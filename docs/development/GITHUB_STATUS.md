@@ -5,6 +5,9 @@ Repository: [whatvlad/practiceloop](https://github.com/whatvlad/practiceloop).
 Visibility: **Private**, verified through authenticated GitHub API.
 Default branch: **main**. Original MVP is the seed commit; infrastructure is
 published on **chore/bootstrap-collaboration** and requires human PR review.
+Draft PR: [#16](https://github.com/whatvlad/practiceloop/pull/16), **not merged**.
+Infrastructure Issue [#1](https://github.com/whatvlad/practiceloop/issues/1) is
+assigned to whatvlad and In Review; the remaining 14 Issues are Backlog/unassigned.
 
 ## Applied and verified
 
@@ -14,8 +17,8 @@ published on **chore/bootstrap-collaboration** and requires human PR review.
   of merged feature branches enabled.
 - 15 MVP Issues published, one per prepared PL ID, with type/priority/status labels
   and acceptance criteria. No second human or assignee was invented.
-- Dependabot vulnerability-alert and automated-security-fix enable endpoints
-  returned HTTP 204. See final verification below for read-back state.
+- Dependabot vulnerability alerts read-back returned HTTP 204 (enabled);
+  automated-security-fixes read-back returned `enabled: true, paused: false`.
 - No collaborator invitations, visibility change, paid upgrade, hosted migration,
   deployment or PR merge performed.
 
@@ -53,9 +56,14 @@ return security_and_analysis state. Gitleaks CI is an independent repository che
 
 ## CI and review
 
-Hosted CI result: pending first infrastructure push/run; final verification below
-will record observed results. Local frontend/backend/SQL/security checks passed
-as documented in SETUP_REPORT.md. No merge or independent human approval exists.
+Hosted CI **passed all four jobs** (Frontend, Backend, Database isolation and
+Security) on infrastructure commit `a201ebd92cebd8e5e962c0679896ae95fdd722f3`:
+[PR run](https://github.com/whatvlad/practiceloop/actions/runs/38814546491) and
+[push run](https://github.com/whatvlad/practiceloop/actions/runs/38814518255).
+This includes full Git-history Gitleaks scan and actual Linux frontend/backend/
+database tests. Subsequent documentation commits trigger their own checks; inspect
+the latest PR head before merging. Local results are in SETUP_REPORT.md.
+No merge or independent human approval exists.
 Private-branch enforcement unavailability means PL-001 must not be marked Done.
 
 ## Connect another agent

@@ -10,7 +10,8 @@
 ## До принятия инфраструктурного PR
 
 Используйте отдельный клон. В main пока только оригинальная спецификация;
-инфраструктура проходит review в chore/bootstrap-collaboration.
+инфраструктура проходит review в chore/bootstrap-collaboration:
+[PR #16](https://github.com/whatvlad/practiceloop/pull/16).
 
 ```powershell
 git clone --branch chore/bootstrap-collaboration https://github.com/whatvlad/practiceloop.git practiceloop-agent
@@ -33,7 +34,7 @@ PR по тексту ниже. Не редактируйте ветку реал
 2. Прочитай AGENTS.md, CLAUDE.md (если ты Claude Code), исходную спецификацию
    docs/PRACTICELOOP_MVP.md, docs/agents/STATUS.md, WORKFLOW.md, TASK_PROTOCOL.md,
    REVIEW_PROTOCOL.md, HANDOFF.md и релевантные ADR.
-3. Проверь открытые Issues и PR. Сначала найди PR из chore/bootstrap-collaboration
+3. Проверь открытые Issues и PR. Сначала открой PR #16 из chore/bootstrap-collaboration
    в main и проведи независимое review реального diff. Обозначь свою настоящую
    идентичность агента, человека-владельца, проверенный commit и запущенные проверки.
 4. Не выдавай ИИ-review за человеческое одобрение. Не выполняй merge, не меняй

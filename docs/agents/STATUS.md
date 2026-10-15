@@ -3,8 +3,9 @@
 Agent: Codex. Accountable human: whatvlad (owner authorized publication).
 Issue: #1 / PL-001. Repository: https://github.com/whatvlad/practiceloop (Private).
 Branch: chore/bootstrap-collaboration. Scope: development infrastructure only.
-Status: private GitHub repository created and Issues published; infrastructure PR
-and hosted verification in progress. NOT Done. Current authoritative publication
+Status: private GitHub repository created, 15 Issues published, infrastructure
+draft PR #16 In Review and all four initial hosted CI jobs passed. NOT Done.
+Current authoritative publication
 state: docs/development/GITHUB_STATUS.md.
 
 - Original empty folder analyzed; no earlier code/history was overwritten.
@@ -21,10 +22,11 @@ state: docs/development/GITHUB_STATUS.md.
 - Independent separate Codex review recorded in SETUP_REPORT; no Claude review
   or independent human approval has been obtained.
 - Repository created, main seeded with original spec, 15 Issues published,
-  remote origin set. Infrastructure is being submitted as a reviewed PR.
+  remote origin set. Infrastructure is published in draft PR #16, without merge.
+  Issue #1 is assigned to whatvlad and In Review; other Issues are Backlog.
 - Main protection rejected by GitHub: HTTP 403, requires GitHub Pro for this
   private repository. No enforcement is claimed; review/merge policy still applies.
-- Dependabot alerts/security-update enable endpoints returned 204. Hosted secret
+- Dependabot alerts read-back returned 204; security updates are enabled and not paused. Hosted secret
   scanning/push protection is unconfirmed. No Projects v2 board has been created.
 - No collaborator invitation, hosted Supabase migration, deployment or merge.
 - Source manifest: docs/development/FILES.md. The local setup report is historical;
