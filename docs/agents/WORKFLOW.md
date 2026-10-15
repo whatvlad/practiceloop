@@ -12,8 +12,8 @@
 10. Check formatting, types, tests, security boundaries, migrations, dependencies, and secret exposure.
 11. Update relevant documentation when behavior, APIs, migrations, or decisions change.
 12. Create a focused pull request only when authorized by the accountable human.
-13. Request independent review from the other agent and independent approval from a human.
-14. Do not merge.
+13. Optionally request review from the other agent or human (recommended for database, authentication and mathematical logic).
+14. Merge the pull request into main yourself once hosted CI passes.
 
 ## Completion criteria
 
@@ -24,10 +24,8 @@ A task is Done only when:
 - relevant tests, formatting, type checks, security checks, and migration checks pass;
 - documentation is current;
 - hosted CI passes;
-- blocking review findings are resolved;
-- independent AI review is recorded when available;
-- an independent human approves the work;
-- an authorized human merges the pull request;
+- blocking review findings, if any were raised, are resolved;
+- the pull request is merged into main;
 - the Issue is closed.
 
 If any condition is missing, report the exact remaining state and do not call the task Done.

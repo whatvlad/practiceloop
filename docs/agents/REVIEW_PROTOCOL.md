@@ -11,7 +11,7 @@ When receiving a HANDOFF from the other agent:
 7. Do not modify the other agent’s branch unless explicitly authorized.
 8. For review findings, provide severity, file, exact line or area, concrete impact, and an actionable recommendation.
 9. Do not describe self-review as independent review.
-10. AI review is advisory and does not replace independent human approval.
+10. Review is advisory; it is not required for merging.
 
 Use this review finding format:
 

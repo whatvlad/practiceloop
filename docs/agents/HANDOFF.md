@@ -22,8 +22,7 @@ Dependencies:
 Potential overlap with the other agent:
 Uncommitted changes or recovery instructions:
 
-Review status:
-Human approval status:
+Review status (if requested):
 Merge status:
 
 Next concrete action:
@@ -37,7 +36,6 @@ HANDOFF rules:
 - Clearly distinguish completed, pending, blocked, and unverified work.
 - Mention any local-only or uncommitted changes.
 - State whether hosted CI was checked.
-- State whether independent AI review and human approval were obtained.
 - Never report the task as Done before all repository completion criteria are satisfied.
 - If the other agent needs a message, produce a complete copyable block for the accountable human to transfer.
 - Write HANDOFF records in English.

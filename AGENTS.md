@@ -31,7 +31,7 @@ The agents have no permanent roles such as “frontend agent” or “backend ag
 - Work in your own branch created from the latest main.
 - Never implement directly on main.
 - Never edit or rewrite the other agent’s branch.
-- Do not merge, force-push, rewrite shared history, change repository access, or resolve conflicts by blindly choosing one side.
+- Do not force-push, rewrite shared history, change repository access, or resolve conflicts by blindly choosing one side.
 - Never exchange tokens, passwords, service-role keys, or other secrets through chat.
 - GitHub Issues, pull requests, and merged commits are the authoritative shared state.
 - AGENTS.md and STATUS.md document rules and status, but they do not provide automatic synchronization.
@@ -48,8 +48,8 @@ The agents have no permanent roles such as “frontend agent” or “backend ag
 - Preserve all unrelated and uncommitted work.
 - Do not modify the original MVP specification without explicit owner permission.
 - Do not expose private answers, generator internals, credentials, or service-role keys to the browser.
-- Do not treat AI review as human approval.
-- Never merge your own pull request.
+- No approval is required: merge your own pull request into main once hosted CI passes.
+- Review by the other agent or human is optional; ask for it on database, authentication or mathematical-logic changes.
 
 Coordination record: docs/agents/TASK_PROTOCOL.md. Implementation workflow and
 completion criteria: docs/agents/WORKFLOW.md. Receiving a HANDOFF and review
