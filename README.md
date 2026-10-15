@@ -92,12 +92,9 @@ Backend, Database isolation and Security; hosted outcomes are unverified until r
 
 ## Collaboration
 
-Two developers, two AI agents, equal rights. Rules for everyone (humans, Codex,
-Claude Code): [AGENTS.md](AGENTS.md). In short: pick or create an Issue, branch
-from `main`, push, open a PR, the other developer reviews, merge when CI is green.
-[Getting started](docs/development/ONBOARDING.md), [contributing](CONTRIBUTING.md),
-[architecture](docs/architecture/OVERVIEW.md), [API status](docs/api/README.md),
+Two developers, each with an AI agent, as equal collaborators. Rules:
+[AGENTS.md](AGENTS.md) and [docs/agents](docs/agents/WORKFLOW.md).
+[Architecture](docs/architecture/OVERVIEW.md), [API status](docs/api/README.md),
 [decisions](docs/decisions/DECISIONS.md), [open questions](docs/decisions/OPEN_QUESTIONS.md),
-[security](SECURITY.md), [changelog](CHANGELOG.md). Bootstrap-era process documents
-are kept in [docs/archive/bootstrap](docs/archive/bootstrap/README.md) for history only.
-No license is granted yet; the owner must select one.
+[security](SECURITY.md), [changelog](CHANGELOG.md). No license is granted yet;
+the owner must select one.

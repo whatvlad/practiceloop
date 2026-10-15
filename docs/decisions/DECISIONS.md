@@ -8,7 +8,7 @@
 | 2026-10-15 | Dependency versions pinned after actual audit | Lockfiles and setup report |
 | 2026-10-15 | Owner approved private whatvlad/practiceloop; infrastructure through PR #16 | Repository/Issues created; four hosted CI jobs passed; no merge |
 | 2026-10-15 | Preserve Private visibility despite plan-limited branch protection | GitHub protection HTTP 403 requires Pro; main is not protected; review before merge is an agreement |
-| 2026-10-15 | Simplified collaboration: equal roles for both developers and agents; Issue -> branch -> PR -> review by the other developer -> merge | AGENTS.md; bootstrap protocols archived |
+| 2026-10-15 | Equal agent roles; collaboration rules reduced to AGENTS.md + docs/agents | Bootstrap setup reports, backlog snapshot and onboarding docs removed (kept in Git history) |
 
 Open questions are in docs/decisions/OPEN_QUESTIONS.md. Record substantial choices
 in a new ADR rather than changing accepted history or the source specification.
