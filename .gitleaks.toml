@@ -1,0 +1,12 @@
+title = "PracticeLoop secret scanning"
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Local dependencies, build output and ephemeral tooling are not source"
+paths = [
+  '''(^|/)\.venv/''',
+  '''(^|/)node_modules/''',
+  '''(^|/)dist/''',
+  '''(^|/)\.local/'''
+]

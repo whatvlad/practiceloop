@@ -1,0 +1,20 @@
+name: Task
+description: Feature, fix, test, docs or infrastructure work
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: What and why
+      description: Link the relevant part of the MVP spec if useful.
+    validations:
+      required: true
+  - type: textarea
+    id: done
+    attributes:
+      label: Done when
+      description: How we know it works (behaviour, tests).
+  - type: textarea
+    id: notes
+    attributes:
+      label: Dependencies or notes
+      description: Issues this waits on. Add the `blocked` label if it can't start yet.

@@ -1,0 +1,5 @@
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+# Preserve the original requirements document byte-for-byte across every clone.
+docs/PRACTICELOOP_MVP.md -text

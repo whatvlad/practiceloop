@@ -1,0 +1,1 @@
+"""Explicit allowlisted response contracts."""
