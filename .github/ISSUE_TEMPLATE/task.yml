@@ -1,44 +1,20 @@
-name: Development task
-description: Feature, Documentation, Testing, Infrastructure, Security or Architecture work
-title: "[Task] "
+name: Task
+description: Feature, fix, test, docs or infrastructure work
 body:
-  - type: dropdown
-    id: type
+  - type: textarea
+    id: description
     attributes:
-      label: Type
-      options: [Feature, Documentation, Testing, Infrastructure, Security, Architecture]
+      label: What and why
+      description: Link the relevant part of the MVP spec if useful.
     validations:
       required: true
   - type: textarea
-    id: scope
+    id: done
     attributes:
-      label: Scope and MVP requirement
-      description: Include boundaries and relevant spec section.
-    validations:
-      required: true
+      label: Done when
+      description: How we know it works (behaviour, tests).
   - type: textarea
-    id: acceptance
+    id: notes
     attributes:
-      label: Acceptance criteria and tests
-    validations:
-      required: true
-  - type: input
-    id: owner
-    attributes:
-      label: Accountable human and implementation agent
-  - type: dropdown
-    id: priority
-    attributes:
-      label: Priority
-      options: [P1, P0, P2]
-    validations:
-      required: true
-  - type: textarea
-    id: dependencies
-    attributes:
-      label: Dependencies, overlapping files, linked PRs
-  - type: dropdown
-    id: status
-    attributes:
-      label: Initial status
-      options: [Backlog, Ready, Blocked]
+      label: Dependencies or notes
+      description: Issues this waits on. Add the `blocked` label if it can't start yet.

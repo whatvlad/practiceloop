@@ -11,7 +11,7 @@ try {
   if (-not (Get-Command gh -ErrorAction SilentlyContinue)) { throw 'Install GitHub CLI and authenticate first' }
   & gh repo view $Repository --json nameWithOwner,isPrivate
   if ($LASTEXITCODE -ne 0) { throw 'Target repository is inaccessible; no changes applied' }
-  $tasks = Get-Content -LiteralPath docs/development/backlog.json -Raw -Encoding UTF8 | ConvertFrom-Json
+  $tasks = Get-Content -LiteralPath docs/archive/bootstrap/backlog.json -Raw -Encoding UTF8 | ConvertFrom-Json
   if (-not $Apply) {
     $tasks | Select-Object id,title,type,priority,status | Format-Table
     Write-Output 'Preview only. After owner approval rerun with -Apply against the confirmed repository.'
