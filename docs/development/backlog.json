@@ -1,0 +1,313 @@
+[
+  {
+    "id": "PL-001",
+    "title": "Publish repository and enforce collaboration gates",
+    "type": "Infrastructure",
+    "priority": "P0",
+    "status": "Backlog",
+    "owner": null,
+    "dependencies": [],
+    "pairing": "Owner + both developers",
+    "scope": "Apply prepared GitHub configuration after explicit approval.",
+    "acceptance": [
+      "Confirm owner/private target and absence or reconcile existing history",
+      "Publish bootstrap PR; all four hosted jobs pass",
+      "Verify protection, independent human review, CODEOWNERS, security availability, labels and optional board",
+      "Connect actual second developer with approved least-privilege role"
+    ],
+    "related_prs": []
+  },
+  {
+    "id": "PL-002",
+    "title": "Finalize API and unresolved mathematical policies",
+    "type": "Architecture",
+    "priority": "P0",
+    "status": "Backlog",
+    "owner": null,
+    "dependencies": [],
+    "pairing": "Both developers + both agents",
+    "scope": "Resolve OQ-01/02/03/04/05 and publish reviewed ADRs/contracts.",
+    "acceptance": [
+      "Specify integration constant and real-domain equivalence policy",
+      "Approve topic x difficulty template matrix and expression grammar/resource bounds",
+      "Agree profile counting, invalid-attempt storage and reveal semantics",
+      "Define API DTOs, failure/retry behavior and atomic persistence boundary"
+    ],
+    "related_prs": []
+  },
+  {
+    "id": "PL-003",
+    "title": "Apply and integration-test Supabase schema",
+    "type": "Security",
+    "priority": "P0",
+    "status": "Backlog",
+    "owner": null,
+    "dependencies": [
+      "PL-002"
+    ],
+    "pairing": "Developer 2 + Claude Code",
+    "scope": "Review ADR-002 and migrate a disposable Supabase project.",
+    "acceptance": [
+      "Validate four public tables, private answers, indexes and composite ownership FK",
+      "Test two real authenticated users and anonymous PostgREST clients; private schema is not exposed",
+      "Demonstrate client writes rejected; document service-role bypass and API ownership tests required by PL-004",
+      "Document profile provisioning and rollback/backup plan"
+    ],
+    "related_prs": []
+  },
+  {
+    "id": "PL-004",
+    "title": "Verify Supabase JWTs and enforce API ownership",
+    "type": "Security",
+    "priority": "P0",
+    "status": "Backlog",
+    "owner": null,
+    "dependencies": [
+      "PL-002",
+      "PL-003"
+    ],
+    "pairing": "Developer 2 + Claude Code",
+    "scope": "Implement verified identity dependency and user-scoped backend persistence.",
+    "acceptance": [
+      "Check JWT signature/allowed algorithm/issuer/audience/expiry and signing-key rotation",
+      "Reject missing/expired/tampered/wrong-project tokens",
+      "User ID comes solely from verified identity; every problem/attempt/reveal query enforces ownership",
+      "Integration tests deny cross-user IDs even with service_role persistence"
+    ],
+    "related_prs": []
+  },
+  {
+    "id": "PL-005",
+    "title": "Implement Google login, session restore and logout",
+    "type": "Feature",
+    "priority": "P1",
+    "status": "Backlog",
+    "owner": null,
+    "dependencies": [
+      "PL-004"
+    ],
+    "pairing": "Developer 1 + Codex",
+    "scope": "Wire Supabase Auth and protected client routes.",
+    "acceptance": [
+      "Configure Google/Supabase callbacks and deployment origins in dev environment",
+      "Login/session restore/token expiry/logout work across reload",
+      "Protected routes handle unauthenticated state; keys in browser are public only",
+      "Exercise redirect errors without logging tokens"
+    ],
+    "related_prs": []
+  },
+  {
+    "id": "PL-006",
+    "title": "Build basic-integral generator across five levels",
+    "type": "Feature",
+    "priority": "P1",
+    "status": "Backlog",
+    "owner": null,
+    "dependencies": [
+      "PL-002"
+    ],
+    "pairing": "Developer 2 + Claude Code",
+    "scope": "Extend internal trusted fixture using approved versioned template matrix.",
+    "acceptance": [
+      "Every approved level has bounded valid parameters and deterministic replay",
+      "Check derivative correctness and domain assumptions across parameter corpus",
+      "Store versioned primitive parameters with no executable expression serialization",
+      "Validate each solution step and final +C policy"
+    ],
+    "related_prs": []
+  },
+  {
+    "id": "PL-007",
+    "title": "Implement a safe bounded math-input parser",
+    "type": "Security",
+    "priority": "P0",
+    "status": "Backlog",
+    "owner": null,
+    "dependencies": [
+      "PL-002"
+    ],
+    "pairing": "Developer 2 + Claude Code",
+    "scope": "Normalize common notation into allowlisted expressions without string eval.",
+    "acceptance": [
+      "Support 3pi, 3*pi, 3π, 3/5, sqrt(3), √3, e^2 and pi/4 + 2",
+      "Reject imports, attributes, arbitrary calls, malformed input and non-allowlisted symbols",
+      "Bound input length, nesting, node count, exponent size and numeric literal length before construction",
+      "Run CPU/memory/wall-limited killable worker tests for pathological expressions; no request-thread-only timeout"
+    ],
+    "related_prs": []
+  },
+  {
+    "id": "PL-008",
+    "title": "Verify mathematical equivalence and integration constants",
+    "type": "Feature",
+    "priority": "P0",
+    "status": "Backlog",
+    "owner": null,
+    "dependencies": [
+      "PL-006",
+      "PL-007"
+    ],
+    "pairing": "Developer 2 + Claude Code",
+    "scope": "Return Correct, Incorrect or Invalid expression using agreed domain/constant policy.",
+    "acceptance": [
+      "Accept equivalent fractions and alternative valid antiderivatives",
+      "Test constants, logs/absolute values, trig identities and domain differences",
+      "Malformed input never causes execution or a 500; timeout is not Incorrect",
+      "Adversarial corpus verifies process termination and resource limits"
+    ],
+    "related_prs": []
+  },
+  {
+    "id": "PL-009",
+    "title": "Add remaining four Integration topic families",
+    "type": "Feature",
+    "priority": "P1",
+    "status": "Backlog",
+    "owner": null,
+    "dependencies": [
+      "PL-006",
+      "PL-008"
+    ],
+    "pairing": "Developer 2 + Claude Code",
+    "scope": "Substitution, integration by parts, rational functions and trigonometric integrals.",
+    "acceptance": [
+      "Split into separate topic Issues with non-overlapping owners before implementation",
+      "Each topic implements the approved five-level template matrix",
+      "Check domain-valid parameters, exact derivative invariants and deterministic replay",
+      "Each template includes verified step-by-step solutions and versioning"
+    ],
+    "related_prs": []
+  },
+  {
+    "id": "PL-010",
+    "title": "Persist generation, attempts and authorized reveals",
+    "type": "Feature",
+    "priority": "P1",
+    "status": "Backlog",
+    "owner": null,
+    "dependencies": [
+      "PL-003",
+      "PL-004",
+      "PL-006",
+      "PL-008"
+    ],
+    "pairing": "Developer 2 + Claude Code",
+    "scope": "Implement problem/attempt/reveal API with trusted outcomes.",
+    "acceptance": [
+      "Save public problem and private solution atomically before generation response",
+      "Persist every attempt including agreed invalid state; no client-controlled correctness",
+      "Reveal only after owner verification and persist flags",
+      "Test DB failure, concurrency, retries/idempotency policy, no internal-data leak and rate limits"
+    ],
+    "related_prs": []
+  },
+  {
+    "id": "PL-011",
+    "title": "Implement practice flow and KaTeX problem card",
+    "type": "Feature",
+    "priority": "P1",
+    "status": "Backlog",
+    "owner": null,
+    "dependencies": [
+      "PL-005",
+      "PL-010"
+    ],
+    "pairing": "Developer 1 + Codex",
+    "scope": "Build topic/difficulty selection, answer/check/reveal/next flows.",
+    "acceptance": [
+      "All MVP card controls and five levels use agreed API contracts",
+      "Trust-disabled KaTeX and accessible math/labels/keyboard controls",
+      "Handle loading, invalid expressions, server failures, stale responses and duplicate submissions",
+      "Never prefetch answers/solution internals into public problem state"
+    ],
+    "related_prs": []
+  },
+  {
+    "id": "PL-012",
+    "title": "Implement history, reopen and basic profile",
+    "type": "Feature",
+    "priority": "P1",
+    "status": "Backlog",
+    "owner": null,
+    "dependencies": [
+      "PL-002",
+      "PL-005",
+      "PL-010"
+    ],
+    "pairing": "Developer 1 + Codex with Developer 2 API support",
+    "scope": "Own paginated history and agreed profile counters.",
+    "acceptance": [
+      "Show topic, level, date, attempts and answer/solution-reveal flags",
+      "Reopen any owned previous problem with persisted state",
+      "Profile shows account, generated, attempted and correct counts with tested repeated-attempt semantics",
+      "Pagination is stable; users cannot read others' rows"
+    ],
+    "related_prs": []
+  },
+  {
+    "id": "PL-013",
+    "title": "Verify complete MVP end to end",
+    "type": "Testing",
+    "priority": "P0",
+    "status": "Backlog",
+    "owner": null,
+    "dependencies": [
+      "PL-009",
+      "PL-011",
+      "PL-012"
+    ],
+    "pairing": "Both developers + cross-agent reviewers",
+    "scope": "Exercise complete authenticated practice flow against disposable Supabase.",
+    "acceptance": [
+      "Google session -> choose -> generate/persist -> attempt -> reveal -> reopen -> profile is verified",
+      "Cross-user API/PostgREST/private data denial tested",
+      "Math corpus, malicious input, worker saturation and DB failure checks pass",
+      "Independent diff review and independent human acceptance; no out-of-scope features"
+    ],
+    "related_prs": []
+  },
+  {
+    "id": "PL-014",
+    "title": "Prepare Cloudflare and Oracle deployment",
+    "type": "Infrastructure",
+    "priority": "P1",
+    "status": "Backlog",
+    "owner": null,
+    "dependencies": [
+      "PL-004",
+      "PL-007",
+      "PL-013"
+    ],
+    "pairing": "Owner + Developer 2; Codex reviews frontend setup",
+    "scope": "Owner-approved hosting configuration for existing specified platforms.",
+    "acceptance": [
+      "Confirm Oracle Free Tier capacity/region and killable worker isolation",
+      "Deploy static frontend and FastAPI only after owner approval; HTTPS/CORS/health/rate limits verified",
+      "Secrets remain backend-only, Google redirects correct, backups/log redaction/restore documented",
+      "Document rollbacks and verify deployed smoke checks"
+    ],
+    "related_prs": []
+  },
+  {
+    "id": "PL-015",
+    "title": "Document operations, review gates and MVP release",
+    "type": "Documentation",
+    "priority": "P1",
+    "status": "Backlog",
+    "owner": null,
+    "dependencies": [
+      "PL-001",
+      "PL-013",
+      "PL-014"
+    ],
+    "pairing": "Both developers + both agents",
+    "scope": "Record actual deployed behavior and acceptance evidence.",
+    "acceptance": [
+      "README/API/ADRs reflect implementation and all limitations",
+      "Second developer can clone, run tests and use each agent with isolated worktrees",
+      "No missing hosted CI/review/approval/merge gate is marked Done",
+      "Owner selects license; record meaningful user-facing release changelog"
+    ],
+    "related_prs": []
+  }
+]

@@ -1,0 +1,44 @@
+name: Development task
+description: Feature, Documentation, Testing, Infrastructure, Security or Architecture work
+title: "[Task] "
+body:
+  - type: dropdown
+    id: type
+    attributes:
+      label: Type
+      options: [Feature, Documentation, Testing, Infrastructure, Security, Architecture]
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope and MVP requirement
+      description: Include boundaries and relevant spec section.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria and tests
+    validations:
+      required: true
+  - type: input
+    id: owner
+    attributes:
+      label: Accountable human and implementation agent
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options: [P1, P0, P2]
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies, overlapping files, linked PRs
+  - type: dropdown
+    id: status
+    attributes:
+      label: Initial status
+      options: [Backlog, Ready, Blocked]
