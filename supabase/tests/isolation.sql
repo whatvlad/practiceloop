@@ -1,5 +1,29 @@
 \set ON_ERROR_STOP on
 begin;
+
+-- Check privileges directly, independently of RLS or schema USAGE. In particular,
+-- TRUNCATE bypasses RLS, and new tables may inherit unsafe default grants.
+do $$
+declare
+  unsafe_grants text;
+begin
+  select string_agg(
+    format('%I.%I: %I has %s', n.nspname, c.relname, browser.role_name, operation.privilege),
+    '; ' order by n.nspname, c.relname, browser.role_name, operation.privilege
+  ) into unsafe_grants
+  from pg_class c
+  join pg_namespace n on n.oid = c.relnamespace
+  cross join (values ('anon'), ('authenticated')) as browser(role_name)
+  cross join (values ('INSERT'), ('UPDATE'), ('DELETE'), ('TRUNCATE')) as operation(privilege)
+  where n.nspname in ('public', 'private')
+    and c.relkind in ('r', 'p', 'f')
+    and has_table_privilege(browser.role_name, c.oid, operation.privilege);
+
+  if unsafe_grants is not null then
+    raise exception 'FAIL: browser write privileges detected: %', unsafe_grants;
+  end if;
+end $$;
+
 insert into auth.users(id) values
   ('00000000-0000-0000-0000-000000000001'),
   ('00000000-0000-0000-0000-000000000002');

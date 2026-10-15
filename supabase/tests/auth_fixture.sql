@@ -10,3 +10,8 @@ create function auth.uid() returns uuid language sql stable as $$
 $$;
 grant usage on schema public, auth to anon, authenticated, service_role;
 grant execute on function auth.uid() to anon, authenticated, service_role;
+
+-- Supabase-created public tables receive browser grants by default. Migrations
+-- must revoke those grants explicitly; otherwise this fixture would hide leaks.
+alter default privileges in schema public
+  grant all on tables to anon, authenticated, service_role;

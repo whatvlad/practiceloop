@@ -24,15 +24,15 @@ backend/app/           main.py, api/, core/, models/, services/, generators/, sc
 backend/tests/         liveness, mathematical invariants and public-data boundary
 supabase/migrations/   prepared schema and RLS (not hosted)
 supabase/tests/        disposable SQL fixture and isolation tests
-docs/                 MVP, architecture, decisions, agents, api, development
+docs/                 MVP, architecture, decisions, agents, api
 .github/              CI, issue/PR templates, owners, Dependabot, protection payload
-scripts/              repository checks, disposable database tests, issue publishing
+scripts/              repository checks, disposable database tests
 ```
 
 ## Local setup
 
 Use Node 24 LTS and Python 3.12–3.14. CI targets Node 24/Python 3.12/Linux;
-local setup machine uses different runtime versions noted in the report.
+use these supported versions for local work as well.
 PowerShell examples, from repository root:
 ```powershell
 python -m venv .venv

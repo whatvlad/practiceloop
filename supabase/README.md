@@ -20,3 +20,11 @@ Local/CI isolation tests use a fresh PostgreSQL 17 container and the minimal
 migration, role grants, RLS and composite ownership FK. It does **not** verify
 hosted Supabase Auth, JWT claims, Google OAuth or PostgREST configuration.
 PL-003/004/005 track those integration checks against a disposable Supabase project.
+
+The fixture reproduces Supabase's automatic public-table grants to anon,
+authenticated and service_role. Isolation tests enumerate every public/private
+table (including partitioned and foreign tables) and reject INSERT, UPDATE,
+DELETE or TRUNCATE privileges for either browser role, including inherited/PUBLIC
+grants. This catches newly introduced tables without explicit revokes and checks
+TRUNCATE separately because RLS does not constrain it. The fixture is a focused
+table-privilege model, not a full Supabase installation.
