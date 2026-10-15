@@ -36,7 +36,7 @@ supported input examples parse safely; mathematical equivalence respects domain
 and integration constants; every generation and attempt persists; reveal flags and
 history survive reload; Google/session/logout work; cross-user access is denied;
 profile counts are correct; UI handles failures; resource limits and hosting are
-verified. See BACKLOG for acceptance criteria and docs/agents/WORKFLOW for Done.
+verified. Per-task acceptance criteria live in the GitHub Issues.
 
 Out of scope: tutor, chat, subscriptions, ranks, social, teachers, mobile app,
 adaptive learning, achievements, OCR, other school subjects and advanced analytics.

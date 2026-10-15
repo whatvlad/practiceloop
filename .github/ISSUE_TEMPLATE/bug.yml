@@ -1,25 +1,21 @@
 name: Bug report
-description: Reproducible product or infrastructure defect
+description: Something that doesn't work as expected
 title: "[Bug] "
 body:
   - type: textarea
     id: reproduction
     attributes:
-      label: Reproduction steps and environment
+      label: Steps to reproduce
     validations:
       required: true
   - type: textarea
     id: expected
     attributes:
-      label: Expected and actual behavior
+      label: Expected and actual behaviour
     validations:
       required: true
   - type: textarea
     id: evidence
     attributes:
-      label: Sanitized evidence and regression test
+      label: Logs or screenshots
       description: Do not paste tokens, user answers or personal data.
-  - type: input
-    id: owner
-    attributes:
-      label: Accountable human, agent, dependencies and linked PRs

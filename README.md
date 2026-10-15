@@ -5,14 +5,11 @@ answer verification and personal practice history. The MVP covers Integration,
 five topics and five difficulty levels, Google login, attempts, answer/solution
 reveal and a basic profile. [Original specification](docs/PRACTICELOOP_MVP.md).
 
-**Current state: collaboration infrastructure and a development scaffold.** The
-authenticated practice flow is not implemented. Private repository:
-[whatvlad/practiceloop](https://github.com/whatvlad/practiceloop).
-Infrastructure is submitted on `chore/bootstrap-collaboration` for human review;
-no hosted database has been migrated and no deployment is configured. See
-[publication status](docs/development/GITHUB_STATUS.md),
-[setup report](docs/development/SETUP_REPORT.md) and
-[second-agent connection guide](docs/agents/CONNECT_AGENT.md).
+**Current state: development scaffold.** The authenticated practice flow is not
+implemented yet. Private repository:
+[whatvlad/practiceloop](https://github.com/whatvlad/practiceloop). Tasks live in
+[GitHub Issues](https://github.com/whatvlad/practiceloop/issues). No hosted
+database has been migrated and no deployment is configured.
 
 ## Stack and structure
 
@@ -89,22 +86,15 @@ powershell -File scripts/test-db.ps1
 ```
 Database test needs Docker and pulls a disposable PostgreSQL image. Never point
 auth_fixture.sql at Supabase/shared data. Git history secret scan is also in CI;
-see GITHUB_SETUP.md for the local command after the first commit exists.
+run Gitleaks locally with `gitleaks git . --config .gitleaks.toml --redact` if needed.
 No command should report success on skipped/missing tests. CI jobs are Frontend,
 Backend, Database isolation and Security; hosted outcomes are unverified until run.
 
 ## Collaboration
 
-Read [CONTRIBUTING](CONTRIBUTING.md), [shared agent rules](AGENTS.md),
-[workflow and Done criteria](docs/agents/WORKFLOW.md),
-[task protocol](docs/agents/TASK_PROTOCOL.md),
-[review protocol](docs/agents/REVIEW_PROTOCOL.md) and [handoff](docs/agents/HANDOFF.md).
-One Issue/owner/branch, isolated worktrees, cross-agent review and independent
-human approval. [Connect developer 2, Codex and Claude](docs/development/ONBOARDING.md).
-
-Owner approval is required before GitHub creation/publication/access changes or
-merge. [Exact GitHub completion steps](docs/development/GITHUB_SETUP.md).
-[Backlog](docs/development/BACKLOG.md), [open decisions](docs/decisions/OPEN_QUESTIONS.md),
-[API status](docs/api/README.md), [security](SECURITY.md),
-[current status](docs/agents/STATUS.md), [decision log](docs/agents/DECISIONS.md),
-[changelog](CHANGELOG.md). No license is granted yet; owner must select one.
+Two developers, each with an AI agent, as equal collaborators. Rules:
+[AGENTS.md](AGENTS.md) and [docs/agents](docs/agents/WORKFLOW.md).
+[Architecture](docs/architecture/OVERVIEW.md), [API status](docs/api/README.md),
+[decisions](docs/decisions/DECISIONS.md), [open questions](docs/decisions/OPEN_QUESTIONS.md),
+[security](SECURITY.md), [changelog](CHANGELOG.md). No license is granted yet;
+the owner must select one.
