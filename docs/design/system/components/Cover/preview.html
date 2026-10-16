@@ -1,0 +1,36 @@
+<!-- @dsCard height=288 -->
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap">
+<style>
+body{margin:0}
+.c{position:relative;width:960px;height:288px;background:var(--canvas);overflow:hidden}
+.n{position:absolute;left:40px;bottom:58px;width:440px;font-family:var(--font-display);font-size:64px;line-height:.95;color:var(--ink);white-space:nowrap}
+.t{position:absolute;left:40px;bottom:32px;width:440px;font-family:var(--font-sans);font-size:14px;line-height:20px;color:var(--ink-muted)}
+svg{position:absolute;left:0;top:0}
+.a{fill:var(--action)} .b{fill:var(--line)} .m{fill:var(--ink-muted)} .ok{fill:var(--correct)} .no{fill:var(--incorrect)} .iv{fill:var(--invalid)}
+.ring{fill:none;stroke:var(--canvas);stroke-width:6}
+.big{rx:var(--radius-xl)} .sq{rx:var(--radius-xl)}
+</style><link rel="stylesheet" href="../../tokens.css"><link rel="stylesheet" href="../bundle.css">
+</head><body>
+<div class="c">
+<svg width="960" height="288" viewBox="0 0 960 288" aria-hidden="true">
+<!--
+blocks: action 224x240 slab (white), line 112x112 square, ink-muted 112 disc, correct/incorrect/invalid 72px discs and pill
+arrangement: tall white slab at left of the field with a staggered grey pair beside it, three small result-state blocks in a column at the right edge
+pattern: loop motif, concentric rings (pitch 28) cut from the slab in canvas colour; the product is a loop of attempts
+steps: 24 margin, 16 gaps, radius-xl on slab and square, half-side on discs and pill
+-->
+<defs><clipPath id="s"><rect x="496" y="24" width="224" height="240" rx="28"/></clipPath></defs>
+<rect class="a big" x="496" y="24" width="224" height="240" rx="28"/>
+<g clip-path="url(#s)"><circle class="ring" cx="608" cy="144" r="28"/><circle class="ring" cx="608" cy="144" r="56"/><circle class="ring" cx="608" cy="144" r="84"/><circle class="ring" cx="608" cy="144" r="112"/></g>
+<rect class="b sq" x="736" y="24" width="112" height="112" rx="28"/>
+<circle class="m" cx="792" cy="208" r="56"/>
+<circle class="ok" cx="900" cy="60" r="36"/>
+<circle class="no" cx="900" cy="148" r="36"/>
+<rect class="iv" x="864" y="204" width="72" height="60" rx="30"/>
+</svg>
+<div class="n">PracticeLoop</div>
+<div class="t">Math practice, on loop.</div>
+</div>
+</body></html>

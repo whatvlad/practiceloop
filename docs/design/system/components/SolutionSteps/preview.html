@@ -1,0 +1,21 @@
+<!-- @dsCard group="Practice" height=470 subtitle="Numbered steps with a sentence and an expression each." -->
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>body{margin:0}.pad{padding:var(--space-5)}</style>
+<link rel="stylesheet" href="../../tokens.css"><link rel="stylesheet" href="../bundle.css">
+</head><body>
+
+<div class="pad" style="max-width:700px"><ol class="pl-steps">
+  <li><div><div class="say">Let</div><div class="m"><span data-tex="u = x^2"></span></div></div></li>
+  <li><div><div class="say">Then</div><div class="m"><span data-tex="du = 2x\,dx"></span></div></div></li>
+  <li><div><div class="say">Therefore</div><div class="m"><span data-tex="\int 2x\cos(x^2)\,dx = \int \cos(u)\,du"></span></div></div></li>
+  <li><div><div class="say">Integrate</div><div class="m"><span data-tex="= \sin(u) + C"></span></div></div></li>
+  <li class="final"><div><div class="say">Substitute back</div><div class="m"><span data-tex="= \sin(x^2) + C"></span></div></div></li>
+</ol></div>
+<script>
+document.querySelectorAll('[data-tex]').forEach(function(el){try{katex.render(el.getAttribute('data-tex'),el,{displayMode:false,throwOnError:false})}catch(e){el.textContent=el.getAttribute('data-tex')}});
+</script>
+
+</body></html>

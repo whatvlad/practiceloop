@@ -1,0 +1,24 @@
+<!-- @dsCard group="Inputs" height=330 subtitle="Monospace field for typed notation: 3pi, sqrt(3), pi/4 + 2." -->
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>body{margin:0}.pad{padding:var(--space-5)}</style>
+<link rel="stylesheet" href="../../tokens.css"><link rel="stylesheet" href="../bundle.css">
+</head><body>
+
+<div class="pad pl-stack" style="max-width:640px;gap:var(--space-5)">
+  <div class="pl-field"><label class="pl-label" for="a1">Your answer</label>
+    <input id="a1" class="pl-input" placeholder="e.g. sin(x^2) + C" autocomplete="off" spellcheck="false">
+    <div class="pl-hint">Accepted: <code>3pi</code> <code>3*pi</code> <code>3π</code> <code>3/5</code> <code>sqrt(3)</code> <code>√3</code> <code>e^2</code> <code>pi/4 + 2</code></div></div>
+  <div class="pl-field"><label class="pl-label" for="a2">Your answer</label>
+    <input id="a2" class="pl-input is-correct" value="2/4"></div>
+  <div class="pl-field"><label class="pl-label" for="a3">Your answer</label>
+    <input id="a3" class="pl-input is-invalid" value="3pi +* 2" aria-invalid="true">
+    <div class="pl-hint" style="color:var(--invalid)">We could not read that expression.</div></div>
+</div>
+<script>
+document.querySelectorAll('[data-tex]').forEach(function(el){try{katex.render(el.getAttribute('data-tex'),el,{displayMode:false,throwOnError:false})}catch(e){el.textContent=el.getAttribute('data-tex')}});
+</script>
+
+</body></html>
