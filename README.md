@@ -19,7 +19,7 @@ FastAPI -> rule engine/private solutions and Supabase. Only backend can write
 trusted outcomes; owner-filtered browser reads use RLS. [Architecture](docs/architecture/OVERVIEW.md).
 
 ```text
-frontend/src/          React entry, safe KaTeX utility and tests
+frontend/src/          React app: components/, pages/, styles/, data/ (api.ts + temporary mock/)
 backend/app/           main.py, api/, core/, models/, services/, generators/, schemas/
 backend/tests/         liveness, mathematical invariants and public-data boundary
 supabase/migrations/   prepared schema and RLS (not hosted)
