@@ -1,0 +1,28 @@
+<!-- @dsCard group="Actions" height=190 subtitle="Primary is white on black. One per view." -->
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>body{margin:0}.pad{padding:var(--space-5)}</style>
+<link rel="stylesheet" href="../../tokens.css"><link rel="stylesheet" href="../bundle.css">
+</head><body>
+
+<div class="pad pl-stack">
+  <div class="pl-actions">
+    <button class="pl-btn pl-btn--primary pl-btn--lg">Generate problem <svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    <button class="pl-btn pl-btn--primary">Check answer</button>
+    <button class="pl-btn pl-btn--secondary">Show answer</button>
+    <button class="pl-btn pl-btn--ghost">Show solution</button>
+  </div>
+  <div class="pl-actions">
+    <button class="pl-btn pl-btn--primary pl-btn--pill pl-btn--lg">Continue with Google</button>
+    <button class="pl-btn pl-btn--secondary pl-btn--sm">Sign out</button>
+    <button class="pl-btn pl-btn--primary" disabled>Check answer</button>
+    <button class="pl-btn pl-btn--secondary">Next problem <span class="pl-kbd">Enter</span></button>
+  </div>
+</div>
+<script>
+document.querySelectorAll('[data-tex]').forEach(function(el){try{katex.render(el.getAttribute('data-tex'),el,{displayMode:false,throwOnError:false})}catch(e){el.textContent=el.getAttribute('data-tex')}});
+</script>
+
+</body></html>

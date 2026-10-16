@@ -1,0 +1,31 @@
+<!-- @dsCard group="Pages" height=700 width=1200 subtitle="Account info and three counters. Nothing more." -->
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>body{margin:0}.pad{padding:var(--space-5)}</style>
+<link rel="stylesheet" href="../../tokens.css"><link rel="stylesheet" href="../bundle.css">
+</head><body>
+
+<div class="pl-page"><header class="pl-nav"><a class="pl-logo" href="#"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66" stroke-width="2.5"/><circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none"/></svg>PracticeLoop</a>
+  <nav aria-label="Primary"><a href="#">Dashboard</a><a href="#">Practice</a><a href="#">History</a><a href="#" aria-current="page">Profile</a></nav>
+  <div class="pl-row"><button class="pl-btn pl-btn--ghost pl-btn--sm">Log out</button><span class="pl-avatar">A</span></div></header>
+<main class="pl-wrap pl-wrap--narrow" style="padding-top:var(--space-7);padding-bottom:var(--space-8)">
+  <div class="pl-label">Profile</div>
+  <h1 class="pl-display-md" style="margin:var(--space-3) 0 var(--space-6)">Your <em>account.</em></h1>
+  <div class="pl-card pl-card--lg pl-row" style="justify-content:space-between;margin-bottom:var(--space-4)">
+    <div class="pl-row" style="gap:var(--space-4)"><span class="pl-avatar" style="width:56px;height:56px;font-size:20px">A</span><div><div class="pl-h-md">Alex Morgan</div><div class="pl-muted pl-small">alex@example.com · Signed in with Google</div></div></div>
+    <button class="pl-btn pl-btn--secondary">Log out</button>
+  </div>
+  <div class="pl-grid-3">
+    <div class="pl-stat"><span class="pl-label">Generated</span><div class="v">128</div></div>
+    <div class="pl-stat"><span class="pl-label">Attempted</span><div class="v">94</div></div>
+    <div class="pl-stat"><span class="pl-label">Correct</span><div class="v">71</div></div>
+  </div>
+  <p class="pl-small pl-subtle" style="margin-top:var(--space-4)">Illustrative data.</p>
+</main></div>
+<script>
+document.querySelectorAll('[data-tex]').forEach(function(el){try{katex.render(el.getAttribute('data-tex'),el,{displayMode:false,throwOnError:false})}catch(e){el.textContent=el.getAttribute('data-tex')}});
+</script>
+
+</body></html>

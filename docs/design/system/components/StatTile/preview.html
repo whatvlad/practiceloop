@@ -1,0 +1,19 @@
+<!-- @dsCard group="Data" height=230 subtitle="Profile and dashboard counters. Large serif numerals." -->
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>body{margin:0}.pad{padding:var(--space-5)}</style>
+<link rel="stylesheet" href="../../tokens.css"><link rel="stylesheet" href="../bundle.css">
+</head><body>
+
+<div class="pad pl-grid-3" style="max-width:860px">
+  <div class="pl-stat"><span class="pl-label">Generated</span><div class="v">128</div><span class="pl-small pl-muted">problems</span></div>
+  <div class="pl-stat"><span class="pl-label">Attempted</span><div class="v">94</div><div class="pl-bar"><i style="width:73%"></i></div></div>
+  <div class="pl-stat"><span class="pl-label">Correct</span><div class="v">71<small>/ 94</small></div><div class="pl-bar"><i style="width:76%"></i></div></div>
+</div>
+<script>
+document.querySelectorAll('[data-tex]').forEach(function(el){try{katex.render(el.getAttribute('data-tex'),el,{displayMode:false,throwOnError:false})}catch(e){el.textContent=el.getAttribute('data-tex')}});
+</script>
+
+</body></html>
