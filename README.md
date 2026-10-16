@@ -61,6 +61,9 @@ In two terminals:
 cd frontend
 npm run dev
 ```
+A preview of `main` (mock data) deploys to GitHub Pages via
+`.github/workflows/pages.yml`; to build for that sub-path run
+`npm run build -- --base=/practiceloop/`.
 Frontend: http://localhost:5173. Backend health: http://localhost:8000/health.
 OpenAPI: http://localhost:8000/docs. Health is liveness, not database readiness.
 
