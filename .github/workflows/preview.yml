@@ -1,7 +1,7 @@
 name: Preview
 # Preview hosting on Cloudflare Pages: the frontend (mock data) at / and the
 # Graphify code graph at /graph/, rebuilt from each push to main.
-# Visitors are limited by a Cloudflare Access policy set in the Cloudflare dashboard.
+# Served at https://practiceloop.pages.dev (noindex, no login for now).
 # Needs repo secrets CLOUDFLARE_API_TOKEN (Account > Cloudflare Pages > Edit) and
 # CLOUDFLARE_ACCOUNT_ID; without them the build still runs and the deploy is skipped.
 on:

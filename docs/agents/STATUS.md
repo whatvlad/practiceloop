@@ -10,5 +10,5 @@ with mock data behind `frontend/src/data/api.ts`; the temporary stub in
 `frontend/src/data/mock/` is replaced when the API (PL-010/011/012) lands.
 
 Preview hosting (#28, #33): `.github/workflows/preview.yml` deploys `frontend/`
-and the Graphify graph (`/graph/`) to Cloudflare Pages on push to main, behind a
-Cloudflare Access login. GitHub Pages stopped when the repo became private.
+and the Graphify graph (`/graph/`) to https://practiceloop.pages.dev on push to
+main (noindex, no login for now). GitHub Pages stopped when the repo became private.
