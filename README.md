@@ -9,7 +9,8 @@ reveal and a basic profile. [Original specification](docs/PRACTICELOOP_MVP.md).
 implemented yet. Private repository:
 [whatvlad/practiceloop](https://github.com/whatvlad/practiceloop). Tasks live in
 [GitHub Issues](https://github.com/whatvlad/practiceloop/issues). No hosted
-database has been migrated and no deployment is configured.
+database has been migrated. GitHub Pages hosts the current mock-data preview;
+the production stack is not deployed.
 
 ## Stack and structure
 
@@ -101,3 +102,17 @@ Two developers, each with an AI agent, as equal collaborators. Rules:
 [decisions](docs/decisions/DECISIONS.md), [open questions](docs/decisions/OPEN_QUESTIONS.md),
 [security](SECURITY.md), [changelog](CHANGELOG.md). No license is granted yet;
 the owner must select one.
+
+## Product direction
+
+The original [MVP specification](docs/PRACTICELOOP_MVP.md) remains the product
+source of truth. Approved planning documents refine the path to production
+without silently changing that specification:
+
+- [production-readiness plan](docs/production/PRODUCTION_READINESS_PLAN.md);
+- [problem-generation intent](docs/intent/PROBLEM_GENERATION.md);
+- [educational content-style intent](docs/intent/CONTENT_STYLE.md);
+- [staged production roadmap](docs/agents/NEXT_CHAT_GITHUB_ROADMAP.md).
+
+The roadmap is tracked in
+[GitHub Issue #30](https://github.com/whatvlad/practiceloop/issues/30).
