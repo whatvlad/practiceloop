@@ -46,7 +46,7 @@ forwarding off), and may run only
    It installs Python 3.12 (from the OS, or a standalone build via uv on images
    such as Ubuntu 20.04 that lack it) and Caddy, creates the user and services, opens the
    VM firewall and prints three values.
-4. In GitHub repo settings, add the printed values as Actions **variables**
+4. In GitHub repo settings, add the printed values as Actions **variables** (secrets also work)
    `ORACLE_HOST`, `ORACLE_KNOWN_HOSTS` and `API_BASE_URL`, and the private key as
    the **secret** `ORACLE_SSH_KEY`
    (`gh secret set ORACLE_SSH_KEY < ~/.ssh/practiceloop_deploy`).

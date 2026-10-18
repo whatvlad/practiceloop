@@ -2,7 +2,7 @@ name: Backend deploy
 # Ships backend/ to the Oracle VM on every push to main that touches it, then checks
 # the public HTTPS health endpoint. Setup and rollback: docs/production/ORACLE_DEPLOY.md.
 # Needs secret ORACLE_SSH_KEY and variables ORACLE_HOST, ORACLE_KNOWN_HOSTS and
-# API_BASE_URL; without them the tests still run and the deploy is skipped.
+# API_BASE_URL (each may also be a secret); without them the deploy is skipped.
 on:
   push:
     branches: [main]
@@ -26,9 +26,9 @@ jobs:
     timeout-minutes: 15
     env:
       ORACLE_SSH_KEY: ${{ secrets.ORACLE_SSH_KEY }}
-      ORACLE_HOST: ${{ vars.ORACLE_HOST }}
-      ORACLE_KNOWN_HOSTS: ${{ vars.ORACLE_KNOWN_HOSTS }}
-      API_BASE_URL: ${{ vars.API_BASE_URL }}
+      ORACLE_HOST: ${{ vars.ORACLE_HOST || secrets.ORACLE_HOST }}
+      ORACLE_KNOWN_HOSTS: ${{ vars.ORACLE_KNOWN_HOSTS || secrets.ORACLE_KNOWN_HOSTS }}
+      API_BASE_URL: ${{ vars.API_BASE_URL || secrets.API_BASE_URL }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
