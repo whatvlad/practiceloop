@@ -6,6 +6,8 @@
 set -euo pipefail
 
 CADDY_VERSION="${CADDY_VERSION:-2.10.2}"
+UV_VERSION="${UV_VERSION:-0.12.24}"
+PYTHON_VERSION=3.12
 APP_USER=practiceloop
 APP_ROOT=/opt/practiceloop
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -35,14 +37,28 @@ echo "==> Installing Python 3.12, curl and tar"
 if command -v apt-get >/dev/null; then
   export DEBIAN_FRONTEND=noninteractive
   apt-get update -q
-  apt-get install -y -q python3.12 python3.12-venv curl tar
+  apt-get install -y -q curl tar python3-venv
+  if apt-cache show python3.12-venv >/dev/null 2>&1; then
+    apt-get install -y -q python3.12 python3.12-venv
+  fi
 elif command -v dnf >/dev/null; then
-  dnf install -y -q python3.12 curl tar
+  dnf install -y -q curl tar
+  dnf install -y -q python3.12 || true
 else
-  echo "Unsupported OS: needs apt (Ubuntu 24.04) or dnf (Oracle Linux 9)." >&2
+  echo "Unsupported OS: needs apt (Ubuntu) or dnf (Oracle Linux)." >&2
   exit 1
 fi
-command -v python3.12 >/dev/null || { echo "python3.12 is not available on this OS." >&2; exit 1; }
+# Older images (such as Ubuntu 20.04) have no python3.12 package: use uv's standalone build.
+if ! command -v python3.12 >/dev/null; then
+  echo "==> No python3.12 package here, installing a standalone Python $PYTHON_VERSION with uv"
+  [[ -x /opt/uv/bin/uv ]] || python3 -m venv /opt/uv
+  /opt/uv/bin/pip install --quiet --disable-pip-version-check "uv==$UV_VERSION"
+  export UV_PYTHON_INSTALL_DIR=/opt/python UV_PYTHON_PREFERENCE=only-managed
+  /opt/uv/bin/uv python install --no-bin "$PYTHON_VERSION"
+  ln -sfn "$(/opt/uv/bin/uv python find "$PYTHON_VERSION")" /usr/local/bin/python3.12
+  chmod -R a+rX /opt/python
+fi
+python3.12 -m venv --help >/dev/null || { echo "python3.12 cannot create venvs." >&2; exit 1; }
 
 echo "==> Creating the $APP_USER user"
 if ! id "$APP_USER" >/dev/null 2>&1; then

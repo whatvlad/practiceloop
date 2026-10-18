@@ -19,6 +19,10 @@ domain later, pass it as the third argument to `bootstrap.sh` and update
 
 ## On the VM
 
+The preview VM (2026-10-18) is an Ampere A1 ARM instance on Ubuntu 20.04, which no
+longer gets standard security updates; upgrade it or attach free Ubuntu Pro before
+production.
+
 | Path | What |
 |---|---|
 | `/opt/practiceloop/releases/<sha>-<run>-<attempt>/` | One upload: `backend/`, `deploy/oracle/` and its own `.venv` |
@@ -39,7 +43,8 @@ forwarding off), and may run only
 3. Copy `deploy/oracle/` to the VM and run, with the VM's public IP and the
    contents of `practiceloop_deploy.pub`:
    `sudo bash bootstrap.sh <ip> "<ssh-ed25519 ... practiceloop-deploy>"`.
-   It installs Python 3.12 and Caddy, creates the user and services, opens the
+   It installs Python 3.12 (from the OS, or a standalone build via uv on images
+   such as Ubuntu 20.04 that lack it) and Caddy, creates the user and services, opens the
    VM firewall and prints three values.
 4. In GitHub repo settings, add the printed values as Actions **variables**
    `ORACLE_HOST`, `ORACLE_KNOWN_HOSTS` and `API_BASE_URL`, and the private key as
