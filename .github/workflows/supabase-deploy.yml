@@ -1,0 +1,92 @@
+name: Supabase migrations
+on:
+  push:
+    branches: [main]
+    paths:
+      - supabase/migrations/**
+      - supabase/config.toml
+      - .github/workflows/supabase-deploy.yml
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Inspect pending migrations or apply after first-project verification
+        type: choice
+        options: [dry-run, apply]
+        default: dry-run
+
+permissions:
+  contents: read
+
+concurrency:
+  group: supabase-migrations
+  cancel-in-progress: false
+
+jobs:
+  migrate:
+    name: Validate and migrate
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: local-ci-only
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+      MIGRATIONS_READY: ${{ vars.SUPABASE_MIGRATIONS_READY }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Check schema in disposable Postgres (never hosted)
+        env:
+          PGPASSWORD: local-ci-only
+          PGHOST: localhost
+          PGUSER: postgres
+        run: |
+          psql -v ON_ERROR_STOP=1 -f supabase/tests/auth_fixture.sql
+          for migration in supabase/migrations/*.sql; do
+            psql -v ON_ERROR_STOP=1 -f "$migration"
+          done
+          psql -v ON_ERROR_STOP=1 -f supabase/tests/isolation.sql
+      - name: Check delivery configuration
+        id: config
+        run: |
+          if [[ -z "$SUPABASE_ACCESS_TOKEN" || -z "$SUPABASE_PROJECT_REF" || -z "$SUPABASE_DB_PASSWORD" ]]; then
+            echo "::notice::Hosted migration skipped: set SUPABASE_ACCESS_TOKEN, SUPABASE_PROJECT_REF and SUPABASE_DB_PASSWORD secrets. Local SQL checks ran; hosted schema is unverified."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: supabase/setup-cli@1dedf2c611547ede7232d26866dd3c56ab903bbb # v1
+        if: steps.config.outputs.ready == 'true'
+        with:
+          version: 2.121.0
+      - name: Link hosted project
+        if: steps.config.outputs.ready == 'true'
+        run: |
+          supabase link --project-ref "$SUPABASE_PROJECT_REF"
+          if [[ ! -s supabase/.temp/pooler-url ]]; then
+            echo "::error::No IPv4 pooler configuration cached. Check token Connection Pooling Read permission and project availability."
+            exit 1
+          fi
+      - name: Inspect pending migrations before every push
+        if: steps.config.outputs.ready == 'true'
+        run: supabase db push --linked --dry-run
+      - name: Apply pending migrations
+        if: steps.config.outputs.ready == 'true' && env.MIGRATIONS_READY == 'true' && (github.event_name == 'push' || inputs.mode == 'apply')
+        run: supabase db push --linked --yes
+      - name: Verify migration history
+        if: steps.config.outputs.ready == 'true'
+        run: supabase migration list --linked
+      - name: Report first-project hold
+        if: steps.config.outputs.ready == 'true' && env.MIGRATIONS_READY != 'true'
+        run: |
+          echo "::notice::Dry-run only. After reviewing the real-project dry-run, ADR-002 policy and backup plan, the human sets SUPABASE_MIGRATIONS_READY=true to enable application."

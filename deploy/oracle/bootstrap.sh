@@ -88,7 +88,8 @@ if [[ ! -f /etc/practiceloop/api.env ]]; then
 ALLOWED_ORIGINS=https://practiceloop.pages.dev,http://localhost:5173,http://127.0.0.1:5173
 ENV
 fi
-chmod 644 /etc/practiceloop/api.env
+chown root:root /etc/practiceloop/api.env
+chmod 600 /etc/practiceloop/api.env
 install -m 644 "$HERE/practiceloop-api.service" /etc/systemd/system/practiceloop-api.service
 
 echo "==> Installing Caddy $CADDY_VERSION for HTTPS"

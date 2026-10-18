@@ -82,6 +82,7 @@ npm audit --audit-level=moderate
 cd ..
 .\.venv\Scripts\python.exe -m ruff check backend scripts
 .\.venv\Scripts\python.exe -m ruff format --check backend scripts
+.\.venv\Scripts\python.exe -m unittest discover -s scripts -p 'test_supabase_*_unit.py'
 cd backend
 ..\.venv\Scripts\python.exe -m mypy
 ..\.venv\Scripts\python.exe -m pytest
