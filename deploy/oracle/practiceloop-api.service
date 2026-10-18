@@ -1,0 +1,22 @@
+[Unit]
+Description=PracticeLoop API (FastAPI)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=practiceloop
+Group=practiceloop
+# current is a symlink to the active release, re-read on every restart.
+WorkingDirectory=/opt/practiceloop/current/backend
+EnvironmentFile=/etc/practiceloop/api.env
+ExecStart=/opt/practiceloop/current/.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000 --proxy-headers --no-server-header
+Restart=on-failure
+RestartSec=3
+MemoryMax=512M
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

@@ -1,5 +1,6 @@
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
+import { ApiStatusNotice } from './ApiStatusNotice';
 import { DifficultyScale } from './DifficultyScale';
 import { ProblemCard } from './ProblemCard';
 import { TopicChips } from './TopicChips';
@@ -59,5 +60,16 @@ describe('selection controls', () => {
     expect(chips.match(/aria-pressed="false"/g)).toHaveLength(4);
     const scale = renderToStaticMarkup(<DifficultyScale selected={3} onSelect={noop} />);
     expect(scale.match(/aria-pressed="true"/g)).toHaveLength(1);
+  });
+});
+
+describe('ApiStatusNotice', () => {
+  it('renders only when the API is unreachable', () => {
+    expect(renderToStaticMarkup(<ApiStatusNotice health="ok" />)).toBe('');
+    expect(renderToStaticMarkup(<ApiStatusNotice health="unconfigured" />)).toBe('');
+    expect(renderToStaticMarkup(<ApiStatusNotice health={undefined} />)).toBe('');
+    const html = renderToStaticMarkup(<ApiStatusNotice health="unreachable" />);
+    expect(html).toContain('role="status"');
+    expect(html).toContain('reach the PracticeLoop server');
   });
 });

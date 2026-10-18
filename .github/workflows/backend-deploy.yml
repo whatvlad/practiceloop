@@ -1,0 +1,73 @@
+name: Backend deploy
+# Ships backend/ to the Oracle VM on every push to main that touches it, then checks
+# the public HTTPS health endpoint. Setup and rollback: docs/production/ORACLE_DEPLOY.md.
+# Needs secret ORACLE_SSH_KEY and variables ORACLE_HOST, ORACLE_KNOWN_HOSTS and
+# API_BASE_URL; without them the tests still run and the deploy is skipped.
+on:
+  push:
+    branches: [main]
+    paths:
+      - backend/**
+      - deploy/oracle/**
+      - .github/workflows/backend-deploy.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: backend-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Test and deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      ORACLE_SSH_KEY: ${{ secrets.ORACLE_SSH_KEY }}
+      ORACLE_HOST: ${{ vars.ORACLE_HOST }}
+      ORACLE_KNOWN_HOSTS: ${{ vars.ORACLE_KNOWN_HOSTS }}
+      API_BASE_URL: ${{ vars.API_BASE_URL }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Test backend
+        working-directory: backend
+        run: |
+          python -m pip install -r requirements.txt
+          python -m pip install --no-deps -e .
+          python -m pytest
+      - name: Deploy to Oracle
+        id: deploy
+        if: env.ORACLE_SSH_KEY != '' && env.ORACLE_HOST != '' && env.ORACLE_KNOWN_HOSTS != ''
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$ORACLE_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$ORACLE_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          ssh_cmd=(ssh -i ~/.ssh/deploy_key -o BatchMode=yes -o StrictHostKeyChecking=yes
+            -o ConnectTimeout=20 "practiceloop@$ORACLE_HOST")
+          release="${GITHUB_SHA::12}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          tar -czf - --exclude=__pycache__ backend/app backend/requirements.txt backend/pyproject.toml deploy/oracle \
+            | "${ssh_cmd[@]}" "mkdir /opt/practiceloop/releases/$release && tar -xzf - -C /opt/practiceloop/releases/$release"
+          "${ssh_cmd[@]}" "bash /opt/practiceloop/releases/$release/deploy/oracle/release.sh $release"
+      - name: Check public health over HTTPS
+        if: steps.deploy.outcome == 'success' && env.API_BASE_URL != ''
+        run: |
+          for _ in $(seq 1 20); do
+            curl -fsS --max-time 5 "$API_BASE_URL/health" && exit 0
+            sleep 3
+          done
+          echo "::error::$API_BASE_URL/health did not answer over HTTPS."
+          exit 1
+      - name: Report skipped deploy
+        if: steps.deploy.outcome == 'skipped'
+        run: echo "::notice::Oracle secrets are not set, so the backend was tested but not deployed."
+      - name: Remove the deploy key
+        if: always()
+        run: rm -f ~/.ssh/deploy_key

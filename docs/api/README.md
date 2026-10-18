@@ -2,6 +2,8 @@
 
 Implemented: `GET /health` -> 200 `{"status":"ok"}`. Liveness only. Runtime
 OpenAPI at `/openapi.json` and `/docs`. No auth/persistence readiness claim.
+CORS allows only the exact origins in `ALLOWED_ORIGINS` (default: local Vite);
+see docs/production/ORACLE_DEPLOY.md.
 
 Proposed routes below are NOT implemented. Agree contracts in PL-002/004/010.
 Every route requires a verified Supabase Bearer access token except health.

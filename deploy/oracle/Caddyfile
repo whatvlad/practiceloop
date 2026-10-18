@@ -1,0 +1,10 @@
+# Written to /etc/caddy/Caddyfile by bootstrap.sh, which fills in the API host.
+# Caddy gets and renews the HTTPS certificate on its own.
+{$API_HOST} {
+	encode gzip
+	header {
+		X-Robots-Tag "noindex, nofollow"
+		-Server
+	}
+	reverse_proxy 127.0.0.1:8000
+}

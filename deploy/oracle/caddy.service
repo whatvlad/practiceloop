@@ -1,0 +1,21 @@
+[Unit]
+Description=Caddy HTTPS proxy for the PracticeLoop API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=caddy
+Group=caddy
+Environment=XDG_DATA_HOME=/var/lib XDG_CONFIG_HOME=/var/lib
+ExecStart=/usr/local/bin/caddy run --environ --config /etc/caddy/Caddyfile
+ExecReload=/usr/local/bin/caddy reload --config /etc/caddy/Caddyfile --force
+Restart=on-failure
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+LimitNOFILE=1048576
+
+[Install]
+WantedBy=multi-user.target
