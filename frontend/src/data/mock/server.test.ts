@@ -15,7 +15,19 @@ const PUBLIC_KEYS = [
 ];
 
 describe('mock server boundary', () => {
-  beforeEach(() => server.resetMockServer());
+  beforeEach(() => { server.setDemoOwner(null); server.resetMockServer(); });
+
+  it('discards local demo history when the real account changes or signs out', async () => {
+    server.setDemoOwner('user-a');
+    const generated = await server.generateProblem('basic-integrals', 1);
+    await server.submitAttempt(generated.id, 'private demo input');
+    server.setDemoOwner('user-b');
+    expect(JSON.stringify(await server.listProblems())).not.toContain('private demo input');
+    server.setDemoOwner('user-a');
+    expect(await server.listProblems()).toHaveLength(5);
+    server.setDemoOwner(null);
+    expect(await server.listProblems()).toHaveLength(5);
+  });
 
   it('returns only public fields for problems', async () => {
     const generated = await server.generateProblem('substitution', 2);

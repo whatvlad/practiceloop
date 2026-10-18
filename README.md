@@ -5,14 +5,14 @@ answer verification and personal practice history. The MVP covers Integration,
 five topics and five difficulty levels, Google login, attempts, answer/solution
 reveal and a basic profile. [Original specification](docs/PRACTICELOOP_MVP.md).
 
-**Current state: development scaffold.** The authenticated practice flow is not
-implemented yet. Private repository:
+**Current state: Google account login with demo practice.** Supabase handles Google
+sign-in, restore and logout; practice/history/counts remain browser-session demo
+data until backend persistence is implemented. [Auth setup](docs/auth/GOOGLE_AUTH.md).
+Private repository:
 [whatvlad/practiceloop](https://github.com/whatvlad/practiceloop). Tasks live in
-[GitHub Issues](https://github.com/whatvlad/practiceloop/issues). The initial
-Supabase schema is applied to the
-hosted test project; isolation verification is pending in #3. Cloudflare Pages
-hosts the mock-data preview and the scaffold API runs on Oracle. Application
-authentication and persisted learning data are not connected yet.
+[GitHub Issues](https://github.com/whatvlad/practiceloop/issues). Initial schema is
+applied to the hosted test database; #3's full isolation verification remains
+pending. Cloudflare Pages serves the preview; the scaffold API runs on Oracle.
 
 ## Stack and structure
 
@@ -49,9 +49,9 @@ Do not commit .env. Copy the example only when configuring real services:
 ```powershell
 Copy-Item .env.example .env
 ```
-Scaffold needs no credentials. Real services are not wired yet. Vite reads
-frontend/.env.local when integration is implemented; copy only the VITE_* public
-values there. Never copy the entire backend .env into the frontend. On Unix use
+Frontend sign-in needs the public Supabase settings in frontend/.env.local;
+copy only the VITE_* public values there. The backend scaffold still needs no
+credentials. Never copy the entire backend .env into the frontend. On Unix use
 `.venv/bin/python` instead of `.venv\Scripts\python.exe`.
 
 ## Run
@@ -66,7 +66,7 @@ npm run dev
 ```
 A preview of `main` (mock data, plus the Graphify code graph at `/graph/`)
 deploys to Cloudflare Pages via `.github/workflows/preview.yml` at
-https://practiceloop.pages.dev (noindex, no login for now).
+https://practiceloop.pages.dev (noindex, Google login; practice is a demo).
 Frontend: http://localhost:5173. Backend health: http://localhost:8000/health.
 OpenAPI: http://localhost:8000/docs. Health is liveness, not database readiness.
 

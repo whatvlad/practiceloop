@@ -22,10 +22,11 @@ interface AppNavProps {
   current: string;
   initial: string;
   onLogOut: () => void;
+  busy?: boolean;
 }
 
 /** Signed-in app bar: wordmark, the four routes and the account area. */
-export function AppNav({ current, initial, onLogOut }: AppNavProps) {
+export function AppNav({ current, initial, onLogOut, busy = false }: AppNavProps) {
   return (
     <header className="pl-nav">
       <Logo to="/dashboard" />
@@ -37,8 +38,8 @@ export function AppNav({ current, initial, onLogOut }: AppNavProps) {
         ))}
       </nav>
       <div className="pl-row pl-nav-account">
-        <Button variant="ghost" size="sm" onClick={onLogOut}>
-          Log out
+        <Button variant="ghost" size="sm" onClick={onLogOut} disabled={busy} aria-busy={busy}>
+          {busy ? 'Logging out…' : 'Log out'}
         </Button>
         <span className="pl-avatar" aria-hidden="true">
           {initial}

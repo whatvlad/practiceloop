@@ -53,7 +53,10 @@ function DemoCard() {
   );
 }
 
-export function LandingPage({ onSignIn }: { onSignIn: () => void }) {
+export function LandingPage({ onSignIn, disabled = false, busy = false, error = null, signedIn = false }: {
+  onSignIn: () => void; disabled?: boolean; busy?: boolean; error?: string | null; signedIn?: boolean;
+}) {
+  const label = busy ? 'Opening Google…' : signedIn ? 'Open your dashboard' : 'Continue with Google';
   return (
     <div className="pl-page">
       <PublicNav />
@@ -70,13 +73,14 @@ export function LandingPage({ onSignIn }: { onSignIn: () => void }) {
             answer, reveal the solution, go again.
           </p>
           <div className="pl-actions pl-hero-actions">
-            <Button size="lg" pill arrow onClick={onSignIn}>
-              Continue with Google
+            <Button size="lg" pill arrow onClick={onSignIn} disabled={disabled} aria-busy={busy}>
+              {label}
             </Button>
             <a className="pl-btn pl-btn--secondary pl-btn--lg pl-btn--pill" href="#how">
               See how it works
             </a>
           </div>
+          {error && <p className="pl-result pl-result--invalid" role="alert">{error}</p>}
         </section>
 
         <section className="pl-wrap pl-wrap--narrow pl-section">
@@ -126,9 +130,9 @@ export function LandingPage({ onSignIn }: { onSignIn: () => void }) {
         <section className="pl-wrap pl-section">
           <div className="pl-card pl-card--lg pl-cta">
             <h2 className="pl-display-lg">Ready for problem one?</h2>
-            <p className="pl-lead pl-cta-lead">Sign in and every problem you generate is saved to your history.</p>
-            <Button size="lg" pill arrow onClick={onSignIn}>
-              Continue with Google
+            <p className="pl-lead pl-cta-lead">Sign in with Google and explore the practice demo.</p>
+            <Button size="lg" pill arrow onClick={onSignIn} disabled={disabled} aria-busy={busy}>
+              {label}
             </Button>
           </div>
         </section>

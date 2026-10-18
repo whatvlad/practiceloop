@@ -4,7 +4,7 @@ import { getProfileCounts } from '../data/api';
 import type { Account } from '../data/types';
 import { useLoad } from '../useLoad';
 
-export function ProfilePage({ account, onLogOut }: { account: Account; onLogOut: () => void }) {
+export function ProfilePage({ account, onLogOut, busy = false }: { account: Account; onLogOut: () => void; busy?: boolean }) {
   const counts = useLoad(getProfileCounts);
   return (
     <main className="pl-wrap pl-wrap--narrow pl-app-main">
@@ -24,8 +24,8 @@ export function ProfilePage({ account, onLogOut }: { account: Account; onLogOut:
             </div>
           </div>
         </div>
-        <Button variant="secondary" onClick={onLogOut}>
-          Log out
+        <Button variant="secondary" onClick={onLogOut} disabled={busy} aria-busy={busy}>
+          {busy ? 'Logging out…' : 'Log out'}
         </Button>
       </div>
       {counts.status === 'ready' && (

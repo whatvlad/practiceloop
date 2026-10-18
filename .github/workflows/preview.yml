@@ -1,7 +1,7 @@
 name: Preview
 # Preview hosting on Cloudflare Pages: the frontend (mock data) at / and the
 # Graphify code graph at /graph/, rebuilt from each push to main.
-# Served at https://practiceloop.pages.dev (noindex, no login for now).
+# Served at https://practiceloop.pages.dev (noindex, Google login).
 # The app calls the API at repo variable API_BASE_URL (the Oracle backend; empty skips it).
 # Needs repo secrets CLOUDFLARE_API_TOKEN (Account > Cloudflare Pages > Edit) and
 # CLOUDFLARE_ACCOUNT_ID; without them the build still runs and the deploy is skipped.
@@ -37,10 +37,24 @@ jobs:
           node-version: '24'
       - run: npm ci --ignore-scripts
         working-directory: frontend
+      - name: Validate public browser auth settings
+        env:
+          SUPABASE_URL: ${{ vars.SUPABASE_URL || secrets.SUPABASE_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ vars.SUPABASE_PUBLISHABLE_KEY || secrets.SUPABASE_PUBLISHABLE_KEY }}
+        run: |
+          node --input-type=module <<'JS'
+          const key = process.env.SUPABASE_PUBLISHABLE_KEY || '';
+          const raw = process.env.SUPABASE_URL || '';
+          if (!key.startsWith('sb_publishable_')) throw new Error('Set the public SUPABASE_PUBLISHABLE_KEY; secret/service-role keys are forbidden in browser builds.');
+          const url = new URL(raw);
+          if (url.protocol !== 'https:' || url.username || url.password || url.pathname !== '/' || url.search || url.hash) throw new Error('SUPABASE_URL must be the HTTPS project origin.');
+          JS
       - run: npm run build
         working-directory: frontend
         env:
           VITE_API_BASE_URL: ${{ vars.API_BASE_URL || secrets.API_BASE_URL }}
+          VITE_SUPABASE_URL: ${{ vars.SUPABASE_URL || secrets.SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.SUPABASE_PUBLISHABLE_KEY || secrets.SUPABASE_PUBLISHABLE_KEY }}
       # Same Graphify release as scripts/setup-graphify.sh (v0.9.92), pinned to its commit.
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
@@ -55,7 +69,7 @@ jobs:
       # index.html for unknown paths when there is no 404.html, so deep links work.
       - name: Mark preview noindex
         run: |
-          printf '/*\n  X-Robots-Tag: noindex\n' > frontend/dist/_headers
+          printf '/*\n  X-Robots-Tag: noindex\n  Referrer-Policy: no-referrer\n' > frontend/dist/_headers
       - name: Deploy to Cloudflare Pages
         if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != ''
         run: |
