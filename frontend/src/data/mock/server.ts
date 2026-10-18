@@ -4,7 +4,6 @@
 // module only through revealAnswer and revealSolution, as the API will.
 
 import type {
-  Account,
   CheckResult,
   Difficulty,
   ProfileCounts,
@@ -23,14 +22,13 @@ interface StoredProblem {
 }
 
 interface State {
-  signedIn: boolean;
   problems: StoredProblem[];
   lastSelection: { topic: TopicSlug; difficulty: Difficulty };
   nextId: number;
 }
 
-const STORAGE_KEY = 'practiceloop.mock.v1';
-const ACCOUNT: Account = { name: 'Alex Morgan', email: 'alex@example.com', provider: 'Google' };
+let storageKey = 'practiceloop.mock.v1';
+let demoOwner: string | null = null;
 const MINUTE = 60_000;
 
 function seed(now: number): State {
@@ -60,7 +58,6 @@ function seed(now: number): State {
     };
   };
   return {
-    signedIn: false,
     nextId: 6,
     lastSelection: { topic: 'substitution', difficulty: 3 },
     problems: [
@@ -84,7 +81,7 @@ let state: State | null = null;
 function load(): State {
   if (state) return state;
   try {
-    const raw = sessionStorage.getItem(STORAGE_KEY);
+    const raw = sessionStorage.getItem(storageKey);
     if (raw) state = JSON.parse(raw) as State;
   } catch {
     state = null;
@@ -95,7 +92,7 @@ function load(): State {
 
 function save(): void {
   try {
-    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    sessionStorage.setItem(storageKey, JSON.stringify(state));
   } catch {
     // Storage can be unavailable (private mode, tests); the session stays in memory.
   }
@@ -118,19 +115,11 @@ export class NotFoundError extends Error {
   }
 }
 
-export async function getAccount(): Promise<Account | null> {
-  return load().signedIn ? copy(ACCOUNT) : null;
-}
-
-export async function signIn(): Promise<Account> {
-  load().signedIn = true;
-  save();
-  return copy(ACCOUNT);
-}
-
-export async function signOut(): Promise<void> {
-  load().signedIn = false;
-  save();
+export function setDemoOwner(id: string | null): void {
+  if (demoOwner === id) return;
+  resetMockServer();
+  demoOwner = id;
+  storageKey = id ? `practiceloop.demo.v1.${id}` : 'practiceloop.mock.v1';
 }
 
 export async function getProfileCounts(): Promise<ProfileCounts> {
@@ -212,7 +201,7 @@ export async function revealSolution(id: string): Promise<RevealedSolution> {
 export function resetMockServer(): void {
   state = null;
   try {
-    sessionStorage.removeItem(STORAGE_KEY);
+    sessionStorage.removeItem(storageKey);
   } catch {
     // ignore
   }

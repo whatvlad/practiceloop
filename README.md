@@ -5,17 +5,19 @@ answer verification and personal practice history. The MVP covers Integration,
 five topics and five difficulty levels, Google login, attempts, answer/solution
 reveal and a basic profile. [Original specification](docs/PRACTICELOOP_MVP.md).
 
-**Current state: development scaffold.** The authenticated practice flow is not
-implemented yet. Private repository:
+**Current state: Google account login with demo practice.** Supabase handles Google
+sign-in, restore and logout; practice/history/counts remain browser-session demo
+data until backend persistence is implemented. [Auth setup](docs/auth/GOOGLE_AUTH.md).
+Private repository:
 [whatvlad/practiceloop](https://github.com/whatvlad/practiceloop). Tasks live in
-[GitHub Issues](https://github.com/whatvlad/practiceloop/issues). No hosted
-database has been migrated. GitHub Pages hosts the current mock-data preview;
-the production stack is not deployed.
+[GitHub Issues](https://github.com/whatvlad/practiceloop/issues). Initial schema is
+applied to the hosted test database; #3's full isolation verification remains
+pending. Cloudflare Pages serves the preview; the scaffold API runs on Oracle.
 
 ## Stack and structure
 
 React, TypeScript, Vite and KaTeX (Cloudflare Pages); Python, FastAPI and SymPy
-(proposed Oracle Free Tier); Supabase PostgreSQL and Auth. Browser -> authenticated
+(Oracle Free Tier); Supabase PostgreSQL and Auth. Browser -> authenticated
 FastAPI -> rule engine/private solutions and Supabase. Only backend can write
 trusted outcomes; owner-filtered browser reads use RLS. [Architecture](docs/architecture/OVERVIEW.md).
 
@@ -23,7 +25,7 @@ trusted outcomes; owner-filtered browser reads use RLS. [Architecture](docs/arch
 frontend/src/          React app: components/, pages/, styles/, data/ (api.ts + temporary mock/)
 backend/app/           main.py, api/, core/, models/, services/, generators/, schemas/
 backend/tests/         liveness, mathematical invariants and public-data boundary
-supabase/migrations/   prepared schema and RLS (not hosted)
+supabase/migrations/   hosted test schema and RLS (full isolation checks pending)
 supabase/tests/        disposable SQL fixture and isolation tests
 docs/                 MVP, architecture, decisions, agents, api
 .github/              CI, issue/PR templates, owners, Dependabot, protection payload
@@ -47,9 +49,9 @@ Do not commit .env. Copy the example only when configuring real services:
 ```powershell
 Copy-Item .env.example .env
 ```
-Scaffold needs no credentials. Real services are not wired yet. Vite reads
-frontend/.env.local when integration is implemented; copy only the VITE_* public
-values there. Never copy the entire backend .env into the frontend. On Unix use
+Frontend sign-in needs the public Supabase settings in frontend/.env.local;
+copy only the VITE_* public values there. The backend scaffold still needs no
+credentials. Never copy the entire backend .env into the frontend. On Unix use
 `.venv/bin/python` instead of `.venv\Scripts\python.exe`.
 
 ## Run
@@ -64,7 +66,7 @@ npm run dev
 ```
 A preview of `main` (mock data, plus the Graphify code graph at `/graph/`)
 deploys to Cloudflare Pages via `.github/workflows/preview.yml` at
-https://practiceloop.pages.dev (noindex, no login for now).
+https://practiceloop.pages.dev (noindex, Google login; practice is a demo).
 Frontend: http://localhost:5173. Backend health: http://localhost:8000/health.
 OpenAPI: http://localhost:8000/docs. Health is liveness, not database readiness.
 

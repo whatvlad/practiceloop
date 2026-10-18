@@ -11,6 +11,13 @@ with mock data behind `frontend/src/data/api.ts`; the temporary stub in
 
 Preview hosting (#28, #33): `.github/workflows/preview.yml` deploys `frontend/`
 and the Graphify graph (`/graph/`) to https://practiceloop.pages.dev on push to
-main (noindex, no login for now). GitHub Pages stopped when the repo became private.
+main (noindex). GitHub Pages stopped when the repo became private.
 The backend deploys to an Oracle VM over SSH on push to main
 (`.github/workflows/backend-deploy.yml`, docs/production/ORACLE_DEPLOY.md).
+
+Google client authentication (#5): implementation replaces mock identity with
+Supabase Google OAuth, persistent sessions, refresh/logout and protected routes.
+See docs/auth/GOOGLE_AUTH.md for configuration and verification. Practice/history
+and counters remain an explicitly labeled browser-session demo until #10/#12.
+Backend JWT enforcement (#4) and #3's two-user database checks are still pending.
+Use the Issue and PR for current delivery/merge/preview verification state.

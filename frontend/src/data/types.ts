@@ -47,6 +47,7 @@ export interface RevealedSolution {
 }
 
 export interface Account {
+  id: string;
   name: string;
   email: string;
   provider: 'Google';

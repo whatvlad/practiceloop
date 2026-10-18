@@ -1,19 +1,22 @@
-// The one data boundary for pages. Today every call goes to the temporary
-// mock in ./mock; swap these exports for authenticated FastAPI calls
-// (docs/api/README.md) without changing any page or component.
+// The one data boundary for pages: real Supabase Auth, temporary demo practice.
+import { createAuthStore } from './auth';
+import { setDemoOwner } from './mock/server';
+import { callbackOptions, createBrowserClient } from './supabase';
+
+const client = createBrowserClient();
+export const authStore = createAuthStore(client?.auth ?? null, {
+  ...callbackOptions(), onIdentityChange: setDemoOwner,
+});
 
 export {
   NotFoundError,
   generateProblem,
-  getAccount,
   getLastSelection,
   getProblem,
   getProfileCounts,
   listProblems,
   revealAnswer,
   revealSolution,
-  signIn,
-  signOut,
   submitAttempt,
 } from './mock/server';
 export { checkApiHealth } from './health';
