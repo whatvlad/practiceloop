@@ -387,8 +387,9 @@ Done.
 
 ## Current execution order
 
-Complete Issue #31, then #32. Issue #33 can proceed after both preparation
-tasks are Done. Issues #34 through #39 form a strict dependency chain. Keep
-Issue #30 open as the tracker until the public-launch criteria in #39 are met.
-Always inspect live Issue and pull-request state before starting work because
-this document is a versioned plan, not a synchronization mechanism.
+The execution order is the `Order` field of the GitHub Project
+`PracticeLoop — Implementation Queue` (see AGENTS.md); this section does not
+define it. Issues #34 through #39 still form a strict dependency chain, and
+Issue #30 stays open as the tracker until the public-launch criteria in #39 are
+met. Always inspect live Issue and pull-request state before starting work
+because this document is a versioned plan, not a synchronization mechanism.

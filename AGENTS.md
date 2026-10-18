@@ -21,6 +21,8 @@ The agents have no permanent roles such as “frontend agent” or “backend ag
    - git remote -v
    - git fetch origin --prune
 4. Inspect current GitHub Issues, open pull requests, ownership, and dependencies.
+   Take the next task from the Implementation Queue (see GitHub Issue names):
+   the open Issue with the lowest `Order` whose dependencies are done.
 5. Do not begin implementation until the accountable human confirms that the selected Issue is available.
 6. Record the exact base commit before making changes.
 
@@ -59,7 +61,12 @@ format: docs/agents/REVIEW_PROTOCOL.md. HANDOFF format: docs/agents/HANDOFF.md.
 
 - An Issue title is short and descriptive. It contains no date and no queue number.
 - Every open Issue planned for implementation must be in the GitHub Project
-  `PracticeLoop — Implementation Queue`.
+  `PracticeLoop — Implementation Queue`:
+  https://github.com/users/whatvlad/projects/1
+- Read it with `gh project item-list 1 --owner whatvlad --format json`. This
+  needs `gh` signed in with the `project` scope (`gh auth refresh -s project`)
+  and an account invited to the project. If you cannot read it, ask the
+  accountable human instead of guessing the order.
 - The project's `Order` field is the only source of implementation order.
 - Set `Order` from dependencies, blockers and product stages, never from
   creation time or the GitHub Issue number.
@@ -67,3 +74,9 @@ format: docs/agents/REVIEW_PROTOCOL.md. HANDOFF format: docs/agents/HANDOFF.md.
   fix them if needed.
 - Open Issues in the queue have unique, continuous `Order` values `1…N`.
 - Closed Issues are not part of the active queue.
+- Keep the project's `Status` field current: `In Progress` when you claim an
+  Issue, `Done` when its pull request is merged and the Issue is closed. Then
+  remove the closed Issue's `Order` value and renumber the remaining open
+  Issues to `1…N` without changing their relative order.
+- Other documents (roadmaps, STATUS.md) describe stages and dependencies but
+  never override `Order`.

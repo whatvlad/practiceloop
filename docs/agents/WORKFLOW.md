@@ -1,10 +1,12 @@
 # Implementation workflow
 
-1. Confirm that the Issue is unclaimed and its dependencies are complete.
+1. Take the lowest-`Order` open Issue in the Implementation Queue (AGENTS.md)
+   and confirm that it is unclaimed and its dependencies are complete.
 2. Confirm the accountable human and implementation agent.
 3. Update local remote references.
 4. Start from the latest accepted main.
-5. Create a branch using the repository naming convention.
+5. Create a branch using the repository naming convention, and set the Issue's
+   project `Status` to `In Progress`.
 6. Implement only the Issue acceptance criteria.
 7. Reuse existing repository patterns before adding abstractions or dependencies.
 8. Run the actual verification commands documented in README.md.
@@ -26,6 +28,8 @@ A task is Done only when:
 - hosted CI passes;
 - blocking review findings, if any were raised, are resolved;
 - the pull request is merged into main;
-- the Issue is closed.
+- the Issue is closed;
+- its project `Status` is `Done` and the open Issues' `Order` values are
+  renumbered to `1…N`.
 
 If any condition is missing, report the exact remaining state and do not call the task Done.
