@@ -2,6 +2,7 @@ name: Preview
 # Preview hosting on Cloudflare Pages: the frontend (mock data) at / and the
 # Graphify code graph at /graph/, rebuilt from each push to main.
 # Served at https://practiceloop.pages.dev (noindex, no login for now).
+# The app calls the API at repo variable API_BASE_URL (the Oracle backend; empty skips it).
 # Needs repo secrets CLOUDFLARE_API_TOKEN (Account > Cloudflare Pages > Edit) and
 # CLOUDFLARE_ACCOUNT_ID; without them the build still runs and the deploy is skipped.
 on:
@@ -38,6 +39,8 @@ jobs:
         working-directory: frontend
       - run: npm run build
         working-directory: frontend
+        env:
+          VITE_API_BASE_URL: ${{ vars.API_BASE_URL }}
       # Same Graphify release as scripts/setup-graphify.sh (v0.9.92), pinned to its commit.
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:

@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
+import { ApiStatusNotice } from './components/ApiStatusNotice';
 import { AppNav, Logo } from './components/AppNav';
 import { ButtonLink } from './components/Button';
-import { getAccount, signIn, signOut } from './data/api';
+import { type ApiHealth, checkApiHealth, getAccount, signIn, signOut } from './data/api';
 import type { Account } from './data/types';
 import { DashboardPage } from './pages/DashboardPage';
 import { HistoryPage } from './pages/HistoryPage';
@@ -48,8 +49,11 @@ export function App() {
   // undefined while the session is being restored.
   const [account, setAccount] = useState<Account | null | undefined>(undefined);
 
+  const [apiHealth, setApiHealth] = useState<ApiHealth | undefined>(undefined);
+
   useEffect(() => {
     void getAccount().then(setAccount);
+    void checkApiHealth().then(setApiHealth);
   }, []);
 
   useEffect(() => {
@@ -81,6 +85,7 @@ export function App() {
   return (
     <div className="pl-page">
       <AppNav current={pathname} initial={account.name.charAt(0).toUpperCase()} onLogOut={handleLogOut} />
+      <ApiStatusNotice health={apiHealth} />
       {pathname === '/dashboard' && <DashboardPage />}
       {pathname === '/practice' && <PracticePage id={params.get('id')} />}
       {pathname === '/history' && <HistoryPage />}

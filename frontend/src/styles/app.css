@@ -33,6 +33,7 @@ html,body,#root{min-height:100%}
 .pl-answer-label{margin-bottom:4px}
 
 /* app pages */
+.pl-api-notice{padding-top:var(--space-5)}
 .pl-app-main{padding-top:var(--space-7);padding-bottom:var(--space-8)}
 .pl-practice-main{padding-top:var(--space-6);padding-bottom:var(--space-8)}
 .pl-page-title{margin:var(--space-3) 0 var(--space-6)}

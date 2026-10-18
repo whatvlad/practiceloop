@@ -16,3 +16,5 @@ export {
   signOut,
   submitAttempt,
 } from './mock/server';
+export { checkApiHealth } from './health';
+export type { ApiHealth } from './health';
