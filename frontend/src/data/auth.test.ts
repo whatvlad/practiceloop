@@ -78,6 +78,45 @@ describe('real auth lifecycle', () => {
     expect(store.getSnapshot().status).toBe('authenticated');
   });
 
+  it('unlocks sign-in when navigation is interrupted, including after logout', async () => {
+    const { store, client, event } = setup(session());
+    await start(store);
+    await store.signOut();
+    let finish!: () => void;
+    client.signInWithOAuth.mockImplementationOnce(() => new Promise(resolve => {
+      finish = () => resolve({ data: { url: 'https://example.invalid' }, error: null });
+    }));
+    const pending = store.signIn();
+    expect(store.getSnapshot().working).toBe(true);
+    await store.signIn();
+    expect(client.signInWithOAuth).toHaveBeenCalledTimes(1);
+    // SDK initiation succeeds, but the browser never leaves this document.
+    finish();
+    await pending;
+    expect(store.getSnapshot().working).toBe(false);
+    expect(store.getSnapshot().account).toBeNull();
+    await store.signIn();
+    expect(client.signInWithOAuth).toHaveBeenCalledTimes(2);
+    event('SIGNED_IN', session());
+    await store.signOut();
+    await store.signIn();
+    expect(client.signInWithOAuth).toHaveBeenCalledTimes(3);
+    expect(store.getSnapshot().working).toBe(false);
+  });
+
+  it('unlocks failed sign-in and allows a retry without exposing provider details', async () => {
+    const { store, client } = setup();
+    await start(store);
+    client.signInWithOAuth.mockRejectedValueOnce(new Error('private provider details'));
+    await store.signIn();
+    expect(store.getSnapshot().working).toBe(false);
+    expect(store.getSnapshot().error).toContain('did not finish');
+    expect(store.getSnapshot().error).not.toContain('private');
+    await store.signIn();
+    expect(client.signInWithOAuth).toHaveBeenCalledTimes(2);
+    expect(store.getSnapshot().error).toBeNull();
+  });
+
   it('does not let a stale initial session undo a newer logout', async () => {
     const { store, client, event } = setup();
     let finish!: (value: unknown) => void;
