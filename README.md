@@ -8,14 +8,16 @@ reveal and a basic profile. [Original specification](docs/PRACTICELOOP_MVP.md).
 **Current state: development scaffold.** The authenticated practice flow is not
 implemented yet. Private repository:
 [whatvlad/practiceloop](https://github.com/whatvlad/practiceloop). Tasks live in
-[GitHub Issues](https://github.com/whatvlad/practiceloop/issues). No hosted
-database has been migrated. GitHub Pages hosts the current mock-data preview;
-the production stack is not deployed.
+[GitHub Issues](https://github.com/whatvlad/practiceloop/issues). The initial
+Supabase schema is applied to the
+hosted test project; isolation verification is pending in #3. Cloudflare Pages
+hosts the mock-data preview and the scaffold API runs on Oracle. Application
+authentication and persisted learning data are not connected yet.
 
 ## Stack and structure
 
 React, TypeScript, Vite and KaTeX (Cloudflare Pages); Python, FastAPI and SymPy
-(proposed Oracle Free Tier); Supabase PostgreSQL and Auth. Browser -> authenticated
+(Oracle Free Tier); Supabase PostgreSQL and Auth. Browser -> authenticated
 FastAPI -> rule engine/private solutions and Supabase. Only backend can write
 trusted outcomes; owner-filtered browser reads use RLS. [Architecture](docs/architecture/OVERVIEW.md).
 
@@ -23,7 +25,7 @@ trusted outcomes; owner-filtered browser reads use RLS. [Architecture](docs/arch
 frontend/src/          React app: components/, pages/, styles/, data/ (api.ts + temporary mock/)
 backend/app/           main.py, api/, core/, models/, services/, generators/, schemas/
 backend/tests/         liveness, mathematical invariants and public-data boundary
-supabase/migrations/   prepared schema and RLS (not hosted)
+supabase/migrations/   hosted test schema and RLS (full isolation checks pending)
 supabase/tests/        disposable SQL fixture and isolation tests
 docs/                 MVP, architecture, decisions, agents, api
 .github/              CI, issue/PR templates, owners, Dependabot, protection payload
@@ -80,6 +82,7 @@ npm audit --audit-level=moderate
 cd ..
 .\.venv\Scripts\python.exe -m ruff check backend scripts
 .\.venv\Scripts\python.exe -m ruff format --check backend scripts
+.\.venv\Scripts\python.exe -m unittest discover -s scripts -p 'test_supabase_*_unit.py'
 cd backend
 ..\.venv\Scripts\python.exe -m mypy
 ..\.venv\Scripts\python.exe -m pytest

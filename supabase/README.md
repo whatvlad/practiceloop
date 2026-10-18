@@ -1,9 +1,10 @@
 # Database preparation
 
 Migration preserves the MVP's four public tables and adds private storage for
-answers, versioned generator data and solution steps. It is **not applied to a
-hosted Supabase project**. Schema additions and nullable `attempts.is_correct`
-are proposals in ADR-002; human review is required before production application.
+answers, versioned generator data and solution steps. The initial migration has
+been applied to the hosted test project; **hosted isolation verification remains
+incomplete**. Vlad confirmed nullable `attempts.is_correct` semantics for this test
+project. ADR-002's remaining proposals still need review before production use.
 
 Only authenticated reads are granted, filtered to each owner. All writes use the
 backend. A backend service-role client bypasses RLS: validate the JWT and verify
@@ -226,8 +227,12 @@ separate HTTP calls are not atomic. No new RPC or persistence API is added here.
 The initial migration was applied successfully in hosted preflight run
 [39173170854, attempt 3](https://github.com/whatvlad/practiceloop/actions/runs/39173170854/attempts/3)
 after a successful real-project dry-run and Vlad's explicit approval. Both commands
-recognized the unchanged 12-digit version. Two-user/anonymous PostgREST tests and
-backup/restore have **not yet been verified**. The PR and Issue stay open until real hosted
+recognized the unchanged 12-digit version. Two-user PostgREST isolation, hosted SQL
+assertions and populated-project backup/restore are **not yet verified**. The human-run
+single-user check passed: authenticated reads, browser mutation denial, anonymous
+reads/writes denied, and private schema unexposed. Owned profiles/problems/attempts
+were all empty, so fixture reads and two-user isolation remain unverified. Vlad
+chose to defer the second Google account. The PR and Issue stay open until real hosted
 evidence and the repository completion
 criteria are satisfied. #4/#5/#10/#12 own later API/frontend integration; #35 reuses
 their results and covers residual demo/statistics/deletion requirements after #34.
