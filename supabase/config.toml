@@ -1,0 +1,32 @@
+# Initialized with Supabase CLI 2.121.0; local configuration only.
+# Hosted Auth/Data API settings must be configured and checked separately.
+project_id = "practiceloop"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 17
+
+[db.migrations]
+enabled = true
+schema_paths = []
+
+[db.seed]
+enabled = false
+sql_paths = []
+
+[auth]
+enabled = true
+site_url = "http://localhost:5173"
+additional_redirect_urls = ["http://localhost:5173/**"]
+enable_anonymous_sign_ins = false
+
+[auth.email]
+enable_signup = false

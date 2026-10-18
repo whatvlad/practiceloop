@@ -27,7 +27,7 @@ production.
 |---|---|
 | `/opt/practiceloop/releases/<sha>-<run>-<attempt>/` | One upload: `backend/`, `deploy/oracle/` and its own `.venv` |
 | `/opt/practiceloop/current`, `previous` | Symlinks to the live and the last release |
-| `/etc/practiceloop/api.env` | Server settings, not in Git (`ALLOWED_ORIGINS`) |
+| `/etc/practiceloop/api.env` | Server settings, not in Git; `root:root`, mode `600` |
 | `/etc/caddy/Caddyfile` | HTTPS proxy, adds `X-Robots-Tag: noindex` |
 
 The `practiceloop` user owns the releases, logs in with the deploy key only (port and agent
@@ -59,6 +59,42 @@ forwarding off), and may run only
 answers: `https://practiceloop.pages.dev` and the local Vite server
 (`http://localhost:5173`, `http://127.0.0.1:5173`). `*` is ignored. After an edit,
 run `sudo systemctl restart practiceloop-api`.
+
+## Before adding Supabase credentials (human only)
+
+Bootstrap now sets `api.env` to `root:root`, mode `600`, including on reruns.
+Older installations used `644`; fix the existing VM before adding any secret:
+
+```powershell
+ssh -i "$env:USERPROFILE\.ssh\oracle_vlad" ubuntu@92.5.92.72
+```
+
+Then on the VM:
+
+```sh
+sudo chown root:root /etc/practiceloop/api.env
+sudo chmod 600 /etc/practiceloop/api.env
+sudo stat -c '%a %U:%G' /etc/practiceloop/api.env
+```
+
+Expected output: `600 root:root`. systemd reads `EnvironmentFile` as root before
+starting the service as `practiceloop`; the application user need not read the file.
+Changing repository code alone does not change the existing VM's file permissions.
+
+When #4 wires backend Supabase access, the human edits the file with
+`sudo nano /etc/practiceloop/api.env`, adding these values directly on the VM:
+
+```dotenv
+SUPABASE_URL=https://<project-ref>.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=<backend-only-service-role-key>
+SUPABASE_JWT_ISSUER=https://<project-ref>.supabase.co/auth/v1
+```
+
+Keep the existing `ALLOWED_ORIGINS`. There is no space after `=` in the issuer.
+Restart with `sudo systemctl restart practiceloop-api`. Do not print the file,
+paste credentials into chat, put the service-role key in GitHub, or use it in
+`VITE_*` variables. #3 adds migration delivery only; `/health` still reports
+liveness and does not verify Supabase connectivity or authenticated API access.
 
 ## When the API is down
 
