@@ -109,6 +109,7 @@ def check_private(client: Client) -> None:
 
 
 def verify(clients: list[Client]) -> int:
+    require(len(clients) == 2, "Full isolation verification requires two real users")
     user_ids: list[str] = []
     for client in clients:
         status, user = client.request("/auth/v1/user")
@@ -181,6 +182,54 @@ def verify(clients: list[Client]) -> int:
     return 0
 
 
+def verify_single_user(client: Client) -> dict[str, int]:
+    """Partial smoke check; empty tables cannot prove owner-row isolation."""
+    status, user = client.request("/auth/v1/user")
+    require(status == 200 and isinstance(user, dict), "Real authenticated session required")
+    require(user.get("role") == "authenticated", "Expected authenticated user role")
+    require(user.get("is_anonymous") is False, "Anonymous Auth users are not test users")
+    own = str(UUID(user["id"]))
+    counts: dict[str, int] = {}
+    for table, owner_col in (("profiles", "id"), ("problems", "user_id"), ("attempts", "user_id")):
+        data = rows(client, table, f"select={owner_col}&limit=1000")
+        require(all(row[owner_col] == own for row in data), f"{table}: owner filter failed")
+        counts[table] = len(data)
+    topics = rows(client, "topics", "select=id,slug")
+    require(len(topics) == 5, "Expected five seeded MVP topics")
+    bodies = {
+        "profiles": {"id": own},
+        "topics": {"name": "forged", "slug": "forged"},
+        "problems": {
+            "user_id": own,
+            "topic_id": topics[0]["id"],
+            "difficulty": 1,
+            "problem_latex": "forged",
+        },
+        "attempts": {
+            "problem_id": PROBLEMS[0],
+            "user_id": own,
+            "user_answer": "forged",
+            "is_correct": True,
+        },
+    }
+    anonymous = Client(client.url, client.key)
+    for browser in (client, anonymous):
+        for table in TABLES:
+            if browser is anonymous:
+                status, data = browser.request(f"/rest/v1/{table}?select=id")
+                require(
+                    status in (401, 403) and isinstance(data, dict) and data.get("code") == "42501",
+                    f"anon {table}: expected permission denial",
+                )
+            for method in ("POST", "PATCH", "DELETE"):
+                denied(browser, table, method, None if method == "DELETE" else bodies[table])
+        check_private(browser)
+    print("PASS: authenticated reads, browser write denial, anonymous denial, private schema")
+    print(f"Owned rows observed: {counts}; zero rows do not exercise owned fixture reads.")
+    print("PARTIAL: cross-user isolation and hosted SQL assertions NOT tested; #3 remains open.")
+    return counts
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -188,7 +237,14 @@ def main() -> int:
         action="store_true",
         help="Open two real Google logins on localhost:5173, keeping tokens in memory",
     )
+    parser.add_argument(
+        "--single-user",
+        action="store_true",
+        help="Partial checks with one Google account; never reports full isolation success",
+    )
     args = parser.parse_args()
+    if args.single_user and not args.google_login:
+        parser.error("--single-user requires --google-login")
     root = Path(__file__).resolve().parents[1]
     report = root / ".local/hosted-test-result.json"
     if args.google_login:
@@ -218,14 +274,14 @@ def main() -> int:
     if args.google_login:
         from supabase_google_test_login import collect_google_tokens
 
-        tokens = collect_google_tokens(url)
+        tokens = collect_google_tokens(url, count=1 if args.single_user else 2)
     else:
         tokens = [
             getpass.getpass(f"User {slot} short-lived access token (hidden): ") for slot in (1, 2)
         ]
-    require(all(tokens), "Both user tokens are required")
+    require(all(tokens), "Test session tokens are required")
     clients = [Client(url, key, token) for token in tokens]
-    if args.google_login:
+    if args.google_login and not args.single_user:
         ids = []
         for client in clients:
             status, user = client.request("/auth/v1/user")
@@ -245,9 +301,11 @@ def main() -> int:
             input("Type SQL PASSED after both SQL scripts succeed: ").strip() == "SQL PASSED",
             "Hosted SQL checks were not confirmed; no success reported",
         )
-    result = verify(clients)
+    owned_rows = verify_single_user(clients[0]) if args.single_user else None
+    result = 0 if args.single_user else verify(clients)
     if args.google_login:
-        print(f"Finish by running: {root / 'supabase/tests/hosted_cleanup.sql'}")
+        if not args.single_user:
+            print(f"Finish by running: {root / 'supabase/tests/hosted_cleanup.sql'}")
         for client in clients:
             status, _ = client.request("/auth/v1/logout?scope=local", "POST", {})
             require(status == 204, "Test-session logout failed; revoke it in Supabase Auth")
@@ -257,8 +315,11 @@ def main() -> int:
                 {
                     "timestamp_utc": datetime.now(UTC).isoformat(),
                     "verifier_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
-                    "postgrest": "passed",
-                    "sql": "human-confirmed passed",
+                    "status": "partial" if args.single_user else "passed",
+                    "postgrest": "single-user checks passed" if args.single_user else "passed",
+                    "cross_user": "not run" if args.single_user else "passed",
+                    "sql": "not run" if args.single_user else "human-confirmed passed",
+                    "owned_row_counts": owned_rows,
                 }
             )
             + "\n",

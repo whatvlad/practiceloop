@@ -170,11 +170,25 @@ then `supabase/tests/hosted_schema.sql`, in the hosted SQL Editor as `postgres`.
 Type `SQL PASSED` in the terminal only if both completed successfully. The helper
 then runs the two-user/anonymous PostgREST checks and signs out its test Supabase
 sessions on success. Run `supabase/tests/hosted_cleanup.sql` to remove fixtures.
-Only a successful check writes `.local/hosted-test-result.json`; it contains two
-status fields and no credentials. SQL success is a human confirmation, distinct
+Only a successful check writes `.local/hosted-test-result.json`; it contains
+status fields, timestamp and verifier hash, with no credentials. SQL success is a human confirmation, distinct
 from the script's directly observed PostgREST results. On failure, retain the safe
 terminal message and inspect configuration; do not share tokens or callback URLs
 containing fragments. Revoke test sessions in Supabase if interrupted.
+
+Vlad chose to keep only one Google test account for now. For partial checks without
+fixture setup or a second login, run:
+
+```powershell
+python scripts/test_supabase_hosted.py --google-login --single-user
+```
+
+This checks authenticated reads, browser mutation denial, anonymous denial and
+unexposed private schema. It observes existing owned-row counts and explicitly
+reports empty-table coverage limits. It creates no fixtures. The output/report is
+marked `partial`, with cross-user and SQL checks `not run`; it cannot satisfy #3's
+two-real-user acceptance criterion. The default two-account verifier still rejects
+duplicate identities and remains available for later completion.
 
 ### Profile provisioning and transaction boundary
 

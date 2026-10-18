@@ -1,10 +1,19 @@
 """Regression checks: permission-test failures must never become false success."""
 
 import unittest
+from contextlib import redirect_stdout
+from io import StringIO
 from typing import Any
 from unittest.mock import patch
 
-from test_supabase_hosted import CheckFailure, Client, check_private, denied, verify
+from test_supabase_hosted import (
+    CheckFailure,
+    Client,
+    check_private,
+    denied,
+    verify,
+    verify_single_user,
+)
 
 
 class StubClient(Client):
@@ -23,6 +32,10 @@ class StubClient(Client):
 
 
 class DenialChecks(unittest.TestCase):
+    def test_full_isolation_rejects_single_client(self) -> None:
+        with self.assertRaises(CheckFailure):
+            verify([StubClient(200, {})])
+
     def test_mutation_requires_database_permission_denial(self) -> None:
         for status, code in (
             (401, "PGRST301"),
@@ -63,6 +76,64 @@ class DenialChecks(unittest.TestCase):
         b = StubClient(200, {"id": "b", "role": "authenticated", "is_anonymous": False})
         with patch("test_supabase_hosted.rows", return_value=[]), self.assertRaises(CheckFailure):
             verify([a, b])
+
+
+class SingleUserClient(StubClient):
+    def __init__(self, leak: bool = False) -> None:
+        super().__init__(403, {"code": "42501"})
+        self.url = "https://example.supabase.co"
+        self.key = "sb_publishable_fixture"
+        self.leak = leak
+
+    def request(
+        self,
+        path: str,
+        method: str = "GET",
+        body: dict[str, Any] | None = None,
+        schema: str = "public",
+    ) -> tuple[int, Any]:
+        if path == "/auth/v1/user":
+            return 200, {
+                "id": "00000000-0000-0000-0000-000000000001",
+                "role": "authenticated",
+                "is_anonymous": False,
+            }
+        if schema == "private":
+            return 406, {"code": "PGRST106"}
+        if method != "GET":
+            return super().request(path, method, body, schema)
+        if path.startswith("/rest/v1/topics?"):
+            return 200, [{"id": f"topic-{slot}", "slug": str(slot)} for slot in range(5)]
+        if self.leak:
+            return 200, [{"id": "someone-else", "user_id": "someone-else"}]
+        return 200, []
+
+
+class SingleUserChecks(unittest.TestCase):
+    def test_empty_owner_reads_stay_explicitly_partial(self) -> None:
+        anonymous = StubClient(403, {"code": "42501"})
+        original = anonymous.request
+
+        def respond(*args: Any, **kwargs: Any) -> tuple[int, Any]:
+            if kwargs.get("schema") == "private":
+                return 406, {"code": "PGRST106"}
+            return original(*args, **kwargs)
+
+        output = StringIO()
+        with (
+            patch("test_supabase_hosted.Client", return_value=anonymous),
+            patch.object(anonymous, "request", side_effect=respond),
+            redirect_stdout(output),
+        ):
+            counts = verify_single_user(SingleUserClient())
+        self.assertEqual(counts, {"profiles": 0, "problems": 0, "attempts": 0})
+        self.assertIn("PARTIAL", output.getvalue())
+        self.assertIn("cross-user isolation", output.getvalue())
+        self.assertIn("NOT tested", output.getvalue())
+
+    def test_visible_foreign_owner_fails_single_user_smoke_check(self) -> None:
+        with self.assertRaises(CheckFailure):
+            verify_single_user(SingleUserClient(leak=True))
 
 
 if __name__ == "__main__":

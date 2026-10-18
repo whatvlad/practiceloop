@@ -94,9 +94,11 @@ def handler_for(nonce: str, captured: list[str]) -> type[BaseHTTPRequestHandler]
     return Handler
 
 
-def collect_google_tokens(project_url: str) -> list[str]:
+def collect_google_tokens(project_url: str, count: int = 2) -> list[str]:
+    if count not in (1, 2):
+        raise ValueError("One or two test sessions are supported")
     tokens: list[str] = []
-    for slot in (1, 2):
+    for slot in range(1, count + 1):
         nonce = secrets.token_urlsafe(32)
         captured: list[str] = []
         handler = handler_for(nonce, captured)
