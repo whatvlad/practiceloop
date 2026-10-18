@@ -1,10 +1,10 @@
 name: Pages
 # Temporary preview hosting for the frontend (mock data) until PL-014 moves it to Cloudflare Pages.
+# Also publishes the Graphify code graph at /graph/, rebuilt from the pushed commit.
 # Requires Settings -> Pages -> Source: GitHub Actions.
 on:
   push:
     branches: [main]
-    paths: ['frontend/**', '.github/workflows/pages.yml']
   workflow_dispatch:
 
 permissions:
@@ -38,6 +38,17 @@ jobs:
           BASE_PATH: ${{ steps.pages.outputs.base_path }}
       # Pages serves 404.html for unknown paths, so deep links reach the client router.
       - run: cp dist/index.html dist/404.html
+      # Same Graphify release as scripts/setup-graphify.sh (v0.9.92), pinned to its commit.
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - run: python -m pip install "graphifyy @ git+https://github.com/Graphify-Labs/graphify.git@86c57be8204673c2a1b9849a3292a7dd3ab373d8"
+      - name: Build code graph
+        working-directory: .
+        run: |
+          graphify update .
+          mkdir -p frontend/dist/graph
+          cp graphify-out/graph.html frontend/dist/graph/index.html
       - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
           path: frontend/dist
