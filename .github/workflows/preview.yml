@@ -40,7 +40,7 @@ jobs:
       - run: npm run build
         working-directory: frontend
         env:
-          VITE_API_BASE_URL: ${{ vars.API_BASE_URL }}
+          VITE_API_BASE_URL: ${{ vars.API_BASE_URL || secrets.API_BASE_URL }}
       # Same Graphify release as scripts/setup-graphify.sh (v0.9.92), pinned to its commit.
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
