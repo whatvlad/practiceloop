@@ -79,7 +79,9 @@ user answers or generator state.
 Unit/DOM tests exercise PKCE exchange under StrictMode, callback cleanup/error
 handling, duplicate sign-in prevention, stale-restore versus logout ordering,
 token refresh/expiry, cross-tab sign-out, logout failure, real account rendering,
-protected-route loading/redirects and demo isolation across accounts.
+protected-route loading/redirects and demo isolation across accounts. Sign-in
+releases its busy state when the SDK finishes initiating the redirect, so an
+interrupted navigation cannot leave the current document's button disabled.
 
 After preview deployment, the human checks one allowed Google account:
 
@@ -88,7 +90,9 @@ After preview deployment, the human checks one allowed Google account:
 3. Profile shows the real name/email; the demo notice is visible.
 4. Reload: the account remains signed in; callback fields are absent from the URL.
 5. Open a second tab, log out in the first: private content disappears in both.
-6. Cancel a new Google login: a useful generic retry message appears.
+6. Sign in again after logout without reloading: Google opens and login succeeds.
+7. Cancel a new Google login: a useful generic retry message appears. If browser
+   navigation is stopped or returns to the previous document, sign-in can be retried.
 
 Do not send tokens, callback fragments or browser-storage dumps to chat. The
 human can report the above outcomes without exposing session data. The website

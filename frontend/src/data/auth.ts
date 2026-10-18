@@ -121,9 +121,13 @@ export function createAuthStore(client: AuthClient | null, options: AuthOptions)
         provider: 'google',
         options: { redirectTo: options.redirectTo, queryParams: { prompt: 'select_account' } },
       });
-      if (error) publish({ ...snapshot, error: CALLBACK_ERROR, working: false });
+      if (error) publish({ ...snapshot, error: CALLBACK_ERROR });
     } catch {
-      publish({ ...snapshot, error: CALLBACK_ERROR, working: false });
+      publish({ ...snapshot, error: CALLBACK_ERROR });
+    } finally {
+      // The SDK has only initiated navigation. It may be cancelled, or this
+      // document may return from browser history, so do not leave it locked.
+      publish({ ...snapshot, working: false });
     }
   }
 
