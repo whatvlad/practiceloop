@@ -1,0 +1,34 @@
+# Temporary verification for Issue #3's explicitly owned branch. Remove before merge.
+name: Supabase first-project preflight
+on:
+  push:
+    branches: [codex/issue-3-supabase-schema]
+    paths: [.github/workflows/supabase-preflight.yml]
+permissions:
+  contents: read
+concurrency:
+  group: supabase-migrations
+  cancel-in-progress: false
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+      MIGRATIONS_READY: ${{ vars.SUPABASE_MIGRATIONS_READY }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: supabase/setup-cli@1dedf2c611547ede7232d26866dd3c56ab903bbb # v1
+        with:
+          version: 2.121.0
+      - name: Link the human-configured disposable project
+        run: supabase link --project-ref "$SUPABASE_PROJECT_REF"
+      - name: Dry-run first, without applying the application schema
+        run: supabase db push --linked --dry-run
+      - name: Apply only after human first-project confirmation
+        if: env.MIGRATIONS_READY == 'true'
+        run: supabase db push --linked --yes

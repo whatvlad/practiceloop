@@ -177,8 +177,8 @@ separate HTTP calls are not atomic. No new RPC or persistence API is added here.
 ### Current verification status
 
 Hosted migration application, two-user/anonymous PostgREST tests and backup/restore
-have **not yet been verified**. A preparation PR can merge without closing #3;
-the Issue stays open until real hosted evidence and the repository completion
+have **not yet been verified**. The PR and Issue stay open until real hosted
+evidence and the repository completion
 criteria are satisfied. #4/#5/#10/#12 own later API/frontend integration; #35 reuses
 their results and covers residual demo/statistics/deletion requirements after #34.
 
