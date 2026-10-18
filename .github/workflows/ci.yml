@@ -55,6 +55,8 @@ jobs:
       - run: python -m ruff format --check . ../scripts
       - run: python -m mypy
       - run: python -m pytest
+      - name: Check hosted verification failure handling (offline)
+        run: python -m unittest discover -s ../scripts -p test_supabase_hosted_unit.py
 
   database:
     name: Database isolation
@@ -80,6 +82,15 @@ jobs:
       - run: psql -v ON_ERROR_STOP=1 -f supabase/tests/auth_fixture.sql
       - run: psql -v ON_ERROR_STOP=1 -f supabase/migrations/202610150001_initial_schema.sql
       - run: psql -v ON_ERROR_STOP=1 -f supabase/tests/isolation.sql
+      - name: Validate hosted-check SQL in disposable Postgres only
+        run: |
+          psql -v ON_ERROR_STOP=1 -c "insert into auth.users(id) values ('00000000-0000-0000-0000-000000000001'), ('00000000-0000-0000-0000-000000000002')"
+          sed -e 's/REPLACE_WITH_USER_A_UUID/00000000-0000-0000-0000-000000000001/g' \
+              -e 's/REPLACE_WITH_USER_B_UUID/00000000-0000-0000-0000-000000000002/g' \
+              supabase/tests/hosted_fixture.sql | psql -v ON_ERROR_STOP=1
+          psql -v ON_ERROR_STOP=1 -f supabase/tests/hosted_schema.sql
+          psql -v ON_ERROR_STOP=1 -f supabase/tests/hosted_cleanup.sql
+          psql -v ON_ERROR_STOP=1 -c "do \$\$ begin assert (select count(*) from public.problems) = 0; assert (select count(*) from public.attempts) = 0; assert (select count(*) from private.problem_solutions) = 0; end \$\$"
 
   security:
     name: Security
