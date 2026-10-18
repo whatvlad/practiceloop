@@ -54,3 +54,16 @@ The agents have no permanent roles such as “frontend agent” or “backend ag
 Coordination record: docs/agents/TASK_PROTOCOL.md. Implementation workflow and
 completion criteria: docs/agents/WORKFLOW.md. Receiving a HANDOFF and review
 format: docs/agents/REVIEW_PROTOCOL.md. HANDOFF format: docs/agents/HANDOFF.md.
+
+## GitHub Issue names
+
+- An Issue title is short and descriptive. It contains no date and no queue number.
+- Every open Issue planned for implementation must be in the GitHub Project
+  `PracticeLoop — Implementation Queue`.
+- The project's `Order` field is the only source of implementation order.
+- Set `Order` from dependencies, blockers and product stages, never from
+  creation time or the GitHub Issue number.
+- After adding an Issue or changing dependencies, check the `Order` values and
+  fix them if needed.
+- Open Issues in the queue have unique, continuous `Order` values `1…N`.
+- Closed Issues are not part of the active queue.
