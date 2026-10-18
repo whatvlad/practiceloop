@@ -56,7 +56,7 @@ printf 'no-port-forwarding,no-agent-forwarding,no-X11-forwarding,no-pty %s\n' "$
   > "$APP_ROOT/.ssh/authorized_keys"
 chown "$APP_USER:$APP_USER" "$APP_ROOT/.ssh/authorized_keys"
 chmod 600 "$APP_ROOT/.ssh/authorized_keys"
-command -v restorecon >/dev/null && restorecon -R "$APP_ROOT/.ssh" || true
+if command -v restorecon >/dev/null; then restorecon -R "$APP_ROOT/.ssh"; fi
 
 # The deploy user may restart the API and nothing else.
 echo "$APP_USER ALL=(root) NOPASSWD: /usr/bin/systemctl restart practiceloop-api" \
@@ -97,7 +97,7 @@ install -d -o caddy -g caddy -m 750 /var/lib/caddy
 install -d -m 755 /etc/caddy
 sed "s/{\$API_HOST}/$API_HOST/" "$HERE/Caddyfile" > /etc/caddy/Caddyfile
 install -m 644 "$HERE/caddy.service" /etc/systemd/system/caddy.service
-command -v restorecon >/dev/null && restorecon /usr/local/bin/caddy || true
+if command -v restorecon >/dev/null; then restorecon /usr/local/bin/caddy; fi
 
 echo "==> Opening ports 80 and 443 on the VM firewall"
 if systemctl is-active --quiet firewalld; then
