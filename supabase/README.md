@@ -47,8 +47,12 @@ The first real-project dry-run must still list **202610150001** before applying.
    created project shows West EU (Ireland). Confirm no existing application data
    before first migration. Save its database password in a password manager.
 2. In Supabase account settings → Access Tokens, create a scoped token limited to
-   this project: **Project Settings**, **API Keys**, **API Key Secrets**, all
-   **Read**. No other capabilities are required for `supabase link`. Record its
+   this project: **Project Settings**, **API Keys**, **API Key Secrets**, and
+   **Connection Pooling**, all **Read**. The pooler permission
+   (`database_pooling_config_read`) is required for IPv4 fallback on GitHub runners;
+   link otherwise silently skips caching its connection URL. See the
+   [pooler endpoint permissions](https://supabase.com/docs/reference/api/v1-get-pooler-config).
+   Record its
    expiry and rotate the GitHub secret before it expires. A seven-day setup token
    requires replacement for continuing automatic delivery.
 3. In GitHub → repository Settings → Secrets and variables → Actions → Secrets,

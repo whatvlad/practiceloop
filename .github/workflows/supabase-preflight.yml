@@ -26,7 +26,12 @@ jobs:
         with:
           version: 2.121.0
       - name: Link the human-configured disposable project
-        run: supabase link --project-ref "$SUPABASE_PROJECT_REF"
+        run: |
+          supabase link --project-ref "$SUPABASE_PROJECT_REF"
+          if [[ ! -s supabase/.temp/pooler-url ]]; then
+            echo "::error::No IPv4 pooler configuration cached. Check token Connection Pooling Read permission and project availability."
+            exit 1
+          fi
       - name: Dry-run first, without applying the application schema
         run: supabase db push --linked --dry-run
       - name: Apply only after human first-project confirmation

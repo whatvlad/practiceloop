@@ -71,7 +71,12 @@ jobs:
           version: 2.121.0
       - name: Link hosted project
         if: steps.config.outputs.ready == 'true'
-        run: supabase link --project-ref "$SUPABASE_PROJECT_REF"
+        run: |
+          supabase link --project-ref "$SUPABASE_PROJECT_REF"
+          if [[ ! -s supabase/.temp/pooler-url ]]; then
+            echo "::error::No IPv4 pooler configuration cached. Check token Connection Pooling Read permission and project availability."
+            exit 1
+          fi
       - name: Inspect pending migrations before every push
         if: steps.config.outputs.ready == 'true'
         run: supabase db push --linked --dry-run
