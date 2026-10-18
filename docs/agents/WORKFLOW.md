@@ -16,6 +16,8 @@
 12. Create a focused pull request only when authorized by the accountable human.
 13. Optionally request review from the other agent or human (recommended for database, authentication and mathematical logic).
 14. Merge the pull request into main yourself once hosted CI passes.
+15. Update the project right away, as AGENTS.md "After a merge" says. If you
+    cannot reach it, give the accountable human the `gh` commands listed there.
 
 ## Completion criteria
 
