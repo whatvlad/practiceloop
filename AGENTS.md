@@ -81,6 +81,30 @@ format: docs/agents/REVIEW_PROTOCOL.md. HANDOFF format: docs/agents/HANDOFF.md.
 - Other documents (roadmaps, STATUS.md) describe stages and dependencies but
   never override `Order`.
 
+## After a merge
+
+Updating the project is part of the merge, not a later chore. Right after your
+pull request is merged, and before you report the task as done:
+
+1. Close the Issue (or confirm `Closes #N` closed it).
+2. Set its project `Status` to `Done` and clear its `Order`.
+3. Renumber the remaining open Issues to `1…N`, keeping their relative order.
+4. Read the project back and confirm the result.
+
+If you cannot reach the project (for example a 403), do not skip these steps.
+Tell the accountable human the task is not Done yet and give them the exact
+`gh` commands to run, with the Issue number filled in:
+
+```sh
+gh issue close <N>
+gh project view 1 --owner whatvlad --format json --jq .id          # <PROJECT_ID>
+gh project field-list 1 --owner whatvlad --format json             # Status, Done option, Order ids
+gh project item-list 1 --owner whatvlad --format json              # <ITEM_ID> and other Orders
+gh project item-edit --project-id <PROJECT_ID> --id <ITEM_ID> --field-id <STATUS_ID> --single-select-option-id <DONE_ID>
+gh project item-edit --project-id <PROJECT_ID> --id <ITEM_ID> --field-id <ORDER_ID> --clear
+gh project item-edit --project-id <PROJECT_ID> --id <OTHER_ITEM_ID> --field-id <ORDER_ID> --number <NEW_ORDER>   # per renumbered Issue
+```
+
 ## Graphify
 
 Graphify is optional development tooling for agents. It must not become an
