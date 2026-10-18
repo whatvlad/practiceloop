@@ -4,14 +4,19 @@ No service-role key is needed. Supply two short-lived real Auth access tokens vi
 hidden prompts, never shell arguments or chat. See supabase/README.md.
 """
 
+import argparse
 import getpass
+import hashlib
 import json
 import os
 import sys
 import urllib.error
 import urllib.parse
 import urllib.request
+from datetime import UTC, datetime
+from pathlib import Path
 from typing import Any
+from uuid import UUID
 
 TABLES = ("profiles", "topics", "problems", "attempts")
 PROBLEMS = tuple(f"31000000-0000-0000-0000-{slot:012d}" for slot in (1, 2))
@@ -61,6 +66,8 @@ class Client:
             response = error
         with response:
             status = response.code
+            if status == 204:
+                return status, None
             try:
                 data = json.loads(response.read(1_000_000))
             except (ValueError, UnicodeError):
@@ -175,7 +182,21 @@ def verify(clients: list[Client]) -> int:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--google-login",
+        action="store_true",
+        help="Open two real Google logins on localhost:5173, keeping tokens in memory",
+    )
+    args = parser.parse_args()
+    root = Path(__file__).resolve().parents[1]
+    report = root / ".local/hosted-test-result.json"
+    if args.google_login:
+        # A failed new run must not leave an older success report looking current.
+        report.unlink(missing_ok=True)
     url = os.environ.get("SUPABASE_URL", "").rstrip("/")
+    if args.google_login and not url:
+        url = input("Supabase project URL (public HTTPS origin): ").strip().rstrip("/")
     parsed = urllib.parse.urlsplit(url)
     require(
         parsed.scheme == "https"
@@ -190,13 +211,60 @@ def main() -> int:
         "Set SUPABASE_URL to the hosted HTTPS project origin",
     )
     key = os.environ.get("SUPABASE_PUBLISHABLE_KEY", "")
+    if args.google_login and not key:
+        key = input("Public sb_publishable_ key (never a secret/service-role key): ").strip()
     require(key.startswith("sb_publishable_"), "Supply only the public sb_publishable_ key")
     require(sys.stdin.isatty(), "Run interactively; access tokens use hidden prompts")
-    tokens = [
-        getpass.getpass(f"User {slot} short-lived access token (hidden): ") for slot in (1, 2)
-    ]
+    if args.google_login:
+        from supabase_google_test_login import collect_google_tokens
+
+        tokens = collect_google_tokens(url)
+    else:
+        tokens = [
+            getpass.getpass(f"User {slot} short-lived access token (hidden): ") for slot in (1, 2)
+        ]
     require(all(tokens), "Both user tokens are required")
-    return verify([Client(url, key, token) for token in tokens])
+    clients = [Client(url, key, token) for token in tokens]
+    if args.google_login:
+        ids = []
+        for client in clients:
+            status, user = client.request("/auth/v1/user")
+            require(status == 200 and isinstance(user, dict), "Google session verification failed")
+            require(user.get("app_metadata", {}).get("provider") == "google", "Google required")
+            ids.append(str(UUID(user["id"])))
+        require(ids[0] != ids[1], "Use two different Google accounts; rerun the command")
+        fixture = (root / "supabase/tests/hosted_fixture.sql").read_text(encoding="utf-8")
+        fixture = fixture.replace("REPLACE_WITH_USER_A_UUID", ids[0])
+        fixture = fixture.replace("REPLACE_WITH_USER_B_UUID", ids[1])
+        output = root / ".local/hosted_fixture.sql"
+        output.parent.mkdir(exist_ok=True)
+        output.write_text(fixture, encoding="utf-8")
+        print(f"Run this generated SQL in the project's SQL Editor: {output}")
+        print(f"Then run: {root / 'supabase/tests/hosted_schema.sql'}")
+        require(
+            input("Type SQL PASSED after both SQL scripts succeed: ").strip() == "SQL PASSED",
+            "Hosted SQL checks were not confirmed; no success reported",
+        )
+    result = verify(clients)
+    if args.google_login:
+        print(f"Finish by running: {root / 'supabase/tests/hosted_cleanup.sql'}")
+        for client in clients:
+            status, _ = client.request("/auth/v1/logout?scope=local", "POST", {})
+            require(status == 204, "Test-session logout failed; revoke it in Supabase Auth")
+        print("Test Supabase sessions signed out; close the callback tabs.")
+        report.write_text(
+            json.dumps(
+                {
+                    "timestamp_utc": datetime.now(UTC).isoformat(),
+                    "verifier_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+                    "postgrest": "passed",
+                    "sql": "human-confirmed passed",
+                }
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+    return result
 
 
 if __name__ == "__main__":

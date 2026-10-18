@@ -37,3 +37,5 @@ jobs:
       - name: Apply only after human first-project confirmation
         if: env.MIGRATIONS_READY == 'true'
         run: supabase db push --linked --yes
+      - name: Verify hosted migration history
+        run: supabase migration list --linked

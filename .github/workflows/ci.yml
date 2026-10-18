@@ -56,7 +56,7 @@ jobs:
       - run: python -m mypy
       - run: python -m pytest
       - name: Check hosted verification failure handling (offline)
-        run: python -m unittest discover -s ../scripts -p test_supabase_hosted_unit.py
+        run: python -m unittest discover -s ../scripts -p 'test_supabase_*_unit.py'
 
   database:
     name: Database isolation

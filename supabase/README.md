@@ -112,10 +112,11 @@ This test is deliberately separate from the ordinary CI fixture. Never execute
 3. Authentication → URL Configuration: Site URL `https://practiceloop.pages.dev`;
    redirect URLs `https://practiceloop.pages.dev/**` and `http://localhost:5173/**`.
    Google consent/testing configuration must allow both real test Google accounts.
-4. Obtain two real Google-authenticated user sessions in separate browser profiles
-   (using the #5 client or a local test OAuth client). Auth sessions must belong to
-   this hosted project and be short lived. Never send JWTs to the agent or put them
-   in a shell command. This PR does not implement #5 or claim login is functional.
+4. Obtain two real Google-authenticated user sessions. You can use the human-only
+   helper below, which avoids copying tokens and does not depend on the #5 client.
+   Auth sessions must belong to this hosted project and be short lived. Never send
+   JWTs to the agent or put them in shell arguments. This PR does not implement #5
+   or claim the application's login is functional.
 5. SQL Editor as `postgres`: replace only the two UUID placeholders in
    `tests/hosted_fixture.sql` with those real Auth user IDs, then run it. It creates
    two profiles if absent, two public problems, attempts and private answers. Fixed
@@ -146,6 +147,34 @@ This test is deliberately separate from the ordinary CI fixture. Never execute
 
 PostgREST denial does not prove API ownership: `service_role` bypasses RLS. #4
 must verify JWT claims and scope **every** service-role query by verified user ID.
+
+#### Human-only Google test helper (no token copying)
+
+Stop any local frontend server using port 5173. In the implementation worktree:
+
+```powershell
+python scripts/test_supabase_hosted.py --google-login
+```
+
+The script asks for the public Project URL and `sb_publishable_` API key (from
+Project Settings → API Keys), unless already set in public environment variables.
+It opens Google's sign-in twice: choose the two different allowed test accounts.
+The helper listens only on IPv4 loopback port 5173. The nonce callback accepts only
+same-origin POSTs, clears the URL fragment immediately and never persists/logs
+tokens. It loads no third-party script. Sessions remain in memory in this human-run
+process and expire; do not run the command through the agent's tools.
+
+Once both sessions have been verified with Supabase, it generates the ignored
+`.local/hosted_fixture.sql` with their UUIDs (no tokens). Run that generated file,
+then `supabase/tests/hosted_schema.sql`, in the hosted SQL Editor as `postgres`.
+Type `SQL PASSED` in the terminal only if both completed successfully. The helper
+then runs the two-user/anonymous PostgREST checks and signs out its test Supabase
+sessions on success. Run `supabase/tests/hosted_cleanup.sql` to remove fixtures.
+Only a successful check writes `.local/hosted-test-result.json`; it contains two
+status fields and no credentials. SQL success is a human confirmation, distinct
+from the script's directly observed PostgREST results. On failure, retain the safe
+terminal message and inspect configuration; do not share tokens or callback URLs
+containing fragments. Revoke test sessions in Supabase if interrupted.
 
 ### Profile provisioning and transaction boundary
 
@@ -180,8 +209,11 @@ separate HTTP calls are not atomic. No new RPC or persistence API is added here.
 
 ### Current verification status
 
-Hosted migration application, two-user/anonymous PostgREST tests and backup/restore
-have **not yet been verified**. The PR and Issue stay open until real hosted
+The initial migration was applied successfully in hosted preflight run
+[39173170854, attempt 3](https://github.com/whatvlad/practiceloop/actions/runs/39173170854/attempts/3)
+after a successful real-project dry-run and Vlad's explicit approval. Both commands
+recognized the unchanged 12-digit version. Two-user/anonymous PostgREST tests and
+backup/restore have **not yet been verified**. The PR and Issue stay open until real hosted
 evidence and the repository completion
 criteria are satisfied. #4/#5/#10/#12 own later API/frontend integration; #35 reuses
 their results and covers residual demo/statistics/deletion requirements after #34.

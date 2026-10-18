@@ -83,6 +83,9 @@ jobs:
       - name: Apply pending migrations
         if: steps.config.outputs.ready == 'true' && env.MIGRATIONS_READY == 'true' && (github.event_name == 'push' || inputs.mode == 'apply')
         run: supabase db push --linked --yes
+      - name: Verify migration history
+        if: steps.config.outputs.ready == 'true'
+        run: supabase migration list --linked
       - name: Report first-project hold
         if: steps.config.outputs.ready == 'true' && env.MIGRATIONS_READY != 'true'
         run: |
