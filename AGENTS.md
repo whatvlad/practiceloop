@@ -80,3 +80,23 @@ format: docs/agents/REVIEW_PROTOCOL.md. HANDOFF format: docs/agents/HANDOFF.md.
   Issues to `1…N` without changing their relative order.
 - Other documents (roadmaps, STATUS.md) describe stages and dependencies but
   never override `Order`.
+
+## Graphify
+
+Graphify is optional development tooling for agents. It must not become an
+application dependency, production service, container layer or runtime request.
+
+- Install or update it with `scripts/setup-graphify.sh`. The script keeps its
+  source and virtual environment under the ignored `.local/` directory.
+- When `graphify-out/graph.json` exists, run a scoped
+  `.local/graphify-venv/bin/graphify query "<question>" --budget 2500` before the
+  first broad repository search or source-file read for a codebase question.
+- Use `path` for relationships and `explain` for a focused concept. Use
+  `graphify-out/GRAPH_REPORT.md` only for broad architecture review or when a
+  scoped query is insufficient.
+- Verify relevant graph results against source code. If Graphify is unavailable
+  or stale, say so and continue with normal repository tools.
+- After code changes, run `.local/graphify-venv/bin/graphify update .` and review
+  changes to the shared graph outputs before committing them.
+- Never commit Graphify caches, cost history, interpreter paths or other
+  machine-specific state.
