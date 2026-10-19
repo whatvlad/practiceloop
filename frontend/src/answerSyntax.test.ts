@@ -10,6 +10,7 @@ const SUPPORTED = [
   'sin^1/2(x)', '|x|+|x+1|', 'log|x|', 'x+C+2C', '2x + (x+1)(x-1)', 'sin^2(x) + ln|x|',
   '12345678', '12.123456', 'x^12', 'x^(-12)', 'x^(1/12)', '('.repeat(12) + 'x' + ')'.repeat(12),
   Array(16).fill('sin(x)').join('+'), '+'.repeat(95) + 'x', ' '.repeat(255) + 'x',
+  'x²+C', '2x³', '-x²', 'x⁻¹', 'x¹²', 'e²', 'sin²(x)',
 ];
 
 const REJECTED = [
@@ -19,7 +20,7 @@ const REJECTED = [
   'x+', '(x', 'x)', '||x||', '√-3', '√', '1..2', 'nan', 'oo', 'x[0]', 'x=1', 'x!', 'α',
   '1'.repeat(257), ' '.repeat(255) + 'π', Array(65).fill('1').join('+'), Array(49).fill('1').join('+'),
   '('.repeat(13) + 'x' + ')'.repeat(13), Array(17).fill('sin(x)').join('+'),
-  '123456789', '1.1234567', '000000001', '123.123456',
+  '123456789', '1.1234567', '000000001', '123.123456', 'x¹³',
 ];
 
 describe('analyseAnswer mirrors the backend grammar', () => {
@@ -81,8 +82,10 @@ describe('mistakes are flagged while typing', () => {
     expect(analyseAnswer('1e6')).toMatchObject({ status: 'error', fix: undefined });
   });
 
-  it('warns when a superscript digit would be read as multiplication', () => {
-    expect(analyseAnswer('x²+C')).toMatchObject({ status: 'ok', latex: 'x\\cdot 2+C', fix: 'x^2+C' });
+  it('reads superscript digits as powers, like the backend', () => {
+    expect(analyseAnswer('x²+C')).toEqual(analyseAnswer('x^2+C'));
+    expect(analyseAnswer('x⁻¹')).toEqual(analyseAnswer('x^-1'));
+    expect(analyseAnswer('x²+C')).not.toHaveProperty('warning');
   });
 
   it('warns when only the first number is in the exponent', () => {

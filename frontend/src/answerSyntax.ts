@@ -47,9 +47,15 @@ class SyntaxProblem extends Error {
 
 class TooLong extends SyntaxProblem {}
 
+const SUPERSCRIPTS: Record<string, string> = {
+  '⁰': '0', '¹': '1', '²': '2', '³': '3', '⁴': '4', '⁵': '5', '⁶': '6', '⁷': '7', '⁸': '8', '⁹': '9', '⁻': '-',
+};
+
 function normalise(source: string): string {
   if ([...source].length > MAX_INPUT_BYTES) throw new TooLong('Input length exceeds the supported range');
+  // NFKC would turn x² into x2 (read as x*2), so superscript runs become powers first.
   const normalised = source
+    .replace(/⁻?[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g, (run) => `^${[...run].map((c) => SUPERSCRIPTS[c]).join('')}`)
     .normalize('NFKC')
     .replace(/π/g, 'pi')
     .replace(/[−–]/g, '-')
@@ -419,14 +425,10 @@ function toLatex(node: Node): string {
 // ---------- Learner feedback ----------
 
 const FUNCTION_PATTERN = 'asin|acos|atan|sqrt|sin|cos|tan|sec|csc|cot|exp|abs|ln|log';
-const SUPERSCRIPTS: Record<string, string> = {
-  '⁰': '0', '¹': '1', '²': '2', '³': '3', '⁴': '4', '⁵': '5', '⁶': '6', '⁷': '7', '⁸': '8', '⁹': '9', '⁻': '-',
-};
 
 /** Rewrites common slips into the accepted syntax; the learner chooses whether to apply it. */
 export function suggestFix(source: string): string {
-  let text = source.replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻]+/g, run => `^${[...run].map(c => SUPERSCRIPTS[c]).join('')}`);
-  text = text.replace(/\*\*/g, '^');
+  let text = source.replace(/\*\*/g, '^');
   text = text.replace(/arc(sin|cos|tan)/g, 'a$1');
   // A number directly before e reads as scientific notation: 2e^x -> 2*e^x.
   text = text.replace(/(\d)(?=[eE](?!\d))/g, '$1*');
@@ -526,9 +528,6 @@ export function analyseAnswer(source: string): AnswerAnalysis {
     return { status: 'error', message: HINTS[error.message] ?? error.message, fix };
   }
   const latex = toLatex(tree);
-  if (/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻]/.test(source)) {
-    return { status: 'ok', latex, warning: 'Superscripts read as ordinary digits, so x² means x·2. Use ^ for powers.', fix: suggestFix(source) };
-  }
   const exponentRun = /e\^(-?\d+(?:\.\d+)?)([A-Za-z(])/.exec(source);
   if (exponentRun) {
     const fix = source.replace(/e\^(-?\d+(?:\.\d+)?)(x|\([^()]*\))/, 'e^($1$2)');
