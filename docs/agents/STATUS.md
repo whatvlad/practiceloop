@@ -20,7 +20,7 @@ Google client authentication (#5): implementation replaces mock identity with
 Supabase Google OAuth, persistent sessions, refresh/logout and protected routes.
 See docs/auth/GOOGLE_AUTH.md for configuration and verification. Practice/history
 and counters remain an explicitly labeled browser-session demo until #10/#12.
-Backend JWT enforcement (#4) and #3's two-user database checks are still pending.
+#3's two-user database checks are still pending.
 Use the Issue and PR for current delivery/merge/preview verification state.
 
 Mathematical input (#7): a bounded allowlisted parser produces an internal syntax
@@ -48,3 +48,10 @@ editor, loaded lazily. `frontend/src/mathEditor.ts` turns its LaTeX into
 ADR-003 text before checking, so the backend is unchanged; it also corrects
 slips such as `x(x+1)`, `sin x` and `arctan`. Phones get MathLive's on-screen
 keyboard with the same keys instead of the inline keypad.
+
+API identity and ownership (#4): `app.core.auth.current_user` verifies Supabase
+access tokens against the project's public JWKS (asymmetric keys only) and is
+the only source of a user ID. `app.services.owned_records` holds the owner-scoped
+SQL for problems, attempts and reveals; CI's Database isolation job runs it as
+the RLS-bypassing service role (`pytest -m db`). No `/api` route uses them yet;
+the routes arrive with #34/#10, which also call `install_error_handlers`.

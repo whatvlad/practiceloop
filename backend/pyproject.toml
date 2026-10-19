@@ -6,7 +6,13 @@ build-backend = "setuptools.build_meta"
 name = "practiceloop-backend"
 version = "0.0.0"
 requires-python = ">=3.12,<3.15"
-dependencies = ["fastapi>=0.115,<1", "uvicorn>=0.34,<1", "sympy>=1.14,<2"]
+dependencies = [
+  "fastapi>=0.115,<1",
+  "uvicorn>=0.34,<1",
+  "sympy>=1.14,<2",
+  "PyJWT[crypto]>=2.10,<3",
+  "psycopg[binary]>=3.2,<4",
+]
 
 [project.optional-dependencies]
 dev = ["httpx>=0.28,<1", "pytest>=8,<10", "ruff>=0.11,<1", "mypy>=2.4.0,<3", "pip-audit>=2.9,<3", "pyyaml>=6,<7"]
@@ -16,7 +22,9 @@ include = ["app*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-ra"
+# Database tests need disposable Postgres; CI runs them with `-m db`.
+addopts = "-ra -m 'not db'"
+markers = ["db: needs PRACTICELOOP_TEST_DATABASE_URL (disposable Postgres only)"]
 
 [tool.ruff]
 target-version = "py312"
