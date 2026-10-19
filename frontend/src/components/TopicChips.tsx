@@ -8,6 +8,7 @@ interface ChipOption<T extends string> {
 }
 
 interface ChipsProps<T extends string> {
+  available?: readonly T[];
   options: readonly ChipOption<T>[];
   selected: T;
   onSelect: (value: T) => void;
@@ -17,7 +18,7 @@ interface ChipsProps<T extends string> {
 }
 
 /** Single-select pill chips: the topic picker and the history filters. */
-export function Chips<T extends string>({ options, selected, onSelect, label, labelledBy }: ChipsProps<T>) {
+export function Chips<T extends string>({ options, selected, onSelect, label, labelledBy, available }: ChipsProps<T>) {
   return (
     <div className="pl-chips" role="group" aria-label={labelledBy ? undefined : label} aria-labelledby={labelledBy}>
       {options.map((option) => {
@@ -28,6 +29,7 @@ export function Chips<T extends string>({ options, selected, onSelect, label, la
             type="button"
             className="pl-chip"
             aria-pressed={pressed}
+            disabled={available !== undefined && !available.includes(option.value)}
             onClick={() => onSelect(option.value)}
           >
             {pressed && <CheckIcon />}
@@ -45,8 +47,9 @@ interface TopicChipsProps {
   selected: TopicSlug;
   onSelect: (slug: TopicSlug) => void;
   labelledBy?: string;
+  available?: readonly TopicSlug[];
 }
 
-export function TopicChips({ selected, onSelect, labelledBy }: TopicChipsProps) {
-  return <Chips options={TOPIC_OPTIONS} selected={selected} onSelect={onSelect} label="Topic" labelledBy={labelledBy} />;
+export function TopicChips({ selected, onSelect, labelledBy, available }: TopicChipsProps) {
+  return <Chips options={TOPIC_OPTIONS} selected={selected} onSelect={onSelect} label="Topic" labelledBy={labelledBy} available={available} />;
 }

@@ -1,11 +1,11 @@
-// The one data boundary for pages: real Supabase Auth, temporary demo practice.
+// The one data boundary: existing account login and untracked server-generated practice.
 import { createAuthStore } from './auth';
-import { setDemoOwner } from './mock/server';
+import { resetPractice } from './practice';
 import { callbackOptions, createBrowserClient } from './supabase';
 
 const client = createBrowserClient();
 export const authStore = createAuthStore(client?.auth ?? null, {
-  ...callbackOptions(), onIdentityChange: setDemoOwner,
+  ...callbackOptions(), onIdentityChange: resetPractice,
 });
 
 export {
@@ -18,6 +18,6 @@ export {
   revealAnswer,
   revealSolution,
   submitAttempt,
-} from './mock/server';
+} from './practice';
 export { checkApiHealth } from './health';
 export type { ApiHealth } from './health';

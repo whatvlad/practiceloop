@@ -44,6 +44,7 @@ adaptive learning, achievements, OCR, other school subjects and advanced analyti
 
 Current backend code includes `/health`, the bounded input parser/worker and a
 private five-level basic-integral generator. The frontend has Google login and
-demo practice; the authenticated practice API is not implemented yet.
+untracked server-generated practice for four topic/level cells; the authenticated
+practice API is not implemented yet. See [preview boundaries](PREVIEW_PRACTICE.md).
 The accepted route shapes and retry rules are in `docs/api/README.md`; ADR-003
 defines the parser, equivalence policy and topic/difficulty matrix.

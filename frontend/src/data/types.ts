@@ -15,8 +15,8 @@ export interface Topic {
 
 export type Difficulty = 1 | 2 | 3 | 4 | 5;
 
-/** The three outcomes the checker can return, and no others. */
-export type CheckResult = 'correct' | 'incorrect' | 'invalid';
+/** Three API outcomes plus a display state for the missing_constant feedback code. */
+export type CheckResult = 'correct' | 'incorrect' | 'invalid' | 'missing_constant';
 
 /** Latest recorded attempt. Invalid expressions are not recorded as attempts. */
 export type AttemptResult = 'correct' | 'incorrect' | null;

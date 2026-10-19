@@ -161,9 +161,14 @@ def test_check_answer_end_to_end(answer: str, expected: AnswerCheck) -> None:
 
 
 @linux_only
+def test_original_domain_hole_is_invalid_before_simplification() -> None:
+    assert check_answer("2x^3/3 + log(x^2) - 2log|x| + C", POWER) == AnswerCheck("invalid")
+
+
 def test_inconclusive_is_a_service_error(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(math_worker, "_run_worker", lambda *_args: b"inconclusive")
     with pytest.raises(MathCheckInconclusive):
-        check_answer("2x^3/3 + log(x^2) - 2log|x| + C", POWER)
+        check_answer("2x^3/3+C", POWER)
 
 
 @linux_only

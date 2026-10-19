@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "lint": "eslint . --max-warnings 0",
+    "lint:content": "python3 ../scripts/check_content.py",
     "typecheck": "tsc --noEmit",
     "build": "tsc --noEmit && vite build",
     "test": "vitest run"

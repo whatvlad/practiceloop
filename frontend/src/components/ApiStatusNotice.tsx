@@ -1,5 +1,6 @@
 import type { ApiHealth } from '../data/health';
 import { WarningIcon } from './icons';
+import text from '../../../backend/app/content/en.json';
 
 /** Shown only when the API is configured but cannot be reached. */
 export function ApiStatusNotice({ health }: { health: ApiHealth | undefined }) {
@@ -10,7 +11,7 @@ export function ApiStatusNotice({ health }: { health: ApiHealth | undefined }) {
         <WarningIcon />
         <div>
           <b>Can’t reach the PracticeLoop server</b>
-          <span>Practice here still works with demo data. Reload the page in a minute to try again.</span>
+          <span>{text.service_error}</span>
         </div>
       </div>
     </div>

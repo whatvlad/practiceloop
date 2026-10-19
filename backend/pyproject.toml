@@ -20,6 +20,9 @@ dev = ["httpx>=0.28,<1", "pytest>=8,<10", "ruff>=0.11,<1", "mypy>=2.4.0,<3", "pi
 [tool.setuptools.packages.find]
 include = ["app*"]
 
+[tool.setuptools.package-data]
+"app.content" = ["en.json"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 # Database tests need disposable Postgres; CI runs them with `-m db`.

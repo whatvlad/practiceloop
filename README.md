@@ -5,20 +5,23 @@ answer verification and personal practice history. The MVP covers Integration,
 five topics and five difficulty levels, Google login, attempts, answer/solution
 reveal and a basic profile. [Original specification](docs/PRACTICELOOP_MVP.md).
 
-**Current state: Google account login with demo practice.** Supabase handles Google
-sign-in, restore and logout; practice/history/counts remain browser-session demo
-data until backend persistence is implemented. [Auth setup](docs/auth/GOOGLE_AUTH.md).
+**Current code: Google account login with untracked server-generated practice.**
+Supabase handles sign-in, restore and logout; practice/history/counts are temporary
+and not saved to accounts. [Auth setup](docs/auth/GOOGLE_AUTH.md).
 Private repository:
 [whatvlad/practiceloop](https://github.com/whatvlad/practiceloop). Tasks live in
 [GitHub Issues](https://github.com/whatvlad/practiceloop/issues). Initial schema is
 applied to the hosted test database; #3's full isolation verification remains
 pending. Cloudflare Pages serves the preview; the scaffold API runs on Oracle.
 The backend also provides the bounded math-input parser and isolated Linux
-construction worker from #7; answer equivalence and API integration are pending.
+construction worker from #7 and the shared answer checker from #8. Untracked
+preview integration is implemented in #34; account-backed persistence is pending.
 See [math-input implementation](docs/architecture/MATH_INPUT.md).
 The basic-integral generator now covers levels 1–5 with versioned private
 parameters and checked solution steps ([generator details](docs/architecture/BASIC_GENERATOR.md)).
-The frontend still uses demo problems until the practice API is connected.
+The preview connects basic integrals and substitution at levels 1–2 to a separate
+non-persistent API, with 186 verified records and no repeats within a pool cycle.
+Other cells are disabled. [Preview boundaries](docs/architecture/PREVIEW_PRACTICE.md).
 
 ## Stack and structure
 
@@ -70,9 +73,9 @@ In two terminals:
 cd frontend
 npm run dev
 ```
-A preview of `main` (mock data, plus the Graphify code graph at `/graph/`)
+A preview of `main` (untracked practice, plus the Graphify code graph at `/graph/`)
 deploys to Cloudflare Pages via `.github/workflows/preview.yml` at
-https://practiceloop.pages.dev (noindex, Google login; practice is a demo).
+https://practiceloop.pages.dev (noindex, Google login; practice is not persisted).
 Frontend: http://localhost:5173. Backend health: http://localhost:8000/health.
 OpenAPI: http://localhost:8000/docs. Health is liveness, not database readiness.
 
@@ -81,6 +84,7 @@ OpenAPI: http://localhost:8000/docs. Health is liveness, not database readiness.
 ```powershell
 cd frontend
 npm run lint
+npm run lint:content
 npm run typecheck
 npm test
 npm run build

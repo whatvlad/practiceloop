@@ -13,6 +13,10 @@ from typing import Any, Literal
 import sympy as sp
 
 from app.generators.basic import InternalProblem, X, replay_basic
+from app.generators.core import Exercise, replay
+from app.services.math_parser import MathNode
+
+type Problem = InternalProblem | Exercise
 
 type Outcome = Literal["correct", "incorrect", "missing_constant", "invalid", "inconclusive"]
 type Verdict = Literal["yes", "no", "unknown"]
@@ -25,14 +29,16 @@ _PRECISION = 50
 _TOLERANCE = sp.Float("1e-12", _PRECISION)
 
 
-def replay_problem(record: Mapping[str, object]) -> InternalProblem:
+def replay_problem(record: Mapping[str, object]) -> Problem:
     """Rebuild the trusted problem from its private JSON record (no expression strings)."""
     if record.get("generator_version") == "basic-v1":
         return replay_basic(dict(record))
+    if record.get("generator_version") == "substitution-v1":
+        return replay(dict(record))
     raise ValueError("Unsupported generator version")
 
 
-def _components(problem: InternalProblem) -> tuple[tuple[Any, Any, tuple[float, ...]], ...]:
+def _components(problem: Problem) -> tuple[tuple[Any, Any, tuple[float, ...]], ...]:
     """(replacement for x, variable it is written in, samples) per connected component."""
     domain = problem.template.domain
     if domain == "real":
@@ -66,7 +72,7 @@ def _not_real(expression: Any, variable: Any, samples: tuple[float, ...]) -> boo
     return False
 
 
-def _is_primitive(candidate: Any, problem: InternalProblem) -> Verdict:
+def _is_primitive(candidate: Any, problem: Problem) -> Verdict:
     """Does `candidate` differentiate to the integrand and stay real on every component?"""
     undecided = False
     for replacement, variable, samples in _components(problem):
@@ -89,7 +95,7 @@ def _is_primitive(candidate: Any, problem: InternalProblem) -> Verdict:
     return "unknown" if undecided else "yes"
 
 
-def _same_number_everywhere(offset: Any, problem: InternalProblem) -> Verdict:
+def _same_number_everywhere(offset: Any, problem: Problem) -> Verdict:
     """ADR-003: after removing the known primitive, `b` must be one numeric constant."""
     values = []
     for replacement, _variable, _samples in _components(problem):
@@ -102,7 +108,7 @@ def _same_number_everywhere(offset: Any, problem: InternalProblem) -> Verdict:
     return "no"
 
 
-def classify(answer: Any, problem: InternalProblem) -> Outcome:
+def classify(answer: Any, problem: Problem) -> Outcome:
     """`answer` is the evaluated SymPy form of a parsed learner expression."""
     if problem.template.is_definite:
         raise ValueError("Definite templates are not supported yet")
@@ -130,3 +136,26 @@ def classify(answer: Any, problem: InternalProblem) -> Outcome:
     if offset == "unknown":
         return "inconclusive"
     return "correct" if offset == "yes" else "incorrect"
+
+
+def check_tree(tree: MathNode, problem: Problem) -> Outcome:
+    """Protect all-real preview cells before evaluation can cancel domain holes."""
+    from sympy.calculus.util import continuous_domain
+
+    from app.services.math_worker import _build_sympy
+
+    if problem.template.domain == "real":
+        stack = [tree]
+        try:
+            while stack:
+                item = stack.pop()
+                value = _build_sympy(item)
+                if value.has(sp.zoo, sp.oo, -sp.oo, sp.nan):
+                    return "invalid"
+                for variable in (X, *(value.free_symbols - {X})):
+                    if continuous_domain(value, variable, sp.S.Reals) != sp.S.Reals:
+                        return "invalid"
+                stack.extend(item.children)
+        except (NotImplementedError, ValueError, TypeError):
+            return "inconclusive"
+    return classify(_build_sympy(tree, evaluate=True), problem)

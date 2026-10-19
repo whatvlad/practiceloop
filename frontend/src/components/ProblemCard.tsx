@@ -6,6 +6,7 @@ import { DifficultyDots } from './DifficultyScale';
 import { ResultBanner, RevealedAnswer } from './ResultBanner';
 import { SolutionSteps } from './SolutionSteps';
 import { Tex } from './Tex';
+import text from '../../../backend/app/content/en.json';
 
 interface ProblemCardProps {
   topic: TopicSlug;
@@ -58,7 +59,7 @@ export function ProblemCard({
         {headLabel && <span className="pl-label">{headLabel}</span>}
       </div>
       <div className="pl-stack pl-gap-3">
-        <p className="pl-lead">Calculate:</p>
+        <p className="pl-lead">{text.calculate}</p>
         <div className="pl-expr">
           <Tex latex={problemLatex} display />
         </div>
