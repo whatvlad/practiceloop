@@ -8,7 +8,7 @@ Google login -> choose one of five Integration topics and difficulty 1–5 ->
 generate and immediately persist -> submit repeated attempts -> return Correct,
 Incorrect or Invalid expression -> explicitly reveal answer/steps -> reopen
 history. Profile shows account, generated count, attempted-problem count and
-solved-problem count. ADR-004 proposes all three as distinct-problem counters.
+solved-problem count. ADR-004 defines all three as distinct-problem counters.
 
 ```mermaid
 flowchart LR
@@ -27,7 +27,7 @@ version, derivative checks and checked step templates. No LLM generation.
 
 Public schema is profiles, topics, problems, attempts per specification. Private
 solution table keeps answers/steps/parameters inaccessible to browser roles.
-Nullable `is_correct` represents invalid attempts; ADR-004 proposes the final
+Nullable `is_correct` represents invalid attempts; ADR-004 defines the final
 attempt, constant-omission, profile-provisioning and reveal semantics.
 All browser writes are denied, avoiding forged correctness and reveal flags.
 Service-role DB access requires separate API-level ownership enforcement.

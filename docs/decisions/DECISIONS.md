@@ -10,8 +10,8 @@
 | 2026-10-15 | Preserve Private visibility despite plan-limited branch protection | GitHub protection HTTP 403 requires Pro; main is not protected; main is not protected |
 | 2026-10-15 | No approval required: authors merge their own PR after green CI; review optional | Owner decision in project chat |
 | 2026-10-15 | Equal agent roles; collaboration rules reduced to AGENTS.md + docs/agents | Bootstrap setup reports, backlog snapshot and onboarding docs removed (kept in Git history) |
-| 2026-10-19 | Bounded answer language, real-domain equivalence and five-by-five template matrix | ADR-003 proposed for PL-002 review |
-| 2026-10-19 | Backend-owned attempts/reveals, distinct-problem counters and idempotent writes | ADR-004 proposed for PL-002 review |
+| 2026-10-19 | Bounded answer language, real-domain equivalence and five-by-five template matrix | ADR-003 accepted by accountable human |
+| 2026-10-19 | Backend-owned attempts/reveals, distinct-problem counters and idempotent writes | ADR-004 accepted by accountable human |
 
 Open questions are in docs/decisions/OPEN_QUESTIONS.md. Record substantial choices
 in a new ADR rather than changing accepted history or the source specification.
