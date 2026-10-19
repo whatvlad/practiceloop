@@ -14,6 +14,7 @@ from collections.abc import Iterator
 from contextlib import contextmanager
 from functools import lru_cache
 from typing import Any
+from uuid import UUID
 
 import psycopg
 from psycopg_pool import ConnectionPool, PoolTimeout
@@ -68,7 +69,9 @@ def database_unavailable() -> ApiError:
 
 
 @contextmanager
-def transaction() -> Iterator[psycopg.Connection[Any]]:
+def transaction(
+    user_id: UUID | None = None, *, read_only: bool = False
+) -> Iterator[psycopg.Connection[Any]]:
     """Commits on normal exit; any exception rolls everything back."""
     try:
         pool = get_pool()
@@ -77,6 +80,12 @@ def transaction() -> Iterator[psycopg.Connection[Any]]:
     try:
         with pool.connection() as conn, conn.transaction():
             conn.execute("set local role service_role")
+            if read_only:
+                conn.execute("set transaction isolation level repeatable read, read only")
+            if user_id is not None:
+                exists = conn.execute("select private.account_exists(%s)", (user_id,)).fetchone()
+                if not exists or not exists[0]:
+                    raise ApiError(401, "invalid_token", "Your account is no longer available.")
             yield conn
     except (PoolTimeout, psycopg.OperationalError, psycopg.InterfaceError) as exc:
         raise database_unavailable() from exc

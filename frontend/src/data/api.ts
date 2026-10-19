@@ -20,6 +20,10 @@ configurePracticeAuth(async () => {
 });
 
 export {
+  getDisplayName,
+  saveDisplayName,
+  getLearningStatistics,
+  deleteAccount,
   NotFoundError,
   generateProblem,
   getLastSelection,
@@ -29,6 +33,7 @@ export {
   listProblems,
   listProblemPage,
   openProblem,
+  openDemo,
   revealAnswer,
   revealSolution,
   submitAttempt,

@@ -1,6 +1,6 @@
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import { ApiStatusNotice } from './components/ApiStatusNotice';
-import { AppNav, Logo } from './components/AppNav';
+import { AppNav, Logo, PublicNav } from './components/AppNav';
 import { ButtonLink } from './components/Button';
 import { type ApiHealth, authStore, checkApiHealth } from './data/api';
 import { DashboardPage } from './pages/DashboardPage';
@@ -59,7 +59,7 @@ export function App() {
     document.title = TITLES[pathname] ?? 'PracticeLoop';
   }, [pathname]);
 
-  const needsAccount = APP_ROUTES.has(pathname);
+  const needsAccount = APP_ROUTES.has(pathname) && pathname !== '/practice';
   useEffect(() => {
     if (auth.status === 'loading') return;
     if (!account && (needsAccount || pathname === '/auth/callback')) navigate('/login', { replace: true });
@@ -76,13 +76,19 @@ export function App() {
     if (!authStore.getSnapshot().account) navigate('/');
   }
 
+  async function handleDeleted() {
+    await authStore.completeDeletion();
+    navigate('/');
+  }
+
   const authDisabled = auth.working || auth.status === 'loading' || !authStore.configured;
   if (pathname === '/') return <LandingPage onSignIn={handleSignIn} disabled={authDisabled} busy={auth.working} error={auth.error} signedIn={!!account} />;
   if (pathname === '/login') return <LoginPage onSignIn={handleSignIn} disabled={authDisabled} busy={auth.working} error={auth.error} />;
   if (pathname === '/auth/callback' || (needsAccount && auth.status === 'loading')) {
     return <div className="pl-page pl-login"><p role="status">Restoring your session…</p></div>;
   }
-  if (!needsAccount) return <NotFoundPage />;
+  if (!account && pathname === '/practice' && auth.status !== 'loading') return <div className="pl-page"><PublicNav /><div className="pl-wrap"><p className="pl-small pl-muted">Try one demo. Your answer and result are not saved.</p></div><PracticePage key="demo" id={null} demo /></div>;
+  if (!APP_ROUTES.has(pathname)) return <NotFoundPage />;
   if (!account) return <div className="pl-page" />;
 
   return (
@@ -96,7 +102,7 @@ export function App() {
       {pathname === '/dashboard' && <DashboardPage />}
       {pathname === '/practice' && <PracticePage key={params.get('id') ?? 'latest'} id={params.get('id')} />}
       {pathname === '/history' && <HistoryPage />}
-      {pathname === '/profile' && <ProfilePage account={account} onLogOut={handleLogOut} busy={auth.working} />}
+      {pathname === '/profile' && <ProfilePage account={account} onLogOut={handleLogOut} onDeleted={handleDeleted} busy={auth.working} />}
     </div>
   );
 }

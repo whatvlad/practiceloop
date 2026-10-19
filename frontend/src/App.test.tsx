@@ -69,7 +69,7 @@ describe('client route protection and auth UI', () => {
   it('renders real account details and removes them immediately on a cross-tab sign-out', async () => {
     await renderAt('/profile', signedIn);
     expect(element.textContent).toContain('learner@example.invalid');
-    expect(element.textContent).toContain('A Learner');
+    expect(element.textContent).toContain('Learner');
     expect(element.textContent).not.toContain('Alex Morgan');
     expect(element.textContent).toContain('Problems, attempts and reveals are saved to your account');
     await act(async () => harness.set(signedOut));

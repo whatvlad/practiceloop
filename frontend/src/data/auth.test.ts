@@ -44,6 +44,15 @@ async function start(store: ReturnType<typeof createAuthStore>) {
 afterEach(() => { stops.splice(0).forEach(stop => stop()); vi.useRealTimers(); });
 
 describe('real auth lifecycle', () => {
+  it('removes a deleted identity even when local sign-out fails', async () => {
+    const { store, client, identityChange } = setup(session());
+    await start(store);
+    client.signOut.mockRejectedValueOnce(new Error('network'));
+    await store.completeDeletion();
+    expect(store.getSnapshot().account).toBeNull();
+    expect(store.getSnapshot().status).toBe('unauthenticated');
+    expect(identityChange).toHaveBeenLastCalledWith(null);
+  });
   it('restores the real account and clears it on cross-tab logout', async () => {
     const { store, event, identityChange } = setup(session());
     await start(store);

@@ -581,7 +581,122 @@ def test_history_reads_require_authentication_before_database_access(
     app.dependency_overrides.pop(current_user)
     app.dependency_overrides[token_verifier] = lambda: object()
     try:
-        for path in ("/problems", f"/problems/{uuid4()}", "/profile"):
+        for path in ("/problems", f"/problems/{uuid4()}", "/profile", "/statistics"):
             assert client.get(path).status_code == 401
     finally:
         app.dependency_overrides.pop(token_verifier)
+
+
+# Account completion (#35)
+
+
+def test_private_omission_metrics_exclude_invalid_and_keep_each_checked_attempt(
+    client, users, url, monkeypatch
+):
+    problem = generate(client)
+    for outcome in (
+        AnswerCheck("incorrect", True),
+        AnswerCheck("correct", False),
+        AnswerCheck("invalid", False),
+    ):
+        stub_check(monkeypatch, outcome)
+        assert (
+            client.post(
+                f"/problems/{problem['id']}/attempts",
+                json={"answer": "x", "elapsedMs": 1234},
+                headers=key(),
+            ).status_code
+            == 201
+        )
+    stats = client.get("/statistics").json()
+    assert (stats["checkedAttempts"], stats["omitted"], stats["rate"]) == (2, 1, 0.5)
+    assert stats["byTopicDifficulty"] == [
+        {
+            "topic": "basic-integrals",
+            "difficulty": 1,
+            "checkedAttempts": 2,
+            "omitted": 1,
+            "rate": 0.5,
+        }
+    ]
+    assert len(stats["weekly"]) == 8
+    assert sum(w["omitted"] for w in stats["weekly"]) == 1
+    assert rows(
+        url, "select distinct elapsed_ms from public.attempts where user_id = %s", users.alice
+    ) == [(1234,)]
+    users.current = users.bob
+    other = client.get("/statistics").json()
+    assert other["checkedAttempts"] == 0 and other["omitted"] == 0 and other["rate"] is None
+    assert other["byTopicDifficulty"] == []
+    assert all(w["rate"] is None for w in other["weekly"])
+
+
+def test_statistics_all_time_and_eight_week_trend_have_distinct_windows(client, users, url):
+    problem = generate(client)
+    with psycopg.connect(url) as conn:
+        conn.execute(
+            "insert into public.attempts(problem_id,user_id,user_answer,is_correct,"
+            "constant_omitted,created_at) values (%s,%s,'x',false,true,"
+            "now()-interval '10 weeks')",
+            (problem["id"], users.alice),
+        )
+    stats = client.get("/statistics").json()
+    assert stats["omitted"] == 1
+    assert sum(w["omitted"] for w in stats["weekly"]) == 0
+
+
+def test_optional_name_is_owner_scoped_editable_and_removable(client, users):
+    assert client.get("/profile").json()["account"]["name"] is None
+    assert client.post("/profile", json={"name": "  Ada  "}).json() == {"name": "Ada"}
+    assert client.get("/profile").json()["account"]["name"] == "Ada"
+    users.current = users.bob
+    assert client.get("/profile").json()["account"]["name"] is None
+    assert (
+        client.post("/profile", json={"name": "B", "userId": str(users.alice)}).status_code == 422
+    )
+    users.current = users.alice
+    assert client.post("/profile", json={"name": None}).status_code == 200
+    assert client.get("/profile").json()["account"]["name"] is None
+    assert client.post("/profile", json={"name": "x" * 81}).status_code == 422
+
+
+def test_hard_delete_cascades_all_learning_data_and_old_identity_is_denied(
+    client, users, url, monkeypatch
+):
+    own = generate(client)
+    users.current = users.bob
+    other = generate(client)
+    users.current = users.alice
+    with psycopg.connect(url) as conn:
+        conn.execute(
+            "insert into public.attempts(problem_id,user_id,user_answer,is_correct)"
+            " values (%s,%s,'private answer',false)",
+            (own["id"], users.alice),
+        )
+
+    def remove(identity):
+        assert identity == users.alice
+        with psycopg.connect(url) as conn:
+            conn.execute("delete from auth.users where id = %s", (identity,))
+
+    monkeypatch.setattr(practice, "delete_user", remove)
+    assert client.post("/account/delete", json={"confirmation": "DELETE"}).status_code == 200
+    for table, column in (
+        ("public.profiles", "id"),
+        ("public.problems", "user_id"),
+        ("public.attempts", "user_id"),
+        ("private.idempotency_keys", "user_id"),
+    ):
+        assert not rows(url, f"select 1 from {table} where {column} = %s", users.alice)  # noqa: S608 -- fixed test constants
+    assert not rows(url, "select 1 from private.problem_solutions where problem_id = %s", own["id"])
+    for path in ("/profile", "/statistics", "/problems", f"/problems/{own['id']}"):
+        assert client.get(path).status_code == 401
+    assert (
+        client.post(
+            "/problems", json={"topic": "basic-integrals", "difficulty": 1}, headers=key()
+        ).status_code
+        == 401
+    )
+    assert client.post("/profile", json={"name": "recreate"}).status_code == 401
+    users.current = users.bob
+    assert client.get(f"/problems/{other['id']}").status_code == 200

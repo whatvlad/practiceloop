@@ -76,3 +76,14 @@ export interface ProfileCounts {
   attempted: number;
   correct: number;
 }
+
+export interface OmissionMetric {
+  checkedAttempts: number;
+  omitted: number;
+  rate: number | null;
+}
+
+export interface LearningStatistics extends OmissionMetric {
+  byTopicDifficulty: (OmissionMetric & { topic: TopicSlug; difficulty: Difficulty })[];
+  weekly: (OmissionMetric & { week: string })[];
+}

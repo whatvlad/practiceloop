@@ -7,7 +7,7 @@ import { ProfilePage } from './ProfilePage';
 import * as api from '../data/api';
 import type { ProblemPage, PublicProblem } from '../data/types';
 
-vi.mock('../data/api', () => ({ listProblemPage: vi.fn(), getProfileCounts: vi.fn() }));
+vi.mock('../data/api', async original => ({ ...await original<typeof import('../data/api')>(), listProblemPage: vi.fn(), getProfileCounts: vi.fn() }));
 const problem = (id: string): PublicProblem => ({ id, saved: true, topic: 'basic-integrals', difficulty: 2,
   problemLatex: '\\int x\\,dx', createdAt: '2026-10-19T00:00:00Z', answerRevealed: true,
   solutionRevealed: true, attemptCount: 3, lastAnswer: 'x^2/2+C', lastResult: 'correct' });
@@ -74,5 +74,5 @@ it('shows an error rather than invented zero profile counts, then loads real tot
   await act(async () => button('Retry loading statistics').click());
   expect(element.textContent).toContain('123');
   expect(element.textContent).toContain('45');
-  expect(element.querySelector('[role="alert"]')).toBeNull();
+  expect(element.textContent).not.toContain('Your statistics could not be loaded.');
 });

@@ -145,6 +145,10 @@ export function createAuthStore(client: AuthClient | null, options: AuthOptions)
 
   return {
     start, signIn, signOut,
+    completeDeletion: async () => {
+      try { await client?.signOut({ scope: 'local' }); } catch { /* Backend already denies the deleted identity. */ }
+      finally { accept(null); }
+    },
     configured: client !== null,
     getSnapshot: () => snapshot,
     getServerSnapshot: () => INITIAL,

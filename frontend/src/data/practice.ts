@@ -1,7 +1,7 @@
 // Saved account practice and an isolated, untracked guest preview. Public cache only.
 import text from '../../../backend/app/content/en.json';
 import { TOPICS } from './topics';
-import type { AvailableTopic, CheckResult, Difficulty, OpenedProblem, ProblemPage, ProfileCounts, PublicProblem, RevealedAnswer, RevealedSolution, TopicSlug } from './types';
+import type { AvailableTopic, CheckResult, Difficulty, LearningStatistics, OmissionMetric, OpenedProblem, ProblemPage, ProfileCounts, PublicProblem, RevealedAnswer, RevealedSolution, TopicSlug } from './types';
 
 const base = (import.meta.env.VITE_API_BASE_URL ?? '/api').trim().replace(/\/+$/, '');
 let token: Promise<string> | null = null;
@@ -11,6 +11,7 @@ let selection: { topic: TopicSlug; difficulty: Difficulty } = { topic: 'basic-in
 let generating: Promise<PublicProblem> | null = null;
 let accessToken: () => Promise<string | null> = async () => null;
 const keys = new Map<string, string>();
+const elapsed = new Map<string, number>();
 const pending = new Map<string, Promise<unknown>>();
 const correctProblems = new Set<string>();
 let retryAfter = 0;
@@ -26,6 +27,7 @@ export function resetPractice(): void {
   problems = [];
   selection = { topic: 'basic-integrals', difficulty: 1 };
   keys.clear();
+  elapsed.clear();
   pending.clear();
   correctProblems.clear();
   retryAfter = 0;
@@ -172,6 +174,11 @@ export async function listProblemPage({ limit = 20, cursor = null }: { limit?: n
 /** Convenience read of the most recent history page. */
 export async function listProblems(): Promise<PublicProblem[]> { return (await listProblemPage()).items; }
 
+export async function openDemo(): Promise<OpenedProblem> {
+  const demo = problems.find(problem => problem.saved === false) ?? await generateProblem('basic-integrals', 1);
+  return openProblem(demo.id);
+}
+
 export async function openProblem(id: string): Promise<OpenedProblem> {
   const started = epoch;
   const { bearer, saved } = await credentials();
@@ -205,7 +212,7 @@ export async function getProfileCounts(): Promise<ProfileCounts> {
   const started = epoch;
   const { bearer, saved } = await credentials();
   if (saved) {
-    const data = await request('/profile', undefined, bearer, true);
+    const data = await once('profile-read', () => request('/profile', undefined, bearer, true));
     if (started !== epoch) throw new Error(text.expired);
     const counts = object(data.counts);
     const values = [counts.generated, counts.attempted, counts.correct];
@@ -263,14 +270,15 @@ export function generateProblem(topic: TopicSlug, difficulty: Difficulty): Promi
   return operation;
 }
 
-export function submitAttempt(id: string, answer: string): Promise<CheckResult> {
+export function submitAttempt(id: string, answer: string, elapsedMs?: number): Promise<CheckResult> {
   return once(`attempt:${id}:${answer}`, async () => {
     const problem = find(id);
     const started = epoch;
     const { bearer, saved } = await credentials();
     const operation = `attempt:${id}:${answer}`;
+    if (elapsedMs !== undefined && !elapsed.has(operation)) elapsed.set(operation, elapsedMs);
     const authorized = await authorize(started, saved, bearer);
-    const response = await request(`/problems/${encodeURIComponent(id)}/attempts`, { answer }, authorized, saved, operation);
+    const response = await request(`/problems/${encodeURIComponent(id)}/attempts`, { answer, ...(saved && elapsed.has(operation) ? { elapsedMs: elapsed.get(operation) } : {}) }, authorized, saved, operation);
     if (started !== epoch) throw new Error(text.expired);
     const data = saved ? object(response.attempt) : response;
     const checked = verdict(data);
@@ -281,8 +289,56 @@ export function submitAttempt(id: string, answer: string): Promise<CheckResult> 
       problem.attemptCount = (problem.attemptCount ?? 0) + 1;
     }
     keys.delete(operation);
+    elapsed.delete(operation);
     return checked;
   });
+}
+
+async function accountRequest(path: string, body?: unknown) {
+  const { bearer, saved } = await credentials();
+  if (!saved) throw new Error('Sign in to view your account.');
+  if (path === '/profile' && body === undefined) return once('profile-read', () => request(path, body, bearer, true));
+  return request(path, body, bearer, true);
+}
+
+export async function getDisplayName(): Promise<string | null> {
+  const data = await accountRequest('/profile');
+  const account = object(data.account);
+  if (account.name !== null && typeof account.name !== 'string') throw new Error(text.service_error);
+  return account.name as string | null;
+}
+
+export async function saveDisplayName(name: string): Promise<void> {
+  await accountRequest('/profile', { name: name.trim() || null });
+}
+
+export async function deleteAccount(): Promise<void> {
+  const data = await accountRequest('/account/delete', { confirmation: 'DELETE' });
+  if (data.deleted !== true) throw new Error(text.service_error);
+  resetPractice();
+}
+
+function omissionMetric(value: unknown): OmissionMetric {
+  const data = object(value);
+  if (!Number.isSafeInteger(data.checkedAttempts) || !Number.isSafeInteger(data.omitted)
+    || (data.omitted as number) < 0 || (data.checkedAttempts as number) < (data.omitted as number)
+    || (data.checkedAttempts === 0 ? data.rate !== null : typeof data.rate !== 'number'
+      || Math.abs(data.rate - (data.omitted as number) / (data.checkedAttempts as number)) > 1e-9)) throw new Error(text.service_error);
+  return { checkedAttempts: data.checkedAttempts as number, omitted: data.omitted as number, rate: data.rate as number | null };
+}
+
+export async function getLearningStatistics(): Promise<LearningStatistics> {
+  const data = await accountRequest('/statistics');
+  if (!Array.isArray(data.byTopicDifficulty) || !Array.isArray(data.weekly) || data.weekly.length !== 8) throw new Error(text.service_error);
+  return { ...omissionMetric(data), byTopicDifficulty: data.byTopicDifficulty.map(value => {
+    const item = object(value);
+    if (!TOPICS.some(t => t.slug === item.topic) || ![1, 2, 3, 4, 5].includes(item.difficulty as number)) throw new Error(text.service_error);
+    return { ...omissionMetric(item), topic: item.topic as TopicSlug, difficulty: item.difficulty as Difficulty };
+  }), weekly: data.weekly.map(value => {
+    const item = object(value);
+    if (typeof item.week !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(item.week)) throw new Error(text.service_error);
+    return { ...omissionMetric(item), week: item.week };
+  }) };
 }
 
 export function revealAnswer(id: string): Promise<RevealedAnswer> {

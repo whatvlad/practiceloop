@@ -112,3 +112,8 @@ html,body,#root{min-height:100%}
   .pl-login-panel{padding:var(--space-6) var(--space-5)}
   .pl-footer{flex-wrap:wrap}
 }
+.pl-table-scroll { overflow-x: auto; }
+.pl-learning-table { width: 100%; border-collapse: collapse; text-align: left; font-size: .875rem; }
+.pl-learning-table caption { text-align: left; padding-block: var(--space-3); font-weight: 600; }
+.pl-learning-table th, .pl-learning-table td { padding: var(--space-3); border-bottom: 1px solid var(--line); }
+.pl-learning-table th { font-weight: 500; }
