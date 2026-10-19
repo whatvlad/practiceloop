@@ -34,3 +34,9 @@ to render how an answer will be read and to explain syntax mistakes while
 typing; it never decides correctness. Keep it in step with
 `backend/app/services/math_parser.py` (shared test corpus in
 `frontend/src/answerSyntax.test.ts`).
+
+Formula editor (#61): on the practice card the answer box is a MathLive 2D
+editor, loaded lazily. `frontend/src/mathEditor.ts` turns its LaTeX into
+ADR-003 text before checking, so the backend is unchanged; it also corrects
+slips such as `x(x+1)`, `sin x` and `arctan`. Phones get MathLive's on-screen
+keyboard with the same keys instead of the inline keypad.

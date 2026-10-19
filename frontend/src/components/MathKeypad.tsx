@@ -1,15 +1,20 @@
 import { useState, type MouseEvent } from 'react';
 
-/** Text a key adds at the caret; `close` goes after the selection, which it wraps. */
+/**
+ * Text a key adds at the caret; `close` goes after the selection, which it wraps.
+ * `latex` is the same key for the formula editor, in MathLive insert syntax:
+ * #0 is the selection, #@ the term before the caret and #? an empty box.
+ */
 export interface KeypadInsert {
   open: string;
   close?: string;
+  latex: string;
 }
 
 /** A caret move by one character. */
 export type KeypadMove = -1 | 1;
 
-interface Key {
+export interface Key {
   label: string;
   name: string;
   insert?: KeypadInsert;
@@ -18,31 +23,35 @@ interface Key {
   math?: boolean;
 }
 
-const fn = (name: string, label = name): Key => ({ label, name, insert: { open: `${name}(`, close: ')' } });
+const fn = (name: string, label = name, command = label): Key => ({
+  label,
+  name,
+  insert: { open: `${name}(`, close: ')', latex: `\\${command}\\left(#0\\right)` },
+});
 
-const MAIN_KEYS: readonly Key[] = [
-  { label: 'x', name: 'x', insert: { open: 'x' }, math: true },
-  { label: 'π', name: 'pi', insert: { open: 'pi' }, math: true },
-  { label: 'eˣ', name: 'e to the power', insert: { open: 'e^(', close: ')' }, math: true },
-  { label: 'x²', name: 'squared', insert: { open: '^2' }, math: true },
-  { label: 'xⁿ', name: 'power', insert: { open: '^' }, math: true },
-  { label: '√', name: 'square root', insert: { open: 'sqrt(', close: ')' }, math: true },
-  { label: '( )', name: 'brackets', insert: { open: '(', close: ')' } },
-  { label: '|x|', name: 'absolute value', insert: { open: 'abs(', close: ')' }, math: true },
-  { label: '+', name: 'plus', insert: { open: '+' } },
-  { label: '−', name: 'minus', insert: { open: '-' } },
-  { label: '×', name: 'times', insert: { open: '*' } },
-  { label: '÷', name: 'divide', insert: { open: '/' } },
+export const MAIN_KEYS: readonly Key[] = [
+  { label: 'x', name: 'x', insert: { open: 'x', latex: 'x' }, math: true },
+  { label: 'π', name: 'pi', insert: { open: 'pi', latex: '\\pi' }, math: true },
+  { label: 'eˣ', name: 'e to the power', insert: { open: 'e^(', close: ')', latex: 'e^{#0}' }, math: true },
+  { label: 'x²', name: 'squared', insert: { open: '^2', latex: '#@^{2}' }, math: true },
+  { label: 'xⁿ', name: 'power', insert: { open: '^', latex: '#@^{#?}' }, math: true },
+  { label: '√', name: 'square root', insert: { open: 'sqrt(', close: ')', latex: '\\sqrt{#0}' }, math: true },
+  { label: '( )', name: 'brackets', insert: { open: '(', close: ')', latex: '\\left(#0\\right)' } },
+  { label: '|x|', name: 'absolute value', insert: { open: 'abs(', close: ')', latex: '\\left|#0\\right|' }, math: true },
+  { label: '+', name: 'plus', insert: { open: '+', latex: '+' } },
+  { label: '−', name: 'minus', insert: { open: '-', latex: '-' } },
+  { label: '×', name: 'times', insert: { open: '*', latex: '\\cdot' } },
+  { label: '÷', name: 'divide', insert: { open: '/', latex: '\\frac{#@}{#?}' } },
   fn('sin'),
   fn('cos'),
   fn('tan'),
   fn('ln'),
-  { label: '+C', name: 'plus constant', insert: { open: ' + C' }, math: true },
+  { label: '+C', name: 'plus constant', insert: { open: ' + C', latex: '+C' }, math: true },
   { label: '←', name: 'move left', move: -1 },
   { label: '→', name: 'move right', move: 1 },
 ];
 
-const MORE_KEYS: readonly Key[] = [
+export const MORE_KEYS: readonly Key[] = [
   fn('sec'),
   fn('csc'),
   fn('cot'),

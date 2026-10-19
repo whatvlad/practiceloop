@@ -1,0 +1,159 @@
+// @vitest-environment jsdom
+import { act, useState } from 'react';
+import { createRoot, type Root } from 'react-dom/client';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { AnswerInput } from './AnswerInput';
+import { loadMathLive } from './FormulaField';
+
+// A stand-in for MathLive's <math-field>: it holds LaTeX and records what the keypad sends.
+vi.mock('mathlive', () => {
+  class FakeMathfield extends HTMLElement {
+    static fontsDirectory: string | null = '';
+    static soundsDirectory: string | null = '';
+    static keypressSound: unknown = null;
+    static plonkSound: unknown = null;
+    latex = '';
+    inserted: string[] = [];
+    commands: unknown[] = [];
+    keybindings = [{ key: '[Escape]', command: ['switchMode', 'latex'] }, { key: '[Tab]', command: 'moveToNextPlaceholder' }];
+    getValue() {
+      return this.latex;
+    }
+    setValue(latex: string) {
+      this.latex = latex;
+    }
+    insert(latex: string) {
+      this.inserted.push(latex);
+    }
+    executeCommand(command: unknown) {
+      this.commands.push(command);
+    }
+    hasFocus() {
+      return document.activeElement === this;
+    }
+    type(latex: string) {
+      this.latex = latex;
+      this.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+  }
+  customElements.define('math-field', FakeMathfield);
+  return {
+    MathfieldElement: FakeMathfield,
+    convertAsciiMathToLatex: (text: string) => `\\text{${text}}`,
+  };
+});
+
+type Fake = HTMLElement & {
+  latex: string;
+  inserted: string[];
+  commands: unknown[];
+  keybindings: { key: string }[];
+  type: (latex: string) => void;
+};
+
+let root: Root;
+let element: HTMLDivElement;
+const changes: string[] = [];
+let checks = 0;
+
+function Harness({ initial = '' }: { initial?: string }) {
+  const [value, setValue] = useState(initial);
+  return (
+    <>
+      <AnswerInput
+        id="answer"
+        value={value}
+        onChange={(next) => {
+          changes.push(next);
+          setValue(next);
+        }}
+        onEnter={() => (checks += 1)}
+        assist
+      />
+      <button type="button" id="reset" onClick={() => setValue('')} />
+    </>
+  );
+}
+
+async function render(initial?: string) {
+  await act(async () => {
+    root.render(<Harness initial={initial} />);
+    await loadMathLive();
+  });
+}
+
+const field = () => element.querySelector('math-field') as Fake;
+const preview = () => element.querySelector('.pl-preview')!.textContent;
+
+beforeEach(() => {
+  (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
+  element = document.createElement('div');
+  document.body.append(element);
+  root = createRoot(element);
+  changes.length = 0;
+  checks = 0;
+});
+
+afterEach(() => {
+  act(() => root.unmount());
+  element.remove();
+});
+
+describe('AnswerInput formula editor', () => {
+  it('replaces the text box and turns off LaTeX mode', async () => {
+    await render();
+    expect(element.querySelector('input')).toBeNull();
+    expect(field().id).toBe('answer');
+    expect(field().keybindings.map((binding) => binding.key)).toEqual(['[Tab]']);
+  });
+
+  it('sends what the editor holds as answer text and previews it', async () => {
+    await render();
+    act(() => field().type('\\frac{x^2}{2}+C'));
+    expect(changes).toEqual(['x^2/2 + C']);
+    expect(preview()).toContain('Reads as');
+    act(() => field().type('x\\left(x+1\\right)'));
+    expect(changes.at(-1)).toBe('x*(x + 1)');
+    expect(field().getAttribute('aria-invalid')).toBeNull();
+  });
+
+  it('treats an empty box as unfinished, not wrong', async () => {
+    await render();
+    act(() => field().type('\\frac{x}{\\placeholder{}}'));
+    expect(preview()).toBe('Fill in the empty box to finish.');
+    expect(field().getAttribute('aria-invalid')).toBeNull();
+  });
+
+  it('ignores input events that do not change the answer', async () => {
+    await render();
+    act(() => field().type('x'));
+    act(() => field().type('x'));
+    expect(changes).toEqual(['x']);
+  });
+
+  it('drives the editor from the keypad', async () => {
+    await render();
+    act(() => {
+      element.querySelector<HTMLButtonElement>('button[aria-label="square root"]')!.click();
+      element.querySelector<HTMLButtonElement>('button[aria-label="divide"]')!.click();
+      element.querySelector<HTMLButtonElement>('button[aria-label="move left"]')!.click();
+    });
+    expect(field().inserted).toEqual(['\\sqrt{#0}', '\\frac{#@}{#?}']);
+    expect(field().commands).toEqual(['moveToPreviousChar']);
+  });
+
+  it('checks on Enter', async () => {
+    await render();
+    act(() => {
+      field().dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    });
+    expect(checks).toBe(1);
+  });
+
+  it('shows a value set from outside, and clears with it', async () => {
+    await render('x^2/2 + C');
+    expect(field().latex).toBe('\\frac{x^{2}}{2}+C');
+    act(() => element.querySelector<HTMLButtonElement>('#reset')!.click());
+    expect(field().latex).toBe('');
+  });
+});
