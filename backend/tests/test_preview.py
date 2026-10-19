@@ -187,12 +187,12 @@ def test_worker_saturation_does_not_queue_and_slot_is_released(monkeypatch):
     from app.services import preview_check
 
     record = {"generator_version": "basic-v1", "template": "power", "coefficient": 1}
-    assert preview_check._SLOTS.acquire(blocking=False)
+    assert preview_check.CHECK_SLOTS.acquire(blocking=False)
     try:
         with pytest.raises(MathWorkerError, match="busy"):
             check_answer("x+C", record)
     finally:
-        preview_check._SLOTS.release()
+        preview_check.CHECK_SLOTS.release()
 
     def inconclusive(*_args):
         raise MathCheckInconclusive("undecided")
@@ -200,5 +200,5 @@ def test_worker_saturation_does_not_queue_and_slot_is_released(monkeypatch):
     monkeypatch.setattr(preview_check, "shared_check", inconclusive)
     with pytest.raises(MathWorkerError, match="inconclusive"):
         check_answer("x+C", record)
-    assert preview_check._SLOTS.acquire(blocking=False)
-    preview_check._SLOTS.release()
+    assert preview_check.CHECK_SLOTS.acquire(blocking=False)
+    preview_check.CHECK_SLOTS.release()

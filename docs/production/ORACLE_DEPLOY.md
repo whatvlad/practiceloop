@@ -104,6 +104,19 @@ paste credentials into chat, put the service-role key in GitHub, or use it in
 `VITE_*` variables. #3 adds migration delivery only; `/health` still reports
 liveness and does not verify Supabase connectivity or authenticated API access.
 
+#10 saves practice in Supabase Postgres, which needs one more line in the same file:
+
+```dotenv
+DATABASE_URL=postgresql://postgres.<project-ref>:<database-password>@<pooler-host>:5432/postgres?sslmode=require
+```
+
+Copy it from Supabase → **Connect** → **Session pooler** (the IPv4 address; the
+direct host is IPv6-only) and fill in the database password. The API connects as
+`postgres` but runs every transaction as `service_role`, and all ownership checks
+are in its SQL. Without `DATABASE_URL`, `/problems` and the other saved-practice
+routes answer `503 database_unavailable`; the untracked `/preview` routes are
+unaffected. Restart the service after editing.
+
 ## When the API is down
 
 The signed-in app shows "Can't reach the PracticeLoop server" and keeps working on

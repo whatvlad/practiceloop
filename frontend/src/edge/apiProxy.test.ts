@@ -15,13 +15,16 @@ describe('proxyToApi', () => {
     const fetchImpl = ok();
     const request = new Request('https://x.pages.dev/api/attempts', {
       method: 'POST',
-      headers: { Authorization: 'Bearer t', 'Content-Type': 'application/json', Cookie: 'c=1' },
+      headers: {
+        Authorization: 'Bearer t', 'Content-Type': 'application/json', 'Idempotency-Key': 'k', Cookie: 'c=1',
+      },
       body: '{"a":1}',
     });
     await proxyToApi(request, 'https://api.example', fetchImpl);
     const init = fetchImpl.mock.calls[0][1]!;
     const headers = init.headers as Headers;
     expect(headers.get('authorization')).toBe('Bearer t');
+    expect(headers.get('idempotency-key')).toBe('k');
     expect(headers.get('cookie')).toBeNull();
     expect(new TextDecoder().decode(init.body as ArrayBuffer)).toBe('{"a":1}');
   });

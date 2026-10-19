@@ -38,6 +38,7 @@ platformdirs==4.13.0
 pluggy==1.7.0
 psycopg-binary==3.3.6
 psycopg==3.3.6
+psycopg-pool==3.3.3
 py-serializable==2.1.0
 pycparser==3.11
 pydantic==2.14.1

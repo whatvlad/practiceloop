@@ -80,7 +80,11 @@ jobs:
         with:
           persist-credentials: false
       - run: psql -v ON_ERROR_STOP=1 -f supabase/tests/auth_fixture.sql
-      - run: psql -v ON_ERROR_STOP=1 -f supabase/migrations/202610150001_initial_schema.sql
+      - name: Apply every migration in order
+        run: |
+          for migration in supabase/migrations/*.sql; do
+            psql -v ON_ERROR_STOP=1 -f "$migration"
+          done
       - run: psql -v ON_ERROR_STOP=1 -f supabase/tests/isolation.sql
       - name: Validate hosted-check SQL in disposable Postgres only
         run: |

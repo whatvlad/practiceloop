@@ -1,9 +1,24 @@
 # API contract
 
-Implemented: `GET /health` returns `200 {"status":"ok"}` (liveness only), plus
-the separate [untracked preview API](../architecture/PREVIEW_PRACTICE.md) under
-`/preview`. The `/api` routes below are the accepted PL-002 contract and remain
-unimplemented until their owning Issues land.
+Implemented: `GET /health` returns `200 {"status":"ok"}` (liveness only), the
+separate [untracked preview API](../architecture/PREVIEW_PRACTICE.md) under
+`/preview`, and (#10, `backend/app/api/practice.py`) the saved-practice routes
+`GET /api/topics`, `POST /api/problems`, `POST /api/problems/{id}/attempts`,
+`/reveal-answer` and `/reveal-solution`. `GET /api/problems`,
+`GET /api/problems/{id}` and `GET /api/profile` belong to #12 and are not
+implemented yet. The browser calls `/api/...` on the Pages origin; the proxy
+strips `/api`, so FastAPI serves these at `/topics`, `/problems`, ... like
+`/preview`. The proxy forwards `Idempotency-Key`. Saved practice needs
+`DATABASE_URL` on the host (docs/production/ORACLE_DEPLOY.md); without it these
+routes return `503 database_unavailable`.
+
+Generation picks a random record from the cell's verified catalogue, skipping the
+records behind the user's latest half-catalogue in that cell, so a learner sees
+no repeat within that window. Only the cells the generators support are offered
+(basic integrals and substitution, levels 1 and 2); other cells return 422.
+Idempotency keys live in `private.idempotency_keys` (migration
+`202610190001_practice_persistence.sql`) and expire after 24 hours. Rate limits
+are per user and per process: 30 generations, 30 attempts and 60 reveals a minute.
 
 All routes documented here require `Authorization: Bearer <Supabase access token>`.
 The backend verifies the token and takes the user ID only from its `sub` claim.

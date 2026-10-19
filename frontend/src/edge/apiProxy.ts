@@ -1,4 +1,4 @@
-const FORWARDED_HEADERS = ['accept', 'authorization', 'content-type'];
+const FORWARDED_HEADERS = ['accept', 'authorization', 'content-type', 'idempotency-key'];
 
 /** Forwards /api/<path>?<query> to <origin>/<path>?<query>, keeping only the headers the API reads. */
 export async function proxyToApi(
