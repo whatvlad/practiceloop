@@ -1,24 +1,24 @@
 import { useEffect, useRef, useState } from 'react';
 import text from '../../../backend/app/content/en.json';
-import { ButtonLink } from '../components/Button';
+import { Button, ButtonLink } from '../components/Button';
 import { ProblemCard } from '../components/ProblemCard';
 import {
   NotFoundError,
   generateProblem,
   getLastSelection,
-  getProblem,
-  listProblems,
+  openProblem,
+  listProblemPage,
   revealAnswer,
   revealSolution,
   submitAttempt,
 } from '../data/api';
-import type { CheckResult, PublicProblem, SolutionStep } from '../data/types';
+import type { CheckResult, OpenedProblem, SolutionStep } from '../data/types';
 import { navigate } from '../router';
 import { useLoad } from '../useLoad';
 
 /** Opens the most recent problem, or generates one when history is empty. */
 async function latestOrNewId(): Promise<string> {
-  const [latest] = await listProblems();
+  const { items: [latest] } = await listProblemPage({ limit: 1 });
   if (latest) return latest.id;
   const { topic, difficulty } = await getLastSelection();
   return (await generateProblem(topic, difficulty)).id;
@@ -28,26 +28,18 @@ function practiceUrl(id: string): string {
   return `/practice?id=${encodeURIComponent(id)}`;
 }
 
-function PracticeSession({ problem }: { problem: PublicProblem }) {
+function PracticeSession({ opened }: { opened: OpenedProblem }) {
+  const { problem } = opened;
   const [answer, setAnswer] = useState(problem.lastAnswer ?? '');
   const answerRevision = useRef(0);
   const [result, setResult] = useState<CheckResult | null>(problem.lastResult);
-  const [answerLatex, setAnswerLatex] = useState<string | null>(null);
-  const [solution, setSolution] = useState<SolutionStep[] | null>(null);
+  const [answerLatex, setAnswerLatex] = useState<string | null>(opened.answer?.answerLatex ?? null);
+  const [solution, setSolution] = useState<SolutionStep[] | null>(opened.solution?.steps ?? null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const pending = useRef(false);
   const active = useRef(true);
   useEffect(() => { active.current = true; return () => { active.current = false; }; }, []);
-
-  // A reopened problem shows what was already revealed for it.
-  useEffect(() => {
-    let current = true;
-    const failed = () => { if (current) setError(text.service_error); };
-    if (problem.answerRevealed) void revealAnswer(problem.id).then((r) => { if (current) setAnswerLatex(r.answerLatex); }).catch(failed);
-    if (problem.solutionRevealed) void revealSolution(problem.id).then((r) => { if (current) setSolution(r.steps); }).catch(failed);
-    return () => { current = false; };
-  }, [problem]);
 
   async function run(task: () => Promise<void>) {
     if (pending.current) return;
@@ -97,18 +89,19 @@ function PracticeSession({ problem }: { problem: PublicProblem }) {
 }
 
 export function PracticePage({ id }: { id: string | null }) {
+  const [revision, setRevision] = useState(0);
   const [startError, setStartError] = useState(false);
   useEffect(() => {
     let current = true;
     setStartError(false);
     if (!id) void latestOrNewId().then((latest) => { if (current) navigate(practiceUrl(latest), { replace: true }); }).catch(() => { if (current) setStartError(true); });
     return () => { current = false; };
-  }, [id]);
-  const problem = useLoad(() => (id ? getProblem(id) : new Promise<never>(() => {})), id ?? '');
+  }, [id, revision]);
+  const problem = useLoad(() => (id ? openProblem(id) : new Promise<never>(() => {})), `${id ?? ''}:${revision}`);
 
   return (
     <main className="pl-wrap pl-wrap--narrow pl-practice-main">
-      {problem.status === 'ready' && <PracticeSession key={problem.data.id} problem={problem.data} />}
+      {problem.status === 'ready' && <PracticeSession key={problem.data.problem.id} opened={problem.data} />}
       {!startError && problem.status === 'loading' && <p role="status">Loading problem…</p>}
       {(startError || problem.status === 'error') && (
         <section className="pl-card pl-card--lg pl-stack pl-gap-4">
@@ -117,6 +110,7 @@ export function PracticePage({ id }: { id: string | null }) {
           </h1>
           <p className="pl-muted pl-m-0">Start a new problem from the dashboard.</p>
           <div>
+            {!(problem.status === 'error' && problem.error instanceof NotFoundError) && <Button variant="secondary" onClick={() => setRevision(value => value + 1)}>Retry loading problem</Button>}
             <ButtonLink to="/dashboard" arrow>
               Go to dashboard
             </ButtonLink>

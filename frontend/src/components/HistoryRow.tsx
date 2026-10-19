@@ -39,13 +39,15 @@ export function HistoryRow({ problem }: { problem: PublicProblem }) {
       </div>
       <div>
         <div>{topicName(problem.topic)}</div>
-        <div className="pl-small pl-subtle">{formatWhen(problem.createdAt)}</div>
+        <time className="pl-small pl-subtle" dateTime={problem.createdAt} title={new Date(problem.createdAt).toLocaleString()}>{formatWhen(problem.createdAt)}</time>
+        {problem.lastAnswer !== null && <div className="pl-small pl-subtle pl-history-answer">Latest answer: <code>{problem.lastAnswer}</code></div>}
       </div>
       <div className="pl-small pl-muted">
         <DifficultyDots level={problem.difficulty} />
       </div>
       <div>
         <AttemptStatus result={problem.lastResult} />
+        {problem.attemptCount !== undefined && <div className="pl-small pl-subtle">{problem.attemptCount} {problem.attemptCount === 1 ? 'attempt' : 'attempts'}</div>}
         {problem.answerRevealed && <div className="pl-small pl-subtle">Answer revealed</div>}
         {problem.solutionRevealed && <div className="pl-small pl-subtle">Solution viewed</div>}
       </div>

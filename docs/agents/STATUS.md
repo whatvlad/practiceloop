@@ -5,6 +5,13 @@ the Implementation Queue project (https://github.com/users/whatvlad/projects/1),
 worked in `Order`. Live state is always GitHub Issues, pull requests, merged
 commits and that project.
 
+History/profile (#12): saved practice now has owner-scoped paginated reads,
+persisted reopen with latest attempt/count and previously authorized reveal
+payloads, and account-wide ADR-004 profile counts. The frontend restores those
+after reload, supports loading older history and retries failures. No schema,
+auth-policy or mathematical changes. See docs/architecture/SAVED_PRACTICE_UI.md;
+the Issue/PR remains authoritative for delivery/deployment verification.
+
 Connected preview (#34): `data/api.ts` now uses the untracked `/preview` backend
 for basic integrals and substitution, levels 1–2. There are 186 verified records,
 shuffled without replacement per session/cell; unsupported options are disabled.
@@ -68,8 +75,8 @@ and both reveals (browser path `/api/...`), persisted through `app.core.database
 with ADR-004 idempotency keys and the shared #8 checker. It needs `DATABASE_URL`
 on the VM; without it those routes return 503. The #11 frontend switches
 signed-in practice to these saved routes, fetches available cells from `/topics`,
-and keeps guest preview isolated. History, reopen and profile reads after a
-reload remain #12; current history/counters show only this browser session.
+and keeps guest preview isolated. #12 adds history, reopen and profile reads
+after a reload; account pages use persisted data rather than browser-only counts.
 See docs/architecture/SAVED_PRACTICE_UI.md.
 
 Answer checking (#8): `app.services.math_worker.check_answer(answer, record)`

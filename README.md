@@ -7,8 +7,8 @@ reveal and a basic profile. [Original specification](docs/PRACTICELOOP_MVP.md).
 
 **Current code: Google account login with saved server-generated practice.**
 Supabase handles sign-in, restore and logout. Signed-in generation, attempts and
-reveals use the saved API. History and counts currently show this browser session
-only; restoring saved history and account-wide counts belongs to #12.
+reveals use the saved API. History reloads saved problems with paginated older
+entries, latest attempts and reveal flags; profile counts cover the whole account.
 [Auth setup](docs/auth/GOOGLE_AUTH.md), [practice UI](docs/architecture/SAVED_PRACTICE_UI.md).
 Private repository:
 [whatvlad/practiceloop](https://github.com/whatvlad/practiceloop). Tasks live in
@@ -17,7 +17,8 @@ applied to the hosted test database; #3's two-user isolation verification passed
 Cloudflare Pages serves the preview; the API runs on Oracle.
 The backend also provides the bounded math-input parser and isolated Linux
 construction worker from #7 and the shared answer checker from #8. Untracked
-preview integration is implemented in #34; #10/#11 connect saved practice.
+preview integration is implemented in #34; #10/#11/#12 connect saved practice,
+durable history, reopen and profile counts.
 See [math-input implementation](docs/architecture/MATH_INPUT.md).
 The basic-integral generator now covers levels 1–5 with versioned private
 parameters and checked solution steps ([generator details](docs/architecture/BASIC_GENERATOR.md)).

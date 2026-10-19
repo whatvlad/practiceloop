@@ -90,7 +90,7 @@ export function App() {
       <AppNav current={pathname} initial={account.name.charAt(0).toUpperCase()} onLogOut={handleLogOut} busy={auth.working} />
       <ApiStatusNotice health={apiHealth} />
       <div className="pl-wrap pl-api-notice">
-        <p className="pl-small pl-muted" role="status">Problems, attempts and reveals are saved to your account. History and counts below show this browser session only; restoring saved history is not available yet.</p>
+        <p className="pl-small pl-muted" role="status">Problems, attempts and reveals are saved to your account.</p>
         {auth.error && <p className="pl-result pl-result--invalid" role="alert">{auth.error}</p>}
       </div>
       {pathname === '/dashboard' && <DashboardPage />}

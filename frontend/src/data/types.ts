@@ -26,6 +26,7 @@ export type CheckResult = 'correct' | 'incorrect' | 'invalid' | 'missing_constan
 export type AttemptResult = CheckResult | null;
 
 export interface PublicProblem {
+  attemptCount?: number;
   saved?: boolean;
   id: string;
   topic: TopicSlug;
@@ -49,6 +50,18 @@ export interface SolutionStep {
 
 export interface RevealedSolution {
   steps: SolutionStep[];
+}
+
+/** Only the active reopened card receives previously authorized reveal payloads. */
+export interface OpenedProblem {
+  problem: PublicProblem;
+  answer?: RevealedAnswer;
+  solution?: RevealedSolution;
+}
+
+export interface ProblemPage {
+  items: PublicProblem[];
+  nextCursor: string | null;
 }
 
 export interface Account {

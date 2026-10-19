@@ -7,6 +7,9 @@ Supabase token. Transactions follow ADR-004; the contract is docs/api/README.md.
 
 from __future__ import annotations
 
+import base64
+import binascii
+import json
 import math
 import secrets
 import time
@@ -16,7 +19,7 @@ from threading import Lock
 from typing import Annotated, Any
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, Header
+from fastapi import APIRouter, Depends, Header, Query
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -144,6 +147,104 @@ def topics(_user: User) -> dict[str, object]:
             {"slug": slug, "name": name, "availableDifficulties": list(levels)}
             for slug, (name, levels) in TOPICS.items()
         ]
+    }
+
+
+def _public_problem(
+    problem: records.ProblemRecord, summary: tuple[records.AttemptRecord, int] | None
+) -> dict[str, Any]:
+    last = summary[0] if summary else None
+    return {
+        "id": str(problem.id),
+        "topic": problem.topic,
+        "difficulty": problem.difficulty,
+        "problemLatex": problem.problem_latex,
+        "createdAt": _timestamp(problem.created_at),
+        "answerRevealed": problem.answer_revealed,
+        "solutionRevealed": problem.solution_revealed,
+        "attemptCount": summary[1] if summary else 0,
+        "lastAttempt": None
+        if last is None
+        else {
+            "answer": last.user_answer,
+            "result": "invalid"
+            if last.is_correct is None
+            else "correct"
+            if last.is_correct
+            else "incorrect",
+            "feedbackCode": "missing_constant" if last.constant_omitted else None,
+        },
+    }
+
+
+def _encode_cursor(problem: records.ProblemRecord) -> str:
+    data = json.dumps([_timestamp(problem.created_at), str(problem.id)], separators=(",", ":"))
+    return base64.urlsafe_b64encode(data.encode()).decode().rstrip("=")
+
+
+def _decode_cursor(value: str | None) -> tuple[datetime, UUID] | None:
+    if value is None:
+        return None
+    try:
+        data = json.loads(
+            base64.b64decode(value + "=" * (-len(value) % 4), altchars=b"-_", validate=True)
+        )
+        if (
+            not isinstance(data, list)
+            or len(data) != 2
+            or not all(isinstance(x, str) for x in data)
+        ):
+            raise ValueError
+        timestamp = datetime.fromisoformat(data[0])
+        if timestamp.tzinfo is None:
+            raise ValueError
+        return timestamp, UUID(data[1])
+    except (ValueError, TypeError, binascii.Error, UnicodeDecodeError):
+        raise _invalid() from None
+
+
+@router.get("/problems")
+def history(
+    user: User,
+    limit: Annotated[int, Query(ge=1, le=records.MAX_PAGE_SIZE)] = 20,
+    cursor: Annotated[str | None, Query(max_length=256)] = None,
+) -> dict[str, Any]:
+    before = _decode_cursor(cursor)
+    with transaction() as conn:
+        conn.execute("set transaction isolation level repeatable read, read only")
+        page = records.list_problems(conn, user.id, limit, before, include_next=True)
+        visible = page[:limit]
+        summaries = records.attempt_summaries(conn, user.id, [p.id for p in visible])
+    return {
+        "items": [_public_problem(p, summaries.get(p.id)) for p in visible],
+        "nextCursor": _encode_cursor(visible[-1]) if len(page) > limit else None,
+    }
+
+
+@router.get("/problems/{problem_id}")
+def reopen(problem_id: UUID, user: User) -> dict[str, Any]:
+    with transaction() as conn:
+        conn.execute("set transaction isolation level repeatable read, read only")
+        problem = records.get_problem(conn, user.id, problem_id)
+        if problem is None:
+            raise _not_found()
+        summary = records.attempt_summaries(conn, user.id, [problem.id]).get(problem.id)
+        revealed = records.previously_revealed(conn, user.id, problem.id)
+    return {"problem": _public_problem(problem, summary), **revealed}
+
+
+@router.get("/profile")
+def profile(user: User) -> dict[str, Any]:
+    with transaction() as conn:
+        counts = records.profile_counts(conn, user.id)
+    return {
+        "account": {
+            "id": str(user.id),
+            "name": None,
+            "email": user.email or "",
+            "provider": "Google",
+        },
+        "counts": counts,
     }
 
 
