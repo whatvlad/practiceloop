@@ -2,7 +2,8 @@ name: Preview
 # Preview hosting on Cloudflare Pages: the frontend (mock data) at / and the
 # Graphify code graph at /graph/, rebuilt from each push to main.
 # Served at https://practiceloop.pages.dev (noindex, Google login).
-# The app calls the API at repo variable API_BASE_URL (the Oracle backend; empty skips it).
+# The app calls the API same-origin at /api; functions/api forwards that to repo variable
+# API_BASE_URL (the Oracle backend; empty skips it), so filtering networks only see pages.dev.
 # Needs repo secrets CLOUDFLARE_API_TOKEN (Account > Cloudflare Pages > Edit) and
 # CLOUDFLARE_ACCOUNT_ID; without them the build still runs and the deploy is skipped.
 on:
@@ -28,6 +29,7 @@ jobs:
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      API_ORIGIN: ${{ vars.API_BASE_URL || secrets.API_BASE_URL }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -52,7 +54,7 @@ jobs:
       - run: npm run build
         working-directory: frontend
         env:
-          VITE_API_BASE_URL: ${{ vars.API_BASE_URL || secrets.API_BASE_URL }}
+          VITE_API_BASE_URL: ${{ env.API_ORIGIN != '' && '/api' || '' }}
           VITE_SUPABASE_URL: ${{ vars.SUPABASE_URL || secrets.SUPABASE_URL }}
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.SUPABASE_PUBLISHABLE_KEY || secrets.SUPABASE_PUBLISHABLE_KEY }}
       # Same Graphify release as scripts/setup-graphify.sh (v0.9.92), pinned to its commit.
@@ -72,11 +74,24 @@ jobs:
           printf '/*\n  X-Robots-Tag: noindex\n  Referrer-Policy: no-referrer\n' > frontend/dist/_headers
       - name: Deploy to Cloudflare Pages
         if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != ''
+        working-directory: frontend
         run: |
+          # Gives functions/api its upstream; deploying from frontend/ picks up functions/.
+          printf 'name = "%s"\npages_build_output_dir = "dist"\ncompatibility_date = "2026-10-01"\n\n[vars]\nAPI_ORIGIN = "%s"\n' \
+            "$CLOUDFLARE_PROJECT" "$API_ORIGIN" > wrangler.toml
           npx --yes wrangler@4.147.0 pages project create "$CLOUDFLARE_PROJECT" --production-branch main \
             || echo "Project already exists."
-          npx --yes wrangler@4.147.0 pages deploy frontend/dist --project-name "$CLOUDFLARE_PROJECT" \
+          npx --yes wrangler@4.147.0 pages deploy dist --project-name "$CLOUDFLARE_PROJECT" \
             --branch main --commit-hash "$GITHUB_SHA"
+      - name: Check the API through pages.dev
+        if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != '' && env.API_ORIGIN != ''
+        run: |
+          for _ in $(seq 1 20); do
+            curl -fsS --max-time 10 "https://$CLOUDFLARE_PROJECT.pages.dev/api/health" && exit 0
+            sleep 6
+          done
+          echo "::error::https://$CLOUDFLARE_PROJECT.pages.dev/api/health did not answer."
+          exit 1
       - name: Report skipped deploy
         if: env.CLOUDFLARE_API_TOKEN == '' || env.CLOUDFLARE_ACCOUNT_ID == ''
         run: echo "::notice::Cloudflare secrets are not set, so the preview was built but not deployed."
