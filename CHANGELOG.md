@@ -4,6 +4,7 @@ Meaningful user-facing releases will be recorded here. No MVP release exists yet
 
 ## Unreleased
 
+- Hosted Supabase two-user isolation check passed with two real Google accounts; #3 done.
 - Backend checks integration answers (#8): an explicit `aK + b` constant,
   derivative equality and real values on every part of the problem's domain,
   all inside the resource-limited worker. Undecidable answers return a
