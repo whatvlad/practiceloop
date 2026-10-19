@@ -61,10 +61,17 @@ API identity and ownership (#4): `app.core.auth.current_user` verifies Supabase
 access tokens against the project's public JWKS (asymmetric keys only) and is
 the only source of a user ID. `app.services.owned_records` holds the owner-scoped
 SQL for problems, attempts and reveals; CI's Database isolation job runs it as
-the RLS-bypassing service role (`pytest -m db`). No `/api` route uses them yet;
-the routes arrive with #34/#10, which also call `install_error_handlers`.
+the RLS-bypassing service role (`pytest -m db`).
+
+Saved practice (#10): `app.api.practice` serves `/topics`, `/problems`, attempts
+and both reveals (browser path `/api/...`), persisted through `app.core.database`
+with ADR-004 idempotency keys and the shared #8 checker. It needs `DATABASE_URL`
+on the VM; until then those routes return 503. The frontend still uses the
+untracked `/preview` routes; switching the practice page to the saved routes is
+#11, and history, reopen and profile reads are #12.
 
 Answer checking (#8): `app.services.math_worker.check_answer(answer, record)`
 applies ADR-003 inside the limited worker and returns correct, incorrect (with a
 missing-constant flag) or invalid, or raises a retryable/inconclusive error. See
-docs/architecture/ANSWER_CHECK.md. No route calls it yet (#34/#10).
+docs/architecture/ANSWER_CHECK.md. The preview (#34) and saved-practice (#10)
+routes call it through one shared worker slot.

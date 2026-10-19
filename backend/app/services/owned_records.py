@@ -15,6 +15,7 @@ from uuid import UUID
 
 from psycopg import Connection
 from psycopg.rows import dict_row
+from psycopg.types.json import Jsonb
 
 MAX_PAGE_SIZE = 50
 
@@ -36,6 +37,7 @@ class AttemptRecord:
     problem_id: UUID
     user_answer: str
     is_correct: bool | None
+    constant_omitted: bool
     created_at: datetime
 
 
@@ -59,6 +61,56 @@ def ensure_profile(conn: Connection[Any], user_id: UUID) -> None:
     conn.execute(
         "insert into public.profiles(id) values (%s) on conflict (id) do nothing", (user_id,)
     )
+
+
+def insert_problem(
+    conn: Connection[Any],
+    user_id: UUID,
+    topic: str,
+    difficulty: int,
+    problem_latex: str,
+    solution: PrivateSolution,
+) -> ProblemRecord:
+    """The public problem and its private solution; the caller's transaction makes it atomic."""
+    with conn.cursor(row_factory=dict_row) as cur:
+        cur.execute(
+            "insert into public.problems(user_id, topic_id, difficulty, problem_latex)"
+            " select %s, t.id, %s, %s from public.topics t where t.slug = %s"
+            " returning id, difficulty, problem_latex, created_at,"
+            " answer_revealed, solution_revealed",
+            (user_id, difficulty, problem_latex, topic),
+        )
+        row = cur.fetchone()
+    if row is None:
+        raise LookupError(f"Unknown topic {topic!r}")
+    conn.execute(
+        "insert into private.problem_solutions"
+        "(problem_id, generator_version, generator_data, answer_latex, solution_steps)"
+        " values (%s, %s, %s, %s, %s)",
+        (
+            row["id"],
+            solution.generator_version,
+            Jsonb(solution.generator_data),
+            solution.answer_latex,
+            Jsonb(solution.solution_steps),
+        ),
+    )
+    return ProblemRecord(topic=topic, **row)
+
+
+def recent_generator_data(
+    conn: Connection[Any], user_id: UUID, topic: str, difficulty: int, limit: int
+) -> list[Any]:
+    """Records behind the user's latest problems in one topic and level, newest first."""
+    rows = conn.execute(
+        "select s.generator_data from public.problems p"
+        " join public.topics t on t.id = p.topic_id"
+        " join private.problem_solutions s on s.problem_id = p.id"
+        " where p.user_id = %s and t.slug = %s and p.difficulty = %s"
+        " order by p.created_at desc, p.id desc limit %s",
+        (user_id, topic, difficulty, limit),
+    ).fetchall()
+    return [row[0] for row in rows]
 
 
 def get_problem(conn: Connection[Any], user_id: UUID, problem_id: UUID) -> ProblemRecord | None:
@@ -99,7 +151,8 @@ def list_problems(
 def last_attempt(conn: Connection[Any], user_id: UUID, problem_id: UUID) -> AttemptRecord | None:
     with conn.cursor(row_factory=dict_row) as cur:
         cur.execute(
-            "select id, problem_id, user_answer, is_correct, created_at from public.attempts"
+            "select id, problem_id, user_answer, is_correct, constant_omitted, created_at"
+            " from public.attempts"
             " where problem_id = %s and user_id = %s"
             " order by created_at desc, id desc limit 1",
             (problem_id, user_id),
@@ -130,15 +183,17 @@ def insert_attempt(
     problem_id: UUID,
     user_answer: str,
     is_correct: bool | None,
+    constant_omitted: bool = False,
 ) -> AttemptRecord | None:
     """None when the problem is missing or belongs to someone else; nothing is written."""
     with conn.cursor(row_factory=dict_row) as cur:
         cur.execute(
-            "insert into public.attempts(problem_id, user_id, user_answer, is_correct)"
-            " select p.id, p.user_id, %s, %s from public.problems p"
+            "insert into public.attempts"
+            "(problem_id, user_id, user_answer, is_correct, constant_omitted)"
+            " select p.id, p.user_id, %s, %s, %s from public.problems p"
             " where p.id = %s and p.user_id = %s"
-            " returning id, problem_id, user_answer, is_correct, created_at",
-            (user_answer, is_correct, problem_id, user_id),
+            " returning id, problem_id, user_answer, is_correct, constant_omitted, created_at",
+            (user_answer, is_correct, constant_omitted, problem_id, user_id),
         )
         row = cur.fetchone()
     return AttemptRecord(**row) if row else None

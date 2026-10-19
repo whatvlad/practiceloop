@@ -4,6 +4,11 @@ Meaningful user-facing releases will be recorded here. No MVP release exists yet
 
 ## Unreleased
 
+- Backend saves practice for signed-in learners (#10): generating a problem stores
+  it with its private solution, every checked answer is stored (including invalid
+  ones and a missing-constant flag), and reveals set their flags. Retries with the
+  same idempotency key never duplicate work. The app itself still uses the
+  untracked preview until #11.
 - Hosted Supabase two-user isolation check passed with two real Google accounts; #3 done.
 - Backend checks integration answers (#8): an explicit `aK + b` constant,
   derivative equality and real values on every part of the problem's domain,
