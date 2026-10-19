@@ -53,10 +53,18 @@ forwarding off), and may run only
 5. Run the **Backend deploy** workflow, then the **Preview** workflow so the
    frontend is rebuilt with `API_BASE_URL`.
 
+## Browser path
+
+The deployed app never calls sslip.io directly. It calls `/api/*` on
+practiceloop.pages.dev, and the Pages Function `frontend/functions/api/[[path]].ts`
+forwards that to `API_BASE_URL`. Campus networks such as eduroam behind a FortiGate
+intercept HTTPS to unfamiliar hosts like sslip.io and break it with their own
+certificate, but leave pages.dev alone.
+
 ## CORS
 
 `ALLOWED_ORIGINS` in `/etc/practiceloop/api.env` lists the exact origins the API
-answers: `https://practiceloop.pages.dev` and the local Vite server
+answers (only direct browser calls need it now): `https://practiceloop.pages.dev` and the local Vite server
 (`http://localhost:5173`, `http://127.0.0.1:5173`). `*` is ignored. After an edit,
 run `sudo systemctl restart practiceloop-api`.
 
