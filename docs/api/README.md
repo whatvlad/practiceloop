@@ -1,31 +1,156 @@
-# API contract status
+# API contract
 
-Implemented: `GET /health` -> 200 `{"status":"ok"}`. Liveness only. Runtime
-OpenAPI at `/openapi.json` and `/docs`. No auth/persistence readiness claim.
-CORS allows only the exact origins in `ALLOWED_ORIGINS` (default: local Vite);
-see docs/production/ORACLE_DEPLOY.md.
+Implemented today: `GET /health` returns `200 {"status":"ok"}`. It is liveness
+only. The `/api` routes below are the proposed PL-002 contract and remain
+unimplemented until their owning Issues land.
 
-Proposed routes below are NOT implemented. Agree contracts in PL-002/004/010.
-Every route requires a verified Supabase Bearer access token except health.
+All routes documented here require `Authorization: Bearer <Supabase access token>`.
+The backend verifies the token and takes the user ID only from its `sub` claim.
+Request and response bodies use JSON, UUIDs are lowercase strings and timestamps
+are UTC RFC 3339 strings. Unknown request fields are rejected.
 
-| Route | Intended behavior |
-|---|---|
-| GET /api/topics | Allowed topics and available levels |
-| POST /api/problems | Validate topic/level; atomically save public + private problem before returning public DTO |
-| POST /api/problems/{id}/attempts | Bounded input; persist attempt; return Correct / Incorrect / Invalid expression |
-| POST /api/problems/{id}/reveal-answer | Owner check; save reveal flag; return only final result |
-| POST /api/problems/{id}/reveal-solution | Owner check; save solution flag; return checked steps |
-| GET /api/problems | Paginated own history, no solution/internal fields |
-| GET /api/problems/{id} | Reopen own public problem and authorized saved reveal state |
-| GET /api/profile | Account and agreed aggregate counts |
+The untracked preview slice in #34 and the one anonymous demo in #35 use a
+separate non-persistent boundary. They must not write anonymous problems or
+attempts through these authenticated routes.
 
-Public response includes id, topic, difficulty, statement/LaTeX and creation time
-once persistence exists. The current internal fixture DTO is not this final API.
-404 for another user's ID, 401 missing/invalid token, 422 invalid request fields,
-429 resource/rate limit and 503 worker unavailability are proposed transport
-semantics. Invalid expression is a domain result, not a server exception.
-Timeouts must not be mislabeled Incorrect; finalize retry/error behavior first.
-Accept no client user_id or is_correct. Do not return expected answers in checks,
-logs, OpenAPI examples or errors. Endpoint tests must cover cross-user IDs and
-concurrent generation/check persistence. Generation, reveal and login should be
-rate limited before public exposure.
+## Shared shapes
+
+```json
+{
+  "problem": {
+    "id": "uuid",
+    "topic": "basic-integrals",
+    "difficulty": 1,
+    "problemLatex": "\\int 3x^2\\,dx",
+    "createdAt": "2026-10-19T12:00:00Z",
+    "answerRevealed": false,
+    "solutionRevealed": false,
+    "lastAttempt": null
+  }
+}
+```
+
+`topic` is one of `basic-integrals`, `substitution`, `integration-by-parts`,
+`rational-functions`, or `trigonometric-integrals`; `difficulty` is `1..5`.
+`lastAttempt`, when present, contains `answer`, `result` and `feedbackCode`.
+`result` is exactly `correct`, `incorrect` or `invalid`.
+`feedbackCode` is `missing_constant` or `null`; it is never an expected answer.
+
+Errors have one envelope:
+
+```json
+{"error":{"code":"problem_not_found","message":"Problem not found.","retryable":false}}
+```
+
+Messages are safe learner-facing text. Logs, errors, OpenAPI examples and check
+responses never include expected answers, solution steps or generator data.
+
+## Routes
+
+### `GET /api/topics`
+
+Returns only implemented template cells:
+
+```json
+{"items":[{"slug":"basic-integrals","name":"Basic integrals","availableDifficulties":[1,2]}]}
+```
+
+### `POST /api/problems`
+
+Requires `Idempotency-Key: <UUIDv4>`.
+
+```json
+{"topic":"basic-integrals","difficulty":1}
+```
+
+Returns `201` and the shared problem shape after the public problem, private
+solution and idempotency record commit atomically. An exact replay returns the
+same status/body with `Idempotency-Replayed: true` and creates no second problem.
+
+### `POST /api/problems/{id}/attempts`
+
+Requires `Idempotency-Key: <UUIDv4>`.
+
+```json
+{"answer":"x^3 + C"}
+```
+
+Returns `201` after the result and idempotency record commit:
+
+```json
+{"attempt":{"id":"uuid","answer":"x^3 + C","result":"correct","feedbackCode":null,"createdAt":"2026-10-19T12:01:00Z"}}
+```
+
+An invalid expression is a persisted domain result with `result: "invalid"`, not
+an HTTP validation error. A missing integration constant returns
+`result: "incorrect"` and `feedbackCode: "missing_constant"`. Empty input or an
+answer longer than the ADR-003 limit is rejected before an attempt is created.
+
+### `POST /api/problems/{id}/reveal-answer`
+
+Returns `200` and sets the answer flag in the same transaction:
+
+```json
+{"answerLatex":"x^3 + C"}
+```
+
+### `POST /api/problems/{id}/reveal-solution`
+
+Returns `200` and sets both reveal flags in the same transaction:
+
+```json
+{"steps":[{"say":"Use the power rule.","latex":"\\int x^n\\,dx=\\frac{x^{n+1}}{n+1}+C"}]}
+```
+
+Both reveal routes are naturally idempotent. They return the already authorized
+payload when repeated.
+
+### `GET /api/problems`
+
+Accepts `limit` (`1..50`, default `20`) and opaque `cursor`. Returns newest first
+by `(created_at, id)`:
+
+```json
+{"items":[{"id":"uuid","topic":"basic-integrals","difficulty":1,"problemLatex":"\\int 3x^2\\,dx","createdAt":"2026-10-19T12:00:00Z","answerRevealed":false,"solutionRevealed":false,"lastAttempt":null}],"nextCursor":null}
+```
+
+The cursor is stable for rows already seen. Newly generated problems appear only
+when pagination restarts without a cursor.
+
+### `GET /api/problems/{id}`
+
+Returns `200` and the shared problem shape. If a reveal flag is true, the response
+also includes the corresponding previously authorized `answer` or `solution`.
+
+### `GET /api/profile`
+
+```json
+{"account":{"id":"uuid","name":"Ada","email":"ada@example.test","provider":"Google"},"counts":{"generated":4,"attempted":3,"correct":2}}
+```
+
+Counts use ADR-004 distinct-problem semantics. `name` is nullable. Account data
+comes from the verified session/profile, never client-supplied identity fields.
+
+## HTTP failures and retry behavior
+
+| Status | Code | Meaning / retry |
+|---|---|---|
+| `401` | `authentication_required`, `invalid_token` | Missing or failed token; refresh/re-authenticate, do not blindly retry |
+| `404` | `problem_not_found` | Missing and other-user IDs are intentionally indistinguishable |
+| `409` | `idempotency_conflict` | Same key with different input; create a new key only for a deliberate new action |
+| `422` | `invalid_request` | Malformed JSON, unknown field, empty answer, unsupported topic/level or normalized input over 256 bytes |
+| `429` | `rate_limited` | Retry only after the `Retry-After` delay |
+| `503` | `math_worker_unavailable`, `math_check_inconclusive`, `database_unavailable` | No mutation committed; retry with the same idempotency key only when `retryable` is true |
+
+Unexpected failures return a generic `500 internal_error` with a correlation ID,
+not exception text. Client disconnects do not cancel a database commit already in
+progress; the client repeats the request with the same idempotency key to learn
+the committed outcome.
+
+## Ownership and atomicity
+
+Every problem, attempt, reveal, history and profile query is scoped to the
+verified user in SQL even though the backend service role bypasses RLS. All
+access to another user's problem returns the same `404` as a missing UUID.
+Transaction and retry boundaries are defined in ADR-004; mathematical input and
+equivalence rules are defined in ADR-003.
