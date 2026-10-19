@@ -27,3 +27,10 @@ tree, and a fresh Linux worker constructs SymPy expressions under CPU, memory,
 wall-clock and combined-output limits. See docs/architecture/MATH_INPUT.md.
 Equivalence/domain checks (#8), generators and the API remain separate work;
 the browser demo does not use this parser yet.
+
+Answer input (#57): the practice card has a math keypad and a live preview.
+`frontend/src/answerSyntax.ts` mirrors the backend parser's grammar and limits
+to render how an answer will be read and to explain syntax mistakes while
+typing; it never decides correctness. Keep it in step with
+`backend/app/services/math_parser.py` (shared test corpus in
+`frontend/src/answerSyntax.test.ts`).
