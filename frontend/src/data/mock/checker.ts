@@ -51,7 +51,7 @@ export function isReadable(input: string): boolean {
   );
 }
 
-export function check(input: string, accepted: readonly string[]): CheckResult {
+export function check(input: string, accepted: readonly string[]): Exclude<CheckResult, 'missing_constant'> {
   if (!isReadable(input)) return 'invalid';
   const value = normalise(input);
   return accepted.some((form) => normalise(form) === value) ? 'correct' : 'incorrect';

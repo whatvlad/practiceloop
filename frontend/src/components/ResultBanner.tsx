@@ -1,23 +1,25 @@
 import type { CheckResult } from '../data/types';
 import { CheckIcon, CrossIcon, WarningIcon } from './icons';
 import { Tex } from './Tex';
+import text from '../../../backend/app/content/en.json';
 
 const RESULTS = {
   correct: {
     title: 'Correct',
-    message: 'Your answer is mathematically equivalent to the solution.',
+    message: text.correct,
     Icon: CheckIcon,
   },
   incorrect: {
     title: 'Incorrect',
-    message: 'That is not equivalent to the correct answer. Try again, or reveal it.',
+    message: text.incorrect,
     Icon: CrossIcon,
   },
   invalid: {
     title: 'Invalid expression',
-    message: 'We could not read that. Check your brackets and operators.',
+    message: text.invalid,
     Icon: WarningIcon,
   },
+  missing_constant: { title: 'Almost correct', message: text.missing_constant, Icon: WarningIcon },
 } as const;
 
 interface ResultBannerProps {
@@ -32,7 +34,7 @@ interface ResultBannerProps {
 export function ResultBanner({ state, message, id, live = true }: ResultBannerProps) {
   const { title, message: fallback, Icon } = RESULTS[state];
   return (
-    <div id={id} className={`pl-result pl-result--${state} pl-fade`} role={live ? 'status' : undefined}>
+    <div id={id} className={`pl-result pl-result--${state === 'missing_constant' ? 'invalid' : state} pl-fade`} role={live ? 'status' : undefined}>
       <Icon />
       <div>
         <b>{title}</b>

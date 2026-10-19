@@ -5,6 +5,15 @@ the Implementation Queue project (https://github.com/users/whatvlad/projects/1),
 worked in `Order`. Live state is always GitHub Issues, pull requests, merged
 commits and that project.
 
+Connected preview (#34): `data/api.ts` now uses the untracked `/preview` backend
+for basic integrals and substitution, levels 1–2. There are 186 verified records,
+shuffled without replacement per session/cell; unsupported options are disabled.
+Checking uses the isolated worker; private answers/steps are explicit reveals.
+History/counts are temporary page memory, not account data. The shared educational
+catalogue is checked in CI. See docs/architecture/PREVIEW_PRACTICE.md. This describes
+the branch implementation; the Issue/PR remains authoritative for review, merge
+and actual deployment. The earlier mock-practice notes below describe prior stages.
+
 Frontend design (#26): the design system in docs/design/system is implemented
 with mock data behind `frontend/src/data/api.ts`; the temporary stub in
 `frontend/src/data/mock/` is replaced when the API (PL-010/011/012) lands.

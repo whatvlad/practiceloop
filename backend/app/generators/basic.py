@@ -7,6 +7,7 @@ from typing import Any, Literal
 import sympy as sp
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
+from app.content.catalogue import TEXT
 from app.schemas.problem import PublicProblem
 
 X = sp.Symbol("x", real=True)
@@ -19,15 +20,6 @@ type StepKind = Literal[
     "linearity", "rewrite_power", "expand", "split_fraction", "integrate", "constant"
 ]
 
-# A small typed catalogue; the shared content checker/catalogue belongs to #34.
-_STEP_TEXT: dict[StepKind, str] = {
-    "linearity": "Integrate each term separately.",
-    "rewrite_power": "Write the integrand as a power of x.",
-    "expand": "Expand the squared factor.",
-    "split_fraction": "Divide each numerator term by x.",
-    "integrate": "Apply the standard integral rules to each term.",
-    "constant": "Add an arbitrary integration constant C.",
-}
 _DOMAIN_LATEX: dict[Domain, str] = {
     "real": r"x\in\mathbb{R}",
     "nonzero": r"x\ne0",
@@ -89,7 +81,7 @@ class SolutionStep:
 
     @property
     def say(self) -> str:
-        return _STEP_TEXT[self.kind]
+        return TEXT[self.kind]
 
     @property
     def latex(self) -> str:

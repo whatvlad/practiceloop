@@ -1,0 +1,22 @@
+{
+  "calculate": "Calculate the indefinite integral.",
+  "linearity": "Integrate each term separately.",
+  "rewrite_power": "Write the integrand as a power of x.",
+  "expand": "Expand the squared factor.",
+  "split_fraction": "Divide each numerator term by x.",
+  "integrate": "Apply the standard integral rules to each term.",
+  "constant": "Add an arbitrary integration constant C.",
+  "substitute": "Set u equal to the inner expression.",
+  "differentiate": "Differentiate the inner expression.",
+  "rewrite": "Write the integral in terms of u.",
+  "substitute_back": "Replace u with the original expression.",
+  "correct": "Your answer is mathematically equivalent to the solution.",
+  "incorrect": "Check your answer, or reveal the solution.",
+  "invalid": "Check your brackets, functions and operators.",
+  "missing_constant": "Add an arbitrary integration constant, such as C.",
+  "service_error": "The request could not finish. Try again shortly.",
+  "expired": "This practice session has expired. Reload the page to start again.",
+  "unsupported": "Choose an available topic and level.",
+  "preview": "Practice uses the server generator. Results are temporary and are not saved to your account.",
+  "availability": "Basic integrals and substitution are available at levels 1 and 2. Other options are not available yet."
+}

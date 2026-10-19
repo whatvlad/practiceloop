@@ -71,7 +71,7 @@ describe('client route protection and auth UI', () => {
     expect(element.textContent).toContain('learner@example.invalid');
     expect(element.textContent).toContain('A Learner');
     expect(element.textContent).not.toContain('Alex Morgan');
-    expect(element.textContent).toContain('Demo practice');
+    expect(element.textContent).toContain('Practice uses the server generator');
     await act(async () => harness.set(signedOut));
     expect(window.location.pathname).toBe('/login');
     expect(element.textContent).not.toContain('learner@example.invalid');

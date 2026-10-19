@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import text from '../../../backend/app/content/en.json';
 import { Button, ButtonLink } from '../components/Button';
 import { DifficultyScale } from '../components/DifficultyScale';
 import { HistoryList } from '../components/HistoryRow';
@@ -13,9 +14,13 @@ export function DashboardPage() {
   const counts = useLoad(getProfileCounts);
   const recent = useLoad(async () => (await listProblems()).slice(0, 3));
   const last = useLoad(getLastSelection);
-  const [topic, setTopic] = useState<TopicSlug>('substitution');
-  const [difficulty, setDifficulty] = useState<Difficulty>(3);
+  const [topic, setTopic] = useState<TopicSlug>('basic-integrals');
+  const [difficulty, setDifficulty] = useState<Difficulty>(1);
   const [busy, setBusy] = useState(false);
+  const pending = useRef(false);
+  const active = useRef(true);
+  useEffect(() => { active.current = true; return () => { active.current = false; }; }, []);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (last.status !== 'ready') return;
@@ -24,12 +29,18 @@ export function DashboardPage() {
   }, [last]);
 
   async function generate() {
+    if (pending.current) return;
+    pending.current = true;
+    setError('');
     setBusy(true);
     try {
       const problem = await generateProblem(topic, difficulty);
-      navigate(`/practice?id=${encodeURIComponent(problem.id)}`);
+      if (active.current) navigate(`/practice?id=${encodeURIComponent(problem.id)}`);
+    } catch (failure) {
+      if (active.current) setError(failure instanceof Error ? failure.message : text.service_error);
     } finally {
-      setBusy(false);
+      pending.current = false;
+      if (active.current) setBusy(false);
     }
   }
 
@@ -57,18 +68,20 @@ export function DashboardPage() {
           <div id="topic-label" className="pl-label">
             Topic
           </div>
-          <TopicChips selected={topic} onSelect={setTopic} labelledBy="topic-label" />
+          <TopicChips selected={topic} onSelect={setTopic} labelledBy="topic-label" available={['basic-integrals', 'substitution']} />
+          <p className="pl-small pl-muted">{text.availability}</p>
         </div>
         <div className="pl-stack pl-gap-3">
           <div id="difficulty-label" className="pl-label">
             Difficulty
           </div>
-          <DifficultyScale selected={difficulty} onSelect={setDifficulty} labelledBy="difficulty-label" />
+          <DifficultyScale selected={difficulty} onSelect={setDifficulty} labelledBy="difficulty-label" available={[1, 2]} />
         </div>
         <div>
           <Button size="lg" arrow onClick={generate} disabled={busy}>
             Generate problem
           </Button>
+          {error && <p role="alert">{error}</p>}
         </div>
       </section>
       <div className="pl-row pl-section-head">

@@ -10,6 +10,7 @@ import { LoginPage } from './pages/LoginPage';
 import { PracticePage } from './pages/PracticePage';
 import { ProfilePage } from './pages/ProfilePage';
 import { navigate, useLocation } from './router';
+import text from '../../backend/app/content/en.json';
 
 const TITLES: Record<string, string> = {
   '/': 'PracticeLoop',
@@ -90,7 +91,7 @@ export function App() {
       <AppNav current={pathname} initial={account.name.charAt(0).toUpperCase()} onLogOut={handleLogOut} busy={auth.working} />
       <ApiStatusNotice health={apiHealth} />
       <div className="pl-wrap pl-api-notice">
-        <p className="pl-small pl-muted" role="status">Demo practice: problems, history and counts stay in this browser session. They are not saved to your account yet.</p>
+        <p className="pl-small pl-muted" role="status">{text.preview} Reloading clears this temporary history.</p>
         {auth.error && <p className="pl-result pl-result--invalid" role="alert">{auth.error}</p>}
       </div>
       {pathname === '/dashboard' && <DashboardPage />}

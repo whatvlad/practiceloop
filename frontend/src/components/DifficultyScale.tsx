@@ -5,14 +5,15 @@ interface DifficultyScaleProps {
   selected: Difficulty;
   onSelect: (level: Difficulty) => void;
   labelledBy?: string;
+  available?: readonly Difficulty[];
 }
 
 /** Segmented five-level picker, used where the learner chooses. */
-export function DifficultyScale({ selected, onSelect, labelledBy }: DifficultyScaleProps) {
+export function DifficultyScale({ selected, onSelect, labelledBy, available }: DifficultyScaleProps) {
   return (
     <div className="pl-seg" role="group" aria-label={labelledBy ? undefined : 'Difficulty'} aria-labelledby={labelledBy}>
       {DIFFICULTIES.map(({ level, name }) => (
-        <button key={level} type="button" aria-pressed={level === selected} onClick={() => onSelect(level)}>
+        <button key={level} type="button" aria-pressed={level === selected} disabled={available !== undefined && !available.includes(level)} onClick={() => onSelect(level)}>
           <span className="n">{level}</span>
           <span className="t">{name}</span>
         </button>
