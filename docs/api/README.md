@@ -1,7 +1,7 @@
 # API contract
 
 Implemented today: `GET /health` returns `200 {"status":"ok"}`. It is liveness
-only. The `/api` routes below are the proposed PL-002 contract and remain
+only. The `/api` routes below are the accepted PL-002 contract and remain
 unimplemented until their owning Issues land.
 
 All routes documented here require `Authorization: Bearer <Supabase access token>`.

@@ -1,11 +1,11 @@
 # ADR-004: backend-owned practice records and distinct-problem counts
 
-Date: 2026-10-19. Status: proposed for PL-002 owner review.
+Date: 2026-10-19. Status: accepted by accountable human Feijhoaaaaa.
 
 The backend owns all practice writes, stores solutions privately and makes every
 client retry safe. Profile counters describe distinct problems rather than the
-number of submissions. This proposes accepting ADR-002's storage boundary and
-resolving OQ-04, OQ-05 and OQ-08.
+number of submissions. This accepts ADR-002's storage boundary and resolves
+OQ-04, OQ-05 and OQ-08.
 
 ## Attempts and counters
 
