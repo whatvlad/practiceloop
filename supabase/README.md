@@ -177,8 +177,7 @@ from the script's directly observed PostgREST results. On failure, retain the sa
 terminal message and inspect configuration; do not share tokens or callback URLs
 containing fragments. Revoke test sessions in Supabase if interrupted.
 
-Vlad chose to keep only one Google test account for now. For partial checks without
-fixture setup or a second login, run:
+For a partial check without fixture setup or a second login, run:
 
 ```powershell
 python scripts/test_supabase_hosted.py --google-login --single-user
@@ -187,9 +186,8 @@ python scripts/test_supabase_hosted.py --google-login --single-user
 This checks authenticated reads, browser mutation denial, anonymous denial and
 unexposed private schema. It observes existing owned-row counts and explicitly
 reports empty-table coverage limits. It creates no fixtures. The output/report is
-marked `partial`, with cross-user and SQL checks `not run`; it cannot satisfy #3's
-two-real-user acceptance criterion. The default two-account verifier still rejects
-duplicate identities and remains available for later completion.
+marked `partial`, with cross-user and SQL checks `not run`; it cannot replace the
+two-real-user check. The default two-account verifier rejects duplicate identities.
 
 ### Profile provisioning and transaction boundary
 
@@ -227,14 +225,14 @@ separate HTTP calls are not atomic. No new RPC or persistence API is added here.
 The initial migration was applied successfully in hosted preflight run
 [39173170854, attempt 3](https://github.com/whatvlad/practiceloop/actions/runs/39173170854/attempts/3)
 after a successful real-project dry-run and Vlad's explicit approval. Both commands
-recognized the unchanged 12-digit version. Two-user PostgREST isolation, hosted SQL
-assertions and populated-project backup/restore are **not yet verified**. The human-run
-single-user check passed: authenticated reads, browser mutation denial, anonymous
-reads/writes denied, and private schema unexposed. Owned profiles/problems/attempts
-were all empty, so fixture reads and two-user isolation remain unverified. Vlad
-chose to defer the second Google account. The PR and Issue stay open until real hosted
-evidence and the repository completion
-criteria are satisfied. #4/#5/#10/#12 own later API/frontend integration; #35 reuses
+recognized the unchanged 12-digit version. On 2026-10-19 Vlad ran the full
+two-account check against the hosted project with two different real Google users:
+`hosted_fixture.sql` and `hosted_schema.sql` succeeded in the SQL Editor, and the
+PostgREST checks passed for user 1, user 2 and anonymous clients (own reads,
+cross-user isolation, browser write denial, anonymous denial, private schema
+unexposed). Fixtures were then removed with `hosted_cleanup.sql`. This closes #3.
+Populated-project backup/restore is still unrehearsed; do it before the first
+migration on a project with real data. #4/#5/#10/#12 own later API/frontend integration; #35 reuses
 their results and covers residual demo/statistics/deletion requirements after #34.
 
 The fixture reproduces Supabase's automatic public-table grants to anon,

@@ -29,7 +29,7 @@ Google client authentication (#5): implementation replaces mock identity with
 Supabase Google OAuth, persistent sessions, refresh/logout and protected routes.
 See docs/auth/GOOGLE_AUTH.md for configuration and verification. Practice/history
 and counters remain an explicitly labeled browser-session demo until #10/#12.
-#3's two-user database checks are still pending.
+#3's hosted two-user isolation check passed on 2026-10-19 (supabase/README.md).
 Use the Issue and PR for current delivery/merge/preview verification state.
 
 Mathematical input (#7): a bounded allowlisted parser produces an internal syntax
