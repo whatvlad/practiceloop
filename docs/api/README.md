@@ -6,6 +6,15 @@ unimplemented until their owning Issues land.
 
 All routes documented here require `Authorization: Bearer <Supabase access token>`.
 The backend verifies the token and takes the user ID only from its `sub` claim.
+Verification (#4, `backend/app/core/auth.py`, dependency `current_user`) accepts
+only tokens signed with the project's asymmetric Supabase keys (ES256 or RS256)
+from `<SUPABASE_URL>/auth/v1/.well-known/jwks.json`; shared-secret (HS256) and
+unsigned tokens are always rejected. It requires `exp`, `iat`, `iss` (the
+project's `SUPABASE_JWT_ISSUER`), `aud = authenticated`, `role = authenticated`,
+a UUID `sub`, and not `is_anonymous`. Keys are cached and refetched when a token
+names an unknown `kid` (rotation), at most once per 30 seconds. Owner-scoped SQL
+for problems, attempts and reveals is in `backend/app/services/owned_records.py`;
+route handlers use those functions rather than writing their own queries.
 Request and response bodies use JSON, UUIDs are lowercase strings and timestamps
 are UTC RFC 3339 strings. Unknown request fields are rejected.
 
@@ -140,7 +149,7 @@ comes from the verified session/profile, never client-supplied identity fields.
 | `409` | `idempotency_conflict` | Same key with different input; create a new key only for a deliberate new action |
 | `422` | `invalid_request` | Malformed JSON, unknown field, empty answer, unsupported topic/level or normalized input over 256 bytes |
 | `429` | `rate_limited` | Retry only after the `Retry-After` delay |
-| `503` | `math_worker_unavailable`, `math_check_inconclusive`, `database_unavailable` | No mutation committed; retry with the same idempotency key only when `retryable` is true |
+| `503` | `authentication_unavailable`, `math_worker_unavailable`, `math_check_inconclusive`, `database_unavailable` | No mutation committed; retry with the same idempotency key only when `retryable` is true |
 
 Unexpected failures return a generic `500 internal_error` with a correlation ID,
 not exception text. Client disconnects do not cancel a database commit already in
