@@ -66,9 +66,11 @@ the RLS-bypassing service role (`pytest -m db`).
 Saved practice (#10): `app.api.practice` serves `/topics`, `/problems`, attempts
 and both reveals (browser path `/api/...`), persisted through `app.core.database`
 with ADR-004 idempotency keys and the shared #8 checker. It needs `DATABASE_URL`
-on the VM; until then those routes return 503. The frontend still uses the
-untracked `/preview` routes; switching the practice page to the saved routes is
-#11, and history, reopen and profile reads are #12.
+on the VM; without it those routes return 503. The #11 frontend switches
+signed-in practice to these saved routes, fetches available cells from `/topics`,
+and keeps guest preview isolated. History, reopen and profile reads after a
+reload remain #12; current history/counters show only this browser session.
+See docs/architecture/SAVED_PRACTICE_UI.md.
 
 Answer checking (#8): `app.services.math_worker.check_answer(answer, record)`
 applies ADR-003 inside the limited worker and returns correct, incorrect (with a

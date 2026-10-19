@@ -1,0 +1,128 @@
+// @vitest-environment jsdom
+import { act } from 'react';
+import { createRoot, type Root } from 'react-dom/client';
+import { afterEach, beforeEach, expect, it, vi } from 'vitest';
+import { DashboardPage } from './DashboardPage';
+import { PracticePage } from './PracticePage';
+import { configurePracticeAuth, getProblem, resetPractice } from '../data/practice';
+
+// Keep the real answer input, syntax preview and keyboard handlers; only skip
+// the dynamically loaded native math editor, which needs an actual browser.
+vi.mock('../components/FormulaField', () => ({ useMathLive: () => null, usesPhoneKeyboard: () => false }));
+
+let root: Root;
+let element: HTMLDivElement;
+let nextId: number;
+const calls: { path: string; body: Record<string, unknown> | null }[] = [];
+const fetchMock = vi.fn<typeof fetch>();
+const response = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status });
+const button = (label: string) => Array.from(element.querySelectorAll('button')).find(b => b.textContent?.includes(label))!;
+
+beforeEach(() => {
+  (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
+  resetPractice();
+  configurePracticeAuth(async () => 'test-supabase-token');
+  nextId = 0;
+  calls.length = 0;
+  fetchMock.mockReset().mockImplementation(async (url, options) => {
+    const path = String(url);
+    const body = options?.body ? JSON.parse(String(options.body)) as Record<string, unknown> : null;
+    calls.push({ path, body });
+    expect(options?.headers).toHaveProperty('Authorization', 'Bearer test-supabase-token');
+    if (path.endsWith('/topics')) return response({ items: [
+      { slug: 'basic-integrals', name: 'Basic integrals', availableDifficulties: [1, 2] },
+      { slug: 'substitution', name: 'Substitution', availableDifficulties: [1] },
+    ] });
+    if (path.endsWith('/attempts')) return response({ attempt: { result: body?.answer === 'x^2/2+C' ? 'correct' : 'invalid', feedbackCode: null } }, 201);
+    if (path.endsWith('/reveal-answer')) return response({ answerLatex: 'x^2/2+C' });
+    if (path.endsWith('/reveal-solution')) return response({ steps: [{ say: 'Apply the power rule.', latex: 'x^2/2+C' }] });
+    if (path === '/api/problems') return response({ problem: { id: `problem-${++nextId}`, ...body,
+      problemLatex: '\\int x\\,dx', createdAt: '2026-10-19T00:00:00Z', answerRevealed: false, solutionRevealed: false, lastAttempt: null } }, 201);
+    throw new Error('Unexpected route');
+  });
+  vi.stubGlobal('fetch', fetchMock);
+  vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
+  window.history.replaceState(null, '', '/dashboard');
+  element = document.createElement('div');
+  document.body.append(element);
+  root = createRoot(element);
+});
+
+afterEach(async () => {
+  await act(async () => root.unmount());
+  element.remove();
+  resetPractice();
+  configurePracticeAuth(async () => null);
+  vi.unstubAllGlobals();
+  vi.restoreAllMocks();
+});
+
+async function typeAnswer(value: string) {
+  const input = element.querySelector<HTMLInputElement>('#answer')!;
+  await act(async () => {
+    Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!.call(input, value);
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+}
+
+it('runs selection → saved generation → invalid/correct check → explicit reveals → next through the real data boundary', async () => {
+  await act(async () => root.render(<DashboardPage />));
+  expect(button('Advanced').disabled).toBe(true);
+  expect(button('Integration by parts').disabled).toBe(true);
+  expect(element.querySelectorAll('.pl-seg button')).toHaveLength(5);
+  await act(async () => { button('Generate problem').click(); button('Generate problem').click(); });
+  expect(calls.filter(call => call.path === '/api/problems')).toHaveLength(1);
+  const id = new URLSearchParams(window.location.search).get('id')!;
+  await act(async () => root.render(<PracticePage key={id} id={id} />));
+  expect(element.textContent).toContain('Saved to your account');
+  expect(element.querySelector('.katex-mathml')).not.toBeNull();
+  expect(calls.some(call => call.path.includes('reveal-'))).toBe(false);
+  await typeAnswer('sin(');
+  await act(async () => button('Check answer').click());
+  expect(element.textContent).toContain('Check your brackets');
+  await typeAnswer('x^2/2+C');
+  await act(async () => element.querySelector('#answer')!.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })));
+  expect(element.textContent).toContain('mathematically equivalent');
+  expect(button('Check answer').disabled).toBe(true);
+  await act(async () => button('Show answer').click());
+  await act(async () => button('Show solution').click());
+  expect(element.textContent).toContain('Apply the power rule');
+  expect(await getProblem(id)).toMatchObject({ answerRevealed: true, solutionRevealed: true });
+  await act(async () => button('Generate next problem').click());
+  const next = new URLSearchParams(window.location.search).get('id')!;
+  expect(next).not.toBe(id);
+  await act(async () => root.render(<PracticePage key={next} id={next} />));
+  expect(element.querySelector<HTMLInputElement>('#answer')!.value).toBe('');
+  expect(element.textContent).not.toContain('Apply the power rule');
+});
+
+it('uses topic-specific availability and retries a failed catalogue without generating a problem', async () => {
+  fetchMock.mockResolvedValueOnce(response({}, 503));
+  await act(async () => root.render(<DashboardPage />));
+  expect(button('Generate problem').disabled).toBe(true);
+  expect(element.querySelector('[role="alert"]')).not.toBeNull();
+  await act(async () => button('Retry loading topics').click());
+  expect(button('Generate problem').disabled).toBe(false);
+  await act(async () => button('Easy').click());
+  await act(async () => button('Substitution').click());
+  expect(button('Easy').disabled).toBe(true);
+  expect(button('Generate problem').disabled).toBe(true);
+  expect(element.textContent).toContain('Choose an available option');
+  await act(async () => button('1Basic').click());
+  await act(async () => button('Generate problem').click());
+  expect(calls.find(call => call.path === '/api/problems')?.body).toEqual({ topic: 'substitution', difficulty: 1 });
+});
+
+it('discards a check verdict after the answer changes while the request is pending', async () => {
+  await act(async () => root.render(<DashboardPage />));
+  await act(async () => button('Generate problem').click());
+  await act(async () => root.render(<PracticePage id="problem-1" />));
+  await typeAnswer('x^2/2+C');
+  let finish!: (value: Response) => void;
+  fetchMock.mockImplementationOnce(() => new Promise(resolve => { finish = resolve; }));
+  await act(async () => button('Check answer').click());
+  await typeAnswer('x');
+  await act(async () => finish(response({ attempt: { result: 'correct', feedbackCode: null } })));
+  expect(element.textContent).not.toContain('mathematically equivalent');
+  expect(button('Check answer').disabled).toBe(false);
+});

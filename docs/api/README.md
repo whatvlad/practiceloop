@@ -12,6 +12,11 @@ strips `/api`, so FastAPI serves these at `/topics`, `/problems`, ... like
 `DATABASE_URL` on the host (docs/production/ORACLE_DEPLOY.md); without it these
 routes return `503 database_unavailable`.
 
+The #11 frontend uses these saved write routes for signed-in accounts, taking a
+current Supabase access token before each request. Guests keep the separate
+preview boundary. See [saved-practice UI](../architecture/SAVED_PRACTICE_UI.md)
+for retry behavior and the browser-session history limitation until #12.
+
 Generation picks a random record from the cell's verified catalogue, skipping the
 records behind the user's latest half-catalogue in that cell, so a learner sees
 no repeat within that window. Only the cells the generators support are offered

@@ -48,7 +48,7 @@ export function ProblemCard({
 }: ProblemCardProps) {
   const solved = result === 'correct';
   return (
-    <section className="pl-problem" aria-label="Problem">
+    <section className="pl-problem" aria-label="Problem" aria-busy={busy}>
       <div className="pl-problem-head">
         <div className="meta">
           <span className="pl-tag">Integration — {topicName(topic)}</span>
@@ -80,6 +80,7 @@ export function ProblemCard({
         }
       />
       <div className="pl-result-slot" role="status">{result && <ResultBanner id="answer-result" state={result} live={false} />}</div>
+      {busy && <p role="status" className="pl-small pl-muted">Working…</p>}
       <Button size="lg" block onClick={onCheck} disabled={solved || busy}>
         Check answer
       </Button>

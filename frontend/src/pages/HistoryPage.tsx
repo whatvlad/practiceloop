@@ -21,8 +21,9 @@ function matches(problem: PublicProblem, filter: Filter): boolean {
     case 'all':
       return true;
     case 'correct':
-    case 'incorrect':
       return problem.lastResult === filter;
+    case 'incorrect':
+      return problem.lastResult === 'incorrect' || problem.lastResult === 'missing_constant';
     case 'none':
       return problem.lastResult === null;
     case 'revealed':
