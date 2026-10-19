@@ -26,8 +26,7 @@ Use the Issue and PR for current delivery/merge/preview verification state.
 Mathematical input (#7): a bounded allowlisted parser produces an internal syntax
 tree, and a fresh Linux worker constructs SymPy expressions under CPU, memory,
 wall-clock and combined-output limits. See docs/architecture/MATH_INPUT.md.
-Equivalence/domain checks (#8) and the API remain separate work;
-the browser demo does not use this parser yet.
+The API remains separate work; the browser demo does not use this parser yet.
 
 Basic-integral generation (#6): 11 bounded templates cover all five ADR-003
 basic-integral levels. Private `basic-v1` records reproduce the integrand,
@@ -55,3 +54,8 @@ the only source of a user ID. `app.services.owned_records` holds the owner-scope
 SQL for problems, attempts and reveals; CI's Database isolation job runs it as
 the RLS-bypassing service role (`pytest -m db`). No `/api` route uses them yet;
 the routes arrive with #34/#10, which also call `install_error_handlers`.
+
+Answer checking (#8): `app.services.math_worker.check_answer(answer, record)`
+applies ADR-003 inside the limited worker and returns correct, incorrect (with a
+missing-constant flag) or invalid, or raises a retryable/inconclusive error. See
+docs/architecture/ANSWER_CHECK.md. No route calls it yet (#34/#10).

@@ -10,8 +10,9 @@ decimals, implicit multiplication, square roots, absolute-value bars and numeric
 function powers. For example, `3π`, `2(x+1)`, `√3`, `ln|x|` and `sin^2(x)` work.
 Numeric exponents are exact bounded rationals; `e^(2*x+1)` is also supported.
 Only one additional single-letter real symbol is allowed; `i`, `I`, `j`, `J`
-are reserved to prevent confusion with complex units. The checker in #8 must
-still enforce the arbitrary constant's affine form and the problem's real domain.
+are reserved to prevent confusion with complex units. The checker from #8
+([ANSWER_CHECK.md](ANSWER_CHECK.md)) enforces the arbitrary constant's affine form
+and the problem's real domain.
 
 Use `*` between a symbol and a following group, and before `e` after a number:
 `x*(x+1)` and `2*e^x`. Unknown calls such as `f(x)`, scientific notation such as
@@ -39,7 +40,7 @@ from its base `MathInputError` (invalid syntax). The API must also reject empty
 answers at request validation per its contract. `MathWorkerError` is a retryable
 service failure, never `incorrect` or a persisted invalid attempt. Successful
 construction does not establish equivalence, real-valuedness or domain coverage;
-those belong to #8 and must also execute inside the limited worker.
+those are checked by `check_answer` (#8), which runs inside the same limited worker.
 
 Verification, from `backend/` with the documented Python environment:
 
