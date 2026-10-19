@@ -13,7 +13,7 @@ export function DifficultyScale({ selected, onSelect, labelledBy, available }: D
   return (
     <div className="pl-seg" role="group" aria-label={labelledBy ? undefined : 'Difficulty'} aria-labelledby={labelledBy}>
       {DIFFICULTIES.map(({ level, name }) => (
-        <button key={level} type="button" aria-pressed={level === selected} disabled={available !== undefined && !available.includes(level)} onClick={() => onSelect(level)}>
+        <button key={level} type="button" aria-pressed={level === selected} disabled={available !== undefined && !available.includes(level)} title={available !== undefined && !available.includes(level) ? 'Not available yet' : undefined} onClick={() => onSelect(level)}>
           <span className="n">{level}</span>
           <span className="t">{name}</span>
         </button>

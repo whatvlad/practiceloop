@@ -71,7 +71,7 @@ function PracticeSession({ problem }: { problem: PublicProblem }) {
       topic={problem.topic}
       difficulty={problem.difficulty}
       problemLatex={problem.problemLatex}
-      headLabel="Temporary practice"
+      headLabel={problem.saved ? 'Saved to your account' : 'Temporary practice'}
       answer={answer}
       onAnswerChange={(value) => { answerRevision.current += 1; setAnswer(value); setResult(null); }}
       result={result}
@@ -81,8 +81,8 @@ function PracticeSession({ problem }: { problem: PublicProblem }) {
         const checked = await submitAttempt(problem.id, answer);
         if (active.current && revision === answerRevision.current) setResult(checked);
       })}
-      onShowAnswer={() => run(async () => setAnswerLatex((await revealAnswer(problem.id)).answerLatex))}
-      onShowSolution={() => run(async () => setSolution((await revealSolution(problem.id)).steps))}
+      onShowAnswer={() => run(async () => { const revealed = await revealAnswer(problem.id); if (active.current) setAnswerLatex(revealed.answerLatex); })}
+      onShowSolution={() => run(async () => { const revealed = await revealSolution(problem.id); if (active.current) setSolution(revealed.steps); })}
       onNext={() =>
         run(async () => {
           const next = await generateProblem(problem.topic, problem.difficulty);

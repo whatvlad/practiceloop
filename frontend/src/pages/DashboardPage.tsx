@@ -5,12 +5,14 @@ import { DifficultyScale } from '../components/DifficultyScale';
 import { HistoryList } from '../components/HistoryRow';
 import { StatTile } from '../components/StatTile';
 import { TopicChips } from '../components/TopicChips';
-import { generateProblem, getLastSelection, getProfileCounts, listProblems } from '../data/api';
+import { generateProblem, getLastSelection, getProfileCounts, getTopics, listProblems } from '../data/api';
 import type { Difficulty, TopicSlug } from '../data/types';
 import { navigate } from '../router';
 import { useLoad } from '../useLoad';
 
 export function DashboardPage() {
+  const [catalogueRevision, setCatalogueRevision] = useState(0);
+  const catalogue = useLoad(getTopics, String(catalogueRevision));
   const counts = useLoad(getProfileCounts);
   const recent = useLoad(async () => (await listProblems()).slice(0, 3));
   const last = useLoad(getLastSelection);
@@ -21,6 +23,9 @@ export function DashboardPage() {
   const active = useRef(true);
   useEffect(() => { active.current = true; return () => { active.current = false; }; }, []);
   const [error, setError] = useState('');
+  const topics = catalogue.status === 'ready' ? catalogue.data : [];
+  const levels = topics.find(t => t.slug === topic)?.availableDifficulties ?? [];
+  const available = levels.includes(difficulty);
 
   useEffect(() => {
     if (last.status !== 'ready') return;
@@ -29,7 +34,7 @@ export function DashboardPage() {
   }, [last]);
 
   async function generate() {
-    if (pending.current) return;
+    if (pending.current || !available) return;
     pending.current = true;
     setError('');
     setBusy(true);
@@ -68,19 +73,22 @@ export function DashboardPage() {
           <div id="topic-label" className="pl-label">
             Topic
           </div>
-          <TopicChips selected={topic} onSelect={setTopic} labelledBy="topic-label" available={['basic-integrals', 'substitution']} />
-          <p className="pl-small pl-muted">{text.availability}</p>
+          <TopicChips selected={topic} onSelect={setTopic} labelledBy="topic-label" available={busy ? [] : topics.filter(t => t.availableDifficulties.length > 0).map(t => t.slug)} />
+          <p className="pl-small pl-muted">Disabled options are not available yet.</p>
         </div>
         <div className="pl-stack pl-gap-3">
           <div id="difficulty-label" className="pl-label">
             Difficulty
           </div>
-          <DifficultyScale selected={difficulty} onSelect={setDifficulty} labelledBy="difficulty-label" available={[1, 2]} />
+          <DifficultyScale selected={difficulty} onSelect={setDifficulty} labelledBy="difficulty-label" available={busy ? [] : levels} />
         </div>
         <div>
-          <Button size="lg" arrow onClick={generate} disabled={busy}>
-            Generate problem
+          <Button size="lg" arrow onClick={generate} disabled={busy || !available} aria-busy={busy}>
+            {busy ? 'Generating…' : 'Generate problem'}
           </Button>
+          {catalogue.status === 'loading' && <p role="status">Loading available topics…</p>}
+          {catalogue.status === 'error' && <div role="alert"><p>{text.service_error}</p><Button variant="secondary" onClick={() => setCatalogueRevision(value => value + 1)}>Retry loading topics</Button></div>}
+          {catalogue.status === 'ready' && !available && <p role="status">This topic and level are not available yet. Choose an available option.</p>}
           {error && <p role="alert">{error}</p>}
         </div>
       </section>

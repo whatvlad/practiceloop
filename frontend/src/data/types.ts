@@ -13,15 +13,20 @@ export interface Topic {
   name: string;
 }
 
+export interface AvailableTopic extends Topic {
+  availableDifficulties: Difficulty[];
+}
+
 export type Difficulty = 1 | 2 | 3 | 4 | 5;
 
 /** Three API outcomes plus a display state for the missing_constant feedback code. */
 export type CheckResult = 'correct' | 'incorrect' | 'invalid' | 'missing_constant';
 
-/** Latest recorded attempt. Invalid expressions are not recorded as attempts. */
-export type AttemptResult = 'correct' | 'incorrect' | null;
+/** Saved practice records invalid expressions too; preview does not. */
+export type AttemptResult = CheckResult | null;
 
 export interface PublicProblem {
+  saved?: boolean;
   id: string;
   topic: TopicSlug;
   difficulty: Difficulty;

@@ -5,17 +5,19 @@ answer verification and personal practice history. The MVP covers Integration,
 five topics and five difficulty levels, Google login, attempts, answer/solution
 reveal and a basic profile. [Original specification](docs/PRACTICELOOP_MVP.md).
 
-**Current code: Google account login with untracked server-generated practice.**
-Supabase handles sign-in, restore and logout; practice/history/counts are temporary
-and not saved to accounts. [Auth setup](docs/auth/GOOGLE_AUTH.md).
+**Current code: Google account login with saved server-generated practice.**
+Supabase handles sign-in, restore and logout. Signed-in generation, attempts and
+reveals use the saved API. History and counts currently show this browser session
+only; restoring saved history and account-wide counts belongs to #12.
+[Auth setup](docs/auth/GOOGLE_AUTH.md), [practice UI](docs/architecture/SAVED_PRACTICE_UI.md).
 Private repository:
 [whatvlad/practiceloop](https://github.com/whatvlad/practiceloop). Tasks live in
 [GitHub Issues](https://github.com/whatvlad/practiceloop/issues). Initial schema is
-applied to the hosted test database; #3's full isolation verification remains
-pending. Cloudflare Pages serves the preview; the scaffold API runs on Oracle.
+applied to the hosted test database; #3's two-user isolation verification passed.
+Cloudflare Pages serves the preview; the API runs on Oracle.
 The backend also provides the bounded math-input parser and isolated Linux
 construction worker from #7 and the shared answer checker from #8. Untracked
-preview integration is implemented in #34; account-backed persistence is pending.
+preview integration is implemented in #34; #10/#11 connect saved practice.
 See [math-input implementation](docs/architecture/MATH_INPUT.md).
 The basic-integral generator now covers levels 1–5 with versioned private
 parameters and checked solution steps ([generator details](docs/architecture/BASIC_GENERATOR.md)).
@@ -34,7 +36,7 @@ trusted outcomes; owner-filtered browser reads use RLS. [Architecture](docs/arch
 frontend/src/          React app: components/, pages/, styles/, data/ (api.ts + temporary mock/)
 backend/app/           main.py, api/, core/, models/, services/, generators/, schemas/
 backend/tests/         liveness, mathematical invariants and public-data boundary
-supabase/migrations/   hosted test schema and RLS (full isolation checks pending)
+supabase/migrations/   hosted test schema and verified two-user RLS isolation
 supabase/tests/        disposable SQL fixture and isolation tests
 docs/                 MVP, architecture, decisions, agents, api
 .github/              CI, issue/PR templates, owners, Dependabot, protection payload
@@ -59,8 +61,9 @@ Do not commit .env. Copy the example only when configuring real services:
 Copy-Item .env.example .env
 ```
 Frontend sign-in needs the public Supabase settings in frontend/.env.local;
-copy only the VITE_* public values there. The backend scaffold still needs no
-credentials. Never copy the entire backend .env into the frontend. On Unix use
+copy only the VITE_* public values there. Saved practice needs backend database
+and auth configuration (docs/production/ORACLE_DEPLOY.md).
+Never copy the entire backend .env into the frontend. On Unix use
 `.venv/bin/python` instead of `.venv\Scripts\python.exe`.
 
 ## Run
@@ -73,9 +76,9 @@ In two terminals:
 cd frontend
 npm run dev
 ```
-A preview of `main` (untracked practice, plus the Graphify code graph at `/graph/`)
+A preview of `main` (saved practice, plus the Graphify code graph at `/graph/`)
 deploys to Cloudflare Pages via `.github/workflows/preview.yml` at
-https://practiceloop.pages.dev (noindex, Google login; practice is not persisted).
+https://practiceloop.pages.dev (noindex, Google login; practice is persisted).
 Frontend: http://localhost:5173. Backend health: http://localhost:8000/health.
 OpenAPI: http://localhost:8000/docs. Health is liveness, not database readiness.
 

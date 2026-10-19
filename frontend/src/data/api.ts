@@ -1,6 +1,6 @@
-// The one data boundary: existing account login and untracked server-generated practice.
+// The data boundary selects saved practice for an account and preview for a guest.
 import { createAuthStore } from './auth';
-import { resetPractice } from './practice';
+import { configurePracticeAuth, resetPractice } from './practice';
 import { callbackOptions, createBrowserClient } from './supabase';
 
 const client = createBrowserClient();
@@ -8,10 +8,22 @@ export const authStore = createAuthStore(client?.auth ?? null, {
   ...callbackOptions(), onIdentityChange: resetPractice,
 });
 
+configurePracticeAuth(async () => {
+  const auth = authStore.getSnapshot();
+  if (auth.status === 'loading') throw new Error('Wait for your session to finish loading.');
+  if (!auth.account) return null;
+  const { data, error } = await client!.auth.getSession();
+  if (error || !data.session || data.session.user.id !== auth.account.id) {
+    throw new Error('Please sign in again to save your practice.');
+  }
+  return data.session.access_token;
+});
+
 export {
   NotFoundError,
   generateProblem,
   getLastSelection,
+  getTopics,
   getProblem,
   getProfileCounts,
   listProblems,

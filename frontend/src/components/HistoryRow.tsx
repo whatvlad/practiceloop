@@ -14,13 +14,14 @@ function AttemptStatus({ result }: { result: PublicProblem['lastResult'] }) {
         Correct
       </span>
     );
-  if (result === 'incorrect')
+  if (result === 'incorrect' || result === 'missing_constant')
     return (
       <span className="pl-status pl-status--incorrect">
         <CrossIcon />
         Incorrect
       </span>
     );
+  if (result === 'invalid') return <span className="pl-status pl-status--none">Invalid expression</span>;
   return (
     <span className="pl-status pl-status--none">
       <DashIcon />

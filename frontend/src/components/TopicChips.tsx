@@ -30,6 +30,7 @@ export function Chips<T extends string>({ options, selected, onSelect, label, la
             className="pl-chip"
             aria-pressed={pressed}
             disabled={available !== undefined && !available.includes(option.value)}
+            title={available !== undefined && !available.includes(option.value) ? 'Not available yet' : undefined}
             onClick={() => onSelect(option.value)}
           >
             {pressed && <CheckIcon />}
