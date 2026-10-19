@@ -83,7 +83,7 @@ export function MathKeypad({ onInsert, onMove, disabled }: MathKeypadProps) {
         <button
           key={key.name}
           type="button"
-          className={key.math ? 'pl-key is-math' : 'pl-key'}
+          className={['pl-key', key.math && 'is-math', key.label.length > 4 && 'is-wide'].filter(Boolean).join(' ')}
           aria-label={key.name}
           disabled={disabled}
           // Keep the caret, and the phone keyboard, in the answer field.

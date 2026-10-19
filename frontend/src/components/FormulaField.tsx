@@ -166,7 +166,10 @@ export function FormulaField({
     field.id = id;
     // Most options need the element in the document first.
     host.current!.append(field);
-    field.mathVirtualKeyboardPolicy = 'manual';
+    const coarse = usesPhoneKeyboard();
+    // On phones MathLive shows its keyboard on focus and hides it only once focus has
+    // really gone: iOS blurs the field for a moment on each key tap.
+    field.mathVirtualKeyboardPolicy = coarse ? 'auto' : 'manual';
     field.inlineShortcuts = SHORTCUTS;
     // No LaTeX or text mode: Escape or a backslash would otherwise hide what is typed.
     field.keybindings = field.keybindings.filter(
@@ -177,7 +180,6 @@ export function FormulaField({
     field.smartSuperscript = true;
     field.defaultMode = 'math';
     field.setAttribute('aria-label', label);
-    const coarse = usesPhoneKeyboard();
     const onInput = () => {
       const answer = latexToAnswer(field.getValue('latex'));
       // MathLive also sends input for Enter and moves; only real edits count.
@@ -200,26 +202,16 @@ export function FormulaField({
     const onClick = () => {
       if (!field.hasFocus()) field.focus();
     };
-    const onFocus = () => {
-      if (coarse) window.mathVirtualKeyboard.show();
-    };
-    const onBlur = () => {
-      if (coarse) window.mathVirtualKeyboard.hide();
-    };
     field.addEventListener('input', onInput);
     field.addEventListener('keydown', onKeyDown);
     field.addEventListener('change', onCommit);
     field.addEventListener('click', onClick);
-    field.addEventListener('focusin', onFocus);
-    field.addEventListener('focusout', onBlur);
     fieldRef.current = field;
     return () => {
       field.removeEventListener('input', onInput);
       field.removeEventListener('keydown', onKeyDown);
       field.removeEventListener('change', onCommit);
       field.removeEventListener('click', onClick);
-      field.removeEventListener('focusin', onFocus);
-      field.removeEventListener('focusout', onBlur);
       field.remove();
       fieldRef.current = null;
       emitted.current = null;
