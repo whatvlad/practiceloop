@@ -45,6 +45,7 @@ vi.mock('mathlive', () => {
 
 type Fake = HTMLElement & {
   latex: string;
+  mathVirtualKeyboardPolicy: string;
   inserted: string[];
   commands: unknown[];
   keybindings: { key: string }[];
@@ -140,6 +141,30 @@ describe('AnswerInput formula editor', () => {
     });
     expect(field().inserted).toEqual(['\\sqrt{#0}', '\\frac{#@}{#?}']);
     expect(field().commands).toEqual(['moveToPreviousChar']);
+  });
+
+  it('leaves the phone keyboard to MathLive, which keeps it open through a key tap', async () => {
+    vi.stubGlobal('matchMedia', (query: string) => ({ matches: query === '(pointer: coarse)' }));
+    try {
+      await render();
+      expect(field().mathVirtualKeyboardPolicy).toBe('auto');
+      expect(element.querySelector('.pl-keypad')).toBeNull();
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+
+  it('keeps the phone keyboard off on desktop, where the inline keypad is', async () => {
+    await render();
+    expect(field().mathVirtualKeyboardPolicy).toBe('manual');
+    expect(element.querySelector('.pl-keypad')).not.toBeNull();
+  });
+
+  it('gives long key labels two columns', async () => {
+    await render();
+    act(() => element.querySelector<HTMLButtonElement>('.pl-key.is-toggle')!.click());
+    const wide = [...element.querySelectorAll('.pl-key.is-wide')].map((key) => key.textContent);
+    expect(wide).toEqual(['arcsin', 'arccos', 'arctan']);
   });
 
   it('checks on Enter', async () => {
