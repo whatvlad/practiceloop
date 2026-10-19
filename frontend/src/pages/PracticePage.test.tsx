@@ -7,10 +7,10 @@ import * as api from '../data/api';
 
 vi.mock('../data/api', () => ({
   NotFoundError: class extends Error {},
-  getProblem: vi.fn(async () => ({ id: 'one', topic: 'basic-integrals', difficulty: 1,
+  openProblem: vi.fn(async () => ({ problem: { id: 'one', topic: 'basic-integrals', difficulty: 1,
     problemLatex: '\\int x\\,dx', createdAt: '', answerRevealed: false, solutionRevealed: false,
-    lastResult: null, lastAnswer: null })),
-  getLastSelection: vi.fn(), listProblems: vi.fn(), generateProblem: vi.fn(),
+    lastResult: null, lastAnswer: null } })),
+  getLastSelection: vi.fn(), listProblemPage: vi.fn(), generateProblem: vi.fn(),
   revealAnswer: vi.fn(), revealSolution: vi.fn(), submitAttempt: vi.fn(),
 }));
 vi.mock('../components/AnswerInput', () => ({ AnswerInput: () => <input aria-label="answer" /> }));

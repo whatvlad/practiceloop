@@ -5,6 +5,7 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { DashboardPage } from './DashboardPage';
 import { PracticePage } from './PracticePage';
 import { configurePracticeAuth, getProblem, resetPractice } from '../data/practice';
+import type { PublicProblem } from '../data/types';
 
 // Keep the real answer input, syntax preview and keyboard handlers; only skip
 // the dynamically loaded native math editor, which needs an actual browser.
@@ -13,6 +14,7 @@ vi.mock('../components/FormulaField', () => ({ useMathLive: () => null, usesPhon
 let root: Root;
 let element: HTMLDivElement;
 let nextId: number;
+const saved = new Map<string, PublicProblem>();
 const calls: { path: string; body: Record<string, unknown> | null }[] = [];
 const fetchMock = vi.fn<typeof fetch>();
 const response = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status });
@@ -23,6 +25,7 @@ beforeEach(() => {
   resetPractice();
   configurePracticeAuth(async () => 'test-supabase-token');
   nextId = 0;
+  saved.clear();
   calls.length = 0;
   fetchMock.mockReset().mockImplementation(async (url, options) => {
     const path = String(url);
@@ -33,11 +36,26 @@ beforeEach(() => {
       { slug: 'basic-integrals', name: 'Basic integrals', availableDifficulties: [1, 2] },
       { slug: 'substitution', name: 'Substitution', availableDifficulties: [1] },
     ] });
+    const dto = (problem: PublicProblem) => ({ ...problem, attemptCount: problem.attemptCount ?? 0,
+      lastAttempt: problem.lastAnswer === null ? null : { answer: problem.lastAnswer,
+        result: problem.lastResult, feedbackCode: null } });
+    if (path === '/api/profile') return response({ counts: { generated: saved.size, attempted: 0, correct: 0 } });
+    if (path.startsWith('/api/problems?')) return response({ items: [...saved.values()].map(dto), nextCursor: null });
+    if (options?.method === 'GET' && path.startsWith('/api/problems/')) {
+      const problem = saved.get(path.split('/').at(-1)!)!;
+      return response({ problem: dto(problem), ...(problem.answerRevealed ? { answer: { answerLatex: 'x^2/2+C' } } : {}),
+        ...(problem.solutionRevealed ? { solution: { steps: [{ say: 'Previously revealed step.', latex: 'x^2/2+C' }] } } : {}) });
+    }
     if (path.endsWith('/attempts')) return response({ attempt: { result: body?.answer === 'x^2/2+C' ? 'correct' : 'invalid', feedbackCode: null } }, 201);
     if (path.endsWith('/reveal-answer')) return response({ answerLatex: 'x^2/2+C' });
     if (path.endsWith('/reveal-solution')) return response({ steps: [{ say: 'Apply the power rule.', latex: 'x^2/2+C' }] });
-    if (path === '/api/problems') return response({ problem: { id: `problem-${++nextId}`, ...body,
-      problemLatex: '\\int x\\,dx', createdAt: '2026-10-19T00:00:00Z', answerRevealed: false, solutionRevealed: false, lastAttempt: null } }, 201);
+    if (path === '/api/problems') {
+      const problem = { id: `problem-${++nextId}`, ...body, problemLatex: '\\int x\\,dx',
+        createdAt: '2026-10-19T00:00:00Z', answerRevealed: false, solutionRevealed: false,
+        lastResult: null, lastAnswer: null } as PublicProblem;
+      saved.set(problem.id, problem);
+      return response({ problem: { ...problem, lastAttempt: null } }, 201);
+    }
     throw new Error('Unexpected route');
   });
   vi.stubGlobal('fetch', fetchMock);
@@ -125,4 +143,17 @@ it('discards a check verdict after the answer changes while the request is pendi
   await act(async () => finish(response({ attempt: { result: 'correct', feedbackCode: null } })));
   expect(element.textContent).not.toContain('mathematically equivalent');
   expect(button('Check answer').disabled).toBe(false);
+});
+
+it('restores an old problem after clearing browser practice state without making reveal writes', async () => {
+  saved.set('old', { id: 'old', topic: 'basic-integrals', difficulty: 2, problemLatex: '\\int x\\,dx',
+    createdAt: '2026-10-19T00:00:00Z', lastAnswer: 'x^2/2+C', lastResult: 'correct', attemptCount: 2,
+    answerRevealed: true, solutionRevealed: true });
+  resetPractice();
+  await act(async () => root.render(<PracticePage id="old" />));
+  expect(element.querySelector<HTMLInputElement>('#answer')!.value).toBe('x^2/2+C');
+  expect(element.textContent).toContain('Previously revealed step');
+  expect(element.textContent).toContain('mathematically equivalent');
+  expect(calls).toHaveLength(1);
+  expect(calls[0]).toEqual({ path: '/api/problems/old', body: null });
 });

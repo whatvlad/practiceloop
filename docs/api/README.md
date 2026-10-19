@@ -4,9 +4,9 @@ Implemented: `GET /health` returns `200 {"status":"ok"}` (liveness only), the
 separate [untracked preview API](../architecture/PREVIEW_PRACTICE.md) under
 `/preview`, and (#10, `backend/app/api/practice.py`) the saved-practice routes
 `GET /api/topics`, `POST /api/problems`, `POST /api/problems/{id}/attempts`,
-`/reveal-answer` and `/reveal-solution`. `GET /api/problems`,
-`GET /api/problems/{id}` and `GET /api/profile` belong to #12 and are not
-implemented yet. The browser calls `/api/...` on the Pages origin; the proxy
+`/reveal-answer` and `/reveal-solution`, plus (#12) `GET /api/problems`,
+`GET /api/problems/{id}` and `GET /api/profile`.
+The browser calls `/api/...` on the Pages origin; the proxy
 strips `/api`, so FastAPI serves these at `/topics`, `/problems`, ... like
 `/preview`. The proxy forwards `Idempotency-Key`. Saved practice needs
 `DATABASE_URL` on the host (docs/production/ORACLE_DEPLOY.md); without it these
@@ -15,7 +15,7 @@ routes return `503 database_unavailable`.
 The #11 frontend uses these saved write routes for signed-in accounts, taking a
 current Supabase access token before each request. Guests keep the separate
 preview boundary. See [saved-practice UI](../architecture/SAVED_PRACTICE_UI.md)
-for retry behavior and the browser-session history limitation until #12.
+for retry behavior, durable history and previously authorized reveal restoration.
 
 Generation picks a random record from the cell's verified catalogue, skipping the
 records behind the user's latest half-catalogue in that cell, so a learner sees
@@ -65,6 +65,9 @@ attempts through these authenticated routes.
 `lastAttempt`, when present, contains `answer`, `result` and `feedbackCode`.
 `result` is exactly `correct`, `incorrect` or `invalid`.
 `feedbackCode` is `missing_constant` or `null`; it is never an expected answer.
+Read responses add `attemptCount`, the total number of persisted attempts for
+that problem, including invalid expressions. `lastAttempt` is the latest by
+`(created_at, id)`, not an aggregate result or all previous submissions.
 
 Errors have one envelope:
 
@@ -144,13 +147,21 @@ by `(created_at, id)`:
 {"items":[{"id":"uuid","topic":"basic-integrals","difficulty":1,"problemLatex":"\\int 3x^2\\,dx","createdAt":"2026-10-19T12:00:00Z","answerRevealed":false,"solutionRevealed":false,"lastAttempt":null}],"nextCursor":null}
 ```
 
+The cursor encodes the last visible `(created_at, id)` tuple; it is bounded and
+validated, and never supplies an owner ID. Each page reads problem metadata and
+latest-attempt/count summaries from one read-only repeatable-read transaction.
+One extra row detects whether another page exists, including at the 50-row limit.
 The cursor is stable for rows already seen. Newly generated problems appear only
-when pagination restarts without a cursor.
+when pagination restarts without a cursor. History never includes reveal payloads.
 
 ### `GET /api/problems/{id}`
 
 Returns `200` and the shared problem shape. If a reveal flag is true, the response
 also includes the corresponding previously authorized `answer` or `solution`.
+These are top-level siblings of `problem`, with the same shapes as the reveal
+responses, e.g. `{"problem":{...},"answer":{"answerLatex":"..."}}`.
+This is a read-only transaction: reopening never creates attempts or changes
+reveal flags. Unrevealed content and generator records are not returned.
 
 ### `GET /api/profile`
 
@@ -158,7 +169,11 @@ also includes the corresponding previously authorized `answer` or `solution`.
 {"account":{"id":"uuid","name":"Ada","email":"ada@example.test","provider":"Google"},"counts":{"generated":4,"attempted":3,"correct":2}}
 ```
 
-Counts use ADR-004 distinct-problem semantics. `name` is nullable. Account data
+Counts use one SQL aggregate snapshot and ADR-004 distinct-problem semantics:
+invalid-only attempts count as attempted, repeated attempts do not inflate
+counts, and any previous correct attempt keeps the problem counted as correct.
+`name` is currently null because the verified API identity does not include it;
+the UI retains the current Google-session display name. Account data
 comes from the verified session/profile, never client-supplied identity fields.
 
 ## HTTP failures and retry behavior

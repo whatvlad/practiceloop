@@ -5,7 +5,7 @@ import { DifficultyScale } from '../components/DifficultyScale';
 import { HistoryList } from '../components/HistoryRow';
 import { StatTile } from '../components/StatTile';
 import { TopicChips } from '../components/TopicChips';
-import { generateProblem, getLastSelection, getProfileCounts, getTopics, listProblems } from '../data/api';
+import { generateProblem, getLastSelection, getProfileCounts, getTopics, listProblemPage } from '../data/api';
 import type { Difficulty, TopicSlug } from '../data/types';
 import { navigate } from '../router';
 import { useLoad } from '../useLoad';
@@ -13,8 +13,9 @@ import { useLoad } from '../useLoad';
 export function DashboardPage() {
   const [catalogueRevision, setCatalogueRevision] = useState(0);
   const catalogue = useLoad(getTopics, String(catalogueRevision));
-  const counts = useLoad(getProfileCounts);
-  const recent = useLoad(async () => (await listProblems()).slice(0, 3));
+  const [dataRevision, setDataRevision] = useState(0);
+  const counts = useLoad(getProfileCounts, String(dataRevision));
+  const recent = useLoad(async () => (await listProblemPage({ limit: 3 })).items, String(dataRevision));
   const last = useLoad(getLastSelection);
   const [topic, setTopic] = useState<TopicSlug>('basic-integrals');
   const [difficulty, setDifficulty] = useState<Difficulty>(1);
@@ -62,6 +63,8 @@ export function DashboardPage() {
           <StatTile label="Correct" value={counts.data.correct} of={counts.data.attempted} />
         </div>
       )}
+      {counts.status === 'loading' && <p role="status">Loading your statistics…</p>}
+      {(counts.status === 'error' || recent.status === 'error') && <div role="alert"><p>Your history or statistics could not be loaded.</p><Button variant="secondary" onClick={() => setDataRevision(value => value + 1)}>Retry history and statistics</Button></div>}
       <section className="pl-problem pl-problem--flat pl-mb-6" aria-labelledby="start-title">
         <div>
           <h2 id="start-title" className="pl-h-lg">
@@ -104,6 +107,7 @@ export function DashboardPage() {
         ) : (
           <p className="pl-muted">Problems you generate appear here.</p>
         ))}
+      {recent.status === 'loading' && <p role="status">Loading recent problems…</p>}
     </main>
   );
 }

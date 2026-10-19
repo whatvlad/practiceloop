@@ -445,3 +445,143 @@ def test_topics_lists_only_generated_cells(client: TestClient) -> None:
         ("basic-integrals", [1, 2]),
         ("substitution", [1, 2]),
     ]
+
+
+# History, persisted reopen and profile (#12)
+
+
+def test_empty_history_and_profile_need_no_existing_profile(client: TestClient) -> None:
+    assert client.get("/problems").json() == {"items": [], "nextCursor": None}
+    assert client.get("/profile").json()["counts"] == {"generated": 0, "attempted": 0, "correct": 0}
+
+
+def test_history_reopen_and_profile_are_owner_scoped(
+    client: TestClient, users: Users, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    stub_check(monkeypatch, AnswerCheck("correct"))
+    problem = generate(client)
+    attempt(client, problem["id"], "x+C")
+    client.post(f"/problems/{problem['id']}/reveal-solution")
+    users.current = users.bob
+    assert client.get("/problems").json() == {"items": [], "nextCursor": None}
+    foreign = client.get(f"/problems/{problem['id']}")
+    missing = client.get(f"/problems/{uuid4()}")
+    assert foreign.status_code == missing.status_code == 404
+    assert foreign.json() == missing.json()
+    profile = client.get("/profile").json()
+    assert profile["account"]["id"] == str(users.bob)
+    assert profile["counts"] == {"generated": 0, "attempted": 0, "correct": 0}
+
+
+def test_reopen_restores_latest_attempt_and_only_previously_revealed_content(
+    client: TestClient, url: str, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    problem = generate(client)
+    path = f"/problems/{problem['id']}"
+    unrevealed = client.get(path).json()
+    assert set(unrevealed) == {"problem"}
+    assert unrevealed["problem"]["lastAttempt"] is None
+    assert unrevealed["problem"]["attemptCount"] == 0
+    stub_check(monkeypatch, AnswerCheck("incorrect", missing_constant=True))
+    attempt(client, problem["id"], "x")
+    state = client.get(path).json()
+    assert state["problem"]["lastAttempt"] == {
+        "answer": "x",
+        "result": "incorrect",
+        "feedbackCode": "missing_constant",
+    }
+    assert state["problem"]["attemptCount"] == 1
+    answer = client.post(path + "/reveal-answer").json()
+    assert client.get(path).json()["answer"] == answer
+    assert "solution" not in client.get(path).json()
+    solution = client.post(path + "/reveal-solution").json()
+    reopened = client.get(path).json()
+    assert reopened["answer"] == answer and reopened["solution"] == solution
+    history = client.get("/problems").json()["items"][0]
+    assert history["answerRevealed"] and history["solutionRevealed"]
+    assert "answer" not in history and "solution" not in history
+    assert "generator" not in str(reopened)
+    assert rows(
+        url,
+        "select answer_revealed, solution_revealed from public.problems where id=%s",
+        problem["id"],
+    ) == [(True, True)]
+
+
+def test_profile_counts_distinct_problems_and_remembers_a_correct_attempt(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    one, two, _untouched = generate(client), generate(client), generate(client)
+    stub_check(monkeypatch, AnswerCheck("invalid"))
+    attempt(client, one["id"], "x+*")
+    assert client.get("/profile").json()["counts"] == {"generated": 3, "attempted": 1, "correct": 0}
+    stub_check(monkeypatch, AnswerCheck("correct"))
+    headers = key()
+    attempt(client, two["id"], "x+C", headers)
+    attempt(client, two["id"], "x+C", headers)
+    stub_check(monkeypatch, AnswerCheck("incorrect"))
+    attempt(client, two["id"], "x+1")
+    assert client.get("/profile").json()["counts"] == {"generated": 3, "attempted": 2, "correct": 1}
+    history = client.get("/problems").json()["items"]
+    assert next(p for p in history if p["id"] == two["id"])["attemptCount"] == 2
+
+
+def test_history_cursor_orders_ties_and_excludes_newer_insertions(
+    client: TestClient, users: Users, url: str
+) -> None:
+    ids = [generate(client)["id"] for _ in range(4)]
+    with psycopg.connect(url) as conn:
+        conn.execute(
+            "update public.problems set created_at='2026-01-01T00:00:00Z' where user_id=%s",
+            (users.alice,),
+        )
+    first = client.get("/problems?limit=2").json()
+    assert len(first["items"]) == 2 and first["nextCursor"]
+    fresh = generate(client)["id"]
+    second = client.get("/problems", params={"limit": 2, "cursor": first["nextCursor"]}).json()
+    assert second["nextCursor"] is None
+    seen = [p["id"] for p in first["items"] + second["items"]]
+    assert seen == sorted(ids, reverse=True)
+    assert fresh not in seen
+    assert client.get("/problems").json()["items"][0]["id"] == fresh
+
+
+@pytest.mark.parametrize(
+    "query", ["limit=0", "limit=51", "limit=x", "cursor=bad!", "cursor=", "cursor=" + "x" * 257]
+)
+def test_history_rejects_malformed_pagination(client: TestClient, query: str) -> None:
+    assert client.get("/problems?" + query).status_code == 422
+
+
+def test_history_maximum_page_uses_one_extra_row_to_detect_more(
+    client: TestClient, users: Users, url: str
+) -> None:
+    rows(
+        url,
+        "insert into public.problems(user_id, topic_id, difficulty, problem_latex)"
+        " select %s, t.id, 1, 'statement' from public.topics t cross join generate_series(1,51)"
+        " where t.slug='basic-integrals' returning id",
+        users.alice,
+    )
+    page = client.get("/problems?limit=50").json()
+    assert len(page["items"]) == 50 and page["nextCursor"]
+    last = client.get("/problems", params={"limit": 50, "cursor": page["nextCursor"]}).json()
+    assert len(last["items"]) == 1 and last["nextCursor"] is None
+
+
+def test_history_reads_require_authentication_before_database_access(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from app.core.auth import token_verifier
+
+    def no_database() -> Any:
+        raise AssertionError("Unauthenticated request reached the database")
+
+    monkeypatch.setattr(practice, "transaction", no_database)
+    app.dependency_overrides.pop(current_user)
+    app.dependency_overrides[token_verifier] = lambda: object()
+    try:
+        for path in ("/problems", f"/problems/{uuid4()}", "/profile"):
+            assert client.get(path).status_code == 401
+    finally:
+        app.dependency_overrides.pop(token_verifier)

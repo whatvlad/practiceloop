@@ -1,4 +1,4 @@
-# Saved practice UI (#11)
+# Saved practice UI (#11/#12)
 
 The signed-in dashboard and practice card use #10's saved routes through
 `frontend/src/data/api.ts` and `practice.ts`. Before every request, the data
@@ -39,24 +39,43 @@ Revealing the solution sets both local reveal flags, matching the backend.
 
 Generation explicitly projects only the public problem fields into the cache.
 Checks accept only verdict/feedback fields. Answers and solution steps are
-returned by reveal calls and held separately in the active card. They are never
+returned by reveal calls (or an authorized reopen) and held separately in the active card. They are never
 prefetched for an unrevealed problem or stored in the shared problem cache.
-Reopening an already revealed problem in this browser session can request its
-previously authorized reveal payload again. KaTeX retains `trust: false`, bounded
+Reopening an already revealed problem restores its authorized payload through
+the read-only GET route, without additional reveal writes. KaTeX retains `trust: false`, bounded
 expansion/size and MathML output; rendering failures fall back to escaped text.
 
-## History limitation and verification
+## Durable history and profile
 
-All generated problems, attempts and reveals are persisted by #10, but the #12
-read routes do not exist yet. History/reopen/counters currently use this browser
-session's public cache. Reload clears that cache, not the saved database rows.
-The app labels this explicitly. Durable history restoration and account-wide
-profile statistics are excluded from #11.
+The #12 read routes load history after a reload, reopen owned problems and return
+account-wide profile counts. History uses 20-row pages with stable cursors and a
+Load more control; the dashboard requests only three recent records. Filters
+apply to loaded records and say when older pages remain. Failed next-page reads
+retain existing rows and retry the same cursor; pending requests are guarded.
+Each row shows topic, difficulty, creation time, latest user answer/result,
+attempt count and reveal flags. Full attempt timelines are outside this contract.
+
+Reopen always reads the server and restores latest input/feedback plus previously
+authorized answers/solutions in an `OpenedProblem`. The shared `PublicProblem`
+cache receives only public fields. Unsigned preview keeps its in-memory history.
+
+Profile counts come from the server, not the loaded history subset. A single SQL
+statement computes generated, distinct attempted (including invalid-only), and
+distinct ever-correct problems. Repeated attempts do not inflate counts; a later
+incorrect attempt cannot erase an earlier success. Loading/errors have explicit
+states and retries, with no invented zero counts on service failure.
+
+## Verification
 
 `practice.test.ts` covers saved/preview routing, DTO projection, key reuse,
 duplicate requests, token refresh, Retry-After, invalid/missing-constant results
 and identity races. `savedPracticeFlow.test.tsx` runs the real React controls,
 answer syntax/Enter handler and data boundary against controlled HTTP responses:
 selection, generation, invalid/correct checking, explicit reveals and next.
-It also checks topic-specific availability, catalogue retry and stale verdicts.
-These tests do not claim a live Google OAuth/database end-to-end run.
+It also checks topic-specific availability, catalogue retry, stale verdicts and
+reopen after clearing the browser cache. History page tests cover pagination
+retry/duplicate clicks, empty state and discarding the previous account's read.
+Database tests run as the RLS-bypassing service role and check ownership, stable
+timestamp ties/new insertions, the 50-row boundary, reveal gating and ADR-004
+invalid/repeated/correct-then-incorrect semantics. Unit/component tests do not
+claim live Google OAuth/database verification; delivery evidence is in the PR.

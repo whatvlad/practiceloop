@@ -27,6 +27,8 @@ export {
   getProblem,
   getProfileCounts,
   listProblems,
+  listProblemPage,
+  openProblem,
   revealAnswer,
   revealSolution,
   submitAttempt,

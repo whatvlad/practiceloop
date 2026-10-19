@@ -1,7 +1,7 @@
 // Saved account practice and an isolated, untracked guest preview. Public cache only.
 import text from '../../../backend/app/content/en.json';
 import { TOPICS } from './topics';
-import type { AvailableTopic, CheckResult, Difficulty, PublicProblem, RevealedAnswer, RevealedSolution, TopicSlug } from './types';
+import type { AvailableTopic, CheckResult, Difficulty, OpenedProblem, ProblemPage, ProfileCounts, PublicProblem, RevealedAnswer, RevealedSolution, TopicSlug } from './types';
 
 const base = (import.meta.env.VITE_API_BASE_URL ?? '/api').trim().replace(/\/+$/, '');
 let token: Promise<string> | null = null;
@@ -110,10 +110,109 @@ function find(id: string): PublicProblem {
   return problem;
 }
 
-export async function listProblems(): Promise<PublicProblem[]> { return structuredClone(problems); }
-export async function getProblem(id: string): Promise<PublicProblem> { return structuredClone(find(id)); }
+function verdict(data: Record<string, unknown>): CheckResult {
+  if (data.result !== 'correct' && data.result !== 'incorrect' && data.result !== 'invalid') throw new Error(text.service_error);
+  if (data.feedbackCode !== null && data.feedbackCode !== 'missing_constant') throw new Error(text.service_error);
+  if (data.feedbackCode === 'missing_constant' && data.result !== 'incorrect') throw new Error(text.service_error);
+  return data.feedbackCode === 'missing_constant' ? 'missing_constant' : data.result;
+}
+
+function publicProblem(value: unknown): PublicProblem {
+  const data = object(value);
+  if (typeof data.id !== 'string' || typeof data.problemLatex !== 'string' || typeof data.createdAt !== 'string'
+    || !TOPICS.some(t => t.slug === data.topic) || ![1, 2, 3, 4, 5].includes(data.difficulty as number)
+    || typeof data.answerRevealed !== 'boolean' || typeof data.solutionRevealed !== 'boolean'
+    || !Number.isSafeInteger(data.attemptCount) || (data.attemptCount as number) < 0) throw new Error(text.service_error);
+  const last = data.lastAttempt === null ? null : object(data.lastAttempt);
+  if (last && typeof last.answer !== 'string') throw new Error(text.service_error);
+  return { saved: true, id: data.id, topic: data.topic as TopicSlug, difficulty: data.difficulty as Difficulty,
+    problemLatex: data.problemLatex, createdAt: data.createdAt, answerRevealed: data.answerRevealed,
+    solutionRevealed: data.solutionRevealed, attemptCount: data.attemptCount as number,
+    lastResult: last ? verdict(last) : null, lastAnswer: last ? last.answer as string : null };
+}
+
+function cache(problem: PublicProblem): PublicProblem {
+  const existing = problems.find(p => p.id === problem.id);
+  if (existing) { Object.assign(existing, problem); return existing; }
+  problems.push(problem);
+  return problem;
+}
+
+function solution(data: Record<string, unknown>): RevealedSolution {
+  if (!Array.isArray(data.steps) || data.steps.length > 20) throw new Error(text.service_error);
+  return { steps: data.steps.map((value: unknown) => {
+    const step = object(value);
+    if (typeof step.say !== 'string' || typeof step.latex !== 'string') throw new Error(text.service_error);
+    return { say: step.say, latex: step.latex };
+  }) };
+}
+
+export async function listProblemPage({ limit = 20, cursor = null }: { limit?: number; cursor?: string | null } = {}): Promise<ProblemPage> {
+  if (!Number.isInteger(limit) || limit < 1 || limit > 50) throw new Error(text.service_error);
+  const started = epoch;
+  const { bearer, saved } = await credentials();
+  if (!saved) {
+    const offset = cursor === null ? 0 : Number(cursor);
+    if (!Number.isSafeInteger(offset) || offset < 0) throw new Error(text.service_error);
+    return { items: structuredClone(problems.slice(offset, offset + limit)),
+      nextCursor: offset + limit < problems.length ? String(offset + limit) : null };
+  }
+  const query = new URLSearchParams({ limit: String(limit) });
+  if (cursor !== null) query.set('cursor', cursor);
+  const data = await request(`/problems?${query}`, undefined, bearer, true);
+  if (started !== epoch) throw new Error(text.expired);
+  if (!Array.isArray(data.items) || data.items.length > limit
+    || (data.nextCursor !== null && (typeof data.nextCursor !== 'string' || !data.nextCursor || data.nextCursor === cursor))) throw new Error(text.service_error);
+  const items = data.items.map(publicProblem);
+  if (new Set(items.map(p => p.id)).size !== items.length || (!items.length && data.nextCursor)) throw new Error(text.service_error);
+  items.forEach(cache);
+  return { items, nextCursor: data.nextCursor as string | null };
+}
+
+/** Convenience read of the most recent history page. */
+export async function listProblems(): Promise<PublicProblem[]> { return (await listProblemPage()).items; }
+
+export async function openProblem(id: string): Promise<OpenedProblem> {
+  const started = epoch;
+  const { bearer, saved } = await credentials();
+  if (!saved) {
+    const problem = structuredClone(find(id));
+    return { problem, ...(problem.answerRevealed ? { answer: await revealAnswer(id) } : {}),
+      ...(problem.solutionRevealed ? { solution: await revealSolution(id) } : {}) };
+  }
+  const data = await request(`/problems/${encodeURIComponent(id)}`, undefined, bearer, true);
+  if (started !== epoch) throw new Error(text.expired);
+  const problem = publicProblem(data.problem);
+  if (problem.id !== id) throw new Error(text.service_error);
+  const result: OpenedProblem = { problem };
+  if (problem.answerRevealed) {
+    const answer = object(data.answer);
+    if (typeof answer.answerLatex !== 'string') throw new Error(text.service_error);
+    result.answer = { answerLatex: answer.answerLatex };
+  }
+  if (problem.solutionRevealed) result.solution = solution(object(data.solution));
+  cache(problem);
+  return result;
+}
+
+/** Public cache lookup for an already active problem, otherwise open it from the server. */
+export async function getProblem(id: string): Promise<PublicProblem> {
+  const local = problems.find(p => p.id === id);
+  return local ? structuredClone(local) : (await openProblem(id)).problem;
+}
 export async function getLastSelection() { return { ...selection }; }
-export async function getProfileCounts() {
+export async function getProfileCounts(): Promise<ProfileCounts> {
+  const started = epoch;
+  const { bearer, saved } = await credentials();
+  if (saved) {
+    const data = await request('/profile', undefined, bearer, true);
+    if (started !== epoch) throw new Error(text.expired);
+    const counts = object(data.counts);
+    const values = [counts.generated, counts.attempted, counts.correct];
+    if (values.some(value => !Number.isSafeInteger(value) || (value as number) < 0)
+      || (counts.correct as number) > (counts.attempted as number) || (counts.attempted as number) > (counts.generated as number)) throw new Error(text.service_error);
+    return { generated: counts.generated as number, attempted: counts.attempted as number, correct: counts.correct as number };
+  }
   return { generated: problems.length, attempted: problems.filter(p => p.lastResult !== null).length,
     correct: correctProblems.size };
 }
@@ -174,16 +273,15 @@ export function submitAttempt(id: string, answer: string): Promise<CheckResult> 
     const response = await request(`/problems/${encodeURIComponent(id)}/attempts`, { answer }, authorized, saved, operation);
     if (started !== epoch) throw new Error(text.expired);
     const data = saved ? object(response.attempt) : response;
-    if (data.result !== 'correct' && data.result !== 'incorrect' && data.result !== 'invalid') throw new Error(text.service_error);
-    if (data.feedbackCode !== null && data.feedbackCode !== 'missing_constant') throw new Error(text.service_error);
-    if (data.feedbackCode === 'missing_constant' && data.result !== 'incorrect') throw new Error(text.service_error);
+    const checked = verdict(data);
     if (data.result === 'correct') correctProblems.add(id);
     if (data.result !== 'invalid' || saved) {
-      problem.lastResult = data.feedbackCode === 'missing_constant' ? 'missing_constant' : data.result;
+      problem.lastResult = checked;
       problem.lastAnswer = answer;
+      problem.attemptCount = (problem.attemptCount ?? 0) + 1;
     }
     keys.delete(operation);
-    return data.feedbackCode === 'missing_constant' ? 'missing_constant' : data.result;
+    return checked;
   });
 }
 
@@ -209,14 +307,9 @@ export function revealSolution(id: string): Promise<RevealedSolution> {
     const authorized = await authorize(started, saved, bearer);
     const data = await request(`/problems/${encodeURIComponent(id)}/reveal-solution`, {}, authorized, saved);
     if (started !== epoch) throw new Error(text.expired);
-    if (!Array.isArray(data.steps) || data.steps.length > 20) throw new Error(text.service_error);
-    const steps = data.steps.map((value: unknown) => {
-      const step = object(value);
-      if (typeof step.say !== 'string' || typeof step.latex !== 'string') throw new Error(text.service_error);
-      return { say: step.say, latex: step.latex };
-    });
+    const revealed = solution(data);
     problem.solutionRevealed = true;
     if (saved) problem.answerRevealed = true;
-    return { steps };
+    return revealed;
   });
 }

@@ -130,6 +130,8 @@ def list_problems(
     user_id: UUID,
     limit: int,
     before: tuple[datetime, UUID] | None = None,
+    *,
+    include_next: bool = False,
 ) -> list[ProblemRecord]:
     """Newest first by (created_at, id); `before` is the last row of the previous page."""
     if not 1 <= limit <= MAX_PAGE_SIZE:
@@ -143,9 +145,71 @@ def list_problems(
             " and (%(created)s::timestamptz is null"
             "      or (p.created_at, p.id) < (%(created)s::timestamptz, %(id)s::uuid))"
             " order by p.created_at desc, p.id desc limit %(limit)s",
-            {"user": user_id, "created": created_before, "id": id_before, "limit": limit},
+            {
+                "user": user_id,
+                "created": created_before,
+                "id": id_before,
+                "limit": limit + int(include_next),
+            },
         )
         return [ProblemRecord(**row) for row in cur.fetchall()]
+
+
+def attempt_summaries(
+    conn: Connection[Any], user_id: UUID, problem_ids: list[UUID]
+) -> dict[UUID, tuple[AttemptRecord, int]]:
+    """Latest attempt and total count, in one bounded query for the owner's page."""
+    if not problem_ids:
+        return {}
+    with conn.cursor(row_factory=dict_row) as cur:
+        cur.execute(
+            "select distinct on (problem_id) id, problem_id, user_answer, is_correct,"
+            " constant_omitted, created_at, count(*) over (partition by problem_id) as total"
+            " from public.attempts where user_id = %s and problem_id = any(%s)"
+            " order by problem_id, created_at desc, id desc",
+            (user_id, problem_ids),
+        )
+        result = {}
+        for row in cur.fetchall():
+            count = int(row.pop("total"))
+            attempt = AttemptRecord(**row)
+            result[attempt.problem_id] = (attempt, count)
+        return result
+
+
+def profile_counts(conn: Connection[Any], user_id: UUID) -> dict[str, int]:
+    """All three ADR-004 counts from one statement/snapshot, including invalid attempts."""
+    row = conn.execute(
+        "select count(*), count(*) filter (where exists ("
+        " select 1 from public.attempts a where a.problem_id = p.id and a.user_id = p.user_id"
+        ")), count(*) filter (where exists ("
+        " select 1 from public.attempts a where a.problem_id = p.id and a.user_id = p.user_id"
+        " and a.is_correct is true)) from public.problems p where p.user_id = %s",
+        (user_id,),
+    ).fetchone()
+    if row is None:
+        raise RuntimeError("Aggregate query returned no row")
+    return dict(zip(("generated", "attempted", "correct"), map(int, row), strict=True))
+
+
+def previously_revealed(conn: Connection[Any], user_id: UUID, problem_id: UUID) -> dict[str, Any]:
+    """Read only previously authorized content; GET never changes reveal flags."""
+    row = conn.execute(
+        "select case when p.answer_revealed then s.answer_latex end,"
+        " case when p.solution_revealed then s.solution_steps end"
+        " from public.problems p join private.problem_solutions s on s.problem_id = p.id"
+        " where p.id = %s and p.user_id = %s"
+        " and (p.answer_revealed or p.solution_revealed)",
+        (problem_id, user_id),
+    ).fetchone()
+    if row is None:
+        return {}
+    result: dict[str, Any] = {}
+    if row[0] is not None:
+        result["answer"] = {"answerLatex": str(row[0])}
+    if row[1] is not None:
+        result["solution"] = {"steps": list(row[1])}
+    return result
 
 
 def last_attempt(conn: Connection[Any], user_id: UUID, problem_id: UUID) -> AttemptRecord | None:

@@ -93,7 +93,7 @@ it('uses saved DTOs and a Supabase bearer without creating a preview session or 
   expect(fetchMock).toHaveBeenCalledTimes(1);
   expect(fetchMock.mock.calls[0][0]).toBe('/api/problems');
   expect(fetchMock.mock.calls[0][1]?.headers).toMatchObject({ Authorization: 'Bearer supabase-access-token' });
-  expect(JSON.stringify(await practice.listProblems())).not.toContain('PRIVATE');
+  expect(JSON.stringify(await practice.getProblem(problem.id))).not.toContain('PRIVATE');
   fetchMock.mockResolvedValueOnce(response({ attempt: { result: 'invalid', feedbackCode: null } }, 201));
   expect(await practice.submitAttempt(problem.id, 'sin(')).toBe('invalid');
   expect((await practice.getProblem(problem.id)).lastResult).toBe('invalid');
@@ -103,7 +103,7 @@ it('uses saved DTOs and a Supabase bearer without creating a preview session or 
   fetchMock.mockResolvedValueOnce(response({ steps: [{ say: 'Integrate.', latex: 'x^2/2+C' }] }));
   await practice.revealSolution(problem.id);
   expect(await practice.getProblem(problem.id)).toMatchObject({ answerRevealed: true, solutionRevealed: true });
-  expect(JSON.stringify(await practice.listProblems())).not.toContain('steps');
+  expect(JSON.stringify(await practice.getProblem(problem.id))).not.toContain('steps');
 });
 
 it('reuses the generation key after a lost response but makes a new key for the next deliberate problem', async () => {
@@ -118,7 +118,7 @@ it('reuses the generation key after a lost response but makes a new key for the 
   fetchMock.mockResolvedValueOnce(response({ problem: { ...publicProblem, id: 'two' } }, 201));
   await practice.generateProblem('basic-integrals', 1);
   expect((fetchMock.mock.calls[2][1]?.headers as Record<string, string>)['Idempotency-Key']).not.toBe(firstKey);
-  expect(await practice.listProblems()).toHaveLength(2);
+  expect((await practice.getProblem('two')).id).toBe('two');
 });
 
 it('deduplicates attempts and retains their key on retry with a refreshed access token', async () => {
@@ -180,6 +180,7 @@ it('drops saved responses and credentials that finish after an identity change',
   practice.resetPractice();
   finish(response({ attempt: { result: 'correct', feedbackCode: null } }));
   await expect(pending).rejects.toThrow('expired');
+  practice.configurePracticeAuth(async () => null);
   expect(await practice.listProblems()).toEqual([]);
   let credential!: (value: string) => void;
   practice.configurePracticeAuth(() => new Promise(resolve => { credential = resolve; }));
@@ -188,4 +189,65 @@ it('drops saved responses and credentials that finish after an identity change',
   credential('old-account-token');
   await expect(next).rejects.toThrow('expired');
   expect(fetchMock).toHaveBeenCalledTimes(2);
+});
+
+const storedProblem = { ...publicProblem, answerRevealed: false, solutionRevealed: false, attemptCount: 2,
+  lastAttempt: { answer: 'x^2/2', result: 'incorrect', feedbackCode: 'missing_constant' } };
+
+it('reads paginated persisted history and keeps reveal payloads out of shared problem state', async () => {
+  practice.configurePracticeAuth(async () => 'access-token');
+  fetchMock.mockResolvedValueOnce(response({ items: [{ ...storedProblem, answer: 'PRIVATE', solution: 'PRIVATE', generator: 'PRIVATE' }], nextCursor: 'next-page' }));
+  const page = await practice.listProblemPage({ limit: 1 });
+  expect(page.nextCursor).toBe('next-page');
+  expect(page.items[0]).toMatchObject({ attemptCount: 2, lastResult: 'missing_constant', lastAnswer: 'x^2/2' });
+  expect(JSON.stringify(page)).not.toContain('PRIVATE');
+  fetchMock.mockResolvedValueOnce(response({ items: [], nextCursor: null }));
+  await practice.listProblemPage({ limit: 1, cursor: page.nextCursor });
+  expect(fetchMock.mock.calls[1][0]).toBe('/api/problems?limit=1&cursor=next-page');
+});
+
+it('reopens persisted state after a reload with previously authorized reveals and no POST', async () => {
+  practice.configurePracticeAuth(async () => 'access-token');
+  fetchMock.mockResolvedValueOnce(response({ problem: { ...storedProblem, answerRevealed: true, solutionRevealed: true },
+    answer: { answerLatex: 'x^2/2+C', generator: 'PRIVATE' }, solution: { steps: [{ say: 'Integrate.', latex: 'x^2/2+C' }] } }));
+  const opened = await practice.openProblem(publicProblem.id);
+  expect(opened.answer).toEqual({ answerLatex: 'x^2/2+C' });
+  expect(opened.solution?.steps).toHaveLength(1);
+  expect(opened.problem.lastResult).toBe('missing_constant');
+  expect(fetchMock.mock.calls[0][1]?.method).toBe('GET');
+  expect(JSON.stringify(await practice.getProblem(publicProblem.id))).not.toMatch(/answerLatex|steps|PRIVATE/);
+});
+
+it('ignores unsolicited reveals on an unrevealed problem and takes profile counts from the server', async () => {
+  practice.configurePracticeAuth(async () => 'access-token');
+  fetchMock.mockResolvedValueOnce(response({ problem: storedProblem, answer: { answerLatex: 'PRIVATE' }, solution: { steps: [] } }));
+  const opened = await practice.openProblem(publicProblem.id);
+  expect(opened.answer).toBeUndefined();
+  expect(opened.solution).toBeUndefined();
+  fetchMock.mockResolvedValueOnce(response({ counts: { generated: 100, attempted: 70, correct: 40 } }));
+  expect(await practice.getProfileCounts()).toEqual({ generated: 100, attempted: 70, correct: 40 });
+  expect(fetchMock.mock.calls[1][0]).toBe('/api/profile');
+});
+
+it('rejects a looping page cursor, duplicate page IDs and inconsistent profile counts', async () => {
+  practice.configurePracticeAuth(async () => 'access-token');
+  fetchMock.mockResolvedValueOnce(response({ items: [storedProblem], nextCursor: 'loop' }));
+  await expect(practice.listProblemPage({ cursor: 'loop' })).rejects.toThrow();
+  fetchMock.mockResolvedValueOnce(response({ items: [storedProblem, storedProblem], nextCursor: null }));
+  await expect(practice.listProblemPage()).rejects.toThrow();
+  fetchMock.mockResolvedValueOnce(response({ counts: { generated: 1, attempted: 0, correct: 1 } }));
+  await expect(practice.getProfileCounts()).rejects.toThrow();
+});
+
+it('discards a read that finishes after switching accounts and never caches its problem', async () => {
+  practice.configurePracticeAuth(async () => 'old-token');
+  let finish!: (value: Response) => void;
+  fetchMock.mockImplementationOnce(() => new Promise(resolve => { finish = resolve; }));
+  const pending = practice.listProblemPage();
+  await vi.waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+  practice.resetPractice();
+  practice.configurePracticeAuth(async () => null);
+  finish(response({ items: [storedProblem], nextCursor: null }));
+  await expect(pending).rejects.toThrow('expired');
+  expect(await practice.listProblems()).toEqual([]);
 });
