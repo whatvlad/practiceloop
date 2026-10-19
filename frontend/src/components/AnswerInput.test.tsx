@@ -1,8 +1,11 @@
 // @vitest-environment jsdom
 import { act, useState } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AnswerInput } from './AnswerInput';
+
+// These cover the plain-text field, used until (or where) the formula editor cannot load.
+vi.mock('mathlive', () => ({}));
 
 let root: Root;
 let element: HTMLDivElement;

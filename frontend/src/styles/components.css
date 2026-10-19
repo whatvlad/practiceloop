@@ -48,6 +48,12 @@ a{color:inherit}
 .pl-input.is-correct{border-color:var(--correct)}
 .pl-input.is-incorrect{border-color:var(--incorrect)}
 .pl-input.is-invalid{border-color:var(--invalid)}
+.pl-formula{display:flex;align-items:center;height:auto;min-height:60px;padding:var(--space-2) var(--space-4);font-family:var(--font-math);font-size:22px;--caret-color:var(--ink);--selection-background-color:var(--surface-hover);--placeholder-color:var(--ink-subtle);--contains-highlight-background-color:transparent;--primary-color:var(--ink);--text-font-family:var(--font-mono)}
+.pl-formula:focus-within{outline:2px solid var(--focus);outline-offset:2px;border-color:var(--ink)}
+.pl-formula::part(virtual-keyboard-toggle),.pl-formula::part(menu-toggle){display:none}
+.pl-formula::part(content){padding:0}
+/* MathLive's phone keyboard, in the app's colours. */
+body{--keyboard-background:var(--surface);--keyboard-border:var(--line);--keyboard-toolbar-text:var(--ink-muted);--keyboard-toolbar-text-active:var(--ink);--keyboard-toolbar-background-hover:var(--surface-hover);--keyboard-toolbar-background-selected:var(--surface-raised);--keyboard-accent-color:var(--ink);--keycap-background:var(--surface-raised);--keycap-background-hover:var(--surface-hover);--keycap-background-active:var(--surface-hover);--keycap-background-pressed:var(--surface-hover);--keycap-border:var(--control-border);--keycap-border-bottom:var(--control-border);--keycap-text:var(--ink);--keycap-secondary-background:var(--surface-hover);--keycap-secondary-background-hover:var(--line);--keycap-secondary-text:var(--ink);--keycap-secondary-border:var(--control-border);--keycap-secondary-border-bottom:var(--control-border);--keycap-primary-background:var(--action);--keycap-primary-text:var(--on-action);--keycap-primary-background-hover:var(--action-hover)}
 /* answer assist: live preview and math keypad */
 .pl-preview{min-height:44px;display:flex;flex-direction:column;justify-content:center;gap:var(--space-1);font-size:14px;line-height:22px}
 .pl-preview-note{color:var(--ink-subtle)}

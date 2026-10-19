@@ -74,7 +74,7 @@ export function ProblemCard({
         assist
         hint={
           <>
-            Type notation like <code>sqrt(3)</code>, <code>pi/4 + 2</code>, <code>e^2</code>, or use the keys. Press Enter to check.
+            Type <code>/</code> for a fraction, <code>^</code> for a power, <code>sqrt</code> for a root, or use the keys. Press Enter to check.
           </>
         }
       />

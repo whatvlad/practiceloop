@@ -1,6 +1,9 @@
-import { useLayoutEffect, useMemo, useRef, type KeyboardEvent, type ReactNode } from 'react';
+import { useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
+import type { MathfieldElement } from 'mathlive';
 import { analyseAnswer } from '../answerSyntax';
 import type { CheckResult } from '../data/types';
+import type { EditorAnswer } from '../mathEditor';
+import { FormulaField, useMathLive, usesPhoneKeyboard } from './FormulaField';
 import { MathKeypad, type KeypadInsert, type KeypadMove } from './MathKeypad';
 import { Tex } from './Tex';
 
@@ -17,7 +20,11 @@ interface AnswerInputProps {
   describedBy?: string;
   onEnter?: () => void;
   readOnly?: boolean;
-  /** Math keypad plus a live preview that flags syntax mistakes while typing. */
+  /**
+   * Formula editor that shows the answer as 2D maths while typing, plus a math
+   * keypad and a preview that flags syntax mistakes. Until the editor has
+   * loaded (or where it cannot run) the field is plain text.
+   */
   assist?: boolean;
 }
 
@@ -35,10 +42,28 @@ export function AnswerInput({
   assist = false,
 }: AnswerInputProps) {
   const input = useRef<HTMLInputElement>(null);
+  const formula = useRef<MathfieldElement | null>(null);
   const caret = useRef<number | null>(null);
-  const analysis = useMemo(() => (assist ? analyseAnswer(value) : null), [assist, value]);
+  const mathLive = useMathLive(assist && !readOnly);
+  // An empty box in the formula editor (a fraction without its denominator, say).
+  const [emptyBox, setEmptyBox] = useState(false);
+  const analysis = useMemo(() => {
+    if (!assist) return null;
+    if (mathLive && emptyBox && value.trim() !== '') {
+      return { status: 'unfinished', message: 'Fill in the empty box to finish.' } as const;
+    }
+    return analyseAnswer(value);
+  }, [assist, value, mathLive, emptyBox]);
   const hintId = hint ? `${id}-hint` : undefined;
   const previewId = assist ? `${id}-preview` : undefined;
+  const describedByIds = [previewId, hintId, describedBy].filter(Boolean).join(' ') || undefined;
+  const invalid = state === 'invalid' || analysis?.status === 'error';
+  const className = state ? `pl-input is-${state}` : 'pl-input';
+
+  function handleFormula({ text, complete }: EditorAnswer) {
+    setEmptyBox(!complete);
+    onChange(text);
+  }
 
   useLayoutEffect(() => {
     if (caret.current === null || !input.current) return;
@@ -64,7 +89,11 @@ export function AnswerInput({
     }
   }
 
-  function insert({ open, close = '' }: KeypadInsert, focus: boolean) {
+  function insert({ open, close = '', latex }: KeypadInsert, focus: boolean) {
+    if (formula.current) {
+      formula.current.insert(latex, { focus, selectionMode: 'placeholder', format: 'latex' });
+      return;
+    }
     const field = input.current;
     const start = field?.selectionStart ?? value.length;
     const end = field?.selectionEnd ?? value.length;
@@ -74,37 +103,67 @@ export function AnswerInput({
   }
 
   function move(step: KeypadMove, focus: boolean) {
+    if (formula.current) {
+      if (focus) formula.current.focus();
+      formula.current.executeCommand(step < 0 ? 'moveToPreviousChar' : 'moveToNextChar');
+      return;
+    }
     const at = input.current?.selectionStart ?? value.length;
     replace(value, Math.min(value.length, Math.max(0, at + step)), focus);
   }
 
   return (
     <div className="pl-field">
-      <label className="pl-label" htmlFor={id}>
+      <label className="pl-label" htmlFor={id} onClick={() => formula.current?.focus()}>
         {label}
       </label>
-      <input
-        ref={input}
-        id={id}
-        className={state ? `pl-input is-${state}` : 'pl-input'}
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder={placeholder}
-        autoComplete="off"
-        autoCapitalize="off"
-        autoCorrect="off"
-        spellCheck={false}
-        readOnly={readOnly}
-        aria-invalid={state === 'invalid' || analysis?.status === 'error' || undefined}
-        aria-describedby={[previewId, hintId, describedBy].filter(Boolean).join(' ') || undefined}
-      />
+      {mathLive ? (
+        <FormulaField
+          module={mathLive}
+          id={id}
+          label={label}
+          value={value}
+          onChange={handleFormula}
+          className={`${className} pl-formula`}
+          placeholder={placeholder}
+          invalid={invalid}
+          describedBy={describedByIds}
+          onEnter={onEnter}
+          fieldRef={formula}
+        />
+      ) : (
+        <input
+          ref={input}
+          id={id}
+          className={className}
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder={placeholder}
+          autoComplete="off"
+          autoCapitalize="off"
+          autoCorrect="off"
+          spellCheck={false}
+          readOnly={readOnly}
+          aria-invalid={invalid || undefined}
+          aria-describedby={describedByIds}
+        />
+      )}
       {analysis && (
         <div id={previewId} className="pl-preview">
-          <AnswerPreview analysis={analysis} onFix={(fix) => replace(fix, fix.length, true)} />
+          <AnswerPreview
+            analysis={analysis}
+            onFix={(fix) => {
+              if (formula.current) {
+                setEmptyBox(false);
+                onChange(fix);
+                formula.current.focus();
+              } else replace(fix, fix.length, true);
+            }}
+          />
         </div>
       )}
-      {assist && !readOnly && <MathKeypad onInsert={insert} onMove={move} />}
+      {assist && !readOnly && !(mathLive && usesPhoneKeyboard()) && <MathKeypad onInsert={insert} onMove={move} />}
       {hint && (
         <div id={hintId} className="pl-hint">
           {hint}
