@@ -21,3 +21,9 @@ See docs/auth/GOOGLE_AUTH.md for configuration and verification. Practice/histor
 and counters remain an explicitly labeled browser-session demo until #10/#12.
 Backend JWT enforcement (#4) and #3's two-user database checks are still pending.
 Use the Issue and PR for current delivery/merge/preview verification state.
+
+Mathematical input (#7): a bounded allowlisted parser produces an internal syntax
+tree, and a fresh Linux worker constructs SymPy expressions under CPU, memory,
+wall-clock and combined-output limits. See docs/architecture/MATH_INPUT.md.
+Equivalence/domain checks (#8), generators and the API remain separate work;
+the browser demo does not use this parser yet.

@@ -13,6 +13,9 @@ Private repository:
 [GitHub Issues](https://github.com/whatvlad/practiceloop/issues). Initial schema is
 applied to the hosted test database; #3's full isolation verification remains
 pending. Cloudflare Pages serves the preview; the scaffold API runs on Oracle.
+The backend also provides the bounded math-input parser and isolated Linux
+construction worker from #7; answer equivalence and API integration are pending.
+See [math-input implementation](docs/architecture/MATH_INPUT.md).
 
 ## Stack and structure
 
