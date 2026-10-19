@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 import unicodedata
 from dataclasses import dataclass
 from fractions import Fraction
@@ -62,6 +63,10 @@ class _Token:
     value: str
 
 
+_SUPERSCRIPTS = str.maketrans("⁰¹²³⁴⁵⁶⁷⁸⁹⁻", "0123456789-")
+_SUPERSCRIPT_RUN = re.compile("⁻?[⁰¹²³⁴⁵⁶⁷⁸⁹]+")
+
+
 def _normalise(source: str) -> str:
     if not isinstance(source, str):
         raise MathInputError("Input must be text")
@@ -74,7 +79,9 @@ def _normalise(source: str) -> str:
         ord("×"): "*",
         ord("÷"): "/",
     }
-    normalised = unicodedata.normalize("NFKC", source).translate(replacements)
+    # NFKC would turn x² into x2 (read as x*2), so superscript runs become powers first.
+    powered = _SUPERSCRIPT_RUN.sub(lambda run: "^" + run.group().translate(_SUPERSCRIPTS), source)
+    normalised = unicodedata.normalize("NFKC", powered).translate(replacements)
     size_form = normalised.replace("√", "sqrt")
     try:
         encoded = size_form.encode("ascii")

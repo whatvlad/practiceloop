@@ -35,6 +35,13 @@ X = Symbol("x", real=True)
         ("x+C+2C", X + 3 * Symbol("C", real=True)),
         ("2x + (x+1)(x-1)", 2 * X + (X + 1) * (X - 1)),
         ("sin^2(x) + ln|x|", sin(X) ** 2 + log(Abs(X))),
+        ("x²+C", X**2 + Symbol("C", real=True)),
+        ("2x³", 2 * X**3),
+        ("-x²", -(X**2)),
+        ("x⁻¹", 1 / X),
+        ("x¹²", X**12),
+        ("e²", E**2),
+        ("sin²(x)", sin(X) ** 2),
     ],
 )
 def test_supported_notation(source: str, expected: object) -> None:
@@ -86,6 +93,7 @@ def test_supported_notation(source: str, expected: object) -> None:
         "x=1",
         "x!",
         "α",
+        "x¹³",
         "",
         "   ",
     ],
