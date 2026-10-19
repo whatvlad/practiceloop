@@ -71,9 +71,10 @@ export function ProblemCard({
         placeholder="e.g. x^2/2 + C"
         describedBy={result ? 'answer-result' : undefined}
         onEnter={solved || busy ? undefined : onCheck}
+        assist
         hint={
           <>
-            Type notation like <code>sqrt(3)</code>, <code>pi/4 + 2</code>, <code>e^2</code>. Press Enter to check.
+            Type notation like <code>sqrt(3)</code>, <code>pi/4 + 2</code>, <code>e^2</code>, or use the keys. Press Enter to check.
           </>
         }
       />
