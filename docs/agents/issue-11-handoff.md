@@ -4,8 +4,11 @@ Agent: Codex
 Accountable human: Vlad (whatvlad), availability confirmed in chat
 Issue / PR: #11 / pending
 Branch: codex/issue-11-saved-practice
-Base commit: f0d3764e64c4c1fdad77f2f47776c9b5ac1091d7
-Head commit: pending
+Base commit: cc74c4bec351c54dfbef7c316baeeae8012b2ae1
+Original claim base: f0d3764e64c4c1fdad77f2f47776c9b5ac1091d7
+Head commit (implementation): 3913d4553ec87a53742c4d4b3f63e544f8806a85
+The unpublished implementation was rebased onto #73's isolated installer fix;
+there was no file overlap. This handoff metadata follows the implementation.
 Current status: implementation verified locally; project In Progress; hosted CI pending
 
 Scope: Connect authenticated topic selection, generation, attempts and explicit
