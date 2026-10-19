@@ -1,5 +1,14 @@
 # Written to /etc/caddy/Caddyfile by bootstrap.sh, which fills in the API host.
 # Caddy gets and renews the HTTPS certificate on its own.
+
+# No HTTP/3: only TCP 443 is open, so advertising h3 (UDP) makes Safari's
+# requests hang until the app's health check gives up.
+{
+	servers {
+		protocols h1 h2
+	}
+}
+
 {$API_HOST} {
 	encode gzip
 	header {

@@ -28,7 +28,7 @@ production.
 | `/opt/practiceloop/releases/<sha>-<run>-<attempt>/` | One upload: `backend/`, `deploy/oracle/` and its own `.venv` |
 | `/opt/practiceloop/current`, `previous` | Symlinks to the live and the last release |
 | `/etc/practiceloop/api.env` | Server settings, not in Git; `root:root`, mode `600` |
-| `/etc/caddy/Caddyfile` | HTTPS proxy, adds `X-Robots-Tag: noindex` |
+| `/etc/caddy/Caddyfile` | HTTPS proxy over HTTP/1.1 and HTTP/2 only, adds `X-Robots-Tag: noindex` |
 
 The `practiceloop` user owns the releases, logs in with the deploy key only (port and agent
 forwarding off), and may run only
@@ -105,6 +105,14 @@ its demo data. Check from the VM:
 systemctl status practiceloop-api caddy
 journalctl -u practiceloop-api -n 100
 curl -s http://127.0.0.1:8000/health
+```
+
+The deploy workflow does not touch Caddy. After changing `deploy/oracle/Caddyfile`,
+apply it as `ubuntu` from a release that contains the change:
+
+```
+sudo sed "s/{\$API_HOST}/92-5-92-72.sslip.io/" /opt/practiceloop/current/deploy/oracle/Caddyfile | sudo tee /etc/caddy/Caddyfile >/dev/null
+sudo systemctl restart caddy
 ```
 
 ## Rollback and recovery
