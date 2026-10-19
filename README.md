@@ -16,6 +16,9 @@ pending. Cloudflare Pages serves the preview; the scaffold API runs on Oracle.
 The backend also provides the bounded math-input parser and isolated Linux
 construction worker from #7; answer equivalence and API integration are pending.
 See [math-input implementation](docs/architecture/MATH_INPUT.md).
+The basic-integral generator now covers levels 1–5 with versioned private
+parameters and checked solution steps ([generator details](docs/architecture/BASIC_GENERATOR.md)).
+The frontend still uses demo problems until the practice API is connected.
 
 ## Stack and structure
 
