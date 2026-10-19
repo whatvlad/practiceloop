@@ -50,31 +50,25 @@ def test_entire_catalogue_has_valid_replay_domain_clean_values_and_answers(topic
         assert exercise.steps[-1]["latex"].endswith(" + C")
 
 
-@pytest.mark.parametrize("topic,level", CELLS)
-def test_no_repeats_until_pool_exhausted_and_no_adjacent_repeat_across_cycle(client, topic, level):
+def test_one_fixed_demo_requires_login_for_more_and_never_saves_outcomes(client):
+    body = {"topic": "basic-integrals", "difficulty": 1}
     auth = headers(client)
-    statements = []
-    for _ in range(len(catalogue(topic, level)) + 1):
-        response = client.post(
-            "/preview/problems", json={"topic": topic, "difficulty": level}, headers=auth
-        )
-        assert response.status_code == 201
-        assert response.headers["cache-control"] == "no-store"
-        problem = response.json()
-        assert set(problem) == {
-            "id",
-            "topic",
-            "difficulty",
-            "problemLatex",
-            "createdAt",
-            "answerRevealed",
-            "solutionRevealed",
-            "lastResult",
-            "lastAnswer",
-        }
-        statements.append(problem["problemLatex"])
-    assert len(set(statements[:-1])) == len(statements) - 1
-    assert statements[-1] != statements[-2]
+    first = client.post("/preview/problems", json=body, headers=auth)
+    assert first.status_code == 201
+    assert client.post("/preview/problems", json=body, headers=auth).status_code == 403
+    assert (
+        client.post(
+            "/preview/problems",
+            json={"topic": "substitution", "difficulty": 1},
+            headers=headers(client),
+        ).status_code
+        == 403
+    )
+    again = client.post("/preview/problems", json=body, headers=headers(client))
+    assert again.json()["problemLatex"] == first.json()["problemLatex"]
+    assert first.json()["lastAnswer"] is None
+    assert first.json()["lastResult"] is None
+    assert len(next(iter(preview._sessions.values())).problems) == 1
 
 
 def test_reveal_is_scoped_and_check_does_not_leak(client):
@@ -96,7 +90,7 @@ def test_reveal_is_scoped_and_check_does_not_leak(client):
     assert "__import__" not in response.text
 
 
-@pytest.mark.parametrize("topic,level", CELLS)
+@pytest.mark.parametrize("topic,level", (("basic-integrals", 1),))
 def test_generate_check_and_reveal_through_shared_worker(client, topic, level):
     auth = headers(client)
     public = client.post(

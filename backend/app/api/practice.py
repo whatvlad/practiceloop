@@ -29,7 +29,9 @@ from app.core.errors import ApiError
 from app.generators.core import Exercise, catalogue
 from app.services import idempotency
 from app.services import owned_records as records
+from app.services.account import delete_user
 from app.services.idempotency import Scope, StoredResponse
+from app.services.learning_stats import statistics
 from app.services.math_parser import MathInputTooLong
 from app.services.math_worker import MathCheckInconclusive, MathWorkerError
 from app.services.math_worker import check_answer as shared_check
@@ -99,6 +101,17 @@ class GenerateBody(BaseModel):
 class AttemptBody(BaseModel):
     model_config = ConfigDict(extra="forbid", strict=True)
     answer: str = Field(min_length=1, max_length=MAX_ANSWER_CHARS)
+    elapsedMs: int | None = Field(default=None, ge=0, le=86400000)
+
+
+class ProfileBody(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True)
+    name: str | None = Field(max_length=80)
+
+
+class DeleteBody(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True)
+    confirmation: str
 
 
 def _invalid() -> ApiError:
@@ -210,8 +223,7 @@ def history(
     cursor: Annotated[str | None, Query(max_length=256)] = None,
 ) -> dict[str, Any]:
     before = _decode_cursor(cursor)
-    with transaction() as conn:
-        conn.execute("set transaction isolation level repeatable read, read only")
+    with transaction(user.id, read_only=True) as conn:
         page = records.list_problems(conn, user.id, limit, before, include_next=True)
         visible = page[:limit]
         summaries = records.attempt_summaries(conn, user.id, [p.id for p in visible])
@@ -223,8 +235,7 @@ def history(
 
 @router.get("/problems/{problem_id}")
 def reopen(problem_id: UUID, user: User) -> dict[str, Any]:
-    with transaction() as conn:
-        conn.execute("set transaction isolation level repeatable read, read only")
+    with transaction(user.id, read_only=True) as conn:
         problem = records.get_problem(conn, user.id, problem_id)
         if problem is None:
             raise _not_found()
@@ -235,17 +246,47 @@ def reopen(problem_id: UUID, user: User) -> dict[str, Any]:
 
 @router.get("/profile")
 def profile(user: User) -> dict[str, Any]:
-    with transaction() as conn:
+    with transaction(user.id) as conn:
         counts = records.profile_counts(conn, user.id)
+        row = conn.execute(
+            "select display_name from public.profiles where id = %s", (user.id,)
+        ).fetchone()
     return {
         "account": {
             "id": str(user.id),
-            "name": None,
+            "name": row[0] if row else None,
             "email": user.email or "",
             "provider": "Google",
         },
         "counts": counts,
     }
+
+
+@router.get("/statistics")
+def learning_statistics(user: User) -> dict[str, Any]:
+    with transaction(user.id, read_only=True) as conn:
+        return statistics(conn, user.id)
+
+
+@router.post("/profile")
+def update_profile(body: ProfileBody, user: User) -> dict[str, Any]:
+    name = body.name.strip() if body.name else None
+    with transaction(user.id) as conn:
+        records.ensure_profile(conn, user.id)
+        conn.execute(
+            "update public.profiles set display_name = %s where id = %s", (name or None, user.id)
+        )
+    return {"name": name or None}
+
+
+@router.post("/account/delete")
+def delete_account(body: DeleteBody, user: User) -> dict[str, bool]:
+    if body.confirmation != "DELETE":
+        raise _invalid()
+    # Hard deletion cascades profiles, problems, private solutions, attempts and keys
+    # in the Auth transaction. No partial learning-data deletion before Auth succeeds.
+    delete_user(user.id)
+    return {"deleted": True}
 
 
 @router.post("/problems", status_code=201)
@@ -261,7 +302,7 @@ def generate(body: GenerateBody, user: User, key: IdempotencyKey = None) -> JSON
     if cell is None or body.difficulty not in cell[1]:
         raise _invalid()
     generation_limit.check(user.id)
-    with transaction() as conn:
+    with transaction(user.id) as conn:
         records.ensure_profile(conn, user.id)
         stored = idempotency.claim(conn, scope)
         if stored is not None:
@@ -348,7 +389,7 @@ def attempt(
     attempt_limit.check(user.id)
     # Read the private record, then check without holding a connection; the
     # attempt and its key commit together only once a result exists.
-    with transaction() as conn:
+    with transaction(user.id) as conn:
         stored = idempotency.lookup(conn, scope)
         if stored is not None:
             return _respond(stored, replayed=True)
@@ -356,7 +397,7 @@ def attempt(
     if solution is None:
         raise _not_found()
     is_correct, constant_omitted = _check(body.answer, dict(solution.generator_data))
-    with transaction() as conn:
+    with transaction(user.id) as conn:
         stored = idempotency.claim(conn, scope)
         if stored is not None:
             return _respond(stored, replayed=True)
@@ -365,6 +406,10 @@ def attempt(
         )
         if saved is None:
             raise _not_found()
+        conn.execute(
+            "update public.attempts set elapsed_ms = %s where id = %s and user_id = %s",
+            (body.elapsedMs, saved.id, user.id),
+        )
         result = "invalid" if is_correct is None else "correct" if is_correct else "incorrect"
         response = StoredResponse(
             201,
@@ -385,7 +430,7 @@ def attempt(
 @router.post("/problems/{problem_id}/reveal-answer")
 def reveal_answer(problem_id: UUID, user: User) -> dict[str, str]:
     reveal_limit.check(user.id)
-    with transaction() as conn:
+    with transaction(user.id) as conn:
         answer = records.reveal_answer(conn, user.id, problem_id)
     if answer is None:
         raise _not_found()
@@ -395,7 +440,7 @@ def reveal_answer(problem_id: UUID, user: User) -> dict[str, str]:
 @router.post("/problems/{problem_id}/reveal-solution")
 def reveal_solution(problem_id: UUID, user: User) -> dict[str, list[Any]]:
     reveal_limit.check(user.id)
-    with transaction() as conn:
+    with transaction(user.id) as conn:
         steps = records.reveal_solution(conn, user.id, problem_id)
     if steps is None:
         raise _not_found()

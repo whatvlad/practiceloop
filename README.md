@@ -1,5 +1,9 @@
 # PracticeLoop
 
+Account completion (#35) is described in
+[ACCOUNT_COMPLETION.md](docs/architecture/ACCOUNT_COMPLETION.md): anonymous demo,
+private learning statistics, optional name, deletion, deployment and retention.
+
 A mathematics practice platform with rule-based problem generation, symbolic
 answer verification and personal practice history. The MVP covers Integration,
 five topics and five difficulty levels, Google login, attempts, answer/solution

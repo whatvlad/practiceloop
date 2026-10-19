@@ -1,13 +1,17 @@
 import { useState } from 'react';
 import { Button } from '../components/Button';
 import { StatTile } from '../components/StatTile';
-import { getProfileCounts } from '../data/api';
+import { getDisplayName, getProfileCounts } from '../data/api';
 import type { Account } from '../data/types';
 import { useLoad } from '../useLoad';
+import { AccountSettings } from './AccountSettings';
+import { LearningStatistics } from './LearningStatistics';
 
-export function ProfilePage({ account, onLogOut, busy = false }: { account: Account; onLogOut: () => void; busy?: boolean }) {
+export function ProfilePage({ account, onLogOut, onDeleted = async () => {}, busy = false }: { account: Account; onLogOut: () => void; onDeleted?: () => Promise<void>; busy?: boolean }) {
   const [revision, setRevision] = useState(0);
   const counts = useLoad(getProfileCounts, String(revision));
+  const displayName = useLoad(getDisplayName, String(revision));
+  const name = displayName.status === 'ready' ? displayName.data || 'Learner' : 'Learner';
   return (
     <main className="pl-wrap pl-wrap--narrow pl-app-main">
       <div className="pl-label">Profile</div>
@@ -17,10 +21,10 @@ export function ProfilePage({ account, onLogOut, busy = false }: { account: Acco
       <div className="pl-card pl-card--lg pl-row pl-account">
         <div className="pl-row pl-gap-4">
           <span className="pl-avatar pl-avatar--lg" aria-hidden="true">
-            {account.name.charAt(0).toUpperCase()}
+            {name.charAt(0).toUpperCase()}
           </span>
           <div>
-            <div className="pl-h-md">{account.name}</div>
+            <div className="pl-h-md">{name}</div>
             <div className="pl-muted pl-small">
               {account.email} · Signed in with {account.provider}
             </div>
@@ -42,6 +46,8 @@ export function ProfilePage({ account, onLogOut, busy = false }: { account: Acco
       )}
       {counts.status === 'loading' && <p role="status">Loading your statistics…</p>}
       {counts.status === 'error' && <div role="alert"><p>Your statistics could not be loaded.</p><Button variant="secondary" onClick={() => setRevision(value => value + 1)}>Retry loading statistics</Button></div>}
+      <LearningStatistics />
+      <AccountSettings onDeleted={onDeleted} onNameSaved={() => setRevision(value => value + 1)} />
     </main>
   );
 }

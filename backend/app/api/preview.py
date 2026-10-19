@@ -20,7 +20,7 @@ from app.services.preview_check import check_answer
 router = APIRouter(prefix="/preview", tags=["untracked preview"])
 TTL = 3600
 MAX_SESSIONS = 256
-MAX_PROBLEMS = 200
+MAX_PROBLEMS = 1
 _lock = Lock()
 _requests: deque[float] = deque()
 
@@ -29,8 +29,6 @@ _requests: deque[float] = deque()
 class Session:
     expires: float
     problems: dict[str, Exercise] = field(default_factory=dict)
-    bags: dict[tuple[str, int], list[int]] = field(default_factory=dict)
-    previous: dict[tuple[str, int], int] = field(default_factory=dict)
 
 
 _sessions: dict[str, Session] = {}
@@ -96,18 +94,14 @@ def topics() -> dict[str, object]:
 def generate(body: Generate, authorization: Annotated[str, Header()] = "") -> dict[str, object]:
     with _lock:
         session = _session(authorization)
+        if body.topic != "basic-integrals" or body.difficulty != 1:
+            raise HTTPException(403, "sign_in_for_more_practice")
         if len(session.problems) >= MAX_PROBLEMS:
-            raise HTTPException(409, "preview_session_full")
+            raise HTTPException(403, "sign_in_for_more_practice")
         cell = (body.topic, body.difficulty)
         exercises = catalogue(*cell)
-        bag = session.bags.setdefault(cell, [])
-        if not bag:
-            bag.extend(range(len(exercises)))
-            secrets.SystemRandom().shuffle(bag)
-            if bag[-1] == session.previous.get(cell):
-                bag[0], bag[-1] = bag[-1], bag[0]
-        index = bag.pop()
-        session.previous[cell] = index
+        # One fixed demo across sessions; resetting admission never unlocks new practice.
+        index = 0
         exercise = exercises[index]
         identifier = str(uuid4())
         session.problems[identifier] = exercise

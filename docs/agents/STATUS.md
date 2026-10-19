@@ -1,5 +1,12 @@
 # Project status
 
+Account completion (#35, branch implementation): one fixed anonymous demo;
+private constant-omission count/rate/topic+difficulty breakdown/eight-week UTC
+trend; editable/removable optional display name; attempt elapsed time; explicit
+Auth hard deletion and deleted-identity guard. Migration, backend credential,
+backup/retention and live deletion verification remain deployment gates. See
+docs/architecture/ACCOUNT_COMPLETION.md and the live Issue/PR for actual status.
+
 The MVP features are not implemented yet. Tasks are the open GitHub Issues in
 the Implementation Queue project (https://github.com/users/whatvlad/projects/1),
 worked in `Order`. Live state is always GitHub Issues, pull requests, merged

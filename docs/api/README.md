@@ -1,5 +1,12 @@
 # API contract
 
+Account completion (#35): `GET /api/statistics` (private omission metrics),
+`POST /api/profile {name: string|null}` (private optional name) and
+`POST /api/account/delete {confirmation: "DELETE"}` (hard deletion).
+Attempts additionally accept optional `elapsedMs` from 0 to 86,400,000.
+See [account completion](../architecture/ACCOUNT_COMPLETION.md) for exact
+denominators, UTC trend, deleted-token guard, deployment and retention gates.
+
 Implemented: `GET /health` returns `200 {"status":"ok"}` (liveness only), the
 separate [untracked preview API](../architecture/PREVIEW_PRACTICE.md) under
 `/preview`, and (#10, `backend/app/api/practice.py`) the saved-practice routes

@@ -1,6 +1,12 @@
 \set ON_ERROR_STOP on
 begin;
 
+do $$ begin
+  assert not has_function_privilege('anon', 'private.account_exists(uuid)', 'EXECUTE');
+  assert not has_function_privilege('authenticated', 'private.account_exists(uuid)', 'EXECUTE');
+  assert has_function_privilege('service_role', 'private.account_exists(uuid)', 'EXECUTE');
+end $$;
+
 -- Check privileges directly, independently of RLS or schema USAGE. In particular,
 -- TRUNCATE bypasses RLS, and new tables may inherit unsafe default grants.
 do $$

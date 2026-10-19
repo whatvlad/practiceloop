@@ -23,6 +23,7 @@ interface ProblemCardProps {
   onShowAnswer: () => void;
   onShowSolution: () => void;
   onNext: () => void;
+  nextLabel?: string;
   /** Present only after the backend returns it for Show Answer. */
   answerLatex?: string | null;
   /** Present only after the backend returns it for Show Solution. */
@@ -43,6 +44,7 @@ export function ProblemCard({
   onShowAnswer,
   onShowSolution,
   onNext,
+  nextLabel = 'Generate next problem',
   answerLatex,
   solution,
 }: ProblemCardProps) {
@@ -93,7 +95,7 @@ export function ProblemCard({
         </Button>
         <span className="pl-spacer" />
         <Button variant={solved ? 'primary' : 'ghost'} arrow onClick={onNext} disabled={busy}>
-          Generate next problem
+          {nextLabel}
         </Button>
       </div>
       {answerLatex && <RevealedAnswer latex={answerLatex} />}

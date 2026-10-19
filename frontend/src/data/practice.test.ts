@@ -7,6 +7,19 @@ const response = (body: unknown, status = 200) => new Response(JSON.stringify(bo
 beforeEach(() => { practice.resetPractice(); practice.configurePracticeAuth(async () => null); fetchMock.mockReset(); vi.stubGlobal('fetch', fetchMock); });
 afterEach(() => vi.unstubAllGlobals());
 
+it('keeps elapsed time and idempotency key stable after an uncertain saved-attempt failure', async () => {
+  const problem = await savedProblem();
+  fetchMock.mockRejectedValueOnce(new TypeError('connection lost'));
+  await expect(practice.submitAttempt(problem.id, 'x+C', 1234)).rejects.toThrow();
+  fetchMock.mockResolvedValueOnce(response({ attempt: { result: 'correct', feedbackCode: null } }));
+  await practice.submitAttempt(problem.id, 'x+C', 5678);
+  const first = fetchMock.mock.calls[1][1]!;
+  const retry = fetchMock.mock.calls[2][1]!;
+  expect(JSON.parse(String(first.body)).elapsedMs).toBe(1234);
+  expect(retry.body).toBe(first.body);
+  expect(retry.headers).toEqual(first.headers);
+});
+
 async function generate() {
   fetchMock.mockResolvedValueOnce(response({ token: 'a'.repeat(43) }));
   fetchMock.mockResolvedValueOnce(response(publicProblem));

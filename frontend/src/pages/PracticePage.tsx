@@ -7,6 +7,7 @@ import {
   generateProblem,
   getLastSelection,
   openProblem,
+  openDemo,
   listProblemPage,
   revealAnswer,
   revealSolution,
@@ -39,6 +40,7 @@ function PracticeSession({ opened }: { opened: OpenedProblem }) {
   const [error, setError] = useState('');
   const pending = useRef(false);
   const active = useRef(true);
+  const [startedAt] = useState(() => Date.now());
   useEffect(() => { active.current = true; return () => { active.current = false; }; }, []);
 
   async function run(task: () => Promise<void>) {
@@ -70,17 +72,19 @@ function PracticeSession({ opened }: { opened: OpenedProblem }) {
       busy={busy}
       onCheck={() => run(async () => {
         const revision = answerRevision.current;
-        const checked = await submitAttempt(problem.id, answer);
+        const checked = await submitAttempt(problem.id, answer, Math.min(86400000, Math.max(0, Date.now() - startedAt)));
         if (active.current && revision === answerRevision.current) setResult(checked);
       })}
       onShowAnswer={() => run(async () => { const revealed = await revealAnswer(problem.id); if (active.current) setAnswerLatex(revealed.answerLatex); })}
       onShowSolution={() => run(async () => { const revealed = await revealSolution(problem.id); if (active.current) setSolution(revealed.steps); })}
       onNext={() =>
         run(async () => {
+          if (problem.saved === false) { navigate('/login'); return; }
           const next = await generateProblem(problem.topic, problem.difficulty);
           if (active.current) navigate(practiceUrl(next.id));
         })
       }
+      nextLabel={problem.saved === false ? 'Sign in for more practice' : 'Generate next problem'}
       answerLatex={answerLatex}
       solution={solution}
     />
@@ -88,16 +92,16 @@ function PracticeSession({ opened }: { opened: OpenedProblem }) {
   );
 }
 
-export function PracticePage({ id }: { id: string | null }) {
+export function PracticePage({ id, demo = false }: { id: string | null; demo?: boolean }) {
   const [revision, setRevision] = useState(0);
   const [startError, setStartError] = useState(false);
   useEffect(() => {
     let current = true;
     setStartError(false);
-    if (!id) void latestOrNewId().then((latest) => { if (current) navigate(practiceUrl(latest), { replace: true }); }).catch(() => { if (current) setStartError(true); });
+    if (!id && !demo) void latestOrNewId().then((latest) => { if (current) navigate(practiceUrl(latest), { replace: true }); }).catch(() => { if (current) setStartError(true); });
     return () => { current = false; };
-  }, [id, revision]);
-  const problem = useLoad(() => (id ? openProblem(id) : new Promise<never>(() => {})), `${id ?? ''}:${revision}`);
+  }, [id, revision, demo]);
+  const problem = useLoad(() => (demo ? openDemo() : id ? openProblem(id) : new Promise<never>(() => {})), `${demo}:${id ?? ''}:${revision}`);
 
   return (
     <main className="pl-wrap pl-wrap--narrow pl-practice-main">
@@ -108,11 +112,11 @@ export function PracticePage({ id }: { id: string | null }) {
           <h1 className="pl-h-lg">
             {problem.status === 'error' && problem.error instanceof NotFoundError ? 'That problem is not in your history.' : text.service_error}
           </h1>
-          <p className="pl-muted pl-m-0">Start a new problem from the dashboard.</p>
+          <p className="pl-muted pl-m-0">{demo ? 'Retry the demo or sign in to save your practice.' : 'Start a new problem from the dashboard.'}</p>
           <div>
             {!(problem.status === 'error' && problem.error instanceof NotFoundError) && <Button variant="secondary" onClick={() => setRevision(value => value + 1)}>Retry loading problem</Button>}
-            <ButtonLink to="/dashboard" arrow>
-              Go to dashboard
+            <ButtonLink to={demo ? '/login' : '/dashboard'} arrow>
+              {demo ? 'Sign in with Google' : 'Go to dashboard'}
             </ButtonLink>
           </div>
         </section>

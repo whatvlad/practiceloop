@@ -1,5 +1,5 @@
 import { PublicNav, Logo } from '../components/AppNav';
-import { Button } from '../components/Button';
+import { Button, ButtonLink } from '../components/Button';
 import { DifficultyDots } from '../components/DifficultyScale';
 import { ResultBanner } from '../components/ResultBanner';
 import { Tex } from '../components/Tex';
@@ -73,6 +73,7 @@ export function LandingPage({ onSignIn, disabled = false, busy = false, error = 
             answer, reveal the solution, go again.
           </p>
           <div className="pl-actions pl-hero-actions">
+            {!signedIn && <ButtonLink to="/practice" size="lg" pill arrow>Try one problem</ButtonLink>}
             <Button size="lg" pill arrow onClick={onSignIn} disabled={disabled} aria-busy={busy}>
               {label}
             </Button>
@@ -130,7 +131,7 @@ export function LandingPage({ onSignIn, disabled = false, busy = false, error = 
         <section className="pl-wrap pl-section">
           <div className="pl-card pl-card--lg pl-cta">
             <h2 className="pl-display-lg">Ready for problem one?</h2>
-            <p className="pl-lead pl-cta-lead">Sign in with Google and explore the practice demo.</p>
+            <p className="pl-lead pl-cta-lead">Try one problem, then sign in with Google to save your progress.</p>
             <Button size="lg" pill arrow onClick={onSignIn} disabled={disabled} aria-busy={busy}>
               {label}
             </Button>
