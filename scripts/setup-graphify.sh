@@ -14,11 +14,37 @@ else
   git -C "$source_dir" checkout --detach "$graphify_ref"
 fi
 
-if [[ ! -x "$venv_dir/bin/python" ]]; then
-  python -m venv "$venv_dir"
+# Pick a working Python: "python" may be missing or, on Windows, the Store stub.
+python_cmd=()
+for candidate in python3 python "py -3"; do
+  if $candidate -c 'import sys' >/dev/null 2>&1; then
+    read -r -a python_cmd <<<"$candidate"
+    break
+  fi
+done
+if [[ ${#python_cmd[@]} -eq 0 ]]; then
+  echo "Python 3 was not found. Install it from https://www.python.org/ and retry." >&2
+  exit 1
 fi
 
-"$venv_dir/bin/python" -m pip install --upgrade "$source_dir"
+# Windows venvs keep executables in Scripts\ instead of bin/.
+if [[ ! -x "$venv_dir/bin/python" && ! -x "$venv_dir/Scripts/python.exe" ]]; then
+  "${python_cmd[@]}" -m venv "$venv_dir"
+fi
+
+if [[ -x "$venv_dir/Scripts/python.exe" ]]; then
+  "$venv_dir/Scripts/python.exe" -m pip install --upgrade "$source_dir"
+  # Shims so the documented .local/graphify-venv/bin/graphify path (AGENTS.md,
+  # .codex/hooks.json) works from Git Bash, PowerShell and cmd.
+  mkdir -p "$venv_dir/bin"
+  printf '#!/bin/sh\nexec "$(dirname "$0")/../Scripts/graphify.exe" "$@"\n' \
+    >"$venv_dir/bin/graphify"
+  chmod +x "$venv_dir/bin/graphify"
+  printf '@"%%~dp0..\\Scripts\\graphify.exe" %%*\r\n' >"$venv_dir/bin/graphify.cmd"
+else
+  "$venv_dir/bin/python" -m pip install --upgrade "$source_dir"
+fi
+
 "$venv_dir/bin/graphify" update "$repo_root"
 
 printf 'Graphify is ready. Query it with:\n  %s query "your question"\n' \
