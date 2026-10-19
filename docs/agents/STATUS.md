@@ -26,8 +26,15 @@ Use the Issue and PR for current delivery/merge/preview verification state.
 Mathematical input (#7): a bounded allowlisted parser produces an internal syntax
 tree, and a fresh Linux worker constructs SymPy expressions under CPU, memory,
 wall-clock and combined-output limits. See docs/architecture/MATH_INPUT.md.
-Equivalence/domain checks (#8), generators and the API remain separate work;
+Equivalence/domain checks (#8) and the API remain separate work;
 the browser demo does not use this parser yet.
+
+Basic-integral generation (#6): 11 bounded templates cover all five ADR-003
+basic-integral levels. Private `basic-v1` records reproduce the integrand,
+domain, answer and structured solution steps; all 126 parameter combinations
+are checked in tests. See docs/architecture/BASIC_GENERATOR.md. This is an
+internal library; API/persistence, other topics and frontend integration remain
+separate work.
 
 Answer input (#57): the practice card has a math keypad and a live preview.
 `frontend/src/answerSyntax.ts` mirrors the backend parser's grammar and limits

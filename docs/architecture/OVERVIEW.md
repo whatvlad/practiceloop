@@ -42,7 +42,8 @@ verified. Per-task acceptance criteria live in the GitHub Issues.
 Out of scope: tutor, chat, subscriptions, ranks, social, teachers, mobile app,
 adaptive learning, achievements, OCR, other school subjects and advanced analytics.
 
-Current code is a development skeleton: `/health`, a private polynomial fixture,
-and frontend mounting/rendering tests. None of the full authenticated flow exists.
+Current backend code includes `/health`, the bounded input parser/worker and a
+private five-level basic-integral generator. The frontend has Google login and
+demo practice; the authenticated practice API is not implemented yet.
 The accepted route shapes and retry rules are in `docs/api/README.md`; ADR-003
 defines the parser, equivalence policy and topic/difficulty matrix.
