@@ -73,7 +73,8 @@ jobs:
       # Cloudflare Pages serves index.html for unknown paths when there is no
       # 404.html, so deep links work and the app shows its own 404 page.
       - name: Check preview headers
-        run: grep -q 'X-Robots-Tag: noindex' frontend/dist/_headers
+        run: |
+          grep -q 'X-Robots-Tag: noindex' frontend/dist/_headers
       - name: Deploy to Cloudflare Pages
         if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != ''
         working-directory: frontend
