@@ -34,6 +34,12 @@ export function DashboardPage() {
     setDifficulty(last.data.difficulty);
   }, [last]);
 
+  // A topic shows only its own levels, so move a level it lacks to the nearest one it has.
+  useEffect(() => {
+    if (levels.length === 0 || levels.includes(difficulty)) return;
+    setDifficulty(levels.reduce((best, level) => Math.abs(level - difficulty) < Math.abs(best - difficulty) ? level : best));
+  }, [levels, difficulty]);
+
   async function generate() {
     if (pending.current || !available) return;
     pending.current = true;
@@ -83,7 +89,7 @@ export function DashboardPage() {
           <div id="difficulty-label" className="pl-label">
             Difficulty
           </div>
-          <DifficultyScale selected={difficulty} onSelect={setDifficulty} labelledBy="difficulty-label" available={busy ? [] : levels} />
+          <DifficultyScale selected={difficulty} onSelect={setDifficulty} labelledBy="difficulty-label" available={busy ? [] : levels} shown={levels} />
         </div>
         <div>
           <Button size="lg" arrow onClick={generate} disabled={busy || !available} aria-busy={busy}>

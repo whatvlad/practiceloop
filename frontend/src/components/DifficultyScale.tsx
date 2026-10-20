@@ -6,13 +6,16 @@ interface DifficultyScaleProps {
   onSelect: (level: Difficulty) => void;
   labelledBy?: string;
   available?: readonly Difficulty[];
+  /** The levels the chosen topic has; the others are hidden rather than disabled. */
+  shown?: readonly Difficulty[];
 }
 
-/** Segmented five-level picker, used where the learner chooses. */
-export function DifficultyScale({ selected, onSelect, labelledBy, available }: DifficultyScaleProps) {
+/** Segmented level picker (up to five), used where the learner chooses. */
+export function DifficultyScale({ selected, onSelect, labelledBy, available, shown }: DifficultyScaleProps) {
+  const levels = shown?.length ? DIFFICULTIES.filter(({ level }) => shown.includes(level)) : DIFFICULTIES;
   return (
     <div className="pl-seg" role="group" aria-label={labelledBy ? undefined : 'Difficulty'} aria-labelledby={labelledBy}>
-      {DIFFICULTIES.map(({ level, name }) => (
+      {levels.map(({ level, name }) => (
         <button key={level} type="button" aria-pressed={level === selected} disabled={available !== undefined && !available.includes(level)} title={available !== undefined && !available.includes(level) ? 'Not available yet' : undefined} onClick={() => onSelect(level)}>
           <span className="n">{level}</span>
           <span className="t">{name}</span>

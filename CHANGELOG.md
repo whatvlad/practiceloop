@@ -9,6 +9,9 @@ Meaningful user-facing releases will be recorded here. No MVP release exists yet
   sign, a missing chain-rule factor or a definite integral left unevaluated, the
   learner sees advice for that mistake. Otherwise they get a general hint. The
   code is saved with the attempt and shown again when the problem is reopened.
+- Integration by parts now has levels 1–3 instead of 3–5, and the practice page
+  shows only the levels a topic offers. Switching topic moves an unavailable
+  level to the nearest available one.
 - Definite integrals (#36, part 2): most practice cells now also offer definite
   integrals with clean bounds and exact values such as `e - 2` or `3 ln(4/3)`.
   Their answer is one number with no `+ C`; bounds never touch a singularity.

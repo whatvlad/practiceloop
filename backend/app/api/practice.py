@@ -43,8 +43,8 @@ router = APIRouter(tags=["practice"])
 TOPICS = {
     "basic-integrals": ("Basic integrals", (1, 2, 3, 4, 5)),
     "substitution": ("Substitution", (1, 2, 3, 4, 5)),
-    # ADR-003: integration by parts starts at level 3.
-    "integration-by-parts": ("Integration by parts", (3, 4, 5)),
+    # ADR-003 amendment: parts has three levels; the frontend hides the rest.
+    "integration-by-parts": ("Integration by parts", (1, 2, 3)),
     "rational-functions": ("Rational functions", (1, 2, 3, 4, 5)),
     "trigonometric-integrals": ("Trigonometric integrals", (1, 2, 3, 4, 5)),
 }

@@ -45,9 +45,14 @@ clean-value and deterministic-replay checks.
 |---|---|---|---|---|---|
 | Basic integrals | One constant, power, exponential, sine or cosine term | A clean sum or constant multiple of two direct terms | Negative/fractional powers or `1/x`, with an explicit real domain | Expand, cancel or split once, then integrate term by term | A clean mixed sum requiring two compatible algebraic rewrites |
 | Substitution | A visible `f'(x)g(f(x))` pair | Recover one missing constant factor or use an affine inner function | One polynomial, exponential or trigonometric substitution | One algebraic/trigonometric rewrite before substitution, optionally with clean bounds | A nested substitution or substitution combined with one compatible identity |
-| Integration by parts | Not offered: the method is structurally above level 1 | Not offered: the method is structurally above level 2 | One application with a linear polynomial and basic exponential/trigonometric factor | A degree-two polynomial, logarithmic family or clean definite problem requiring repeated parts | A cyclic exponential–trigonometric family or parts combined with one compatible preparation |
+| Integration by parts | One application with a linear polynomial and basic exponential/trigonometric factor | A degree-two polynomial, logarithmic family or clean definite problem requiring repeated parts | A cyclic exponential–trigonometric family or parts combined with one compatible preparation | Not offered | Not offered |
 | Rational functions | A constant over one linear factor | Numerator proportional to a denominator derivative | Proper fractions with distinct linear factors | Repeated linear factors or one irreducible quadratic | Polynomial division followed by partial fractions |
 | Trigonometric integrals | One standard sine, cosine or secant-squared primitive | A linear argument with one constant-factor adjustment | Odd sine/cosine powers with one factor split off | Even powers or products requiring one standard identity | One identity followed by a compatible substitution |
+
+Amendment (2026-10-20, owner decision): integration by parts has three levels.
+Its row keeps the original level 3–5 content, renumbered 1–3, because a learner
+choosing parts has already chosen the method. Levels 4–5 are not offered for
+parts, and the practice page hides levels a topic does not offer.
 
 Across the matrix, levels increase by recognition, transformations and method
 composition. Coefficients, exponents and bounds remain pedagogically clean.
