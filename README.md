@@ -117,7 +117,7 @@ cd ..
 powershell -File scripts/test-db.ps1
 ```
 Database test needs Docker and pulls a disposable PostgreSQL image. Never point
-auth_fixture.sql at Supabase/shared data. Git history secret scan is also in CI;
+auth_fixture.sql at Supabase/shared data. [End-to-end check](docs/production/MVP_E2E_CHECK.md): `scripts/e2e_local.py`. Git history secret scan is also in CI;
 run Gitleaks locally with `gitleaks git . --config .gitleaks.toml --redact` if needed.
 No command should report success on skipped/missing tests. CI jobs are Frontend,
 Backend, Database isolation and Security; hosted outcomes are unverified until run.

@@ -4,6 +4,11 @@ Meaningful user-facing releases will be recorded here. No MVP release exists yet
 
 ## Unreleased
 
+- End-to-end check (#13): `scripts/e2e_local.py` drives the real API over HTTP
+  through every topic and level, cross-user denial, malicious input, worker
+  saturation and a database outage; CI runs it. An answer or profile name
+  containing a NUL byte is now rejected as invalid instead of failing with a
+  server error.
 - Mixed practice (#36, part 2): signed-in learners can choose "Mixed practice" and
   a level. Each problem's topic is drawn with fixed weights that the dashboard
   shows as percentages; basic integrals have half the weight of each method.

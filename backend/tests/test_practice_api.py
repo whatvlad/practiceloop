@@ -457,8 +457,9 @@ def test_busy_worker_slot_is_retryable(client: TestClient) -> None:
     assert response.headers["retry-after"] == "3"
 
 
-@pytest.mark.parametrize("answer", ["", "   ", "x+" * 200 + "C"])
-def test_empty_or_oversized_answers_are_rejected_before_an_attempt(
+# A NUL byte cannot be stored in PostgreSQL text: it must be a 422, not a 500 (#13).
+@pytest.mark.parametrize("answer", ["", "   ", "x+" * 200 + "C", "x\x00+C"])
+def test_empty_oversized_or_nul_answers_are_rejected_before_an_attempt(
     client: TestClient, url: str, answer: str
 ) -> None:
     problem = generate(client)
@@ -818,6 +819,7 @@ def test_optional_name_is_owner_scoped_editable_and_removable(client, users):
     assert client.post("/profile", json={"name": None}).status_code == 200
     assert client.get("/profile").json()["account"]["name"] is None
     assert client.post("/profile", json={"name": "x" * 81}).status_code == 422
+    assert client.post("/profile", json={"name": "A\x00da"}).status_code == 422
 
 
 def test_hard_delete_cascades_all_learning_data_and_old_identity_is_denied(
