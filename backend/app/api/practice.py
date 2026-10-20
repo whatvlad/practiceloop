@@ -107,6 +107,10 @@ attempt_limit = RateLimiter(30)
 reveal_limit = RateLimiter(60)
 
 
+# PostgreSQL text cannot hold NUL; reject it as a bad request instead of failing the insert.
+NO_NUL = r"^[^\x00]*$"
+
+
 class GenerateBody(BaseModel):
     model_config = ConfigDict(extra="forbid", strict=True)
     topic: str = Field(min_length=1, max_length=64)
@@ -115,13 +119,13 @@ class GenerateBody(BaseModel):
 
 class AttemptBody(BaseModel):
     model_config = ConfigDict(extra="forbid", strict=True)
-    answer: str = Field(min_length=1, max_length=MAX_ANSWER_CHARS)
+    answer: str = Field(min_length=1, max_length=MAX_ANSWER_CHARS, pattern=NO_NUL)
     elapsedMs: int | None = Field(default=None, ge=0, le=86400000)
 
 
 class ProfileBody(BaseModel):
     model_config = ConfigDict(extra="forbid", strict=True)
-    name: str | None = Field(max_length=80)
+    name: str | None = Field(max_length=80, pattern=NO_NUL)
 
 
 class DeleteBody(BaseModel):

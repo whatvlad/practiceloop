@@ -12,6 +12,7 @@ vi.mock('mathlive', () => {
     static soundsDirectory: string | null = '';
     static keypressSound: unknown = null;
     static plonkSound: unknown = null;
+    static scientificNotationTemplate: string | null = '#1\\times10^{#2}';
     latex = '';
     inserted: string[] = [];
     commands: unknown[] = [];
@@ -106,6 +107,11 @@ describe('AnswerInput formula editor', () => {
     expect(element.querySelector('input')).toBeNull();
     expect(field().id).toBe('answer');
     expect(field().keybindings.map((binding) => binding.key)).toEqual(['[Tab]']);
+  });
+
+  it('never turns a number before e into scientific notation', async () => {
+    const module = await loadMathLive();
+    expect(module?.MathfieldElement.scientificNotationTemplate).toBeNull();
   });
 
   it('sends what the editor holds as answer text and previews it', async () => {
