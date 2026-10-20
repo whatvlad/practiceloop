@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Read-only check of the Oracle VM for Issue #14. Prints facts, changes nothing,
 # and never prints the values in /etc/practiceloop/api.env (only its key names).
-# Run as ubuntu: ssh ... ubuntu@<vm> 'bash -s' < deploy/oracle/audit.sh
+# Run as ubuntu: ssh ... ubuntu@<vm> 'tr -d \\015 | bash -s' < deploy/oracle/audit.sh
+# (tr strips the CRs that a Windows checkout or PowerShell pipe adds.)
 set -uo pipefail
 
 section() { printf '\n== %s\n' "$1"; }

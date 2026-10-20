@@ -200,7 +200,7 @@ ports, the key *names* in `api.env`, worker limits, log settings and local healt
 From the repo on your PC:
 
 ```powershell
-Get-Content deploy/oracle/audit.sh -Raw | ssh -i "$env:USERPROFILE\.ssh\oracle_vlad" ubuntu@92.5.92.72 'tr -d "\r" | bash -s'
+Get-Content deploy/oracle/audit.sh -Raw | ssh -i "$env:USERPROFILE\.ssh\oracle_vlad" ubuntu@92.5.92.72 'tr -d \\015 | bash -s'
 ```
 
 Public checks from any PC:
