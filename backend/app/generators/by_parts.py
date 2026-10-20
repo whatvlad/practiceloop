@@ -1,4 +1,4 @@
-"""#78: parts-v1. ADR-003 deliberately has no level 1 or level 2 parts cell."""
+"""#78: parts-v1. Its three steps are levels 1-3 (ADR-003 amendment, 2026-10-20)."""
 
 from typing import Any
 
@@ -8,9 +8,9 @@ from app.generators.basic import X
 from app.generators.families import FamilyStep, FamilyTemplate
 
 TEMPLATES = {
-    "linear_exponential": FamilyTemplate(3, sp.S.Reals, "integration_by_parts"),
-    "quadratic_exponential": FamilyTemplate(4, sp.S.Reals, "integration_by_parts", ("repeat",)),
-    "cyclic_sine": FamilyTemplate(5, sp.S.Reals, "integration_by_parts", ("solve_cycle",)),
+    "linear_exponential": FamilyTemplate(1, sp.S.Reals, "integration_by_parts"),
+    "quadratic_exponential": FamilyTemplate(2, sp.S.Reals, "integration_by_parts", ("repeat",)),
+    "cyclic_sine": FamilyTemplate(3, sp.S.Reals, "integration_by_parts", ("solve_cycle",)),
 }
 
 

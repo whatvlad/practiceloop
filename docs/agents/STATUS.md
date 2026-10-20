@@ -1,7 +1,7 @@
 # Project status
 
 Internal topic generators (#9, split into #77–#80): 18 versioned templates cover
-substitution, parts (levels 3–5), rational functions and trigonometric integrals.
+substitution, parts (levels 1–3), rational functions and trigonometric integrals.
 The 108-record corpus checks exact formulas, replay, domains, solution stages,
 input grammar and public-data boundaries. #36 part 1 connects them, and basic
 levels 3–5, to the worker and saved-practice API; definite integrals, weighted

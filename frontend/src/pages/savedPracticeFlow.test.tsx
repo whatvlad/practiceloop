@@ -85,9 +85,10 @@ async function typeAnswer(value: string) {
 
 it('runs selection → saved generation → invalid/correct check → explicit reveals → next through the real data boundary', async () => {
   await act(async () => root.render(<DashboardPage />));
-  expect(button('Advanced').disabled).toBe(true);
+  // Levels the topic lacks are hidden, not disabled: basic integrals has 1-2 here.
+  expect(button('Advanced')).toBeUndefined();
   expect(button('Integration by parts').disabled).toBe(true);
-  expect(element.querySelectorAll('.pl-seg button')).toHaveLength(5);
+  expect(element.querySelectorAll('.pl-seg button')).toHaveLength(2);
   await act(async () => { button('Generate problem').click(); button('Generate problem').click(); });
   expect(calls.filter(call => call.path === '/api/problems')).toHaveLength(1);
   const id = new URLSearchParams(window.location.search).get('id')!;
@@ -123,10 +124,11 @@ it('uses topic-specific availability and retries a failed catalogue without gene
   expect(button('Generate problem').disabled).toBe(false);
   await act(async () => button('Easy').click());
   await act(async () => button('Substitution').click());
-  expect(button('Easy').disabled).toBe(true);
-  expect(button('Generate problem').disabled).toBe(true);
-  expect(element.textContent).toContain('Choose an available option');
-  await act(async () => button('1Basic').click());
+  // Substitution has only level 1 here: level 2 is hidden and the choice moves to 1.
+  expect(button('Easy')).toBeUndefined();
+  expect(button('1Basic').getAttribute('aria-pressed')).toBe('true');
+  expect(button('Generate problem').disabled).toBe(false);
+  expect(element.textContent).not.toContain('Choose an available option');
   await act(async () => button('Generate problem').click());
   expect(calls.find(call => call.path === '/api/problems')?.body).toEqual({ topic: 'substitution', difficulty: 1 });
 });

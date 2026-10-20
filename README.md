@@ -33,7 +33,7 @@ Other cells are disabled. [Preview boundaries](docs/architecture/PREVIEW_PRACTIC
 The remaining topic generators (#9, #77–#80) cover the approved substitution,
 parts, rational and trigonometric cells: 18 templates and 108 verified records.
 Since #36 (part 1) signed-in practice offers every approved cell: all five topics
-at levels 1–5, with integration by parts at levels 3–5.
+at levels 1–5, except integration by parts, which has levels 1–3.
 [Topic-generator details](docs/architecture/TOPIC_GENERATORS.md).
 Enabling these new versions in practice is the separate #36 milestone.
 
