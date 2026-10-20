@@ -37,7 +37,7 @@ def replay_problem(record: Mapping[str, object]) -> Problem:
     if record.get("generator_version") == "substitution-v1":
         return replay(dict(record))
     if record.get("generator_version") in FAMILY_VERSIONS:
-        return replay_family(dict(record))
+        return replay_family(dict(record), verify=False)
     raise ValueError("Unsupported generator version")
 
 
@@ -104,6 +104,7 @@ def _not_real(expression: Any, variable: Any, samples: tuple[float, ...]) -> boo
 def _is_primitive(candidate: Any, problem: Problem) -> Verdict:
     """Does `candidate` differentiate to the integrand and stay real on every component?"""
     undecided = False
+    defined: bool | None = None  # computed once, only if some component needs it
     for replacement, variable, samples in _components(problem):
         expression = candidate.subs(X, replacement)
         integrand = problem.integrand.subs(X, replacement)
@@ -116,7 +117,9 @@ def _is_primitive(candidate: Any, problem: Problem) -> Verdict:
         realness = expression.is_real
         if realness is False:
             return "no"
-        if realness is None and not _defined_throughout(candidate, problem):
+        if realness is None and defined is None:
+            defined = _defined_throughout(candidate, problem)
+        if realness is None and not defined:
             # e.g. log(x^2) on all reals: undefined at 0, which no sample point hits.
             if _not_real(expression, variable, samples):
                 return "no"

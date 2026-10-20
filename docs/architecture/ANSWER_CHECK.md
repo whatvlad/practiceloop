@@ -71,8 +71,10 @@ end as a retryable `MathWorkerError`, never as `incorrect`. The corpus in
 `backend/tests/test_answer_check.py` runs such answers through the real worker
 and checks that each ends within the wall limit with its child reaped.
 
-The rational templates are the slowest: about 1 s of wall time per check on
-Linux for level 5, still inside the limits. `replay_problem` accepts `basic-v1`,
+The #77–#80 records are replayed in the worker with `verify=False`: the
+catalogue already proved each one when it was generated, and repeating that proof
+cost most of the CPU budget for rational level 5 on CI runners. Their slowest
+check, rational level 5, then uses about 0.5 s of child CPU locally. `replay_problem` accepts `basic-v1`,
 `substitution-v1` and the four #77–#80 versions. Definite templates still raise
 `ValueError` until #36 part 2 adds them. A new generator version adds its replay
 to `answer_check.replay_problem`.
