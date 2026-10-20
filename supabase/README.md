@@ -1,10 +1,10 @@
 # Database preparation
 
 Migration preserves the MVP's four public tables and adds private storage for
-answers, versioned generator data and solution steps. The initial migration has
-been applied to the hosted test project; **hosted isolation verification remains
-incomplete**. Vlad confirmed nullable `attempts.is_correct` semantics for this test
-project. ADR-002's remaining proposals still need review before production use.
+answers, versioned generator data and solution steps. Every migration in
+`migrations/` is applied to the hosted project by `supabase-deploy.yml`, and the
+two-user hosted isolation check passed on 2026-10-19 (#3). Nullable
+`attempts.is_correct` semantics are confirmed; ADR-002 is accepted through ADR-004.
 
 Only authenticated reads are granted, filtered to each owner. All writes use the
 backend. A backend service-role client bypasses RLS: validate the JWT and verify
@@ -17,7 +17,7 @@ in generator_data. Use bounded, versioned primitive JSON parameters, never pickl
 or executable SymPy strings. Add migrations rather than editing applied SQL.
 
 Local/CI isolation tests use a fresh PostgreSQL 17 container and the minimal
-`tests/auth_fixture.sql`. See `scripts/test-db.ps1`. This tests the actual
+`tests/auth_fixture.sql`. See `scripts/test-db.py`. This tests the actual
 migration, role grants, RLS and composite ownership FK. It does **not** verify
 hosted Supabase Auth, JWT claims, Google OAuth or PostgREST configuration.
 PL-003/004/005 track those integration checks against a disposable Supabase project.

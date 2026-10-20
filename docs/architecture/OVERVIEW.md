@@ -18,7 +18,7 @@ flowchart LR
   API -->|verified owner| DB[(Supabase PostgreSQL)]
 ```
 
-Frontend routes to implement: `/`, `/login`, `/dashboard`, `/practice`, `/history`,
+Frontend routes: `/`, `/login`, `/dashboard`, `/practice`, `/history`,
 `/profile`. Frontend displays public data and authorized reveal responses only.
 FastAPI owns generation, safe expression parsing, symbolic verification, solution
 templates and persistence. Do not parse untrusted strings with eval-based SymPy
@@ -42,9 +42,9 @@ verified. Per-task acceptance criteria live in the GitHub Issues.
 Out of scope: tutor, chat, subscriptions, ranks, social, teachers, mobile app,
 adaptive learning, achievements, OCR, other school subjects and advanced analytics.
 
-Current backend code includes `/health`, the bounded input parser/worker and a
-private five-level basic-integral generator. The frontend has Google login and
-untracked server-generated practice for four topic/level cells; the authenticated
-practice API is not implemented yet. See [preview boundaries](PREVIEW_PRACTICE.md).
+The flow above is implemented and deployed (MVP 0.1.0, see the README for
+known limitations). Integration by parts offers levels 1–3; every other topic
+offers 1–5. Signed-out visitors get one untracked demo problem
+([preview boundaries](PREVIEW_PRACTICE.md)).
 The accepted route shapes and retry rules are in `docs/api/README.md`; ADR-003
 defines the parser, equivalence policy and topic/difficulty matrix.

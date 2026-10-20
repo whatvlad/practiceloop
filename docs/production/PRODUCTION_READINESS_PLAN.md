@@ -1,6 +1,7 @@
 # PracticeLoop production readiness plan
 
-Status: approved requirements draft; implementation not started.
+Status: approved requirements draft. The MVP (0.1.0) implements the account,
+practice and hosting parts; the remaining gates are Issues #38 and #39.
 
 This document records the production-readiness audit and the decisions made with
 the product owner. It intentionally does not invent unresolved legal, branding,
@@ -23,8 +24,8 @@ content, or infrastructure details.
   or contact form.
 - The planned stack is Cloudflare Pages, FastAPI on Oracle Free Tier, and
   Supabase Auth/PostgreSQL.
-- The current GitHub Pages address is a development preview:
-  <https://whatvlad.github.io/practiceloop/>.
+- The current development preview is <https://practiceloop.pages.dev>
+  (Cloudflare Pages; GitHub Pages stopped when the repository became private).
 - Development and preview hosts stay `noindex`; indexing starts only after a
   custom production domain is approved.
 
@@ -184,7 +185,7 @@ before adding dependencies or abstractions.
 - Full legal identity and contact details of the Polish operator.
 - Dedicated privacy/contact email.
 - Provisioned Cloudflare, Oracle, Supabase, and Google OAuth configuration.
-- Independent verification that the GitHub Pages build matches this repository.
+- Independent verification that the Cloudflare Pages build matches this repository.
 
 ## Verification and publication rules
 

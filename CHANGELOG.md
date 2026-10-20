@@ -1,8 +1,43 @@
 # Changelog
 
-Meaningful user-facing releases will be recorded here. No MVP release exists yet.
+User-facing releases. Known limitations of the current release are in
+[README.md](README.md#known-limitations).
 
 ## Unreleased
+
+Nothing yet.
+
+## 0.1.0 — MVP (2026-10-20)
+
+The first complete release of PracticeLoop, live as a noindex preview at
+https://practiceloop.pages.dev with the API on Oracle and data in Supabase.
+
+- **Sign in with Google.** Sessions survive reloads and sign-out works across
+  tabs. A signed-out visitor can try one fixed demo problem; nothing they do is
+  saved.
+- **Integration practice.** Choose basic integrals, substitution, rational
+  functions or trigonometric integrals at levels 1–5, integration by parts at
+  levels 1–3, or mixed practice with fixed, published topic weights. Most choices
+  also include definite integrals with exact answers. Every problem comes from a
+  checked catalogue, and you see no repeat within half of a topic-level catalogue.
+- **Answer checking.** Type answers in a formula editor with a maths keyboard and
+  live preview. Answers are checked symbolically on the server as Correct,
+  Incorrect or Invalid expression. A missing `+ C` is pointed out, and common
+  mistakes such as `ln(x)` for `ln|x|`, a lost sign or a missing chain-rule factor
+  get specific advice.
+- **Answers and solutions on request.** Reveal the final answer or a full
+  step-by-step solution; reveals are remembered.
+- **History.** Every generated problem is saved with its latest attempt and can
+  be reopened after a reload, with older entries loaded page by page.
+- **Profile and statistics.** Generated, attempted and solved counts; how often
+  the integration constant was left out, by topic and level and over eight weeks;
+  an optional display name; and permanent account deletion with typed
+  confirmation.
+- **Privacy and safety.** Each account sees only its own data, the browser never
+  receives answers or solutions before they are revealed, and answers are parsed
+  by a bounded, sandboxed checker.
+
+### Changes during MVP development
 
 - End-to-end check (#13): `scripts/e2e_local.py` drives the real API over HTTP
   through every topic and level, cross-user denial, malicious input, worker

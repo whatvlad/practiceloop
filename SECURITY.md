@@ -13,11 +13,12 @@ explicitly; never rewrite shared history without permission.
 PR CI has read-only repository permissions, no deployment credentials and no
 pull_request_target execution. Do not approve untrusted Actions runs casually;
 dependency installation and test execution run PR code. Keep external Actions
-pinned and reviewed. No production deploy automation is configured.
+pinned and reviewed. Pushes to `main` deploy the preview frontend, backend and
+migrations with repository secrets (README "Merge gates"; ORACLE_DEPLOY.md).
 
-RLS tests verify SQL isolation in a disposable DB. Hosted JWT, API ownership,
-service-role usage and resource-limited expression workers require additional
-integration tests before launch. A timeout must terminate the math process;
+RLS tests verify SQL isolation in a disposable DB; hosted two-user isolation was
+checked once (#3). CI also runs API ownership as the RLS-bypassing service role
+and the end-to-end API flow (#13). A timeout must terminate the math process;
 thread/request timeouts alone do not bound CPU/memory. Reject unsupported grammar,
 giant expressions, deep nesting and attribute/import/call escapes before SymPy.
 Never log raw credentials or user answers by default.

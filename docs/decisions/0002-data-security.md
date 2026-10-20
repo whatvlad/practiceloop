@@ -1,6 +1,7 @@
 # ADR-002: private solutions and backend-owned writes
 
-Date: 2026-10-15. Status: proposed; migration prepared for review, not hosted.
+Date: 2026-10-15. Status: accepted through ADR-004 (2026-10-19); applied to the
+hosted Supabase project, with two-user isolation verified there (#3).
 
 The MVP forbids direct browser access to correct answers or generator internals.
 Use private.problem_solutions; expose only the four public MVP tables, grant
