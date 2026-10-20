@@ -1,4 +1,6 @@
 import { describe, expect, it } from 'vitest';
+import { mixedShares } from './data/topics';
+import type { AvailableTopic, Difficulty } from './data/types';
 import { formatWhen, isDefinite } from './format';
 
 const NOW = new Date(2026, 9, 16, 15, 0);
@@ -16,5 +18,18 @@ describe('definite statements', () => {
   it('are recognized by their bounds', () => {
     expect(isDefinite('\\int_{0}^{\\pi} \\left(\\sin{\\left(x \\right)}\\right)\\,dx')).toBe(true);
     expect(isDefinite('\\int \\left(x\\right)\\,dx\\quad(x\\in\\mathbb{R})')).toBe(false);
+  });
+});
+
+describe('mixed practice shares', () => {
+  it('renormalize the published weights over the topics offered at a level', () => {
+    const topics: AvailableTopic[] = [
+      { slug: 'basic-integrals', name: 'Basic integrals', availableDifficulties: [1, 3] },
+      { slug: 'substitution', name: 'Substitution', availableDifficulties: [1, 3] },
+      { slug: 'integration-by-parts', name: 'Integration by parts', availableDifficulties: [3] },
+    ];
+    const mixed = { availableDifficulties: [1, 3] as Difficulty[], weights: { 'basic-integrals': 1, substitution: 2, 'integration-by-parts': 2 } };
+    expect(mixedShares(topics, mixed, 1).map(share => [share.topic.slug, share.percent])).toEqual([['basic-integrals', 33], ['substitution', 67]]);
+    expect(mixedShares(topics, mixed, 3).map(share => share.percent)).toEqual([20, 40, 40]);
   });
 });

@@ -5,27 +5,30 @@ import { DifficultyScale } from '../components/DifficultyScale';
 import { HistoryList } from '../components/HistoryRow';
 import { StatTile } from '../components/StatTile';
 import { TopicChips } from '../components/TopicChips';
-import { generateProblem, getLastSelection, getProfileCounts, getTopics, listProblemPage } from '../data/api';
-import type { Difficulty, TopicSlug } from '../data/types';
+import { generateProblem, getCatalogue, getLastSelection, getProfileCounts, listProblemPage } from '../data/api';
+import { mixedShares } from '../data/topics';
+import type { Difficulty, PracticeTopic } from '../data/types';
 import { navigate } from '../router';
 import { useLoad } from '../useLoad';
 
 export function DashboardPage() {
   const [catalogueRevision, setCatalogueRevision] = useState(0);
-  const catalogue = useLoad(getTopics, String(catalogueRevision));
+  const catalogue = useLoad(getCatalogue, String(catalogueRevision));
   const [dataRevision, setDataRevision] = useState(0);
   const counts = useLoad(getProfileCounts, String(dataRevision));
   const recent = useLoad(async () => (await listProblemPage({ limit: 3 })).items, String(dataRevision));
   const last = useLoad(getLastSelection);
-  const [topic, setTopic] = useState<TopicSlug>('basic-integrals');
+  const [topic, setTopic] = useState<PracticeTopic>('basic-integrals');
   const [difficulty, setDifficulty] = useState<Difficulty>(1);
   const [busy, setBusy] = useState(false);
   const pending = useRef(false);
   const active = useRef(true);
   useEffect(() => { active.current = true; return () => { active.current = false; }; }, []);
   const [error, setError] = useState('');
-  const topics = catalogue.status === 'ready' ? catalogue.data : [];
-  const levels = topics.find(t => t.slug === topic)?.availableDifficulties ?? [];
+  const topics = catalogue.status === 'ready' ? catalogue.data.topics : [];
+  const mixed = catalogue.status === 'ready' ? catalogue.data.mixed : null;
+  const levels = topic === 'mixed' ? mixed?.availableDifficulties ?? [] : topics.find(t => t.slug === topic)?.availableDifficulties ?? [];
+  const offered: PracticeTopic[] = [...topics.filter(t => t.availableDifficulties.length > 0).map(t => t.slug), ...(mixed ? ['mixed' as const] : [])];
   const available = levels.includes(difficulty);
 
   useEffect(() => {
@@ -82,7 +85,7 @@ export function DashboardPage() {
           <div id="topic-label" className="pl-label">
             Topic
           </div>
-          <TopicChips selected={topic} onSelect={setTopic} labelledBy="topic-label" available={busy ? [] : topics.filter(t => t.availableDifficulties.length > 0).map(t => t.slug)} />
+          <TopicChips selected={topic} onSelect={setTopic} labelledBy="topic-label" mixed={mixed !== null} available={busy ? [] : offered} />
           <p className="pl-small pl-muted">Disabled options are not available yet.</p>
         </div>
         <div className="pl-stack pl-gap-3">
@@ -90,6 +93,12 @@ export function DashboardPage() {
             Difficulty
           </div>
           <DifficultyScale selected={difficulty} onSelect={setDifficulty} labelledBy="difficulty-label" available={busy ? [] : levels} shown={levels} />
+          {topic === 'mixed' && mixed && available && (
+            <p className="pl-small pl-muted" id="mixed-weights">
+              Mixed practice picks one topic for each problem with fixed weights:{' '}
+              {mixedShares(topics, mixed, difficulty).map(({ topic: t, percent }) => `${t.name} ${percent}%`).join(', ')}.
+            </p>
+          )}
         </div>
         <div>
           <Button size="lg" arrow onClick={generate} disabled={busy || !available} aria-busy={busy}>

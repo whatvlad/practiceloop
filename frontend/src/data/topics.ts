@@ -1,4 +1,4 @@
-import type { Difficulty, Topic, TopicSlug } from './types';
+import type { AvailableTopic, Difficulty, MixedPractice, Topic, TopicSlug } from './types';
 
 // Matches the seed rows in supabase/migrations/202610150001_initial_schema.sql.
 export const TOPICS: readonly Topic[] = [
@@ -19,4 +19,11 @@ export const DIFFICULTIES: readonly { level: Difficulty; name: string }[] = [
 
 export function topicName(slug: TopicSlug): string {
   return TOPICS.find((t) => t.slug === slug)?.name ?? slug;
+}
+
+/** Each topic's share of mixed practice at one level: its weight over the weights offered there. */
+export function mixedShares(topics: readonly AvailableTopic[], mixed: MixedPractice, difficulty: Difficulty): { topic: Topic; percent: number }[] {
+  const offered = topics.filter(t => t.availableDifficulties.includes(difficulty) && (mixed.weights[t.slug] ?? 0) > 0);
+  const total = offered.reduce((sum, t) => sum + (mixed.weights[t.slug] ?? 0), 0);
+  return offered.map(t => ({ topic: t, percent: Math.round((100 * (mixed.weights[t.slug] ?? 0)) / total) }));
 }

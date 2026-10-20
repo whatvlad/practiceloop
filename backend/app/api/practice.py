@@ -48,6 +48,16 @@ TOPICS = {
     "rational-functions": ("Rational functions", (1, 2, 3, 4, 5)),
     "trigonometric-integrals": ("Trigonometric integrals", (1, 2, 3, 4, 5)),
 }
+# #36 mixed practice: fixed, published weights, never adapted to a learner's history.
+# Basic integrals are the building block of every method, so they get half the share.
+MIXED = "mixed"
+MIXED_WEIGHTS = {
+    "basic-integrals": 1,
+    "substitution": 2,
+    "integration-by-parts": 2,
+    "rational-functions": 2,
+    "trigonometric-integrals": 2,
+}
 MAX_ANSWER_CHARS = 512  # the parser's 256-byte limit applies after normalization
 
 
@@ -91,6 +101,7 @@ class RateLimiter:
             self._hits.clear()
 
 
+_RANDOM = secrets.SystemRandom()
 generation_limit = RateLimiter(30)
 attempt_limit = RateLimiter(30)
 reveal_limit = RateLimiter(60)
@@ -157,13 +168,25 @@ def _pick(conn: Any, user_id: UUID, topic: str, difficulty: int) -> Exercise:
     return secrets.choice(fresh or list(pool))
 
 
+def mixed_topics(difficulty: int) -> tuple[list[str], list[int]]:
+    """The topics offered at this level and their weights; a missing cell has none."""
+    slugs = [slug for slug, (_, levels) in TOPICS.items() if difficulty in levels]
+    return slugs, [MIXED_WEIGHTS[slug] for slug in slugs]
+
+
 @router.get("/topics")
 def topics(_user: User) -> dict[str, object]:
     return {
         "items": [
             {"slug": slug, "name": name, "availableDifficulties": list(levels)}
             for slug, (name, levels) in TOPICS.items()
-        ]
+        ],
+        "mixed": {
+            "availableDifficulties": sorted(
+                {level for _, levels in TOPICS.values() for level in levels}
+            ),
+            "weights": MIXED_WEIGHTS,
+        },
     }
 
 
@@ -307,7 +330,11 @@ def generate(body: GenerateBody, user: User, key: IdempotencyKey = None) -> JSON
         _idempotency_key(key),
         idempotency.request_hash(body.model_dump()),
     )
-    cell = TOPICS.get(body.topic)
+    topic = body.topic
+    if topic == MIXED and body.difficulty in range(1, 6):
+        slugs, weights = mixed_topics(body.difficulty)
+        topic = _RANDOM.choices(slugs, weights)[0]
+    cell = TOPICS.get(topic)
     if cell is None or body.difficulty not in cell[1]:
         raise _invalid()
     generation_limit.check(user.id)
@@ -316,11 +343,11 @@ def generate(body: GenerateBody, user: User, key: IdempotencyKey = None) -> JSON
         stored = idempotency.claim(conn, scope)
         if stored is not None:
             return _respond(stored, replayed=True)
-        exercise = _pick(conn, user.id, body.topic, body.difficulty)
+        exercise = _pick(conn, user.id, topic, body.difficulty)
         problem = records.insert_problem(
             conn,
             user.id,
-            body.topic,
+            topic,
             body.difficulty,
             exercise.statement,
             records.PrivateSolution(

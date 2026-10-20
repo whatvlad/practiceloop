@@ -2,13 +2,13 @@
 import text from '../../../backend/app/content/en.json';
 import { TOPICS } from './topics';
 import { FEEDBACK_CODES } from './types';
-import type { AvailableTopic, CheckOutcome, Difficulty, LearningStatistics, OmissionMetric, OpenedProblem, ProblemPage, ProfileCounts, PublicProblem, RevealedAnswer, RevealedSolution, TopicSlug } from './types';
+import type { AvailableTopic, Catalogue, CheckOutcome, Difficulty, LearningStatistics, OmissionMetric, OpenedProblem, ProblemPage, ProfileCounts, PublicProblem, RevealedAnswer, RevealedSolution, PracticeTopic, TopicSlug } from './types';
 
 const base = (import.meta.env.VITE_API_BASE_URL ?? '/api').trim().replace(/\/+$/, '');
 let token: Promise<string> | null = null;
 let epoch = 0;
 let problems: PublicProblem[] = [];
-let selection: { topic: TopicSlug; difficulty: Difficulty } = { topic: 'basic-integrals', difficulty: 1 };
+let selection: { topic: PracticeTopic; difficulty: Difficulty } = { topic: 'basic-integrals', difficulty: 1 };
 let generating: Promise<PublicProblem> | null = null;
 let accessToken: () => Promise<string | null> = async () => null;
 const keys = new Map<string, string>();
@@ -203,7 +203,8 @@ export async function openProblem(id: string): Promise<OpenedProblem> {
     result.answer = { answerLatex: answer.answerLatex };
   }
   if (problem.solutionRevealed) result.solution = solution(object(data.solution));
-  cache(problem);
+  // The cache keeps session-only flags such as `mixed` that the server does not store.
+  result.problem = structuredClone(cache(problem));
   return result;
 }
 
@@ -229,16 +230,36 @@ export async function getProfileCounts(): Promise<ProfileCounts> {
     correct: correctProblems.size };
 }
 
+const LEVELS = [1, 2, 3, 4, 5];
+
+function difficulties(value: unknown): Difficulty[] {
+  if (!Array.isArray(value) || value.some(level => !LEVELS.includes(level))) throw new Error(text.service_error);
+  return [...new Set(value)] as Difficulty[];
+}
+
+function mixedPractice(value: unknown): Catalogue['mixed'] {
+  if (value === undefined) return null;
+  const data = object(value);
+  const weights = object(data.weights);
+  if (Object.entries(weights).some(([slug, weight]) => !TOPICS.some(t => t.slug === slug)
+    || !Number.isSafeInteger(weight) || (weight as number) <= 0)) throw new Error(text.service_error);
+  return { availableDifficulties: difficulties(data.availableDifficulties), weights: weights as Record<TopicSlug, number> };
+}
+
 export async function getTopics(): Promise<AvailableTopic[]> {
+  return (await getCatalogue()).topics;
+}
+
+export async function getCatalogue(): Promise<Catalogue> {
   const started = epoch;
   const bearer = await accessToken();
   if (started !== epoch) throw new Error(text.expired);
-  if (!bearer) return TOPICS.slice(0, 2).map(topic => ({ ...topic, availableDifficulties: [1, 2] }));
+  if (!bearer) return { topics: TOPICS.slice(0, 2).map(topic => ({ ...topic, availableDifficulties: [1, 2] })), mixed: null };
   const data = await request('/topics', undefined, bearer, true);
   if (started !== epoch) throw new Error(text.expired);
   if (!Array.isArray(data.items)) throw new Error(text.service_error);
   const seen = new Set<string>();
-  return data.items.map((value: unknown) => {
+  const topics = data.items.map((value: unknown) => {
     const item = object(value);
     const topic = TOPICS.find(t => t.slug === item.slug);
     if (!topic || seen.has(topic.slug) || !Array.isArray(item.availableDifficulties)
@@ -246,25 +267,29 @@ export async function getTopics(): Promise<AvailableTopic[]> {
     seen.add(topic.slug);
     return { ...topic, availableDifficulties: [...new Set(item.availableDifficulties)] as Difficulty[] };
   });
+  return { topics, mixed: mixedPractice(data.mixed) };
 }
 
-export function generateProblem(topic: TopicSlug, difficulty: Difficulty): Promise<PublicProblem> {
-  if (!TOPICS.some(t => t.slug === topic) || ![1, 2, 3, 4, 5].includes(difficulty)) return Promise.reject(new Error(text.unsupported));
+export function generateProblem(topic: PracticeTopic, difficulty: Difficulty): Promise<PublicProblem> {
+  const mixed = topic === 'mixed';
+  if ((!mixed && !TOPICS.some(t => t.slug === topic)) || ![1, 2, 3, 4, 5].includes(difficulty)) return Promise.reject(new Error(text.unsupported));
   if (generating) return generating;
   const started = epoch;
   const operation = (async () => {
     const { bearer, saved } = await credentials();
-    if (!saved && (!['basic-integrals', 'substitution'].includes(topic) || ![1, 2].includes(difficulty))) throw new Error(text.unsupported);
+    if (!saved && (mixed || !['basic-integrals', 'substitution'].includes(topic) || ![1, 2].includes(difficulty))) throw new Error(text.unsupported);
     const operation = `generate:${topic}:${difficulty}`;
     const authorized = await authorize(started, saved, bearer);
     const response = await request('/problems', { topic, difficulty }, authorized, saved, operation);
     const data = saved ? object(response.problem) : response;
     if (started !== epoch) throw new Error(text.expired);
     if (typeof data.id !== 'string' || typeof data.problemLatex !== 'string' || typeof data.createdAt !== 'string'
-        || data.topic !== topic || data.difficulty !== difficulty) throw new Error(text.service_error);
+        || (mixed ? !TOPICS.some(t => t.slug === data.topic) : data.topic !== topic)
+        || data.difficulty !== difficulty) throw new Error(text.service_error);
     // Explicit projection: even a malformed server response cannot cache private fields.
-    const problem: PublicProblem = { saved, id: data.id, topic, difficulty, problemLatex: data.problemLatex,
-      createdAt: data.createdAt, answerRevealed: false, solutionRevealed: false, lastResult: null, lastAnswer: null };
+    const problem: PublicProblem = { saved, id: data.id, topic: data.topic as TopicSlug, difficulty,
+      problemLatex: data.problemLatex, createdAt: data.createdAt, answerRevealed: false, solutionRevealed: false,
+      lastResult: null, lastAnswer: null, ...(mixed ? { mixed: true } : {}) };
     problems.unshift(problem);
     selection = { topic, difficulty };
     keys.delete(operation);

@@ -28,6 +28,7 @@ export {
   generateProblem,
   getLastSelection,
   getTopics,
+  getCatalogue,
   getProblem,
   getProfileCounts,
   listProblems,

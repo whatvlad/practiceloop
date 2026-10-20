@@ -100,11 +100,17 @@ responses never include expected answers, solution steps or generator data.
 
 ### `GET /api/topics`
 
-Returns only implemented template cells:
+Returns only implemented template cells, and the fixed mixed-practice weights (#36):
 
 ```json
-{"items":[{"slug":"basic-integrals","name":"Basic integrals","availableDifficulties":[1,2]}]}
+{"items":[{"slug":"basic-integrals","name":"Basic integrals","availableDifficulties":[1,2]}],
+ "mixed":{"availableDifficulties":[1,2,3,4,5],"weights":{"basic-integrals":1,"substitution":2,"integration-by-parts":2,"rational-functions":2,"trigonometric-integrals":2}}}
 ```
+
+Mixed practice draws a topic for each problem with these weights, over the
+topics offered at the chosen level; at levels 1–2 integration by parts is not
+offered, so the others share its part. Weights are constants in
+`backend/app/api/practice.py`, never adapted to a learner's history.
 
 ### `POST /api/problems`
 
@@ -113,6 +119,9 @@ Requires `Idempotency-Key: <UUIDv4>`.
 ```json
 {"topic":"basic-integrals","difficulty":1}
 ```
+
+`topic` may also be `"mixed"` (levels 1–5): the server draws the topic with the
+published weights, and the saved problem and the response carry the drawn topic.
 
 Returns `201` and the shared problem shape after the public problem, private
 solution and idempotency record commit atomically. An exact replay returns the

@@ -526,6 +526,70 @@ def test_topics_lists_only_generated_cells(client: TestClient) -> None:
     ]
 
 
+def test_topics_publish_the_fixed_mixed_practice_weights(client: TestClient) -> None:
+    mixed = client.get("/topics").json()["mixed"]
+    assert mixed == {
+        "availableDifficulties": [1, 2, 3, 4, 5],
+        "weights": {
+            "basic-integrals": 1,
+            "substitution": 2,
+            "integration-by-parts": 2,
+            "rational-functions": 2,
+            "trigonometric-integrals": 2,
+        },
+    }
+
+
+@pytest.mark.parametrize(
+    ("level", "slugs", "weights"),
+    [
+        (
+            level,
+            [slug for slug, (_, levels) in practice.TOPICS.items() if level in levels],
+            [
+                w
+                for slug, (_, levels) in practice.TOPICS.items()
+                if level in levels
+                for w in (practice.MIXED_WEIGHTS[slug],)
+            ],
+        )
+        # Only the topics that offer a level take part in its draw.
+        for level in (1, 4)
+    ],
+)
+def test_mixed_practice_draws_a_topic_with_the_published_weights(
+    client: TestClient, url: str, monkeypatch: pytest.MonkeyPatch, level, slugs, weights
+) -> None:
+    calls = []
+
+    def choices(population, weights):
+        calls.append((population, weights))
+        return [population[-1]]
+
+    monkeypatch.setattr(practice._RANDOM, "choices", choices)
+    problem = generate(client, "mixed", level)
+    assert calls == [(slugs, weights)]
+    # The saved problem belongs to the drawn topic, so history and statistics stay per topic.
+    assert (problem["topic"], problem["difficulty"]) == (slugs[-1], level)
+    assert rows(
+        url,
+        "select t.slug from public.problems p join public.topics t on t.id = p.topic_id"
+        " where p.id = %s",
+        problem["id"],
+    ) == [(slugs[-1],)]
+
+
+def test_mixed_practice_reaches_every_offered_topic(client: TestClient) -> None:
+    seen = {generate(client, "mixed", 3)["topic"] for _ in range(25)}
+    assert seen <= set(practice.MIXED_WEIGHTS) and len(seen) >= 3
+
+
+@pytest.mark.parametrize("level", [0, 6])
+def test_mixed_practice_rejects_unknown_levels(client: TestClient, level: int) -> None:
+    response = client.post("/problems", json={"topic": "mixed", "difficulty": level}, headers=key())
+    assert response.status_code == 422
+
+
 # History, persisted reopen and profile (#12)
 
 
