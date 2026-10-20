@@ -66,15 +66,15 @@ def users(url: str, monkeypatch: pytest.MonkeyPatch) -> Iterator[Users]:
 
 
 @pytest.fixture
-def client(users: Users) -> Iterator[TestClient]:
+def client(users: Users, monkeypatch: pytest.MonkeyPatch) -> Iterator[TestClient]:
+    # Indefinite records unless a test pins definite-v1, so assertions stay deterministic.
+    pin_version(monkeypatch, None)
     with TestClient(app) as test_client:
         yield test_client
 
 
 def pin_version(monkeypatch: pytest.MonkeyPatch, version: str | None) -> None:
     """Cells mix definite and indefinite records (#36): pin one version, or None for indefinite."""
-    from app.api import practice
-    from app.generators.core import catalogue
 
     def keep(record: dict[str, object]) -> bool:
         if version is None:
@@ -156,7 +156,7 @@ def test_generation_response_never_carries_private_data(client: TestClient, url:
 
 
 def test_no_repeat_within_the_latest_half_of_a_cell(client: TestClient, url: str) -> None:
-    window = len(catalogue("basic-integrals", 1)) // 2 + 1
+    window = len(practice.catalogue("basic-integrals", 1)) // 2 + 1
     ids = [generate(client)["id"] for _ in range(window)]
     data = rows(
         url,
@@ -662,7 +662,6 @@ def test_history_reads_require_authentication_before_database_access(
 def test_private_omission_metrics_exclude_invalid_and_keep_each_checked_attempt(
     client, users, url, monkeypatch
 ):
-    pin_version(monkeypatch, None)
     problem = generate(client)
     for outcome in (
         AnswerCheck("incorrect", True),
@@ -701,10 +700,7 @@ def test_private_omission_metrics_exclude_invalid_and_keep_each_checked_attempt(
     assert all(w["rate"] is None for w in other["weekly"])
 
 
-def test_statistics_all_time_and_eight_week_trend_have_distinct_windows(
-    client, users, url, monkeypatch
-):
-    pin_version(monkeypatch, None)
+def test_statistics_all_time_and_eight_week_trend_have_distinct_windows(client, users, url):
     problem = generate(client)
     with psycopg.connect(url) as conn:
         conn.execute(
