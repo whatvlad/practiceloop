@@ -18,6 +18,8 @@ export function loadMathLive(): Promise<MathLive | null> {
       module.MathfieldElement.soundsDirectory = null;
       module.MathfieldElement.keypressSound = null;
       module.MathfieldElement.plonkSound = null;
+      // e is the constant, never scientific notation: keep 3e-6 from becoming 3×10^{-6}.
+      module.MathfieldElement.scientificNotationTemplate = null;
       configureKeyboard();
       return module;
     })

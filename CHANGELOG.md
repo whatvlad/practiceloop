@@ -8,7 +8,8 @@ Meaningful user-facing releases will be recorded here. No MVP release exists yet
   through every topic and level, cross-user denial, malicious input, worker
   saturation and a database outage; CI runs it. An answer or profile name
   containing a NUL byte is now rejected as invalid instead of failing with a
-  server error.
+  server error. The formula editor no longer turns `3e-6` into `3×10⁻⁶`; a
+  number before `e` is the constant e, as everywhere else.
 - Mixed practice (#36, part 2): signed-in learners can choose "Mixed practice" and
   a level. Each problem's topic is drawn with fixed weights that the dashboard
   shows as percentages; basic integrals have half the weight of each method.
