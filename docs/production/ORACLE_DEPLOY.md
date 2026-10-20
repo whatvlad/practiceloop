@@ -27,6 +27,16 @@ convenient. Only 22, 80 and 443 are open in the Oracle security list. Caddy's
 admin API (2019) and uvicorn (8000) listen on localhost only; the image's rpcbind
 (111) listens on all addresses but is blocked by the security list.
 
+**Co-tenant (known risk, accepted 2026-10-20):** an unrelated app,
+`/home/ubuntu/korepetycje-telegram-crm` (Python on `127.0.0.1:8080`), runs on the
+same VM as `ubuntu` and is published through a Cloudflare quick tunnel
+(`cloudflared tunnel --url http://127.0.0.1:8080`, which also listens on 20241 for
+metrics). Both were started by hand, with no systemd unit. Because `ubuntu` has
+passwordless sudo, a compromise of that public app would give root on the VM and
+with it `api.env` (service-role key, database password). It also shares the one
+OCPU. Moving it to its own unprivileged user or its own VM removes the risk. Docker
+is installed (containerd on localhost 34179) but runs no containers.
+
 | Path | What |
 |---|---|
 | `/opt/practiceloop/releases/<sha>-<run>-<attempt>/` | One upload: `backend/`, `deploy/oracle/` and its own `.venv` |
