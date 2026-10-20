@@ -1,5 +1,5 @@
 import { TOPICS } from '../data/topics';
-import type { TopicSlug } from '../data/types';
+import type { PracticeTopic } from '../data/types';
 import { CheckIcon } from './icons';
 
 interface ChipOption<T extends string> {
@@ -42,15 +42,18 @@ export function Chips<T extends string>({ options, selected, onSelect, label, la
   );
 }
 
-const TOPIC_OPTIONS = TOPICS.map((t) => ({ value: t.slug, label: t.name }));
+const TOPIC_OPTIONS: ChipOption<PracticeTopic>[] = TOPICS.map((t) => ({ value: t.slug, label: t.name }));
+const WITH_MIXED: ChipOption<PracticeTopic>[] = [...TOPIC_OPTIONS, { value: 'mixed', label: 'Mixed practice' }];
 
 interface TopicChipsProps {
-  selected: TopicSlug;
-  onSelect: (slug: TopicSlug) => void;
+  selected: PracticeTopic;
+  onSelect: (topic: PracticeTopic) => void;
   labelledBy?: string;
-  available?: readonly TopicSlug[];
+  available?: readonly PracticeTopic[];
+  /** Offer mixed practice as a last chip (#36). */
+  mixed?: boolean;
 }
 
-export function TopicChips({ selected, onSelect, labelledBy, available }: TopicChipsProps) {
-  return <Chips options={TOPIC_OPTIONS} selected={selected} onSelect={onSelect} label="Topic" labelledBy={labelledBy} available={available} />;
+export function TopicChips({ selected, onSelect, labelledBy, available, mixed = false }: TopicChipsProps) {
+  return <Chips options={mixed ? WITH_MIXED : TOPIC_OPTIONS} selected={selected} onSelect={onSelect} label="Topic" labelledBy={labelledBy} available={available} />;
 }

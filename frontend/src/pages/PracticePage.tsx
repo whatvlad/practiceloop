@@ -66,6 +66,7 @@ function PracticeSession({ opened }: { opened: OpenedProblem }) {
       topic={problem.topic}
       difficulty={problem.difficulty}
       problemLatex={problem.problemLatex}
+      mixed={problem.mixed === true}
       headLabel={problem.saved ? 'Saved to your account' : 'Temporary practice'}
       answer={answer}
       onAnswerChange={(value) => { answerRevision.current += 1; setAnswer(value); setResult(null); }}
@@ -82,7 +83,7 @@ function PracticeSession({ opened }: { opened: OpenedProblem }) {
       onNext={() =>
         run(async () => {
           if (problem.saved === false) { navigate('/login'); return; }
-          const next = await generateProblem(problem.topic, problem.difficulty);
+          const next = await generateProblem(problem.mixed ? 'mixed' : problem.topic, problem.difficulty);
           if (active.current) navigate(practiceUrl(next.id));
         })
       }

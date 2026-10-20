@@ -4,6 +4,10 @@ Meaningful user-facing releases will be recorded here. No MVP release exists yet
 
 ## Unreleased
 
+- Mixed practice (#36, part 2): signed-in learners can choose "Mixed practice" and
+  a level. Each problem's topic is drawn with fixed weights that the dashboard
+  shows as percentages; basic integrals have half the weight of each method.
+  "Generate next problem" stays in mixed practice.
 - Targeted mistake feedback (#36, part 2): when a wrong answer clearly matches a
   common mistake its template declares, such as `ln(x)` instead of `ln|x|`, a lost
   sign, a missing chain-rule factor or a definite integral left unevaluated, the

@@ -171,6 +171,29 @@ it('loads supported topic cells from the API, including future higher levels', a
   expect((await practice.generateProblem('basic-integrals', 5)).difficulty).toBe(5);
 });
 
+it('reads published mixed-practice weights and keeps the drawn topic with a mixed flag', async () => {
+  practice.configurePracticeAuth(async () => 'access-token');
+  const weights = { 'basic-integrals': 1, substitution: 2 };
+  fetchMock.mockResolvedValueOnce(response({ items: [{ slug: 'basic-integrals', availableDifficulties: [1] }],
+    mixed: { availableDifficulties: [1, 2, 3, 4, 5], weights } }));
+  expect((await practice.getCatalogue()).mixed).toEqual({ availableDifficulties: [1, 2, 3, 4, 5], weights });
+  fetchMock.mockResolvedValueOnce(response({ problem: { ...publicProblem, topic: 'substitution', difficulty: 3 } }, 201));
+  const problem = await practice.generateProblem('mixed', 3);
+  expect(JSON.parse(String(fetchMock.mock.calls[1][1]?.body))).toEqual({ topic: 'mixed', difficulty: 3 });
+  expect([problem.topic, problem.mixed]).toEqual(['substitution', true]);
+  expect(await practice.getLastSelection()).toEqual({ topic: 'mixed', difficulty: 3 });
+  fetchMock.mockResolvedValueOnce(response({ problem: { ...publicProblem, topic: 'not-a-topic' } }, 201));
+  await expect(practice.generateProblem('mixed', 1)).rejects.toThrow();
+  fetchMock.mockResolvedValueOnce(response({ items: [], mixed: { availableDifficulties: [1], weights: { other: 1 } } }));
+  await expect(practice.getCatalogue()).rejects.toThrow();
+});
+
+it('offers guests no mixed practice', async () => {
+  expect((await practice.getCatalogue()).mixed).toBeNull();
+  await expect(practice.generateProblem('mixed', 1)).rejects.toThrow('available');
+  expect(fetchMock).not.toHaveBeenCalled();
+});
+
 it('does not fall back to preview when the account token cannot be obtained', async () => {
   practice.configurePracticeAuth(async () => { throw new Error('Please sign in again.'); });
   await expect(practice.generateProblem('basic-integrals', 1)).rejects.toThrow('sign in again');
