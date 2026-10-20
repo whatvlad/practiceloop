@@ -19,9 +19,13 @@ domain later, pass it as the third argument to `bootstrap.sh` and update
 
 ## On the VM
 
-The preview VM (2026-10-18) is an Ampere A1 ARM instance on Ubuntu 20.04, which no
-longer gets standard security updates; upgrade it or attach free Ubuntu Pro before
-production.
+The VM (audited 2026-10-20) is `VM.Standard.A1.Flex` with 1 OCPU (Ampere ARM)
+and 6 GB RAM, 45 GB disk, in `eu-frankfurt-1` (AD-1), inside the Always Free
+allowance (4 OCPUs / 24 GB). It runs Ubuntu 20.04 with Ubuntu Pro ESM (infra and
+apps) attached, so it still gets security updates; move to a newer LTS when
+convenient. Only 22, 80 and 443 are open in the Oracle security list. Caddy's
+admin API (2019) and uvicorn (8000) listen on localhost only; the image's rpcbind
+(111) listens on all addresses but is blocked by the security list.
 
 | Path | What |
 |---|---|
@@ -36,7 +40,7 @@ forwarding off), and may run only
 
 ## Capacity and worker isolation
 
-The VM's region, shape and size are listed under [Audit](#audit). One process
+The VM's shape and size are under [On the VM](#on-the-vm). One process
 serves the API under systemd with `MemoryMax=512M`. Each answer check spawns a fresh
 math worker (`backend/app/services/math_worker.py`) with a 2 s CPU limit, a 256 MB
 address-space limit, a 3 s wall clock and no core dumps; the parent kills it on
