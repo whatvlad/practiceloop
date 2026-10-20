@@ -26,8 +26,11 @@ for retry behavior, durable history and previously authorized reveal restoration
 
 Generation picks a random record from the cell's verified catalogue, skipping the
 records behind the user's latest half-catalogue in that cell, so a learner sees
-no repeat within that window. Only the cells the generators support are offered
-(basic integrals and substitution, levels 1 and 2); other cells return 422.
+no repeat within that window. Only the cells the generators support are offered:
+every topic at levels 1–5 except integration by parts, which starts at level 3
+(ADR-003). Other cells return 422. `GET /topics` lists them as
+`availableDifficulties`. Substitution levels 1–2 keep `substitution-v1`; levels
+3–5 use `substitution-v2`. All problems are still indefinite.
 Idempotency keys live in `private.idempotency_keys` (migration
 `202610190001_practice_persistence.sql`) and expire after 24 hours. Rate limits
 are per user and per process: 30 generations, 30 attempts and 60 reveals a minute.

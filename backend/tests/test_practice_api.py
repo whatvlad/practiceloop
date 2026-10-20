@@ -154,7 +154,9 @@ def test_no_repeat_within_the_latest_half_of_a_cell(client: TestClient, url: str
     "body",
     [
         {"topic": "integration-by-parts", "difficulty": 1},
-        {"topic": "basic-integrals", "difficulty": 3},
+        {"topic": "integration-by-parts", "difficulty": 2},
+        {"topic": "basic-integrals", "difficulty": 6},
+        {"topic": "definite-integrals", "difficulty": 1},
         {"topic": "basic-integrals", "difficulty": "1"},
         {"topic": "basic-integrals", "difficulty": 1, "userId": "x"},
         {"topic": "basic-integrals"},
@@ -328,6 +330,32 @@ def test_attempts_are_checked_by_the_real_worker_and_persisted(
         assert saved == [(users.alice, is_correct, omitted)]
 
 
+@pytest.mark.parametrize(
+    ("topic", "level", "version"),
+    [
+        ("basic-integrals", 3, "basic-v1"),
+        ("substitution", 4, "substitution-v2"),
+        ("integration-by-parts", 5, "parts-v1"),
+        ("rational-functions", 5, "rational-v1"),
+        ("trigonometric-integrals", 4, "trigonometric-v1"),
+    ],
+)
+def test_higher_levels_persist_their_family_record_and_check_answers(
+    client: TestClient, url: str, topic: str, level: int, version: str
+) -> None:
+    problem = generate(client, topic, level)
+    assert (problem["topic"], problem["difficulty"]) == (topic, level)
+    assert rows(
+        url,
+        "select generator_version from private.problem_solutions where problem_id = %s",
+        problem["id"],
+    ) == [(version,)]
+    primitive = primitive_of(url, problem["id"]).replace("Abs", "abs")
+    response = attempt(client, problem["id"], primitive + " + C")
+    assert response.status_code == 201, response.text
+    assert response.json()["attempt"]["result"] == "correct"
+
+
 def test_attempt_replay_and_conflict(
     client: TestClient, url: str, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -442,8 +470,11 @@ def test_reveals_set_flags_return_payload_and_are_idempotent(client: TestClient,
 def test_topics_lists_only_generated_cells(client: TestClient) -> None:
     items = client.get("/topics").json()["items"]
     assert [(item["slug"], item["availableDifficulties"]) for item in items] == [
-        ("basic-integrals", [1, 2]),
-        ("substitution", [1, 2]),
+        ("basic-integrals", [1, 2, 3, 4, 5]),
+        ("substitution", [1, 2, 3, 4, 5]),
+        ("integration-by-parts", [3, 4, 5]),
+        ("rational-functions", [1, 2, 3, 4, 5]),
+        ("trigonometric-integrals", [1, 2, 3, 4, 5]),
     ]
 
 

@@ -9,8 +9,9 @@ import pytest
 import sympy as sp
 from test_basic import RECORDS
 
+from app.generators.families import _families
 from app.services import math_worker
-from app.services.answer_check import classify, replay_problem
+from app.services.answer_check import check_tree, classify, replay_problem
 from app.services.math_parser import MathInputTooLong, parse_math_input
 from app.services.math_worker import (
     AnswerCheck,
@@ -137,6 +138,79 @@ def test_every_generated_answer_is_accepted(problem_record: dict[str, Any]) -> N
     assert outcome(f"{primitive} + x + C", problem_record) == "incorrect"
 
 
+def family(version: str, template: str, coefficient: int = 1) -> dict[str, Any]:
+    return {"generator_version": version, "template": template, "coefficient": coefficient}
+
+
+FAMILY_RECORDS = [
+    family(version, name, coefficient)
+    for version, (_slug, templates, _build) in _families().items()
+    for name in templates
+    for coefficient in (-3, -2, -1, 1, 2, 3)
+]
+POLES = family("rational-v1", "distinct_factors")  # 1/(x(x+1)) on x not in {-1, 0}
+REPEATED = family("rational-v1", "repeated_factor")  # 1/(x(x+1)^2)
+DIVISION = family("rational-v1", "division_then_fractions")  # (x^3+x+1)/(x(x+1))
+LOG_ONLY = family("rational-v1", "linear_denominator")  # 1/x on x != 0
+PARTS = family("parts-v1", "linear_exponential")  # x e^x
+CYCLIC = family("parts-v1", "cyclic_sine")  # e^x sin x
+ODD = family("trigonometric-v1", "odd_power")  # sin^3 x
+EVEN = family("trigonometric-v1", "even_power")  # sin^2 x
+NESTED = family("substitution-v2", "identity_nested")  # x sin(x^2) sin(2x^2)
+
+
+@pytest.mark.parametrize("problem_record", FAMILY_RECORDS)
+def test_every_family_answer_is_accepted(problem_record: dict[str, Any]) -> None:
+    test_every_generated_answer_is_accepted(problem_record)
+
+
+@pytest.mark.parametrize(
+    ("problem", "answer", "expected"),
+    [
+        # Every connected component of a multi-pole domain, including (-1, 0).
+        (POLES, "ln|x| - ln|x+1| + C", "correct"),
+        (POLES, "ln|x/(x+1)| + C", "correct"),
+        (POLES, "ln|x| - ln|x+1|", "missing_constant"),
+        (POLES, "ln(x) - ln(x+1) + C", "incorrect"),
+        (POLES, "ln|x| - ln(x+1) + C", "incorrect"),
+        (POLES, "ln|x| + ln|x+1| + C", "incorrect"),
+        # The derivative is right, but the offset differs between components.
+        (POLES, "ln|x| - ln|x+1| + abs(x+1)/(x+1) + C", "incorrect"),
+        (POLES, "ln|x| - ln|x+1| + abs(x)/x + C", "incorrect"),
+        # A part undefined inside the domain cannot be cancelled away.
+        (POLES, "ln|x| - ln|x+1| + (x-2)/(x-2) + C", "incorrect"),
+        (POLES, "ln|x| - ln|x+1| + 1/(x-x) + C", "invalid"),
+        (REPEATED, "ln|x| - ln|x+1| + 1/(x+1) + C", "correct"),
+        (REPEATED, "ln|x/(x+1)| + 1/(x+1) + C", "correct"),
+        (REPEATED, "ln|x/(x+1)| - 1/(x+1) + C", "incorrect"),
+        (DIVISION, "x^2/2 - x + ln|x| + ln|x+1| + C", "correct"),
+        (DIVISION, "x^2/2 - x + ln|x^2 + x| + C", "correct"),
+        (DIVISION, "(x-1)^2/2 + ln|x*(x+1)| + C", "correct"),
+        (DIVISION, "x^2/2 - x + ln|x| - ln|x+1| + C", "incorrect"),
+        (LOG_ONLY, "ln|x| + C", "correct"),
+        (LOG_ONLY, "ln(x) + C", "incorrect"),
+        # All-real families keep the preview's hole rule and accept alternative methods.
+        (PARTS, "x e^x - e^x + C", "correct"),
+        (PARTS, "(x-1)e^x + C", "correct"),
+        (PARTS, "x e^x + C", "incorrect"),
+        (PARTS, "(x-1)e^x + (x-2)/(x-2) + C", "invalid"),
+        (CYCLIC, "e^x * (sin(x) - cos(x))/2 + C", "correct"),
+        (CYCLIC, "e^x sin(x)/2 - e^x cos(x)/2 + C", "correct"),
+        (CYCLIC, "e^x * (sin(x) + cos(x))/2 + C", "incorrect"),
+        (ODD, "cos^3(x)/3 - cos(x) + C", "correct"),
+        (ODD, "-cos(x) + cos(x)^3/3 + C", "correct"),
+        (ODD, "-cos(x) + C", "incorrect"),
+        (EVEN, "x/2 - sin(2x)/4 + C", "correct"),
+        (EVEN, "x/2 - sin(x)cos(x)/2 + C", "correct"),
+        (EVEN, "(x - sin(x)cos(x))/2", "missing_constant"),
+        (NESTED, "sin^3(x^2)/3 + C", "correct"),
+        (NESTED, "-cos^3(x^2)/3 + C", "incorrect"),
+    ],
+)
+def test_family_classification(problem: dict[str, Any], answer: str, expected: str) -> None:
+    assert check_tree(parse_math_input(answer), replay_problem(problem)) == expected
+
+
 def test_unknown_record_version_is_rejected() -> None:
     with pytest.raises(ValueError, match="version"):
         replay_problem({"generator_version": "basic-v9"})
@@ -158,6 +232,23 @@ def test_unknown_record_version_is_rejected() -> None:
 )
 def test_check_answer_end_to_end(answer: str, expected: AnswerCheck) -> None:
     assert check_answer(answer, MIXED) == expected
+
+
+@linux_only
+@pytest.mark.parametrize(
+    ("problem", "answer", "expected"),
+    [
+        (DIVISION, "x^2/2 - x + ln|x^2 + x| + C", AnswerCheck("correct")),
+        (DIVISION, "x^2/2 - x + ln|x| + ln|x+1|", AnswerCheck("incorrect", missing_constant=True)),
+        (POLES, "ln|x| - ln|x+1| + abs(x)/x + C", AnswerCheck("incorrect")),
+        (CYCLIC, "e^x * (sin(x) - cos(x))/2 + C", AnswerCheck("correct")),
+        (NESTED, "sin^3(x^2)/3 + C", AnswerCheck("correct")),
+    ],
+)
+def test_family_check_fits_the_worker_limits(
+    problem: dict[str, Any], answer: str, expected: AnswerCheck
+) -> None:
+    assert check_answer(answer, problem) == expected
 
 
 @linux_only

@@ -30,9 +30,11 @@ The preview connects basic integrals and substitution at levels 1–2 to a separ
 non-persistent API, with 186 verified records and no repeats within a pool cycle.
 Other cells are disabled. [Preview boundaries](docs/architecture/PREVIEW_PRACTICE.md).
 
-The remaining internal topic generators (#9, #77–#80) cover the approved
-substitution, parts, rational and trigonometric cells: 18 templates and 108
-verified records. [Topic-generator details](docs/architecture/TOPIC_GENERATORS.md).
+The remaining topic generators (#9, #77–#80) cover the approved substitution,
+parts, rational and trigonometric cells: 18 templates and 108 verified records.
+Since #36 (part 1) signed-in practice offers every approved cell: all five topics
+at levels 1–5, with integration by parts at levels 3–5.
+[Topic-generator details](docs/architecture/TOPIC_GENERATORS.md).
 Enabling these new versions in practice is the separate #36 milestone.
 
 ## Stack and structure

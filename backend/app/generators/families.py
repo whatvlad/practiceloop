@@ -1,4 +1,4 @@
-"""Internal ADR-003 topic families. Not advertised by the practice API yet (#36)."""
+"""ADR-003 topic families, offered by the practice API through `core.catalogue` (#36)."""
 
 from collections.abc import Callable
 from dataclasses import dataclass

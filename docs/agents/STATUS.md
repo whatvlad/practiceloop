@@ -3,10 +3,10 @@
 Internal topic generators (#9, split into #77–#80): 18 versioned templates cover
 substitution, parts (levels 3–5), rational functions and trigonometric integrals.
 The 108-record corpus checks exact formulas, replay, domains, solution stages,
-input grammar and public-data boundaries. Existing API availability remains
-levels 1–2 of basic integrals/substitution; #36 owns worker/API integration and
-advanced practice. See docs/architecture/TOPIC_GENERATORS.md and the live Issue/PR
-for delivery state.
+input grammar and public-data boundaries. #36 part 1 connects them, and basic
+levels 3–5, to the worker and saved-practice API; definite integrals, weighted
+mixed practice and mistake diagnosis remain #36 part 2. See
+docs/architecture/TOPIC_GENERATORS.md and the live Issue/PR for delivery state.
 
 Account completion (#35, branch implementation): one fixed anonymous demo;
 private constant-omission count/rate/topic+difficulty breakdown/eight-week UTC

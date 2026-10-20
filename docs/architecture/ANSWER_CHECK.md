@@ -34,14 +34,25 @@ answer from the syntax tree, and runs `app.services.answer_check.classify`:
    derivative `dF/dK` must be a nonzero real number, so the answer is `aK + b`.
    `K^2`, `K*x` and `e^K` are incorrect.
 2. With `K = 0`, the rest must differentiate to the integrand and be real on
-   every connected component of the domain. Components are checked with a
-   positive symbol `t` substituted as `x = t` and `x = -t`, as the generator
-   does, so `ln|x|` passes on `x != 0` and `ln(x)` fails there.
+   every connected component of the domain. Each component is an open interval
+   written in a positive symbol `t`: `a + t` or `b - t` when it is unbounded and
+   `a + (b - a)t/(1 + t)` for a finite one such as the rational templates'
+   `(-1, 0)`. So `ln|x|` passes on `x != 0` and `ln(x)` fails there. When SymPy
+   cannot infer realness in `t` (for example `ln|x^2 + x|`), the answer's own
+   `continuous_domain` must cover the whole domain instead.
 3. With no constant, a valid primitive is `missing_constant`; adding a number
    such as `+ 7` does not count.
 4. The primitive minus the template's own primitive must be one number on all
    components. `ln|x| + |x|/x + C` has derivative `1/x`, but the offset differs
-   on each side of zero, so it is incorrect.
+   on each side of zero, so it is incorrect. Both primitives are already proven
+   here, so when the offset does not simplify in `t`, its exact value at `t = 1`
+   is that component's constant.
+
+Before evaluation, every subexpression of the parsed answer is checked with
+`continuous_domain`, so evaluation cannot cancel a hole. On all-real domains a
+hole is `invalid`, as before. On other domains a part that is undefined somewhere
+in the domain makes the answer `incorrect`, the same as `ln(x)` where `x < 0` is
+allowed; a part defined nowhere, such as `1/(x-x)`, is `invalid`.
 
 `sympy.simplify` returning zero is the only proof of equality. When it cannot
 prove a difference is zero, the answer is evaluated at fixed sample points of
@@ -60,9 +71,11 @@ end as a retryable `MathWorkerError`, never as `incorrect`. The corpus in
 `backend/tests/test_answer_check.py` runs such answers through the real worker
 and checks that each ends within the wall limit with its child reaped.
 
-Only indefinite `basic-v1` templates exist, so definite integrals and other
-generator versions raise `ValueError` until their templates land. A new
-generator version adds its replay to `answer_check.replay_problem`.
+The rational templates are the slowest: about 1 s of wall time per check on
+Linux for level 5, still inside the limits. `replay_problem` accepts `basic-v1`,
+`substitution-v1` and the four #77–#80 versions. Definite templates still raise
+`ValueError` until #36 part 2 adds them. A new generator version adds its replay
+to `answer_check.replay_problem`.
 
 Verification, from `backend/`: `python -m pytest tests/test_answer_check.py`
 (worker tests skip off Linux).

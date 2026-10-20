@@ -13,10 +13,11 @@ from typing import Any, Literal
 import sympy as sp
 
 from app.generators.basic import InternalProblem, X, replay_basic
-from app.generators.core import Exercise, replay
+from app.generators.core import FAMILY_VERSIONS, Exercise, replay
+from app.generators.families import FamilyProblem, replay_family
 from app.services.math_parser import MathNode
 
-type Problem = InternalProblem | Exercise
+type Problem = InternalProblem | Exercise | FamilyProblem
 
 type Outcome = Literal["correct", "incorrect", "missing_constant", "invalid", "inconclusive"]
 type Verdict = Literal["yes", "no", "unknown"]
@@ -35,17 +36,45 @@ def replay_problem(record: Mapping[str, object]) -> Problem:
         return replay_basic(dict(record))
     if record.get("generator_version") == "substitution-v1":
         return replay(dict(record))
+    if record.get("generator_version") in FAMILY_VERSIONS:
+        return replay_family(dict(record))
     raise ValueError("Unsupported generator version")
 
 
-def _components(problem: Problem) -> tuple[tuple[Any, Any, tuple[float, ...]], ...]:
-    """(replacement for x, variable it is written in, samples) per connected component."""
+def _domain(problem: Problem) -> Any:
+    """The template's declared real domain as a SymPy set."""
     domain = problem.template.domain
+    if not isinstance(domain, str):
+        return domain
     if domain == "real":
-        return ((X, X, _REAL_SAMPLES),)
+        return sp.S.Reals
     if domain == "positive":
-        return ((_T, _T, _POSITIVE_SAMPLES),)
-    return ((_T, _T, _POSITIVE_SAMPLES), (-_T, _T, _POSITIVE_SAMPLES))
+        return sp.Interval.open(0, sp.oo)
+    return sp.Union(sp.Interval.open(-sp.oo, 0), sp.Interval.open(0, sp.oo))
+
+
+def _components(problem: Problem) -> tuple[tuple[Any, Any, tuple[float, ...]], ...]:
+    """(replacement for x, variable it is written in, samples) per connected component.
+
+    A positive `t` covers each open interval, as the generators' own proofs do:
+    `a + t` and `b - t` for unbounded ones and `a + (b - a)t/(1 + t)` for (a, b).
+    """
+    domain = _domain(problem)
+    if domain == sp.S.Reals:
+        return ((X, X, _REAL_SAMPLES),)
+    parts = domain.args if isinstance(domain, sp.Union) else (domain,)
+    components = []
+    for part in parts:
+        if not isinstance(part, sp.Interval) or not (part.left_open and part.right_open):
+            raise ValueError("Unsupported problem domain")
+        if part.start == -sp.oo:
+            replacement = part.end - _T
+        elif part.end == sp.oo:
+            replacement = part.start + _T
+        else:
+            replacement = part.start + (part.end - part.start) * _T / (1 + _T)
+        components.append((replacement, _T, _POSITIVE_SAMPLES))
+    return tuple(components)
 
 
 def _value(expression: Any, variable: Any, point: float) -> Any:
@@ -87,7 +116,7 @@ def _is_primitive(candidate: Any, problem: Problem) -> Verdict:
         realness = expression.is_real
         if realness is False:
             return "no"
-        if realness is None:
+        if realness is None and not _defined_throughout(candidate, problem):
             # e.g. log(x^2) on all reals: undefined at 0, which no sample point hits.
             if _not_real(expression, variable, samples):
                 return "no"
@@ -95,11 +124,32 @@ def _is_primitive(candidate: Any, problem: Problem) -> Verdict:
     return "unknown" if undecided else "yes"
 
 
+def _defined_throughout(expression: Any, problem: Problem) -> bool:
+    """A symbolic proof that `expression` is real and continuous on the whole domain.
+
+    It settles `ln|x^2 + x|` on (-1, 0), whose sign SymPy cannot infer from `t`.
+    """
+    from sympy.calculus.util import continuous_domain
+
+    try:
+        gap = _domain(problem) - continuous_domain(expression, X, sp.S.Reals)
+    except (NotImplementedError, ValueError, TypeError):
+        return False
+    return bool(gap == sp.S.EmptySet)
+
+
 def _same_number_everywhere(offset: Any, problem: Problem) -> Verdict:
-    """ADR-003: after removing the known primitive, `b` must be one numeric constant."""
+    """ADR-003: after removing the known primitive, `b` must be one numeric constant.
+
+    Only called once both primitives are proven, so `offset` has a zero derivative
+    and is constant on each component. If SymPy cannot reduce it in `t`, its exact
+    value at the rational point t = 1 is that constant.
+    """
     values = []
-    for replacement, _variable, _samples in _components(problem):
+    for replacement, variable, _samples in _components(problem):
         value = sp.simplify(offset.subs(X, replacement))
+        if not value.is_number and variable == _T:
+            value = sp.simplify(value.subs(_T, sp.Integer(1)))
         if not value.is_number:
             return "unknown"
         values.append(value)
@@ -139,23 +189,39 @@ def classify(answer: Any, problem: Problem) -> Outcome:
 
 
 def check_tree(tree: MathNode, problem: Problem) -> Outcome:
-    """Protect all-real preview cells before evaluation can cancel domain holes."""
+    """Check every subexpression before evaluation can cancel a domain hole.
+
+    On all-real domains a hole is `invalid`, as for the preview cells. On other
+    domains a part that is undefined somewhere in the domain makes the answer
+    `incorrect`, matching how `ln(x)` is treated where `x < 0` is allowed.
+    """
     from sympy.calculus.util import continuous_domain
 
     from app.services.math_worker import _build_sympy
 
-    if problem.template.domain == "real":
-        stack = [tree]
+    domain = _domain(problem)
+    all_reals = domain == sp.S.Reals
+    stack = [tree]
+    while stack:
+        item = stack.pop()
+        value = _build_sympy(item)
+        if value.has(sp.zoo, sp.oo, -sp.oo, sp.nan):
+            return "invalid"
         try:
-            while stack:
-                item = stack.pop()
-                value = _build_sympy(item)
-                if value.has(sp.zoo, sp.oo, -sp.oo, sp.nan):
+            defined = continuous_domain(value, X, sp.S.Reals)
+            if defined == sp.S.EmptySet or (all_reals and defined != sp.S.Reals):
+                return "invalid"
+            if not all_reals:
+                # `is_subset` is undecided for unions; an evaluated gap is a set of points.
+                gap = domain - defined
+                if gap != sp.S.EmptySet and not isinstance(gap, sp.Complement):
+                    return "incorrect"
+            for constant in value.free_symbols - {X}:
+                if continuous_domain(value, constant, sp.S.Reals) != sp.S.Reals:
                     return "invalid"
-                for variable in (X, *(value.free_symbols - {X})):
-                    if continuous_domain(value, variable, sp.S.Reals) != sp.S.Reals:
-                        return "invalid"
-                stack.extend(item.children)
         except (NotImplementedError, ValueError, TypeError):
-            return "inconclusive"
+            # e.g. `ln|x| + C` in C needs the sign of |x|; its parts are still checked.
+            if all_reals:
+                return "inconclusive"
+        stack.extend(item.children)
     return classify(_build_sympy(tree, evaluate=True), problem)

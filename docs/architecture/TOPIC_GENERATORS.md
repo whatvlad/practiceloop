@@ -77,16 +77,18 @@ catalogue and the existing deterministic `lint:content` check.
 
 ## Delivery boundary
 
-This is the internal-library milestone, like the basic generator in #6.
-`GET /topics` still offers only basic integrals and substitution at levels 1–2.
-The current checker does not accept these new version identifiers. No API,
-frontend, database schema or deployment configuration changes are included.
+#77–#80 delivered the internal library. #36 part 1 connects it to signed-in
+practice: `core.catalogue(topic, level)` replays every record of a cell (six per
+template), `GET /topics` offers all approved cells, and the worker's
+`answer_check.replay_problem` accepts the four new versions. Saved substitution
+levels 1–2 keep `substitution-v1`; levels 3–5 use `substitution-v2`. The checker
+now reads each template's domain as a set of open intervals, including the
+multi-pole rational domains; see [answer checking](ANSWER_CHECK.md).
 
-Issue #36 owns enabling the new cells through the limited worker and API,
-answer-equivalence/domain regression tests for those routes, definite integrals,
-weighted mixed practice and mistake diagnosis. In particular, the existing
-checker's three-domain shortcut must not be reused for the new multi-pole
-rational domains without extending its component and input-domain checks.
+No frontend, database schema or deployment change was needed: the website
+already shows the levels `GET /topics` returns, and topic slugs were seeded with
+the initial migration. #36 part 2 still owns definite integrals, weighted mixed
+practice and template-declared mistake diagnosis.
 
 Focused check: `.venv/bin/python -m pytest backend/tests/test_families.py`.
 The full backend suite and hosted CI remain required for delivery.
