@@ -4,6 +4,11 @@ Meaningful user-facing releases will be recorded here. No MVP release exists yet
 
 ## Unreleased
 
+- Targeted mistake feedback (#36, part 2): when a wrong answer clearly matches a
+  common mistake its template declares, such as `ln(x)` instead of `ln|x|`, a lost
+  sign, a missing chain-rule factor or a definite integral left unevaluated, the
+  learner sees advice for that mistake. Otherwise they get a general hint. The
+  code is saved with the attempt and shown again when the problem is reopened.
 - Definite integrals (#36, part 2): most practice cells now also offer definite
   integrals with clean bounds and exact values such as `e - 2` or `3 ln(4/3)`.
   Their answer is one number with no `+ C`; bounds never touch a singularity.

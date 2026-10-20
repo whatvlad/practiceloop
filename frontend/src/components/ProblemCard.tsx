@@ -1,4 +1,4 @@
-import type { CheckResult, Difficulty, SolutionStep, TopicSlug } from '../data/types';
+import type { CheckResult, Difficulty, FeedbackCode, SolutionStep, TopicSlug } from '../data/types';
 import { isDefinite } from '../format';
 import { topicName } from '../data/topics';
 import { AnswerInput } from './AnswerInput';
@@ -18,6 +18,8 @@ interface ProblemCardProps {
   answer: string;
   onAnswerChange: (value: string) => void;
   result: CheckResult | null;
+  /** A declared mistake the incorrect answer matched; otherwise a general hint shows. */
+  feedback?: FeedbackCode | null;
   /** A request is in flight; buttons wait for it. */
   busy?: boolean;
   onCheck: () => void;
@@ -31,6 +33,12 @@ interface ProblemCardProps {
   solution?: readonly SolutionStep[] | null;
 }
 
+/** Targeted feedback only for a matched mistake (#36); otherwise a general hint, never a guess. */
+export function incorrectMessage(feedback: FeedbackCode | null, definite: boolean): string {
+  if (feedback) return text[`feedback_${feedback}`];
+  return definite ? text.general_hint_definite : text.general_hint;
+}
+
 /** The one lifted surface: a problem, its answer field and every action on it. */
 export function ProblemCard({
   topic,
@@ -40,6 +48,7 @@ export function ProblemCard({
   answer,
   onAnswerChange,
   result,
+  feedback = null,
   busy = false,
   onCheck,
   onShowAnswer,
@@ -51,6 +60,7 @@ export function ProblemCard({
 }: ProblemCardProps) {
   const solved = result === 'correct';
   const definite = isDefinite(problemLatex);
+  const message = result === 'incorrect' ? incorrectMessage(feedback, definite) : undefined;
   return (
     <section className="pl-problem" aria-label="Problem" aria-busy={busy}>
       <div className="pl-problem-head">
@@ -83,7 +93,7 @@ export function ProblemCard({
           </>
         }
       />
-      <div className="pl-result-slot" role="status">{result && <ResultBanner id="answer-result" state={result} live={false} />}</div>
+      <div className="pl-result-slot" role="status">{result && <ResultBanner id="answer-result" state={result} message={message} live={false} />}</div>
       {busy && <p role="status" className="pl-small pl-muted">Working…</p>}
       <Button size="lg" block onClick={onCheck} disabled={solved || busy}>
         Check answer

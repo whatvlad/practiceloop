@@ -14,7 +14,9 @@ def check_answer(answer: str, record: dict[str, object]) -> str:
         raise MathWorkerError("Math workers busy")
     try:
         result = shared_check(answer, record)
-        return "missing_constant" if result.missing_constant else result.result
+        if result.missing_constant:
+            return "missing_constant"
+        return result.feedback_code or result.result
     except MathCheckInconclusive as exc:
         raise MathWorkerError("Math check inconclusive") from exc
     finally:

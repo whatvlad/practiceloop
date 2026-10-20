@@ -13,7 +13,7 @@ import {
   revealSolution,
   submitAttempt,
 } from '../data/api';
-import type { CheckResult, OpenedProblem, SolutionStep } from '../data/types';
+import type { CheckResult, FeedbackCode, OpenedProblem, SolutionStep } from '../data/types';
 import { navigate } from '../router';
 import { useLoad } from '../useLoad';
 
@@ -34,6 +34,7 @@ function PracticeSession({ opened }: { opened: OpenedProblem }) {
   const [answer, setAnswer] = useState(problem.lastAnswer ?? '');
   const answerRevision = useRef(0);
   const [result, setResult] = useState<CheckResult | null>(problem.lastResult);
+  const [feedback, setFeedback] = useState<FeedbackCode | null>(problem.lastFeedback ?? null);
   const [answerLatex, setAnswerLatex] = useState<string | null>(opened.answer?.answerLatex ?? null);
   const [solution, setSolution] = useState<SolutionStep[] | null>(opened.solution?.steps ?? null);
   const [busy, setBusy] = useState(false);
@@ -69,11 +70,12 @@ function PracticeSession({ opened }: { opened: OpenedProblem }) {
       answer={answer}
       onAnswerChange={(value) => { answerRevision.current += 1; setAnswer(value); setResult(null); }}
       result={result}
+      feedback={feedback}
       busy={busy}
       onCheck={() => run(async () => {
         const revision = answerRevision.current;
         const checked = await submitAttempt(problem.id, answer, Math.min(86400000, Math.max(0, Date.now() - startedAt)));
-        if (active.current && revision === answerRevision.current) setResult(checked);
+        if (active.current && revision === answerRevision.current) { setResult(checked.result); setFeedback(checked.feedback); }
       })}
       onShowAnswer={() => run(async () => { const revealed = await revealAnswer(problem.id); if (active.current) setAnswerLatex(revealed.answerLatex); })}
       onShowSolution={() => run(async () => { const revealed = await revealSolution(problem.id); if (active.current) setSolution(revealed.steps); })}

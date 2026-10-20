@@ -11,6 +11,7 @@ from pathlib import Path
 from tempfile import TemporaryFile
 from typing import Any, Literal, cast
 
+from app.schemas.feedback import MISTAKE_CODES
 from app.services.math_parser import (
     MAX_INPUT_BYTES,
     MathInputError,
@@ -108,7 +109,7 @@ def _check_child() -> int:
         _apply_limits()
         request = json.loads(sys.stdin.buffer.read(MAX_CHECK_REQUEST_BYTES + 1))
         # Imported only now, under the limits: both modules import SymPy.
-        from app.services.answer_check import check_tree, replay_problem
+        from app.services.answer_check import check_and_diagnose, replay_problem
 
         try:
             problem = replay_problem(request["record"])
@@ -116,7 +117,9 @@ def _check_child() -> int:
             outcome = "bad_record"
         else:
             tree = parse_math_input(request["answer"])
-            outcome = check_tree(tree, problem)
+            outcome, code = check_and_diagnose(tree, problem, request["record"])
+            if code is not None:
+                outcome += ":" + code
         sys.stdout.buffer.write(outcome.encode("ascii"))
         sys.stdout.buffer.flush()
         return 0
@@ -178,6 +181,8 @@ class MathCheckInconclusive(RuntimeError):
 class AnswerCheck:
     result: CheckResult
     missing_constant: bool = False
+    # A declared mistake (#36) that an incorrect answer unambiguously matches.
+    feedback_code: str | None = None
 
 
 _CHECK_OUTCOMES = {
@@ -209,6 +214,11 @@ def check_answer(answer: str, record: Mapping[str, object]) -> AnswerCheck:
         raise MathCheckInconclusive("Answer could not be decided within the worker limits")
     if outcome == b"bad_record":
         raise ValueError("Generator record cannot be replayed")
+    if outcome.startswith(b"incorrect:"):
+        code = outcome.removeprefix(b"incorrect:").decode("ascii", "replace")
+        if code not in MISTAKE_CODES:
+            raise MathWorkerError("Math worker failed within its resource limits")
+        return AnswerCheck("incorrect", feedback_code=code)
     if outcome not in _CHECK_OUTCOMES:
         raise MathWorkerError("Math worker failed within its resource limits")
     return _CHECK_OUTCOMES[outcome]

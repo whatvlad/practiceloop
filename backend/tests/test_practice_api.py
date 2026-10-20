@@ -342,10 +342,18 @@ def test_attempts_are_checked_by_the_real_worker_and_persisted(
 ) -> None:
     problem = generate(client, "substitution", 1)
     primitive = primitive_of(url, problem["id"])
+    ((data,),) = rows(
+        url,
+        "select generator_data from private.problem_solutions where problem_id = %s",
+        problem["id"],
+    )
+    # #36: substitution-v1 sine and cosine records declare a lost trigonometric sign.
+    sign = None if data["family"] == "exp" else "trig_sign"
     cases = [
         (primitive + " + C", "correct", None, True, False),
         (primitive, "incorrect", "missing_constant", False, True),
         (primitive + " + x + C", "incorrect", None, False, False),
+        ("-(" + primitive + ") + C", "incorrect", sign, False, False),
         ("x +* 2", "invalid", None, None, False),
     ]
     for answer, result, feedback, is_correct, omitted in cases:
@@ -355,10 +363,12 @@ def test_attempts_are_checked_by_the_real_worker_and_persisted(
         assert (body["answer"], body["result"], body["feedbackCode"]) == (answer, result, feedback)
         saved = rows(
             url,
-            "select user_id, is_correct, constant_omitted from public.attempts where id = %s",
+            "select user_id, is_correct, constant_omitted, feedback_code"
+            " from public.attempts where id = %s",
             body["id"],
         )
-        assert saved == [(users.alice, is_correct, omitted)]
+        code = None if omitted else feedback
+        assert saved == [(users.alice, is_correct, omitted, code)]
 
 
 @pytest.mark.parametrize(
@@ -560,6 +570,9 @@ def test_reopen_restores_latest_attempt_and_only_previously_revealed_content(
         "feedbackCode": "missing_constant",
     }
     assert state["problem"]["attemptCount"] == 1
+    stub_check(monkeypatch, AnswerCheck("incorrect", feedback_code="power_rule"))
+    attempt(client, problem["id"], "x^2")
+    assert client.get(path).json()["problem"]["lastAttempt"]["feedbackCode"] == "power_rule"
     answer = client.post(path + "/reveal-answer").json()
     assert client.get(path).json()["answer"] == answer
     assert "solution" not in client.get(path).json()

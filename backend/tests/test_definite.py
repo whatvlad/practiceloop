@@ -202,7 +202,11 @@ linux_only = pytest.mark.skipif(not sys.platform.startswith("linux"), reason="Li
         ("cyclic_sine", "e^pi/2 + 1/2", AnswerCheck("correct")),
         ("division_then_fractions", "ln(3) + 1/2", AnswerCheck("correct")),
         ("repeated_factor", "ln(4/3) - 1/6", AnswerCheck("correct")),
-        ("repeated_factor", "ln(4/3) - 1/6 + C", AnswerCheck("incorrect")),
+        (
+            "repeated_factor",
+            "ln(4/3) - 1/6 + C",
+            AnswerCheck("incorrect", feedback_code="definite_constant"),
+        ),
         ("quadratic_exponential", "x^2*e^x", AnswerCheck("incorrect")),
     ],
 )

@@ -39,6 +39,7 @@ class AttemptRecord:
     is_correct: bool | None
     constant_omitted: bool
     created_at: datetime
+    feedback_code: str | None = None
 
 
 @dataclass(frozen=True)
@@ -164,7 +165,8 @@ def attempt_summaries(
     with conn.cursor(row_factory=dict_row) as cur:
         cur.execute(
             "select distinct on (problem_id) id, problem_id, user_answer, is_correct,"
-            " constant_omitted, created_at, count(*) over (partition by problem_id) as total"
+            " constant_omitted, created_at, feedback_code,"
+            " count(*) over (partition by problem_id) as total"
             " from public.attempts where user_id = %s and problem_id = any(%s)"
             " order by problem_id, created_at desc, id desc",
             (user_id, problem_ids),
@@ -248,16 +250,18 @@ def insert_attempt(
     user_answer: str,
     is_correct: bool | None,
     constant_omitted: bool = False,
+    feedback_code: str | None = None,
 ) -> AttemptRecord | None:
     """None when the problem is missing or belongs to someone else; nothing is written."""
     with conn.cursor(row_factory=dict_row) as cur:
         cur.execute(
             "insert into public.attempts"
-            "(problem_id, user_id, user_answer, is_correct, constant_omitted)"
-            " select p.id, p.user_id, %s, %s, %s from public.problems p"
+            "(problem_id, user_id, user_answer, is_correct, constant_omitted, feedback_code)"
+            " select p.id, p.user_id, %s, %s, %s, %s from public.problems p"
             " where p.id = %s and p.user_id = %s"
-            " returning id, problem_id, user_answer, is_correct, constant_omitted, created_at",
-            (user_answer, is_correct, constant_omitted, problem_id, user_id),
+            " returning id, problem_id, user_answer, is_correct, constant_omitted, created_at,"
+            " feedback_code",
+            (user_answer, is_correct, constant_omitted, feedback_code, problem_id, user_id),
         )
         row = cur.fetchone()
     return AttemptRecord(**row) if row else None

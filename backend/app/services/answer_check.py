@@ -16,6 +16,7 @@ from app.generators.basic import InternalProblem, X, replay_basic
 from app.generators.core import FAMILY_VERSIONS, Exercise, replay
 from app.generators.definite import DefiniteProblem, replay_definite
 from app.generators.families import FamilyProblem, replay_family
+from app.generators.mistakes import declared
 from app.services.math_parser import MathNode
 
 type Problem = InternalProblem | Exercise | FamilyProblem | DefiniteProblem
@@ -254,3 +255,79 @@ def check_tree(tree: MathNode, problem: Problem) -> Outcome:
                 return "inconclusive"
         stack.extend(item.children)
     return classify(_build_sympy(tree, evaluate=True), problem)
+
+
+def _differ_by_constant(left: Any, right: Any) -> bool:
+    """A proof that `left - right` is one number. A per-component constant is not
+    enough: `ln(x)` and `ln|x|` have the same derivative but are different answers."""
+    return X not in sp.simplify(left - right).free_symbols
+
+
+def _definite_value(expression: Any, problem: DefiniteProblem) -> Any:
+    from sympy.calculus.util import continuous_domain
+
+    interval = sp.Interval(problem.lower, problem.upper)
+    if interval.is_subset(continuous_domain(expression, X, sp.S.Reals)) is not True:
+        return None
+    return expression.subs(X, problem.upper) - expression.subs(X, problem.lower)
+
+
+def _base_record(problem: DefiniteProblem) -> dict[str, object]:
+    from app.generators.definite import TEMPLATES, base_record
+
+    return base_record(TEMPLATES[problem.parameters.template], problem.parameters.coefficient)
+
+
+def _definite_mistakes(answer: Any, problem: DefiniteProblem) -> set[str]:
+    constants = answer.free_symbols - {X}
+    if len(constants) > 1:
+        return set()
+    plain = answer.subs(dict.fromkeys(constants, 0))
+    if X in plain.free_symbols:
+        # An antiderivative written as the answer, without evaluating it at the bounds.
+        if _differ_by_constant(plain, problem.antiderivative):
+            return {"definite_not_evaluated"}
+        return set()
+    if constants:
+        return {"definite_constant"} if sp.simplify(plain - problem.value) == 0 else set()
+    codes = {"bounds_reversed"} if sp.simplify(answer + problem.value) == 0 else set()
+    for code, wrong in declared(_base_record(problem), problem.antiderivative):
+        value = _definite_value(wrong, problem)
+        # A mistake that still gives the right value on these bounds is not diagnosable.
+        if value is None or sp.simplify(value - problem.value) == 0:
+            continue
+        if sp.simplify(answer - value) == 0:
+            codes.add(code)
+    return codes
+
+
+def diagnose(answer: Any, problem: Problem, record: Mapping[str, object]) -> str | None:
+    """The one declared mistake an incorrect answer matches, or None for a general hint.
+
+    Only called after `classify` returned `incorrect`. Two matching codes, or a
+    match that cannot be proven symbolically, give no diagnosis: never a guess.
+    """
+    if isinstance(problem, DefiniteProblem):
+        codes = _definite_mistakes(answer, problem)
+    else:
+        constants = answer.free_symbols - {X}
+        if len(constants) > 1:
+            return None
+        plain = answer.subs(dict.fromkeys(constants, 0))
+        codes = {
+            code
+            for code, wrong in declared(dict(record), problem.antiderivative)
+            if _differ_by_constant(plain, wrong)
+        }
+    return codes.pop() if len(codes) == 1 else None
+
+
+def check_and_diagnose(
+    tree: MathNode, problem: Problem, record: Mapping[str, object]
+) -> tuple[Outcome, str | None]:
+    from app.services.math_worker import _build_sympy
+
+    outcome = check_tree(tree, problem)
+    if outcome != "incorrect":
+        return outcome, None
+    return outcome, diagnose(_build_sympy(tree, evaluate=True), problem, record)

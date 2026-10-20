@@ -30,5 +30,18 @@
   "polynomial_division": "Divide the numerator by the denominator before splitting the remainder.",
   "calculate_definite": "Calculate the definite integral.",
   "evaluate_bounds": "Evaluate the antiderivative at the upper bound and subtract its value at the lower bound.",
-  "definite_value": "Simplify the result. A definite integral has no integration constant."
+  "definite_value": "Simplify the result. A definite integral has no integration constant.",
+  "feedback_power_rule": "Check the power rule. Raise the power by one, then divide by the new power.",
+  "feedback_trig_sign": "Check the sign. The integral of sin(x) is -cos(x), and the integral of cos(x) is sin(x).",
+  "feedback_chain_factor": "Check the constant factor from the inner function. Differentiate your answer to compare it with the integrand.",
+  "feedback_log_absolute": "Use ln|x| instead of ln(x). The integrand is also defined where x is negative.",
+  "feedback_split_product": "Do not integrate each factor of a product separately. Use substitution or integration by parts.",
+  "feedback_parts_sign": "Check the sign in the parts formula: subtract the integral of v du from uv.",
+  "feedback_cycle_factor": "Divide by two after you move the repeated integral to the other side.",
+  "feedback_partial_fraction_sign": "Check the signs of your partial fractions. Add them together to compare with the integrand.",
+  "feedback_definite_not_evaluated": "Evaluate your antiderivative at both bounds and subtract. The answer is a number.",
+  "feedback_bounds_reversed": "Subtract the value at the lower bound from the value at the upper bound.",
+  "feedback_definite_constant": "Remove the constant. A definite integral has no integration constant.",
+  "general_hint": "Differentiate your answer and compare it with the integrand, or reveal the solution.",
+  "general_hint_definite": "Check your antiderivative, then evaluate it at both bounds, or reveal the solution."
 }

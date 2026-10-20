@@ -22,6 +22,18 @@ export type Difficulty = 1 | 2 | 3 | 4 | 5;
 /** Three API outcomes plus a display state for the missing_constant feedback code. */
 export type CheckResult = 'correct' | 'incorrect' | 'invalid' | 'missing_constant';
 
+/** A declared mistake the checker matched unambiguously (#36); null means a general hint. */
+export const FEEDBACK_CODES = [
+  'power_rule', 'trig_sign', 'chain_factor', 'log_absolute', 'split_product', 'parts_sign',
+  'cycle_factor', 'partial_fraction_sign', 'definite_not_evaluated', 'bounds_reversed', 'definite_constant',
+] as const;
+export type FeedbackCode = (typeof FEEDBACK_CODES)[number];
+
+export interface CheckOutcome {
+  result: CheckResult;
+  feedback: FeedbackCode | null;
+}
+
 /** Saved practice records invalid expressions too; preview does not. */
 export type AttemptResult = CheckResult | null;
 
@@ -36,6 +48,7 @@ export interface PublicProblem {
   answerRevealed: boolean;
   solutionRevealed: boolean;
   lastResult: AttemptResult;
+  lastFeedback?: FeedbackCode | null;
   lastAnswer: string | null;
 }
 
