@@ -1,4 +1,4 @@
-"""Internal ADR-003 topic families. Not advertised by the practice API yet (#36)."""
+"""ADR-003 topic families, offered by the practice API through `core.catalogue` (#36)."""
 
 from collections.abc import Callable
 from dataclasses import dataclass
@@ -103,8 +103,13 @@ def _families() -> dict[Version, tuple[str, dict[str, FamilyTemplate], Builder]]
     }
 
 
-def replay_family(record: dict[str, object]) -> FamilyProblem:
-    """Validate the entire primitive record before constructing symbolic expressions."""
+def replay_family(record: dict[str, object], *, verify: bool = True) -> FamilyProblem:
+    """Validate the entire primitive record before constructing symbolic expressions.
+
+    `verify=False` is only for the answer worker: the record was proven when the
+    catalogue replayed it at generation, and the proof would use most of the
+    worker's CPU budget on the rational templates.
+    """
     parameters = FamilyParameters.model_validate(record)
     topic, templates, build = _families()[parameters.generator_version]
     if parameters.template not in templates:
@@ -118,7 +123,8 @@ def replay_family(record: dict[str, object]) -> FamilyProblem:
         primitive,
         (*steps, FamilyStep("integrate", primitive), FamilyStep("constant", primitive + C)),
     )
-    verify_family(problem)
+    if verify:
+        verify_family(problem)
     return problem
 
 

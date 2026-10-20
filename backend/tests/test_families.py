@@ -263,7 +263,7 @@ def test_verifier_rejects_wrong_steps_missing_constant_and_wrong_domain():
             verify_family(corrupted)
 
 
-def test_existing_preview_versions_are_unchanged_and_new_cells_stay_internal():
+def test_existing_preview_versions_are_unchanged_and_new_cells_are_offered():
     record = dict(
         generator_version="substitution-v1", family="sin", a=1, b=1, scale=1, difficulty=1
     )
@@ -273,6 +273,9 @@ def test_existing_preview_versions_are_unchanged_and_new_cells_stay_internal():
     from app.api.practice import TOPICS
 
     assert {topic: levels for topic, (_, levels) in TOPICS.items()} == {
-        "basic-integrals": (1, 2),
-        "substitution": (1, 2),
+        "basic-integrals": (1, 2, 3, 4, 5),
+        "substitution": (1, 2, 3, 4, 5),
+        "integration-by-parts": (3, 4, 5),
+        "rational-functions": (1, 2, 3, 4, 5),
+        "trigonometric-integrals": (1, 2, 3, 4, 5),
     }

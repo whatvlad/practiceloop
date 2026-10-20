@@ -41,8 +41,12 @@ router = APIRouter(tags=["practice"])
 
 # Only cells with a verified generator are offered; others are 422, never easy copies.
 TOPICS = {
-    "basic-integrals": ("Basic integrals", (1, 2)),
-    "substitution": ("Substitution", (1, 2)),
+    "basic-integrals": ("Basic integrals", (1, 2, 3, 4, 5)),
+    "substitution": ("Substitution", (1, 2, 3, 4, 5)),
+    # ADR-003: integration by parts starts at level 3.
+    "integration-by-parts": ("Integration by parts", (3, 4, 5)),
+    "rational-functions": ("Rational functions", (1, 2, 3, 4, 5)),
+    "trigonometric-integrals": ("Trigonometric integrals", (1, 2, 3, 4, 5)),
 }
 MAX_ANSWER_CHARS = 512  # the parser's 256-byte limit applies after normalization
 

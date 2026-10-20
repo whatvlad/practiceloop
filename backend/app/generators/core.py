@@ -1,4 +1,4 @@
-"""Finite, verified preview catalogue. Records never cross the public API boundary."""
+"""Finite, verified practice catalogue. Records never cross the public API boundary."""
 
 from dataclasses import dataclass
 from functools import lru_cache
@@ -7,7 +7,18 @@ from typing import Any
 
 import sympy as sp
 
-from app.generators.basic import BasicTemplate, X, replay_basic
+from app.generators.basic import (
+    _POWER_TEMPLATES,
+    _SECONDARY_TEMPLATES,
+    BASIC_TEMPLATES,
+    BasicTemplate,
+    X,
+    replay_basic,
+)
+from app.generators.families import _families, replay_family
+
+COEFFICIENTS = (-3, -2, -1, 1, 2, 3)
+FAMILY_VERSIONS = frozenset({"substitution-v2", "parts-v1", "rational-v1", "trigonometric-v1"})
 
 
 @dataclass(frozen=True)
@@ -18,9 +29,11 @@ class Exercise:
     integrand: Any
     primitive: Any
     steps: tuple[dict[str, str], ...]
+    statement: str
 
     @property
     def template(self) -> BasicTemplate:
+        # Only substitution-v1 is checked through this view; its domain is all of R.
         return BasicTemplate("preview", self.difficulty, "real", self.topic)
 
     @property
@@ -28,26 +41,33 @@ class Exercise:
         return self.primitive
 
     @property
-    def statement(self) -> str:
-        return rf"\int \left({sp.latex(self.integrand)}\right)\,dx\quad(x\in\mathbb{{R}})"
-
-    @property
     def answer(self) -> str:
         return str(sp.latex(self.primitive)) + " + C"
 
 
 def replay(record: dict[str, object]) -> Exercise:
+    """Rebuild a catalogue exercise; its statement carries the template's real domain."""
     if record.get("generator_version") == "basic-v1":
-        problem = replay_basic(record)
-        if problem.difficulty not in (1, 2):
-            raise ValueError("Unsupported preview level")
+        basic = replay_basic(record)
         return Exercise(
             record,
             "basic-integrals",
-            problem.difficulty,
-            problem.integrand,
-            problem.antiderivative,
-            tuple({"say": step.say, "latex": step.latex} for step in problem.solution_steps),
+            basic.difficulty,
+            basic.integrand,
+            basic.antiderivative,
+            tuple({"say": step.say, "latex": step.latex} for step in basic.solution_steps),
+            basic.public().problem_latex,
+        )
+    if record.get("generator_version") in FAMILY_VERSIONS:
+        family = replay_family(record)
+        return Exercise(
+            record,
+            family.topic,
+            family.difficulty,
+            family.integrand,
+            family.antiderivative,
+            tuple({"say": step.say, "latex": step.latex} for step in family.solution_steps),
+            family.public().problem_latex,
         )
     # Only catalogue records are passed here; validate replay before constructing symbols.
     if set(record) != {"generator_version", "family", "a", "b", "scale", "difficulty"}:
@@ -87,37 +107,58 @@ def replay(record: dict[str, object]) -> Exercise:
         {"say": TEXT["integrate"], "latex": str(sp.latex(outer)) + " + C"},
         {"say": TEXT["substitute_back"], "latex": str(sp.latex(primitive)) + " + C"},
     )
-    return Exercise(record, "substitution", int(level), integrand, primitive, steps)
+    statement = rf"\int \left({sp.latex(integrand)}\right)\,dx\quad(x\in\mathbb{{R}})"
+    return Exercise(record, "substitution", int(level), integrand, primitive, steps, statement)
 
 
-@lru_cache(maxsize=4)
+def _basic_records(difficulty: int) -> list[dict[str, object]]:
+    records: list[dict[str, object]] = []
+    for template in BASIC_TEMPLATES:
+        if template.difficulty != difficulty:
+            continue
+        # expand_and_split needs positive coefficients so its terms never cancel.
+        coefficients = (1, 2, 3) if template.name == "expand_and_split" else COEFFICIENTS
+        for a, b, power in product(
+            coefficients,
+            (1, 2) if template.name in _SECONDARY_TEMPLATES else (1,),
+            (2, 3, 4) if template.name in _POWER_TEMPLATES else (2,),
+        ):
+            records.append(
+                dict(
+                    generator_version="basic-v1",
+                    template=template.name,
+                    coefficient=a,
+                    secondary=b,
+                    power=power,
+                )
+            )
+    return records
+
+
+def _family_records(topic: str, difficulty: int) -> list[dict[str, object]]:
+    return [
+        dict(generator_version=version, template=name, coefficient=a)
+        for version, (slug, templates, _) in _families().items()
+        if slug == topic
+        for name, template in templates.items()
+        if template.difficulty == difficulty
+        for a in COEFFICIENTS
+    ]
+
+
+@lru_cache(maxsize=32)
 def catalogue(topic: str, difficulty: int) -> tuple[Exercise, ...]:
-    if topic not in ("basic-integrals", "substitution") or difficulty not in (1, 2):
-        raise ValueError("Unsupported preview cell")
+    """Every verified record of one topic and level; empty cells are an error."""
+    if type(difficulty) is not int or difficulty not in range(1, 6):
+        raise ValueError("Unsupported practice cell")
     records: list[dict[str, object]] = []
     if topic == "basic-integrals":
-        names = (
-            ("constant", "power", "exponential", "sine", "cosine") if difficulty == 1 else ("sum",)
-        )
-        for name in names:
-            for a, b, power in product(
-                (-3, -2, -1, 1, 2, 3),
-                (1, 2) if name == "sum" else (1,),
-                (2, 3, 4) if name in ("power", "sum") else (2,),
-            ):
-                records.append(
-                    dict(
-                        generator_version="basic-v1",
-                        template=name,
-                        coefficient=a,
-                        secondary=b,
-                        power=power,
-                    )
-                )
-    else:
+        records = _basic_records(difficulty)
+    elif topic == "substitution" and difficulty in (1, 2):
+        # Saved substitution-v1 records keep their meaning; v2 adds levels 3-5.
         for family, a, b, scale in product(
             ("sin", "cos", "exp"),
-            (-3, -2, -1, 1, 2, 3),
+            COEFFICIENTS,
             (1, 2),
             (1,) if difficulty == 1 else (2, 3),
         ):
@@ -131,4 +172,8 @@ def catalogue(topic: str, difficulty: int) -> tuple[Exercise, ...]:
                     difficulty=difficulty,
                 )
             )
+    else:
+        records = _family_records(topic, difficulty)
+    if not records:
+        raise ValueError("Unsupported practice cell")
     return tuple(replay(record) for record in records)

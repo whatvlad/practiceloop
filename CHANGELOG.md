@@ -4,6 +4,11 @@ Meaningful user-facing releases will be recorded here. No MVP release exists yet
 
 ## Unreleased
 
+- Signed-in practice offers every approved topic and level (#36, part 1): all
+  five topics at levels 1–5, with integration by parts from level 3. The answer
+  checker grades the new substitution, parts, rational and trigonometric problems
+  on every part of their domain. Definite integrals, mixed practice and mistake
+  feedback are still to come.
 - Backend saves practice for signed-in learners (#10): generating a problem stores
   it with its private solution, every checked answer is stored (including invalid
   ones and a missing-constant flag), and reveals set their flags. Retries with the
