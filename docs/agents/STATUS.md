@@ -18,6 +18,7 @@ Where each part is documented:
 | Saved practice, history, profile | #10, #11, #12 | docs/architecture/SAVED_PRACTICE_UI.md, ADR-004 |
 | Anonymous demo, statistics, name, deletion | #34, #35 | docs/architecture/PREVIEW_PRACTICE.md, ACCOUNT_COMPLETION.md |
 | Mixed practice and mistake feedback | #36 | docs/api/README.md, TOPIC_GENERATORS.md |
+| Problem sharing by link and code | #37 | docs/api/README.md "Sharing" |
 | End-to-end check | #13 | docs/production/MVP_E2E_CHECK.md |
 | Hosting, deploy, audit, backups | #14, #28, #33 | docs/production/ORACLE_DEPLOY.md |
 | Operations docs, gates, license, release | #15 | README.md, CHANGELOG.md, LICENSE |

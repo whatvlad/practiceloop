@@ -17,6 +17,7 @@ let nextId: number;
 const saved = new Map<string, PublicProblem>();
 const calls: { path: string; body: Record<string, unknown> | null }[] = [];
 const fetchMock = vi.fn<typeof fetch>();
+const SHARE_TOKEN = 'S'.repeat(43);
 const response = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status });
 const button = (label: string) => Array.from(element.querySelectorAll('button')).find(b => b.textContent?.includes(label))!;
 
@@ -46,6 +47,8 @@ beforeEach(() => {
       return response({ problem: dto(problem), ...(problem.answerRevealed ? { answer: { answerLatex: 'x^2/2+C' } } : {}),
         ...(problem.solutionRevealed ? { solution: { steps: [{ say: 'Previously revealed step.', latex: 'x^2/2+C' }] } } : {}) });
     }
+    if (path.endsWith('/share')) return response({ share: { token: SHARE_TOKEN, code: 'K7M2QX9P', expiresAt: '2027-01-18T12:00:00Z' } }, 201);
+    if (path.endsWith('/share/revoke')) return response({ share: null });
     if (path.endsWith('/attempts')) return response({ attempt: { result: body?.answer === 'x^2/2+C' ? 'correct' : 'invalid', feedbackCode: null } }, 201);
     if (path.endsWith('/reveal-answer')) return response({ answerLatex: 'x^2/2+C' });
     if (path.endsWith('/reveal-solution')) return response({ steps: [{ say: 'Apply the power rule.', latex: 'x^2/2+C' }] });
@@ -158,4 +161,20 @@ it('restores an old problem after clearing browser practice state without making
   expect(element.textContent).toContain('mathematically equivalent');
   expect(calls).toHaveLength(1);
   expect(calls[0]).toEqual({ path: '/api/problems/old', body: null });
+});
+
+it('shares a saved problem by link and code and stops sharing it (#37)', async () => {
+  await act(async () => root.render(<DashboardPage />));
+  await act(async () => button('Generate problem').click());
+  await act(async () => root.render(<PracticePage id="problem-1" />));
+  expect(element.textContent).toContain('Your answers, results and solutions stay private');
+  await act(async () => button('Share problem').click());
+  expect(calls.at(-1)?.path).toBe('/api/problems/problem-1/share');
+  expect(element.querySelector<HTMLInputElement>('.pl-share-link')!.value).toBe(`${window.location.origin}/s/${SHARE_TOKEN}`);
+  expect(element.textContent).toContain('K7M2-QX9P');
+  expect(element.textContent).toContain('18 Jan 2027');
+  await act(async () => button('Stop sharing').click());
+  expect(calls.at(-1)?.path).toBe('/api/problems/problem-1/share/revoke');
+  expect(element.querySelector('.pl-share-link')).toBeNull();
+  expect(button('Share problem')).toBeDefined();
 });

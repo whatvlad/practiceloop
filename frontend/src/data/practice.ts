@@ -2,7 +2,7 @@
 import text from '../../../backend/app/content/en.json';
 import { TOPICS } from './topics';
 import { FEEDBACK_CODES } from './types';
-import type { AvailableTopic, Catalogue, CheckOutcome, Difficulty, LearningStatistics, OmissionMetric, OpenedProblem, ProblemPage, ProfileCounts, PublicProblem, RevealedAnswer, RevealedSolution, PracticeTopic, TopicSlug } from './types';
+import type { AvailableTopic, Catalogue, CheckOutcome, Difficulty, LearningStatistics, OmissionMetric, OpenedProblem, ProblemPage, ProblemShare, ProfileCounts, PublicProblem, RevealedAnswer, RevealedSolution, PracticeTopic, TopicSlug } from './types';
 
 const base = (import.meta.env.VITE_API_BASE_URL ?? '/api').trim().replace(/\/+$/, '');
 let token: Promise<string> | null = null;
@@ -154,6 +154,40 @@ function solution(data: Record<string, unknown>): RevealedSolution {
   }) };
 }
 
+const SHARE_TOKEN = /^[A-Za-z0-9_-]{43}$/;
+const SHARE_CODE = /^[0-9A-HJKMNP-TV-Z]{8}$/;
+
+function problemShare(value: unknown): ProblemShare {
+  const data = object(value);
+  if (typeof data.token !== 'string' || !SHARE_TOKEN.test(data.token) || typeof data.code !== 'string'
+    || !SHARE_CODE.test(data.code) || typeof data.expiresAt !== 'string' || Number.isNaN(Date.parse(data.expiresAt))) throw new Error(text.service_error);
+  return { token: data.token, code: data.code, expiresAt: data.expiresAt };
+}
+
+/** The problem's live share, or a new one; only saved problems can be shared (#37). */
+export function shareProblem(id: string): Promise<ProblemShare> {
+  return once(`share:${id}`, async () => {
+    const started = epoch;
+    const { bearer, saved } = await credentials();
+    if (!saved) throw new Error('Sign in to share a problem.');
+    const data = await request(`/problems/${encodeURIComponent(id)}/share`, {}, bearer, true);
+    if (started !== epoch) throw new Error(text.expired);
+    return problemShare(data.share);
+  });
+}
+
+/** Ends the link and the code at once. */
+export function stopSharing(id: string): Promise<void> {
+  return once(`unshare:${id}`, async () => {
+    const started = epoch;
+    const { bearer, saved } = await credentials();
+    if (!saved) throw new Error('Sign in to share a problem.');
+    const data = await request(`/problems/${encodeURIComponent(id)}/share/revoke`, {}, bearer, true);
+    if (started !== epoch) throw new Error(text.expired);
+    if (data.share !== null) throw new Error(text.service_error);
+  });
+}
+
 export async function listProblemPage({ limit = 20, cursor = null }: { limit?: number; cursor?: string | null } = {}): Promise<ProblemPage> {
   if (!Number.isInteger(limit) || limit < 1 || limit > 50) throw new Error(text.service_error);
   const started = epoch;
@@ -203,6 +237,7 @@ export async function openProblem(id: string): Promise<OpenedProblem> {
     result.answer = { answerLatex: answer.answerLatex };
   }
   if (problem.solutionRevealed) result.solution = solution(object(data.solution));
+  result.share = data.share === null || data.share === undefined ? null : problemShare(data.share);
   // The cache keeps session-only flags such as `mixed` that the server does not store.
   result.problem = structuredClone(cache(problem));
   return result;

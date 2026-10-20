@@ -86,7 +86,25 @@ export interface OpenedProblem {
   problem: PublicProblem;
   answer?: RevealedAnswer;
   solution?: RevealedSolution;
+  /** The owner's live share (#37), if any. */
+  share?: ProblemShare | null;
 }
+
+/** An owner's live share: the link token, the short code and when both stop working. */
+export interface ProblemShare {
+  token: string;
+  code: string;
+  expiresAt: string;
+}
+
+/** All a shared link or code reveals: never answers, results, solutions or the owner. */
+export interface SharedProblem {
+  topic: TopicSlug;
+  difficulty: Difficulty;
+  problemLatex: string;
+}
+
+export type ShareUnavailable = 'invalid' | 'not_found' | 'expired' | 'revoked';
 
 export interface ProblemPage {
   items: PublicProblem[];

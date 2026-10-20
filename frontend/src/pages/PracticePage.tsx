@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import text from '../../../backend/app/content/en.json';
 import { Button, ButtonLink } from '../components/Button';
 import { ProblemCard } from '../components/ProblemCard';
+import { ShareControls } from '../components/ShareControls';
 import {
   NotFoundError,
   generateProblem,
@@ -91,6 +92,7 @@ function PracticeSession({ opened }: { opened: OpenedProblem }) {
       answerLatex={answerLatex}
       solution={solution}
     />
+    {problem.saved && <ShareControls problemId={problem.id} initial={opened.share ?? null} />}
     </>
   );
 }

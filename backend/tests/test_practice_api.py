@@ -623,7 +623,8 @@ def test_reopen_restores_latest_attempt_and_only_previously_revealed_content(
     problem = generate(client)
     path = f"/problems/{problem['id']}"
     unrevealed = client.get(path).json()
-    assert set(unrevealed) == {"problem"}
+    assert set(unrevealed) == {"problem", "share"}
+    assert unrevealed["share"] is None
     assert unrevealed["problem"]["lastAttempt"] is None
     assert unrevealed["problem"]["attemptCount"] == 0
     stub_check(monkeypatch, AnswerCheck("incorrect", missing_constant=True))

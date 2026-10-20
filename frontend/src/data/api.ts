@@ -37,7 +37,10 @@ export {
   openDemo,
   revealAnswer,
   revealSolution,
+  shareProblem,
+  stopSharing,
   submitAttempt,
 } from './practice';
+export { lookupShare, shareCode, shareLink } from './shares';
 export { checkApiHealth } from './health';
 export type { ApiHealth } from './health';

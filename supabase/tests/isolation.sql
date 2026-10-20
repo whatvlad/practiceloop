@@ -5,6 +5,10 @@ do $$ begin
   assert not has_function_privilege('anon', 'private.account_exists(uuid)', 'EXECUTE');
   assert not has_function_privilege('authenticated', 'private.account_exists(uuid)', 'EXECUTE');
   assert has_function_privilege('service_role', 'private.account_exists(uuid)', 'EXECUTE');
+  -- #37: share tokens and codes are read only by the backend.
+  assert not has_table_privilege('anon', 'private.problem_shares', 'SELECT');
+  assert not has_table_privilege('authenticated', 'private.problem_shares', 'SELECT');
+  assert has_table_privilege('service_role', 'private.problem_shares', 'SELECT');
 end $$;
 
 -- Check privileges directly, independently of RLS or schema USAGE. In particular,

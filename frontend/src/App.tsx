@@ -9,6 +9,7 @@ import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/LoginPage';
 import { PracticePage } from './pages/PracticePage';
 import { ProfilePage } from './pages/ProfilePage';
+import { SharedProblemPage } from './pages/SharedProblemPage';
 import { navigate, useLocation } from './router';
 
 const TITLES: Record<string, string> = {
@@ -18,6 +19,7 @@ const TITLES: Record<string, string> = {
   '/practice': 'Practice · PracticeLoop',
   '/history': 'History · PracticeLoop',
   '/profile': 'Profile · PracticeLoop',
+  '/shared': 'Shared problem · PracticeLoop',
 };
 
 const APP_ROUTES = new Set(['/dashboard', '/practice', '/history', '/profile']);
@@ -56,7 +58,7 @@ export function App() {
   useEffect(() => authStore.start(), []);
 
   useEffect(() => {
-    document.title = TITLES[pathname] ?? 'PracticeLoop';
+    document.title = TITLES[pathname.startsWith('/s/') ? '/shared' : pathname] ?? 'PracticeLoop';
   }, [pathname]);
 
   const needsAccount = APP_ROUTES.has(pathname) && pathname !== '/practice';
@@ -83,6 +85,9 @@ export function App() {
 
   const authDisabled = auth.working || auth.status === 'loading' || !authStore.configured;
   if (pathname === '/') return <LandingPage onSignIn={handleSignIn} disabled={authDisabled} busy={auth.working} error={auth.error} signedIn={!!account} />;
+  // Shared problems (#37) open the same way signed in or not.
+  if (pathname === '/shared') return <SharedProblemPage token={null} code={params.get('code')} />;
+  if (/^\/s\/[^/]+$/.test(pathname)) return <SharedProblemPage token={pathname.slice(3)} code={null} />;
   if (pathname === '/login') return <LoginPage onSignIn={handleSignIn} disabled={authDisabled} busy={auth.working} error={auth.error} />;
   if (pathname === '/auth/callback' || (needsAccount && auth.status === 'loading')) {
     return <div className="pl-page pl-login"><p role="status">Restoring your session…</p></div>;

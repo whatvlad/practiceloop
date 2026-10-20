@@ -102,9 +102,15 @@ def start_server(keys: LocalKeys) -> tuple[uvicorn.Server, str]:
 
 
 def reset_limits() -> None:
-    from app.api import practice
+    from app.api import practice, shares
 
-    for limiter in (practice.generation_limit, practice.attempt_limit, practice.reveal_limit):
+    for limiter in (
+        practice.generation_limit,
+        practice.attempt_limit,
+        practice.reveal_limit,
+        shares.share_limit,
+        shares.lookup_limit,
+    ):
         limiter.reset()
 
 
@@ -232,6 +238,31 @@ def cross_user(api_b: httpx.Client, base: str, keys: LocalKeys, alice: UUID, pid
         check(response.status_code == 401, f"{label} is rejected", response.status_code)
 
 
+def sharing(api_a: httpx.Client, api_b: httpx.Client, base: str, pid: str) -> None:
+    """#37: anyone with the link or code sees the statement, topic and difficulty only."""
+    created = api_a.post(f"/problems/{pid}/share")
+    check(created.status_code == 201, "owner shares a problem", created.text)
+    share = created.json()["share"]
+    check(api_b.post(f"/problems/{pid}/share/revoke").status_code == 404, "others cannot revoke")
+    for label, path in (("link", share["token"]), ("code", f"code/{share['code']}")):
+        response = httpx.get(f"{base}/shares/{path}")  # no Authorization header at all
+        body = response.json()
+        check(
+            response.status_code == 200
+            and set(body) == {"problem"}
+            and set(body["problem"]) == {"topic", "difficulty", "problemLatex"},
+            f"anonymous {label} lookup returns only the public statement",
+            response.text,
+        )
+    check(api_a.post(f"/problems/{pid}/share/revoke").status_code == 200, "owner revokes")
+    gone = httpx.get(f"{base}/shares/{share['token']}")
+    check(
+        gone.status_code == 410 and gone.json()["error"]["code"] == "share_revoked",
+        "a revoked link says so",
+        gone.text,
+    )
+
+
 MALICIOUS = [
     "__import__('os').system('id')",
     "exec('print(1)')",
@@ -343,6 +374,7 @@ def main() -> int:
         created = full_flow(api_a, url)
         if created:
             cross_user(api_b, base, keys, alice, created[0])
+            sharing(api_a, api_b, base, created[0])
             malicious(api_a, created[0])
             saturation(api_a, url, created[0])
         if args.stop_db and args.start_db:
