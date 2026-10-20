@@ -137,10 +137,9 @@ def attempt(
         raise HTTPException(422, "invalid_request") from exc
     except MathWorkerError as exc:
         raise HTTPException(503, "math_check_unavailable", headers={"Retry-After": "3"}) from exc
-    return {
-        "result": "incorrect" if result == "missing_constant" else result,
-        "feedbackCode": "missing_constant" if result == "missing_constant" else None,
-    }
+    # Anything but the three results is a feedback code on an incorrect answer.
+    verdict = result if result in ("correct", "incorrect", "invalid") else "incorrect"
+    return {"result": verdict, "feedbackCode": None if verdict == result else result}
 
 
 @router.post("/problems/{identifier}/reveal-answer")

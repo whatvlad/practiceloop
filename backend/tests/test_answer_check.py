@@ -225,7 +225,10 @@ def test_unknown_record_version_is_rejected() -> None:
     [
         ("2/3(x+2)^3 + 2x + 2ln|x| + C", AnswerCheck("correct")),
         ("2x^3/3 + 4x^2 + 10x + 2ln|x|", AnswerCheck("incorrect", missing_constant=True)),
-        ("2x^3/3 + 4x^2 + 10x + 2ln(x) + C", AnswerCheck("incorrect")),
+        (
+            "2x^3/3 + 4x^2 + 10x + 2ln(x) + C",
+            AnswerCheck("incorrect", feedback_code="log_absolute"),
+        ),
         ("x +* 2", AnswerCheck("invalid")),
         ("__import__('os').system('id')", AnswerCheck("invalid")),
     ],

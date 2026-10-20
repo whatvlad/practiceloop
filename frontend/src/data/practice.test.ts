@@ -44,12 +44,22 @@ it('calls the real boundary once for duplicate clicks and starts with an empty h
 it('keeps missing-constant feedback separate and reveals only on explicit requests', async () => {
   const problem = await generate();
   fetchMock.mockResolvedValueOnce(response({ result: 'incorrect', feedbackCode: 'missing_constant' }));
-  expect(await practice.submitAttempt(problem.id, 'x^2/2')).toBe('missing_constant');
+  expect(await practice.submitAttempt(problem.id, 'x^2/2')).toEqual({ result: 'missing_constant', feedback: null });
   fetchMock.mockResolvedValueOnce(response({ answerLatex: 'x^2/2+C' }));
   expect(await practice.revealAnswer(problem.id)).toEqual({ answerLatex: 'x^2/2+C' });
   fetchMock.mockResolvedValueOnce(response({ steps: [{ say: 'Integrate.', latex: 'x^2/2+C', private: true }] }));
   expect(await practice.revealSolution(problem.id)).toEqual({ steps: [{ say: 'Integrate.', latex: 'x^2/2+C' }] });
   expect(JSON.stringify(await practice.getProblem(problem.id))).not.toContain('answerLatex');
+});
+
+it('passes a known mistake code through and treats an unknown one as a general hint', async () => {
+  const problem = await generate();
+  fetchMock.mockResolvedValueOnce(response({ result: 'incorrect', feedbackCode: 'trig_sign' }));
+  expect(await practice.submitAttempt(problem.id, 'cos(x) + C')).toEqual({ result: 'incorrect', feedback: 'trig_sign' });
+  fetchMock.mockResolvedValueOnce(response({ result: 'incorrect', feedbackCode: 'from_a_newer_server' }));
+  expect(await practice.submitAttempt(problem.id, 'x + C')).toEqual({ result: 'incorrect', feedback: null });
+  fetchMock.mockResolvedValueOnce(response({ result: 'correct', feedbackCode: 'trig_sign' }));
+  await expect(practice.submitAttempt(problem.id, 'x^2/2 + C')).rejects.toThrow();
 });
 
 it('does not turn network failures into incorrect answers or fallback demos', async () => {
@@ -108,10 +118,10 @@ it('uses saved DTOs and a Supabase bearer without creating a preview session or 
   expect(fetchMock.mock.calls[0][1]?.headers).toMatchObject({ Authorization: 'Bearer supabase-access-token' });
   expect(JSON.stringify(await practice.getProblem(problem.id))).not.toContain('PRIVATE');
   fetchMock.mockResolvedValueOnce(response({ attempt: { result: 'invalid', feedbackCode: null } }, 201));
-  expect(await practice.submitAttempt(problem.id, 'sin(')).toBe('invalid');
+  expect(await practice.submitAttempt(problem.id, 'sin(')).toEqual({ result: 'invalid', feedback: null });
   expect((await practice.getProblem(problem.id)).lastResult).toBe('invalid');
   fetchMock.mockResolvedValueOnce(response({ attempt: { result: 'incorrect', feedbackCode: 'missing_constant' } }, 201));
-  expect(await practice.submitAttempt(problem.id, 'x^2/2')).toBe('missing_constant');
+  expect(await practice.submitAttempt(problem.id, 'x^2/2')).toEqual({ result: 'missing_constant', feedback: null });
   expect((await practice.getProblem(problem.id)).lastResult).toBe('missing_constant');
   fetchMock.mockResolvedValueOnce(response({ steps: [{ say: 'Integrate.', latex: 'x^2/2+C' }] }));
   await practice.revealSolution(problem.id);
@@ -147,7 +157,7 @@ it('deduplicates attempts and retains their key on retry with a refreshed access
   const headers = fetchMock.mock.calls[1][1]?.headers as Record<string, string>;
   practice.configurePracticeAuth(async () => 'refreshed-token');
   fetchMock.mockResolvedValueOnce(response({ attempt: { result: 'correct', feedbackCode: null } }, 201));
-  expect(await practice.submitAttempt(problem.id, 'x+C')).toBe('correct');
+  expect(await practice.submitAttempt(problem.id, 'x+C')).toEqual({ result: 'correct', feedback: null });
   expect(fetchMock.mock.calls[2][1]?.headers).toMatchObject({ 'Idempotency-Key': headers['Idempotency-Key'], Authorization: 'Bearer refreshed-token' });
 });
 

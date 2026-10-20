@@ -37,5 +37,18 @@ type TextKey = Literal[
     "unsupported",
     "preview",
     "availability",
+    "feedback_power_rule",
+    "feedback_trig_sign",
+    "feedback_chain_factor",
+    "feedback_log_absolute",
+    "feedback_split_product",
+    "feedback_parts_sign",
+    "feedback_cycle_factor",
+    "feedback_partial_fraction_sign",
+    "feedback_definite_not_evaluated",
+    "feedback_bounds_reversed",
+    "feedback_definite_constant",
+    "general_hint",
+    "general_hint_definite",
 ]
 TEXT: dict[TextKey, str] = json.loads(Path(__file__).with_name("en.json").read_text())

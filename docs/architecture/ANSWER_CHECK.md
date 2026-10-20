@@ -17,7 +17,8 @@ in [BASIC_GENERATOR.md](BASIC_GENERATOR.md)), never an expression string.
 |---|---|
 | `AnswerCheck("correct")` | `result: "correct"` |
 | `AnswerCheck("incorrect", missing_constant=True)` | `result: "incorrect"`, `feedbackCode: "missing_constant"` |
-| `AnswerCheck("incorrect")` | `result: "incorrect"` |
+| `AnswerCheck("incorrect", feedback_code="trig_sign")` | `result: "incorrect"`, `feedbackCode: "trig_sign"` |
+| `AnswerCheck("incorrect")` | `result: "incorrect"`, a general hint |
 | `AnswerCheck("invalid")` | grammar rejection, or an expression that evaluates to an undefined value such as `1/(x-x)`; a persisted invalid attempt |
 | `MathInputTooLong` | `422`, no attempt |
 | `MathWorkerError` | retryable `503 math_worker_unavailable`, no attempt |
@@ -77,6 +78,23 @@ cost most of the CPU budget for rational level 5 on CI runners. Their slowest
 check, rational level 5, then uses about 0.5 s of child CPU locally. `replay_problem` accepts `basic-v1`,
 `substitution-v1`, the four #77–#80 versions and `definite-v1`. A new generator
 version adds its replay to `answer_check.replay_problem`.
+
+## Mistake diagnosis
+
+After an `incorrect` result, the worker compares the answer with the mistakes
+its template declares in `app/generators/mistakes.py`. Each declared mistake is
+the wrong antiderivative it produces, for example `ln(x)` for `ln|x|`
+(`log_absolute`) or `-cos(x)` with its sign lost (`trig_sign`). The answer,
+without its constant, matches when the difference is proven constant on every
+component; numbers are never used as proof. Definite templates reuse their base
+template's mistakes evaluated at the bounds, skipping any that still give the
+correct value, and add `definite_not_evaluated` (an antiderivative instead of a
+number), `bounds_reversed` and `definite_constant`. Exactly one matching code is
+returned as `incorrect:<code>`; none, or two different codes, give no diagnosis
+and the learner sees a general hint. The attempt stores the code in
+`attempts.feedback_code` (migration `202610200001`). Correct, invalid and
+missing-constant answers never carry one. Diagnosis adds 0.01–0.4 s of CPU to
+an incorrect check.
 
 ## Definite integrals
 

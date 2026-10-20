@@ -1,7 +1,8 @@
 // Saved account practice and an isolated, untracked guest preview. Public cache only.
 import text from '../../../backend/app/content/en.json';
 import { TOPICS } from './topics';
-import type { AvailableTopic, CheckResult, Difficulty, LearningStatistics, OmissionMetric, OpenedProblem, ProblemPage, ProfileCounts, PublicProblem, RevealedAnswer, RevealedSolution, TopicSlug } from './types';
+import { FEEDBACK_CODES } from './types';
+import type { AvailableTopic, CheckOutcome, Difficulty, LearningStatistics, OmissionMetric, OpenedProblem, ProblemPage, ProfileCounts, PublicProblem, RevealedAnswer, RevealedSolution, TopicSlug } from './types';
 
 const base = (import.meta.env.VITE_API_BASE_URL ?? '/api').trim().replace(/\/+$/, '');
 let token: Promise<string> | null = null;
@@ -112,11 +113,14 @@ function find(id: string): PublicProblem {
   return problem;
 }
 
-function verdict(data: Record<string, unknown>): CheckResult {
+function verdict(data: Record<string, unknown>): CheckOutcome {
   if (data.result !== 'correct' && data.result !== 'incorrect' && data.result !== 'invalid') throw new Error(text.service_error);
-  if (data.feedbackCode !== null && data.feedbackCode !== 'missing_constant') throw new Error(text.service_error);
-  if (data.feedbackCode === 'missing_constant' && data.result !== 'incorrect') throw new Error(text.service_error);
-  return data.feedbackCode === 'missing_constant' ? 'missing_constant' : data.result;
+  if (data.feedbackCode !== null && typeof data.feedbackCode !== 'string') throw new Error(text.service_error);
+  if (data.feedbackCode !== null && data.result !== 'incorrect') throw new Error(text.service_error);
+  if (data.feedbackCode === 'missing_constant') return { result: 'missing_constant', feedback: null };
+  // A code this build does not know yet falls back to the general hint.
+  const feedback = FEEDBACK_CODES.find(code => code === data.feedbackCode) ?? null;
+  return { result: data.result, feedback };
 }
 
 function publicProblem(value: unknown): PublicProblem {
@@ -130,7 +134,8 @@ function publicProblem(value: unknown): PublicProblem {
   return { saved: true, id: data.id, topic: data.topic as TopicSlug, difficulty: data.difficulty as Difficulty,
     problemLatex: data.problemLatex, createdAt: data.createdAt, answerRevealed: data.answerRevealed,
     solutionRevealed: data.solutionRevealed, attemptCount: data.attemptCount as number,
-    lastResult: last ? verdict(last) : null, lastAnswer: last ? last.answer as string : null };
+    lastResult: last ? verdict(last).result : null, lastFeedback: last ? verdict(last).feedback : null,
+    lastAnswer: last ? last.answer as string : null };
 }
 
 function cache(problem: PublicProblem): PublicProblem {
@@ -270,7 +275,7 @@ export function generateProblem(topic: TopicSlug, difficulty: Difficulty): Promi
   return operation;
 }
 
-export function submitAttempt(id: string, answer: string, elapsedMs?: number): Promise<CheckResult> {
+export function submitAttempt(id: string, answer: string, elapsedMs?: number): Promise<CheckOutcome> {
   return once(`attempt:${id}:${answer}`, async () => {
     const problem = find(id);
     const started = epoch;
@@ -284,7 +289,8 @@ export function submitAttempt(id: string, answer: string, elapsedMs?: number): P
     const checked = verdict(data);
     if (data.result === 'correct') correctProblems.add(id);
     if (data.result !== 'invalid' || saved) {
-      problem.lastResult = checked;
+      problem.lastResult = checked.result;
+      problem.lastFeedback = checked.feedback;
       problem.lastAnswer = answer;
       problem.attemptCount = (problem.attemptCount ?? 0) + 1;
     }

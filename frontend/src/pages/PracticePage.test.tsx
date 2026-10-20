@@ -38,10 +38,20 @@ it('disables all actions during a request and catches failures without an incorr
   expect(button('Generate next problem').disabled).toBe(false);
 });
 
+it('shows targeted feedback only for a matched mistake and a general hint otherwise', async () => {
+  vi.mocked(api.submitAttempt).mockResolvedValueOnce({ result: 'incorrect', feedback: 'log_absolute' });
+  await act(async () => button('Check answer').click());
+  expect(element.textContent).toContain('Use ln|x| instead of ln(x).');
+  vi.mocked(api.submitAttempt).mockResolvedValueOnce({ result: 'incorrect', feedback: null });
+  await act(async () => button('Check answer').click());
+  expect(element.textContent).toContain('Differentiate your answer and compare it with the integrand');
+  expect(element.textContent).not.toContain('ln|x|');
+});
+
 it('shows the dedicated missing-constant message and does not prefetch solutions', async () => {
   expect(api.revealAnswer).not.toHaveBeenCalled();
   expect(api.revealSolution).not.toHaveBeenCalled();
-  vi.mocked(api.submitAttempt).mockResolvedValueOnce('missing_constant');
+  vi.mocked(api.submitAttempt).mockResolvedValueOnce({ result: 'missing_constant', feedback: null });
   await act(async () => button('Check answer').click());
   expect(element.textContent).toContain('Add an arbitrary integration constant');
   expect(button('Check answer').disabled).toBe(false);

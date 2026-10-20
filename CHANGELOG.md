@@ -4,6 +4,11 @@ Meaningful user-facing releases will be recorded here. No MVP release exists yet
 
 ## Unreleased
 
+- Targeted mistake feedback (#36, part 2): when a wrong answer clearly matches a
+  common mistake its template declares, such as `ln(x)` instead of `ln|x|`, a lost
+  sign, a missing chain-rule factor or a definite integral left unevaluated, the
+  learner sees advice for that mistake. Otherwise they get a general hint. The
+  code is saved with the attempt and shown again when the problem is reopened.
 - Integration by parts now has levels 1–3 instead of 3–5, and the practice page
   shows only the levels a topic offers. Switching topic moves an unavailable
   level to the nearest available one.

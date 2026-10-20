@@ -33,7 +33,7 @@ from app.services.account import delete_user
 from app.services.idempotency import Scope, StoredResponse
 from app.services.learning_stats import statistics
 from app.services.math_parser import MathInputTooLong
-from app.services.math_worker import MathCheckInconclusive, MathWorkerError
+from app.services.math_worker import AnswerCheck, MathCheckInconclusive, MathWorkerError
 from app.services.math_worker import check_answer as shared_check
 from app.services.preview_check import CHECK_SLOTS
 
@@ -189,9 +189,14 @@ def _public_problem(
             else "correct"
             if last.is_correct
             else "incorrect",
-            "feedbackCode": "missing_constant" if last.constant_omitted else None,
+            "feedbackCode": _feedback(last),
         },
     }
+
+
+def _feedback(attempt: records.AttemptRecord) -> str | None:
+    """`missing_constant`, a declared mistake code (#36), or None for a general hint."""
+    return "missing_constant" if attempt.constant_omitted else attempt.feedback_code
 
 
 def _encode_cursor(problem: records.ProblemRecord) -> str:
@@ -344,8 +349,8 @@ def generate(body: GenerateBody, user: User, key: IdempotencyKey = None) -> JSON
     return _respond(response)
 
 
-def _check(answer: str, record: dict[str, object]) -> tuple[bool | None, bool]:
-    """(is_correct, constant_omitted); raises ApiError when no trustworthy result exists."""
+def _check(answer: str, record: dict[str, object]) -> AnswerCheck:
+    """A trustworthy check result; raises ApiError when none exists."""
     if not CHECK_SLOTS.acquire(blocking=False):
         raise _worker_unavailable()
     try:
@@ -362,9 +367,7 @@ def _check(answer: str, record: dict[str, object]) -> tuple[bool | None, bool]:
         raise _worker_unavailable() from None
     finally:
         CHECK_SLOTS.release()
-    if result.result == "invalid":
-        return None, False
-    return result.result == "correct", result.missing_constant
+    return result
 
 
 def _worker_unavailable() -> ApiError:
@@ -400,13 +403,20 @@ def attempt(
         solution = records.solution_for_check(conn, user.id, problem_id)
     if solution is None:
         raise _not_found()
-    is_correct, constant_omitted = _check(body.answer, dict(solution.generator_data))
+    checked = _check(body.answer, dict(solution.generator_data))
+    is_correct = None if checked.result == "invalid" else checked.result == "correct"
     with transaction(user.id) as conn:
         stored = idempotency.claim(conn, scope)
         if stored is not None:
             return _respond(stored, replayed=True)
         saved = records.insert_attempt(
-            conn, user.id, problem_id, body.answer, is_correct, constant_omitted
+            conn,
+            user.id,
+            problem_id,
+            body.answer,
+            is_correct,
+            checked.missing_constant,
+            checked.feedback_code,
         )
         if saved is None:
             raise _not_found()
@@ -422,7 +432,7 @@ def attempt(
                     "id": str(saved.id),
                     "answer": saved.user_answer,
                     "result": result,
-                    "feedbackCode": "missing_constant" if saved.constant_omitted else None,
+                    "feedbackCode": _feedback(saved),
                     "createdAt": _timestamp(saved.created_at),
                 }
             },
