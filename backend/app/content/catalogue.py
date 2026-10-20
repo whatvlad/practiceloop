@@ -6,6 +6,15 @@ from typing import Literal
 
 type TextKey = Literal[
     "calculate",
+    "factor",
+    "identity",
+    "substitution_integral",
+    "nested_substitution",
+    "parts",
+    "repeat_parts",
+    "solve_cycle",
+    "partial_fractions",
+    "polynomial_division",
     "linearity",
     "rewrite_power",
     "expand",
