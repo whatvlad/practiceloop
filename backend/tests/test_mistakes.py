@@ -7,6 +7,7 @@ import pytest
 import sympy as sp
 from test_definite import linux_only
 
+from app.api.practice import TOPICS
 from app.content.catalogue import TEXT
 from app.generators.core import catalogue
 from app.generators.definite import TEMPLATES, base_record, replay_definite
@@ -16,18 +17,8 @@ from app.services.answer_check import check_and_diagnose, replay_problem
 from app.services.math_parser import parse_math_input
 from app.services.math_worker import AnswerCheck, check_answer
 
-CELLS = [
-    (topic, level)
-    for topic in (
-        "basic-integrals",
-        "substitution",
-        "integration-by-parts",
-        "rational-functions",
-        "trigonometric-integrals",
-    )
-    for level in range(1, 6)
-    if not (topic == "integration-by-parts" and level < 3)
-]
+# Every offered cell, from the same table `GET /topics` publishes.
+CELLS = [(topic, level) for topic, (_, levels) in TOPICS.items() for level in levels]
 
 
 def learner(expression: sp.Expr) -> str:
