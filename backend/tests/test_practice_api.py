@@ -71,6 +71,22 @@ def client(users: Users) -> Iterator[TestClient]:
         yield test_client
 
 
+def pin_version(monkeypatch: pytest.MonkeyPatch, version: str | None) -> None:
+    """Cells mix definite and indefinite records (#36): pin one version, or None for indefinite."""
+    from app.api import practice
+    from app.generators.core import catalogue
+
+    def keep(record: dict[str, object]) -> bool:
+        if version is None:
+            return record["generator_version"] != "definite-v1"
+        return record["generator_version"] == version
+
+    def pinned(*cell: Any) -> tuple[Any, ...]:
+        return tuple(item for item in catalogue(*cell) if keep(item.record))
+
+    monkeypatch.setattr(practice, "catalogue", pinned)
+
+
 def key() -> dict[str, str]:
     return {"Idempotency-Key": str(uuid4())}
 
@@ -306,6 +322,21 @@ def primitive_of(url: str, problem_id: str) -> str:
     return str(replay(data).primitive).replace("**", "^")
 
 
+def answer_of(url: str, problem_id: str) -> str:
+    """A correct learner answer: the exact value, or the antiderivative plus C."""
+    from app.generators.core import replay
+
+    (data,) = rows(
+        url,
+        "select generator_data from private.problem_solutions where problem_id = %s",
+        problem_id,
+    )[0]
+    exercise = replay(data)
+    if exercise.value is not None:
+        return str(exercise.value).replace("**", "^").replace("E", "e")
+    return str(exercise.primitive).replace("**", "^").replace("Abs", "abs") + " + C"
+
+
 def test_attempts_are_checked_by_the_real_worker_and_persisted(
     client: TestClient, users: Users, url: str
 ) -> None:
@@ -338,11 +369,19 @@ def test_attempts_are_checked_by_the_real_worker_and_persisted(
         ("integration-by-parts", 5, "parts-v1"),
         ("rational-functions", 5, "rational-v1"),
         ("trigonometric-integrals", 4, "trigonometric-v1"),
+        ("integration-by-parts", 4, "definite-v1"),
+        ("rational-functions", 3, "definite-v1"),
     ],
 )
 def test_higher_levels_persist_their_family_record_and_check_answers(
-    client: TestClient, url: str, topic: str, level: int, version: str
+    client: TestClient,
+    url: str,
+    monkeypatch: pytest.MonkeyPatch,
+    topic: str,
+    level: int,
+    version: str,
 ) -> None:
+    pin_version(monkeypatch, version)
     problem = generate(client, topic, level)
     assert (problem["topic"], problem["difficulty"]) == (topic, level)
     assert rows(
@@ -350,8 +389,7 @@ def test_higher_levels_persist_their_family_record_and_check_answers(
         "select generator_version from private.problem_solutions where problem_id = %s",
         problem["id"],
     ) == [(version,)]
-    primitive = primitive_of(url, problem["id"]).replace("Abs", "abs")
-    response = attempt(client, problem["id"], primitive + " + C")
+    response = attempt(client, problem["id"], answer_of(url, problem["id"]))
     assert response.status_code == 201, response.text
     assert response.json()["attempt"]["result"] == "correct"
 
@@ -624,6 +662,7 @@ def test_history_reads_require_authentication_before_database_access(
 def test_private_omission_metrics_exclude_invalid_and_keep_each_checked_attempt(
     client, users, url, monkeypatch
 ):
+    pin_version(monkeypatch, None)
     problem = generate(client)
     for outcome in (
         AnswerCheck("incorrect", True),
@@ -662,7 +701,10 @@ def test_private_omission_metrics_exclude_invalid_and_keep_each_checked_attempt(
     assert all(w["rate"] is None for w in other["weekly"])
 
 
-def test_statistics_all_time_and_eight_week_trend_have_distinct_windows(client, users, url):
+def test_statistics_all_time_and_eight_week_trend_have_distinct_windows(
+    client, users, url, monkeypatch
+):
+    pin_version(monkeypatch, None)
     problem = generate(client)
     with psycopg.connect(url) as conn:
         conn.execute(
@@ -674,6 +716,20 @@ def test_statistics_all_time_and_eight_week_trend_have_distinct_windows(client, 
     stats = client.get("/statistics").json()
     assert stats["omitted"] == 1
     assert sum(w["omitted"] for w in stats["weekly"]) == 0
+
+
+def test_omission_metrics_exclude_definite_integrals(client, monkeypatch):
+    # A definite answer never takes a constant, so it cannot count as checked for omission.
+    pin_version(monkeypatch, "definite-v1")
+    problem = generate(client)
+    stub_check(monkeypatch, AnswerCheck("incorrect"))
+    response = client.post(
+        f"/problems/{problem['id']}/attempts", json={"answer": "2"}, headers=key()
+    )
+    assert response.status_code == 201
+    stats = client.get("/statistics").json()
+    assert (stats["checkedAttempts"], stats["byTopicDifficulty"]) == (0, [])
+    assert sum(w["checkedAttempts"] for w in stats["weekly"]) == 0
 
 
 def test_optional_name_is_owner_scoped_editable_and_removable(client, users):

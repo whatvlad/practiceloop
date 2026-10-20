@@ -33,7 +33,8 @@ action; answer and full-solution use are stored as the existing reveal flags.
 
 `GET /api/statistics` returns lifetime `checkedAttempts`, `omitted`, `rate`, a
 `byTopicDifficulty` array and eight `weekly` buckets. Each checked attempt counts,
-including retries with a new idempotency key. Invalid expressions are excluded;
+including retries with a new idempotency key. Invalid expressions and definite
+integrals (#36, which never take a constant) are excluded;
 idempotent replays count once. Rate is omitted/checked, NULL when there is no
 denominator. Breakdown is by topic AND difficulty. Trend weeks start Monday UTC;
 the current week is incomplete and zero weeks remain present. A lower rate means

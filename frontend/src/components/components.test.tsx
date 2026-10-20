@@ -48,6 +48,13 @@ describe('ProblemCard', () => {
     expect(html).toContain('<li class="final">');
   });
 
+  it('asks for a definite integral without a constant when the statement has bounds', () => {
+    expect(card()).toContain('Calculate the indefinite integral.');
+    const html = card({ problemLatex: '\\int_{0}^{1} \\left(x e^{x}\\right)\\,dx' });
+    expect(html).toContain('Calculate the definite integral.');
+    expect(html).not.toContain('+ C');
+  });
+
   it('flags invalid input for assistive tech', () => {
     expect(card({ result: 'invalid', answer: 'x +' })).toContain('aria-invalid="true"');
   });

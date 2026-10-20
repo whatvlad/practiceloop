@@ -30,7 +30,9 @@ no repeat within that window. Only the cells the generators support are offered:
 every topic at levels 1–5 except integration by parts, which starts at level 3
 (ADR-003). Other cells return 422. `GET /topics` lists them as
 `availableDifficulties`. Substitution levels 1–2 keep `substitution-v1`; levels
-3–5 use `substitution-v2`. All problems are still indefinite.
+3–5 use `substitution-v2`. Most cells also contain `definite-v1` records (#36):
+their `problemLatex` starts with `\int_{a}^{b}` and their answer is one exact
+number with no constant. See [topic generators](../architecture/TOPIC_GENERATORS.md#definite-integrals).
 Idempotency keys live in `private.idempotency_keys` (migration
 `202610190001_practice_persistence.sql`) and expire after 24 hours. Rate limits
 are per user and per process: 30 generations, 30 attempts and 60 reveals a minute.
@@ -126,7 +128,8 @@ Returns `201` after the result and idempotency record commit:
 
 An invalid expression is a persisted domain result with `result: "invalid"`, not
 an HTTP validation error. A missing integration constant returns
-`result: "incorrect"` and `feedbackCode: "missing_constant"`. Empty input or an
+`result: "incorrect"` and `feedbackCode: "missing_constant"`; a definite answer
+never needs one, and one that contains `x` or a constant is incorrect. Empty input or an
 answer longer than the ADR-003 limit is rejected before an attempt is created.
 
 ### `POST /api/problems/{id}/reveal-answer`

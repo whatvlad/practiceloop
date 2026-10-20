@@ -6,8 +6,8 @@ libraries implement the remaining rows of
 [ADR-003](../decisions/0003-mathematical-input-and-equivalence.md).
 
 There are 18 templates and 108 distinct parameter records. Integration by parts
-starts at level 3; its levels 1–2 are deliberately unavailable. All problems are
-indefinite. Coefficients are the six nonzero integers from -3 to 3. Difficulty
+starts at level 3; its levels 1–2 are deliberately unavailable. These templates
+are indefinite; `definite-v1` (below) adds bounds to some of them. Coefficients are the six nonzero integers from -3 to 3. Difficulty
 comes from the formula and transformations, never from increasing this range.
 
 | Version / topic | Level 1 | Level 2 | Level 3 | Level 4 | Level 5 |
@@ -92,3 +92,42 @@ practice and template-declared mistake diagnosis.
 
 Focused check: `.venv/bin/python -m pytest backend/tests/test_families.py`.
 The full backend suite and hosted CI remain required for delivery.
+
+## Definite integrals
+
+`definite-v1` (#36, `backend/app/generators/definite.py`) adds clean bounds to
+21 verified indefinite templates. A record has the same three fields as a
+family record:
+
+```json
+{"generator_version":"definite-v1","template":"quadratic_exponential","coefficient":2}
+```
+
+The template fixes the base record (a `basic-v1` or family template) and the
+closed interval; the record never carries bounds. The level is the base
+template's level: evaluating at bounds is not a structural step. The base
+replay proves the antiderivative on its whole domain. Replay then requires that
+the closed interval lies inside that domain and inside the continuous domain of
+the integrand and the antiderivative, so no bound touches or crosses a pole,
+and that the value equals `F(b) - F(a)`. A value is clean only when it is a
+nonzero real number with at most 8 operations, built from rationals with
+numerator at most 30 and denominator at most 12, `π`, `e`, `ln` and `exp`.
+The value is simplified per unit coefficient, so `3 ln(4/3)` is not merged
+into `ln(64/27)`.
+
+| Topic | Level 1 | Level 2 | Level 3 | Level 4 | Level 5 |
+|---|---|---|---|---|---|
+| Basic integrals | `x` on [0, 2]; `e^x` on [0, 1] | `x + e^x` on [0, 1] | `1/x` on [1, e]; `1/√x` on [1, 4] | `(x + 1)^2` on [0, 1] | — |
+| Substitution | — | — | `3x^2 e^(x^3)` on [0, 1] | factor a square, [0, 1] | — |
+| Integration by parts | — | — | `x e^x` on [0, 1] | `x^2 e^x` on [0, 1] | `e^x sin x` on [0, π] |
+| Rational functions | `1/x` on [1, 2] | `2x/(x^2 + 1)` on [0, 1] | distinct factors on [1, 2] | repeated factor on [1, 2] | division, then fractions, on [1, 2] |
+| Trigonometric integrals | `sin x` on [0, π] | `sin 2x` on [0, π/2] | `sin^3 x` on [0, π] | `sin^2 x` on [0, π] | identity, then substitution, on [0, π/2] |
+
+`core.catalogue` appends the definite records of a cell after its indefinite
+ones, so a cell offers both kinds and the guest demo's first exercise is
+unchanged. The statement is `\int_{a}^{b} (...)\,dx`, the revealed answer is
+the value, and the solution is the base method's steps without `+ C`, then the
+evaluation `[F(x)]_a^b = F(b) - F(a)` and the value. The website shows
+"Calculate the definite integral." for statements that start with bounds.
+
+Focused check: `.venv/bin/python -m pytest backend/tests/test_definite.py`.
