@@ -13,6 +13,7 @@
 	encode gzip
 	header {
 		X-Robots-Tag "noindex, nofollow"
+		Strict-Transport-Security "max-age=31536000"
 		-Server
 	}
 	reverse_proxy 127.0.0.1:8000

@@ -67,11 +67,19 @@ jobs:
           graphify update .
           mkdir -p frontend/dist/graph
           cp graphify-out/graph.html frontend/dist/graph/index.html
-      # Keep every preview host out of search engines. Cloudflare Pages serves
-      # index.html for unknown paths when there is no 404.html, so deep links work.
+      # Keep every preview host out of search engines and out of other sites' frames.
+      # Cloudflare Pages serves index.html for unknown paths when there is no
+      # 404.html, so deep links work. HSTS is not needed: .dev is HSTS-preloaded.
       - name: Mark preview noindex
         run: |
-          printf '/*\n  X-Robots-Tag: noindex\n  Referrer-Policy: no-referrer\n' > frontend/dist/_headers
+          cat > frontend/dist/_headers <<'HEADERS'
+          /*
+            X-Robots-Tag: noindex
+            Referrer-Policy: no-referrer
+            X-Frame-Options: DENY
+            Content-Security-Policy: frame-ancestors 'none'
+            Permissions-Policy: camera=(), microphone=(), geolocation=()
+          HEADERS
       - name: Deploy to Cloudflare Pages
         if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != ''
         working-directory: frontend

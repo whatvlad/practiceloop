@@ -34,6 +34,49 @@ The `practiceloop` user owns the releases, logs in with the deploy key only (por
 forwarding off), and may run only
 `sudo systemctl restart practiceloop-api`. The release keeps the newest five.
 
+## Capacity and worker isolation
+
+The VM's region, shape and size are listed under [Audit](#audit). One process
+serves the API under systemd with `MemoryMax=512M`. Each answer check spawns a fresh
+math worker (`backend/app/services/math_worker.py`) with a 2 s CPU limit, a 256 MB
+address-space limit, a 3 s wall clock and no core dumps; the parent kills it on
+timeout and answers a retryable `503`. One check runs at a time in `/preview`.
+Rate limits are in the API itself: per user on the signed-in routes and a global
+window on `/preview` (`429` with `Retry-After`, see `docs/api/README.md`).
+
+## Secrets
+
+Backend secrets (`DATABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`) live only in
+`/etc/practiceloop/api.env`. GitHub holds the deploy key, Cloudflare and Supabase
+CLI credentials and the public Supabase URL and publishable key; the frontend build
+gets only `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY` and `/api`. The
+Google OAuth client secret is stored only in Supabase. Google redirects are listed
+in `docs/auth/GOOGLE_AUTH.md`.
+
+## Logs
+
+- **API:** uvicorn writes one access line per request (caller IP, which is Cloudflare's for `/api` traffic, method, path
+  with query, status) to the systemd journal. Paths carry only problem ids and
+  page cursors. Bearer tokens travel in a header and are never logged; answers and
+  other bodies are never logged, and validation errors do not echo them. Unhandled
+  errors log a traceback with a correlation id that the learner sees.
+- **Caddy:** no access log (the Caddyfile has no `log` directive).
+- **Cloudflare:** the `/api` Pages Function forwards only `Accept`,
+  `Authorization`, `Content-Type` and `Idempotency-Key`, and logs nothing.
+- Retention is the journal's default size cap; `deploy/oracle/audit.sh` prints it
+  and counts any lines that look like tokens or database URLs (should be 0).
+
+## Backups and restore
+
+The VM holds no data: releases are rebuilt from Git and settings are only
+`api.env`, so recovery is the **Lost VM** step below plus re-entering `api.env`
+from the Supabase dashboard (Connect → Session pooler; Settings → API keys).
+All learner data is in Supabase Postgres. Its backups depend on the Supabase plan
+(Dashboard → Database → Backups); the restore and 30-day deletion rules are in
+`supabase/README.md` (Backup and rollback) and
+`docs/architecture/ACCOUNT_COMPLETION.md`. Never keep dumps in Git, Actions
+artifacts or VM snapshots.
+
 ## One-time setup
 
 1. In the Oracle console, open the instance's subnet security list and add
@@ -149,3 +192,23 @@ sudo systemctl restart caddy
   update the three variables. Releases hold no data, so nothing else is lost.
 - **Frontend:** roll back in Cloudflare Pages (project `practiceloop` >
   Deployments > an older one > Rollback), or revert on `main`.
+
+## Audit
+
+`deploy/oracle/audit.sh` is read-only and prints the region, shape, services,
+ports, the key *names* in `api.env`, worker limits, log settings and local health.
+From the repo on your PC:
+
+```powershell
+Get-Content deploy/oracle/audit.sh -Raw | ssh -i "$env:USERPROFILE\.ssh\oracle_vlad" ubuntu@92.5.92.72 'tr -d "\r" | bash -s'
+```
+
+Public checks from any PC:
+
+```powershell
+curl.exe -sS https://92-5-92-72.sslip.io/health        # {"status":"ok"}
+curl.exe -sSI http://92-5-92-72.sslip.io/health        # 308 to https
+curl.exe -sS https://practiceloop.pages.dev/api/health  # {"status":"ok"}
+curl.exe -sSI -X OPTIONS https://92-5-92-72.sslip.io/topics -H "Origin: https://evil.example" -H "Access-Control-Request-Method: GET"  # 400, no Allow-Origin
+```
+
