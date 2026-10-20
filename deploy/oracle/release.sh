@@ -52,5 +52,8 @@ keep_previous="$(readlink -f "$APP_ROOT/previous" 2>/dev/null || true)"
 # shellcheck disable=SC2012
 ls -1dt "$APP_ROOT"/releases/*/ | tail -n +$((KEEP + 1)) | while read -r old; do
   old="${old%/}"
-  [[ $old == "$keep_current" || $old == "$keep_previous" ]] || rm -rf "$old"
+  [[ $old == "$keep_current" || $old == "$keep_previous" ]] && continue
+  # A release can hold files another user wrote, such as __pycache__ from a manual
+  # sudo run. The new release is already live, so a leftover is only a warning.
+  rm -rf "$old" 2>/dev/null || echo "Warning: could not fully remove $old" >&2
 done
