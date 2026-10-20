@@ -12,6 +12,15 @@ from app.content.catalogue import TextKey  # noqa: E402
 
 CATALOGUE = ROOT / "backend/app/content/en.json"
 INSTRUCTIONS = {
+    "factor",
+    "identity",
+    "substitution_integral",
+    "nested_substitution",
+    "parts",
+    "repeat_parts",
+    "solve_cycle",
+    "partial_fractions",
+    "polynomial_division",
     "calculate",
     "linearity",
     "rewrite_power",

@@ -18,5 +18,14 @@
   "expired": "This practice session has expired. Reload the page to start again.",
   "unsupported": "Choose an available topic and level.",
   "preview": "Practice uses the server generator. Results are temporary and are not saved to your account.",
-  "availability": "Basic integrals and substitution are available at levels 1 and 2. Other options are not available yet."
+  "availability": "Basic integrals and substitution are available at levels 1 and 2. Other options are not available yet.",
+  "factor": "Write the polynomial as a squared factor.",
+  "identity": "Apply the trigonometric identity to the integrand.",
+  "substitution_integral": "Apply the substitution shown below the integral.",
+  "nested_substitution": "Apply the second substitution inside the first.",
+  "parts": "Apply integration by parts: integrate one factor and differentiate the other.",
+  "repeat_parts": "Apply integration by parts to the remaining integral.",
+  "solve_cycle": "Add the remaining integral to both sides, then divide by two.",
+  "partial_fractions": "Write the rational function as partial fractions.",
+  "polynomial_division": "Divide the numerator by the denominator before splitting the remainder."
 }

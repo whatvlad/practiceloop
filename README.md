@@ -30,6 +30,11 @@ The preview connects basic integrals and substitution at levels 1–2 to a separ
 non-persistent API, with 186 verified records and no repeats within a pool cycle.
 Other cells are disabled. [Preview boundaries](docs/architecture/PREVIEW_PRACTICE.md).
 
+The remaining internal topic generators (#9, #77–#80) cover the approved
+substitution, parts, rational and trigonometric cells: 18 templates and 108
+verified records. [Topic-generator details](docs/architecture/TOPIC_GENERATORS.md).
+Enabling these new versions in practice is the separate #36 milestone.
+
 ## Stack and structure
 
 React, TypeScript, Vite and KaTeX (Cloudflare Pages); Python, FastAPI and SymPy
