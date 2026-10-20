@@ -10,6 +10,15 @@ User-facing releases. Known limitations of the current release are in
   only the problem, its topic and difficulty: never your answers, results or
   solutions. Shares last 90 days, and *Stop sharing* ends them at once. Shared
   pages are kept out of search engines. (#37)
+- **Production readiness on preview.** A draft privacy page that describes the
+  real data flows, *Report a problem* under saved problems, a 404 page with
+  links home and to practice, a skip link, per-page titles and descriptions,
+  and a practice button first on the home page. Fonts are now served from the
+  site itself instead of Google Fonts, the site and API send a strict Content
+  Security Policy and other security headers, and Cloudflare Web Analytics can
+  be switched on without seeing emails, accounts or answers. The release
+  checklist and the open launch blockers are in
+  `docs/production/PRODUCTION_CHECKLIST.md`. (#38)
 
 ## 0.1.0 — MVP (2026-10-20)
 

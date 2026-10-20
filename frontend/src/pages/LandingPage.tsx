@@ -3,6 +3,7 @@ import { Button, ButtonLink } from '../components/Button';
 import { DifficultyDots } from '../components/DifficultyScale';
 import { ResultBanner } from '../components/ResultBanner';
 import { Tex } from '../components/Tex';
+import { Link } from '../router';
 
 const STEPS = [
   { title: 'Choose a topic', text: 'Basic integrals, substitution, by parts, rational and trigonometric.' },
@@ -59,8 +60,8 @@ export function LandingPage({ onSignIn, disabled = false, busy = false, error = 
   const label = busy ? 'Opening Google…' : signedIn ? 'Open your dashboard' : 'Continue with Google';
   return (
     <div className="pl-page">
-      <PublicNav />
-      <main>
+      <PublicNav landing />
+      <main id="main" tabIndex={-1}>
         <section className="pl-wrap pl-hero">
           <div className="pl-label pl-hero-eyebrow">Calculus · Integration</div>
           <h1 className="pl-display-xl">
@@ -73,8 +74,8 @@ export function LandingPage({ onSignIn, disabled = false, busy = false, error = 
             answer, reveal the solution, go again.
           </p>
           <div className="pl-actions pl-hero-actions">
-            {!signedIn && <ButtonLink to="/practice" size="lg" pill arrow>Try one problem</ButtonLink>}
-            <Button size="lg" pill arrow onClick={onSignIn} disabled={disabled} aria-busy={busy}>
+            <ButtonLink to="/practice" size="lg" pill arrow>{signedIn ? 'Start practicing' : 'Try one problem'}</ButtonLink>
+            <Button variant="secondary" size="lg" pill onClick={onSignIn} disabled={disabled} aria-busy={busy}>
               {label}
             </Button>
             <a className="pl-btn pl-btn--secondary pl-btn--lg pl-btn--pill" href="#how">
@@ -140,7 +141,10 @@ export function LandingPage({ onSignIn, disabled = false, busy = false, error = 
       </main>
       <footer className="pl-wrap pl-row pl-small pl-subtle pl-footer">
         <Logo />
-        <span>Math practice, on loop.</span>
+        <span className="pl-footer-links">
+          <span>Math practice, on loop.</span>
+          <Link to="/privacy">Privacy</Link>
+        </span>
       </footer>
     </div>
   );

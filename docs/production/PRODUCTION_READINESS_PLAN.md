@@ -1,7 +1,10 @@
 # PracticeLoop production readiness plan
 
 Status: approved requirements draft. The MVP (0.1.0) implements the account,
-practice and hosting parts; the remaining gates are Issues #38 and #39.
+practice and hosting parts. #38 implements the must-haves that need no final
+domain, legal or brand values; its twelve-gate checklist and the remaining
+launch blockers are in [PRODUCTION_CHECKLIST.md](PRODUCTION_CHECKLIST.md). The
+custom-domain launch is #39.
 
 This document records the production-readiness audit and the decisions made with
 the product owner. It intentionally does not invent unresolved legal, branding,

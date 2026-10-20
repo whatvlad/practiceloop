@@ -1,12 +1,13 @@
 import { Logo } from '../components/AppNav';
 import { Button } from '../components/Button';
+import { Link } from '../router';
 
 export function LoginPage({ onSignIn, disabled = false, busy = false, error = null }: {
   onSignIn: () => void; disabled?: boolean; busy?: boolean; error?: string | null;
 }) {
   return (
     <div className="pl-page pl-login">
-      <main className="pl-problem pl-login-panel">
+      <main id="main" tabIndex={-1} className="pl-problem pl-login-panel">
         <div className="pl-center">
           <Logo />
         </div>
@@ -23,7 +24,7 @@ export function LoginPage({ onSignIn, disabled = false, busy = false, error = nu
           </span>{' '}
           {busy ? 'Opening Google…' : 'Continue with Google'}
         </Button>
-        <p className="pl-small pl-subtle pl-m-0 pl-center">Google is the only sign-in method. Accounts are for learners aged 16 and over.</p>
+        <p className="pl-small pl-subtle pl-m-0 pl-center">Google is the only sign-in method. Accounts are for learners aged 16 and over. <Link to="/privacy">Privacy</Link></p>
       </main>
     </div>
   );

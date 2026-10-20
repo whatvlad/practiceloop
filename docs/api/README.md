@@ -249,8 +249,46 @@ when both apply).
 Rate limits: 20 creates and revokes a minute per user, and 120 lookups a minute
 in total. The Pages proxy does not pass the client address, so lookups share
 one window; guessing a code or token stays infeasible at that rate. The
-frontend serves shares at `/s/{token}` and `/shared?code=...`, both with a
-`noindex, nofollow` robots meta tag on top of the site's `X-Robots-Tag`.
+frontend serves shares at `/s/{token}`, `/shared/{token}` and `/shared?code=...`,
+all with a `noindex, nofollow` robots meta tag on top of the site's `X-Robots-Tag`.
+
+## Reports (#38)
+
+### `POST /api/problems/{id}/report`
+
+Owner only: a learner reports one of their own saved problems. Body:
+
+```json
+{"category":"answer_check","comment":"optional, at most 500 characters"}
+```
+
+`category` is one of `answer_check` (my answer was checked wrongly),
+`solution` (the answer or solution is wrong), `statement` (the problem is
+unclear or broken), `display` and `other`. The comment is trimmed; an empty one
+is stored as null. Unknown fields, other categories, a longer comment or a NUL
+character are `422 invalid_request`, and the error never echoes the input.
+Returns `201`:
+
+```json
+{"report":{"id":"...","category":"answer_check","createdAt":"2026-10-21T08:00:00Z"}}
+```
+
+Reports live in `private.problem_reports` (problem, category, comment, time and
+the owner key), which only the backend reads. Deleting the problem or the
+account deletes its reports. Another user's or a missing problem is `404
+problem_not_found`. Rate limits: 5 reports a minute and 30 an hour per user.
+The anonymous demo has no report button, since its problem is not stored.
+
+## Response headers
+
+Every API response carries `X-Content-Type-Options: nosniff`,
+`X-Frame-Options: DENY`, `Referrer-Policy: no-referrer`,
+`Cross-Origin-Resource-Policy: same-site` and
+`Content-Security-Policy: default-src 'none'; frame-ancestors 'none'; ...`
+(the local `/docs` and `/redoc` pages keep only `frame-ancestors 'none'`).
+CORS answers only exact origins from `ALLOWED_ORIGINS`; wildcards and plain
+`http://` origins other than the local Vite server are dropped. Caddy adds HSTS
+and redirects HTTP to HTTPS.
 
 ## HTTP failures and retry behavior
 

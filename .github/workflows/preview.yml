@@ -1,7 +1,7 @@
 name: Preview
 # Preview hosting on Cloudflare Pages: the frontend (mock data) at / and the
 # Graphify code graph at /graph/, rebuilt from each push to main.
-# Served at https://practiceloop.pages.dev (noindex, Google login).
+# Served at https://practiceloop.pages.dev (noindex, Google login; headers in frontend/public/_headers).
 # The app calls the API same-origin at /api; functions/api forwards that to repo variable
 # API_BASE_URL (the Oracle backend; empty skips it), so filtering networks only see pages.dev.
 # Needs repo secrets CLOUDFLARE_API_TOKEN (Account > Cloudflare Pages > Edit) and
@@ -57,6 +57,8 @@ jobs:
           VITE_API_BASE_URL: ${{ env.API_ORIGIN != '' && '/api' || '' }}
           VITE_SUPABASE_URL: ${{ vars.SUPABASE_URL || secrets.SUPABASE_URL }}
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.SUPABASE_PUBLISHABLE_KEY || secrets.SUPABASE_PUBLISHABLE_KEY }}
+          # Public site token; unset keeps the beacon off. VITE_SITE_URL/INDEXABLE stay unset on preview (#39).
+          VITE_CF_WEB_ANALYTICS_TOKEN: ${{ vars.CF_WEB_ANALYTICS_TOKEN }}
       # Same Graphify release as scripts/setup-graphify.sh (v0.9.92), pinned to its commit.
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
@@ -67,19 +69,11 @@ jobs:
           graphify update .
           mkdir -p frontend/dist/graph
           cp graphify-out/graph.html frontend/dist/graph/index.html
-      # Keep every preview host out of search engines and out of other sites' frames.
+      # Headers (noindex, CSP, anti-framing) come from frontend/public/_headers.
       # Cloudflare Pages serves index.html for unknown paths when there is no
-      # 404.html, so deep links work. HSTS is not needed: .dev is HSTS-preloaded.
-      - name: Mark preview noindex
-        run: |
-          cat > frontend/dist/_headers <<'HEADERS'
-          /*
-            X-Robots-Tag: noindex
-            Referrer-Policy: no-referrer
-            X-Frame-Options: DENY
-            Content-Security-Policy: frame-ancestors 'none'
-            Permissions-Policy: camera=(), microphone=(), geolocation=()
-          HEADERS
+      # 404.html, so deep links work and the app shows its own 404 page.
+      - name: Check preview headers
+        run: grep -q 'X-Robots-Tag: noindex' frontend/dist/_headers
       - name: Deploy to Cloudflare Pages
         if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != ''
         working-directory: frontend

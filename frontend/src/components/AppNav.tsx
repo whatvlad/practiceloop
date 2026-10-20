@@ -49,15 +49,21 @@ export function AppNav({ current, initial, onLogOut, busy = false }: AppNavProps
   );
 }
 
-/** Signed-out bar for the landing page: logo, How it works and Sign in. */
-export function PublicNav() {
+/** Signed-out bar: logo, How it works (Home away from the landing page) and Sign in. */
+export function PublicNav({ landing = false }: { landing?: boolean }) {
   return (
     <header className="pl-nav pl-nav--bare">
       <Logo />
       <div className="pl-row">
-        <a className="pl-btn pl-btn--ghost pl-btn--sm" href="#how">
-          How it works
-        </a>
+        {landing ? (
+          <a className="pl-btn pl-btn--ghost pl-btn--sm" href="#how">
+            How it works
+          </a>
+        ) : (
+          <ButtonLink to="/" variant="ghost" size="sm">
+            Home
+          </ButtonLink>
+        )}
         <ButtonLink to="/login" variant="secondary" size="sm" pill>
           Sign in
         </ButtonLink>

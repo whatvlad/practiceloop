@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button } from '../components/Button';
 import { StatTile } from '../components/StatTile';
 import { getDisplayName, getProfileCounts } from '../data/api';
+import { Link } from '../router';
 import type { Account } from '../data/types';
 import { useLoad } from '../useLoad';
 import { AccountSettings } from './AccountSettings';
@@ -13,7 +14,7 @@ export function ProfilePage({ account, onLogOut, onDeleted = async () => {}, bus
   const displayName = useLoad(getDisplayName, String(revision));
   const name = displayName.status === 'ready' ? displayName.data || 'Learner' : 'Learner';
   return (
-    <main className="pl-wrap pl-wrap--narrow pl-app-main">
+    <main id="main" tabIndex={-1} className="pl-wrap pl-wrap--narrow pl-app-main">
       <div className="pl-label">Profile</div>
       <h1 className="pl-display-md pl-page-title">
         Your <em>account.</em>
@@ -48,6 +49,9 @@ export function ProfilePage({ account, onLogOut, onDeleted = async () => {}, bus
       {counts.status === 'error' && <div role="alert"><p>Your statistics could not be loaded.</p><Button variant="secondary" onClick={() => setRevision(value => value + 1)}>Retry loading statistics</Button></div>}
       <LearningStatistics />
       <AccountSettings onDeleted={onDeleted} onNameSaved={() => setRevision(value => value + 1)} />
+      <p className="pl-small pl-muted">
+        What we store and how deletion works: <Link to="/privacy">Privacy</Link>.
+      </p>
     </main>
   );
 }
