@@ -200,8 +200,8 @@ reveal flags. Unrevealed content and generator records are not returned.
 Counts use one SQL aggregate snapshot and ADR-004 distinct-problem semantics:
 invalid-only attempts count as attempted, repeated attempts do not inflate
 counts, and any previous correct attempt keeps the problem counted as correct.
-`name` is currently null because the verified API identity does not include it;
-the UI retains the current Google-session display name. Account data
+`name` is the optional display name saved with `POST /api/profile` (#35), or
+null; the UI then shows the Google-session name. Account data
 comes from the verified session/profile, never client-supplied identity fields.
 
 ## HTTP failures and retry behavior

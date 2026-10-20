@@ -1,9 +1,8 @@
 # Google authentication
 
-Issue #5 replaces the website's mock identity with Supabase Auth. Vlad confirmed
-that this frontend stage may proceed before open #4 on 2026-10-19. It does not
-implement backend identity verification, persistent practice or learning history.
-Those remain #4/#10/#12. #3's two-user database acceptance is still deferred.
+Issue #5 replaced the website's mock identity with Supabase Auth. The API verifies
+the resulting tokens (#4, docs/api/README.md); signed-in practice, history and
+profile are saved (#10–#12, #35), and #3's two-user hosted isolation check passed.
 
 ## Configuration
 
@@ -60,19 +59,16 @@ the current browser session and clears that account's browser-session demo data.
 Changing accounts remounts private content and resets the previous demo state.
 The account name/email shown in the profile come from the Supabase user.
 
-Client guards are a UI boundary. #4 must still verify signatures, issuer, audience,
-expiry and ownership at the API. Do not treat this client implementation as API
-authorization. Only `/health` is available on the scaffold API today.
+Client guards are a UI boundary. The API (#4) verifies signatures, issuer,
+audience, expiry and ownership itself; never treat the client as authorization.
 
-## Practice remains a demo
+## Practice data
 
-`frontend/src/data/api.ts` is the single boundary. Authentication now goes to
-Supabase; generation/check/reveal/history/counts still use the temporary demo
-module. The authenticated app explicitly labels those as demo data stored in the
-browser session, not persistent account history. Mock login/account functions are
-removed. No browser database writes, profile provisioning or private-solution
-requests are added. The demo contains static example answers, not hosted private
-user answers or generator state.
+`frontend/src/data/api.ts` is the single boundary. Signed-in practice, history and
+profile go to the saved API (docs/architecture/SAVED_PRACTICE_UI.md); a signed-out
+visitor gets the one untracked demo problem (docs/architecture/ACCOUNT_COMPLETION.md).
+The browser never writes to the database directly and never receives private
+solutions before an authorized reveal.
 
 ## Verification
 
