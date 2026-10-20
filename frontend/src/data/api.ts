@@ -37,6 +37,7 @@ export {
   openDemo,
   revealAnswer,
   revealSolution,
+  reportProblem,
   shareProblem,
   stopSharing,
   submitAttempt,

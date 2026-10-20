@@ -108,3 +108,48 @@ describe('client route protection and auth UI', () => {
     expect(harness.store.signIn).not.toHaveBeenCalled();
   });
 });
+
+describe('routes and public pages (#38)', () => {
+  it.each(['/', '/login', '/privacy', '/practice', '/missing', '/shared'])('starts %s with a skip link to the main content', async path => {
+    await renderAt(path);
+    const skip = element.querySelector<HTMLAnchorElement>('a.pl-skip')!;
+    expect(element.querySelector('a')).toBe(skip);
+    expect(skip.getAttribute('href')).toBe('#main');
+    expect(element.querySelector('main#main')).not.toBeNull();
+    expect(document.head.querySelector('meta[name="robots"]')?.getAttribute('content')).toBe('noindex, nofollow');
+  });
+
+  it.each([signedOut, signedIn])('puts a practice CTA first in the hero', async state => {
+    await renderAt('/', state);
+    const cta = element.querySelector<HTMLAnchorElement>('.pl-hero-actions a, .pl-hero-actions button')!;
+    expect(cta.getAttribute('href')).toBe('/practice');
+  });
+
+  it('serves the privacy draft without an account, naming processors and no invented operator', async () => {
+    await renderAt('/privacy');
+    expect(window.location.pathname).toBe('/privacy');
+    expect(element.querySelector('h1')?.textContent).toBe('Privacy');
+    for (const name of ['Supabase', 'Google', 'Cloudflare', 'Oracle Cloud']) expect(element.textContent).toContain(name);
+    expect(element.textContent).toContain('Not decided yet');
+    expect(element.textContent).not.toMatch(/@|sp\. z o\.o\.|ul\./);
+    expect(document.title).toBe('Privacy · PracticeLoop');
+  });
+
+  it('opens /shared/<token> like /s/<token>', async () => {
+    await renderAt('/shared/short');
+    expect(element.textContent).toContain('That link or code is not valid.');
+  });
+
+  it('shows a branded 404 with links home and to practice', async () => {
+    await renderAt('/nowhere');
+    expect(element.textContent).toContain('There is no page at this address.');
+    const links = [...element.querySelectorAll('main a')].map(link => link.getAttribute('href'));
+    expect(links).toEqual(expect.arrayContaining(['/', '/practice']));
+    expect(document.title).toBe('Page not found · PracticeLoop');
+  });
+
+  it.each(['/dashboard', '/history', '/profile'])('sends a signed-out visitor from %s to sign-in', async path => {
+    await renderAt(path);
+    expect(window.location.pathname).toBe('/login');
+  });
+});

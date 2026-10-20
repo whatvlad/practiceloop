@@ -134,3 +134,7 @@ export interface LearningStatistics extends OmissionMetric {
   byTopicDifficulty: (OmissionMetric & { topic: TopicSlug; difficulty: Difficulty })[];
   weekly: (OmissionMetric & { week: string })[];
 }
+
+/** Problem report categories (#38), as app.api.reports accepts them. */
+export const REPORT_CATEGORIES = ['answer_check', 'solution', 'statement', 'display', 'other'] as const;
+export type ReportCategory = (typeof REPORT_CATEGORIES)[number];

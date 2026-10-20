@@ -68,7 +68,7 @@ export function HistoryPage() {
   const shown = all.filter((p) => matches(p, filter));
 
   return (
-    <main className="pl-wrap pl-app-main">
+    <main id="main" tabIndex={-1} className="pl-wrap pl-app-main">
       <div className="pl-label">History</div>
       <div className="pl-row pl-title-row">
         <h1 className="pl-display-md">

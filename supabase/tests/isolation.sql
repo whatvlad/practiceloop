@@ -9,6 +9,11 @@ do $$ begin
   assert not has_table_privilege('anon', 'private.problem_shares', 'SELECT');
   assert not has_table_privilege('authenticated', 'private.problem_shares', 'SELECT');
   assert has_table_privilege('service_role', 'private.problem_shares', 'SELECT');
+  -- #38: problem reports are written and read only by the backend.
+  assert not has_table_privilege('anon', 'private.problem_reports', 'INSERT');
+  assert not has_table_privilege('authenticated', 'private.problem_reports', 'INSERT');
+  assert not has_table_privilege('authenticated', 'private.problem_reports', 'SELECT');
+  assert has_table_privilege('service_role', 'private.problem_reports', 'INSERT');
 end $$;
 
 -- Check privileges directly, independently of RLS or schema USAGE. In particular,

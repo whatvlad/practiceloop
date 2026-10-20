@@ -10,3 +10,5 @@ paths = [
   '''(^|/)dist/''',
   '''(^|/)\.local/'''
 ]
+# The fake Cloudflare Web Analytics token in frontend/src/analytics.test.ts (#38).
+regexes = ['''^0123456789abcdef0123456789abcdef$''']

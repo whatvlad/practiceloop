@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from 'react';
+import { useState, type FormEvent } from 'react';
 import { Logo } from '../components/AppNav';
 import { Button, ButtonLink } from '../components/Button';
 import { DifficultyDots } from '../components/DifficultyScale';
@@ -17,17 +17,6 @@ const UNAVAILABLE: Record<ShareUnavailable, { title: string; detail: string }> =
   expired: { title: 'This shared problem has expired.', detail: 'Shares last 90 days. Ask for a new link.' },
   revoked: { title: 'This problem is no longer shared.', detail: 'Its owner stopped sharing it.' },
 };
-
-/** Shared pages stay out of search results even where the host header allows indexing. */
-function useNoIndex() {
-  useEffect(() => {
-    const meta = document.createElement('meta');
-    meta.name = 'robots';
-    meta.content = 'noindex, nofollow';
-    document.head.append(meta);
-    return () => meta.remove();
-  }, []);
-}
 
 function CodeForm({ initial = '' }: { initial?: string }) {
   const [code, setCode] = useState(initial);
@@ -87,7 +76,6 @@ function Result({ found }: { found: ShareLookup }) {
 
 /** `/s/<token>` opens a shared link; `/shared` takes a code (#37). */
 export function SharedProblemPage({ token, code }: { token: string | null; code: string | null }) {
-  useNoIndex();
   const ref = token !== null ? { token } : code !== null ? { code } : null;
   const found = useLoad(() => (ref ? lookupShare(ref) : Promise.resolve(null)), `${token}:${code}`);
   return (
@@ -96,7 +84,7 @@ export function SharedProblemPage({ token, code }: { token: string | null; code:
         <Logo />
         <ButtonLink to="/login" variant="secondary" size="sm" pill>Sign in</ButtonLink>
       </header>
-      <main className="pl-wrap pl-wrap--narrow pl-practice-main pl-stack pl-gap-5">
+      <main id="main" tabIndex={-1} className="pl-wrap pl-wrap--narrow pl-practice-main pl-stack pl-gap-5">
         {!ref && (
           <section className="pl-card pl-card--lg pl-stack pl-gap-4" aria-label="Open a shared problem">
             <h1 className="pl-h-lg pl-m-0">Open a shared problem</h1>

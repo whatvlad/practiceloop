@@ -6,7 +6,7 @@ import text from '../../../backend/app/content/en.json';
 export function ApiStatusNotice({ health }: { health: ApiHealth | undefined }) {
   if (health !== 'unreachable') return null;
   return (
-    <div className="pl-wrap pl-api-notice">
+    <section className="pl-wrap pl-api-notice" aria-label="Server status">
       <div className="pl-result pl-result--invalid" role="status">
         <WarningIcon />
         <div>
@@ -14,6 +14,6 @@ export function ApiStatusNotice({ health }: { health: ApiHealth | undefined }) {
           <span>{text.service_error}</span>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

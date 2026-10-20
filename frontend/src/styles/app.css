@@ -121,3 +121,14 @@ html,body,#root{min-height:100%}
 .pl-learning-table caption { text-align: left; padding-block: var(--space-3); font-weight: 600; }
 .pl-learning-table th, .pl-learning-table td { padding: var(--space-3); border-bottom: 1px solid var(--line); }
 .pl-learning-table th { font-weight: 500; }
+
+/* Skip link (#38): hidden until keyboard focus reaches it. */
+.pl-skip{position:absolute;left:var(--space-4);top:var(--space-3);z-index:100;padding:var(--space-2) var(--space-4);background:var(--action);color:var(--on-action);border-radius:var(--radius-sm);transform:translateY(-200%)}
+.pl-skip:focus{transform:none}
+main[tabindex="-1"]:focus{outline:none}
+.pl-privacy p,.pl-privacy li,.pl-privacy dd{max-width:68ch}
+.pl-footer-links{display:flex;gap:var(--space-4);flex-wrap:wrap}
+.pl-report{margin-top:var(--space-4)}
+.pl-report-options{border:0;margin:0;padding:0}
+.pl-report-option{gap:var(--space-3);align-items:center;cursor:pointer}
+.pl-report-comment{min-height:72px;resize:vertical;font:inherit}

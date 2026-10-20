@@ -45,7 +45,10 @@ the order of the [Implementation Queue](https://github.com/users/whatvlad/projec
 - **Backups are manual.** Supabase is on the Free plan: no scheduled backups or
   PITR. Recovery copies are made by hand and must expire within 30 days of an
   account deletion ([ACCOUNT_COMPLETION.md](docs/architecture/ACCOUNT_COMPLETION.md)).
-- **Preview, not a launch.** The site is public but `noindex`, has no custom
+- **Preview, not a launch.** The privacy page is a draft without the
+  operator's legal details; launch blockers are listed in
+  [PRODUCTION_CHECKLIST.md](docs/production/PRODUCTION_CHECKLIST.md).
+  The site is public but `noindex`, has no custom
   domain, and Cloudflare Access is off. Until the Google OAuth consent screen is
   published, only Google accounts listed as test users can sign in. Google is the
   only sign-in provider.

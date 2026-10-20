@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import text from '../../../backend/app/content/en.json';
 import { Button, ButtonLink } from '../components/Button';
 import { ProblemCard } from '../components/ProblemCard';
+import { ReportProblem } from '../components/ReportProblem';
 import { ShareControls } from '../components/ShareControls';
 import {
   NotFoundError,
@@ -93,6 +94,7 @@ function PracticeSession({ opened }: { opened: OpenedProblem }) {
       solution={solution}
     />
     {problem.saved && <ShareControls problemId={problem.id} initial={opened.share ?? null} />}
+    {problem.saved && <ReportProblem problemId={problem.id} />}
     </>
   );
 }
@@ -109,7 +111,8 @@ export function PracticePage({ id, demo = false }: { id: string | null; demo?: b
   const problem = useLoad(() => (demo ? openDemo() : id ? openProblem(id) : new Promise<never>(() => {})), `${demo}:${id ?? ''}:${revision}`);
 
   return (
-    <main className="pl-wrap pl-wrap--narrow pl-practice-main">
+    <main id="main" tabIndex={-1} className="pl-wrap pl-wrap--narrow pl-practice-main">
+      {!(startError || problem.status === 'error') && <h1 className="pl-sr-only">Practice problem</h1>}
       {problem.status === 'ready' && <PracticeSession key={problem.data.problem.id} opened={problem.data} />}
       {!startError && problem.status === 'loading' && <p role="status">Loading problem…</p>}
       {(startError || problem.status === 'error') && (

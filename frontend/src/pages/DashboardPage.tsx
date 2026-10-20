@@ -60,7 +60,7 @@ export function DashboardPage() {
   }
 
   return (
-    <main className="pl-wrap pl-app-main">
+    <main id="main" tabIndex={-1} className="pl-wrap pl-app-main">
       <div className="pl-label">Dashboard</div>
       <h1 className="pl-display-md pl-page-title">
         Pick up where you <em>left off.</em>

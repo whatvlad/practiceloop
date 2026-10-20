@@ -2,7 +2,7 @@
 import text from '../../../backend/app/content/en.json';
 import { TOPICS } from './topics';
 import { FEEDBACK_CODES } from './types';
-import type { AvailableTopic, Catalogue, CheckOutcome, Difficulty, LearningStatistics, OmissionMetric, OpenedProblem, ProblemPage, ProblemShare, ProfileCounts, PublicProblem, RevealedAnswer, RevealedSolution, PracticeTopic, TopicSlug } from './types';
+import type { AvailableTopic, Catalogue, CheckOutcome, Difficulty, LearningStatistics, OmissionMetric, OpenedProblem, ProblemPage, ProblemShare, ProfileCounts, PublicProblem, ReportCategory, RevealedAnswer, RevealedSolution, PracticeTopic, TopicSlug } from './types';
 
 const base = (import.meta.env.VITE_API_BASE_URL ?? '/api').trim().replace(/\/+$/, '');
 let token: Promise<string> | null = null;
@@ -185,6 +185,20 @@ export function stopSharing(id: string): Promise<void> {
     const data = await request(`/problems/${encodeURIComponent(id)}/share/revoke`, {}, bearer, true);
     if (started !== epoch) throw new Error(text.expired);
     if (data.share !== null) throw new Error(text.service_error);
+  });
+}
+
+/** #38: one report per call; categories mirror app.api.reports. */
+export function reportProblem(id: string, category: ReportCategory, comment: string): Promise<void> {
+  return once(`report:${id}`, async () => {
+    const started = epoch;
+    const { bearer, saved } = await credentials();
+    if (!saved) throw new Error('Sign in to report a problem.');
+    const trimmed = comment.trim();
+    const data = await request(`/problems/${encodeURIComponent(id)}/report`,
+      { category, ...(trimmed ? { comment: trimmed.slice(0, 500) } : {}) }, bearer, true);
+    if (started !== epoch) throw new Error(text.expired);
+    if (object(data.report).category !== category) throw new Error(text.service_error);
   });
 }
 

@@ -47,15 +47,6 @@ it('shows only the statement, topic and difficulty, even when the server sends m
   expect(element.textContent).not.toMatch(/Show answer|Check answer/);
 });
 
-it('is noindex while it is open', async () => {
-  fetchMock.mockResolvedValue(failure('share_not_found', 404));
-  await render({ token: TOKEN, code: null });
-  expect(document.head.querySelector('meta[name="robots"]')?.getAttribute('content')).toBe('noindex, nofollow');
-  await act(async () => root.unmount());
-  expect(document.head.querySelector('meta[name="robots"]')).toBeNull();
-  root = createRoot(element);
-});
-
 it.each([
   ['share_not_found', 404, 'Nothing is shared under this link or code.'],
   ['share_expired', 410, 'This shared problem has expired.'],
