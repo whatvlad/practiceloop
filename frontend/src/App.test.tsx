@@ -56,6 +56,16 @@ async function renderAt(path: string, state = signedOut) {
 }
 
 describe('client route protection and auth UI', () => {
+  it.each([signedOut, signedIn])('opens shared problems without redirecting (#37)', async state => {
+    await renderAt('/shared', state);
+    expect(window.location.pathname).toBe('/shared');
+    expect(element.querySelector('h1')?.textContent).toBe('Open a shared problem');
+    expect(document.title).toBe('Shared problem · PracticeLoop');
+    await renderAt('/s/short', state);
+    expect(window.location.pathname).toBe('/s/short');
+    expect(element.textContent).toContain('That link or code is not valid.');
+  });
+
   it('does not render a protected profile while restoring the session', async () => {
     await renderAt('/profile', { ...signedOut, status: 'loading' });
     expect(element.textContent).toContain('Restoring your session');

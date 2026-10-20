@@ -190,6 +190,8 @@ These are top-level siblings of `problem`, with the same shapes as the reveal
 responses, e.g. `{"problem":{...},"answer":{"answerLatex":"..."}}`.
 This is a read-only transaction: reopening never creates attempts or changes
 reveal flags. Unrevealed content and generator records are not returned.
+It also carries `share`: the owner's live share of this problem (see Sharing)
+or `null`.
 
 ### `GET /api/profile`
 
@@ -204,12 +206,61 @@ counts, and any previous correct attempt keeps the problem counted as correct.
 null; the UI then shows the Google-session name. Account data
 comes from the verified session/profile, never client-supplied identity fields.
 
+## Sharing (#37)
+
+An owner shares a saved problem's statement, topic and difficulty, nothing more.
+A share has two independent random keys: a link token (32 bytes from
+`secrets`, base64url, 43 characters) and an 8-symbol Crockford base32 code
+(40 bits, shown as `K7M2-QX9P`). Neither is derived from the problem. Shares
+live in `private.problem_shares`, which only the backend reads; they last 90
+days, and deleting the problem or the account deletes them.
+
+### `POST /api/problems/{id}/share`
+
+Owner only. Returns `201` with a new share, or `200` with the problem's live
+share, so a second click never makes a second link:
+
+```json
+{"share":{"token":"43 base64url chars","code":"K7M2QX9P","expiresAt":"2027-01-18T12:00:00Z"}}
+```
+
+### `POST /api/problems/{id}/share/revoke`
+
+Owner only. Ends the link and the code at once and returns `{"share":null}`.
+Idempotent; a later share gets a new token and code. Another user's or a
+missing problem is the usual `404 problem_not_found` for both routes.
+
+### `GET /api/shares/{token}` and `GET /api/shares/code/{code}`
+
+No account needed and no `Authorization` header read. A code is accepted in any
+case, with spaces or hyphens, and with `O`, `I` and `L` read as `0`, `1` and
+`1`. Returns only:
+
+```json
+{"problem":{"topic":"substitution","difficulty":3,"problemLatex":"\\int ..."}}
+```
+
+Never the problem ID, owner, answers, results, statistics, reveals or
+solutions. An unavailable share is one of four states, each with no problem
+data: `400 share_invalid` (not a well-formed token or code), `404
+share_not_found`, `410 share_expired` and `410 share_revoked` (revocation wins
+when both apply).
+
+Rate limits: 20 creates and revokes a minute per user, and 120 lookups a minute
+in total. The Pages proxy does not pass the client address, so lookups share
+one window; guessing a code or token stays infeasible at that rate. The
+frontend serves shares at `/s/{token}` and `/shared?code=...`, both with a
+`noindex, nofollow` robots meta tag on top of the site's `X-Robots-Tag`.
+
 ## HTTP failures and retry behavior
 
 | Status | Code | Meaning / retry |
 |---|---|---|
 | `401` | `authentication_required`, `invalid_token` | Missing or failed token; refresh/re-authenticate, do not blindly retry |
+| `400` | `share_invalid` | Malformed share token or code; ask for a new one |
 | `404` | `problem_not_found` | Missing and other-user IDs are intentionally indistinguishable |
+| `404` | `share_not_found` | No share has this token or code |
+| `410` | `share_expired`, `share_revoked` | The share existed but no longer works; do not retry |
 | `409` | `idempotency_conflict` | Same key with different input; create a new key only for a deliberate new action |
 | `422` | `invalid_request` | Malformed JSON, unknown field, empty answer, unsupported topic/level or normalized input over 256 bytes |
 | `429` | `rate_limited` | Retry only after the `Retry-After` delay |

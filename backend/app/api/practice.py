@@ -27,7 +27,7 @@ from app.core.auth import VerifiedUser, current_user
 from app.core.database import transaction
 from app.core.errors import ApiError
 from app.generators.core import Exercise, catalogue
-from app.services import idempotency
+from app.services import idempotency, shares
 from app.services import owned_records as records
 from app.services.account import delete_user
 from app.services.idempotency import Scope, StoredResponse
@@ -221,6 +221,13 @@ def _public_problem(
     }
 
 
+def _public_share(share: shares.Share | None) -> dict[str, str] | None:
+    """The owner's live share link and code (#37), shown only to the owner."""
+    if share is None:
+        return None
+    return {"token": share.token, "code": share.code, "expiresAt": _timestamp(share.expires_at)}
+
+
 def _feedback(attempt: records.AttemptRecord) -> str | None:
     """`missing_constant`, a declared mistake code (#36), or None for a general hint."""
     return "missing_constant" if attempt.constant_omitted else attempt.feedback_code
@@ -277,7 +284,8 @@ def reopen(problem_id: UUID, user: User) -> dict[str, Any]:
             raise _not_found()
         summary = records.attempt_summaries(conn, user.id, [problem.id]).get(problem.id)
         revealed = records.previously_revealed(conn, user.id, problem.id)
-    return {"problem": _public_problem(problem, summary), **revealed}
+        share = shares.active_share(conn, user.id, problem.id)
+    return {"problem": _public_problem(problem, summary), "share": _public_share(share), **revealed}
 
 
 @router.get("/profile")

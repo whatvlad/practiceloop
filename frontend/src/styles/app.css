@@ -36,6 +36,10 @@ html,body,#root{min-height:100%}
 .pl-api-notice{padding-top:var(--space-5)}
 .pl-app-main{padding-top:var(--space-7);padding-bottom:var(--space-8)}
 .pl-practice-main{padding-top:var(--space-6);padding-bottom:var(--space-8)}
+/* #37: the owner's share card under a saved problem */
+.pl-share{margin-top:var(--space-5)}
+.pl-share-head{flex-wrap:wrap}
+.pl-share-link{height:44px;font-size:14px}
 .pl-page-title{margin:var(--space-3) 0 var(--space-6)}
 .pl-title-row{justify-content:space-between;flex-wrap:wrap;margin:var(--space-3) 0 var(--space-6)}
 .pl-section-head{justify-content:space-between;margin-bottom:var(--space-4)}

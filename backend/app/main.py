@@ -15,6 +15,7 @@ from starlette.responses import Response
 
 from app.api.practice import router as practice_router
 from app.api.preview import router as preview_router
+from app.api.shares import router as shares_router
 from app.core.database import close_pool
 from app.core.errors import install_error_handlers
 
@@ -40,6 +41,7 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
 app = FastAPI(title="PracticeLoop API", version="0.0.0", lifespan=lifespan)
 app.include_router(preview_router)
 app.include_router(practice_router)
+app.include_router(shares_router)
 install_error_handlers(app)
 
 

@@ -5,7 +5,11 @@ User-facing releases. Known limitations of the current release are in
 
 ## Unreleased
 
-Nothing yet.
+- **Share a problem.** Under a saved problem, *Share problem* makes a link and a
+  short code such as `K7M2-QX9P`. Anyone can open it, signed in or not, and sees
+  only the problem, its topic and difficulty: never your answers, results or
+  solutions. Shares last 90 days, and *Stop sharing* ends them at once. Shared
+  pages are kept out of search engines. (#37)
 
 ## 0.1.0 — MVP (2026-10-20)
 

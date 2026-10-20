@@ -16,6 +16,8 @@ https://practiceloop.pages.dev (noindex). Signed-in learners can:
   targeted feedback for common mistakes);
 - reveal the answer or the full step-by-step solution;
 - reopen every generated problem from history after a reload;
+- share a problem's statement by link or short code for 90 days, and stop
+  sharing it at any time; recipients need no account;
 - see profile counts, constant-omission statistics, an optional display name,
   and delete their account.
 
@@ -36,6 +38,8 @@ the order of the [Implementation Queue](https://github.com/users/whatvlad/projec
   (1 OCPU, 6 GB) with one math-worker slot; a busy worker returns a retryable
   `503`. A complex answer can hit the 2 s CPU cap and returns
   `math_check_inconclusive`. Rate limits are per process and reset on restart.
+  Shared-problem lookups have one global limit, since the client address is
+  not passed through.
   The VM runs Ubuntu 20.04 on ESM security updates and also hosts an unrelated
   app ([ORACLE_DEPLOY.md](docs/production/ORACLE_DEPLOY.md)).
 - **Backups are manual.** Supabase is on the Free plan: no scheduled backups or
