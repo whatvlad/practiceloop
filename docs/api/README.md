@@ -27,7 +27,7 @@ for retry behavior, durable history and previously authorized reveal restoration
 Generation picks a random record from the cell's verified catalogue, skipping the
 records behind the user's latest half-catalogue in that cell, so a learner sees
 no repeat within that window. Only the cells the generators support are offered:
-every topic at levels 1–5 except integration by parts, which starts at level 3
+every topic at levels 1–5 except integration by parts, which has levels 1–3
 (ADR-003). Other cells return 422. `GET /topics` lists them as
 `availableDifficulties`. Substitution levels 1–2 keep `substitution-v1`; levels
 3–5 use `substitution-v2`. Most cells also contain `definite-v1` records (#36):

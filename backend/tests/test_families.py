@@ -34,9 +34,9 @@ CASES = [
         X * sp.sin(X**2) * sp.sin(2 * X**2),
         sp.sin(X**2) ** 3 / 3,
     ),
-    ("parts-v1", "linear_exponential", 3, X * sp.exp(X), (X - 1) * sp.exp(X)),
-    ("parts-v1", "quadratic_exponential", 4, X**2 * sp.exp(X), (X**2 - 2 * X + 2) * sp.exp(X)),
-    ("parts-v1", "cyclic_sine", 5, sp.exp(X) * sp.sin(X), sp.exp(X) * (sp.sin(X) - sp.cos(X)) / 2),
+    ("parts-v1", "linear_exponential", 1, X * sp.exp(X), (X - 1) * sp.exp(X)),
+    ("parts-v1", "quadratic_exponential", 2, X**2 * sp.exp(X), (X**2 - 2 * X + 2) * sp.exp(X)),
+    ("parts-v1", "cyclic_sine", 3, sp.exp(X) * sp.sin(X), sp.exp(X) * (sp.sin(X) - sp.cos(X)) / 2),
     ("rational-v1", "linear_denominator", 1, 1 / X, sp.log(sp.Abs(X))),
     ("rational-v1", "denominator_derivative", 2, 2 * X / (X**2 + 1), sp.log(X**2 + 1)),
     (
@@ -187,8 +187,8 @@ def test_all_replay_fields_are_required(missing):
     "change",
     [
         {"topic": "unknown"},
-        {"topic": "integration-by-parts", "difficulty": 1},
-        {"topic": "integration-by-parts", "difficulty": 2},
+        {"topic": "integration-by-parts", "difficulty": 4},
+        {"topic": "integration-by-parts", "difficulty": 5},
         {"difficulty": 0},
         {"difficulty": 6},
         {"difficulty": True},
@@ -275,7 +275,7 @@ def test_existing_preview_versions_are_unchanged_and_new_cells_are_offered():
     assert {topic: levels for topic, (_, levels) in TOPICS.items()} == {
         "basic-integrals": (1, 2, 3, 4, 5),
         "substitution": (1, 2, 3, 4, 5),
-        "integration-by-parts": (3, 4, 5),
+        "integration-by-parts": (1, 2, 3),
         "rational-functions": (1, 2, 3, 4, 5),
         "trigonometric-integrals": (1, 2, 3, 4, 5),
     }

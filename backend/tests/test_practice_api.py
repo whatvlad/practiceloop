@@ -169,8 +169,8 @@ def test_no_repeat_within_the_latest_half_of_a_cell(client: TestClient, url: str
 @pytest.mark.parametrize(
     "body",
     [
-        {"topic": "integration-by-parts", "difficulty": 1},
-        {"topic": "integration-by-parts", "difficulty": 2},
+        {"topic": "integration-by-parts", "difficulty": 4},
+        {"topic": "integration-by-parts", "difficulty": 5},
         {"topic": "basic-integrals", "difficulty": 6},
         {"topic": "definite-integrals", "difficulty": 1},
         {"topic": "basic-integrals", "difficulty": "1"},
@@ -366,10 +366,10 @@ def test_attempts_are_checked_by_the_real_worker_and_persisted(
     [
         ("basic-integrals", 3, "basic-v1"),
         ("substitution", 4, "substitution-v2"),
-        ("integration-by-parts", 5, "parts-v1"),
+        ("integration-by-parts", 3, "parts-v1"),
         ("rational-functions", 5, "rational-v1"),
         ("trigonometric-integrals", 4, "trigonometric-v1"),
-        ("integration-by-parts", 4, "definite-v1"),
+        ("integration-by-parts", 2, "definite-v1"),
         ("rational-functions", 3, "definite-v1"),
     ],
 )
@@ -510,7 +510,7 @@ def test_topics_lists_only_generated_cells(client: TestClient) -> None:
     assert [(item["slug"], item["availableDifficulties"]) for item in items] == [
         ("basic-integrals", [1, 2, 3, 4, 5]),
         ("substitution", [1, 2, 3, 4, 5]),
-        ("integration-by-parts", [3, 4, 5]),
+        ("integration-by-parts", [1, 2, 3]),
         ("rational-functions", [1, 2, 3, 4, 5]),
         ("trigonometric-integrals", [1, 2, 3, 4, 5]),
     ]

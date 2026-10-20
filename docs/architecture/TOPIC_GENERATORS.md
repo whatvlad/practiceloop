@@ -6,14 +6,14 @@ libraries implement the remaining rows of
 [ADR-003](../decisions/0003-mathematical-input-and-equivalence.md).
 
 There are 18 templates and 108 distinct parameter records. Integration by parts
-starts at level 3; its levels 1–2 are deliberately unavailable. These templates
+has three levels, 1–3 (ADR-003 amendment of 2026-10-20); it has no level 4 or 5. These templates
 are indefinite; `definite-v1` (below) adds bounds to some of them. Coefficients are the six nonzero integers from -3 to 3. Difficulty
 comes from the formula and transformations, never from increasing this range.
 
 | Version / topic | Level 1 | Level 2 | Level 3 | Level 4 | Level 5 |
 |---|---|---|---|---|---|
 | `substitution-v2` | Visible derivative pair | Affine inner function and factor | Polynomial inner function | Factor a square before substitution | Double-angle identity and nested substitutions |
-| `parts-v1` | Unavailable | Unavailable | Linear polynomial times exponential | Repeated parts with a quadratic | Cyclic exponential times sine |
+| `parts-v1` | Linear polynomial times exponential | Repeated parts with a quadratic | Cyclic exponential times sine | Not offered | Not offered |
 | `rational-v1` | Constant over x | Denominator derivative | Distinct linear factors | Repeated linear factor | Polynomial division, then partial fractions |
 | `trigonometric-v1` | Sine | Double argument | Odd sine power | Even sine power | Double-angle identity, then substitution |
 
@@ -119,7 +119,7 @@ into `ln(64/27)`.
 |---|---|---|---|---|---|
 | Basic integrals | `x` on [0, 2]; `e^x` on [0, 1] | `x + e^x` on [0, 1] | `1/x` on [1, e]; `1/√x` on [1, 4] | `(x + 1)^2` on [0, 1] | — |
 | Substitution | — | — | `3x^2 e^(x^3)` on [0, 1] | factor a square, [0, 1] | — |
-| Integration by parts | — | — | `x e^x` on [0, 1] | `x^2 e^x` on [0, 1] | `e^x sin x` on [0, π] |
+| Integration by parts | `x e^x` on [0, 1] | `x^2 e^x` on [0, 1] | `e^x sin x` on [0, π] | — | — |
 | Rational functions | `1/x` on [1, 2] | `2x/(x^2 + 1)` on [0, 1] | distinct factors on [1, 2] | repeated factor on [1, 2] | division, then fractions, on [1, 2] |
 | Trigonometric integrals | `sin x` on [0, π] | `sin 2x` on [0, π/2] | `sin^3 x` on [0, π] | `sin^2 x` on [0, π] | identity, then substitution, on [0, π/2] |
 
