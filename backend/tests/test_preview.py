@@ -45,9 +45,14 @@ def test_entire_catalogue_has_valid_replay_domain_clean_values_and_answers(topic
             max((abs(number.p) for number in exercise.primitive.atoms(sp.Rational)), default=0) <= 4
         )
         assert replay(json.loads(json.dumps(exercise.record))) == exercise
-        source = str(exercise.primitive).replace("**", "^") + " + C"
+        if exercise.value is not None:
+            # Definite records (#36) answer with the exact value and no constant.
+            source = str(exercise.value).replace("**", "^").replace("E", "e")
+            assert not exercise.steps[-1]["latex"].endswith(" + C")
+        else:
+            source = str(exercise.primitive).replace("**", "^") + " + C"
+            assert exercise.steps[-1]["latex"].endswith(" + C")
         assert check_tree(parse_math_input(source), replay_problem(exercise.record)) == "correct"
-        assert exercise.steps[-1]["latex"].endswith(" + C")
 
 
 def test_one_fixed_demo_requires_login_for_more_and_never_saves_outcomes(client):

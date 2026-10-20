@@ -15,6 +15,9 @@ from app.generators.basic import (
     X,
     replay_basic,
 )
+from app.generators.definite import TEMPLATES as DEFINITE_TEMPLATES
+from app.generators.definite import difficulty as definite_difficulty
+from app.generators.definite import replay_definite, value_latex
 from app.generators.families import _families, replay_family
 
 COEFFICIENTS = (-3, -2, -1, 1, 2, 3)
@@ -30,6 +33,8 @@ class Exercise:
     primitive: Any
     steps: tuple[dict[str, str], ...]
     statement: str
+    # Exact value of a definite integral; None for indefinite exercises.
+    value: Any = None
 
     @property
     def template(self) -> BasicTemplate:
@@ -42,6 +47,8 @@ class Exercise:
 
     @property
     def answer(self) -> str:
+        if self.value is not None:
+            return value_latex(self.value)
         return str(sp.latex(self.primitive)) + " + C"
 
 
@@ -57,6 +64,18 @@ def replay(record: dict[str, object]) -> Exercise:
             basic.antiderivative,
             tuple({"say": step.say, "latex": step.latex} for step in basic.solution_steps),
             basic.public().problem_latex,
+        )
+    if record.get("generator_version") == "definite-v1":
+        definite = replay_definite(record)
+        return Exercise(
+            record,
+            definite.topic,
+            definite.difficulty,
+            definite.integrand,
+            definite.antiderivative,
+            tuple({"say": step.say, "latex": step.latex} for step in definite.solution_steps),
+            definite.statement,
+            definite.value,
         )
     if record.get("generator_version") in FAMILY_VERSIONS:
         family = replay_family(record)
@@ -146,6 +165,16 @@ def _family_records(topic: str, difficulty: int) -> list[dict[str, object]]:
     ]
 
 
+def _definite_records(topic: str, difficulty: int) -> list[dict[str, object]]:
+    # Indefinite records come first, so the guest demo's first exercise is unchanged.
+    return [
+        dict(generator_version="definite-v1", template=name, coefficient=a)
+        for name, template in DEFINITE_TEMPLATES.items()
+        if template.topic == topic and definite_difficulty(template) == difficulty
+        for a in COEFFICIENTS
+    ]
+
+
 @lru_cache(maxsize=32)
 def catalogue(topic: str, difficulty: int) -> tuple[Exercise, ...]:
     """Every verified record of one topic and level; empty cells are an error."""
@@ -174,6 +203,8 @@ def catalogue(topic: str, difficulty: int) -> tuple[Exercise, ...]:
             )
     else:
         records = _family_records(topic, difficulty)
+    if records:
+        records += _definite_records(topic, difficulty)
     if not records:
         raise ValueError("Unsupported practice cell")
     return tuple(replay(record) for record in records)

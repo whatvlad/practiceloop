@@ -27,5 +27,8 @@
   "repeat_parts": "Apply integration by parts to the remaining integral.",
   "solve_cycle": "Add the remaining integral to both sides, then divide by two.",
   "partial_fractions": "Write the rational function as partial fractions.",
-  "polynomial_division": "Divide the numerator by the denominator before splitting the remainder."
+  "polynomial_division": "Divide the numerator by the denominator before splitting the remainder.",
+  "calculate_definite": "Calculate the definite integral.",
+  "evaluate_bounds": "Evaluate the antiderivative at the upper bound and subtract its value at the lower bound.",
+  "definite_value": "Simplify the result. A definite integral has no integration constant."
 }

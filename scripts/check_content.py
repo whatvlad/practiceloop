@@ -22,6 +22,9 @@ INSTRUCTIONS = {
     "partial_fractions",
     "polynomial_division",
     "calculate",
+    "calculate_definite",
+    "evaluate_bounds",
+    "definite_value",
     "linearity",
     "rewrite_power",
     "expand",
@@ -50,6 +53,8 @@ ACTIONS = {
     "replace",
     "check",
     "choose",
+    "evaluate",
+    "simplify",
 }
 
 

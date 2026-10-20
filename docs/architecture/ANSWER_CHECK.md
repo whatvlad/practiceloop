@@ -75,9 +75,20 @@ The #77–#80 records are replayed in the worker with `verify=False`: the
 catalogue already proved each one when it was generated, and repeating that proof
 cost most of the CPU budget for rational level 5 on CI runners. Their slowest
 check, rational level 5, then uses about 0.5 s of child CPU locally. `replay_problem` accepts `basic-v1`,
-`substitution-v1` and the four #77–#80 versions. Definite templates still raise
-`ValueError` until #36 part 2 adds them. A new generator version adds its replay
-to `answer_check.replay_problem`.
+`substitution-v1`, the four #77–#80 versions and `definite-v1`. A new generator
+version adds its replay to `answer_check.replay_problem`.
+
+## Definite integrals
+
+A `definite-v1` answer (#36) must be one real number: an answer containing `x`
+or any constant symbol is `incorrect`, so `e - 1 + C` is not accepted. Every
+subexpression is evaluated first, and one without a value (such as
+`ln(1 - 1)`) makes the answer `invalid`. Then `simplify(answer - value) == 0`
+proves `correct`, so `2ln(2) - ln(3)`, `ln|4/3|` and `-ln(3/4)` all pass. A
+difference above `1e-12` at 50 digits, or a non-real value such as `ln(-4/3)`,
+is `incorrect`; a decimal such as `1.5708` for `π/2` is therefore incorrect.
+Anything else is `inconclusive`. A definite check uses about 0.7–1.0 s of child
+CPU locally, about the same as the slowest indefinite checks.
 
 Verification, from `backend/`: `python -m pytest tests/test_answer_check.py`
 (worker tests skip off Linux).

@@ -16,3 +16,8 @@ export function formatWhen(iso: string, now: Date = new Date()): string {
   const day = `${date.getDate()} ${MONTHS[date.getMonth()]}`;
   return date.getFullYear() === now.getFullYear() ? day : `${day} ${date.getFullYear()}`;
 }
+
+/** Definite statements start with bounds, `\int_{a}^{b}`; their answer is a number with no `+ C`. */
+export function isDefinite(problemLatex: string): boolean {
+  return problemLatex.startsWith('\\int_');
+}

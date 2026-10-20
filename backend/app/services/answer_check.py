@@ -14,10 +14,11 @@ import sympy as sp
 
 from app.generators.basic import InternalProblem, X, replay_basic
 from app.generators.core import FAMILY_VERSIONS, Exercise, replay
+from app.generators.definite import DefiniteProblem, replay_definite
 from app.generators.families import FamilyProblem, replay_family
 from app.services.math_parser import MathNode
 
-type Problem = InternalProblem | Exercise | FamilyProblem
+type Problem = InternalProblem | Exercise | FamilyProblem | DefiniteProblem
 
 type Outcome = Literal["correct", "incorrect", "missing_constant", "invalid", "inconclusive"]
 type Verdict = Literal["yes", "no", "unknown"]
@@ -38,6 +39,8 @@ def replay_problem(record: Mapping[str, object]) -> Problem:
         return replay(dict(record))
     if record.get("generator_version") in FAMILY_VERSIONS:
         return replay_family(dict(record), verify=False)
+    if record.get("generator_version") == "definite-v1":
+        return replay_definite(dict(record), verify=False)
     raise ValueError("Unsupported generator version")
 
 
@@ -161,12 +164,26 @@ def _same_number_everywhere(offset: Any, problem: Problem) -> Verdict:
     return "no"
 
 
+def _classify_definite(answer: Any, problem: DefiniteProblem) -> Outcome:
+    """ADR-003: a definite answer is one real number, with no `x` and no constant."""
+    if answer.free_symbols:
+        return "incorrect"
+    difference = answer - problem.value
+    if sp.simplify(difference) == 0:
+        return "correct"
+    value = difference.evalf(_PRECISION)
+    if value.has(sp.nan, sp.zoo, sp.oo, -sp.oo) or not value.is_number:
+        return "incorrect"
+    # A certified difference, or a non-real value such as ln(-2), is incorrect.
+    return "incorrect" if abs(value) > _TOLERANCE else "inconclusive"
+
+
 def classify(answer: Any, problem: Problem) -> Outcome:
     """`answer` is the evaluated SymPy form of a parsed learner expression."""
-    if problem.template.is_definite:
-        raise ValueError("Definite templates are not supported yet")
     if answer.has(sp.nan, sp.zoo, sp.oo, -sp.oo):
         return "invalid"
+    if isinstance(problem, DefiniteProblem):
+        return _classify_definite(answer, problem)
     constants = answer.free_symbols - {X}
     if len(constants) > 1:
         return "invalid"
@@ -202,6 +219,15 @@ def check_tree(tree: MathNode, problem: Problem) -> Outcome:
 
     from app.services.math_worker import _build_sympy
 
+    if isinstance(problem, DefiniteProblem):
+        # Every part must have a value: `0/(1 - 1) + 2` is invalid, not 2.
+        stack = [tree]
+        while stack:
+            item = stack.pop()
+            if _build_sympy(item, evaluate=True).has(sp.zoo, sp.oo, -sp.oo, sp.nan):
+                return "invalid"
+            stack.extend(item.children)
+        return classify(_build_sympy(tree, evaluate=True), problem)
     domain = _domain(problem)
     all_reals = domain == sp.S.Reals
     stack = [tree]

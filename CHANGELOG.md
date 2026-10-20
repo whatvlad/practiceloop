@@ -4,6 +4,10 @@ Meaningful user-facing releases will be recorded here. No MVP release exists yet
 
 ## Unreleased
 
+- Definite integrals (#36, part 2): most practice cells now also offer definite
+  integrals with clean bounds and exact values such as `e - 2` or `3 ln(4/3)`.
+  Their answer is one number with no `+ C`; bounds never touch a singularity.
+  Constant-omission statistics leave definite answers out.
 - Signed-in practice offers every approved topic and level (#36, part 1): all
   five topics at levels 1–5, with integration by parts from level 3. The answer
   checker grades the new substitution, parts, rational and trigonometric problems

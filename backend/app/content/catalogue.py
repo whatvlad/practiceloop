@@ -6,6 +6,9 @@ from typing import Literal
 
 type TextKey = Literal[
     "calculate",
+    "calculate_definite",
+    "evaluate_bounds",
+    "definite_value",
     "factor",
     "identity",
     "substitution_integral",

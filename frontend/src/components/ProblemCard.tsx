@@ -1,4 +1,5 @@
 import type { CheckResult, Difficulty, SolutionStep, TopicSlug } from '../data/types';
+import { isDefinite } from '../format';
 import { topicName } from '../data/topics';
 import { AnswerInput } from './AnswerInput';
 import { Button } from './Button';
@@ -49,6 +50,7 @@ export function ProblemCard({
   solution,
 }: ProblemCardProps) {
   const solved = result === 'correct';
+  const definite = isDefinite(problemLatex);
   return (
     <section className="pl-problem" aria-label="Problem" aria-busy={busy}>
       <div className="pl-problem-head">
@@ -61,7 +63,7 @@ export function ProblemCard({
         {headLabel && <span className="pl-label">{headLabel}</span>}
       </div>
       <div className="pl-stack pl-gap-3">
-        <p className="pl-lead">{text.calculate}</p>
+        <p className="pl-lead">{definite ? text.calculate_definite : text.calculate}</p>
         <div className="pl-expr">
           <Tex latex={problemLatex} display />
         </div>
@@ -71,7 +73,7 @@ export function ProblemCard({
         value={answer}
         onChange={onAnswerChange}
         state={result}
-        placeholder="e.g. x^2/2 + C"
+        placeholder={definite ? 'e.g. 3/2 or e - 1' : 'e.g. x^2/2 + C'}
         describedBy={result ? 'answer-result' : undefined}
         onEnter={solved || busy ? undefined : onCheck}
         assist
