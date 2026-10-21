@@ -39,7 +39,7 @@ export type CheckResult = 'correct' | 'incorrect' | 'invalid' | 'missing_constan
 /** A declared mistake the checker matched unambiguously (#36); null means a general hint. */
 export const FEEDBACK_CODES = [
   'power_rule', 'trig_sign', 'chain_factor', 'log_absolute', 'split_product', 'parts_sign',
-  'cycle_factor', 'partial_fraction_sign', 'definite_not_evaluated', 'bounds_reversed', 'definite_constant',
+  'cycle_factor', 'partial_fraction_sign', 'definite_not_evaluated', 'bounds_reversed', 'definite_constant', 'missing_jacobian',
 ] as const;
 export type FeedbackCode = (typeof FEEDBACK_CODES)[number];
 

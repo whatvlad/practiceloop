@@ -14,5 +14,6 @@ type MistakeCode = Literal[
     "definite_not_evaluated",
     "bounds_reversed",
     "definite_constant",
+    "missing_jacobian",
 ]
 MISTAKE_CODES: frozenset[str] = frozenset(get_args(MistakeCode.__value__))

@@ -21,3 +21,14 @@ export function formatWhen(iso: string, now: Date = new Date()): string {
 export function isDefinite(problemLatex: string): boolean {
   return problemLatex.startsWith('\\int_');
 }
+
+export type StatementKind = 'indefinite' | 'definite' | 'double';
+
+/** Double integrals (#99) show `\iint_D` over a region or two iterated `\int_{a}^{b}`. */
+export function statementKind(problemLatex: string): StatementKind {
+  if (problemLatex.startsWith('\\iint') || /^\\int_\{.*?\}\^\{.*?\}\s*\\int_/.test(problemLatex)) return 'double';
+  return isDefinite(problemLatex) ? 'definite' : 'indefinite';
+}
+
+/** The instruction above a statement, from the shared catalogue. */
+export const LEAD_KEYS = { indefinite: 'calculate', definite: 'calculate_definite', double: 'calculate_double' } as const;

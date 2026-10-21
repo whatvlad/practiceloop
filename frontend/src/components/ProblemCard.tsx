@@ -1,5 +1,5 @@
 import type { CheckResult, Difficulty, FeedbackCode, SolutionStep, TopicSlug } from '../data/types';
-import { isDefinite } from '../format';
+import { LEAD_KEYS, statementKind, type StatementKind } from '../format';
 import { topicName } from '../data/topics';
 import { AnswerInput } from './AnswerInput';
 import { Button } from './Button';
@@ -36,9 +36,10 @@ interface ProblemCardProps {
 }
 
 /** Targeted feedback only for a matched mistake (#36); otherwise a general hint, never a guess. */
-export function incorrectMessage(feedback: FeedbackCode | null, definite: boolean): string {
+export function incorrectMessage(feedback: FeedbackCode | null, kind: StatementKind): string {
   if (feedback) return text[`feedback_${feedback}`];
-  return definite ? text.general_hint_definite : text.general_hint;
+  if (kind === 'double') return text.general_hint_multiple;
+  return kind === 'definite' ? text.general_hint_definite : text.general_hint;
 }
 
 /** The one lifted surface: a problem, its answer field and every action on it. */
@@ -62,8 +63,8 @@ export function ProblemCard({
   solution,
 }: ProblemCardProps) {
   const solved = result === 'correct';
-  const definite = isDefinite(problemLatex);
-  const message = result === 'incorrect' ? incorrectMessage(feedback, definite) : undefined;
+  const kind = statementKind(problemLatex);
+  const message = result === 'incorrect' ? incorrectMessage(feedback, kind) : undefined;
   return (
     <section className="pl-problem" aria-label="Problem" aria-busy={busy}>
       <div className="pl-problem-head">
@@ -76,7 +77,7 @@ export function ProblemCard({
         {headLabel && <span className="pl-label">{headLabel}</span>}
       </div>
       <div className="pl-stack pl-gap-3">
-        <p className="pl-lead">{definite ? text.calculate_definite : text.calculate}</p>
+        <p className="pl-lead">{text[LEAD_KEYS[kind]]}</p>
         <div className="pl-expr">
           <Tex latex={problemLatex} display />
         </div>
@@ -86,7 +87,7 @@ export function ProblemCard({
         value={answer}
         onChange={onAnswerChange}
         state={result}
-        placeholder={definite ? 'e.g. 3/2 or e - 1' : 'e.g. x^2/2 + C'}
+        placeholder={kind === 'indefinite' ? 'e.g. x^2/2 + C' : kind === 'double' ? 'e.g. 8pi or (e - 1)/2' : 'e.g. 3/2 or e - 1'}
         describedBy={result ? 'answer-result' : undefined}
         onEnter={solved || busy ? undefined : onCheck}
         assist

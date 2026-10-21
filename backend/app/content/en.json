@@ -43,5 +43,17 @@
   "feedback_bounds_reversed": "Subtract the value at the lower bound from the value at the upper bound.",
   "feedback_definite_constant": "Remove the constant. A definite integral has no integration constant.",
   "general_hint": "Differentiate your answer and compare it with the integrand, or reveal the solution.",
-  "general_hint_definite": "Check your antiderivative, then evaluate it at both bounds, or reveal the solution."
+  "general_hint_definite": "Check your antiderivative, then evaluate it at both bounds, or reveal the solution.",
+  "calculate_double": "Calculate the double integral.",
+  "describe_region": "Describe the region with bounds for each variable.",
+  "describe_polar": "Describe the region in polar coordinates.",
+  "write_iterated": "Write the double integral as an iterated integral.",
+  "reverse_order": "Reverse the order of integration. Use the same region with the other variable outside.",
+  "polar_change": "Change to polar coordinates: x = r cos θ, y = r sin θ and dA = r dr dθ.",
+  "integrate_inner": "Integrate the inner integral. Keep the outer variable constant.",
+  "integrate_outer": "Integrate the result between the outer bounds.",
+  "check_other": "Check the value with the other set-up of the same region.",
+  "multiple_value": "Simplify the result. This is the exact value of the integral.",
+  "feedback_missing_jacobian": "Include the factor r. In polar coordinates dA = r dr dθ.",
+  "general_hint_multiple": "Check the bounds of each integral, then integrate the inner integral first, or reveal the solution."
 }

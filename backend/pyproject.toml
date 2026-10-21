@@ -49,5 +49,5 @@ strict = true
 files = ["app"]
 
 [[tool.mypy.overrides]]
-module = ["sympy", "sympy.*"]
+module = ["sympy", "sympy.*", "mpmath"]
 ignore_missing_imports = true

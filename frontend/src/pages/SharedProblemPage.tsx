@@ -6,7 +6,7 @@ import { Tex } from '../components/Tex';
 import { lookupShare, type ShareLookup } from '../data/shares';
 import { topicName } from '../data/topics';
 import type { ShareUnavailable } from '../data/types';
-import { isDefinite } from '../format';
+import { LEAD_KEYS, statementKind } from '../format';
 import { navigate } from '../router';
 import { useLoad } from '../useLoad';
 import text from '../../../backend/app/content/en.json';
@@ -61,7 +61,7 @@ function Result({ found }: { found: ShareLookup }) {
         <span className="pl-label">Shared problem</span>
       </div>
       <div className="pl-stack pl-gap-3">
-        <p className="pl-lead">{isDefinite(problemLatex) ? text.calculate_definite : text.calculate}</p>
+        <p className="pl-lead">{text[LEAD_KEYS[statementKind(problemLatex)]]}</p>
         <div className="pl-expr">
           <Tex latex={problemLatex} display />
         </div>
