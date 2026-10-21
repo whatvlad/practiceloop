@@ -61,6 +61,11 @@ not-yet-implemented cells must not be advertised by `GET /api/topics`; an older
 task requiring all 25 combinations must follow this structural rule rather than
 inventing misleading low-difficulty exercises.
 
+Amendment (2026-10-21, ADR-005): the Derivatives area adds `derivatives` and
+`partial-derivatives`, and the Integrals area adds `double-integrals` and
+`triple-integrals`, each with its own matrix in ADR-005. The level meanings above
+apply to them unchanged.
+
 ## Accepted input language
 
 The parent process applies Unicode NFKC normalization, then maps `π` to `pi`,
@@ -87,6 +92,10 @@ complex unit, comparison, assignment, comma, attribute access, subscript,
 string, collection, keyword, scientific notation, or implicit function call.
 The API never passes learner text to `eval`, `exec`, `sympify`, `parse_expr`,
 `parse_latex` or `lambdify`.
+
+Amendment (2026-10-21, ADR-005): a derivative template may declare the extra
+variables `y`, `z`, `r` and `theta` (also typed `θ`) with their real domains.
+Only declared variables are accepted; ADR-005 and Issue #96 define the rule.
 
 ## Fixed parser and worker limits
 
