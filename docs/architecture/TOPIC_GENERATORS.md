@@ -131,3 +131,33 @@ evaluation `[F(x)]_a^b = F(b) - F(a)` and the value. The website shows
 "Calculate the definite integral." for statements that start with bounds.
 
 Focused check: `.venv/bin/python -m pytest backend/tests/test_definite.py`.
+
+## Derivatives (`derivatives-v1`, #97)
+
+`backend/app/generators/derivatives.py` implements the derivatives matrix of
+[ADR-005](../decisions/0005-multiple-integrals-and-derivatives.md). A record is
+`{generator_version, template, coefficient}` with a nonzero coefficient from
+-3 to 3, validated before any SymPy construction. `core.catalogue("derivatives",
+level)` offers every template of the level at every coefficient; the topic is
+advertised by the practice API only once the topic-areas Issue (#98) adds it.
+
+| Level | Templates (coefficient 1) |
+|---|---|
+| 1 | `x^4`, `e^x`, `sin x`, `cos x`, `ln x` on x > 0 |
+| 2 | `2√x − 3/x` on x > 0 (rewrite as powers), `sin 3x`, `e^(2x)` (linear inner) |
+| 3 | chain `e^(x²)`, `(x² + 1)³`; product `x sin x`; quotient `x/(x + 1)` |
+| 4 | log laws `ln(x²(x + 1))`, `ln(x²/(x + 1))` on x > 0; `√(x² + 1)` as a power, then chain; `(x + 1)²/x` split, then power rule |
+| 5 | product + chain `x² e^(3x)`, `x cos 2x`; quotient + chain `sin(x²)/x` |
+
+Each step is a SymPy expression shown as `f(x) = …` (a rewrite) or `f'(x) = …`
+(a rule applied, with unevaluated derivatives in prime notation). The verifier
+evaluates every step and proves it equals the function or the derivative on each
+component of the declared domain, and proves `d/dx f = f'`.
+
+The checker compares the answer with `f'(x)` itself, not up to a constant:
+`f'(x) + C` is `incorrect` with feedback `derivative_constant`, and `f'(x) + 1`
+is `incorrect`. Declared mistakes (`derivative_power`, `derivative_trig_sign`,
+`derivative_chain`, `derivative_factors`, `quotient_sign`) are matched exactly
+and named only when one code matches.
+
+Focused check: `.venv/bin/python -m pytest backend/tests/test_derivatives.py`.

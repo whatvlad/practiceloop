@@ -15,11 +15,16 @@ import sympy as sp
 from app.generators.basic import InternalProblem, X, replay_basic
 from app.generators.core import FAMILY_VERSIONS, Exercise, replay
 from app.generators.definite import DefiniteProblem, replay_definite
+from app.generators.derivatives import VERSION as DERIVATIVES_VERSION
+from app.generators.derivatives import DerivativeProblem, replay_derivative
 from app.generators.families import FamilyProblem, replay_family
 from app.generators.mistakes import declared
 from app.services.math_parser import MathNode
 
-type Problem = InternalProblem | Exercise | FamilyProblem | DefiniteProblem
+type Problem = InternalProblem | Exercise | FamilyProblem | DefiniteProblem | DerivativeProblem
+
+# The problems whose answer is an antiderivative, checked up to a constant.
+type Integral = InternalProblem | Exercise | FamilyProblem | DefiniteProblem
 
 type Outcome = Literal["correct", "incorrect", "missing_constant", "invalid", "inconclusive"]
 type Verdict = Literal["yes", "no", "unknown"]
@@ -42,6 +47,8 @@ def replay_problem(record: Mapping[str, object]) -> Problem:
         return replay_family(dict(record), verify=False)
     if record.get("generator_version") == "definite-v1":
         return replay_definite(dict(record), verify=False)
+    if record.get("generator_version") == DERIVATIVES_VERSION:
+        return replay_derivative(dict(record), verify=False)
     raise ValueError("Unsupported generator version")
 
 
@@ -105,7 +112,7 @@ def _not_real(expression: Any, variable: Any, samples: tuple[float, ...]) -> boo
     return False
 
 
-def _is_primitive(candidate: Any, problem: Problem) -> Verdict:
+def _is_primitive(candidate: Any, problem: Integral) -> Verdict:
     """Does `candidate` differentiate to the integrand and stay real on every component?"""
     undecided = False
     defined: bool | None = None  # computed once, only if some component needs it
@@ -179,12 +186,29 @@ def _classify_definite(answer: Any, problem: DefiniteProblem) -> Outcome:
     return "incorrect" if abs(value) > _TOLERANCE else "inconclusive"
 
 
+def _classify_derivative(answer: Any, problem: DerivativeProblem) -> Outcome:
+    """ADR-005: f'(x) itself, equal on every component; an added constant is wrong."""
+    if answer.free_symbols - {X}:
+        return "incorrect"
+    undecided = False
+    for replacement, variable, samples in _components(problem):
+        difference = answer.subs(X, replacement) - problem.derivative.subs(X, replacement)
+        if sp.simplify(difference) == 0:
+            continue
+        if _differs(difference, variable, samples):
+            return "incorrect"
+        undecided = True
+    return "inconclusive" if undecided else "correct"
+
+
 def classify(answer: Any, problem: Problem) -> Outcome:
     """`answer` is the evaluated SymPy form of a parsed learner expression."""
     if answer.has(sp.nan, sp.zoo, sp.oo, -sp.oo):
         return "invalid"
     if isinstance(problem, DefiniteProblem):
         return _classify_definite(answer, problem)
+    if isinstance(problem, DerivativeProblem):
+        return _classify_derivative(answer, problem)
     constants = answer.free_symbols - {X}
     if len(constants) > 1:
         return "invalid"
@@ -301,6 +325,18 @@ def _definite_mistakes(answer: Any, problem: DefiniteProblem) -> set[str]:
     return codes
 
 
+def _derivative_mistakes(answer: Any, problem: DerivativeProblem) -> set[str]:
+    """A derivative is compared exactly: `f' + 1` is not `f'`, unlike antiderivatives."""
+    constants = answer.free_symbols - {X}
+    if len(constants) > 1:
+        return set()
+    if constants:
+        plain = answer.subs(dict.fromkeys(constants, 0))
+        same = sp.simplify(plain - problem.derivative) == 0
+        return {"derivative_constant"} if same else set()
+    return {code for code, wrong in problem.mistakes() if sp.simplify(answer - wrong) == 0}
+
+
 def diagnose(answer: Any, problem: Problem, record: Mapping[str, object]) -> str | None:
     """The one declared mistake an incorrect answer matches, or None for a general hint.
 
@@ -309,6 +345,8 @@ def diagnose(answer: Any, problem: Problem, record: Mapping[str, object]) -> str
     """
     if isinstance(problem, DefiniteProblem):
         codes = _definite_mistakes(answer, problem)
+    elif isinstance(problem, DerivativeProblem):
+        codes = _derivative_mistakes(answer, problem)
     else:
         constants = answer.free_symbols - {X}
         if len(constants) > 1:

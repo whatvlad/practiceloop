@@ -40,6 +40,8 @@ export type CheckResult = 'correct' | 'incorrect' | 'invalid' | 'missing_constan
 export const FEEDBACK_CODES = [
   'power_rule', 'trig_sign', 'chain_factor', 'log_absolute', 'split_product', 'parts_sign',
   'cycle_factor', 'partial_fraction_sign', 'definite_not_evaluated', 'bounds_reversed', 'definite_constant',
+  'derivative_power', 'derivative_trig_sign', 'derivative_chain', 'derivative_factors', 'quotient_sign',
+  'derivative_constant',
 ] as const;
 export type FeedbackCode = (typeof FEEDBACK_CODES)[number];
 
