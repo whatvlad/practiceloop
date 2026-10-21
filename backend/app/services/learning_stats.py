@@ -1,13 +1,15 @@
 """Private attempt-based constant-omission metrics.
 
-Invalid expressions are excluded, and so are definite integrals (#36), whose
-answers never take an integration constant.
+Invalid expressions are excluded, and so are definite integrals (#36) and the
+other versions whose answers never take an integration constant (ADR-005).
 """
 
 from typing import Any
 from uuid import UUID
 
 from psycopg import Connection
+
+CONSTANT_FREE_VERSIONS = ["definite-v1", "derivatives-v1"]
 
 
 def metric(checked: int, omitted: int) -> dict[str, Any]:
@@ -26,9 +28,9 @@ def statistics(conn: Connection[Any], user_id: UUID) -> dict[str, Any]:
         " join public.topics t on t.id = p.topic_id"
         " join private.problem_solutions s on s.problem_id = p.id"
         " where a.user_id = %s and a.is_correct is not null"
-        " and s.generator_version <> 'definite-v1'"
+        " and s.generator_version <> all(%s)"
         " group by t.slug, p.difficulty order by t.slug, p.difficulty",
-        (user_id,),
+        (user_id, CONSTANT_FREE_VERSIONS),
     ).fetchall()
     weekly = conn.execute(
         "with weeks as (select generate_series("
@@ -38,12 +40,12 @@ def statistics(conn: Connection[Any], user_id: UUID) -> dict[str, Any]:
         " count(*) as checked, count(*) filter (where a.constant_omitted) as omitted"
         " from public.attempts a join private.problem_solutions s on s.problem_id = a.problem_id"
         " where a.user_id = %s and a.is_correct is not null"
-        " and s.generator_version <> 'definite-v1'"
+        " and s.generator_version <> all(%s)"
         " and a.created_at >= date_trunc('week', now() at time zone 'UTC')"
         " at time zone 'UTC' - interval '7 weeks' group by 1)"
         " select w.week::date::text, coalesce(c.checked, 0), coalesce(c.omitted, 0)"
         " from weeks w left join counts c using (week) order by w.week",
-        (user_id,),
+        (user_id, CONSTANT_FREE_VERSIONS),
     ).fetchall()
     return {
         **metric(sum(r[2] for r in rows), sum(r[3] for r in rows)),

@@ -1,5 +1,5 @@
-import { TOPICS } from '../data/topics';
-import type { PracticeTopic } from '../data/types';
+import { AREAS } from '../data/topics';
+import type { AreaSlug, PracticeTopic, Topic } from '../data/types';
 import { CheckIcon } from './icons';
 
 interface ChipOption<T extends string> {
@@ -42,10 +42,9 @@ export function Chips<T extends string>({ options, selected, onSelect, label, la
   );
 }
 
-const TOPIC_OPTIONS: ChipOption<PracticeTopic>[] = TOPICS.map((t) => ({ value: t.slug, label: t.name }));
-const WITH_MIXED: ChipOption<PracticeTopic>[] = [...TOPIC_OPTIONS, { value: 'mixed', label: 'Mixed practice' }];
-
 interface TopicChipsProps {
+  /** The topics of the chosen area, in catalogue order. */
+  topics: readonly Topic[];
   selected: PracticeTopic;
   onSelect: (topic: PracticeTopic) => void;
   labelledBy?: string;
@@ -54,6 +53,22 @@ interface TopicChipsProps {
   mixed?: boolean;
 }
 
-export function TopicChips({ selected, onSelect, labelledBy, available, mixed = false }: TopicChipsProps) {
-  return <Chips options={mixed ? WITH_MIXED : TOPIC_OPTIONS} selected={selected} onSelect={onSelect} label="Topic" labelledBy={labelledBy} available={available} />;
+export function TopicChips({ topics, selected, onSelect, labelledBy, available, mixed = false }: TopicChipsProps) {
+  const options: ChipOption<PracticeTopic>[] = topics.map((t) => ({ value: t.slug, label: t.name }));
+  if (mixed) options.push({ value: 'mixed', label: 'Mixed practice' });
+  return <Chips options={options} selected={selected} onSelect={onSelect} label="Topic" labelledBy={labelledBy} available={available} />;
+}
+
+interface AreaChipsProps {
+  /** The areas the catalogue offers (ADR-005). */
+  areas: readonly AreaSlug[];
+  selected: AreaSlug;
+  onSelect: (area: AreaSlug) => void;
+  labelledBy?: string;
+  disabled?: boolean;
+}
+
+export function AreaChips({ areas, selected, onSelect, labelledBy, disabled = false }: AreaChipsProps) {
+  const options = AREAS.filter((a) => areas.includes(a.slug)).map((a) => ({ value: a.slug, label: a.name }));
+  return <Chips options={options} selected={selected} onSelect={onSelect} label="Area" labelledBy={labelledBy} available={disabled ? [] : undefined} />;
 }

@@ -1,8 +1,10 @@
+import text from '../../../backend/app/content/en.json';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import { ApiStatusNotice } from './ApiStatusNotice';
 import { DifficultyScale } from './DifficultyScale';
 import { ProblemCard } from './ProblemCard';
+import { TOPICS } from '../data/topics';
 import { TopicChips } from './TopicChips';
 
 const noop = () => {};
@@ -48,6 +50,14 @@ describe('ProblemCard', () => {
     expect(html).toContain('<li class="final">');
   });
 
+  it('asks for a derivative with its own tag, hint and placeholder (#98)', () => {
+    const html = card({ topic: 'derivatives', problemLatex: "\\frac{d}{dx}\\left(x^{2}\\right)", result: 'incorrect' });
+    expect(html).toContain('Differentiation — Derivatives');
+    expect(html).toContain(text.calculate_derivative.replace("'", '&#x27;'));
+    expect(html).toContain(text.general_hint_derivative);
+    expect(html).toContain('placeholder="e.g. 2x cos(x^2)"');
+  });
+
   it('asks for a definite integral without a constant when the statement has bounds', () => {
     expect(card()).toContain('Calculate the indefinite integral.');
     const html = card({ problemLatex: '\\int_{0}^{1} \\left(x e^{x}\\right)\\,dx' });
@@ -62,7 +72,7 @@ describe('ProblemCard', () => {
 
 describe('selection controls', () => {
   it('marks exactly one topic and one level as pressed', () => {
-    const chips = renderToStaticMarkup(<TopicChips selected="substitution" onSelect={noop} />);
+    const chips = renderToStaticMarkup(<TopicChips topics={TOPICS.filter((t) => t.area === "integrals").slice(0, 5)} selected="substitution" onSelect={noop} />);
     expect(chips.match(/aria-pressed="true"/g)).toHaveLength(1);
     expect(chips.match(/aria-pressed="false"/g)).toHaveLength(4);
     const scale = renderToStaticMarkup(<DifficultyScale selected={3} onSelect={noop} />);

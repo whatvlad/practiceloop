@@ -1,14 +1,21 @@
 // Public shapes the UI works with. None of them carries an expected answer,
 // a solution or generator data: those arrive only from the reveal calls.
 
+/** ADR-005: practice has two areas, and every topic belongs to exactly one. */
+export type AreaSlug = 'integrals' | 'derivatives';
+
 export type TopicSlug =
   | 'basic-integrals'
   | 'substitution'
   | 'integration-by-parts'
   | 'rational-functions'
-  | 'trigonometric-integrals';
+  | 'trigonometric-integrals'
+  | 'double-integrals'
+  | 'triple-integrals'
+  | 'derivatives'
+  | 'partial-derivatives';
 
-/** A topic, or mixed practice: the server draws a topic with fixed, published weights (#36). */
+/** A topic, or mixed practice: the server draws a topic of one area with fixed, published weights (#36). */
 export type PracticeTopic = TopicSlug | 'mixed';
 
 export interface MixedPractice {
@@ -16,15 +23,26 @@ export interface MixedPractice {
   weights: Partial<Record<TopicSlug, number>>;
 }
 
-export interface Catalogue {
-  topics: AvailableTopic[];
-  /** Null for guests, who have only the fixed demo. */
+export interface Area {
+  slug: AreaSlug;
+  name: string;
+}
+
+export interface AvailableArea extends Area {
+  /** Null when the area has fewer than two topics, and for guests, who have only the fixed demo. */
   mixed: MixedPractice | null;
+}
+
+export interface Catalogue {
+  /** Only the areas that offer a topic, in the server's order. */
+  areas: AvailableArea[];
+  topics: AvailableTopic[];
 }
 
 export interface Topic {
   slug: TopicSlug;
   name: string;
+  area: AreaSlug;
 }
 
 export interface AvailableTopic extends Topic {

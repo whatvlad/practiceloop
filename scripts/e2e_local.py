@@ -127,7 +127,8 @@ def correct_answer(url: str, problem_id: str) -> str:
     exercise = replay(row[0])
     if exercise.value is not None:
         return str(exercise.value).replace("**", "^").replace("E", "e")
-    return str(exercise.primitive).replace("**", "^").replace("Abs", "abs") + " + C"
+    constant = " + C" if exercise.constant else ""
+    return str(exercise.primitive).replace("**", "^").replace("Abs", "abs") + constant
 
 
 def key() -> dict[str, str]:
@@ -136,14 +137,29 @@ def key() -> dict[str, str]:
 
 def full_flow(api: httpx.Client, url: str) -> list[str]:
     topics = api.get("/topics").json()
-    cells = [(t["slug"], d) for t in topics["items"] for d in t["availableDifficulties"]]
-    cells += [("mixed", d) for d in topics["mixed"]["availableDifficulties"]]
-    check(len(cells) == 28, "topics list 23 cells plus 5 mixed levels", len(cells))
+    # ADR-005: every topic names a listed area, and mixed practice is per area.
+    areas = {area["slug"]: area for area in topics["areas"]}
+    check(
+        all(t["area"] in areas for t in topics["items"]) and "integrals" in areas,
+        "topics are grouped by listed areas",
+        topics["areas"],
+    )
+    cells: list[tuple[str, int, dict[str, str]]] = [
+        (t["slug"], d, {}) for t in topics["items"] for d in t["availableDifficulties"]
+    ]
+    cells += [
+        ("mixed", d, {"area": slug})
+        for slug, area in areas.items()
+        if area["mixed"]
+        for d in area["mixed"]["availableDifficulties"]
+    ]
+    check(len(cells) == 33, "topics list 28 cells plus 5 mixed levels", len(cells))
     created: list[str] = []
-    for topic, level in cells:
+    for topic, level, extra in cells:
         reset_limits()
-        label = f"{topic} L{level}"
-        response = api.post("/problems", json={"topic": topic, "difficulty": level}, headers=key())
+        label = f"{topic} L{level}" + (f" ({extra['area']})" if extra else "")
+        body = {"topic": topic, "difficulty": level, **extra}
+        response = api.post("/problems", json=body, headers=key())
         if response.status_code != 201:
             check(False, f"generate {label}", response.text)
             continue
@@ -263,6 +279,50 @@ def sharing(api_a: httpx.Client, api_b: httpx.Client, base: str, pid: str) -> No
     )
 
 
+def derivatives(api: httpx.Client, base: str, url: str) -> None:
+    """#98: a derivative renders, checks, reveals, and reaches history, stats, shares, reports."""
+    reset_limits()
+    before = api.get("/statistics").json()["checkedAttempts"]
+    response = api.post("/problems", json={"topic": "derivatives", "difficulty": 3}, headers=key())
+    check(response.status_code == 201, "generate a derivative", response.text)
+    if response.status_code != 201:
+        return
+    problem = response.json()["problem"]
+    pid = problem["id"]
+    check(
+        problem["topic"] == "derivatives" and problem["problemLatex"].startswith(r"\frac{d}{dx}"),
+        "a derivative statement asks for d/dx",
+        problem["problemLatex"],
+    )
+    answer = correct_answer(url, pid)
+    plus_c = api.post(f"/problems/{pid}/attempts", json={"answer": answer + " + C"}, headers=key())
+    attempt = plus_c.json().get("attempt", {})
+    check(
+        (attempt.get("result"), attempt.get("feedbackCode"))
+        == ("incorrect", "derivative_constant"),
+        "a derivative with + C is incorrect and says why",
+        plus_c.text,
+    )
+    right = api.post(f"/problems/{pid}/attempts", json={"answer": answer}, headers=key())
+    check(right.json().get("attempt", {}).get("result") == "correct", "a derivative checks", answer)
+    revealed = api.post(f"/problems/{pid}/reveal-answer").json()["answerLatex"]
+    check("+ C" not in revealed, "a revealed derivative has no constant", revealed)
+    history = api.get("/problems", params={"limit": 50}).json()["items"]
+    listed = any(p["id"] == pid and p["topic"] == "derivatives" for p in history)
+    check(listed, "a derivative appears in history")
+    after = api.get("/statistics").json()["checkedAttempts"]
+    check(after == before, "+ C statistics leave derivatives out", (before, after))
+    shared = api.post(f"/problems/{pid}/share").json()["share"]
+    lookup = httpx.get(f"{base}/shares/{shared['token']}").json()["problem"]
+    check(lookup["topic"] == "derivatives", "a derivative can be shared", lookup)
+    reported = api.post(f"/problems/{pid}/report", json={"category": "statement"})
+    check(reported.status_code == 201, "a derivative can be reported", reported.text)
+    lone = api.post(
+        "/problems", json={"topic": "mixed", "area": "derivatives", "difficulty": 1}, headers=key()
+    )
+    check(lone.status_code == 422, "an area with one topic offers no mixed practice", lone.text)
+
+
 MALICIOUS = [
     "__import__('os').system('id')",
     "exec('print(1)')",
@@ -375,6 +435,7 @@ def main() -> int:
         if created:
             cross_user(api_b, base, keys, alice, created[0])
             sharing(api_a, api_b, base, created[0])
+            derivatives(api_a, base, url)
             malicious(api_a, created[0])
             saturation(api_a, url, created[0])
         if args.stop_db and args.start_db:

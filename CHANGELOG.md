@@ -5,6 +5,11 @@ User-facing releases. Known limitations of the current release are in
 
 ## Unreleased
 
+- **Practice areas.** Practice is grouped into Integrals and Derivatives
+  (ADR-005). Once a second area has topics, the dashboard asks for an area
+  first, then a topic and level, and mixed practice draws only within the
+  chosen area. Topics that are not ready yet are no longer shown. (#98)
+
 - **Share a problem.** Under a saved problem, *Share problem* makes a link and a
   short code such as `K7M2-QX9P`. Anyone can open it, signed in or not, and sees
   only the problem, its topic and difficulty: never your answers, results or

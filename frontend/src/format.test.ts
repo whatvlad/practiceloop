@@ -24,9 +24,9 @@ describe('definite statements', () => {
 describe('mixed practice shares', () => {
   it('renormalize the published weights over the topics offered at a level', () => {
     const topics: AvailableTopic[] = [
-      { slug: 'basic-integrals', name: 'Basic integrals', availableDifficulties: [1, 3] },
-      { slug: 'substitution', name: 'Substitution', availableDifficulties: [1, 3] },
-      { slug: 'integration-by-parts', name: 'Integration by parts', availableDifficulties: [3] },
+      { slug: 'basic-integrals', name: 'Basic integrals', area: 'integrals', availableDifficulties: [1, 3] },
+      { slug: 'substitution', name: 'Substitution', area: 'integrals', availableDifficulties: [1, 3] },
+      { slug: 'integration-by-parts', name: 'Integration by parts', area: 'integrals', availableDifficulties: [3] },
     ];
     const mixed = { availableDifficulties: [1, 3] as Difficulty[], weights: { 'basic-integrals': 1, substitution: 2, 'integration-by-parts': 2 } };
     expect(mixedShares(topics, mixed, 1).map(share => [share.topic.slug, share.percent])).toEqual([['basic-integrals', 33], ['substitution', 67]]);
