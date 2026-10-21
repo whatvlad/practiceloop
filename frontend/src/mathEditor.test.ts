@@ -80,3 +80,27 @@ describe('latexToAnswer', () => {
     expect(back).toEqual({ status: 'ok', latex: first.latex });
   });
 });
+
+describe('latexToAnswer with answer variables', () => {
+  it.each([
+    ['r\\theta', 'r*theta'],
+    ['r\\vartheta', 'r*theta'],
+    ['2\\theta', '2theta'],
+    ['r\\cos\\theta', 'r*cos(theta)'],
+    ['\\sin^{2}\\theta', 'sin^2(theta)'],
+    ['e^{\\theta}', 'e^theta'],
+    ['rtheta', 'r*theta'],
+    ['xy', 'x*y'],
+    ['2xy', '2x*y'],
+    ['x^2y', 'x^2*y'],
+  ])('%j becomes %j', (latex, text) => {
+    expect(read(latex)).toBe(text);
+  });
+
+  it('writes answers the backend reads with the declared variables', () => {
+    for (const latex of ['r\\theta', 'r\\cos\\theta', '\\sin^{2}\\theta']) {
+      expect(analyseAnswer(read(latex), ['r', 'theta']).status).toBe('ok');
+    }
+    expect(analyseAnswer(read('2xy'), ['x', 'y']).status).toBe('ok');
+  });
+});

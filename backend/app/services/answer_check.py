@@ -8,6 +8,7 @@ declared domain; it never proves equality. Anything undecided is `inconclusive`.
 from __future__ import annotations
 
 from collections.abc import Mapping
+from dataclasses import dataclass
 from typing import Any, Literal
 
 import sympy as sp
@@ -17,9 +18,20 @@ from app.generators.core import FAMILY_VERSIONS, Exercise, replay
 from app.generators.definite import DefiniteProblem, replay_definite
 from app.generators.families import FamilyProblem, replay_family
 from app.generators.mistakes import declared
-from app.services.math_parser import MathNode
+from app.services.math_parser import MathNode, VariableDomain
 
-type Problem = InternalProblem | Exercise | FamilyProblem | DefiniteProblem
+
+@dataclass(frozen=True)
+class ExpressionProblem:
+    """ADR-005: the answer is an expression in the template's declared variables,
+    such as a derivative. `expected` is written in `variable_symbol` symbols."""
+
+    expected: Any
+    variables: Mapping[str, VariableDomain]
+
+
+type Integral = InternalProblem | Exercise | FamilyProblem | DefiniteProblem
+type Problem = Integral | ExpressionProblem
 
 type Outcome = Literal["correct", "incorrect", "missing_constant", "invalid", "inconclusive"]
 type Verdict = Literal["yes", "no", "unknown"]
@@ -30,6 +42,11 @@ _REAL_SAMPLES = (-2.75, -1.3, -0.45, 0.35, 1.15, 2.6)
 _POSITIVE_SAMPLES = (0.35, 1.15, 2.6, 4.2)
 _PRECISION = 50
 _TOLERANCE = sp.Float("1e-12", _PRECISION)
+
+
+def variable_symbol(name: str, domain: VariableDomain) -> Any:
+    """The SymPy symbol for a declared variable on its domain (`r > 0`, say)."""
+    return sp.Symbol(name, positive=True) if domain == "positive" else sp.Symbol(name, real=True)
 
 
 def replay_problem(record: Mapping[str, object]) -> Problem:
@@ -45,7 +62,7 @@ def replay_problem(record: Mapping[str, object]) -> Problem:
     raise ValueError("Unsupported generator version")
 
 
-def _domain(problem: Problem) -> Any:
+def _domain(problem: Integral) -> Any:
     """The template's declared real domain as a SymPy set."""
     domain = problem.template.domain
     if not isinstance(domain, str):
@@ -57,7 +74,7 @@ def _domain(problem: Problem) -> Any:
     return sp.Union(sp.Interval.open(-sp.oo, 0), sp.Interval.open(0, sp.oo))
 
 
-def _components(problem: Problem) -> tuple[tuple[Any, Any, tuple[float, ...]], ...]:
+def _components(problem: Integral) -> tuple[tuple[Any, Any, tuple[float, ...]], ...]:
     """(replacement for x, variable it is written in, samples) per connected component.
 
     A positive `t` covers each open interval, as the generators' own proofs do:
@@ -105,7 +122,7 @@ def _not_real(expression: Any, variable: Any, samples: tuple[float, ...]) -> boo
     return False
 
 
-def _is_primitive(candidate: Any, problem: Problem) -> Verdict:
+def _is_primitive(candidate: Any, problem: Integral) -> Verdict:
     """Does `candidate` differentiate to the integrand and stay real on every component?"""
     undecided = False
     defined: bool | None = None  # computed once, only if some component needs it
@@ -131,7 +148,7 @@ def _is_primitive(candidate: Any, problem: Problem) -> Verdict:
     return "unknown" if undecided else "yes"
 
 
-def _defined_throughout(expression: Any, problem: Problem) -> bool:
+def _defined_throughout(expression: Any, problem: Integral) -> bool:
     """A symbolic proof that `expression` is real and continuous on the whole domain.
 
     It settles `ln|x^2 + x|` on (-1, 0), whose sign SymPy cannot infer from `t`.
@@ -145,7 +162,7 @@ def _defined_throughout(expression: Any, problem: Problem) -> bool:
     return bool(gap == sp.S.EmptySet)
 
 
-def _same_number_everywhere(offset: Any, problem: Problem) -> Verdict:
+def _same_number_everywhere(offset: Any, problem: Integral) -> Verdict:
     """ADR-003: after removing the known primitive, `b` must be one numeric constant.
 
     Only called once both primitives are proven, so `offset` has a zero derivative
@@ -179,12 +196,56 @@ def _classify_definite(answer: Any, problem: DefiniteProblem) -> Outcome:
     return "incorrect" if abs(value) > _TOLERANCE else "inconclusive"
 
 
+def _expression_points(problem: ExpressionProblem) -> tuple[dict[Any, Any], ...]:
+    """Bounded sample points of the declared domain, one value per variable each.
+
+    The variables take their samples at different offsets, so no point lies on a
+    diagonal such as x = y where unequal answers can agree.
+    """
+    symbols = [variable_symbol(name, domain) for name, domain in problem.variables.items()]
+    samples = [
+        _POSITIVE_SAMPLES if domain == "positive" else _REAL_SAMPLES
+        for domain in problem.variables.values()
+    ]
+    points = []
+    for index in range(len(_REAL_SAMPLES)):
+        points.append(
+            {
+                symbol: sp.Rational(str(values[(index + 2 * offset) % len(values)]))
+                for offset, (symbol, values) in enumerate(zip(symbols, samples, strict=True))
+            }
+        )
+    return tuple(points)
+
+
+def _classify_expression(answer: Any, problem: ExpressionProblem) -> Outcome:
+    """Symbolic proof on the declared domain; samples only certify a difference."""
+    names = {name: variable_symbol(name, domain) for name, domain in problem.variables.items()}
+    if any(symbol.name not in names for symbol in answer.free_symbols):
+        return "invalid"
+    # The parser builds real symbols; give each one its declared domain.
+    answer = answer.xreplace({sp.Symbol(name, real=True): s for name, s in names.items()})
+    difference = answer - problem.expected
+    if sp.simplify(difference) == 0:
+        return "correct"
+    for point in _expression_points(problem):
+        value = difference.evalf(_PRECISION, subs=point)
+        if value.has(sp.nan, sp.zoo, sp.oo, -sp.oo) or not value.is_number:
+            return "incorrect"
+        # A certified difference, or a non-real value such as ln(-y), is incorrect.
+        if abs(value) > _TOLERANCE:
+            return "incorrect"
+    return "inconclusive"
+
+
 def classify(answer: Any, problem: Problem) -> Outcome:
     """`answer` is the evaluated SymPy form of a parsed learner expression."""
     if answer.has(sp.nan, sp.zoo, sp.oo, -sp.oo):
         return "invalid"
     if isinstance(problem, DefiniteProblem):
         return _classify_definite(answer, problem)
+    if isinstance(problem, ExpressionProblem):
+        return _classify_expression(answer, problem)
     constants = answer.free_symbols - {X}
     if len(constants) > 1:
         return "invalid"
@@ -220,7 +281,7 @@ def check_tree(tree: MathNode, problem: Problem) -> Outcome:
 
     from app.services.math_worker import _build_sympy
 
-    if isinstance(problem, DefiniteProblem):
+    if isinstance(problem, DefiniteProblem | ExpressionProblem):
         # Every part must have a value: `0/(1 - 1) + 2` is invalid, not 2.
         stack = [tree]
         while stack:
@@ -307,6 +368,9 @@ def diagnose(answer: Any, problem: Problem, record: Mapping[str, object]) -> str
     Only called after `classify` returned `incorrect`. Two matching codes, or a
     match that cannot be proven symbolically, give no diagnosis: never a guess.
     """
+    if isinstance(problem, ExpressionProblem):
+        # Templates that use declared variables bring their own mistakes (#97, #101).
+        return None
     if isinstance(problem, DefiniteProblem):
         codes = _definite_mistakes(answer, problem)
     else:

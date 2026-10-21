@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import type { MathfieldElement } from 'mathlive';
-import { analyseAnswer } from '../answerSyntax';
+import type { MathfieldElement, VirtualKeyboardLayout, VirtualKeyboardName } from 'mathlive';
+import { analyseAnswer, type AnswerVariable } from '../answerSyntax';
 import { latexToAnswer, type EditorAnswer } from '../mathEditor';
-import { MAIN_KEYS, MORE_KEYS, type Key } from './MathKeypad';
+import { MAIN_KEYS, MORE_KEYS, mainKeys, type Key } from './MathKeypad';
 
 type MathLive = typeof import('mathlive');
 
@@ -67,6 +67,7 @@ const SHORTCUTS: Record<string, string> = {
   log: '\\log',
   exp: '\\exp',
   abs: '\\left|#?\\right|',
+  theta: '\\theta',
 };
 
 const keycap = (key: Key) =>
@@ -78,7 +79,6 @@ const keycap = (key: Key) =>
 
 const byName = (name: string) => [...MAIN_KEYS, ...MORE_KEYS].find((key) => key.name === name)!;
 
-/** The phone keyboard: the keypad's keys plus digits, in MathLive's virtual keyboard. */
 function configureKeyboard() {
   const keyboard = window.mathVirtualKeyboard;
   if (!keyboard) return;
@@ -88,16 +88,27 @@ function configureKeyboard() {
     document.body.style.paddingBottom = height ? `${height}px` : '';
     if (height) document.activeElement?.closest('.pl-field')?.scrollIntoView({ block: 'center' });
   });
+  keyboard.layouts = keyboardLayouts();
+}
+
+/**
+ * The phone keyboard: the keypad's keys plus digits, in MathLive's virtual keyboard.
+ * The first variable takes x's place and the others take +C's (ADR-005).
+ */
+export function keyboardLayouts(variables?: readonly AnswerVariable[]): (VirtualKeyboardLayout | VirtualKeyboardName)[] {
   const keys = (...names: string[]) => names.map((name) => keycap(byName(name)));
-  keyboard.layouts = [
+  const [first, ...rest] = mainKeys(variables)
+    .filter((key) => key.name === 'x' || key.name === 'plus constant' || isVariableKey(key, variables))
+    .map(keycap);
+  return [
     {
       label: '123',
       tooltip: 'Numbers and operators',
       rows: [
-        [...keys('x', 'pi', 'e to the power', 'squared'), '[separator-5]', '7', '8', '9', keycap(byName('divide'))],
+        [first, ...keys('pi', 'e to the power', 'squared'), '[separator-5]', '7', '8', '9', keycap(byName('divide'))],
         [...keys('power', 'square root', 'brackets', 'absolute value'), '[separator-5]', '4', '5', '6', keycap(byName('times'))],
         [...keys('sin', 'cos', 'tan', 'ln'), '[separator-5]', '1', '2', '3', keycap(byName('minus'))],
-        [...keys('plus constant'), '[left]', '[right]', '[backspace]', '[separator-5]', '0', '.', '[return]', keycap(byName('plus'))],
+        [...rest, '[left]', '[right]', '[backspace]', '[separator-5]', '0', '.', '[return]', keycap(byName('plus'))],
       ],
     },
     {
@@ -113,10 +124,19 @@ function configureKeyboard() {
   ];
 }
 
+const isVariableKey = (key: Key, variables?: readonly AnswerVariable[]) =>
+  variables?.some((name) => name === key.name) ?? false;
+
+/** The keyboard is shared by every field: show the focused exercise's variables. */
+function showKeyboardFor(variables?: readonly AnswerVariable[]) {
+  const keyboard = window.mathVirtualKeyboard;
+  if (keyboard) keyboard.layouts = keyboardLayouts(variables);
+}
+
 /** LaTeX for answer text set from outside (a reset, an applied fix). */
-function answerLatex(text: string, module: MathLive): string {
+function answerLatex(text: string, module: MathLive, variables?: readonly AnswerVariable[]): string {
   if (text.trim() === '') return '';
-  const analysis = analyseAnswer(text);
+  const analysis = analyseAnswer(text, variables);
   return analysis.status === 'ok' ? analysis.latex : module.convertAsciiMathToLatex(text);
 }
 
@@ -139,6 +159,8 @@ interface FormulaFieldProps {
   describedBy?: string;
   onEnter?: () => void;
   fieldRef: { current: MathfieldElement | null };
+  /** The exercise's declared answer variables; omitted for integration. */
+  variables?: readonly AnswerVariable[];
 }
 
 /** The answer as a 2D formula: `/` builds a fraction, `^` raises an exponent, `sqrt` a root. */
@@ -154,13 +176,14 @@ export function FormulaField({
   describedBy,
   onEnter,
   fieldRef,
+  variables,
 }: FormulaFieldProps) {
   const host = useRef<HTMLDivElement>(null);
   const emitted = useRef<string | null>(null);
   const complete = useRef(true);
-  const handlers = useRef({ onChange, onEnter });
+  const handlers = useRef({ onChange, onEnter, variables });
   useEffect(() => {
-    handlers.current = { onChange, onEnter };
+    handlers.current = { onChange, onEnter, variables };
   });
 
   useEffect(() => {
@@ -204,12 +227,15 @@ export function FormulaField({
     const onClick = () => {
       if (!field.hasFocus()) field.focus();
     };
+    const onFocus = () => showKeyboardFor(handlers.current.variables);
+    field.addEventListener('focusin', onFocus);
     field.addEventListener('input', onInput);
     field.addEventListener('keydown', onKeyDown);
     field.addEventListener('change', onCommit);
     field.addEventListener('click', onClick);
     fieldRef.current = field;
     return () => {
+      field.removeEventListener('focusin', onFocus);
       field.removeEventListener('input', onInput);
       field.removeEventListener('keydown', onKeyDown);
       field.removeEventListener('change', onCommit);
@@ -225,8 +251,8 @@ export function FormulaField({
     if (!field || value === emitted.current) return;
     emitted.current = value;
     complete.current = true;
-    field.setValue(answerLatex(value, module), { silenceNotifications: true });
-  }, [value, module, fieldRef]);
+    field.setValue(answerLatex(value, module, variables), { silenceNotifications: true });
+  }, [value, module, fieldRef, variables]);
 
   useEffect(() => {
     const field = fieldRef.current;

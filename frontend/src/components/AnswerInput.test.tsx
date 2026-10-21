@@ -2,6 +2,7 @@
 import { act, useState } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import type { AnswerVariable } from '../answerSyntax';
 import { AnswerInput } from './AnswerInput';
 
 // These cover the plain-text field, used until (or where) the formula editor cannot load.
@@ -10,9 +11,9 @@ vi.mock('mathlive', () => ({}));
 let root: Root;
 let element: HTMLDivElement;
 
-function Harness({ initial = '' }: { initial?: string }) {
+function Harness({ initial = '', variables }: { initial?: string; variables?: readonly AnswerVariable[] }) {
   const [value, setValue] = useState(initial);
-  return <AnswerInput id="answer" value={value} onChange={setValue} assist />;
+  return <AnswerInput id="answer" value={value} onChange={setValue} assist variables={variables} />;
 }
 
 function field(): HTMLInputElement {
@@ -30,9 +31,11 @@ function tap(button: HTMLButtonElement) {
   });
 }
 
-function render(initial?: string) {
-  act(() => root.render(<Harness initial={initial} />));
+function render(initial?: string, variables?: readonly AnswerVariable[]) {
+  act(() => root.render(<Harness initial={initial} variables={variables} />));
 }
+
+const keyLabels = () => [...element.querySelectorAll('.pl-key')].map((button) => button.textContent);
 
 beforeEach(() => {
   (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
@@ -107,5 +110,35 @@ describe('AnswerInput assist', () => {
     render('sqrt(');
     expect(field().getAttribute('aria-invalid')).toBeNull();
     expect(element.querySelector('.pl-preview')!.textContent).toBe('Close the bracket to finish.');
+  });
+});
+
+describe('AnswerInput answer variables (ADR-005)', () => {
+  it('keeps the integration keys when the exercise declares no variables', () => {
+    render();
+    expect(keyLabels()).toContain('x');
+    expect(keyLabels()).toContain('+C');
+    for (const label of ['y', 'z', 'r', 'θ']) expect(keyLabels()).not.toContain(label);
+  });
+
+  it('offers only the declared variables, and no constant key', () => {
+    render('', ['r', 'theta']);
+    expect(keyLabels()).toEqual(expect.arrayContaining(['r', 'θ']));
+    for (const label of ['x', 'y', 'z', '+C']) expect(keyLabels()).not.toContain(label);
+  });
+
+  it('types θ as theta and previews it with the declared variables', () => {
+    render('', ['r', 'theta']);
+    field().focus();
+    tap(key('r'));
+    tap(key('theta'));
+    expect(field().value).toBe('rtheta');
+    expect(element.querySelector('.pl-preview-problem')).toBeNull();
+    expect(element.querySelector('.pl-preview-math')).not.toBeNull();
+  });
+
+  it('flags a variable the exercise does not use', () => {
+    render('x + y', ['r', 'theta']);
+    expect(element.querySelector('.pl-preview-problem')?.textContent).toContain('only r and θ');
   });
 });

@@ -116,6 +116,8 @@ coordinates". It fits as a second level 4 template if the owners want it.
 - Explicit `*` always works between variables. Implicit products such as `2xy`,
   `r theta` and `x y` follow one tokenizer rule, which Issue #96 fixes with
   corpus cases on both backend and frontend before any template uses it.
+  The rule (longest name from the left) is in
+  [MATH_INPUT.md](../architecture/MATH_INPUT.md#declared-answer-variables-adr-005-issue-96).
 - Equivalence follows ADR-003: symbolic proof over the declared domain is
   authoritative, bounded samples from that domain can only find a
   counterexample, and an undecided check is `503 math_check_inconclusive`.

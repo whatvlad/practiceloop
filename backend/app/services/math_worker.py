@@ -17,6 +17,8 @@ from app.services.math_parser import (
     MathInputError,
     MathInputTooLong,
     MathNode,
+    VariableDomain,
+    declared_variables,
     parse_math_input,
 )
 
@@ -104,6 +106,16 @@ def _child() -> int:
         return 1
 
 
+def record_variables(record: Mapping[str, object]) -> dict[str, VariableDomain] | None:
+    """ADR-005 variables a stored record declares; None for the integration grammar.
+
+    The generator copies them from its template; replay checks they still match.
+    """
+    if "variables" not in record:
+        return None
+    return declared_variables(record["variables"])
+
+
 def _check_child() -> int:
     try:
         _apply_limits()
@@ -113,10 +125,13 @@ def _check_child() -> int:
 
         try:
             problem = replay_problem(request["record"])
+            variables = record_variables(request["record"])
+            if getattr(problem, "variables", None) != variables:
+                raise ValueError("Record variables differ from the template")
         except (KeyError, TypeError, ValueError):
             outcome = "bad_record"
         else:
-            tree = parse_math_input(request["answer"])
+            tree = parse_math_input(request["answer"], variables)
             outcome, code = check_and_diagnose(tree, problem, request["record"])
             if code is not None:
                 outcome += ":" + code
@@ -200,8 +215,9 @@ def check_answer(answer: str, record: Mapping[str, object]) -> AnswerCheck:
     MathCheckInconclusive (503). Grammar rejections are an `invalid` result.
     ValueError means the stored record itself is unusable: a server fault.
     """
+    variables = record_variables(record)
     try:
-        parse_math_input(answer)
+        parse_math_input(answer, variables)
     except MathInputTooLong:
         raise
     except MathInputError:

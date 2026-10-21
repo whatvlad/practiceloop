@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import re
 import unicodedata
+from collections.abc import Collection, Mapping
 from dataclasses import dataclass
 from fractions import Fraction
 from typing import Literal, cast
@@ -36,6 +37,18 @@ _FUNCTIONS = frozenset(
     }
 )
 _NAME_STARTS = frozenset("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+# ADR-005: the variables a template may declare, and the real domain each may have.
+type VariableDomain = Literal["real", "positive"]
+ANSWER_VARIABLES: Mapping[str, frozenset[VariableDomain]] = {
+    "x": frozenset({"real", "positive"}),
+    "y": frozenset({"real", "positive"}),
+    "z": frozenset({"real", "positive"}),
+    "r": frozenset({"positive"}),
+    "theta": frozenset({"real"}),
+}
+# Names a letter run can be split into when a template declares variables, longest first.
+_SPLIT_NAMES = tuple(sorted({*_FUNCTIONS, *ANSWER_VARIABLES, "pi", "e"}, key=len, reverse=True))
 
 
 class MathInputError(ValueError):
@@ -74,6 +87,8 @@ def _normalise(source: str) -> str:
         raise MathInputTooLong("Input length exceeds the supported range")
     replacements: dict[int, str | int | None] = {
         ord("π"): "pi",
+        ord("θ"): "theta",
+        ord("ϑ"): "theta",
         ord("−"): "-",
         ord("–"): "-",
         ord("×"): "*",
@@ -92,7 +107,23 @@ def _normalise(source: str) -> str:
     return normalised
 
 
-def _tokenise(source: str) -> tuple[_Token, ...]:
+def _split_name(run: str) -> list[str]:
+    """ADR-005 rule for templates with declared variables: a run of letters is read
+    from the left, each time as the longest function, variable, `pi` or `e` that
+    starts there, so `2xy` is 2*x*y, `rtheta` is r*theta and `xsin(y)` is x*sin(y).
+    A letter that starts no such name makes the whole answer invalid."""
+    names: list[str] = []
+    start = 0
+    while start < len(run):
+        name = next((name for name in _SPLIT_NAMES if run.startswith(name, start)), None)
+        if name is None:
+            raise MathInputError("Symbol is not allowlisted")
+        names.append(name)
+        start += len(name)
+    return names
+
+
+def _tokenise(source: str, split_names: bool = False) -> tuple[_Token, ...]:
     tokens: list[_Token] = []
     index = 0
     while index < len(source):
@@ -119,7 +150,9 @@ def _tokenise(source: str) -> tuple[_Token, ...]:
             start = index
             while index < len(source) and source[index] in _NAME_STARTS:
                 index += 1
-            tokens.append(_Token("NAME", source[start:index]))
+            run = source[start:index]
+            names = _split_name(run) if split_names else [run]
+            tokens.extend(_Token("NAME", name) for name in names)
         elif char == "√":
             tokens.append(_Token("ROOT", char))
             index += 1
@@ -138,8 +171,10 @@ def _tokenise(source: str) -> tuple[_Token, ...]:
 
 
 class _Parser:
-    def __init__(self, tokens: tuple[_Token, ...]) -> None:
+    def __init__(self, tokens: tuple[_Token, ...], variables: frozenset[str] | None) -> None:
         self.tokens = tokens
+        # None is the ADR-003 integration grammar: x, plus one letter for the constant.
+        self.variables = variables
         self.position = 0
         self.node_count = 0
         self.function_count = 0
@@ -245,7 +280,10 @@ class _Parser:
                 self._validate_exponent(result, power)
                 result = self.node("binary", "^", result, power)
             return result
-        if name not in {"x", "pi", "e"}:
+        if self.variables is not None:
+            if name not in self.variables and name not in {"pi", "e"}:
+                raise MathInputError("Variable is not used in this exercise")
+        elif name not in {"x", "pi", "e"}:
             if len(name) != 1 or name in {"i", "I", "j", "J"}:
                 raise MathInputError("Symbol is not allowlisted")
             if self.extra_symbol not in {None, name}:
@@ -353,7 +391,24 @@ def _constant_fraction(node: MathNode) -> Fraction | None:
     return None
 
 
-def parse_math_input(source: str) -> MathNode:
-    """Parse learner text into a validated internal tree, without invoking SymPy."""
+def declared_variables(value: object) -> dict[str, VariableDomain]:
+    """A template's `{variable: domain}` declaration, validated; ValueError otherwise."""
+    if not isinstance(value, dict) or not value:
+        raise ValueError("Answer variables must be a non-empty mapping")
+    for name, domain in value.items():
+        if name not in ANSWER_VARIABLES or domain not in ANSWER_VARIABLES[name]:
+            raise ValueError("Unsupported answer variable or domain")
+    return cast(dict[str, VariableDomain], dict(value))
 
-    return _Parser(_tokenise(_normalise(source))).parse()
+
+def parse_math_input(source: str, variables: Collection[str] | None = None) -> MathNode:
+    """Parse learner text into a validated internal tree, without invoking SymPy.
+
+    `variables` is the template's declared set (ADR-005). Without it the ADR-003
+    integration grammar applies unchanged.
+    """
+    declared = None if variables is None else frozenset(variables)
+    if declared is not None and not declared <= ANSWER_VARIABLES.keys():
+        raise ValueError("Unsupported answer variable")
+    tokens = _tokenise(_normalise(source), split_names=declared is not None)
+    return _Parser(tokens, declared).parse()
