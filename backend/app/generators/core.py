@@ -25,6 +25,9 @@ from app.generators.double import TOPIC as DOUBLE_TOPIC
 from app.generators.double import records as double_records
 from app.generators.double import replay_double
 from app.generators.families import _families, replay_family
+from app.generators.triple import TOPIC as TRIPLE_TOPIC
+from app.generators.triple import records as triple_records
+from app.generators.triple import replay_triple
 
 COEFFICIENTS = (-3, -2, -1, 1, 2, 3)
 FAMILY_VERSIONS = frozenset({"substitution-v2", "parts-v1", "rational-v1", "trigonometric-v1"})
@@ -111,6 +114,18 @@ def replay(record: dict[str, object]) -> Exercise:
             tuple({"say": step.say, "latex": step.latex} for step in derivative.solution_steps),
             derivative.statement,
             constant=False,
+        )
+    if record.get("generator_version") == "triple-v1":
+        triple = replay_triple(record)
+        return Exercise(
+            record,
+            triple.problem.topic,
+            triple.problem.difficulty,
+            None,
+            None,
+            triple.solution_steps,
+            triple.statement,
+            triple.problem.value,
         )
     if record.get("generator_version") in FAMILY_VERSIONS:
         family = replay_family(record)
@@ -240,9 +255,11 @@ def catalogue(topic: str, difficulty: int) -> tuple[Exercise, ...]:
         records = double_records(difficulty)
     elif topic == "derivatives":
         records = derivative_records(difficulty)
+    elif topic == TRIPLE_TOPIC:
+        records = triple_records(difficulty)
     else:
         records = _family_records(topic, difficulty)
-    if records and topic != DOUBLE_TOPIC:
+    if records and topic not in (DOUBLE_TOPIC, TRIPLE_TOPIC):
         records += _definite_records(topic, difficulty)
     if not records:
         raise ValueError("Unsupported practice cell")

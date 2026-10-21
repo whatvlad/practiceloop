@@ -21,6 +21,7 @@ from app.generators.double import replay_value as replay_double_value
 from app.generators.families import FamilyProblem, replay_family
 from app.generators.mistakes import declared
 from app.generators.multiple import ValueProblem
+from app.generators.triple import replay_value as replay_triple_value
 from app.services.math_parser import MathNode
 
 type Problem = (
@@ -59,6 +60,8 @@ def replay_problem(record: Mapping[str, object]) -> Problem:
         return replay_double_value(dict(record))
     if record.get("generator_version") == DERIVATIVES_VERSION:
         return replay_derivative(dict(record), verify=False)
+    if record.get("generator_version") == "triple-v1":
+        return replay_triple_value(dict(record))
     raise ValueError("Unsupported generator version")
 
 
