@@ -44,3 +44,21 @@ export function leadText(kind: ProblemKind): string {
     partial: text.calculate_partial,
   }[kind];
 }
+
+const ANSWER_VARIABLES = ['x', 'y', 'z', 'r', 'theta'] as const;
+
+/**
+ * ADR-005: the variables a partial-derivative answer may use. Every partial-v1
+ * statement ends with its declared domain, `\quad(x, y \in \mathbb{R})` or
+ * `\quad(r > 0,\ \theta \in \mathbb{R})`, so the names are read from there.
+ * Other kinds keep the integration grammar (undefined).
+ */
+export function answerVariables(kind: ProblemKind, problemLatex: string): (typeof ANSWER_VARIABLES)[number][] | undefined {
+  if (kind !== 'partial') return undefined;
+  const start = problemLatex.lastIndexOf('\\quad(');
+  if (start < 0) return undefined;
+  const domain = problemLatex.slice(start + '\\quad('.length).replace(/\\mathbb\{R\}/g, '');
+  const names = new Set(Array.from(domain.matchAll(/\\theta|[a-z]/g), match => match[0].replace('\\', '')));
+  const found = ANSWER_VARIABLES.filter(name => names.has(name));
+  return found.length ? found : undefined;
+}

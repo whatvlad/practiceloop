@@ -18,7 +18,12 @@ x, y, z, r, theta, C = sp.symbols("x y z r theta C", real=True)
 
 
 def record(template: str, coefficient: int = 1) -> dict[str, object]:
-    return {"generator_version": VERSION, "template": template, "coefficient": coefficient}
+    return {
+        "generator_version": VERSION,
+        "template": template,
+        "coefficient": coefficient,
+        "variables": partial.declared(TEMPLATES[template]),
+    }
 
 
 def test_every_level_offers_at_least_two_templates() -> None:
@@ -36,7 +41,7 @@ def test_every_record_is_proven_and_replays_deterministically(item: dict[str, ob
     again = replay_partial(json.loads(json.dumps(item)), verify=False)
     assert (problem.statement, problem.answer_latex) == (again.statement, again.answer_latex)
     assert problem.solution_steps == again.solution_steps
-    assert problem.answer.free_symbols <= set(problem.variables)
+    assert problem.answer.free_symbols <= set(problem.symbols)
     assert problem.answer.is_real is True
     assert problem.answer_latex in problem.solution_steps[-1].latex
     for step in problem.solution_steps:
@@ -55,11 +60,13 @@ def test_every_record_is_proven_and_replays_deterministically(item: dict[str, ob
 
 
 def test_declared_variables_and_domains() -> None:
-    names = lambda name: tuple(v.name for v in TEMPLATES[name].variables)  # noqa: E731
+    names = lambda name: tuple(v.name for v in TEMPLATES[name].symbols)  # noqa: E731
     assert names("polynomial_x") == ("x", "y")
     assert names("three_variables") == ("x", "y", "z")
     assert names("polar_angle") == ("r", "theta")
     assert names("cylindrical_radius") == ("r", "theta", "z")
+    assert replay_partial(record("polar_angle")).variables == {"r": "positive", "theta": "real"}
+    assert replay_partial(record("logarithm_factor")).variables == {"x": "real", "y": "positive"}
     assert partial.R.is_positive and partial.Y_POSITIVE.is_positive
     assert partial.THETA.is_real and partial.THETA.is_positive is None
     assert r"r > 0" in replay_partial(record("polar_angle")).statement
@@ -93,6 +100,10 @@ def test_mixed_partials_are_proven_equal_for_smooth_templates() -> None:
         {**record("polynomial_x"), "template": "x" * 33},
         record("scaled_polar", -1),
         {"generator_version": VERSION, "template": "polynomial_x"},
+        {**record("polynomial_x"), "variables": {"x": "real"}},
+        {**record("polynomial_x"), "variables": {"x": "real", "y": "positive"}},
+        {**record("polynomial_x"), "variables": {"x": "real", "q": "real"}},
+        {**record("polar_angle"), "variables": {"r": "real", "theta": "real"}},
     ],
 )
 def test_malformed_records_are_rejected_before_symbolic_construction(

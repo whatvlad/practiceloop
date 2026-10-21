@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { mixedShares } from './data/topics';
 import type { AvailableTopic, Difficulty } from './data/types';
-import { formatWhen, isDefinite, leadText, problemKind } from './format';
+import { answerVariables, formatWhen, isDefinite, leadText, problemKind } from './format';
 import text from '../../backend/app/content/en.json';
 
 const NOW = new Date(2026, 9, 16, 15, 0);
@@ -40,5 +40,15 @@ describe('problem kinds', () => {
     expect(problemKind('partial-derivatives', '\\frac{\\partial}{\\partial x}')).toBe('partial');
     expect(problemKind('derivatives', '\\frac{d}{dx}')).toBe('derivative');
     expect(leadText('partial')).toBe(text.calculate_partial);
+  });
+
+  it('reads the declared answer variables from a partial statement', () => {
+    const polar = 'f = 3 x y,\\quad x = r \\cos{\\left(\\theta \\right)}:\\quad \\frac{\\partial f}{\\partial \\theta}'
+      + '\\quad(r > 0,\\ \\theta \\in \\mathbb{R})';
+    expect(answerVariables('partial', polar)).toEqual(['r', 'theta']);
+    expect(answerVariables('partial', '\\frac{\\partial}{\\partial x}\\left(x y\\right)\\quad(y > 0,\\ x \\in \\mathbb{R})'))
+      .toEqual(['x', 'y']);
+    expect(answerVariables('partial', 'f\\quad(r > 0,\\ \\theta, z \\in \\mathbb{R})')).toEqual(['z', 'r', 'theta']);
+    expect(answerVariables('derivative', '\\frac{d}{dx} x\\quad(x > 0)')).toBeUndefined();
   });
 });

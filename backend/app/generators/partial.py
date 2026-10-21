@@ -31,6 +31,7 @@ R = sp.Symbol("r", positive=True)
 THETA = sp.Symbol("theta", real=True)
 
 type Kind = Literal["first", "second", "chain", "jacobian"]
+type Domain = Literal["real", "positive"]
 
 
 class PartialParameters(BaseModel):
@@ -41,6 +42,8 @@ class PartialParameters(BaseModel):
     generator_version: Literal["partial-v1"]
     template: str = Field(max_length=32)
     coefficient: int = Field(ge=-3, le=3)
+    # Copied from the template so the parser knows the answer's names (#96).
+    variables: dict[Literal["x", "y", "z", "r", "theta"], Domain] = Field(max_length=3)
 
     @field_validator("coefficient")
     @classmethod
@@ -81,7 +84,8 @@ type Builder = Callable[[Any], Built]
 class PartialTemplate:
     difficulty: int
     kind: Kind
-    variables: tuple[Any, ...]
+    # The answer's declared variables, as symbols carrying their domains.
+    symbols: tuple[Any, ...]
     build: Builder
     coefficients: tuple[int, ...] = (-3, -2, -1, 1, 2, 3)
 
@@ -102,8 +106,13 @@ class PartialProblem:
         return self.template.difficulty
 
     @property
-    def variables(self) -> tuple[Any, ...]:
-        return self.template.variables
+    def symbols(self) -> tuple[Any, ...]:
+        return self.template.symbols
+
+    @property
+    def variables(self) -> dict[str, Domain]:
+        """The #96 declaration `{name: domain}`, also stored in the record."""
+        return declared(self.template)
 
     @property
     def answer_latex(self) -> str:
@@ -505,10 +514,19 @@ TEMPLATES: dict[str, PartialTemplate] = {
 }
 
 
+def declared(template: PartialTemplate) -> dict[str, Domain]:
+    return {v.name: "positive" if v.is_positive else "real" for v in template.symbols}
+
+
 def records(difficulty: int) -> list[dict[str, object]]:
     """Every record of one level, in template then coefficient order."""
     return [
-        dict(generator_version=VERSION, template=name, coefficient=a)
+        dict(
+            generator_version=VERSION,
+            template=name,
+            coefficient=a,
+            variables=declared(template),
+        )
         for name, template in TEMPLATES.items()
         if template.difficulty == difficulty
         for a in template.coefficients
@@ -526,6 +544,8 @@ def replay_partial(record: dict[str, object], *, verify: bool = True) -> Partial
         raise ValueError("Unknown partial template")
     if parameters.coefficient not in template.coefficients:
         raise ValueError("Coefficient is outside the template's range")
+    if parameters.variables != declared(template):
+        raise ValueError("Record variables differ from the template")
     built = _build(parameters.template, parameters.coefficient)
     problem = PartialProblem(
         parameters,
@@ -548,7 +568,7 @@ def _build(name: str, coefficient: int) -> Built:
 def verify_partial(problem: PartialProblem, built: Built | None = None) -> None:
     """Prove the answer from the definition and check every declared property."""
     built = built or _build(problem.parameters.template, problem.parameters.coefficient)
-    variables = set(problem.variables)
+    variables = set(problem.symbols)
     if not problem.answer.free_symbols <= variables:
         raise RuntimeError("Answer uses an undeclared variable")
     if not problem.answer.free_symbols:

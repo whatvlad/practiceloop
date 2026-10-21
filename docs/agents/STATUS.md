@@ -19,6 +19,7 @@ Where each part is documented:
 | Anonymous demo, statistics, name, deletion | #34, #35 | docs/architecture/PREVIEW_PRACTICE.md, ACCOUNT_COMPLETION.md |
 | Mixed practice and mistake feedback | #36 | docs/api/README.md, TOPIC_GENERATORS.md |
 | Practice areas: Integrals and Derivatives | #98 | docs/api/README.md "GET /api/topics", ADR-005 |
+| Partial derivatives, coordinate changes, Jacobians (`partial-v1`) | #101 | TOPIC_GENERATORS.md, ADR-005 |
 | Problem sharing by link and code | #37 | docs/api/README.md "Sharing" |
 | Production readiness on preview (metadata, headers, reports, privacy draft) | #38 | docs/production/PRODUCTION_CHECKLIST.md |
 | End-to-end check | #13 | docs/production/MVP_E2E_CHECK.md |

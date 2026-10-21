@@ -79,8 +79,12 @@ attempts through these authenticated routes.
 `feedbackCode` is `missing_constant`, one declared mistake code (#36) on an
 `incorrect` result, or `null`. The mistake codes are `power_rule`, `trig_sign`,
 `chain_factor`, `log_absolute`, `split_product`, `parts_sign`, `cycle_factor`,
-`partial_fraction_sign`, `definite_not_evaluated`, `bounds_reversed` and
-`definite_constant`. A code is sent only when the answer unambiguously matches
+`partial_fraction_sign`, `definite_not_evaluated`, `bounds_reversed`,
+`definite_constant`, the derivative codes `derivative_power`,
+`derivative_trig_sign`, `derivative_chain`, `derivative_factors`,
+`quotient_sign` and `derivative_constant` (#97), and the partial-derivative codes
+`partial_held_constant`, `partial_chain_term`, `jacobian_missing_r` and
+`jacobian_sign` (#101). A code is sent only when the answer unambiguously matches
 that mistake; `null` on an incorrect answer means the UI shows a general hint.
 Clients treat an unknown code as `null`. A code is never an expected answer.
 Read responses add `attemptCount`, the total number of persisted attempts for
@@ -106,7 +110,7 @@ each area's fixed mixed-practice weights (#36):
 ```json
 {"areas":[
   {"slug":"integrals","name":"Integrals","mixed":{"availableDifficulties":[1,2,3,4,5],"weights":{"basic-integrals":1,"substitution":2,"integration-by-parts":2,"rational-functions":2,"trigonometric-integrals":2}}},
-  {"slug":"derivatives","name":"Derivatives","mixed":null}],
+  {"slug":"derivatives","name":"Derivatives","mixed":{"availableDifficulties":[1,2,3,4,5],"weights":{"derivatives":1,"partial-derivatives":1}}}],
  "items":[{"slug":"basic-integrals","name":"Basic integrals","area":"integrals","availableDifficulties":[1,2,3,4,5]}]}
 ```
 

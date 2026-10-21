@@ -34,7 +34,7 @@ _POSITIVE_SAMPLES = (
 
 def _declared(answer: Any, problem: PartialProblem) -> Any | None:
     """Rename the learner's real symbols to the template's, or None for an unknown one."""
-    names = {variable.name: variable for variable in problem.variables}
+    names = {variable.name: variable for variable in problem.symbols}
     replacements = {}
     for symbol in answer.free_symbols:
         if symbol.name not in names:
@@ -45,11 +45,11 @@ def _declared(answer: Any, problem: PartialProblem) -> Any | None:
 
 def _points(problem: PartialProblem) -> list[dict[Any, Any]]:
     sequences = []
-    for index, variable in enumerate(problem.variables):
+    for index, variable in enumerate(problem.symbols):
         table = _POSITIVE_SAMPLES if variable.is_positive else _REAL_SAMPLES
         sequences.append(table[index % len(table)])
     return [
-        {v: sp.Rational(s[k]) for v, s in zip(problem.variables, sequences, strict=True)}
+        {v: sp.Rational(s[k]) for v, s in zip(problem.symbols, sequences, strict=True)}
         for k in range(len(sequences[0]))
     ]
 
