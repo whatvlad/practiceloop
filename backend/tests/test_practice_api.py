@@ -526,6 +526,7 @@ def test_topics_lists_only_generated_cells(client: TestClient) -> None:
         ("rational-functions", [1, 2, 3, 4, 5]),
         ("trigonometric-integrals", [1, 2, 3, 4, 5]),
         ("double-integrals", [1, 2, 3, 4, 5]),
+        ("triple-integrals", [1, 2, 3, 4, 5]),
         ("derivatives", [1, 2, 3, 4, 5]),
     ]
 
@@ -544,6 +545,7 @@ def test_topics_publish_the_fixed_mixed_practice_weights(client: TestClient) -> 
                 "rational-functions": 2,
                 "trigonometric-integrals": 2,
                 "double-integrals": 2,
+                "triple-integrals": 2,
             },
         },
     }
