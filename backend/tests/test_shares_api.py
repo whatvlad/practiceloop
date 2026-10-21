@@ -363,7 +363,7 @@ def test_recipient_solves_reveals_and_reopens_without_changing_sender(
     response = start_copy(client, {"code": created["code"].lower()})
     assert response.status_code == 201, response.text
     copied = response.json()["problem"]
-    answer = str(replay_basic(dict(exercise.record)).antiderivative) + "+C"
+    answer = str(replay_basic(dict(exercise.record)).antiderivative).replace("**", "^") + "+C"
     checked = client.post(
         f"/problems/{copied['id']}/attempts",
         json={"answer": answer},

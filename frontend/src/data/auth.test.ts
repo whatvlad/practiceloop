@@ -189,6 +189,14 @@ describe('real auth lifecycle', () => {
 });
 
 describe('public configuration and callback hygiene', () => {
+  it.each(['', '/practiceloop'])('preserves shared codes on a fresh load under base %s', base => {
+    const parsed = parseCallback(`https://app.invalid${base}/shared?code=k7m2-qx9p`, `${base}/auth/callback`);
+    expect(parsed).toEqual({ isCallback: false, code: null, failed: false, cleanUrl: `${base}/shared?code=k7m2-qx9p` });
+    const rejected = parseCallback(`https://app.invalid${base}/shared?code=K7M2QX9P&access_token=private`, `${base}/auth/callback`);
+    expect(rejected.failed).toBe(true);
+    expect(rejected.cleanUrl).toBe(`${base}/shared?code=K7M2QX9P`);
+  });
+
   it('rejects backend/legacy credentials, URL passwords and unencrypted remote projects', () => {
     expect(validPublicConfig('https://example.supabase.co', 'sb_publishable_fixture')).toBe(true);
     for (const key of ['sb_secret_fixture', 'legacy-jwt', undefined]) {

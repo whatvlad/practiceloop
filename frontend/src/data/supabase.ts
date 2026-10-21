@@ -27,11 +27,15 @@ export function parseCallback(href: string, callbackPath: string): AuthCallback 
   const url = new URL(href);
   const fragment = new URLSearchParams(url.hash.slice(1));
   const isCallback = url.pathname === callbackPath;
+  // /shared?code=... is an exercise reference, including under a deploy prefix.
+  const isSharedCode = url.pathname === callbackPath.replace(/\/auth\/callback$/, '/shared');
   const code = isCallback ? url.searchParams.get('code') : null;
   const failed = ['error', 'error_description', 'error_code', 'access_token', 'refresh_token']
     .some(key => url.searchParams.has(key) || fragment.has(key))
-    || (!isCallback && url.searchParams.has('code')) || (code !== null && code.length > 2048);
-  for (const key of AUTH_PARAMS) url.searchParams.delete(key);
+    || (!isCallback && !isSharedCode && url.searchParams.has('code')) || (code !== null && code.length > 2048);
+  for (const key of AUTH_PARAMS) {
+    if (key !== 'code' || !isSharedCode) url.searchParams.delete(key);
+  }
   if (AUTH_PARAMS.some(key => fragment.has(key))) url.hash = '';
   return { isCallback, code, failed, cleanUrl: url.pathname + url.search + url.hash };
 }
