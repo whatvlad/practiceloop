@@ -56,6 +56,10 @@ def test_every_code_has_feedback_text_and_is_declared_somewhere() -> None:
         "derivative_factors",
         "quotient_sign",
         "derivative_constant",
+        "partial_held_constant",
+        "partial_chain_term",
+        "jacobian_missing_r",
+        "jacobian_sign",
         "z_bounds",
     }
     for code in MISTAKE_CODES:

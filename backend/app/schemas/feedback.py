@@ -21,6 +21,10 @@ type MistakeCode = Literal[
     "derivative_factors",
     "quotient_sign",
     "derivative_constant",
+    "partial_held_constant",
+    "partial_chain_term",
+    "jacobian_missing_r",
+    "jacobian_sign",
     "z_bounds",
 ]
 MISTAKE_CODES: frozenset[str] = frozenset(get_args(MistakeCode.__value__))

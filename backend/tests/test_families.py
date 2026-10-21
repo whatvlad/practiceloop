@@ -281,4 +281,5 @@ def test_existing_preview_versions_are_unchanged_and_new_cells_are_offered():
         "double-integrals": (1, 2, 3, 4, 5),
         "triple-integrals": (1, 2, 3, 4, 5),
         "derivatives": (1, 2, 3, 4, 5),
+        "partial-derivatives": (1, 2, 3, 4, 5),
     }

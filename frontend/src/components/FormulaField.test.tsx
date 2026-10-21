@@ -3,7 +3,7 @@ import { act, useState } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AnswerInput } from './AnswerInput';
-import { loadMathLive } from './FormulaField';
+import { keyboardLayouts, loadMathLive } from './FormulaField';
 
 // A stand-in for MathLive's <math-field>: it holds LaTeX and records what the keypad sends.
 vi.mock('mathlive', () => {
@@ -186,5 +186,40 @@ describe('AnswerInput formula editor', () => {
     expect(field().latex).toBe('\\frac{x^{2}}{2}+C');
     act(() => element.querySelector<HTMLButtonElement>('#reset')!.click());
     expect(field().latex).toBe('');
+  });
+});
+
+type Layout = { rows: (string | { label: string; insert: string })[][] };
+const labels = (variables?: Parameters<typeof keyboardLayouts>[0]) =>
+  (keyboardLayouts(variables)[0] as Layout).rows.flat().map((key) => (typeof key === 'string' ? key : key.label));
+
+describe('phone keyboard answer variables (ADR-005)', () => {
+  it('keeps x and +C for integration exercises', () => {
+    expect(labels()).toEqual(expect.arrayContaining(['x', '+C']));
+    for (const label of ['y', 'z', 'r', 'θ']) expect(labels()).not.toContain(label);
+  });
+
+  it('shows only the declared variables, θ inserting \\theta', () => {
+    expect(labels(['r', 'theta', 'z'])).toEqual(expect.arrayContaining(['r', 'θ', 'z']));
+    for (const label of ['x', 'y', '+C']) expect(labels(['r', 'theta', 'z'])).not.toContain(label);
+    const theta = (keyboardLayouts(['r', 'theta'])[0] as Layout).rows.flat().find((key) => typeof key !== 'string' && key.label === 'θ');
+    expect(theta).toMatchObject({ insert: '\\theta' });
+  });
+
+  it("switches the shared keyboard to the focused exercise's variables", async () => {
+    const keyboard = { layouts: [] as unknown, addEventListener: () => {}, visible: false };
+    vi.stubGlobal('mathVirtualKeyboard', keyboard);
+    try {
+      await act(async () => {
+        root.render(<AnswerInput id="answer" value="" onChange={() => {}} assist variables={['x', 'y']} />);
+        await loadMathLive();
+      });
+      act(() => field().dispatchEvent(new FocusEvent('focusin', { bubbles: true })));
+      const first = (keyboard.layouts as Layout[])[0].rows[0][0];
+      expect(first).toMatchObject({ label: 'x' });
+      expect((keyboard.layouts as Layout[])[0].rows.flat()).toEqual(expect.arrayContaining([expect.objectContaining({ label: 'y' })]));
+    } finally {
+      vi.unstubAllGlobals();
+    }
   });
 });

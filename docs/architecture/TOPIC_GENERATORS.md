@@ -161,3 +161,42 @@ is `incorrect`. Declared mistakes (`derivative_power`, `derivative_trig_sign`,
 and named only when one code matches.
 
 Focused check: `.venv/bin/python -m pytest backend/tests/test_derivatives.py`.
+
+## Partial derivatives (`partial-v1`, #101)
+
+`backend/app/generators/partial.py` implements the partial-derivatives matrix of
+[ADR-005](../decisions/0005-multiple-integrals-and-derivatives.md). A record is
+`{generator_version, template, coefficient, variables}`. `variables` is the
+template's `{name: domain}` declaration (#96), which the worker parses with;
+replay rejects a record whose declaration, coefficient range or template is wrong
+before any SymPy construction. `core.catalogue("partial-derivatives", level)`
+offers every template of the level at every coefficient, with no definite
+variants. The topic is in the Derivatives area, so that area has mixed practice.
+
+| Level | Templates (coefficient 1) | Answer in |
+|---|---|---|
+| 1 | `∂/∂x (x³y + 2y²)`, `∂/∂y (x²y³ + 3x)` | `x, y` |
+| 2 | `∂/∂y e^(xy)`, `∂/∂x x ln y` on y > 0, `∂/∂x sin(xy²)` | `x, y` |
+| 3 | `∂²/∂x∂y x² e^(xy)`, `∂²/∂x² x³y²`, `∂²/∂z∂y xy²z³`, `∂/∂z xy²z³` | `x, y (, z)` |
+| 4 | polar `f = xy`, `∂f/∂θ`; `f = x²y`, `∂f/∂r`; cylindrical `f = (x + y)z`, `∂f/∂θ`; `f = xyz`, `∂f/∂r` | `r, θ (, z)` |
+| 5 | Jacobian `∂(x, y)/∂(r, θ)` of `x = a r cos θ, y = (a + 1) r sin θ`; `∂(x, y, z)/∂(r, θ, z)` of `x = a r cos θ, y = a r sin θ, z = z` (a = 1, 2, 3) | `r, θ (, z)` |
+
+Domains: `x`, `y`, `z` and `θ` are real, `r > 0`, and `y > 0` where `ln y`
+appears; the statement ends with them. The solution names the variables held
+constant at each differentiation, shows both orders of a mixed partial (equal
+because every template is smooth), and for a coordinate change shows the
+substitution, each `∂f/∂u · ∂u/∂v` factor, the chain-rule sum and the simplified
+result. Replay proves the answer from the definition: `sp.diff` for partials,
+direct substitution for the chain rule, the determinant for a Jacobian.
+
+`services/partial_check.py` checks an answer in the declared variables only, so
+the same function written in `x, y` where `r, θ` is asked is `invalid`, as is an
+added constant. A symbolic proof decides `correct`; exact rational sample points
+of the domain can only certify `incorrect`. Declared mistakes are
+`partial_held_constant` (a held-constant variable differentiated),
+`derivative_chain` (an inner derivative dropped), `partial_chain_term` (one
+chain-rule term dropped), `jacobian_missing_r` and `jacobian_sign`; one is named
+only when exactly one code matches. Replay plus a check of each form takes well
+under the 1 s CPU budget (`test_checks_fit_half_the_worker_cpu_limit`).
+
+Focused check: `.venv/bin/python -m pytest backend/tests/test_partial.py`.

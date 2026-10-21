@@ -1,4 +1,5 @@
 import { useState, type MouseEvent } from 'react';
+import type { AnswerVariable } from '../answerSyntax';
 
 /**
  * Text a key adds at the caret; `close` goes after the selection, which it wraps.
@@ -51,6 +52,24 @@ export const MAIN_KEYS: readonly Key[] = [
   { label: '→', name: 'move right', move: 1 },
 ];
 
+const variable = (name: AnswerVariable): Key =>
+  name === 'theta'
+    ? { label: 'θ', name: 'theta', insert: { open: 'theta', latex: '\\theta' }, math: true }
+    : { label: name, name, insert: { open: name, latex: name }, math: true };
+
+/**
+ * The main keys for an exercise. ADR-005: an exercise that declares its answer
+ * variables gets one key per variable in place of x, and no +C key; other exercises
+ * keep the integration keys.
+ */
+export function mainKeys(variables?: readonly AnswerVariable[]): readonly Key[] {
+  if (!variables) return MAIN_KEYS;
+  return MAIN_KEYS.flatMap((key) => {
+    if (key.name === 'x') return variables.map(variable);
+    return key.name === 'plus constant' ? [] : [key];
+  });
+}
+
 export const MORE_KEYS: readonly Key[] = [
   fn('sec'),
   fn('csc'),
@@ -66,12 +85,15 @@ interface MathKeypadProps {
   onInsert: (insert: KeypadInsert, fromPointer: boolean) => void;
   onMove: (step: KeypadMove, fromPointer: boolean) => void;
   disabled?: boolean;
+  /** The exercise's declared answer variables; omitted for integration. */
+  variables?: readonly AnswerVariable[];
 }
 
 /** Math keys under the answer field, like the WolframAlpha app's extra keyboard row. */
-export function MathKeypad({ onInsert, onMove, disabled }: MathKeypadProps) {
+export function MathKeypad({ onInsert, onMove, disabled, variables }: MathKeypadProps) {
   const [more, setMore] = useState(false);
-  const keys = more ? [...MAIN_KEYS, ...MORE_KEYS] : MAIN_KEYS;
+  const main = mainKeys(variables);
+  const keys = more ? [...main, ...MORE_KEYS] : main;
   function press(key: Key, event: MouseEvent<HTMLButtonElement>) {
     const fromPointer = event.detail > 0;
     if (key.insert) onInsert(key.insert, fromPointer);

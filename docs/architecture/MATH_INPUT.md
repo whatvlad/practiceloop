@@ -22,6 +22,35 @@ one atom, so use `√(-3)` or `√(x+1)` when the argument contains operators.
 Each `√` counts as the four ASCII bytes in `sqrt` for the normalized-size limit.
 Numeric digit limits include leading zeros and both sides of the decimal point.
 
+## Declared answer variables (ADR-005, Issue #96)
+
+`parse_math_input(text, variables)` takes the template's declared variables, a
+subset of `x`, `y`, `z`, `r` and `theta`. Without them the integration grammar
+above applies unchanged. With them:
+
+- Only the declared variables, `pi` and `e` are names. Any other letter, including
+  an integration constant, is invalid: an answer in `r, θ` does not accept `x, y`.
+- `θ` (and `ϑ`) read as `theta`, as `π` reads as `pi`; the size limit counts the
+  five bytes of `theta`.
+- Implicit multiplication follows one rule: a run of letters is read from the
+  left, each time as the longest function, variable, `pi` or `e` that starts there.
+  So `2xy` is `2*x*y`, `rtheta` and `r theta` are `r*theta`, `xsin(y)` is
+  `x*sin(y)` and `ex` is `e*x`. A letter that starts no such name, such as `q` in
+  `xq`, makes the answer invalid. Every split name is one token for the limits.
+- A letter before a bracket is still a function call, so write `x*(y+1)`, and only
+  `e` takes a variable exponent.
+
+A template declares each variable's domain: `x`, `y`, `z` are `real` or
+`positive`, `r` is `positive` and `theta` is `real`
+(`math_parser.declared_variables`). The generator copies the declaration into the
+private record as `variables`; the worker parses with it and refuses a record
+whose declaration differs from its replayed template. `answer_check.ExpressionProblem`
+compares an answer with the expected expression on that domain: a symbolic proof
+decides `correct`, bounded sample points can only certify `incorrect`, and anything
+else is `inconclusive`. The frontend mirror (`answerSyntax.ts`) takes the same
+`variables`, and `AnswerInput`'s `variables` prop puts one key per declared
+variable on the keypad and the phone keyboard, in place of `x` and `+C`.
+
 `app.services.math_worker.validate_math_input(text)` validates syntax in the
 parent, then starts a fresh interpreter using fixed argv and bounded stdin.
 The child activates Linux resource ceilings before importing SymPy, reparses
@@ -45,7 +74,7 @@ those are checked by `check_answer` (#8), which runs inside the same limited wor
 Verification, from `backend/` with the documented Python environment:
 
 ```sh
-python -m pytest tests/test_math_parser.py tests/test_math_worker.py
+python -m pytest tests/test_math_parser.py tests/test_math_worker.py tests/test_answer_variables.py
 ```
 
 Tests cover notation equivalence, hostile syntax, exact boundaries and actual

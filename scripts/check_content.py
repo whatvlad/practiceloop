@@ -12,6 +12,16 @@ from app.content.catalogue import TextKey  # noqa: E402
 
 CATALOGUE = ROOT / "backend/app/content/en.json"
 INSTRUCTIONS = {
+    "calculate_partial",
+    "partial_hold",
+    "partial_second",
+    "partial_mixed_check",
+    "coordinate_substitute",
+    "chain_partials",
+    "chain_rule_sum",
+    "simplify_result",
+    "jacobian_matrix",
+    "jacobian_determinant",
     "factor",
     "identity",
     "substitution_integral",

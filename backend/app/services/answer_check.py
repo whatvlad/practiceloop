@@ -8,6 +8,7 @@ declared domain; it never proves equality. Anything undecided is `inconclusive`.
 from __future__ import annotations
 
 from collections.abc import Mapping
+from dataclasses import dataclass
 from typing import Any, Literal
 
 import sympy as sp
@@ -21,11 +22,30 @@ from app.generators.double import replay_value as replay_double_value
 from app.generators.families import FamilyProblem, replay_family
 from app.generators.mistakes import declared
 from app.generators.multiple import ValueProblem
+from app.generators.partial import PartialProblem, replay_partial
 from app.generators.triple import replay_value as replay_triple_value
-from app.services.math_parser import MathNode
+from app.services import partial_check
+from app.services.math_parser import MathNode, VariableDomain
+
+
+@dataclass(frozen=True)
+class ExpressionProblem:
+    """ADR-005: the answer is an expression in the template's declared variables,
+    such as a derivative. `expected` is written in `variable_symbol` symbols."""
+
+    expected: Any
+    variables: Mapping[str, VariableDomain]
+
 
 type Problem = (
-    InternalProblem | Exercise | FamilyProblem | DefiniteProblem | DerivativeProblem | ValueProblem
+    InternalProblem
+    | Exercise
+    | FamilyProblem
+    | DefiniteProblem
+    | DerivativeProblem
+    | ExpressionProblem
+    | PartialProblem
+    | ValueProblem
 )
 
 # The problems whose answer is an antiderivative, checked up to a constant.
@@ -46,6 +66,11 @@ _PRECISION = 50
 _TOLERANCE = sp.Float("1e-12", _PRECISION)
 
 
+def variable_symbol(name: str, domain: VariableDomain) -> Any:
+    """The SymPy symbol for a declared variable on its domain (`r > 0`, say)."""
+    return sp.Symbol(name, positive=True) if domain == "positive" else sp.Symbol(name, real=True)
+
+
 def replay_problem(record: Mapping[str, object]) -> Problem:
     """Rebuild the trusted problem from its private JSON record (no expression strings)."""
     if record.get("generator_version") == "basic-v1":
@@ -60,6 +85,8 @@ def replay_problem(record: Mapping[str, object]) -> Problem:
         return replay_double_value(dict(record))
     if record.get("generator_version") == DERIVATIVES_VERSION:
         return replay_derivative(dict(record), verify=False)
+    if record.get("generator_version") == "partial-v1":
+        return replay_partial(dict(record), verify=False)
     if record.get("generator_version") == "triple-v1":
         return replay_triple_value(dict(record))
     raise ValueError("Unsupported generator version")
@@ -200,6 +227,48 @@ def _classify_definite(answer: Any, problem: DefiniteProblem | ValueProblem) -> 
     return "incorrect" if abs(value) > _TOLERANCE else "inconclusive"
 
 
+def _expression_points(problem: ExpressionProblem) -> tuple[dict[Any, Any], ...]:
+    """Bounded sample points of the declared domain, one value per variable each.
+
+    The variables take their samples at different offsets, so no point lies on a
+    diagonal such as x = y where unequal answers can agree.
+    """
+    symbols = [variable_symbol(name, domain) for name, domain in problem.variables.items()]
+    samples = [
+        _POSITIVE_SAMPLES if domain == "positive" else _REAL_SAMPLES
+        for domain in problem.variables.values()
+    ]
+    points = []
+    for index in range(len(_REAL_SAMPLES)):
+        points.append(
+            {
+                symbol: sp.Rational(str(values[(index + 2 * offset) % len(values)]))
+                for offset, (symbol, values) in enumerate(zip(symbols, samples, strict=True))
+            }
+        )
+    return tuple(points)
+
+
+def _classify_expression(answer: Any, problem: ExpressionProblem) -> Outcome:
+    """Symbolic proof on the declared domain; samples only certify a difference."""
+    names = {name: variable_symbol(name, domain) for name, domain in problem.variables.items()}
+    if any(symbol.name not in names for symbol in answer.free_symbols):
+        return "invalid"
+    # The parser builds real symbols; give each one its declared domain.
+    answer = answer.xreplace({sp.Symbol(name, real=True): s for name, s in names.items()})
+    difference = answer - problem.expected
+    if sp.simplify(difference) == 0:
+        return "correct"
+    for point in _expression_points(problem):
+        value = difference.evalf(_PRECISION, subs=point)
+        if value.has(sp.nan, sp.zoo, sp.oo, -sp.oo) or not value.is_number:
+            return "incorrect"
+        # A certified difference, or a non-real value such as ln(-y), is incorrect.
+        if abs(value) > _TOLERANCE:
+            return "incorrect"
+    return "inconclusive"
+
+
 def _classify_derivative(answer: Any, problem: DerivativeProblem) -> Outcome:
     """ADR-005: f'(x) itself, equal on every component; an added constant is wrong."""
     if answer.free_symbols - {X}:
@@ -221,8 +290,12 @@ def classify(answer: Any, problem: Problem) -> Outcome:
         return "invalid"
     if isinstance(problem, _VALUE_PROBLEMS):
         return _classify_definite(answer, problem)
+    if isinstance(problem, ExpressionProblem):
+        return _classify_expression(answer, problem)
     if isinstance(problem, DerivativeProblem):
         return _classify_derivative(answer, problem)
+    if isinstance(problem, PartialProblem):
+        return partial_check.classify(answer, problem)
     constants = answer.free_symbols - {X}
     if len(constants) > 1:
         return "invalid"
@@ -258,7 +331,7 @@ def check_tree(tree: MathNode, problem: Problem) -> Outcome:
 
     from app.services.math_worker import _build_sympy
 
-    if isinstance(problem, _VALUE_PROBLEMS):
+    if isinstance(problem, (*_VALUE_PROBLEMS, ExpressionProblem, PartialProblem)):
         # Every part must have a value: `0/(1 - 1) + 2` is invalid, not 2.
         stack = [tree]
         while stack:
@@ -266,6 +339,8 @@ def check_tree(tree: MathNode, problem: Problem) -> Outcome:
             if _build_sympy(item, evaluate=True).has(sp.zoo, sp.oo, -sp.oo, sp.nan):
                 return "invalid"
             stack.extend(item.children)
+        if isinstance(problem, PartialProblem):
+            return partial_check.classify(_build_sympy(tree, evaluate=True), problem)
         return classify(_build_sympy(tree, evaluate=True), problem)
     domain = _domain(problem)
     all_reals = domain == sp.S.Reals
@@ -369,6 +444,11 @@ def diagnose(answer: Any, problem: Problem, record: Mapping[str, object]) -> str
     Only called after `classify` returned `incorrect`. Two matching codes, or a
     match that cannot be proven symbolically, give no diagnosis: never a guess.
     """
+    if isinstance(problem, PartialProblem):
+        return partial_check.diagnose(answer, problem)
+    if isinstance(problem, ExpressionProblem):
+        # Templates that use declared variables bring their own mistakes (#97, #101).
+        return None
     if isinstance(problem, DefiniteProblem):
         codes = _definite_mistakes(answer, problem)
     elif isinstance(problem, ValueProblem):

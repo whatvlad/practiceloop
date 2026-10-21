@@ -114,6 +114,9 @@ def reset_limits() -> None:
         limiter.reset()
 
 
+PARTIAL = "partial-derivatives"
+
+
 def correct_answer(url: str, problem_id: str) -> str:
     from app.generators.core import replay
 
@@ -129,6 +132,17 @@ def correct_answer(url: str, problem_id: str) -> str:
         return str(exercise.value).replace("**", "^").replace("E", "e")
     constant = " + C" if exercise.constant else ""
     return str(exercise.primitive).replace("**", "^").replace("Abs", "abs") + constant
+
+
+def private_record(url: str, problem_id: str) -> dict[str, object]:
+    with psycopg.connect(url) as conn:
+        row = conn.execute(
+            "select generator_data from private.problem_solutions where problem_id = %s",
+            (problem_id,),
+        ).fetchone()
+    if row is None:
+        raise SystemExit(f"no private record for {problem_id}")
+    return dict(row[0])
 
 
 def key() -> dict[str, str]:
@@ -153,7 +167,7 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
         if area["mixed"]
         for d in area["mixed"]["availableDifficulties"]
     ]
-    check(len(cells) == 43, "topics list 38 cells plus 5 mixed levels", len(cells))
+    check(len(cells) == 53, "topics list 43 cells plus 10 mixed levels", len(cells))
     created: list[str] = []
     for topic, level, extra in cells:
         reset_limits()
@@ -168,13 +182,15 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
         created.append(pid)
         leaked = {"answerLatex", "solution", "generator_data", "steps"} & set(problem)
         check(not leaked and not problem["answerRevealed"], f"generate {label} hides the answer")
-        wrong = api.post(f"/problems/{pid}/attempts", json={"answer": "x^9 + 7"}, headers=key())
+        answer = correct_answer(url, pid)
+        # A partial answer may use only its declared variables, so x is not always one.
+        wrong_answer = f"({answer}) + 7" if problem["topic"] == PARTIAL else "x^9 + 7"
+        wrong = api.post(f"/problems/{pid}/attempts", json={"answer": wrong_answer}, headers=key())
         check(
             wrong.status_code == 201 and wrong.json()["attempt"]["result"] == "incorrect",
             f"wrong answer {label} is incorrect",
             wrong.text,
         )
-        answer = correct_answer(url, pid)
         right = api.post(f"/problems/{pid}/attempts", json={"answer": answer}, headers=key())
         check(
             right.status_code == 201 and right.json()["attempt"]["result"] == "correct",
@@ -201,11 +217,19 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
             f"reopen {label} keeps attempts and reveals",
             reopened,
         )
-    history = api.get("/problems", params={"limit": 50}).json()
+    # More cells than one 50-item page: follow the cursor.
+    listed: set[str] = set()
+    params: dict[str, object] = {"limit": 50}
+    while True:
+        history = api.get("/problems", params=params).json()
+        listed |= {p["id"] for p in history["items"]}
+        if not history["nextCursor"]:
+            break
+        params = {"limit": 50, "cursor": history["nextCursor"]}
     check(
-        {p["id"] for p in history["items"]} == set(created),
+        listed == set(created),
         "history lists every generated problem",
-        len(history["items"]),
+        len(listed),
     )
     counts = api.get("/profile").json()["counts"]
     check(str(len(created)) in str(counts), "profile counts the generated problems", counts)
@@ -317,10 +341,51 @@ def derivatives(api: httpx.Client, base: str, url: str) -> None:
     check(lookup["topic"] == "derivatives", "a derivative can be shared", lookup)
     reported = api.post(f"/problems/{pid}/report", json={"category": "statement"})
     check(reported.status_code == 201, "a derivative can be reported", reported.text)
-    lone = api.post(
+    mixed = api.post(
         "/problems", json={"topic": "mixed", "area": "derivatives", "difficulty": 1}, headers=key()
     )
-    check(lone.status_code == 422, "an area with one topic offers no mixed practice", lone.text)
+    drawn = mixed.json().get("problem", {}).get("topic") if mixed.status_code == 201 else None
+    check(
+        drawn in {"derivatives", PARTIAL},
+        "mixed derivatives practice draws within its area",
+        mixed.text,
+    )
+
+
+def partials(api: httpx.Client, url: str) -> None:
+    """#101: declared variables, θ, coordinate changes and mistake feedback."""
+    from app.generators.partial import replay_partial
+
+    reset_limits()
+    response = api.post("/problems", json={"topic": PARTIAL, "difficulty": 4}, headers=key())
+    check(response.status_code == 201, "generate a coordinate change", response.text)
+    if response.status_code != 201:
+        return
+    problem = response.json()["problem"]
+    pid = problem["id"]
+    check(r"\theta" in problem["problemLatex"], "a coordinate change names θ", problem)
+    record = private_record(url, pid)
+    exercise = replay_partial(record)
+    answer = correct_answer(url, pid).replace("theta", "θ")
+    xy = api.post(f"/problems/{pid}/attempts", json={"answer": "x*y"}, headers=key())
+    check(
+        xy.json().get("attempt", {}).get("result") == "invalid",
+        "an answer in x, y is invalid where r, θ is asked",
+        xy.text,
+    )
+    code, wrong = exercise.mistakes[0]
+    text = str(wrong).replace("**", "^")
+    mistake = api.post(f"/problems/{pid}/attempts", json={"answer": text}, headers=key())
+    attempt = mistake.json().get("attempt", {})
+    check(
+        (attempt.get("result"), attempt.get("feedbackCode")) == ("incorrect", code),
+        f"a declared mistake is named ({text})",
+        mistake.text,
+    )
+    right = api.post(f"/problems/{pid}/attempts", json={"answer": answer}, headers=key())
+    check(right.json().get("attempt", {}).get("result") == "correct", "θ answer checks", answer)
+    revealed = api.post(f"/problems/{pid}/reveal-solution").json()["steps"]
+    check(len(revealed) == 4, "the solution shows each chain-rule step", revealed)
 
 
 def multiple_integral(api: httpx.Client, url: str, topic: str, starts: tuple[str, ...]) -> None:
@@ -468,6 +533,7 @@ def main() -> int:
             derivatives(api_a, base, url)
             multiple_integral(api_a, url, "double-integrals", (r"\iint_D", r"\int_"))
             multiple_integral(api_a, url, "triple-integrals", (r"\iiint_E", r"\int_"))
+            partials(api_a, url)
             malicious(api_a, created[0])
             saturation(api_a, url, created[0])
         if args.stop_db and args.start_db:

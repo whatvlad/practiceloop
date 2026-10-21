@@ -5,6 +5,15 @@ User-facing releases. Known limitations of the current release are in
 
 ## Unreleased
 
+- **Partial derivatives.** A second Derivatives topic at levels 1-5: first
+  partials in x and y, second and mixed partials and three variables, the chain
+  rule after changing to polar or cylindrical coordinates, and the Jacobian of
+  a scaled polar or cylindrical map. The answer field takes the variables the
+  exercise names (`y`, `z`, `r`, `θ` as well as `x`, with `2xy` read as
+  `2*x*y`), and the solution shows which variables are held constant and each
+  chain-rule term. A differentiated constant, a dropped chain-rule term, a
+  missing inner derivative, a missing r or a determinant sign error get
+  targeted feedback. Derivatives now have mixed practice. (#96, #101)
 - **Triple integrals.** A new Integrals topic at levels 1-5: boxes, a simplex
   and tetrahedra in Cartesian coordinates, cylinders, a cone and a paraboloid
   in cylindrical coordinates, and Cartesian integrals that are only clean in

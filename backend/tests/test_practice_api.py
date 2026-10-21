@@ -528,6 +528,7 @@ def test_topics_lists_only_generated_cells(client: TestClient) -> None:
         ("double-integrals", [1, 2, 3, 4, 5]),
         ("triple-integrals", [1, 2, 3, 4, 5]),
         ("derivatives", [1, 2, 3, 4, 5]),
+        ("partial-derivatives", [1, 2, 3, 4, 5]),
     ]
 
 
@@ -549,6 +550,10 @@ def test_topics_publish_the_fixed_mixed_practice_weights(client: TestClient) -> 
             },
         },
     }
+    assert areas[1]["mixed"] == {
+        "availableDifficulties": [1, 2, 3, 4, 5],
+        "weights": {"derivatives": 1, "partial-derivatives": 1},
+    }
 
 
 def test_topics_are_grouped_by_area(client: TestClient) -> None:
@@ -566,6 +571,7 @@ def test_an_area_with_one_topic_offers_no_mixed_practice(
 ) -> None:
     topics = dict(practice.TOPICS)
     topics["derivatives"] = practice.Topic("Derivatives", "derivatives", (1, 2), 1)
+    del topics["partial-derivatives"]
     monkeypatch.setattr(practice, "TOPICS", topics)
     areas = {area["slug"]: area for area in client.get("/topics").json()["areas"]}
     assert areas["derivatives"] == {"slug": "derivatives", "name": "Derivatives", "mixed": None}

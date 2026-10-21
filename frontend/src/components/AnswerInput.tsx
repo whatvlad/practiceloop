@@ -1,6 +1,6 @@
 import { useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import type { MathfieldElement } from 'mathlive';
-import { analyseAnswer } from '../answerSyntax';
+import { analyseAnswer, type AnswerVariable } from '../answerSyntax';
 import type { CheckResult } from '../data/types';
 import type { EditorAnswer } from '../mathEditor';
 import { FormulaField, useMathLive, usesPhoneKeyboard } from './FormulaField';
@@ -26,6 +26,11 @@ interface AnswerInputProps {
    * loaded (or where it cannot run) the field is plain text.
    */
   assist?: boolean;
+  /**
+   * ADR-005: the variables the exercise's template declares. The preview, keypad and
+   * phone keyboard then use them; omitted, the integration grammar applies.
+   */
+  variables?: readonly AnswerVariable[];
 }
 
 export function AnswerInput({
@@ -40,6 +45,7 @@ export function AnswerInput({
   onEnter,
   readOnly,
   assist = false,
+  variables,
 }: AnswerInputProps) {
   const input = useRef<HTMLInputElement>(null);
   const formula = useRef<MathfieldElement | null>(null);
@@ -52,8 +58,8 @@ export function AnswerInput({
     if (mathLive && emptyBox && value.trim() !== '') {
       return { status: 'unfinished', message: 'Fill in the empty box to finish.' } as const;
     }
-    return analyseAnswer(value);
-  }, [assist, value, mathLive, emptyBox]);
+    return analyseAnswer(value, variables);
+  }, [assist, value, mathLive, emptyBox, variables]);
   const hintId = hint ? `${id}-hint` : undefined;
   const previewId = assist ? `${id}-preview` : undefined;
   const describedByIds = [previewId, hintId, describedBy].filter(Boolean).join(' ') || undefined;
@@ -130,6 +136,7 @@ export function AnswerInput({
           describedBy={describedByIds}
           onEnter={onEnter}
           fieldRef={formula}
+          variables={variables}
         />
       ) : (
         <input
@@ -163,7 +170,7 @@ export function AnswerInput({
           />
         </div>
       )}
-      {assist && !readOnly && !(mathLive && usesPhoneKeyboard()) && <MathKeypad onInsert={insert} onMove={move} />}
+      {assist && !readOnly && !(mathLive && usesPhoneKeyboard()) && <MathKeypad onInsert={insert} onMove={move} variables={variables} />}
       {hint && (
         <div id={hintId} className="pl-hint">
           {hint}
