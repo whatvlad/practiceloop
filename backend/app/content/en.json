@@ -54,7 +54,7 @@
   "integrate_outer": "Integrate the result between the outer bounds.",
   "check_other": "Check the value with the other set-up of the same region.",
   "multiple_value": "Simplify the result. This is the exact value of the integral.",
-  "feedback_missing_jacobian": "Include the factor r. In polar coordinates dA = r dr dθ.",
+  "feedback_missing_jacobian": "Include the factor r. In polar coordinates dA = r dr dθ, and in cylindrical coordinates dV = r dz dr dθ.",
   "general_hint_multiple": "Check the bounds of each integral, then integrate the inner integral first, or reveal the solution.",
   "calculate_derivative": "Find the derivative f'(x).",
   "derivative_standard": "Apply the standard derivative of the function.",
@@ -87,5 +87,11 @@
   "feedback_partial_chain_term": "Add one chain-rule term for each old variable. A term is missing from your answer.",
   "feedback_jacobian_missing_r": "Check the determinant. The factor r stays after you simplify the sine and cosine terms.",
   "feedback_jacobian_sign": "Check the sign in the determinant. Subtract the product of the other diagonal.",
-  "calculate_partial": "Calculate the partial derivative or the Jacobian. Use only the variables the statement names."
+  "calculate_partial": "Calculate the partial derivative or the Jacobian. Use only the variables the statement names.",
+  "calculate_triple": "Calculate the triple integral.",
+  "describe_solid": "Describe the solid with bounds for each variable.",
+  "write_triple": "Write the triple integral as an iterated integral.",
+  "cylindrical_change": "Change to cylindrical coordinates. Use x = r cos θ, y = r sin θ and dV = r dz dr dθ.",
+  "integrate_middle": "Integrate the middle integral. Keep the outermost variable constant.",
+  "feedback_z_bounds": "Check the bounds for z. They go from the lower surface of the solid to the upper surface."
 }

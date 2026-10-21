@@ -167,7 +167,7 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
         if area["mixed"]
         for d in area["mixed"]["availableDifficulties"]
     ]
-    check(len(cells) == 48, "topics list 38 cells plus 10 mixed levels", len(cells))
+    check(len(cells) == 53, "topics list 43 cells plus 10 mixed levels", len(cells))
     created: list[str] = []
     for topic, level, extra in cells:
         reset_limits()
@@ -217,11 +217,19 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
             f"reopen {label} keeps attempts and reveals",
             reopened,
         )
-    history = api.get("/problems", params={"limit": 50}).json()
+    # More cells than one 50-item page: follow the cursor.
+    listed: set[str] = set()
+    params: dict[str, object] = {"limit": 50}
+    while True:
+        history = api.get("/problems", params=params).json()
+        listed |= {p["id"] for p in history["items"]}
+        if not history["nextCursor"]:
+            break
+        params = {"limit": 50, "cursor": history["nextCursor"]}
     check(
-        {p["id"] for p in history["items"]} == set(created),
+        listed == set(created),
         "history lists every generated problem",
-        len(history["items"]),
+        len(listed),
     )
     counts = api.get("/profile").json()["counts"]
     check(str(len(created)) in str(counts), "profile counts the generated problems", counts)
@@ -380,21 +388,20 @@ def partials(api: httpx.Client, url: str) -> None:
     check(len(revealed) == 4, "the solution shows each chain-rule step", revealed)
 
 
-def double_integrals(api: httpx.Client, url: str) -> None:
-    """#99: a double integral is one exact number, outside the + C statistics."""
+def multiple_integral(api: httpx.Client, url: str, topic: str, starts: tuple[str, ...]) -> None:
+    """#99, #100: a multiple integral is one exact number, outside the + C statistics."""
+    name = topic.replace("-", " ")[:-1]
     reset_limits()
     before = api.get("/statistics").json()["checkedAttempts"]
-    response = api.post(
-        "/problems", json={"topic": "double-integrals", "difficulty": 3}, headers=key()
-    )
-    check(response.status_code == 201, "generate a double integral", response.text)
+    response = api.post("/problems", json={"topic": topic, "difficulty": 3}, headers=key())
+    check(response.status_code == 201, f"generate a {name}", response.text)
     if response.status_code != 201:
         return
     problem = response.json()["problem"]
     pid = problem["id"]
     check(
-        problem["problemLatex"].startswith((r"\iint_D", r"\int_")),
-        "a double integral shows a region or iterated bounds",
+        problem["problemLatex"].startswith(starts),
+        f"a {name} shows a region or iterated bounds",
         problem["problemLatex"],
     )
     answer = correct_answer(url, pid)
@@ -402,13 +409,13 @@ def double_integrals(api: httpx.Client, url: str) -> None:
     attempt = flipped.json().get("attempt", {})
     check(
         (attempt.get("result"), attempt.get("feedbackCode")) == ("incorrect", "bounds_reversed"),
-        "a negated double integral says the bounds are reversed",
+        f"a negated {name} says the bounds are reversed",
         flipped.text,
     )
     right = api.post(f"/problems/{pid}/attempts", json={"answer": answer}, headers=key())
-    check(right.json().get("attempt", {}).get("result") == "correct", "a double integral checks")
+    check(right.json().get("attempt", {}).get("result") == "correct", f"a {name} checks")
     after = api.get("/statistics").json()["checkedAttempts"]
-    check(after == before, "+ C statistics leave double integrals out", (before, after))
+    check(after == before, f"+ C statistics leave {name}s out", (before, after))
 
 
 MALICIOUS = [
@@ -524,7 +531,8 @@ def main() -> int:
             cross_user(api_b, base, keys, alice, created[0])
             sharing(api_a, api_b, base, created[0])
             derivatives(api_a, base, url)
-            double_integrals(api_a, url)
+            multiple_integral(api_a, url, "double-integrals", (r"\iint_D", r"\int_"))
+            multiple_integral(api_a, url, "triple-integrals", (r"\iiint_E", r"\int_"))
             partials(api_a, url)
             malicious(api_a, created[0])
             saturation(api_a, url, created[0])

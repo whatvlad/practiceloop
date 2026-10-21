@@ -25,5 +25,6 @@ type MistakeCode = Literal[
     "partial_chain_term",
     "jacobian_missing_r",
     "jacobian_sign",
+    "z_bounds",
 ]
 MISTAKE_CODES: frozenset[str] = frozenset(get_args(MistakeCode.__value__))

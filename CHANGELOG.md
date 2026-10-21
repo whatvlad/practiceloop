@@ -14,6 +14,13 @@ User-facing releases. Known limitations of the current release are in
   chain-rule term. A differentiated constant, a dropped chain-rule term, a
   missing inner derivative, a missing r or a determinant sign error get
   targeted feedback. Derivatives now have mixed practice. (#96, #101)
+- **Triple integrals.** A new Integrals topic at levels 1-5: boxes, a simplex
+  and tetrahedra in Cartesian coordinates, cylinders, a cone and a paraboloid
+  in cylindrical coordinates, and Cartesian integrals that are only clean in
+  cylindrical. The answer is the exact value, and the solution shows the
+  solid, the bounds, the factor r, each of the three iterated integrals and a
+  check in the other system. A missing r, wrong z bounds or reversed bounds get
+  targeted feedback. (#100)
 - **Double integrals.** A new Integrals topic at levels 1-5: rectangles and
   type I/II regions in Cartesian coordinates, disks, annuli and sectors in
   polar coordinates, reversing the order of integration, and Cartesian

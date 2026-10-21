@@ -60,6 +60,7 @@ def test_every_code_has_feedback_text_and_is_declared_somewhere() -> None:
         "partial_chain_term",
         "jacobian_missing_r",
         "jacobian_sign",
+        "z_bounds",
     }
     for code in MISTAKE_CODES:
         assert TEXT[f"feedback_{code}"]  # type: ignore[literal-required]

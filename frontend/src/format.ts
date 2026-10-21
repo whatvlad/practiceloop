@@ -28,13 +28,14 @@ export function isDefinite(problemLatex: string): boolean {
 }
 
 /** What a statement asks for: an antiderivative + C, one exact number, f'(x), or a partial (ADR-005). */
-export type ProblemKind = 'indefinite' | 'definite' | 'double' | 'derivative' | 'partial';
+export type ProblemKind = 'indefinite' | 'definite' | 'double' | 'triple' | 'derivative' | 'partial';
 
 export function problemKind(topic: TopicSlug, problemLatex: string): ProblemKind {
   if (topic === 'partial-derivatives') return 'partial';
   if (areaOf(topic) === 'derivatives') return 'derivative';
   // A double integral's answer is also one exact number (#99).
   if (topic === 'double-integrals') return 'double';
+  if (topic === 'triple-integrals') return 'triple';
   return isDefinite(problemLatex) ? 'definite' : 'indefinite';
 }
 
@@ -44,6 +45,7 @@ export function leadText(kind: ProblemKind): string {
     indefinite: text.calculate,
     definite: text.calculate_definite,
     double: text.calculate_double,
+    triple: text.calculate_triple,
     derivative: text.calculate_derivative,
     partial: text.calculate_partial,
   }[kind];

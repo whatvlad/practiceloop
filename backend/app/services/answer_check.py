@@ -23,6 +23,7 @@ from app.generators.families import FamilyProblem, replay_family
 from app.generators.mistakes import declared
 from app.generators.multiple import ValueProblem
 from app.generators.partial import PartialProblem, replay_partial
+from app.generators.triple import replay_value as replay_triple_value
 from app.services import partial_check
 from app.services.math_parser import MathNode, VariableDomain
 
@@ -86,6 +87,8 @@ def replay_problem(record: Mapping[str, object]) -> Problem:
         return replay_derivative(dict(record), verify=False)
     if record.get("generator_version") == "partial-v1":
         return replay_partial(dict(record), verify=False)
+    if record.get("generator_version") == "triple-v1":
+        return replay_triple_value(dict(record))
     raise ValueError("Unsupported generator version")
 
 
