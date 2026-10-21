@@ -59,8 +59,9 @@ TOPICS = {
     "integration-by-parts": Topic("Integration by parts", "integrals", (1, 2, 3), 2),
     "rational-functions": Topic("Rational functions", "integrals", (1, 2, 3, 4, 5), 2),
     "trigonometric-integrals": Topic("Trigonometric integrals", "integrals", (1, 2, 3, 4, 5), 2),
-    # #97 derivatives-v1. Alone in its area until partial derivatives ship, so no mixed yet.
+    # #97 derivatives-v1; with #101 partial-v1 the area has two topics and mixed practice.
     "derivatives": Topic("Derivatives", "derivatives", (1, 2, 3, 4, 5), 1),
+    "partial-derivatives": Topic("Partial derivatives", "derivatives", (1, 2, 3, 4, 5), 1),
 }
 MIXED = "mixed"
 MAX_ANSWER_CHARS = 512  # the parser's 256-byte limit applies after normalization
