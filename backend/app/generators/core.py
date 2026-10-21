@@ -18,6 +18,9 @@ from app.generators.basic import (
 from app.generators.definite import TEMPLATES as DEFINITE_TEMPLATES
 from app.generators.definite import difficulty as definite_difficulty
 from app.generators.definite import replay_definite, value_latex
+from app.generators.derivatives import VERSION as DERIVATIVES_VERSION
+from app.generators.derivatives import records as derivative_records
+from app.generators.derivatives import replay_derivative
 from app.generators.double import TOPIC as DOUBLE_TOPIC
 from app.generators.double import records as double_records
 from app.generators.double import replay_double
@@ -38,6 +41,9 @@ class Exercise:
     statement: str
     # Exact value of a definite or multiple integral; None for indefinite exercises.
     value: Any = None
+    # False for derivatives (#97): `integrand` is then the function to
+    # differentiate, `primitive` its derivative, and the answer has no `+ C`.
+    constant: bool = True
 
     @property
     def template(self) -> BasicTemplate:
@@ -52,6 +58,8 @@ class Exercise:
     def answer(self) -> str:
         if self.value is not None:
             return value_latex(self.value)
+        if not self.constant:
+            return self.steps[-1]["latex"].removeprefix("f'(x) = ")
         return str(sp.latex(self.primitive)) + " + C"
 
 
@@ -91,6 +99,18 @@ def replay(record: dict[str, object]) -> Exercise:
             double.solution_steps,
             double.statement,
             double.problem.value,
+        )
+    if record.get("generator_version") == DERIVATIVES_VERSION:
+        derivative = replay_derivative(record)
+        return Exercise(
+            record,
+            derivative.topic,
+            derivative.difficulty,
+            derivative.function,
+            derivative.derivative,
+            tuple({"say": step.say, "latex": step.latex} for step in derivative.solution_steps),
+            derivative.statement,
+            constant=False,
         )
     if record.get("generator_version") in FAMILY_VERSIONS:
         family = replay_family(record)
@@ -218,6 +238,8 @@ def catalogue(topic: str, difficulty: int) -> tuple[Exercise, ...]:
             )
     elif topic == DOUBLE_TOPIC:
         records = double_records(difficulty)
+    elif topic == "derivatives":
+        records = derivative_records(difficulty)
     else:
         records = _family_records(topic, difficulty)
     if records and topic != DOUBLE_TOPIC:

@@ -4,9 +4,9 @@ import { Button, ButtonLink } from '../components/Button';
 import { DifficultyDots } from '../components/DifficultyScale';
 import { Tex } from '../components/Tex';
 import { lookupShare, type ShareLookup } from '../data/shares';
-import { topicName } from '../data/topics';
+import { areaOf, subjectName, topicName } from '../data/topics';
 import type { ShareUnavailable } from '../data/types';
-import { LEAD_KEYS, statementKind } from '../format';
+import { leadText, problemKind } from '../format';
 import { navigate } from '../router';
 import { useLoad } from '../useLoad';
 import text from '../../../backend/app/content/en.json';
@@ -53,7 +53,7 @@ function Result({ found }: { found: ShareLookup }) {
     <section className="pl-problem" aria-label="Shared problem">
       <div className="pl-problem-head">
         <div className="meta">
-          <span className="pl-tag">Integration — {topicName(topic)}</span>
+          <span className="pl-tag">{subjectName(topic)} — {topicName(topic)}</span>
           <span className="pl-small pl-muted">
             <DifficultyDots level={difficulty} />
           </span>
@@ -61,14 +61,14 @@ function Result({ found }: { found: ShareLookup }) {
         <span className="pl-label">Shared problem</span>
       </div>
       <div className="pl-stack pl-gap-3">
-        <p className="pl-lead">{text[LEAD_KEYS[statementKind(problemLatex)]]}</p>
+        <p className="pl-lead">{leadText(problemKind(topic, problemLatex))}</p>
         <div className="pl-expr">
           <Tex latex={problemLatex} display />
         </div>
       </div>
       <p className="pl-small pl-muted pl-m-0">Work it out on paper, then practice problems like it with answer checking and full solutions.</p>
       <div>
-        <ButtonLink to="/practice" arrow>Practice integrals</ButtonLink>
+        <ButtonLink to="/practice" arrow>Practice {areaOf(topic)}</ButtonLink>
       </div>
     </section>
   );

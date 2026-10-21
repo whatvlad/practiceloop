@@ -4,10 +4,10 @@ import { Button, ButtonLink } from '../components/Button';
 import { DifficultyScale } from '../components/DifficultyScale';
 import { HistoryList } from '../components/HistoryRow';
 import { StatTile } from '../components/StatTile';
-import { TopicChips } from '../components/TopicChips';
+import { AreaChips, TopicChips } from '../components/TopicChips';
 import { generateProblem, getCatalogue, getLastSelection, getProfileCounts, listProblemPage } from '../data/api';
 import { mixedShares } from '../data/topics';
-import type { Difficulty, PracticeTopic } from '../data/types';
+import type { AreaSlug, Difficulty, PracticeTopic } from '../data/types';
 import { navigate } from '../router';
 import { useLoad } from '../useLoad';
 
@@ -18,6 +18,7 @@ export function DashboardPage() {
   const counts = useLoad(getProfileCounts, String(dataRevision));
   const recent = useLoad(async () => (await listProblemPage({ limit: 3 })).items, String(dataRevision));
   const last = useLoad(getLastSelection);
+  const [area, setArea] = useState<AreaSlug>('integrals');
   const [topic, setTopic] = useState<PracticeTopic>('basic-integrals');
   const [difficulty, setDifficulty] = useState<Difficulty>(1);
   const [busy, setBusy] = useState(false);
@@ -25,17 +26,32 @@ export function DashboardPage() {
   const active = useRef(true);
   useEffect(() => { active.current = true; return () => { active.current = false; }; }, []);
   const [error, setError] = useState('');
-  const topics = catalogue.status === 'ready' ? catalogue.data.topics : [];
-  const mixed = catalogue.status === 'ready' ? catalogue.data.mixed : null;
+  const areas = catalogue.status === 'ready' ? catalogue.data.areas : [];
+  // ADR-005: the learner picks an area first; topics and mixed practice belong to it.
+  const topics = catalogue.status === 'ready' ? catalogue.data.topics.filter(t => t.area === area) : [];
+  const mixed = areas.find(a => a.slug === area)?.mixed ?? null;
   const levels = topic === 'mixed' ? mixed?.availableDifficulties ?? [] : topics.find(t => t.slug === topic)?.availableDifficulties ?? [];
   const offered: PracticeTopic[] = [...topics.filter(t => t.availableDifficulties.length > 0).map(t => t.slug), ...(mixed ? ['mixed' as const] : [])];
   const available = levels.includes(difficulty);
 
   useEffect(() => {
     if (last.status !== 'ready') return;
+    setArea(last.data.area);
     setTopic(last.data.topic);
     setDifficulty(last.data.difficulty);
   }, [last]);
+
+  // An area the catalogue does not offer falls back to the first one it does.
+  useEffect(() => {
+    if (areas.length === 0 || areas.some(a => a.slug === area)) return;
+    setArea(areas[0].slug);
+  }, [areas, area]);
+
+  // A topic outside the chosen area moves to the area's first topic.
+  useEffect(() => {
+    if (topics.length === 0 || offered.includes(topic)) return;
+    setTopic(offered[0]);
+  }, [topics, offered, topic]);
 
   // A topic shows only its own levels, so move a level it lacks to the nearest one it has.
   useEffect(() => {
@@ -49,7 +65,7 @@ export function DashboardPage() {
     setError('');
     setBusy(true);
     try {
-      const problem = await generateProblem(topic, difficulty);
+      const problem = await generateProblem(topic, difficulty, area);
       if (active.current) navigate(`/practice?id=${encodeURIComponent(problem.id)}`);
     } catch (failure) {
       if (active.current) setError(failure instanceof Error ? failure.message : text.service_error);
@@ -79,13 +95,21 @@ export function DashboardPage() {
           <h2 id="start-title" className="pl-h-lg">
             Start a new problem
           </h2>
-          <p className="pl-muted pl-mt-1">Choose a topic and a difficulty. We generate the rest.</p>
+          <p className="pl-muted pl-mt-1">Choose {areas.length > 1 ? 'an area, a topic' : 'a topic'} and a difficulty. We generate the rest.</p>
         </div>
+        {areas.length > 1 && (
+          <div className="pl-stack pl-gap-3">
+            <div id="area-label" className="pl-label">
+              Area
+            </div>
+            <AreaChips areas={areas.map(a => a.slug)} selected={area} onSelect={setArea} labelledBy="area-label" disabled={busy} />
+          </div>
+        )}
         <div className="pl-stack pl-gap-3">
           <div id="topic-label" className="pl-label">
             Topic
           </div>
-          <TopicChips selected={topic} onSelect={setTopic} labelledBy="topic-label" mixed={mixed !== null} available={busy ? [] : offered} />
+          <TopicChips topics={topics} selected={topic} onSelect={setTopic} labelledBy="topic-label" mixed={mixed !== null} available={busy ? [] : offered} />
           <p className="pl-small pl-muted">Disabled options are not available yet.</p>
         </div>
         <div className="pl-stack pl-gap-3">

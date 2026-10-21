@@ -72,7 +72,8 @@ do $$ begin
   assert (select count(*) from public.profiles) = 1, 'profile isolation';
   assert (select count(*) from public.problems) = 1, 'problem isolation';
   assert (select count(*) from public.attempts) = 1, 'attempt isolation';
-  assert (select count(*) from public.topics) = 5, 'topic list';
+  assert (select count(*) from public.topics) = 9, 'topic list';
+  assert (select count(*) from public.topics where area = 'derivatives') = 2, 'topic areas';
   assert not exists (select 1 from public.problems where user_id <> auth.uid()), 'owner filter';
   begin
     perform * from private.problem_solutions;

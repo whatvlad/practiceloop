@@ -18,7 +18,7 @@ from app.services.math_parser import parse_math_input
 from app.services.math_worker import AnswerCheck, check_answer
 
 # Every offered cell, from the same table `GET /topics` publishes.
-CELLS = [(topic, level) for topic, (_, levels) in TOPICS.items() for level in levels]
+CELLS = [(topic, level) for topic, cell in TOPICS.items() for level in cell.levels]
 
 
 def learner(expression: sp.Expr) -> str:
@@ -50,6 +50,12 @@ def test_every_code_has_feedback_text_and_is_declared_somewhere() -> None:
         "bounds_reversed",
         "definite_constant",
         "missing_jacobian",
+        "derivative_power",
+        "derivative_trig_sign",
+        "derivative_chain",
+        "derivative_factors",
+        "quotient_sign",
+        "derivative_constant",
     }
     for code in MISTAKE_CODES:
         assert TEXT[f"feedback_{code}"]  # type: ignore[literal-required]

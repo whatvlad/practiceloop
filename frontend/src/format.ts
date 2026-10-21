@@ -1,3 +1,7 @@
+import text from '../../backend/app/content/en.json';
+import { areaOf } from './data/topics';
+import type { TopicSlug } from './data/types';
+
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 function startOfDay(date: Date): number {
@@ -22,13 +26,17 @@ export function isDefinite(problemLatex: string): boolean {
   return problemLatex.startsWith('\\int_');
 }
 
-export type StatementKind = 'indefinite' | 'definite' | 'double';
+/** What a statement asks for: an antiderivative + C, one exact number, or a derivative (ADR-005). */
+export type ProblemKind = 'indefinite' | 'definite' | 'double' | 'derivative';
 
-/** Double integrals (#99) show `\iint_D` over a region or two iterated `\int_{a}^{b}`. */
-export function statementKind(problemLatex: string): StatementKind {
-  if (problemLatex.startsWith('\\iint') || /^\\int_\{.*?\}\^\{.*?\}\s*\\int_/.test(problemLatex)) return 'double';
+export function problemKind(topic: TopicSlug, problemLatex: string): ProblemKind {
+  if (areaOf(topic) === 'derivatives') return 'derivative';
+  // A double integral's answer is also one exact number (#99).
+  if (topic === 'double-integrals') return 'double';
   return isDefinite(problemLatex) ? 'definite' : 'indefinite';
 }
 
-/** The instruction above a statement, from the shared catalogue. */
-export const LEAD_KEYS = { indefinite: 'calculate', definite: 'calculate_definite', double: 'calculate_double' } as const;
+/** The instruction above a statement. */
+export function leadText(kind: ProblemKind): string {
+  return { indefinite: text.calculate, definite: text.calculate_definite, double: text.calculate_double, derivative: text.calculate_derivative }[kind];
+}

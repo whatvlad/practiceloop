@@ -15,6 +15,7 @@ import {
   revealSolution,
   submitAttempt,
 } from '../data/api';
+import { areaOf } from '../data/topics';
 import type { CheckResult, FeedbackCode, OpenedProblem, SolutionStep } from '../data/types';
 import { navigate } from '../router';
 import { useLoad } from '../useLoad';
@@ -23,8 +24,8 @@ import { useLoad } from '../useLoad';
 async function latestOrNewId(): Promise<string> {
   const { items: [latest] } = await listProblemPage({ limit: 1 });
   if (latest) return latest.id;
-  const { topic, difficulty } = await getLastSelection();
-  return (await generateProblem(topic, difficulty)).id;
+  const { topic, difficulty, area } = await getLastSelection();
+  return (await generateProblem(topic, difficulty, area)).id;
 }
 
 function practiceUrl(id: string): string {
@@ -85,7 +86,8 @@ function PracticeSession({ opened }: { opened: OpenedProblem }) {
       onNext={() =>
         run(async () => {
           if (problem.saved === false) { navigate('/login'); return; }
-          const next = await generateProblem(problem.mixed ? 'mixed' : problem.topic, problem.difficulty);
+          // Mixed practice draws within one area, the one this problem's topic belongs to.
+          const next = await generateProblem(problem.mixed ? 'mixed' : problem.topic, problem.difficulty, areaOf(problem.topic));
           if (active.current) navigate(practiceUrl(next.id));
         })
       }

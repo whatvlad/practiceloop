@@ -16,7 +16,7 @@ import time
 from collections import deque
 from datetime import UTC, datetime
 from threading import Lock
-from typing import Annotated, Any
+from typing import Annotated, Any, NamedTuple
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, Header, Query
@@ -39,25 +39,32 @@ from app.services.preview_check import CHECK_SLOTS
 
 router = APIRouter(tags=["practice"])
 
-# Only cells with a verified generator are offered; others are 422, never easy copies.
-TOPICS = {
-    "basic-integrals": ("Basic integrals", (1, 2, 3, 4, 5)),
-    "substitution": ("Substitution", (1, 2, 3, 4, 5)),
-    # ADR-003 amendment: parts has three levels; the frontend hides the rest.
-    "integration-by-parts": ("Integration by parts", (1, 2, 3)),
-    "rational-functions": ("Rational functions", (1, 2, 3, 4, 5)),
-    "trigonometric-integrals": ("Trigonometric integrals", (1, 2, 3, 4, 5)),
-}
-# #36 mixed practice: fixed, published weights, never adapted to a learner's history.
+
+class Topic(NamedTuple):
+    name: str
+    area: str
+    # Only cells with a verified generator are offered; others are 422, never easy copies.
+    levels: tuple[int, ...]
+    # #36 mixed practice: a fixed, published weight, never adapted to a learner's history.
+    mixed_weight: int
+
+
+# ADR-005: practice has two areas, and every topic belongs to exactly one of them.
+AREAS = {"integrals": "Integrals", "derivatives": "Derivatives"}
 # Basic integrals are the building block of every method, so they get half the share.
-MIXED = "mixed"
-MIXED_WEIGHTS = {
-    "basic-integrals": 1,
-    "substitution": 2,
-    "integration-by-parts": 2,
-    "rational-functions": 2,
-    "trigonometric-integrals": 2,
+TOPICS = {
+    "basic-integrals": Topic("Basic integrals", "integrals", (1, 2, 3, 4, 5), 1),
+    "substitution": Topic("Substitution", "integrals", (1, 2, 3, 4, 5), 2),
+    # ADR-003 amendment: parts has three levels; the frontend hides the rest.
+    "integration-by-parts": Topic("Integration by parts", "integrals", (1, 2, 3), 2),
+    "rational-functions": Topic("Rational functions", "integrals", (1, 2, 3, 4, 5), 2),
+    "trigonometric-integrals": Topic("Trigonometric integrals", "integrals", (1, 2, 3, 4, 5), 2),
+    # #99 double-v1: the answer is the integral's exact value (ADR-005).
+    "double-integrals": Topic("Double integrals", "integrals", (1, 2, 3, 4, 5), 2),
+    # #97 derivatives-v1. Alone in its area until partial derivatives ship, so no mixed yet.
+    "derivatives": Topic("Derivatives", "derivatives", (1, 2, 3, 4, 5), 1),
 }
+MIXED = "mixed"
 MAX_ANSWER_CHARS = 512  # the parser's 256-byte limit applies after normalization
 
 
@@ -115,6 +122,8 @@ class GenerateBody(BaseModel):
     model_config = ConfigDict(extra="forbid", strict=True)
     topic: str = Field(min_length=1, max_length=64)
     difficulty: int
+    # Only with "mixed": the area to draw from; integrals when omitted, as before #98.
+    area: str | None = Field(default=None, min_length=1, max_length=64)
 
 
 class AttemptBody(BaseModel):
@@ -172,25 +181,44 @@ def _pick(conn: Any, user_id: UUID, topic: str, difficulty: int) -> Exercise:
     return secrets.choice(fresh or list(pool))
 
 
-def mixed_topics(difficulty: int) -> tuple[list[str], list[int]]:
-    """The topics offered at this level and their weights; a missing cell has none."""
-    slugs = [slug for slug, (_, levels) in TOPICS.items() if difficulty in levels]
-    return slugs, [MIXED_WEIGHTS[slug] for slug in slugs]
+def area_topics(area: str) -> list[str]:
+    return [slug for slug, topic in TOPICS.items() if topic.area == area]
+
+
+def mixed_topics(area: str, difficulty: int) -> tuple[list[str], list[int]]:
+    """The area's topics offered at this level and their weights; a missing cell has none."""
+    slugs = [slug for slug in area_topics(area) if difficulty in TOPICS[slug].levels]
+    return slugs, [TOPICS[slug].mixed_weight for slug in slugs]
+
+
+def _mixed(area: str) -> dict[str, object] | None:
+    """Mixed practice needs a choice, so an area offers it only with two topics or more."""
+    slugs = area_topics(area)
+    if len(slugs) < 2:
+        return None
+    return {
+        "availableDifficulties": sorted({level for slug in slugs for level in TOPICS[slug].levels}),
+        "weights": {slug: TOPICS[slug].mixed_weight for slug in slugs},
+    }
 
 
 @router.get("/topics")
 def topics(_user: User) -> dict[str, object]:
     return {
-        "items": [
-            {"slug": slug, "name": name, "availableDifficulties": list(levels)}
-            for slug, (name, levels) in TOPICS.items()
+        "areas": [
+            {"slug": area, "name": name, "mixed": _mixed(area)}
+            for area, name in AREAS.items()
+            if area_topics(area)
         ],
-        "mixed": {
-            "availableDifficulties": sorted(
-                {level for _, levels in TOPICS.values() for level in levels}
-            ),
-            "weights": MIXED_WEIGHTS,
-        },
+        "items": [
+            {
+                "slug": slug,
+                "name": topic.name,
+                "area": topic.area,
+                "availableDifficulties": list(topic.levels),
+            }
+            for slug, topic in TOPICS.items()
+        ],
     }
 
 
@@ -340,14 +368,20 @@ def generate(body: GenerateBody, user: User, key: IdempotencyKey = None) -> JSON
         "POST",
         "/problems",
         _idempotency_key(key),
-        idempotency.request_hash(body.model_dump()),
+        # exclude_none keeps the hash of a request without an area as it was before #98.
+        idempotency.request_hash(body.model_dump(exclude_none=True)),
     )
     topic = body.topic
-    if topic == MIXED and body.difficulty in range(1, 6):
-        slugs, weights = mixed_topics(body.difficulty)
+    if topic == MIXED:
+        area = body.area or "integrals"
+        slugs, weights = mixed_topics(area, body.difficulty) if _mixed(area) else ([], [])
+        if not slugs:
+            raise _invalid()
         topic = _RANDOM.choices(slugs, weights)[0]
+    elif body.area is not None:
+        raise _invalid()
     cell = TOPICS.get(topic)
-    if cell is None or body.difficulty not in cell[1]:
+    if cell is None or body.difficulty not in cell.levels:
         raise _invalid()
     generation_limit.check(user.id)
     with transaction(user.id) as conn:

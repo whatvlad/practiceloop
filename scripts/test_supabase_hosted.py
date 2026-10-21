@@ -142,7 +142,7 @@ def verify(clients: list[Client]) -> int:
             all_rows = rows(client, table, "select=id,user_id&limit=1000")
             require(all(row[owner_col] == own for row in all_rows), f"{table}: owner filter failed")
         topics = rows(client, "topics", "select=id,slug")
-        require(len(topics) == 5, "Expected five seeded MVP topics")
+        require(len(topics) == 9, "Expected nine seeded topics (ADR-005)")
         bodies = {
             "profiles": {"id": own},
             "topics": {"name": "forged", "slug": "forged"},
@@ -195,7 +195,7 @@ def verify_single_user(client: Client) -> dict[str, int]:
         require(all(row[owner_col] == own for row in data), f"{table}: owner filter failed")
         counts[table] = len(data)
     topics = rows(client, "topics", "select=id,slug")
-    require(len(topics) == 5, "Expected five seeded MVP topics")
+    require(len(topics) == 9, "Expected nine seeded topics (ADR-005)")
     bodies = {
         "profiles": {"id": own},
         "topics": {"name": "forged", "slug": "forged"},
