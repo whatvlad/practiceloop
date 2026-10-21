@@ -19,7 +19,7 @@ from fastapi.testclient import TestClient
 
 from app.api import practice, shares
 from app.core import database
-from app.core.auth import VerifiedUser, current_user
+from app.core.auth import VerifiedUser, current_user, token_verifier
 from app.generators.basic import replay_basic
 from app.generators.core import catalogue
 from app.main import app
@@ -462,9 +462,11 @@ def test_expired_missing_invalid_copies_and_untrusted_fields_write_nothing(
 
 
 def test_copy_requires_verified_authentication_and_idempotency_key(
-    client: TestClient, users: Users
+    client: TestClient, users: Users, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     created = share(client, generate(client)["id"])
     assert client.post("/shares/practice", json={"token": created["token"]}).status_code == 422
     app.dependency_overrides.pop(current_user)
+    # Exercise the real missing-credentials dependency without requiring JWKS configuration.
+    monkeypatch.setitem(app.dependency_overrides, token_verifier, lambda: None)
     assert start_copy(client, {"token": created["token"]}).status_code == 401
