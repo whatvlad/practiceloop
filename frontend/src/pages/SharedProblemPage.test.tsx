@@ -4,6 +4,9 @@ import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { SharedProblemPage } from './SharedProblemPage';
 import { lookupShare, normalizeCode, shareCode, shareLink } from '../data/shares';
+import { practiceSharedProblem } from '../data/api';
+
+vi.mock('../data/api', () => ({ practiceSharedProblem: vi.fn() }));
 
 const TOKEN = 'A'.repeat(21) + '_' + 'b'.repeat(20) + '-';
 const fetchMock = vi.fn<typeof fetch>();
@@ -15,6 +18,8 @@ let element: HTMLDivElement;
 beforeEach(() => {
   (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
   fetchMock.mockReset();
+  vi.mocked(practiceSharedProblem).mockReset();
+  vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
   vi.stubGlobal('fetch', fetchMock);
   element = document.createElement('div');
   document.body.append(element);
@@ -25,9 +30,10 @@ afterEach(async () => {
   await act(async () => root.unmount());
   element.remove();
   vi.unstubAllGlobals();
+  vi.restoreAllMocks();
 });
 
-async function render(props: { token: string | null; code: string | null }) {
+async function render(props: { token: string | null; code: string | null; signedIn?: boolean; authLoading?: boolean }) {
   await act(async () => root.render(<SharedProblemPage {...props} />));
   await act(async () => {});
 }
@@ -45,6 +51,51 @@ it('shows only the statement, topic and difficulty, even when the server sends m
   expect(element.querySelector('.katex')).not.toBeNull();
   expect(element.innerHTML).not.toMatch(/LEAKED/);
   expect(element.textContent).not.toMatch(/Show answer|Check answer/);
+});
+
+it.each([{ token: TOKEN, code: null }, { token: null, code: 'k7m2-qx9p' }])('keeps the exact shared reference in the sign-in action', async props => {
+  fetchMock.mockResolvedValue(json({ problem: { topic: 'basic-integrals', difficulty: 4, problemLatex: '\\int (x+2)^2\\,dx' } }));
+  await render(props);
+  const link = [...element.querySelectorAll('a')].find(a => a.textContent?.includes('Sign in to solve'))!;
+  const next = new URL(link.href).searchParams.get('next');
+  expect(next).toBe(props.token ? `/s/${TOKEN}` : '/shared?code=k7m2-qx9p');
+  expect(practiceSharedProblem).not.toHaveBeenCalled();
+});
+
+it('opens the recipient copy once on duplicate clicks and never generates an unrelated problem', async () => {
+  fetchMock.mockResolvedValue(json({ problem: { topic: 'partial-derivatives', difficulty: 5, problemLatex: 'f(x,y)=xy' } }));
+  let finish!: (problem: Awaited<ReturnType<typeof practiceSharedProblem>>) => void;
+  vi.mocked(practiceSharedProblem).mockImplementationOnce(() => new Promise(resolve => { finish = resolve; }));
+  await render({ token: TOKEN, code: null, signedIn: true });
+  const button = [...element.querySelectorAll('button')].find(b => b.textContent?.includes('Solve this problem'))!;
+  await act(async () => { button.click(); button.click(); });
+  expect(practiceSharedProblem).toHaveBeenCalledExactlyOnceWith({ token: TOKEN });
+  expect(button.disabled).toBe(true);
+  await act(async () => finish({ id: 'recipient-copy' } as Awaited<ReturnType<typeof practiceSharedProblem>>));
+  expect(window.location.pathname + window.location.search).toBe('/practice?id=recipient-copy');
+});
+
+it('keeps the shared statement and offers a retry when copying fails', async () => {
+  fetchMock.mockResolvedValue(json({ problem: { topic: 'basic-integrals', difficulty: 4, problemLatex: '\\int (x+2)^2\\,dx' } }));
+  vi.mocked(practiceSharedProblem).mockRejectedValueOnce(new Error('This problem is no longer shared. Ask for a new link.'));
+  await render({ token: null, code: 'K7M2QX9P', signedIn: true });
+  const button = [...element.querySelectorAll('button')].find(b => b.textContent?.includes('Solve this problem'))!;
+  await act(async () => button.click());
+  expect(element.querySelector('[role="alert"]')?.textContent).toContain('no longer shared');
+  expect(button.disabled).toBe(false);
+  expect(element.querySelector('.katex')).not.toBeNull();
+});
+
+it('does not navigate on a late response after leaving the shared page', async () => {
+  fetchMock.mockResolvedValue(json({ problem: { topic: 'basic-integrals', difficulty: 1, problemLatex: 'x' } }));
+  let finish!: (problem: Awaited<ReturnType<typeof practiceSharedProblem>>) => void;
+  vi.mocked(practiceSharedProblem).mockImplementationOnce(() => new Promise(resolve => { finish = resolve; }));
+  await render({ token: TOKEN, code: null, signedIn: true });
+  await act(async () => [...element.querySelectorAll('button')].find(b => b.textContent?.includes('Solve this problem'))!.click());
+  await act(async () => root.render(<div>Another page</div>));
+  window.history.replaceState(null, '', '/history');
+  await act(async () => finish({ id: 'late-copy' } as Awaited<ReturnType<typeof practiceSharedProblem>>));
+  expect(window.location.pathname).toBe('/history');
 });
 
 it.each([

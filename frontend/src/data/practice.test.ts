@@ -7,6 +7,41 @@ const response = (body: unknown, status = 200) => new Response(JSON.stringify(bo
 beforeEach(() => { practice.resetPractice(); practice.configurePracticeAuth(async () => null); fetchMock.mockReset(); vi.stubGlobal('fetch', fetchMock); });
 afterEach(() => vi.unstubAllGlobals());
 
+it('requires an account to solve a share and never falls back to a random guest demo', async () => {
+  await expect(practice.practiceSharedProblem({ token: 'a'.repeat(43) })).rejects.toThrow('Sign in');
+  expect(fetchMock).not.toHaveBeenCalled();
+});
+
+it('copies an exact share with stable idempotency on retry and projects only public fields', async () => {
+  practice.configurePracticeAuth(async () => 'account-token');
+  fetchMock.mockRejectedValueOnce(new TypeError('response lost'));
+  await expect(practice.practiceSharedProblem({ code: 'k7m2-qx9p' })).rejects.toThrow();
+  fetchMock.mockResolvedValueOnce(response({ problem: { ...publicProblem, answerRevealed: false, solutionRevealed: false,
+    lastAttempt: null, attemptCount: 0, generator_data: 'PRIVATE', answerLatex: 'PRIVATE' } }, 201));
+  const one = practice.practiceSharedProblem({ code: 'K7M2QX9P' });
+  const two = practice.practiceSharedProblem({ code: 'K7M2QX9P' });
+  expect(one).toBe(two);
+  const result = await one;
+  expect(result.id).toBe(publicProblem.id);
+  expect(JSON.stringify(result)).not.toContain('PRIVATE');
+  const [url, options] = fetchMock.mock.calls[1];
+  expect(url).toBe('/api/shares/practice');
+  expect(JSON.parse(String(options?.body))).toEqual({ code: 'K7M2QX9P' });
+  expect(options?.headers).toHaveProperty('Authorization', 'Bearer account-token');
+  expect(options?.headers).toEqual(fetchMock.mock.calls[0][1]?.headers);
+});
+
+it('discards a shared copy returned for the previous account', async () => {
+  practice.configurePracticeAuth(async () => 'account-token');
+  let finish!: (response: Response) => void;
+  fetchMock.mockImplementationOnce(() => new Promise(resolve => { finish = resolve; }));
+  const copy = practice.practiceSharedProblem({ token: 'a'.repeat(43) });
+  await vi.waitFor(() => expect(fetchMock).toHaveBeenCalledOnce());
+  practice.resetPractice();
+  finish(response({ problem: publicProblem }));
+  await expect(copy).rejects.toThrow('expired');
+});
+
 it('keeps elapsed time and idempotency key stable after an uncertain saved-attempt failure', async () => {
   const problem = await savedProblem();
   fetchMock.mockRejectedValueOnce(new TypeError('connection lost'));

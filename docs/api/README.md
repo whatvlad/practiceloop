@@ -226,7 +226,7 @@ counts, and any previous correct attempt keeps the problem counted as correct.
 null; the UI then shows the Google-session name. Account data
 comes from the verified session/profile, never client-supplied identity fields.
 
-## Sharing (#37)
+## Sharing (#37, #109)
 
 An owner shares a saved problem's statement, topic and difficulty, nothing more.
 A share has two independent random keys: a link token (32 bytes from
@@ -271,6 +271,35 @@ in total. The Pages proxy does not pass the client address, so lookups share
 one window; guessing a code or token stays infeasible at that rate. The
 frontend serves shares at `/s/{token}`, `/shared/{token}` and `/shared?code=...`,
 all with a `noindex, nofollow` robots meta tag on top of the site's `X-Robots-Tag`.
+
+### `POST /api/shares/practice`
+
+Requires a verified account and a UUID v4 `Idempotency-Key`. The strict body
+contains exactly one reference: `{"token":"43 base64url chars"}` or
+`{"code":"K7M2-QX9P"}`. Code normalization matches public lookup. Unknown
+fields are rejected. This shares the generation limit of 30 requests per
+minute per user.
+
+Returns `201 {"problem": ...}` in the normal saved-problem shape, with a new
+recipient-owned ID, zero attempts and both reveal flags false. The server
+copies the exact trusted statement, topic, difficulty and private solution
+record. It does not regenerate a similar exercise or copy the sender's attempts,
+answers or reveal state. The private record remains server-only; answer checks,
+explicit reveals and history use the recipient's normal saved-practice routes.
+
+Missing, expired, revoked and malformed references use the public lookup error
+states. Copying locks the source problem and share through commit so revocation
+cannot race a new copy. The copy and idempotency outcome commit atomically.
+Repeating the same key and normalized body within 24 hours replays the original
+response, including after the share ends, without creating another problem.
+An ended share cannot create a new copy with a fresh key. Existing recipient
+copies survive revocation, expiry and deletion of the sender's account.
+
+The shared page offers **Solve this problem** for an account, or **Sign in to
+solve this problem** for a visitor. A validated shared route is kept in this
+tab's session storage across Google sign-in and consumed on return. It contains
+only the existing link token or code. Arbitrary return URLs are rejected. The
+recipient then explicitly starts solving; there is no automatic copy on lookup.
 
 ## Reports (#38)
 

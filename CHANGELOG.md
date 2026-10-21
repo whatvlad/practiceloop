@@ -5,6 +5,12 @@ User-facing releases. Known limitations of the current release are in
 
 ## Unreleased
 
+- **Solve a shared problem.** A shared link or code now offers the exact
+  exercise for practice after sign-in. Google sign-in returns to the shared
+  problem, and solving saves a separate copy in the recipient's history with
+  answer checking and explicit answer/solution reveal. Sender attempts and
+  reveal state stay private. (#109)
+
 - **Partial derivatives.** A second Derivatives topic at levels 1-5: first
   partials in x and y, second and mixed partials and three variables, the chain
   rule after changing to polar or cylindrical coordinates, and the Jacobian of

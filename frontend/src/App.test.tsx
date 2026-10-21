@@ -37,6 +37,7 @@ let element: HTMLDivElement;
 beforeEach(() => {
   (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
   harness.set(signedOut);
+  sessionStorage.clear();
   vi.clearAllMocks();
   vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
   element = document.createElement('div');
@@ -97,6 +98,32 @@ describe('client route protection and auth UI', () => {
     });
     expect(window.location.pathname).toBe('/login');
     expect(element.querySelector('[role="alert"]')?.textContent).toBe('Google sign-in did not finish.');
+  });
+
+  it.each([`/s/${'a'.repeat(43)}`, '/shared?code=K7M2QX9P'])('returns from Google to the selected shared problem: %s', async path => {
+    await renderAt(`/login?next=${encodeURIComponent(path)}`);
+    await act(async () => element.querySelector('button')!.click());
+    expect(harness.store.signIn).toHaveBeenCalledOnce();
+    // OAuth returns to a fresh callback URL without the original query string.
+    await renderAt('/auth/callback', signedIn);
+    expect(window.location.pathname + window.location.search).toBe(path);
+    expect(sessionStorage.getItem('practiceloop:shared-return')).toBeNull();
+  });
+
+  it('preserves the shared exercise after a rejected sign-in and retry', async () => {
+    const path = `/s/${'b'.repeat(43)}`;
+    await renderAt(`/login?next=${encodeURIComponent(path)}`);
+    await act(async () => element.querySelector('button')!.click());
+    await renderAt('/auth/callback', { ...signedOut, error: 'Try again.' });
+    expect(window.location.pathname).toBe('/login');
+    await act(async () => element.querySelector('button')!.click());
+    await renderAt('/auth/callback', signedIn);
+    expect(window.location.pathname).toBe(path);
+  });
+
+  it.each(['https://example.invalid', '//example.invalid', '/practice?id=someone-else', '/s/short'])('ignores unsafe auth destinations: %s', async next => {
+    await renderAt(`/login?next=${encodeURIComponent(next)}`, signedIn);
+    expect(window.location.pathname).toBe('/dashboard');
   });
 
   it('disables repeated sign-in attempts while opening Google', async () => {

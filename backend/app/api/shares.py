@@ -12,11 +12,24 @@ from uuid import UUID
 
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
+from pydantic import BaseModel, ConfigDict, Field
 
-from app.api.practice import RateLimiter, User, _not_found, _public_share
+from app.api.practice import (
+    IdempotencyKey,
+    RateLimiter,
+    User,
+    _idempotency_key,
+    _not_found,
+    _public_problem,
+    _public_share,
+    _respond,
+    generation_limit,
+)
 from app.core.database import transaction
 from app.core.errors import ApiError
-from app.services import shares
+from app.services import idempotency, shares
+from app.services import owned_records as records
+from app.services.idempotency import Scope, StoredResponse
 from app.services.shares import SharedProblem, State
 
 router = APIRouter(tags=["sharing"])
@@ -32,6 +45,47 @@ _UNAVAILABLE = {
     State.EXPIRED: (410, "share_expired", "This shared problem has expired."),
     State.REVOKED: (410, "share_revoked", "The owner has stopped sharing this problem."),
 }
+
+
+class PracticeShareBody(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True)
+    token: str | None = Field(default=None, max_length=43)
+    code: str | None = Field(default=None, max_length=32)
+
+
+@router.post("/shares/practice", status_code=201)
+def practice_shared(
+    body: PracticeShareBody, user: User, key: IdempotencyKey = None
+) -> JSONResponse:
+    """Start a separate saved exercise from a live share, with normal private reveals."""
+    if (body.token is None) == (body.code is None):
+        raise _invalid_share()
+    code = shares.normalize_code(body.code) if body.code is not None else None
+    if (body.token is not None and not shares.valid_token(body.token)) or (
+        body.code is not None and code is None
+    ):
+        raise _invalid_share()
+    scope = Scope(
+        user.id,
+        "POST",
+        "/shares/practice",
+        _idempotency_key(key),
+        idempotency.request_hash({"token": body.token, "code": code}),
+    )
+    generation_limit.check(user.id)
+    with transaction(user.id) as conn:
+        records.ensure_profile(conn, user.id)
+        stored = idempotency.claim(conn, scope)
+        if stored is not None:
+            # Replays open an existing recipient copy, even after a share ends.
+            return _respond(stored, replayed=True)
+        copied = shares.copy_for_practice(conn, user.id, token=body.token, code=code)
+        if isinstance(copied, State):
+            status, error, message = _UNAVAILABLE[copied]
+            raise ApiError(status, error, message)
+        response = StoredResponse(201, {"problem": _public_problem(copied, None)})
+        idempotency.store(conn, scope, response)
+    return _respond(response)
 
 
 @router.post("/problems/{problem_id}/share")

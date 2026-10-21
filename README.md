@@ -17,7 +17,8 @@ https://practiceloop.pages.dev (noindex). Signed-in learners can:
 - reveal the answer or the full step-by-step solution;
 - reopen every generated problem from history after a reload;
 - share a problem's statement by link or short code for 90 days, and stop
-  sharing it at any time; recipients need no account;
+  sharing it at any time; recipients can view it without an account and sign
+  in to solve the exact exercise in their own saved history;
 - see profile counts, constant-omission statistics, an optional display name,
   and delete their account.
 

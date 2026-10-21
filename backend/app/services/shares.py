@@ -20,6 +20,8 @@ from uuid import UUID
 from psycopg import Connection, errors
 from psycopg.rows import dict_row
 
+from app.services import owned_records as records
+
 LIFETIME_DAYS = 90
 # Crockford base32: no I, L, O or U, so a code survives being read aloud or retyped.
 CODE_ALPHABET = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
@@ -154,3 +156,47 @@ def lookup(
     if row.pop("expired"):
         return State.EXPIRED
     return SharedProblem(**row)
+
+
+def copy_for_practice(
+    conn: Connection[Any], user_id: UUID, *, token: str | None, code: str | None
+) -> records.ProblemRecord | State:
+    """Copy trusted content, never the sender's attempts or reveal state.
+
+    Lock the source problem and share until commit. Revocation locks/updates
+    these rows too, so it cannot race an authorized copy. The caller owns the
+    idempotency claim and transaction; no source ID leaves this function.
+    """
+    with conn.cursor(row_factory=dict_row) as cur:
+        cur.execute(
+            "select t.slug as topic, p.difficulty, p.problem_latex,"
+            " s.revoked_at is not null as revoked, s.expires_at <= now() as expired,"
+            " a.generator_version, a.generator_data, a.answer_latex, a.solution_steps"
+            " from private.problem_shares s"
+            " join public.problems p on p.id = s.problem_id and p.user_id = s.user_id"
+            " join public.topics t on t.id = p.topic_id"
+            " join private.problem_solutions a on a.problem_id = p.id"
+            " where s.token = %(token)s or s.code = %(code)s"
+            " for share of p, s",
+            {"token": token, "code": code},
+        )
+        row = cur.fetchone()
+    if row is None:
+        return State.MISSING
+    if row["revoked"]:
+        return State.REVOKED
+    if row["expired"]:
+        return State.EXPIRED
+    return records.insert_problem(
+        conn,
+        user_id,
+        row["topic"],
+        row["difficulty"],
+        row["problem_latex"],
+        records.PrivateSolution(
+            row["generator_version"],
+            row["generator_data"],
+            row["answer_latex"],
+            row["solution_steps"],
+        ),
+    )

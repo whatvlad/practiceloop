@@ -20,7 +20,7 @@ Where each part is documented:
 | Mixed practice and mistake feedback | #36 | docs/api/README.md, TOPIC_GENERATORS.md |
 | Practice areas: Integrals and Derivatives | #98 | docs/api/README.md "GET /api/topics", ADR-005 |
 | Partial derivatives, coordinate changes, Jacobians (`partial-v1`) | #101 | TOPIC_GENERATORS.md, ADR-005 |
-| Problem sharing by link and code | #37 | docs/api/README.md "Sharing" |
+| Problem sharing by link and code; recipient-owned solving | #37, #109 | docs/api/README.md "Sharing" |
 | Production readiness on preview (metadata, headers, reports, privacy draft) | #38 | docs/production/PRODUCTION_CHECKLIST.md |
 | End-to-end check | #13 | docs/production/MVP_E2E_CHECK.md |
 | Hosting, deploy, audit, backups | #14, #28, #33 | docs/production/ORACLE_DEPLOY.md |
