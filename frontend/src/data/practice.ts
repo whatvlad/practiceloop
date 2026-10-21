@@ -1,14 +1,16 @@
 // Saved account practice and an isolated, untracked guest preview. Public cache only.
 import text from '../../../backend/app/content/en.json';
-import { TOPICS } from './topics';
+import { AREAS, TOPICS, areaOf } from './topics';
 import { FEEDBACK_CODES } from './types';
-import type { AvailableTopic, Catalogue, CheckOutcome, Difficulty, LearningStatistics, OmissionMetric, OpenedProblem, ProblemPage, ProblemShare, ProfileCounts, PublicProblem, ReportCategory, RevealedAnswer, RevealedSolution, PracticeTopic, TopicSlug } from './types';
+import type { AreaSlug, AvailableArea, AvailableTopic, Catalogue, CheckOutcome, Difficulty, LearningStatistics, OmissionMetric, OpenedProblem, ProblemPage, ProblemShare, ProfileCounts, PublicProblem, ReportCategory, RevealedAnswer, RevealedSolution, PracticeTopic, TopicSlug } from './types';
 
 const base = (import.meta.env.VITE_API_BASE_URL ?? '/api').trim().replace(/\/+$/, '');
 let token: Promise<string> | null = null;
 let epoch = 0;
 let problems: PublicProblem[] = [];
-let selection: { topic: PracticeTopic; difficulty: Difficulty } = { topic: 'basic-integrals', difficulty: 1 };
+export interface Selection { topic: PracticeTopic; difficulty: Difficulty; area: AreaSlug }
+const FIRST: Selection = { topic: 'basic-integrals', difficulty: 1, area: 'integrals' };
+let selection: Selection = { ...FIRST };
 let generating: Promise<PublicProblem> | null = null;
 let accessToken: () => Promise<string | null> = async () => null;
 const keys = new Map<string, string>();
@@ -26,7 +28,7 @@ export function resetPractice(): void {
   token = null;
   generating = null;
   problems = [];
-  selection = { topic: 'basic-integrals', difficulty: 1 };
+  selection = { ...FIRST };
   keys.clear();
   elapsed.clear();
   pending.clear();
@@ -286,11 +288,11 @@ function difficulties(value: unknown): Difficulty[] {
   return [...new Set(value)] as Difficulty[];
 }
 
-function mixedPractice(value: unknown): Catalogue['mixed'] {
-  if (value === undefined) return null;
+function mixedPractice(value: unknown, area: AreaSlug): AvailableArea['mixed'] {
+  if (value === null) return null;
   const data = object(value);
   const weights = object(data.weights);
-  if (Object.entries(weights).some(([slug, weight]) => !TOPICS.some(t => t.slug === slug)
+  if (Object.entries(weights).some(([slug, weight]) => !TOPICS.some(t => t.slug === slug && t.area === area)
     || !Number.isSafeInteger(weight) || (weight as number) <= 0)) throw new Error(text.service_error);
   return { availableDifficulties: difficulties(data.availableDifficulties), weights: weights as Record<TopicSlug, number> };
 }
@@ -303,44 +305,56 @@ export async function getCatalogue(): Promise<Catalogue> {
   const started = epoch;
   const bearer = await accessToken();
   if (started !== epoch) throw new Error(text.expired);
-  if (!bearer) return { topics: TOPICS.slice(0, 2).map(topic => ({ ...topic, availableDifficulties: [1, 2] })), mixed: null };
+  if (!bearer) return { areas: [{ ...AREAS[0], mixed: null }], topics: TOPICS.slice(0, 2).map(topic => ({ ...topic, availableDifficulties: [1, 2] })) };
   const data = await request('/topics', undefined, bearer, true);
   if (started !== epoch) throw new Error(text.expired);
-  if (!Array.isArray(data.items)) throw new Error(text.service_error);
+  if (!Array.isArray(data.items) || !Array.isArray(data.areas)) throw new Error(text.service_error);
+  const areas = data.areas.map((value: unknown) => {
+    const item = object(value);
+    const area = AREAS.find(a => a.slug === item.slug);
+    if (!area) throw new Error(text.service_error);
+    return { ...area, mixed: mixedPractice(item.mixed, area.slug) };
+  });
   const seen = new Set<string>();
   const topics = data.items.map((value: unknown) => {
     const item = object(value);
     const topic = TOPICS.find(t => t.slug === item.slug);
-    if (!topic || seen.has(topic.slug) || !Array.isArray(item.availableDifficulties)
+    if (!topic || seen.has(topic.slug) || item.area !== topic.area || !areas.some(a => a.slug === topic.area)
+      || !Array.isArray(item.availableDifficulties)
       || item.availableDifficulties.some(level => ![1, 2, 3, 4, 5].includes(level))) throw new Error(text.service_error);
     seen.add(topic.slug);
     return { ...topic, availableDifficulties: [...new Set(item.availableDifficulties)] as Difficulty[] };
   });
-  return { topics, mixed: mixedPractice(data.mixed) };
+  if (new Set(areas.map(a => a.slug)).size !== areas.length) throw new Error(text.service_error);
+  return { areas, topics };
 }
 
-export function generateProblem(topic: PracticeTopic, difficulty: Difficulty): Promise<PublicProblem> {
+/** `area` picks the area mixed practice draws from; a topic carries its own area. */
+export function generateProblem(topic: PracticeTopic, difficulty: Difficulty, area: AreaSlug = 'integrals'): Promise<PublicProblem> {
   const mixed = topic === 'mixed';
-  if ((!mixed && !TOPICS.some(t => t.slug === topic)) || ![1, 2, 3, 4, 5].includes(difficulty)) return Promise.reject(new Error(text.unsupported));
+  if ((!mixed && !TOPICS.some(t => t.slug === topic)) || ![1, 2, 3, 4, 5].includes(difficulty)
+    || !AREAS.some(a => a.slug === area)) return Promise.reject(new Error(text.unsupported));
+  const drawFrom = mixed ? area : areaOf(topic);
   if (generating) return generating;
   const started = epoch;
   const operation = (async () => {
     const { bearer, saved } = await credentials();
     if (!saved && (mixed || !['basic-integrals', 'substitution'].includes(topic) || ![1, 2].includes(difficulty))) throw new Error(text.unsupported);
-    const operation = `generate:${topic}:${difficulty}`;
+    const operation = mixed ? `generate:mixed:${drawFrom}:${difficulty}` : `generate:${topic}:${difficulty}`;
     const authorized = await authorize(started, saved, bearer);
-    const response = await request('/problems', { topic, difficulty }, authorized, saved, operation);
+    const body = mixed ? { topic, area: drawFrom, difficulty } : { topic, difficulty };
+    const response = await request('/problems', body, authorized, saved, operation);
     const data = saved ? object(response.problem) : response;
     if (started !== epoch) throw new Error(text.expired);
     if (typeof data.id !== 'string' || typeof data.problemLatex !== 'string' || typeof data.createdAt !== 'string'
-        || (mixed ? !TOPICS.some(t => t.slug === data.topic) : data.topic !== topic)
+        || (mixed ? !TOPICS.some(t => t.slug === data.topic && t.area === drawFrom) : data.topic !== topic)
         || data.difficulty !== difficulty) throw new Error(text.service_error);
     // Explicit projection: even a malformed server response cannot cache private fields.
     const problem: PublicProblem = { saved, id: data.id, topic: data.topic as TopicSlug, difficulty,
       problemLatex: data.problemLatex, createdAt: data.createdAt, answerRevealed: false, solutionRevealed: false,
       lastResult: null, lastAnswer: null, ...(mixed ? { mixed: true } : {}) };
     problems.unshift(problem);
-    selection = { topic, difficulty };
+    selection = { topic, difficulty, area: drawFrom };
     keys.delete(operation);
     return structuredClone(problem);
   })();

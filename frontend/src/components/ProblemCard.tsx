@@ -1,6 +1,6 @@
 import type { CheckResult, Difficulty, FeedbackCode, SolutionStep, TopicSlug } from '../data/types';
-import { isDefinite } from '../format';
-import { topicName } from '../data/topics';
+import { leadText, problemKind, type ProblemKind } from '../format';
+import { subjectName, topicName } from '../data/topics';
 import { AnswerInput } from './AnswerInput';
 import { Button } from './Button';
 import { DifficultyDots } from './DifficultyScale';
@@ -36,10 +36,16 @@ interface ProblemCardProps {
 }
 
 /** Targeted feedback only for a matched mistake (#36); otherwise a general hint, never a guess. */
-export function incorrectMessage(feedback: FeedbackCode | null, definite: boolean): string {
+export function incorrectMessage(feedback: FeedbackCode | null, kind: ProblemKind): string {
   if (feedback) return text[`feedback_${feedback}`];
-  return definite ? text.general_hint_definite : text.general_hint;
+  return { indefinite: text.general_hint, definite: text.general_hint_definite, derivative: text.general_hint_derivative }[kind];
 }
+
+const PLACEHOLDERS: Record<ProblemKind, string> = {
+  indefinite: 'e.g. x^2/2 + C',
+  definite: 'e.g. 3/2 or e - 1',
+  derivative: 'e.g. 2x cos(x^2)',
+};
 
 /** The one lifted surface: a problem, its answer field and every action on it. */
 export function ProblemCard({
@@ -62,13 +68,13 @@ export function ProblemCard({
   solution,
 }: ProblemCardProps) {
   const solved = result === 'correct';
-  const definite = isDefinite(problemLatex);
-  const message = result === 'incorrect' ? incorrectMessage(feedback, definite) : undefined;
+  const kind = problemKind(topic, problemLatex);
+  const message = result === 'incorrect' ? incorrectMessage(feedback, kind) : undefined;
   return (
     <section className="pl-problem" aria-label="Problem" aria-busy={busy}>
       <div className="pl-problem-head">
         <div className="meta">
-          <span className="pl-tag">Integration — {topicName(topic)}{mixed && ' · Mixed practice'}</span>
+          <span className="pl-tag">{subjectName(topic)} — {topicName(topic)}{mixed && ' · Mixed practice'}</span>
           <span className="pl-small pl-muted">
             <DifficultyDots level={difficulty} />
           </span>
@@ -76,7 +82,7 @@ export function ProblemCard({
         {headLabel && <span className="pl-label">{headLabel}</span>}
       </div>
       <div className="pl-stack pl-gap-3">
-        <p className="pl-lead">{definite ? text.calculate_definite : text.calculate}</p>
+        <p className="pl-lead">{leadText(kind)}</p>
         <div className="pl-expr">
           <Tex latex={problemLatex} display />
         </div>
@@ -86,7 +92,7 @@ export function ProblemCard({
         value={answer}
         onChange={onAnswerChange}
         state={result}
-        placeholder={definite ? 'e.g. 3/2 or e - 1' : 'e.g. x^2/2 + C'}
+        placeholder={PLACEHOLDERS[kind]}
         describedBy={result ? 'answer-result' : undefined}
         onEnter={solved || busy ? undefined : onCheck}
         assist
