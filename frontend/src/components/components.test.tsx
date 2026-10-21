@@ -58,6 +58,16 @@ describe('ProblemCard', () => {
     expect(html).toContain('placeholder="e.g. 2x cos(x^2)"');
   });
 
+  it('offers the declared variables of a partial derivative on the keypad (#96, #101)', () => {
+    const polar = 'f = x y,\\quad x = r \\cos{\\left(\\theta \\right)}:\\quad \\frac{\\partial f}{\\partial \\theta}'
+      + '\\quad(r > 0,\\ \\theta \\in \\mathbb{R})';
+    const html = card({ topic: 'partial-derivatives', problemLatex: polar });
+    expect(html).toContain(text.calculate_partial);
+    expect(html).toContain('>θ<');
+    expect(html).not.toContain('>+C<');
+    expect(card()).not.toContain('>θ<');
+  });
+
   it('asks for a definite integral without a constant when the statement has bounds', () => {
     expect(card()).toContain('Calculate the indefinite integral.');
     const html = card({ problemLatex: '\\int_{0}^{1} \\left(x e^{x}\\right)\\,dx' });
