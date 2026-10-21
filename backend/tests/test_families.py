@@ -278,4 +278,5 @@ def test_existing_preview_versions_are_unchanged_and_new_cells_are_offered():
         "integration-by-parts": (1, 2, 3),
         "rational-functions": (1, 2, 3, 4, 5),
         "trigonometric-integrals": (1, 2, 3, 4, 5),
+        "derivatives": (1, 2, 3, 4, 5),
     }

@@ -1,3 +1,4 @@
+import text from '../../../backend/app/content/en.json';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import { ApiStatusNotice } from './ApiStatusNotice';
@@ -47,6 +48,14 @@ describe('ProblemCard', () => {
     const html = card({ answerLatex: '\\sin(x^2) + C', solution: [{ say: 'Let', latex: 'u = x^2' }, { say: 'Integrate', latex: '\\sin(u) + C' }] });
     expect(html).toContain('pl-answer');
     expect(html).toContain('<li class="final">');
+  });
+
+  it('asks for a derivative with its own tag, hint and placeholder (#98)', () => {
+    const html = card({ topic: 'derivatives', problemLatex: "\\frac{d}{dx}\\left(x^{2}\\right)", result: 'incorrect' });
+    expect(html).toContain('Differentiation — Derivatives');
+    expect(html).toContain(text.calculate_derivative.replace("'", '&#x27;'));
+    expect(html).toContain(text.general_hint_derivative);
+    expect(html).toContain('placeholder="e.g. 2x cos(x^2)"');
   });
 
   it('asks for a definite integral without a constant when the statement has bounds', () => {

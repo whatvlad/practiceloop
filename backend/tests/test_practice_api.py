@@ -524,6 +524,7 @@ def test_topics_lists_only_generated_cells(client: TestClient) -> None:
         ("integration-by-parts", [1, 2, 3]),
         ("rational-functions", [1, 2, 3, 4, 5]),
         ("trigonometric-integrals", [1, 2, 3, 4, 5]),
+        ("derivatives", [1, 2, 3, 4, 5]),
     ]
 
 
@@ -576,8 +577,12 @@ def test_an_area_with_one_topic_offers_no_mixed_practice(
     [
         (
             level,
-            [slug for slug, topic in practice.TOPICS.items() if level in topic.levels],
-            [topic.mixed_weight for topic in practice.TOPICS.values() if level in topic.levels],
+            [s for s, t in practice.TOPICS.items() if level in t.levels and t.area == "integrals"],
+            [
+                t.mixed_weight
+                for t in practice.TOPICS.values()
+                if level in t.levels and t.area == "integrals"
+            ],
         )
         # Only the topics that offer a level take part in its draw.
         for level in (1, 4)
