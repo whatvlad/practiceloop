@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { ApiStatusNotice } from './ApiStatusNotice';
 import { DifficultyScale } from './DifficultyScale';
 import { ProblemCard } from './ProblemCard';
+import { TOPICS } from '../data/topics';
 import { TopicChips } from './TopicChips';
 
 const noop = () => {};
@@ -62,7 +63,7 @@ describe('ProblemCard', () => {
 
 describe('selection controls', () => {
   it('marks exactly one topic and one level as pressed', () => {
-    const chips = renderToStaticMarkup(<TopicChips selected="substitution" onSelect={noop} />);
+    const chips = renderToStaticMarkup(<TopicChips topics={TOPICS.filter((t) => t.area === "integrals").slice(0, 5)} selected="substitution" onSelect={noop} />);
     expect(chips.match(/aria-pressed="true"/g)).toHaveLength(1);
     expect(chips.match(/aria-pressed="false"/g)).toHaveLength(4);
     const scale = renderToStaticMarkup(<DifficultyScale selected={3} onSelect={noop} />);

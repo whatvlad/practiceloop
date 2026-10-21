@@ -136,14 +136,29 @@ def key() -> dict[str, str]:
 
 def full_flow(api: httpx.Client, url: str) -> list[str]:
     topics = api.get("/topics").json()
-    cells = [(t["slug"], d) for t in topics["items"] for d in t["availableDifficulties"]]
-    cells += [("mixed", d) for d in topics["mixed"]["availableDifficulties"]]
+    # ADR-005: every topic names a listed area, and mixed practice is per area.
+    areas = {area["slug"]: area for area in topics["areas"]}
+    check(
+        all(t["area"] in areas for t in topics["items"]) and "integrals" in areas,
+        "topics are grouped by listed areas",
+        topics["areas"],
+    )
+    cells: list[tuple[str, int, dict[str, str]]] = [
+        (t["slug"], d, {}) for t in topics["items"] for d in t["availableDifficulties"]
+    ]
+    cells += [
+        ("mixed", d, {"area": slug})
+        for slug, area in areas.items()
+        if area["mixed"]
+        for d in area["mixed"]["availableDifficulties"]
+    ]
     check(len(cells) == 28, "topics list 23 cells plus 5 mixed levels", len(cells))
     created: list[str] = []
-    for topic, level in cells:
+    for topic, level, extra in cells:
         reset_limits()
-        label = f"{topic} L{level}"
-        response = api.post("/problems", json={"topic": topic, "difficulty": level}, headers=key())
+        label = f"{topic} L{level}" + (f" ({extra['area']})" if extra else "")
+        body = {"topic": topic, "difficulty": level, **extra}
+        response = api.post("/problems", json=body, headers=key())
         if response.status_code != 201:
             check(False, f"generate {label}", response.text)
             continue

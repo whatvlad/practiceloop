@@ -23,7 +23,7 @@ from app.core import database
 from app.core.auth import VerifiedUser, current_user
 from app.generators.core import catalogue
 from app.main import app
-from app.services import idempotency
+from app.services import idempotency, learning_stats
 from app.services import owned_records as records
 from app.services.idempotency import Scope, StoredResponse
 from app.services.math_worker import AnswerCheck, MathCheckInconclusive, MathWorkerError
@@ -528,17 +528,47 @@ def test_topics_lists_only_generated_cells(client: TestClient) -> None:
 
 
 def test_topics_publish_the_fixed_mixed_practice_weights(client: TestClient) -> None:
-    mixed = client.get("/topics").json()["mixed"]
-    assert mixed == {
-        "availableDifficulties": [1, 2, 3, 4, 5],
-        "weights": {
-            "basic-integrals": 1,
-            "substitution": 2,
-            "integration-by-parts": 2,
-            "rational-functions": 2,
-            "trigonometric-integrals": 2,
+    areas = client.get("/topics").json()["areas"]
+    assert areas[0] == {
+        "slug": "integrals",
+        "name": "Integrals",
+        "mixed": {
+            "availableDifficulties": [1, 2, 3, 4, 5],
+            "weights": {
+                "basic-integrals": 1,
+                "substitution": 2,
+                "integration-by-parts": 2,
+                "rational-functions": 2,
+                "trigonometric-integrals": 2,
+            },
         },
     }
+
+
+def test_topics_are_grouped_by_area(client: TestClient) -> None:
+    body = client.get("/topics").json()
+    areas = [area["slug"] for area in body["areas"]]
+    assert set(areas) <= set(practice.AREAS) and "integrals" in areas
+    # Every topic names an area the response lists, and an area appears only with topics.
+    assert {item["area"] for item in body["items"]} == set(areas)
+    for item in body["items"]:
+        assert item["area"] == practice.TOPICS[item["slug"]].area
+
+
+def test_an_area_with_one_topic_offers_no_mixed_practice(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    topics = dict(practice.TOPICS)
+    topics["derivatives"] = practice.Topic("Derivatives", "derivatives", (1, 2), 1)
+    monkeypatch.setattr(practice, "TOPICS", topics)
+    areas = {area["slug"]: area for area in client.get("/topics").json()["areas"]}
+    assert areas["derivatives"] == {"slug": "derivatives", "name": "Derivatives", "mixed": None}
+    response = client.post(
+        "/problems",
+        json={"topic": "mixed", "area": "derivatives", "difficulty": 1},
+        headers=key(),
+    )
+    assert response.status_code == 422
 
 
 @pytest.mark.parametrize(
@@ -546,20 +576,16 @@ def test_topics_publish_the_fixed_mixed_practice_weights(client: TestClient) -> 
     [
         (
             level,
-            [slug for slug, (_, levels) in practice.TOPICS.items() if level in levels],
-            [
-                w
-                for slug, (_, levels) in practice.TOPICS.items()
-                if level in levels
-                for w in (practice.MIXED_WEIGHTS[slug],)
-            ],
+            [slug for slug, topic in practice.TOPICS.items() if level in topic.levels],
+            [topic.mixed_weight for topic in practice.TOPICS.values() if level in topic.levels],
         )
         # Only the topics that offer a level take part in its draw.
         for level in (1, 4)
     ],
 )
+@pytest.mark.parametrize("area", [None, "integrals"])
 def test_mixed_practice_draws_a_topic_with_the_published_weights(
-    client: TestClient, url: str, monkeypatch: pytest.MonkeyPatch, level, slugs, weights
+    client: TestClient, url: str, monkeypatch: pytest.MonkeyPatch, level, slugs, weights, area
 ) -> None:
     calls = []
 
@@ -568,7 +594,10 @@ def test_mixed_practice_draws_a_topic_with_the_published_weights(
         return [population[-1]]
 
     monkeypatch.setattr(practice._RANDOM, "choices", choices)
-    problem = generate(client, "mixed", level)
+    body = {"topic": "mixed", "difficulty": level, **({"area": area} if area else {})}
+    response = client.post("/problems", json=body, headers=key())
+    assert response.status_code == 201, response.text
+    problem = response.json()["problem"]
     assert calls == [(slugs, weights)]
     # The saved problem belongs to the drawn topic, so history and statistics stay per topic.
     assert (problem["topic"], problem["difficulty"]) == (slugs[-1], level)
@@ -580,9 +609,48 @@ def test_mixed_practice_draws_a_topic_with_the_published_weights(
     ) == [(slugs[-1],)]
 
 
+def test_mixed_practice_stays_within_the_chosen_area(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    calls = []
+
+    def choices(population, weights):
+        calls.append(population)
+        return [population[0]]
+
+    topics = dict(practice.TOPICS)
+    topics["derivatives"] = practice.Topic("Derivatives", "derivatives", (3,), 1)
+    topics["partial-derivatives"] = practice.Topic("Partial derivatives", "derivatives", (3,), 1)
+    monkeypatch.setattr(practice, "TOPICS", topics)
+    monkeypatch.setattr(practice._RANDOM, "choices", choices)
+    generate(client, "mixed", 3)
+    assert set(calls[0]) == set(practice.area_topics("integrals"))
+    # The draw is all that is checked here; these topics have no catalogue in this test.
+    monkeypatch.setattr(practice, "_pick", lambda *_: (_ for _ in ()).throw(LookupError))
+    with pytest.raises(LookupError):
+        client.post(
+            "/problems",
+            json={"topic": "mixed", "area": "derivatives", "difficulty": 3},
+            headers=key(),
+        )
+    assert calls[1] == ["derivatives", "partial-derivatives"]
+
+
+@pytest.mark.parametrize(
+    "body",
+    [
+        {"topic": "mixed", "area": "geometry", "difficulty": 1},
+        {"topic": "basic-integrals", "area": "integrals", "difficulty": 1},
+        {"topic": "mixed", "area": "", "difficulty": 1},
+    ],
+)
+def test_generation_rejects_unknown_or_misplaced_areas(client: TestClient, body) -> None:
+    assert client.post("/problems", json=body, headers=key()).status_code == 422
+
+
 def test_mixed_practice_reaches_every_offered_topic(client: TestClient) -> None:
     seen = {generate(client, "mixed", 3)["topic"] for _ in range(25)}
-    assert seen <= set(practice.MIXED_WEIGHTS) and len(seen) >= 3
+    assert seen <= set(practice.area_topics("integrals")) and len(seen) >= 3
 
 
 @pytest.mark.parametrize("level", [0, 6])
@@ -805,6 +873,25 @@ def test_omission_metrics_exclude_definite_integrals(client, monkeypatch):
     stats = client.get("/statistics").json()
     assert (stats["checkedAttempts"], stats["byTopicDifficulty"]) == (0, [])
     assert sum(w["checkedAttempts"] for w in stats["weekly"]) == 0
+
+
+@pytest.mark.parametrize("version", learning_stats.CONSTANT_FREE_VERSIONS)
+def test_omission_metrics_exclude_every_constant_free_version(client, url, version):
+    # ADR-005: derivatives and multiple integrals never take a constant either.
+    problem = generate(client)
+    with psycopg.connect(url) as conn:
+        conn.execute(
+            "update private.problem_solutions set generator_version = %s where problem_id = %s",
+            (version, problem["id"]),
+        )
+        conn.execute(
+            "insert into public.attempts(problem_id,user_id,user_answer,is_correct,"
+            "constant_omitted) select id, user_id, 'x', false, true from public.problems"
+            " where id = %s",
+            (problem["id"],),
+        )
+    stats = client.get("/statistics").json()
+    assert (stats["checkedAttempts"], stats["byTopicDifficulty"]) == (0, [])
 
 
 def test_optional_name_is_owner_scoped_editable_and_removable(client, users):

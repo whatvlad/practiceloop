@@ -163,7 +163,8 @@ it('deduplicates attempts and retains their key on retry with a refreshed access
 
 it('loads supported topic cells from the API, including future higher levels', async () => {
   practice.configurePracticeAuth(async () => 'access-token');
-  fetchMock.mockResolvedValueOnce(response({ items: [{ slug: 'basic-integrals', name: 'Basic integrals', availableDifficulties: [1, 2, 3, 4, 5] }] }));
+  fetchMock.mockResolvedValueOnce(response({ areas: [{ slug: 'integrals', name: 'Integrals', mixed: null }],
+    items: [{ slug: 'basic-integrals', name: 'Basic integrals', area: 'integrals', availableDifficulties: [1, 2, 3, 4, 5] }] }));
   expect((await practice.getTopics())[0].availableDifficulties).toEqual([1, 2, 3, 4, 5]);
   expect(fetchMock.mock.calls[0][0]).toBe('/api/topics');
   expect(fetchMock.mock.calls[0][1]?.method).toBe('GET');
@@ -174,22 +175,52 @@ it('loads supported topic cells from the API, including future higher levels', a
 it('reads published mixed-practice weights and keeps the drawn topic with a mixed flag', async () => {
   practice.configurePracticeAuth(async () => 'access-token');
   const weights = { 'basic-integrals': 1, substitution: 2 };
-  fetchMock.mockResolvedValueOnce(response({ items: [{ slug: 'basic-integrals', availableDifficulties: [1] }],
-    mixed: { availableDifficulties: [1, 2, 3, 4, 5], weights } }));
-  expect((await practice.getCatalogue()).mixed).toEqual({ availableDifficulties: [1, 2, 3, 4, 5], weights });
+  fetchMock.mockResolvedValueOnce(response({ items: [{ slug: 'basic-integrals', area: 'integrals', availableDifficulties: [1] }],
+    areas: [{ slug: 'integrals', name: 'Integrals', mixed: { availableDifficulties: [1, 2, 3, 4, 5], weights } }] }));
+  expect((await practice.getCatalogue()).areas[0].mixed).toEqual({ availableDifficulties: [1, 2, 3, 4, 5], weights });
   fetchMock.mockResolvedValueOnce(response({ problem: { ...publicProblem, topic: 'substitution', difficulty: 3 } }, 201));
   const problem = await practice.generateProblem('mixed', 3);
-  expect(JSON.parse(String(fetchMock.mock.calls[1][1]?.body))).toEqual({ topic: 'mixed', difficulty: 3 });
+  expect(JSON.parse(String(fetchMock.mock.calls[1][1]?.body))).toEqual({ topic: 'mixed', area: 'integrals', difficulty: 3 });
   expect([problem.topic, problem.mixed]).toEqual(['substitution', true]);
-  expect(await practice.getLastSelection()).toEqual({ topic: 'mixed', difficulty: 3 });
+  expect(await practice.getLastSelection()).toEqual({ topic: 'mixed', difficulty: 3, area: 'integrals' });
   fetchMock.mockResolvedValueOnce(response({ problem: { ...publicProblem, topic: 'not-a-topic' } }, 201));
   await expect(practice.generateProblem('mixed', 1)).rejects.toThrow();
-  fetchMock.mockResolvedValueOnce(response({ items: [], mixed: { availableDifficulties: [1], weights: { other: 1 } } }));
+  fetchMock.mockResolvedValueOnce(response({ items: [], areas: [{ slug: 'integrals', mixed: { availableDifficulties: [1], weights: { other: 1 } } }] }));
+  await expect(practice.getCatalogue()).rejects.toThrow();
+});
+
+it('groups topics by area and draws mixed practice within the chosen area (#98)', async () => {
+  practice.configurePracticeAuth(async () => 'access-token');
+  fetchMock.mockResolvedValueOnce(response({
+    areas: [{ slug: 'integrals', name: 'Integrals', mixed: null }, { slug: 'derivatives', name: 'Derivatives', mixed: null }],
+    items: [
+      { slug: 'basic-integrals', area: 'integrals', availableDifficulties: [1] },
+      { slug: 'derivatives', area: 'derivatives', availableDifficulties: [1, 2, 3, 4, 5] },
+    ] }));
+  const catalogue = await practice.getCatalogue();
+  expect(catalogue.areas.map(area => area.slug)).toEqual(['integrals', 'derivatives']);
+  expect(catalogue.topics.map(topic => [topic.slug, topic.area])).toEqual([['basic-integrals', 'integrals'], ['derivatives', 'derivatives']]);
+  fetchMock.mockResolvedValueOnce(response({ problem: { ...publicProblem, topic: 'derivatives', difficulty: 2 } }, 201));
+  await practice.generateProblem('derivatives', 2);
+  expect(JSON.parse(String(fetchMock.mock.calls[1][1]?.body))).toEqual({ topic: 'derivatives', difficulty: 2 });
+  expect(await practice.getLastSelection()).toEqual({ topic: 'derivatives', difficulty: 2, area: 'derivatives' });
+  // A mixed draw from another area is a server error, never shown as this area's problem.
+  fetchMock.mockResolvedValueOnce(response({ problem: { ...publicProblem, topic: 'substitution', difficulty: 2 } }, 201));
+  await expect(practice.generateProblem('mixed', 2, 'derivatives')).rejects.toThrow();
+  expect(JSON.parse(String(fetchMock.mock.calls[2][1]?.body))).toEqual({ topic: 'mixed', area: 'derivatives', difficulty: 2 });
+});
+
+it('rejects a topic listed under the wrong area or an area the build does not know', async () => {
+  practice.configurePracticeAuth(async () => 'access-token');
+  fetchMock.mockResolvedValueOnce(response({ areas: [{ slug: 'integrals', mixed: null }, { slug: 'derivatives', mixed: null }],
+    items: [{ slug: 'derivatives', area: 'integrals', availableDifficulties: [1] }] }));
+  await expect(practice.getCatalogue()).rejects.toThrow();
+  fetchMock.mockResolvedValueOnce(response({ areas: [{ slug: 'geometry', mixed: null }], items: [] }));
   await expect(practice.getCatalogue()).rejects.toThrow();
 });
 
 it('offers guests no mixed practice', async () => {
-  expect((await practice.getCatalogue()).mixed).toBeNull();
+  expect((await practice.getCatalogue()).areas).toEqual([{ slug: 'integrals', name: 'Integrals', mixed: null }]);
   await expect(practice.generateProblem('mixed', 1)).rejects.toThrow('available');
   expect(fetchMock).not.toHaveBeenCalled();
 });

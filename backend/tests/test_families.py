@@ -272,7 +272,7 @@ def test_existing_preview_versions_are_unchanged_and_new_cells_are_offered():
     assert problem.integrand == 2 * X * sp.cos(X**2 + 1)
     from app.api.practice import TOPICS
 
-    assert {topic: levels for topic, (_, levels) in TOPICS.items()} == {
+    assert {topic: cell.levels for topic, cell in TOPICS.items()} == {
         "basic-integrals": (1, 2, 3, 4, 5),
         "substitution": (1, 2, 3, 4, 5),
         "integration-by-parts": (1, 2, 3),

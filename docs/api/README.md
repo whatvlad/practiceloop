@@ -100,17 +100,26 @@ responses never include expected answers, solution steps or generator data.
 
 ### `GET /api/topics`
 
-Returns only implemented template cells, and the fixed mixed-practice weights (#36):
+Returns the practice areas (ADR-005, #98), only implemented template cells, and
+each area's fixed mixed-practice weights (#36):
 
 ```json
-{"items":[{"slug":"basic-integrals","name":"Basic integrals","availableDifficulties":[1,2]}],
- "mixed":{"availableDifficulties":[1,2,3,4,5],"weights":{"basic-integrals":1,"substitution":2,"integration-by-parts":2,"rational-functions":2,"trigonometric-integrals":2}}}
+{"areas":[
+  {"slug":"integrals","name":"Integrals","mixed":{"availableDifficulties":[1,2,3,4,5],"weights":{"basic-integrals":1,"substitution":2,"integration-by-parts":2,"rational-functions":2,"trigonometric-integrals":2}}},
+  {"slug":"derivatives","name":"Derivatives","mixed":null}],
+ "items":[{"slug":"basic-integrals","name":"Basic integrals","area":"integrals","availableDifficulties":[1,2,3,4,5]}]}
 ```
 
-Mixed practice draws a topic for each problem with these weights, over the
-topics offered at the chosen level; at levels 1–2 integration by parts is not
-offered, so the others share its part. Weights are constants in
-`backend/app/api/practice.py`, never adapted to a learner's history.
+Every topic belongs to exactly one area, and `areas` lists only areas with at
+least one topic, in display order. The topic slugs are seeded in `public.topics`
+(migration `202610210003_topic_areas.sql`, which also stores each topic's
+`area`); a seeded topic appears in `items` only once its generator ships.
+`mixed` is `null` while an area has fewer than two topics.
+
+Mixed practice draws a topic of one area for each problem with these weights,
+over that area's topics offered at the chosen level; at levels 1–2 integration
+by parts is not offered, so the others share its part. Weights are constants in
+`TOPICS` in `backend/app/api/practice.py`, never adapted to a learner's history.
 
 ### `POST /api/problems`
 
@@ -120,8 +129,15 @@ Requires `Idempotency-Key: <UUIDv4>`.
 {"topic":"basic-integrals","difficulty":1}
 ```
 
-`topic` may also be `"mixed"` (levels 1–5): the server draws the topic with the
-published weights, and the saved problem and the response carry the drawn topic.
+`topic` may also be `"mixed"` (levels 1–5) with an optional `"area"` (default
+`"integrals"`): the server draws a topic of that area with the published
+weights, and the saved problem and the response carry the drawn topic. `area`
+with any other `topic`, an unknown area, or an area without mixed practice is
+`422 invalid_request`.
+
+```json
+{"topic":"mixed","area":"integrals","difficulty":3}
+```
 
 Returns `201` and the shared problem shape after the public problem, private
 solution and idempotency record commit atomically. An exact replay returns the
