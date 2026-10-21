@@ -380,6 +380,7 @@ def test_attempts_are_checked_by_the_real_worker_and_persisted(
         ("rational-functions", 5, "rational-v1"),
         ("trigonometric-integrals", 4, "trigonometric-v1"),
         ("integration-by-parts", 2, "definite-v1"),
+        ("double-integrals", 3, "double-v1"),
         ("rational-functions", 3, "definite-v1"),
     ],
 )
@@ -524,6 +525,7 @@ def test_topics_lists_only_generated_cells(client: TestClient) -> None:
         ("integration-by-parts", [1, 2, 3]),
         ("rational-functions", [1, 2, 3, 4, 5]),
         ("trigonometric-integrals", [1, 2, 3, 4, 5]),
+        ("double-integrals", [1, 2, 3, 4, 5]),
         ("derivatives", [1, 2, 3, 4, 5]),
     ]
 
@@ -541,6 +543,7 @@ def test_topics_publish_the_fixed_mixed_practice_weights(client: TestClient) -> 
                 "integration-by-parts": 2,
                 "rational-functions": 2,
                 "trigonometric-integrals": 2,
+                "double-integrals": 2,
             },
         },
     }

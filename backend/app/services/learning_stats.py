@@ -9,7 +9,7 @@ from uuid import UUID
 
 from psycopg import Connection
 
-CONSTANT_FREE_VERSIONS = ["definite-v1", "derivatives-v1"]
+CONSTANT_FREE_VERSIONS = ["definite-v1", "double-v1", "derivatives-v1"]
 
 
 def metric(checked: int, omitted: int) -> dict[str, Any]:

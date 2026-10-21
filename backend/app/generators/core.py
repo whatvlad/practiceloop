@@ -21,6 +21,9 @@ from app.generators.definite import replay_definite, value_latex
 from app.generators.derivatives import VERSION as DERIVATIVES_VERSION
 from app.generators.derivatives import records as derivative_records
 from app.generators.derivatives import replay_derivative
+from app.generators.double import TOPIC as DOUBLE_TOPIC
+from app.generators.double import records as double_records
+from app.generators.double import replay_double
 from app.generators.families import _families, replay_family
 
 COEFFICIENTS = (-3, -2, -1, 1, 2, 3)
@@ -36,7 +39,7 @@ class Exercise:
     primitive: Any
     steps: tuple[dict[str, str], ...]
     statement: str
-    # Exact value of a definite integral; None for indefinite exercises.
+    # Exact value of a definite or multiple integral; None for indefinite exercises.
     value: Any = None
     # False for derivatives (#97): `integrand` is then the function to
     # differentiate, `primitive` its derivative, and the answer has no `+ C`.
@@ -84,6 +87,18 @@ def replay(record: dict[str, object]) -> Exercise:
             tuple({"say": step.say, "latex": step.latex} for step in definite.solution_steps),
             definite.statement,
             definite.value,
+        )
+    if record.get("generator_version") == "double-v1":
+        double = replay_double(record)
+        return Exercise(
+            record,
+            double.problem.topic,
+            double.problem.difficulty,
+            None,
+            None,
+            double.solution_steps,
+            double.statement,
+            double.problem.value,
         )
     if record.get("generator_version") == DERIVATIVES_VERSION:
         derivative = replay_derivative(record)
@@ -221,11 +236,13 @@ def catalogue(topic: str, difficulty: int) -> tuple[Exercise, ...]:
                     difficulty=difficulty,
                 )
             )
+    elif topic == DOUBLE_TOPIC:
+        records = double_records(difficulty)
     elif topic == "derivatives":
         records = derivative_records(difficulty)
     else:
         records = _family_records(topic, difficulty)
-    if records:
+    if records and topic != DOUBLE_TOPIC:
         records += _definite_records(topic, difficulty)
     if not records:
         raise ValueError("Unsupported practice cell")

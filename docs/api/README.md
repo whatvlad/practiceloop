@@ -79,8 +79,8 @@ attempts through these authenticated routes.
 `feedbackCode` is `missing_constant`, one declared mistake code (#36) on an
 `incorrect` result, or `null`. The mistake codes are `power_rule`, `trig_sign`,
 `chain_factor`, `log_absolute`, `split_product`, `parts_sign`, `cycle_factor`,
-`partial_fraction_sign`, `definite_not_evaluated`, `bounds_reversed` and
-`definite_constant`. A code is sent only when the answer unambiguously matches
+`partial_fraction_sign`, `definite_not_evaluated`, `bounds_reversed`,
+`definite_constant` and `missing_jacobian` (#99). A code is sent only when the answer unambiguously matches
 that mistake; `null` on an incorrect answer means the UI shows a general hint.
 Clients treat an unknown code as `null`. A code is never an expected answer.
 Read responses add `attemptCount`, the total number of persisted attempts for

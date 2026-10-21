@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { mixedShares } from './data/topics';
 import type { AvailableTopic, Difficulty } from './data/types';
-import { formatWhen, isDefinite } from './format';
+import { formatWhen, isDefinite, leadText, problemKind } from './format';
 
 const NOW = new Date(2026, 9, 16, 15, 0);
 
@@ -18,6 +18,14 @@ describe('definite statements', () => {
   it('are recognized by their bounds', () => {
     expect(isDefinite('\\int_{0}^{\\pi} \\left(\\sin{\\left(x \\right)}\\right)\\,dx')).toBe(true);
     expect(isDefinite('\\int \\left(x\\right)\\,dx\\quad(x\\in\\mathbb{R})')).toBe(false);
+  });
+});
+
+describe('double integral statements', () => {
+  it('are one exact number with their own lead text', () => {
+    expect(problemKind('double-integrals', '\\int_{0}^{1}\\int_{0}^{x} \\left(y\\right)\\,dy\\,dx')).toBe('double');
+    expect(problemKind('double-integrals', '\\iint_D \\left(3 x y\\right)\\,dA')).toBe('double');
+    expect(leadText('double')).toBe('Calculate the double integral.');
   });
 });
 

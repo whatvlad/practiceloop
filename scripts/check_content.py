@@ -23,6 +23,16 @@ INSTRUCTIONS = {
     "polynomial_division",
     "calculate",
     "calculate_definite",
+    "calculate_double",
+    "describe_region",
+    "describe_polar",
+    "write_iterated",
+    "reverse_order",
+    "polar_change",
+    "integrate_inner",
+    "integrate_outer",
+    "check_other",
+    "multiple_value",
     "evaluate_bounds",
     "definite_value",
     "linearity",
@@ -55,6 +65,9 @@ ACTIONS = {
     "choose",
     "evaluate",
     "simplify",
+    "describe",
+    "reverse",
+    "change",
 }
 
 
