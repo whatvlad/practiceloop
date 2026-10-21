@@ -22,6 +22,9 @@ from app.generators.derivatives import VERSION as DERIVATIVES_VERSION
 from app.generators.derivatives import records as derivative_records
 from app.generators.derivatives import replay_derivative
 from app.generators.families import _families, replay_family
+from app.generators.partial import TOPIC as PARTIAL_TOPIC
+from app.generators.partial import records as partial_records
+from app.generators.partial import replay_partial
 
 COEFFICIENTS = (-3, -2, -1, 1, 2, 3)
 FAMILY_VERSIONS = frozenset({"substitution-v2", "parts-v1", "rational-v1", "trigonometric-v1"})
@@ -41,6 +44,8 @@ class Exercise:
     # False for derivatives (#97): `integrand` is then the function to
     # differentiate, `primitive` its derivative, and the answer has no `+ C`.
     constant: bool = True
+    # The answer of an exercise whose answer is an expression with no constant.
+    expression_latex: str | None = None
 
     @property
     def template(self) -> BasicTemplate:
@@ -53,6 +58,8 @@ class Exercise:
 
     @property
     def answer(self) -> str:
+        if self.expression_latex is not None:
+            return self.expression_latex
         if self.value is not None:
             return value_latex(self.value)
         if not self.constant:
@@ -96,6 +103,19 @@ def replay(record: dict[str, object]) -> Exercise:
             tuple({"say": step.say, "latex": step.latex} for step in derivative.solution_steps),
             derivative.statement,
             constant=False,
+        )
+    if record.get("generator_version") == "partial-v1":
+        partial = replay_partial(record)
+        return Exercise(
+            record,
+            partial.topic,
+            partial.difficulty,
+            None,
+            partial.answer,
+            tuple({"say": step.say, "latex": step.latex} for step in partial.solution_steps),
+            partial.statement,
+            constant=False,
+            expression_latex=partial.answer_latex,
         )
     if record.get("generator_version") in FAMILY_VERSIONS:
         family = replay_family(record)
@@ -203,6 +223,9 @@ def catalogue(topic: str, difficulty: int) -> tuple[Exercise, ...]:
     records: list[dict[str, object]] = []
     if topic == "basic-integrals":
         records = _basic_records(difficulty)
+    elif topic == PARTIAL_TOPIC:
+        # Partial derivatives have no definite variants: return before they are added.
+        return tuple(replay(record) for record in partial_records(difficulty))
     elif topic == "substitution" and difficulty in (1, 2):
         # Saved substitution-v1 records keep their meaning; v2 adds levels 3-5.
         for family, a, b, scale in product(

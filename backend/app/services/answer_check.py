@@ -19,9 +19,18 @@ from app.generators.derivatives import VERSION as DERIVATIVES_VERSION
 from app.generators.derivatives import DerivativeProblem, replay_derivative
 from app.generators.families import FamilyProblem, replay_family
 from app.generators.mistakes import declared
+from app.generators.partial import PartialProblem, replay_partial
+from app.services import partial_check
 from app.services.math_parser import MathNode
 
-type Problem = InternalProblem | Exercise | FamilyProblem | DefiniteProblem | DerivativeProblem
+type Problem = (
+    InternalProblem
+    | Exercise
+    | FamilyProblem
+    | DefiniteProblem
+    | DerivativeProblem
+    | PartialProblem
+)
 
 # The problems whose answer is an antiderivative, checked up to a constant.
 type Integral = InternalProblem | Exercise | FamilyProblem | DefiniteProblem
@@ -49,10 +58,12 @@ def replay_problem(record: Mapping[str, object]) -> Problem:
         return replay_definite(dict(record), verify=False)
     if record.get("generator_version") == DERIVATIVES_VERSION:
         return replay_derivative(dict(record), verify=False)
+    if record.get("generator_version") == "partial-v1":
+        return replay_partial(dict(record), verify=False)
     raise ValueError("Unsupported generator version")
 
 
-def _domain(problem: Problem) -> Any:
+def _domain(problem: Integral | DerivativeProblem) -> Any:
     """The template's declared real domain as a SymPy set."""
     domain = problem.template.domain
     if not isinstance(domain, str):
@@ -64,7 +75,9 @@ def _domain(problem: Problem) -> Any:
     return sp.Union(sp.Interval.open(-sp.oo, 0), sp.Interval.open(0, sp.oo))
 
 
-def _components(problem: Problem) -> tuple[tuple[Any, Any, tuple[float, ...]], ...]:
+def _components(
+    problem: Integral | DerivativeProblem,
+) -> tuple[tuple[Any, Any, tuple[float, ...]], ...]:
     """(replacement for x, variable it is written in, samples) per connected component.
 
     A positive `t` covers each open interval, as the generators' own proofs do:
@@ -138,7 +151,7 @@ def _is_primitive(candidate: Any, problem: Integral) -> Verdict:
     return "unknown" if undecided else "yes"
 
 
-def _defined_throughout(expression: Any, problem: Problem) -> bool:
+def _defined_throughout(expression: Any, problem: Integral) -> bool:
     """A symbolic proof that `expression` is real and continuous on the whole domain.
 
     It settles `ln|x^2 + x|` on (-1, 0), whose sign SymPy cannot infer from `t`.
@@ -152,7 +165,7 @@ def _defined_throughout(expression: Any, problem: Problem) -> bool:
     return bool(gap == sp.S.EmptySet)
 
 
-def _same_number_everywhere(offset: Any, problem: Problem) -> Verdict:
+def _same_number_everywhere(offset: Any, problem: Integral) -> Verdict:
     """ADR-003: after removing the known primitive, `b` must be one numeric constant.
 
     Only called once both primitives are proven, so `offset` has a zero derivative
@@ -209,6 +222,8 @@ def classify(answer: Any, problem: Problem) -> Outcome:
         return _classify_definite(answer, problem)
     if isinstance(problem, DerivativeProblem):
         return _classify_derivative(answer, problem)
+    if isinstance(problem, PartialProblem):
+        return partial_check.classify(answer, problem)
     constants = answer.free_symbols - {X}
     if len(constants) > 1:
         return "invalid"
@@ -244,7 +259,7 @@ def check_tree(tree: MathNode, problem: Problem) -> Outcome:
 
     from app.services.math_worker import _build_sympy
 
-    if isinstance(problem, DefiniteProblem):
+    if isinstance(problem, DefiniteProblem | PartialProblem):
         # Every part must have a value: `0/(1 - 1) + 2` is invalid, not 2.
         stack = [tree]
         while stack:
@@ -252,6 +267,8 @@ def check_tree(tree: MathNode, problem: Problem) -> Outcome:
             if _build_sympy(item, evaluate=True).has(sp.zoo, sp.oo, -sp.oo, sp.nan):
                 return "invalid"
             stack.extend(item.children)
+        if isinstance(problem, PartialProblem):
+            return partial_check.classify(_build_sympy(tree, evaluate=True), problem)
         return classify(_build_sympy(tree, evaluate=True), problem)
     domain = _domain(problem)
     all_reals = domain == sp.S.Reals
@@ -343,6 +360,8 @@ def diagnose(answer: Any, problem: Problem, record: Mapping[str, object]) -> str
     Only called after `classify` returned `incorrect`. Two matching codes, or a
     match that cannot be proven symbolically, give no diagnosis: never a guess.
     """
+    if isinstance(problem, PartialProblem):
+        return partial_check.diagnose(answer, problem)
     if isinstance(problem, DefiniteProblem):
         codes = _definite_mistakes(answer, problem)
     elif isinstance(problem, DerivativeProblem):

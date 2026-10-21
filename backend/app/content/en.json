@@ -61,5 +61,19 @@
   "feedback_derivative_factors": "Do not differentiate each factor separately. Use the product rule or the quotient rule.",
   "feedback_quotient_sign": "Check the sign in the quotient rule. Start with the derivative of the numerator times the denominator.",
   "feedback_derivative_constant": "Remove the constant. A derivative has no arbitrary constant.",
-  "general_hint_derivative": "Check each rule you used, or reveal the solution."
+  "general_hint_derivative": "Check each rule you used, or reveal the solution.",
+  "partial_hold": "Differentiate with respect to the named variable. Hold every other variable constant.",
+  "partial_second": "Differentiate the first result again with respect to the second variable.",
+  "partial_mixed_check": "Check the result in the other order. The function is smooth, so the mixed partials are equal.",
+  "coordinate_substitute": "Write the old variables in terms of the new coordinates.",
+  "chain_partials": "Differentiate the function in each old variable, and each old variable in the new one.",
+  "chain_rule_sum": "Add one chain-rule product for each old variable, then write the result in the new variables.",
+  "simplify_result": "Simplify the result in the new variables.",
+  "jacobian_matrix": "Write the matrix of the partial derivatives of the old variables in the new ones.",
+  "jacobian_determinant": "Calculate the determinant of the matrix and simplify it.",
+  "feedback_partial_held_constant": "Hold the other variables constant. Treat them as numbers when you differentiate.",
+  "feedback_partial_chain_term": "Add one chain-rule term for each old variable. A term is missing from your answer.",
+  "feedback_jacobian_missing_r": "Check the determinant. The factor r stays after you simplify the sine and cosine terms.",
+  "feedback_jacobian_sign": "Check the sign in the determinant. Subtract the product of the other diagonal.",
+  "calculate_partial": "Calculate the partial derivative or the Jacobian. Use only the variables the statement names."
 }

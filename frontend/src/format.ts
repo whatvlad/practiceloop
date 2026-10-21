@@ -26,15 +26,21 @@ export function isDefinite(problemLatex: string): boolean {
   return problemLatex.startsWith('\\int_');
 }
 
-/** What a statement asks for: an antiderivative + C, one exact number, or a derivative (ADR-005). */
-export type ProblemKind = 'indefinite' | 'definite' | 'derivative';
+/** What a statement asks for: an antiderivative + C, one exact number, f'(x), or a partial (ADR-005). */
+export type ProblemKind = 'indefinite' | 'definite' | 'derivative' | 'partial';
 
 export function problemKind(topic: TopicSlug, problemLatex: string): ProblemKind {
+  if (topic === 'partial-derivatives') return 'partial';
   if (areaOf(topic) === 'derivatives') return 'derivative';
   return isDefinite(problemLatex) ? 'definite' : 'indefinite';
 }
 
 /** The instruction above a statement. */
 export function leadText(kind: ProblemKind): string {
-  return kind === 'derivative' ? text.calculate_derivative : kind === 'definite' ? text.calculate_definite : text.calculate;
+  return {
+    indefinite: text.calculate,
+    definite: text.calculate_definite,
+    derivative: text.calculate_derivative,
+    partial: text.calculate_partial,
+  }[kind];
 }

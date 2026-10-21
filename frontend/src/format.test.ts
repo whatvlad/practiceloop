@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { mixedShares } from './data/topics';
 import type { AvailableTopic, Difficulty } from './data/types';
-import { formatWhen, isDefinite } from './format';
+import { formatWhen, isDefinite, leadText, problemKind } from './format';
+import text from '../../backend/app/content/en.json';
 
 const NOW = new Date(2026, 9, 16, 15, 0);
 
@@ -31,5 +32,13 @@ describe('mixed practice shares', () => {
     const mixed = { availableDifficulties: [1, 3] as Difficulty[], weights: { 'basic-integrals': 1, substitution: 2, 'integration-by-parts': 2 } };
     expect(mixedShares(topics, mixed, 1).map(share => [share.topic.slug, share.percent])).toEqual([['basic-integrals', 33], ['substitution', 67]]);
     expect(mixedShares(topics, mixed, 3).map(share => share.percent)).toEqual([20, 40, 40]);
+  });
+});
+
+describe('problem kinds', () => {
+  it('asks for a partial derivative in the partial-derivatives topic only', () => {
+    expect(problemKind('partial-derivatives', '\\frac{\\partial}{\\partial x}')).toBe('partial');
+    expect(problemKind('derivatives', '\\frac{d}{dx}')).toBe('derivative');
+    expect(leadText('partial')).toBe(text.calculate_partial);
   });
 });
