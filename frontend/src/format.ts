@@ -27,16 +27,17 @@ export function isDefinite(problemLatex: string): boolean {
 }
 
 /** What a statement asks for: an antiderivative + C, one exact number, or a derivative (ADR-005). */
-export type ProblemKind = 'indefinite' | 'definite' | 'double' | 'derivative';
+export type ProblemKind = 'indefinite' | 'definite' | 'double' | 'triple' | 'derivative';
 
 export function problemKind(topic: TopicSlug, problemLatex: string): ProblemKind {
   if (areaOf(topic) === 'derivatives') return 'derivative';
   // A double integral's answer is also one exact number (#99).
   if (topic === 'double-integrals') return 'double';
+  if (topic === 'triple-integrals') return 'triple';
   return isDefinite(problemLatex) ? 'definite' : 'indefinite';
 }
 
 /** The instruction above a statement. */
 export function leadText(kind: ProblemKind): string {
-  return { indefinite: text.calculate, definite: text.calculate_definite, double: text.calculate_double, derivative: text.calculate_derivative }[kind];
+  return { indefinite: text.calculate, definite: text.calculate_definite, double: text.calculate_double, triple: text.calculate_triple, derivative: text.calculate_derivative }[kind];
 }

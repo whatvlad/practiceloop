@@ -107,8 +107,15 @@ with `verify=True` (catalogue and tests) recompute them with SymPy, check them
 clean, and cross-check every other set-up of the same region by 25-digit
 numerical quadrature, exactly where SymPy manages. Diagnosis adds
 `bounds_reversed` (the negated value) and `missing_jacobian`, each only on an
-unambiguous match. The shared pieces live in `app/generators/multiple.py` for
-`triple-v1`.
+unambiguous match. The shared pieces live in `app/generators/multiple.py`.
+
+Triple integrals (`triple-v1`, #100, `app/generators/triple.py`) work the same
+way in Cartesian and cylindrical coordinates (`dV = r dz dr dθ`). Variants also
+declare `z_bounds`, the value a learner gets with the wrong `z` bounds (for
+example a cone filled down to `z = 0`). The numerical cross-check integrates
+the innermost level of a triple set-up exactly with SymPy and nests mpmath only
+over the outer two, splitting an interval at 0 so the kink of `√(x² + y²)` on
+the axis is a quadrature node.
 
 ## Definite integrals
 

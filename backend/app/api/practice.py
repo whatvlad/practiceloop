@@ -61,6 +61,8 @@ TOPICS = {
     "trigonometric-integrals": Topic("Trigonometric integrals", "integrals", (1, 2, 3, 4, 5), 2),
     # #99 double-v1: the answer is the integral's exact value (ADR-005).
     "double-integrals": Topic("Double integrals", "integrals", (1, 2, 3, 4, 5), 2),
+    # #100 triple-v1: Cartesian and cylindrical, answered with the exact value.
+    "triple-integrals": Topic("Triple integrals", "integrals", (1, 2, 3, 4, 5), 2),
     # #97 derivatives-v1. Alone in its area until partial derivatives ship, so no mixed yet.
     "derivatives": Topic("Derivatives", "derivatives", (1, 2, 3, 4, 5), 1),
 }

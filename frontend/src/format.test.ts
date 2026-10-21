@@ -29,6 +29,14 @@ describe('double integral statements', () => {
   });
 });
 
+describe('triple integral statements', () => {
+  it('are one exact number with their own lead text', () => {
+    expect(problemKind('triple-integrals', '\\int_{0}^{2}\\int_{0}^{2 - x}\\int_{0}^{2 - x - y} \\left(x\\right)\\,dz\\,dy\\,dx')).toBe('triple');
+    expect(problemKind('triple-integrals', '\\iiint_E \\left(x y z\\right)\\,dV')).toBe('triple');
+    expect(leadText('triple')).toBe('Calculate the triple integral.');
+  });
+});
+
 describe('mixed practice shares', () => {
   it('renormalize the published weights over the topics offered at a level', () => {
     const topics: AvailableTopic[] = [
