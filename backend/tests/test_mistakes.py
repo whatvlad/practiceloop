@@ -56,6 +56,7 @@ def test_every_code_has_feedback_text_and_is_declared_somewhere() -> None:
         "derivative_factors",
         "quotient_sign",
         "derivative_constant",
+        "z_bounds",
     }
     for code in MISTAKE_CODES:
         assert TEXT[f"feedback_{code}"]  # type: ignore[literal-required]

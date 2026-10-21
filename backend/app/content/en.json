@@ -54,7 +54,7 @@
   "integrate_outer": "Integrate the result between the outer bounds.",
   "check_other": "Check the value with the other set-up of the same region.",
   "multiple_value": "Simplify the result. This is the exact value of the integral.",
-  "feedback_missing_jacobian": "Include the factor r. In polar coordinates dA = r dr dθ.",
+  "feedback_missing_jacobian": "Include the factor r. In polar coordinates dA = r dr dθ, and in cylindrical coordinates dV = r dz dr dθ.",
   "general_hint_multiple": "Check the bounds of each integral, then integrate the inner integral first, or reveal the solution.",
   "calculate_derivative": "Find the derivative f'(x).",
   "derivative_standard": "Apply the standard derivative of the function.",
@@ -73,5 +73,11 @@
   "feedback_derivative_factors": "Do not differentiate each factor separately. Use the product rule or the quotient rule.",
   "feedback_quotient_sign": "Check the sign in the quotient rule. Start with the derivative of the numerator times the denominator.",
   "feedback_derivative_constant": "Remove the constant. A derivative has no arbitrary constant.",
-  "general_hint_derivative": "Check each rule you used, or reveal the solution."
+  "general_hint_derivative": "Check each rule you used, or reveal the solution.",
+  "calculate_triple": "Calculate the triple integral.",
+  "describe_solid": "Describe the solid with bounds for each variable.",
+  "write_triple": "Write the triple integral as an iterated integral.",
+  "cylindrical_change": "Change to cylindrical coordinates. Use x = r cos θ, y = r sin θ and dV = r dz dr dθ.",
+  "integrate_middle": "Integrate the middle integral. Keep the outermost variable constant.",
+  "feedback_z_bounds": "Check the bounds for z. They go from the lower surface of the solid to the upper surface."
 }

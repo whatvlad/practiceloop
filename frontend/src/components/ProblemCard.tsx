@@ -38,13 +38,14 @@ interface ProblemCardProps {
 /** Targeted feedback only for a matched mistake (#36); otherwise a general hint, never a guess. */
 export function incorrectMessage(feedback: FeedbackCode | null, kind: ProblemKind): string {
   if (feedback) return text[`feedback_${feedback}`];
-  return { indefinite: text.general_hint, definite: text.general_hint_definite, double: text.general_hint_multiple, derivative: text.general_hint_derivative }[kind];
+  return { indefinite: text.general_hint, definite: text.general_hint_definite, double: text.general_hint_multiple, triple: text.general_hint_multiple, derivative: text.general_hint_derivative }[kind];
 }
 
 const PLACEHOLDERS: Record<ProblemKind, string> = {
   indefinite: 'e.g. x^2/2 + C',
   definite: 'e.g. 3/2 or e - 1',
   double: 'e.g. 8pi or (e - 1)/2',
+  triple: 'e.g. 8pi/3 or 1/6',
   derivative: 'e.g. 2x cos(x^2)',
 };
 

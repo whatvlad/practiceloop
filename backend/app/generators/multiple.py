@@ -57,9 +57,19 @@ def integrate_setup(setup: Setup, *, with_jacobian: bool = True) -> Any:
 
 
 def quadrature(setup: Setup) -> Any:
-    """An independent numerical value of the set-up, for cross-checks only."""
+    """An independent numerical value of the set-up, for cross-checks only.
+
+    Nested quadrature at this precision is too slow beyond two levels, so SymPy
+    integrates the innermost levels of a triple set-up exactly (in z, a polynomial
+    or a simple rational step) and mpmath the outer two.
+    """
+    expression = integrand_with_jacobian(setup)
+    *inner, outer, last = setup.bounds
+    for variable, lower, upper in inner:
+        expression = sp.integrate(expression, (variable, lower, upper))
+    setup = Setup(setup.system, expression, (outer, last))
     variables = [variable for variable, _, _ in setup.bounds]
-    integrand = sp.lambdify(variables, integrand_with_jacobian(setup), "mpmath")
+    integrand = sp.lambdify(variables, setup.integrand, "mpmath")
     bounds = [
         (
             sp.lambdify(variables, lower, "mpmath"),
@@ -78,7 +88,9 @@ def quadrature(setup: Setup) -> Any:
             return level(index - 1, values)
 
         # Bounds of level `index` use only the outer variables, already set in `values`.
-        return mpmath.quad(inner, [lower(*values), upper(*values)])
+        low, high = lower(*values), upper(*values)
+        # Solids such as a cone have a kink on the axis; quadrature needs it as a node.
+        return mpmath.quad(inner, [low, 0, high] if low < 0 < high else [low, high])
 
     with mpmath.workdps(_QUAD_DIGITS):
         return level(len(variables) - 1, [mpmath.mpf(0)] * len(variables))
