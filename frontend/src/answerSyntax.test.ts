@@ -102,3 +102,69 @@ describe('mistakes are flagged while typing', () => {
     }
   });
 });
+
+// ADR-005 corpora, shared with backend/tests/test_answer_variables.py.
+const XY = ['x', 'y'] as const;
+const XYZ = ['x', 'y', 'z'] as const;
+const POLAR = ['r', 'theta'] as const;
+const CYLINDRICAL = ['r', 'theta', 'z'] as const;
+
+const VARIABLE_SUPPORTED: [string, readonly string[]][] = [
+  ['2xy', XY], ['x y', XY], ['xy^2', XY], ['2r', POLAR], ['r theta', POLAR], ['rtheta', POLAR],
+  ['rθ', POLAR], ['2r θ^2', POLAR], ['rcos(theta)', POLAR], ['r^2sin(θ)cos(θ)', POLAR],
+  ['xsin(y)', XY], ['ye^(xy)', XY], ['e^(xy)', XY], ['ex', XY], ['pixy', XY], ['exp(x)y', XY],
+  ['xyz', XYZ], ['2x*y + y/z', XYZ], ['r^2 z', CYLINDRICAL], ['θ - theta', POLAR],
+  ['sqrt(x^2 + y^2)', XY], ['ln|xy|', XY], ['atan(y/x)', XY], ['sec^2(xy)', XY], ['3pi/4', POLAR],
+  ['y²x³', XY],
+  // Exact limits, reached through the variables.
+  ['xy'.repeat(24), XY], [Array(42).fill('theta').join('+'), POLAR], ['('.repeat(12) + 'theta' + ')'.repeat(12), POLAR],
+  [Array(16).fill('sin(xy)').join('+'), XY], ['12345678y', XY], ['y^12', XY], ['r^(-12)', POLAR], ['theta^(1/12)', POLAR],
+];
+
+const VARIABLE_REJECTED: [string, readonly string[]][] = [
+  ['x + y', POLAR], ['r', XY], ['theta', XY], ['z', XY], ['x + C', XY], ['a', XY], ['xa', XY], ['xq', XY],
+  ['t', POLAR], ['x(y+1)', XY], ['x^y', XY], ['r^theta', POLAR], ['sin xy', XY], ['y(x)', XY],
+  ['2 3x', XY], ['x**y', XY], ['1e3x', XY], ['α', POLAR], ['i*x', XY],
+  // Every parser limit, reached through the variables.
+  ['xy'.repeat(65), XY], [Array(65).fill('r').join('+'), POLAR], [Array(49).fill('r').join('+'), POLAR],
+  ['xy'.repeat(24) + 'x', XY], ['('.repeat(13) + 'theta' + ')'.repeat(13), POLAR], [Array(17).fill('sin(xy)').join('+'), XY],
+  ['123456789y', XY], ['1.1234567r', POLAR], ['y^13', XY], ['theta^(1/13)', POLAR], ['sin^13(r)', POLAR],
+  ['e^(z^13)', XYZ], ['|x + |y||', XY], ['y/0', XY], ['x^(y)', XY], ['θ'.repeat(52), POLAR], ['x'.repeat(257), XY],
+];
+
+describe('declared answer variables (ADR-005)', () => {
+  it.each(VARIABLE_SUPPORTED)('accepts %j with %j and renders it', (source, variables) => {
+    const result = analyseAnswer(source, variables);
+    expect(result.status).toBe('ok');
+    if (result.status === 'ok') expect(() => renderMath(result.latex)).not.toThrow();
+  });
+
+  it.each(VARIABLE_REJECTED)('does not accept %j with %j', (source, variables) => {
+    expect(analyseAnswer(source, variables).status).not.toBe('ok');
+  });
+
+  it.each(['y + z', 'xy', '2xy', 'r theta', 'θ', 'theta', 'x y z'])('keeps the integration grammar for %j', (source) => {
+    expect(analyseAnswer(source).status).not.toBe('ok');
+  });
+
+  it.each([
+    ['2xy', XY, '2\\,x y'],
+    ['r θ', POLAR, 'r \\theta '],
+    ['r theta', POLAR, 'r \\theta '],
+    ['theta r', POLAR, '\\theta  r'],
+  ])('%j reads as %j', (source, variables, latex) => {
+    expect(analyseAnswer(source, variables)).toEqual({ status: 'ok', latex });
+  });
+
+  it('names the exercise variables when another one is used', () => {
+    expect(analyseAnswer('x + y', POLAR)).toMatchObject({
+      status: 'error',
+      message: 'Unknown name. This answer uses only r and θ, with pi, e and the keypad functions.',
+    });
+  });
+
+  it('treats a partly typed theta as unfinished', () => {
+    expect(analyseAnswer('r thet', POLAR).status).toBe('unfinished');
+    expect(analyseAnswer('r thetq', POLAR).status).toBe('error');
+  });
+});

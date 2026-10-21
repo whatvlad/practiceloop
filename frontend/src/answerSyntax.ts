@@ -16,6 +16,11 @@ export const FUNCTIONS = [
   'sin', 'cos', 'tan', 'sec', 'csc', 'cot', 'asin', 'acos', 'atan', 'exp', 'ln', 'log', 'sqrt', 'abs',
 ] as const;
 const FUNCTION_SET: ReadonlySet<string> = new Set(FUNCTIONS);
+/** ADR-005: the variables a template may declare for its answers. */
+export const ANSWER_VARIABLES = ['x', 'y', 'z', 'r', 'theta'] as const;
+export type AnswerVariable = (typeof ANSWER_VARIABLES)[number];
+// Names a letter run splits into when a template declares variables, longest first.
+const SPLIT_NAMES = [...new Set([...FUNCTIONS, ...ANSWER_VARIABLES, 'pi', 'e'])].sort((a, b) => b.length - a.length);
 const RESERVED = new Set(['i', 'I', 'j', 'J']);
 // Partial words that are still on their way to a valid name: not yet a mistake.
 const WORDS_IN_PROGRESS = [...FUNCTIONS, 'pi', 'arcsin', 'arccos', 'arctan'];
@@ -58,6 +63,7 @@ function normalise(source: string): string {
     .replace(/⁻?[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g, (run) => `^${[...run].map((c) => SUPERSCRIPTS[c]).join('')}`)
     .normalize('NFKC')
     .replace(/π/g, 'pi')
+    .replace(/[θϑ]/g, 'theta')
     .replace(/[−–]/g, '-')
     .replace(/×/g, '*')
     .replace(/÷/g, '/');
@@ -70,7 +76,28 @@ function normalise(source: string): string {
 const isDigit = (c: string) => c >= '0' && c <= '9';
 const isLetter = (c: string) => (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
 
-function tokenise(source: string): Token[] {
+/**
+ * ADR-005 rule for templates with declared variables: a run of letters is read from
+ * the left, each time as the longest function, variable, `pi` or `e` that starts
+ * there, so `2xy` is 2*x*y and `rtheta` is r*theta. Mirrors math_parser._split_name.
+ */
+function splitName(run: string, last: boolean): string[] {
+  const names: string[] = [];
+  let start = 0;
+  while (start < run.length) {
+    const name = SPLIT_NAMES.find((n) => run.startsWith(n, start));
+    if (!name) {
+      // A partial name at the end, like `thet`, is still being typed.
+      const typing = last && [...SPLIT_NAMES, 'arcsin', 'arccos', 'arctan'].some((n) => n.startsWith(run.slice(start)));
+      throw new SyntaxProblem('Symbol is not allowlisted', typing);
+    }
+    names.push(name);
+    start += name.length;
+  }
+  return names;
+}
+
+function tokenise(source: string, splitNames = false): Token[] {
   const tokens: Token[] = [];
   let i = 0;
   while (i < source.length) {
@@ -99,7 +126,9 @@ function tokenise(source: string): Token[] {
     } else if (isLetter(c)) {
       const start = i;
       while (i < source.length && isLetter(source[i])) i += 1;
-      tokens.push({ kind: 'NAME', value: source.slice(start, i) });
+      const run = source.slice(start, i);
+      const last = source.slice(i).trim() === '';
+      for (const name of splitNames ? splitName(run, last) : [run]) tokens.push({ kind: 'NAME', value: name });
     } else if (c === '√') {
       tokens.push({ kind: 'ROOT', value: c });
       i += 1;
@@ -165,7 +194,11 @@ class Parser {
   private insideAbsolute = false;
   private extraSymbol: string | null = null;
 
-  constructor(private readonly tokens: Token[]) {}
+  /** `variables` null is the ADR-003 integration grammar: x, plus one constant letter. */
+  constructor(
+    private readonly tokens: Token[],
+    private readonly variables: ReadonlySet<string> | null = null,
+  ) {}
 
   private get current(): Token {
     return this.tokens[this.position];
@@ -281,7 +314,11 @@ class Parser {
       }
       return result;
     }
-    if (!['x', 'pi', 'e'].includes(word)) {
+    if (this.variables !== null) {
+      if (!this.variables.has(word) && word !== 'pi' && word !== 'e') {
+        throw new SyntaxProblem('Variable is not used in this exercise');
+      }
+    } else if (!['x', 'pi', 'e'].includes(word)) {
       if (word.length !== 1 || RESERVED.has(word)) {
         const typing = last && WORDS_IN_PROGRESS.some(w => w.startsWith(word));
         throw new SyntaxProblem('Symbol is not allowlisted', typing);
@@ -379,7 +416,7 @@ function toLatex(node: Node): string {
     case 'number':
       return node.text.startsWith('.') ? `0${node.text}` : node.text;
     case 'symbol':
-      return node.name === 'pi' ? '\\pi ' : node.name;
+      return node.name === 'pi' ? '\\pi ' : node.name === 'theta' ? '\\theta ' : node.name;
     case 'unary': {
       const inner = toLatex(node.arg);
       return `${node.op}${isSum(node.arg) ? paren(inner) : inner}`;
@@ -413,6 +450,9 @@ function toLatex(node: Node): string {
         const ls = wrapLeft ? paren(l) : l;
         const rs = wrapRight ? paren(r) : r;
         if (right.kind === 'unary' || (!wrapRight && startsWithDigit(right))) return `${ls}\\cdot ${rs}`;
+        // Variables side by side (`x y`, `r \\theta`) need no thin space, which also keeps
+        // long products inside KaTeX's expansion limit.
+        if (right.kind === 'symbol' && /[A-Za-z] ?$/.test(ls)) return `${ls} ${rs}`;
         return /^[\\(]/.test(rs) ? `${ls}${rs}` : `${ls}\\,${rs}`;
       }
       const r = toLatex(right);
@@ -499,33 +539,51 @@ export type AnswerAnalysis =
   | { status: 'unfinished'; message: string }
   | { status: 'error'; message: string; fix?: string };
 
-function parseOnly(source: string): Node {
-  return new Parser(tokenise(normalise(source))).parse();
+function parseOnly(source: string, variables?: readonly string[]): Node {
+  const declared = variables ? new Set(variables) : null;
+  return new Parser(tokenise(normalise(source), declared !== null), declared).parse();
 }
 
-function usable(candidate: string): boolean {
+function usable(candidate: string, variables?: readonly string[]): boolean {
   try {
-    parseOnly(candidate);
+    parseOnly(candidate, variables);
     return true;
   } catch (error) {
     return error instanceof SyntaxProblem && error.unfinished;
   }
 }
 
-/** How the backend will read an answer, with a learner-facing hint when it cannot. */
-export function analyseAnswer(source: string): AnswerAnalysis {
+/** `x, y and θ`, for hints. */
+export function variableList(variables: readonly string[]): string {
+  const names = variables.map((v) => (v === 'theta' ? 'θ' : v));
+  return names.length < 2 ? names.join('') : `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`;
+}
+
+function hint(message: string, variables?: readonly string[]): string {
+  if (variables && (message === 'Variable is not used in this exercise' || message === 'Symbol is not allowlisted')) {
+    return `Unknown name. This answer uses only ${variableList(variables)}, with pi, e and the keypad functions.`;
+  }
+  return HINTS[message] ?? message;
+}
+
+/**
+ * How the backend will read an answer, with a learner-facing hint when it cannot.
+ * `variables` is the exercise's declared set (ADR-005); without it the integration
+ * grammar applies.
+ */
+export function analyseAnswer(source: string, variables?: readonly string[]): AnswerAnalysis {
   if (source.trim() === '') return { status: 'empty' };
   let tree: Node;
   try {
-    tree = parseOnly(source);
+    tree = parseOnly(source, variables);
   } catch (error) {
     if (!(error instanceof SyntaxProblem)) throw error;
     if (error.unfinished && !(error instanceof TooLong)) {
       return { status: 'unfinished', message: unfinishedMessage(source) };
     }
     const candidate = suggestFix(source);
-    const fix = candidate !== source && usable(candidate) ? candidate : undefined;
-    return { status: 'error', message: HINTS[error.message] ?? error.message, fix };
+    const fix = candidate !== source && usable(candidate, variables) ? candidate : undefined;
+    return { status: 'error', message: hint(error.message, variables), fix };
   }
   const latex = toLatex(tree);
   const exponentRun = /e\^(-?\d+(?:\.\d+)?)([A-Za-z(])/.exec(source);

@@ -15,7 +15,9 @@ export interface EditorAnswer {
 }
 
 // Longest first, so `asin` wins over `sin` and `sqrt` over `sec`.
-const SPELLED = [...FUNCTIONS, 'arcsin', 'arccos', 'arctan', 'pi'].sort((a, b) => b.length - a.length);
+const SPELLED = [...FUNCTIONS, 'arcsin', 'arccos', 'arctan', 'pi', 'theta'].sort((a, b) => b.length - a.length);
+// Spelled names that are a value, not a function.
+const CONSTANTS = new Set(['pi', 'theta']);
 const INVERSE: Record<string, string> = { sin: 'asin', cos: 'acos', tan: 'atan' };
 
 const COMMAND_FUNCTIONS: Record<string, string> = {
@@ -257,6 +259,7 @@ class Reader {
       return term(`${wrap(radicand)}^(1/${wrap(index)})`, false);
     }
     if (name === 'pi') return term('pi', true);
+    if (name === 'theta' || name === 'vartheta') return term('theta', true);
     if (name === 'exponentialE') return term('e', true);
     if (name === 'operatorname' || name === 'mathrm' || name === 'text' || name === 'mathit') {
       const word = this.word();
@@ -297,7 +300,7 @@ class Reader {
     return term(`abs(${inner})`, true);
   }
 
-  /** A letter, or a run of letters that spells a function name or pi. */
+  /** A letter, or a run of letters that spells a function name, pi or theta. */
   private letters(first: string): Term {
     let run = first;
     for (let k = 0; k < 6; k += 1) {
@@ -308,13 +311,13 @@ class Reader {
     const word = SPELLED.find((w) => run.startsWith(w));
     if (!word) return term(first, true);
     this.position += word.length - 1;
-    if (word === 'pi') return term('pi', true);
+    if (CONSTANTS.has(word)) return term(word, true);
     return this.apply(COMMAND_FUNCTIONS[word] ?? word);
   }
 
   private spelled(word: string): Term {
     const fn = SPELLED.find((w) => w === word);
-    if (fn === 'pi') return term('pi', true);
+    if (fn && CONSTANTS.has(fn)) return term(fn, true);
     if (fn) return this.apply(COMMAND_FUNCTIONS[fn] ?? fn);
     // A multi-letter word in text: one letter per term, like the editor shows it.
     return term(word.split('').join('*'), word.length === 1);
@@ -377,12 +380,12 @@ class Reader {
       if (t?.kind !== 'char' || !/[A-Za-z]/.test(t.value)) break;
       run += t.value;
     }
-    return SPELLED.some((w) => w !== 'pi' && run.startsWith(w));
+    return SPELLED.some((w) => !CONSTANTS.has(w) && run.startsWith(w));
   }
 }
 
 function exponentText(exponent: Term): string {
-  return /^\d+$/.test(exponent.text) || /^[A-Za-z]$/.test(exponent.text) || exponent.text === 'pi'
+  return /^\d+$/.test(exponent.text) || /^[A-Za-z]$/.test(exponent.text) || CONSTANTS.has(exponent.text)
     ? exponent.text
     : `(${exponent.text})`;
 }
