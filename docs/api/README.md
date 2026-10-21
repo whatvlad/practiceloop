@@ -80,7 +80,7 @@ attempts through these authenticated routes.
 `incorrect` result, or `null`. The mistake codes are `power_rule`, `trig_sign`,
 `chain_factor`, `log_absolute`, `split_product`, `parts_sign`, `cycle_factor`,
 `partial_fraction_sign`, `definite_not_evaluated`, `bounds_reversed`,
-`definite_constant`, the derivative codes `derivative_power`,
+`definite_constant`, `missing_jacobian` (#99), the derivative codes `derivative_power`,
 `derivative_trig_sign`, `derivative_chain`, `derivative_factors`,
 `quotient_sign` and `derivative_constant` (#97), and the partial-derivative codes
 `partial_held_constant`, `partial_chain_term`, `jacobian_missing_r` and

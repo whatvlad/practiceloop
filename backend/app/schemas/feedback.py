@@ -14,6 +14,7 @@ type MistakeCode = Literal[
     "definite_not_evaluated",
     "bounds_reversed",
     "definite_constant",
+    "missing_jacobian",
     "derivative_power",
     "derivative_trig_sign",
     "derivative_chain",

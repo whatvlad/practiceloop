@@ -167,7 +167,7 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
         if area["mixed"]
         for d in area["mixed"]["availableDifficulties"]
     ]
-    check(len(cells) == 43, "topics list 33 cells plus 10 mixed levels", len(cells))
+    check(len(cells) == 48, "topics list 38 cells plus 10 mixed levels", len(cells))
     created: list[str] = []
     for topic, level, extra in cells:
         reset_limits()
@@ -380,6 +380,37 @@ def partials(api: httpx.Client, url: str) -> None:
     check(len(revealed) == 4, "the solution shows each chain-rule step", revealed)
 
 
+def double_integrals(api: httpx.Client, url: str) -> None:
+    """#99: a double integral is one exact number, outside the + C statistics."""
+    reset_limits()
+    before = api.get("/statistics").json()["checkedAttempts"]
+    response = api.post(
+        "/problems", json={"topic": "double-integrals", "difficulty": 3}, headers=key()
+    )
+    check(response.status_code == 201, "generate a double integral", response.text)
+    if response.status_code != 201:
+        return
+    problem = response.json()["problem"]
+    pid = problem["id"]
+    check(
+        problem["problemLatex"].startswith((r"\iint_D", r"\int_")),
+        "a double integral shows a region or iterated bounds",
+        problem["problemLatex"],
+    )
+    answer = correct_answer(url, pid)
+    flipped = api.post(f"/problems/{pid}/attempts", json={"answer": f"-({answer})"}, headers=key())
+    attempt = flipped.json().get("attempt", {})
+    check(
+        (attempt.get("result"), attempt.get("feedbackCode")) == ("incorrect", "bounds_reversed"),
+        "a negated double integral says the bounds are reversed",
+        flipped.text,
+    )
+    right = api.post(f"/problems/{pid}/attempts", json={"answer": answer}, headers=key())
+    check(right.json().get("attempt", {}).get("result") == "correct", "a double integral checks")
+    after = api.get("/statistics").json()["checkedAttempts"]
+    check(after == before, "+ C statistics leave double integrals out", (before, after))
+
+
 MALICIOUS = [
     "__import__('os').system('id')",
     "exec('print(1)')",
@@ -493,6 +524,7 @@ def main() -> int:
             cross_user(api_b, base, keys, alice, created[0])
             sharing(api_a, api_b, base, created[0])
             derivatives(api_a, base, url)
+            double_integrals(api_a, url)
             partials(api_a, url)
             malicious(api_a, created[0])
             saturation(api_a, url, created[0])

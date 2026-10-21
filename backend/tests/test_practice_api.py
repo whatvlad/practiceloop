@@ -380,6 +380,7 @@ def test_attempts_are_checked_by_the_real_worker_and_persisted(
         ("rational-functions", 5, "rational-v1"),
         ("trigonometric-integrals", 4, "trigonometric-v1"),
         ("integration-by-parts", 2, "definite-v1"),
+        ("double-integrals", 3, "double-v1"),
         ("rational-functions", 3, "definite-v1"),
     ],
 )
@@ -524,7 +525,9 @@ def test_topics_lists_only_generated_cells(client: TestClient) -> None:
         ("integration-by-parts", [1, 2, 3]),
         ("rational-functions", [1, 2, 3, 4, 5]),
         ("trigonometric-integrals", [1, 2, 3, 4, 5]),
+        ("double-integrals", [1, 2, 3, 4, 5]),
         ("derivatives", [1, 2, 3, 4, 5]),
+        ("partial-derivatives", [1, 2, 3, 4, 5]),
     ]
 
 
@@ -541,8 +544,13 @@ def test_topics_publish_the_fixed_mixed_practice_weights(client: TestClient) -> 
                 "integration-by-parts": 2,
                 "rational-functions": 2,
                 "trigonometric-integrals": 2,
+                "double-integrals": 2,
             },
         },
+    }
+    assert areas[1]["mixed"] == {
+        "availableDifficulties": [1, 2, 3, 4, 5],
+        "weights": {"derivatives": 1, "partial-derivatives": 1},
     }
 
 
@@ -561,6 +569,7 @@ def test_an_area_with_one_topic_offers_no_mixed_practice(
 ) -> None:
     topics = dict(practice.TOPICS)
     topics["derivatives"] = practice.Topic("Derivatives", "derivatives", (1, 2), 1)
+    del topics["partial-derivatives"]
     monkeypatch.setattr(practice, "TOPICS", topics)
     areas = {area["slug"]: area for area in client.get("/topics").json()["areas"]}
     assert areas["derivatives"] == {"slug": "derivatives", "name": "Derivatives", "mixed": None}

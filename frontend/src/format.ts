@@ -1,4 +1,5 @@
 import text from '../../backend/app/content/en.json';
+import { ANSWER_VARIABLES, type AnswerVariable } from './answerSyntax';
 import { areaOf } from './data/topics';
 import type { TopicSlug } from './data/types';
 
@@ -27,11 +28,13 @@ export function isDefinite(problemLatex: string): boolean {
 }
 
 /** What a statement asks for: an antiderivative + C, one exact number, f'(x), or a partial (ADR-005). */
-export type ProblemKind = 'indefinite' | 'definite' | 'derivative' | 'partial';
+export type ProblemKind = 'indefinite' | 'definite' | 'double' | 'derivative' | 'partial';
 
 export function problemKind(topic: TopicSlug, problemLatex: string): ProblemKind {
   if (topic === 'partial-derivatives') return 'partial';
   if (areaOf(topic) === 'derivatives') return 'derivative';
+  // A double integral's answer is also one exact number (#99).
+  if (topic === 'double-integrals') return 'double';
   return isDefinite(problemLatex) ? 'definite' : 'indefinite';
 }
 
@@ -40,12 +43,11 @@ export function leadText(kind: ProblemKind): string {
   return {
     indefinite: text.calculate,
     definite: text.calculate_definite,
+    double: text.calculate_double,
     derivative: text.calculate_derivative,
     partial: text.calculate_partial,
   }[kind];
 }
-
-const ANSWER_VARIABLES = ['x', 'y', 'z', 'r', 'theta'] as const;
 
 /**
  * ADR-005: the variables a partial-derivative answer may use. Every partial-v1
@@ -53,7 +55,7 @@ const ANSWER_VARIABLES = ['x', 'y', 'z', 'r', 'theta'] as const;
  * `\quad(r > 0,\ \theta \in \mathbb{R})`, so the names are read from there.
  * Other kinds keep the integration grammar (undefined).
  */
-export function answerVariables(kind: ProblemKind, problemLatex: string): (typeof ANSWER_VARIABLES)[number][] | undefined {
+export function answerVariables(kind: ProblemKind, problemLatex: string): AnswerVariable[] | undefined {
   if (kind !== 'partial') return undefined;
   const start = problemLatex.lastIndexOf('\\quad(');
   if (start < 0) return undefined;

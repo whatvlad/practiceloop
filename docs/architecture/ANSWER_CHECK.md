@@ -96,6 +96,20 @@ and the learner sees a general hint. The attempt stores the code in
 missing-constant answers never carry one. Diagnosis adds 0.01–0.4 s of CPU to
 an incorrect check.
 
+## Multiple integrals
+
+ADR-005 answers a double integral (`double-v1`, #99) with its exact value, so it
+is checked like a definite integral: one real number, compared exactly with no
+`x` and no constant. The worker never integrates. Each template variant in
+`app/generators/double.py` declares its value and, for polar set-ups, the value
+without the Jacobian factor `r`; a record's coefficient scales both. Replays
+with `verify=True` (catalogue and tests) recompute them with SymPy, check them
+clean, and cross-check every other set-up of the same region by 25-digit
+numerical quadrature, exactly where SymPy manages. Diagnosis adds
+`bounds_reversed` (the negated value) and `missing_jacobian`, each only on an
+unambiguous match. The shared pieces live in `app/generators/multiple.py` for
+`triple-v1`.
+
 ## Definite integrals
 
 A `definite-v1` answer (#36) must be one real number: an answer containing `x`

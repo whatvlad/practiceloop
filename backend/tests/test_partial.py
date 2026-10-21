@@ -7,11 +7,13 @@ from dataclasses import replace
 import pytest
 import sympy as sp
 from pydantic import ValidationError
+from test_definite import linux_only
 
 from app.generators import partial
 from app.generators.core import catalogue, replay
 from app.generators.partial import TEMPLATES, VERSION, records, replay_partial
 from app.services import partial_check
+from app.services.math_worker import AnswerCheck, check_answer
 
 CORPUS = [record for level in range(1, 6) for record in records(level)]
 x, y, z, r, theta, C = sp.symbols("x y z r theta C", real=True)
@@ -205,3 +207,55 @@ def test_catalogue_offers_every_level_without_definite_variants() -> None:
         assert all("+ C" not in e.answer for e in cell)
     exercise = replay(record("polar_angle", 1))
     assert exercise.answer == r"r^{2} \cos{\left(2 \theta \right)}"
+
+
+@linux_only
+@pytest.mark.parametrize(
+    ("template", "coefficient", "answer", "expected"),
+    [
+        ("polynomial_x", 1, "3x^2y", AnswerCheck("correct")),
+        (
+            "polynomial_x",
+            1,
+            "3x^2 y + 4y",
+            AnswerCheck("incorrect", feedback_code="partial_held_constant"),
+        ),
+        ("polynomial_x", 1, "3x^2y + C", AnswerCheck("invalid")),
+        ("exponential_product", 2, "2x e^(xy)", AnswerCheck("correct")),
+        (
+            "exponential_product",
+            2,
+            "2*e^(xy)",
+            AnswerCheck("incorrect", feedback_code="derivative_chain"),
+        ),
+        ("logarithm_factor", 1, "ln(y)", AnswerCheck("correct")),
+        ("mixed_exponential", 1, "x^2(xy+3)e^(xy)", AnswerCheck("correct")),
+        ("three_variables", 2, "6xy^2z^2", AnswerCheck("correct")),
+        ("polar_angle", 1, "r^2 cos(2θ)", AnswerCheck("correct")),
+        ("polar_angle", 1, "r^2(cos(theta)^2 - sin(theta)^2)", AnswerCheck("correct")),
+        ("polar_angle", 1, "x^2 - y^2", AnswerCheck("invalid")),
+        (
+            "polar_angle",
+            1,
+            "r^2cos(θ)^2",
+            AnswerCheck("incorrect", feedback_code="partial_chain_term"),
+        ),
+        ("polar_radius", 3, "9r^2 cos(θ)^2 sin(θ)", AnswerCheck("correct")),
+        ("cylindrical_angle", 1, "r*z*(cos(θ) - sin(θ))", AnswerCheck("correct")),
+        ("cylindrical_radius", 2, "2rz sin(2θ)", AnswerCheck("correct")),
+        ("scaled_polar", 2, "6r", AnswerCheck("correct")),
+        ("scaled_polar", 2, "6", AnswerCheck("incorrect", feedback_code="jacobian_missing_r")),
+        ("scaled_polar", 2, "6r cos(2θ)", AnswerCheck("incorrect", feedback_code="jacobian_sign")),
+        ("scaled_cylindrical", 3, "9r", AnswerCheck("correct")),
+    ],
+)
+def test_worker_checks_partial_answers_within_its_limits(
+    template: str, coefficient: int, answer: str, expected: AnswerCheck
+) -> None:
+    assert check_answer(answer, record(template, coefficient)) == expected
+
+
+@linux_only
+def test_worker_refuses_a_record_whose_variables_differ() -> None:
+    with pytest.raises(ValueError, match="replayed"):
+        check_answer("r", {**record("scaled_polar"), "variables": {"r": "positive", "z": "real"}})

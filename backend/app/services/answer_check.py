@@ -18,8 +18,10 @@ from app.generators.core import FAMILY_VERSIONS, Exercise, replay
 from app.generators.definite import DefiniteProblem, replay_definite
 from app.generators.derivatives import VERSION as DERIVATIVES_VERSION
 from app.generators.derivatives import DerivativeProblem, replay_derivative
+from app.generators.double import replay_value as replay_double_value
 from app.generators.families import FamilyProblem, replay_family
 from app.generators.mistakes import declared
+from app.generators.multiple import ValueProblem
 from app.generators.partial import PartialProblem, replay_partial
 from app.services import partial_check
 from app.services.math_parser import MathNode, VariableDomain
@@ -42,12 +44,15 @@ type Problem = (
     | DerivativeProblem
     | ExpressionProblem
     | PartialProblem
+    | ValueProblem
 )
 
 # The problems whose answer is an antiderivative, checked up to a constant.
 type Integral = InternalProblem | Exercise | FamilyProblem | DefiniteProblem
-# The problems written in x alone, on a template's declared domain of x.
-type SingleVariable = Integral | DerivativeProblem
+# The problems whose answer is a function of x on a declared domain.
+type Symbolic = Integral | DerivativeProblem
+# Problems whose answer is one exact number: definite and multiple integrals.
+_VALUE_PROBLEMS = (DefiniteProblem, ValueProblem)
 
 type Outcome = Literal["correct", "incorrect", "missing_constant", "invalid", "inconclusive"]
 type Verdict = Literal["yes", "no", "unknown"]
@@ -75,6 +80,8 @@ def replay_problem(record: Mapping[str, object]) -> Problem:
         return replay_family(dict(record), verify=False)
     if record.get("generator_version") == "definite-v1":
         return replay_definite(dict(record), verify=False)
+    if record.get("generator_version") == "double-v1":
+        return replay_double_value(dict(record))
     if record.get("generator_version") == DERIVATIVES_VERSION:
         return replay_derivative(dict(record), verify=False)
     if record.get("generator_version") == "partial-v1":
@@ -82,7 +89,7 @@ def replay_problem(record: Mapping[str, object]) -> Problem:
     raise ValueError("Unsupported generator version")
 
 
-def _domain(problem: SingleVariable) -> Any:
+def _domain(problem: Symbolic) -> Any:
     """The template's declared real domain as a SymPy set."""
     domain = problem.template.domain
     if not isinstance(domain, str):
@@ -94,7 +101,7 @@ def _domain(problem: SingleVariable) -> Any:
     return sp.Union(sp.Interval.open(-sp.oo, 0), sp.Interval.open(0, sp.oo))
 
 
-def _components(problem: SingleVariable) -> tuple[tuple[Any, Any, tuple[float, ...]], ...]:
+def _components(problem: Symbolic) -> tuple[tuple[Any, Any, tuple[float, ...]], ...]:
     """(replacement for x, variable it is written in, samples) per connected component.
 
     A positive `t` covers each open interval, as the generators' own proofs do:
@@ -168,7 +175,7 @@ def _is_primitive(candidate: Any, problem: Integral) -> Verdict:
     return "unknown" if undecided else "yes"
 
 
-def _defined_throughout(expression: Any, problem: SingleVariable) -> bool:
+def _defined_throughout(expression: Any, problem: Symbolic) -> bool:
     """A symbolic proof that `expression` is real and continuous on the whole domain.
 
     It settles `ln|x^2 + x|` on (-1, 0), whose sign SymPy cannot infer from `t`.
@@ -182,7 +189,7 @@ def _defined_throughout(expression: Any, problem: SingleVariable) -> bool:
     return bool(gap == sp.S.EmptySet)
 
 
-def _same_number_everywhere(offset: Any, problem: SingleVariable) -> Verdict:
+def _same_number_everywhere(offset: Any, problem: Symbolic) -> Verdict:
     """ADR-003: after removing the known primitive, `b` must be one numeric constant.
 
     Only called once both primitives are proven, so `offset` has a zero derivative
@@ -202,8 +209,9 @@ def _same_number_everywhere(offset: Any, problem: SingleVariable) -> Verdict:
     return "no"
 
 
-def _classify_definite(answer: Any, problem: DefiniteProblem) -> Outcome:
-    """ADR-003: a definite answer is one real number, with no `x` and no constant."""
+def _classify_definite(answer: Any, problem: DefiniteProblem | ValueProblem) -> Outcome:
+    """ADR-003: a definite answer is one real number, with no `x` and no constant.
+    ADR-005 answers multiple integrals the same way."""
     if answer.free_symbols:
         return "incorrect"
     difference = answer - problem.value
@@ -277,7 +285,7 @@ def classify(answer: Any, problem: Problem) -> Outcome:
     """`answer` is the evaluated SymPy form of a parsed learner expression."""
     if answer.has(sp.nan, sp.zoo, sp.oo, -sp.oo):
         return "invalid"
-    if isinstance(problem, DefiniteProblem):
+    if isinstance(problem, _VALUE_PROBLEMS):
         return _classify_definite(answer, problem)
     if isinstance(problem, ExpressionProblem):
         return _classify_expression(answer, problem)
@@ -320,8 +328,7 @@ def check_tree(tree: MathNode, problem: Problem) -> Outcome:
 
     from app.services.math_worker import _build_sympy
 
-    if isinstance(problem, DefiniteProblem | ExpressionProblem):
-    if isinstance(problem, DefiniteProblem | PartialProblem):
+    if isinstance(problem, (*_VALUE_PROBLEMS, ExpressionProblem, PartialProblem)):
         # Every part must have a value: `0/(1 - 1) + 2` is invalid, not 2.
         stack = [tree]
         while stack:
@@ -404,6 +411,18 @@ def _definite_mistakes(answer: Any, problem: DefiniteProblem) -> set[str]:
     return codes
 
 
+def _multiple_mistakes(answer: Any, problem: ValueProblem) -> set[str]:
+    """ADR-005: a sign error from reversed bounds, or a declared wrong value."""
+    if answer.free_symbols:
+        return set()
+    codes = {"bounds_reversed"} if sp.simplify(answer + problem.value) == 0 else set()
+    for code, wrong in problem.mistakes:
+        # A mistake that still gives the right value is not diagnosable.
+        if sp.simplify(wrong - problem.value) != 0 and sp.simplify(answer - wrong) == 0:
+            codes.add(code)
+    return codes
+
+
 def _derivative_mistakes(answer: Any, problem: DerivativeProblem) -> set[str]:
     """A derivative is compared exactly: `f' + 1` is not `f'`, unlike antiderivatives."""
     constants = answer.free_symbols - {X}
@@ -429,6 +448,8 @@ def diagnose(answer: Any, problem: Problem, record: Mapping[str, object]) -> str
         return None
     if isinstance(problem, DefiniteProblem):
         codes = _definite_mistakes(answer, problem)
+    elif isinstance(problem, ValueProblem):
+        codes = _multiple_mistakes(answer, problem)
     elif isinstance(problem, DerivativeProblem):
         codes = _derivative_mistakes(answer, problem)
     else:

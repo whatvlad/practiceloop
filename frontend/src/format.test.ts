@@ -22,6 +22,14 @@ describe('definite statements', () => {
   });
 });
 
+describe('double integral statements', () => {
+  it('are one exact number with their own lead text', () => {
+    expect(problemKind('double-integrals', '\\int_{0}^{1}\\int_{0}^{x} \\left(y\\right)\\,dy\\,dx')).toBe('double');
+    expect(problemKind('double-integrals', '\\iint_D \\left(3 x y\\right)\\,dA')).toBe('double');
+    expect(leadText('double')).toBe('Calculate the double integral.');
+  });
+});
+
 describe('mixed practice shares', () => {
   it('renormalize the published weights over the topics offered at a level', () => {
     const topics: AvailableTopic[] = [

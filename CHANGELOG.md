@@ -5,6 +5,21 @@ User-facing releases. Known limitations of the current release are in
 
 ## Unreleased
 
+- **Partial derivatives.** A second Derivatives topic at levels 1-5: first
+  partials in x and y, second and mixed partials and three variables, the chain
+  rule after changing to polar or cylindrical coordinates, and the Jacobian of
+  a scaled polar or cylindrical map. The answer field takes the variables the
+  exercise names (`y`, `z`, `r`, `θ` as well as `x`, with `2xy` read as
+  `2*x*y`), and the solution shows which variables are held constant and each
+  chain-rule term. A differentiated constant, a dropped chain-rule term, a
+  missing inner derivative, a missing r or a determinant sign error get
+  targeted feedback. Derivatives now have mixed practice. (#96, #101)
+- **Double integrals.** A new Integrals topic at levels 1-5: rectangles and
+  type I/II regions in Cartesian coordinates, disks, annuli and sectors in
+  polar coordinates, reversing the order of integration, and Cartesian
+  integrals that are only clean in polar. The answer is the exact value, and
+  the solution shows the region, the bounds, the factor r and each iterated
+  integral. A missing r or reversed bounds get targeted feedback. (#99)
 - **Practice areas.** Practice is grouped into Integrals and Derivatives
   (ADR-005). Once a second area has topics, the dashboard asks for an area
   first, then a topic and level, and mixed practice draws only within the

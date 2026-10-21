@@ -59,7 +59,7 @@ export const FEEDBACK_CODES = [
   'power_rule', 'trig_sign', 'chain_factor', 'log_absolute', 'split_product', 'parts_sign',
   'cycle_factor', 'partial_fraction_sign', 'definite_not_evaluated', 'bounds_reversed', 'definite_constant',
   'derivative_power', 'derivative_trig_sign', 'derivative_chain', 'derivative_factors', 'quotient_sign',
-  'derivative_constant',
+  'derivative_constant', 'missing_jacobian',
   'partial_held_constant', 'partial_chain_term', 'jacobian_missing_r', 'jacobian_sign',
 ] as const;
 export type FeedbackCode = (typeof FEEDBACK_CODES)[number];
