@@ -1,5 +1,6 @@
 // Saved account practice and an isolated, untracked guest preview. Public cache only.
 import text from '../../../backend/app/content/en.json';
+import { normalizeCode } from './shares';
 import { AREAS, TOPICS, areaOf } from './topics';
 import { FEEDBACK_CODES } from './types';
 import type { AreaSlug, AvailableArea, AvailableTopic, Catalogue, CheckOutcome, Difficulty, LearningStatistics, OmissionMetric, OpenedProblem, ProblemPage, ProblemShare, ProfileCounts, PublicProblem, ReportCategory, RevealedAnswer, RevealedSolution, PracticeTopic, TopicSlug } from './types';
@@ -64,6 +65,7 @@ async function request(path: string, body: unknown, bearer: string | null, saved
     // Do not display raw error bodies or exception text from upstream services.
     if (response.status === 401) throw new Error(saved ? 'Please sign in again to continue saved practice.' : text.expired);
     if (response.status === 404) throw new NotFoundError('That problem is not available.');
+    if (response.status === 410) throw new NotFoundError('This problem is no longer shared. Ask for a new link.');
     if (response.status === 422) {
       if (operation) keys.delete(operation);
       throw new Error('Check your selection or answer and try again.');
@@ -187,6 +189,23 @@ export function stopSharing(id: string): Promise<void> {
     const data = await request(`/problems/${encodeURIComponent(id)}/share/revoke`, {}, bearer, true);
     if (started !== epoch) throw new Error(text.expired);
     if (data.share !== null) throw new Error(text.service_error);
+  });
+}
+
+/** Start this exact shared exercise; retries reuse the same recipient-owned copy. */
+export function practiceSharedProblem(ref: { token: string } | { code: string }): Promise<PublicProblem> {
+  const body = 'token' in ref ? { token: ref.token } : { code: normalizeCode(ref.code) };
+  if (('token' in ref && !SHARE_TOKEN.test(ref.token)) || ('code' in ref && !body.code)) {
+    return Promise.reject(new Error('That link or code is not valid.'));
+  }
+  const operation = `practice-share:${JSON.stringify(body)}`;
+  return once(operation, async () => {
+    const started = epoch;
+    const { bearer, saved } = await credentials();
+    if (!saved) throw new Error('Sign in to solve this problem.');
+    const data = await request('/shares/practice', body, bearer, true, operation);
+    if (started !== epoch) throw new Error(text.expired);
+    return structuredClone(cache(publicProblem(data.problem)));
   });
 }
 

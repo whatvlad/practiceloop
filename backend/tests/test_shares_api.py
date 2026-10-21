@@ -8,6 +8,7 @@ from __future__ import annotations
 import json
 import os
 from collections.abc import Iterator
+from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, datetime, timedelta
 from typing import Any
 from uuid import UUID, uuid4
@@ -18,7 +19,9 @@ from fastapi.testclient import TestClient
 
 from app.api import practice, shares
 from app.core import database
-from app.core.auth import VerifiedUser, current_user
+from app.core.auth import VerifiedUser, current_user, token_verifier
+from app.generators.basic import replay_basic
+from app.generators.core import catalogue
 from app.main import app
 from app.services import shares as share_service
 from app.services.math_worker import AnswerCheck
@@ -291,3 +294,179 @@ def test_lookups_are_rate_limited_before_touching_the_database(
         response = client.get(path)
         assert response.status_code == 429
         assert int(response.headers["Retry-After"]) >= 1
+
+
+def start_copy(client: TestClient, ref: dict[str, str], key: str | None = None) -> Any:
+    return client.post(
+        "/shares/practice", json=ref, headers={"Idempotency-Key": key or str(uuid4())}
+    )
+
+
+@pytest.mark.parametrize("topic", tuple(practice.TOPICS))
+def test_copy_preserves_exact_trusted_content_for_every_topic(
+    client: TestClient, users: Users, url: str, topic: str
+) -> None:
+    source = client.post(
+        "/problems",
+        json={"topic": topic, "difficulty": 3},
+        headers={"Idempotency-Key": str(uuid4())},
+    ).json()["problem"]
+    created = share(client, source["id"])
+    users.current = users.bob
+    response = start_copy(client, {"token": created["token"]})
+    assert response.status_code == 201, response.text
+    copied = response.json()["problem"]
+    assert copied["id"] != source["id"]
+    assert copied["answerRevealed"] is copied["solutionRevealed"] is False
+    assert copied["lastAttempt"] is None
+    assert copied["attemptCount"] == 0
+    assert set(copied) == {
+        "id",
+        "topic",
+        "difficulty",
+        "problemLatex",
+        "createdAt",
+        "answerRevealed",
+        "solutionRevealed",
+        "lastAttempt",
+        "attemptCount",
+    }
+    for field in ("topic", "difficulty", "problemLatex"):
+        assert copied[field] == source[field]
+    with psycopg.connect(url) as conn:
+        solutions = conn.execute(
+            "select generator_version, generator_data, answer_latex, solution_steps"
+            " from private.problem_solutions where problem_id in (%s, %s)",
+            (source["id"], copied["id"]),
+        ).fetchall()
+        assert len(solutions) == 2 and solutions[0] == solutions[1]
+        assert conn.execute(
+            "select user_id from public.problems where id = %s", (copied["id"],)
+        ).fetchone() == (users.bob,)
+    assert client.get(f"/problems/{source['id']}").status_code == 404
+    assert client.get(f"/problems/{copied['id']}").status_code == 200
+
+
+def test_recipient_solves_reveals_and_reopens_without_changing_sender(
+    client: TestClient, users: Users, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    exercise = catalogue("basic-integrals", 4)[0]
+    monkeypatch.setattr(practice, "_pick", lambda *_: exercise)
+    source = client.post(
+        "/problems",
+        json={"topic": "basic-integrals", "difficulty": 4},
+        headers={"Idempotency-Key": str(uuid4())},
+    ).json()["problem"]
+    created = share(client, source["id"])
+    sender_before = client.get(f"/problems/{source['id']}").json()
+    users.current = users.bob
+    response = start_copy(client, {"code": created["code"].lower()})
+    assert response.status_code == 201, response.text
+    copied = response.json()["problem"]
+    answer = str(replay_basic(dict(exercise.record)).antiderivative).replace("**", "^") + "+C"
+    checked = client.post(
+        f"/problems/{copied['id']}/attempts",
+        json={"answer": answer},
+        headers={"Idempotency-Key": str(uuid4())},
+    )
+    assert checked.status_code == 201, checked.text
+    assert checked.json()["attempt"]["result"] == "correct"
+    assert client.post(f"/problems/{copied['id']}/reveal-answer").json() == {
+        "answerLatex": exercise.answer
+    }
+    assert client.post(f"/problems/{copied['id']}/reveal-solution").json() == {
+        "steps": list(exercise.steps)
+    }
+    reopened = client.get(f"/problems/{copied['id']}").json()
+    assert reopened["problem"]["lastAttempt"]["answer"] == answer
+    assert reopened["problem"]["answerRevealed"] is True
+    assert reopened["problem"]["solutionRevealed"] is True
+    assert reopened["answer"]["answerLatex"] == exercise.answer
+    assert reopened["share"] is None
+    history = client.get("/problems").json()["items"]
+    assert [item["id"] for item in history] == [copied["id"]]
+    users.current = users.alice
+    assert client.get(f"/problems/{source['id']}").json() == sender_before
+    assert client.get(f"/problems/{copied['id']}").status_code == 404
+    client.post(f"/problems/{source['id']}/share/revoke")
+    users.current = users.bob
+    assert client.get(f"/problems/{copied['id']}").json() == reopened
+
+
+def test_copy_does_not_inherit_sender_attempts_or_reveals(
+    client: TestClient, users: Users, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    source = generate(client)
+    monkeypatch.setattr(practice, "shared_check", lambda *_: AnswerCheck("incorrect", False))
+    client.post(
+        f"/problems/{source['id']}/attempts",
+        json={"answer": "13579"},
+        headers={"Idempotency-Key": str(uuid4())},
+    )
+    client.post(f"/problems/{source['id']}/reveal-solution")
+    created = share(client, source["id"])
+    users.current = users.bob
+    copied = start_copy(client, {"token": created["token"]}).json()["problem"]
+    opened = client.get(f"/problems/{copied['id']}").json()
+    assert opened == {"problem": copied, "share": None}
+    assert "13579" not in str(opened)
+    assert copied["lastAttempt"] is None and copied["attemptCount"] == 0
+    assert not copied["answerRevealed"] and not copied["solutionRevealed"]
+
+
+def test_concurrent_copy_retries_create_once_and_replay_after_revocation(
+    client: TestClient, users: Users, url: str
+) -> None:
+    source = generate(client)
+    created = share(client, source["id"])
+    users.current = users.bob
+    key = str(uuid4())
+    ref = {"token": created["token"]}
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        responses = list(pool.map(lambda _: start_copy(client, ref, key), range(2)))
+    assert all(response.status_code == 201 for response in responses)
+    assert responses[0].json() == responses[1].json()
+    assert sum(r.headers.get("Idempotency-Replayed") == "true" for r in responses) == 1
+    with psycopg.connect(url) as conn:
+        assert conn.execute(
+            "select count(*) from public.problems where user_id = %s", (users.bob,)
+        ).fetchone() == (1,)
+    users.current = users.alice
+    client.post(f"/problems/{source['id']}/share/revoke")
+    users.current = users.bob
+    assert start_copy(client, ref, key).json() == responses[0].json()
+    assert_unavailable(start_copy(client, ref), 410, "share_revoked")
+    assert_unavailable(start_copy(client, {"code": created["code"]}), 410, "share_revoked")
+
+
+def test_expired_missing_invalid_copies_and_untrusted_fields_write_nothing(
+    client: TestClient, users: Users, url: str
+) -> None:
+    created = share(client, generate(client)["id"])
+    execute(
+        url,
+        "update private.problem_shares set expires_at = now() where token = %s",
+        created["token"],
+    )
+    users.current = users.bob
+    for ref in ({"token": created["token"]}, {"code": created["code"]}):
+        assert_unavailable(start_copy(client, ref), 410, "share_expired")
+    assert_unavailable(start_copy(client, {"token": "a" * 43}), 404, "share_not_found")
+    for ref in ({}, {"token": "short"}, {"code": "bad"}, {"token": "a" * 43, "code": "K7M2QX9P"}):
+        assert_unavailable(start_copy(client, ref), 400, "share_invalid")
+    assert start_copy(client, {"token": created["token"], "answerLatex": "x"}).status_code == 422
+    with psycopg.connect(url) as conn:
+        assert conn.execute(
+            "select count(*) from public.problems where user_id = %s", (users.bob,)
+        ).fetchone() == (0,)
+
+
+def test_copy_requires_verified_authentication_and_idempotency_key(
+    client: TestClient, users: Users, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    created = share(client, generate(client)["id"])
+    assert client.post("/shares/practice", json={"token": created["token"]}).status_code == 422
+    app.dependency_overrides.pop(current_user)
+    # Exercise the real missing-credentials dependency without requiring JWKS configuration.
+    monkeypatch.setitem(app.dependency_overrides, token_verifier, lambda: None)
+    assert start_copy(client, {"token": created["token"]}).status_code == 401

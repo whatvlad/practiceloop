@@ -39,6 +39,7 @@ export {
   revealSolution,
   reportProblem,
   shareProblem,
+  practiceSharedProblem,
   stopSharing,
   submitAttempt,
 } from './practice';

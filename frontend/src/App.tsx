@@ -4,6 +4,7 @@ import { AppNav, Logo, PublicNav } from './components/AppNav';
 import { ButtonLink } from './components/Button';
 import { SkipLink } from './components/SkipLink';
 import { type ApiHealth, authStore, checkApiHealth } from './data/api';
+import { rememberSharedReturn, sharedReturn, takeSharedReturn } from './data/sharedReturn';
 import { DashboardPage } from './pages/DashboardPage';
 import { HistoryPage } from './pages/HistoryPage';
 import { LandingPage } from './pages/LandingPage';
@@ -47,6 +48,7 @@ export function App() {
   const { pathname, params } = useLocation();
   const auth = useSyncExternalStore(authStore.subscribe, authStore.getSnapshot, authStore.getServerSnapshot);
   const account = auth.account;
+  const nextShare = sharedReturn(params.get('next'));
 
   const [apiHealth, setApiHealth] = useState<ApiHealth | undefined>(undefined);
 
@@ -63,12 +65,19 @@ export function App() {
   useEffect(() => {
     if (auth.status === 'loading') return;
     if (!account && (needsAccount || pathname === '/auth/callback')) navigate('/login', { replace: true });
-    if (account && (pathname === '/login' || pathname === '/auth/callback')) navigate('/dashboard', { replace: true });
-  }, [auth.status, account, needsAccount, pathname]);
+    if (account && (pathname === '/login' || pathname === '/auth/callback')) {
+      const remembered = takeSharedReturn();
+      navigate(nextShare ?? remembered ?? '/dashboard', { replace: true });
+    }
+  }, [auth.status, account, needsAccount, pathname, nextShare]);
 
   async function handleSignIn() {
     if (account) navigate('/dashboard');
-    else await authStore.signIn();
+    else {
+      // A rejected callback returns to /login; keep its pending exercise for retry.
+      if (nextShare || pathname !== '/login') rememberSharedReturn(nextShare);
+      await authStore.signIn();
+    }
   }
 
   async function handleLogOut() {
@@ -87,9 +96,9 @@ export function App() {
   function route() {
     if (pathname === '/') return <LandingPage onSignIn={handleSignIn} disabled={authDisabled} busy={auth.working} error={auth.error} signedIn={!!account} />;
     // Shared problems (#37) open the same way signed in or not.
-    if (pathname === '/shared') return <SharedProblemPage token={null} code={params.get('code')} />;
+    if (pathname === '/shared') return <SharedProblemPage key={`${account?.id ?? auth.status}:${params.get('code')}`} token={null} code={params.get('code')} signedIn={!!account} authLoading={auth.status === 'loading'} />;
     const shared = /^\/(?:s|shared)\/([^/]+)$/.exec(pathname);
-    if (shared) return <SharedProblemPage token={decodeURIComponent(shared[1])} code={null} />;
+    if (shared) return <SharedProblemPage key={`${account?.id ?? auth.status}:${shared[1]}`} token={decodeURIComponent(shared[1])} code={null} signedIn={!!account} authLoading={auth.status === 'loading'} />;
     if (pathname === '/privacy') return <PrivacyPage />;
     if (pathname === '/login') return <LoginPage onSignIn={handleSignIn} disabled={authDisabled} busy={auth.working} error={auth.error} />;
     if (pathname === '/auth/callback' || (needsAccount && auth.status === 'loading')) {
