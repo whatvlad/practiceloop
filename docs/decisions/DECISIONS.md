@@ -15,8 +15,8 @@
 | 2026-10-20 | Oracle region, worker isolation, backups and CORS (OQ-06) | Live VM audit, #14; docs/production/ORACLE_DEPLOY.md |
 | 2026-10-20 | License: proprietary, all rights reserved | Owner decision (#15); LICENSE |
 | 2026-10-21 | Add multiple integrals and derivatives as a second calculus area; scope amendment to the MVP | ADR-005 (#95); specification file unchanged |
-| 2026-10-22 | Interactive visualizations in worked solutions (declarative spec, own SVG 2D, lazy three.js 3D); replaces ADR-005's plot exclusion | ADR-006 (#111), proposed |
-| 2026-10-22 | Printable LaTeX PDF worksheets from Practice and History; amends ADR-004's `generated` counter | ADR-007 (#115), proposed; product decisions by Vlad |
+| 2026-10-22 | Interactive visualizations in worked solutions (declarative spec, own SVG 2D, lazy three.js 3D); replaces ADR-005's plot exclusion | ADR-006 (#111), accepted by accountable human (PR #119) |
+| 2026-10-22 | Printable LaTeX PDF worksheets from Practice and History; amends ADR-004's `generated` counter | ADR-007 (#115), accepted by accountable human (PR #119); product decisions by Vlad |
 
 Open questions are in docs/decisions/OPEN_QUESTIONS.md. Record substantial choices
 in a new ADR rather than changing accepted history or the source specification.

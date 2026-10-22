@@ -87,6 +87,19 @@ it('keeps missing-constant feedback separate and reveals only on explicit reques
   expect(JSON.stringify(await practice.getProblem(problem.id))).not.toContain('answerLatex');
 });
 
+it('keeps a valid visual with the steps and drops one this build cannot read (ADR-006)', async () => {
+  const steps = [{ say: 'Integrate.', latex: 'x^2/2+C' }];
+  const visual = { kind: 'indefinite', version: 1, f: 'x', F: ['mul', 0.5, ['pow', 'x', 2]], x: [-4, 4], y: [-2, 9],
+    points: [{ x: 0, kind: 'zero' }] };
+  const problem = await generate();
+  fetchMock.mockResolvedValueOnce(response({ steps, visual }));
+  expect(await practice.revealSolution(problem.id)).toEqual({ steps, visual });
+  for (const broken of [{ ...visual, f: ['eval', 'x'] }, { ...visual, version: 2 }, { ...visual, kind: 'future' }, 'x']) {
+    fetchMock.mockResolvedValueOnce(response({ steps, visual: broken }));
+    expect(await practice.revealSolution(problem.id)).toEqual({ steps });
+  }
+});
+
 it('passes a known mistake code through and treats an unknown one as a general hint', async () => {
   const problem = await generate();
   fetchMock.mockResolvedValueOnce(response({ result: 'incorrect', feedbackCode: 'trig_sign' }));

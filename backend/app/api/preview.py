@@ -16,6 +16,7 @@ from app.generators.core import Exercise, catalogue
 from app.services.math_parser import MathInputTooLong
 from app.services.math_worker import MathWorkerError
 from app.services.preview_check import check_answer
+from app.visuals.spec import solution_payload
 
 router = APIRouter(prefix="/preview", tags=["untracked preview"])
 TTL = 3600
@@ -149,4 +150,5 @@ def answer(identifier: str, authorization: Annotated[str, Header()] = "") -> dic
 
 @router.post("/problems/{identifier}/reveal-solution")
 def solution(identifier: str, authorization: Annotated[str, Header()] = "") -> dict[str, object]:
-    return {"steps": _problem(identifier, authorization).steps}
+    problem = _problem(identifier, authorization)
+    return solution_payload(problem.steps, problem.record)

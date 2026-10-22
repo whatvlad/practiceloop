@@ -25,6 +25,7 @@ from app.generators.core import catalogue
 from app.main import app
 from app.services import shares as share_service
 from app.services.math_worker import AnswerCheck
+from app.visuals.spec import build_visual
 
 pytestmark = pytest.mark.db
 
@@ -375,7 +376,8 @@ def test_recipient_solves_reveals_and_reopens_without_changing_sender(
         "answerLatex": exercise.answer
     }
     assert client.post(f"/problems/{copied['id']}/reveal-solution").json() == {
-        "steps": list(exercise.steps)
+        "steps": list(exercise.steps),
+        "visual": build_visual(exercise.record),
     }
     reopened = client.get(f"/problems/{copied['id']}").json()
     assert reopened["problem"]["lastAttempt"]["answer"] == answer

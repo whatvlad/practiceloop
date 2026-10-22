@@ -36,6 +36,7 @@ from app.services.math_parser import MathInputTooLong
 from app.services.math_worker import AnswerCheck, MathCheckInconclusive, MathWorkerError
 from app.services.math_worker import check_answer as shared_check
 from app.services.preview_check import CHECK_SLOTS
+from app.visuals.spec import solution_payload
 
 router = APIRouter(tags=["practice"])
 
@@ -315,7 +316,13 @@ def reopen(problem_id: UUID, user: User) -> dict[str, Any]:
             raise _not_found()
         summary = records.attempt_summaries(conn, user.id, [problem.id]).get(problem.id)
         revealed = records.previously_revealed(conn, user.id, problem.id)
+        solved = "solution" in revealed
+        stored = records.solution_for_check(conn, user.id, problem.id) if solved else None
         share = shares.active_share(conn, user.id, problem.id)
+    if stored is not None:
+        # Built after the transaction: the visual is CPU work and needs no connection.
+        steps = revealed["solution"]["steps"]
+        revealed["solution"] = solution_payload(steps, stored.generator_data)
     return {"problem": _public_problem(problem, summary), "share": _public_share(share), **revealed}
 
 
@@ -528,10 +535,11 @@ def reveal_answer(problem_id: UUID, user: User) -> dict[str, str]:
 
 
 @router.post("/problems/{problem_id}/reveal-solution")
-def reveal_solution(problem_id: UUID, user: User) -> dict[str, list[Any]]:
+def reveal_solution(problem_id: UUID, user: User) -> dict[str, Any]:
     reveal_limit.check(user.id)
     with transaction(user.id) as conn:
         steps = records.reveal_solution(conn, user.id, problem_id)
-    if steps is None:
+        stored = records.solution_for_check(conn, user.id, problem_id) if steps else None
+    if steps is None or stored is None:
         raise _not_found()
-    return {"steps": steps}
+    return solution_payload(steps, stored.generator_data)

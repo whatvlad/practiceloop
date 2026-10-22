@@ -16,7 +16,7 @@ import {
   submitAttempt,
 } from '../data/api';
 import { areaOf } from '../data/topics';
-import type { CheckResult, FeedbackCode, OpenedProblem, SolutionStep } from '../data/types';
+import type { CheckResult, FeedbackCode, OpenedProblem, RevealedSolution } from '../data/types';
 import { navigate } from '../router';
 import { useLoad } from '../useLoad';
 
@@ -39,7 +39,7 @@ function PracticeSession({ opened }: { opened: OpenedProblem }) {
   const [result, setResult] = useState<CheckResult | null>(problem.lastResult);
   const [feedback, setFeedback] = useState<FeedbackCode | null>(problem.lastFeedback ?? null);
   const [answerLatex, setAnswerLatex] = useState<string | null>(opened.answer?.answerLatex ?? null);
-  const [solution, setSolution] = useState<SolutionStep[] | null>(opened.solution?.steps ?? null);
+  const [solution, setSolution] = useState<RevealedSolution | null>(opened.solution ?? null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const pending = useRef(false);
@@ -82,7 +82,7 @@ function PracticeSession({ opened }: { opened: OpenedProblem }) {
         if (active.current && revision === answerRevision.current) { setResult(checked.result); setFeedback(checked.feedback); }
       })}
       onShowAnswer={() => run(async () => { const revealed = await revealAnswer(problem.id); if (active.current) setAnswerLatex(revealed.answerLatex); })}
-      onShowSolution={() => run(async () => { const revealed = await revealSolution(problem.id); if (active.current) setSolution(revealed.steps); })}
+      onShowSolution={() => run(async () => { const revealed = await revealSolution(problem.id); if (active.current) setSolution(revealed); })}
       onNext={() =>
         run(async () => {
           if (problem.saved === false) { navigate('/login'); return; }
@@ -93,7 +93,8 @@ function PracticeSession({ opened }: { opened: OpenedProblem }) {
       }
       nextLabel={problem.saved === false ? 'Sign in for more practice' : 'Generate next problem'}
       answerLatex={answerLatex}
-      solution={solution}
+      solution={solution?.steps}
+      visual={solution?.visual}
     />
     {problem.saved && <ShareControls problemId={problem.id} initial={opened.share ?? null} />}
     {problem.saved && <ReportProblem problemId={problem.id} />}
