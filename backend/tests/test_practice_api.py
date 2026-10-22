@@ -172,7 +172,7 @@ def test_no_repeat_within_the_latest_half_of_a_cell(client: TestClient, url: str
         {"topic": "integration-by-parts", "difficulty": 4},
         {"topic": "integration-by-parts", "difficulty": 5},
         {"topic": "basic-integrals", "difficulty": 6},
-        {"topic": "definite-integrals", "difficulty": 1},
+        {"topic": "geometry", "difficulty": 1},
         {"topic": "basic-integrals", "difficulty": "1"},
         {"topic": "basic-integrals", "difficulty": 1, "userId": "x"},
         {"topic": "basic-integrals"},
@@ -528,11 +528,33 @@ def test_topics_lists_only_generated_cells(client: TestClient) -> None:
         ("integration-by-parts", [1, 2, 3]),
         ("rational-functions", [1, 2, 3, 4, 5]),
         ("trigonometric-integrals", [1, 2, 3, 4, 5]),
+        ("definite-integrals", [1, 2, 3, 4, 5]),
         ("double-integrals", [1, 2, 3, 4, 5]),
         ("triple-integrals", [1, 2, 3, 4, 5]),
         ("derivatives", [1, 2, 3, 4, 5]),
         ("partial-derivatives", [1, 2, 3, 4, 5]),
     ]
+
+
+def test_definite_topic_saves_definite_problems_under_its_own_topic(
+    client: TestClient, url: str, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """#128: the topic offers only bounded integrals, checked and revealed as numbers."""
+    monkeypatch.setattr(practice, "catalogue", catalogue)
+    problem = generate(client, "definite-integrals", 2)
+    assert problem["topic"] == "definite-integrals"
+    assert problem["problemLatex"].startswith(r"\int_{")
+    assert rows(
+        url,
+        "select t.slug, s.generator_version from public.problems p"
+        " join public.topics t on t.id = p.topic_id"
+        " join private.problem_solutions s on s.problem_id = p.id where p.id = %s",
+        problem["id"],
+    ) == [("definite-integrals", "definite-v1")]
+    answer = client.post(f"/problems/{problem['id']}/reveal-answer").json()["answerLatex"]
+    assert "C" not in answer
+    solution = client.post(f"/problems/{problem['id']}/reveal-solution").json()
+    assert solution["visual"]["kind"] == "definite"
 
 
 def test_topics_publish_the_fixed_mixed_practice_weights(client: TestClient) -> None:
@@ -593,11 +615,15 @@ def test_an_area_with_one_topic_offers_no_mixed_practice(
     [
         (
             level,
-            [s for s, t in practice.TOPICS.items() if level in t.levels and t.area == "integrals"],
+            [
+                s
+                for s, t in practice.TOPICS.items()
+                if level in t.levels and t.area == "integrals" and t.mixed_weight
+            ],
             [
                 t.mixed_weight
                 for t in practice.TOPICS.values()
-                if level in t.levels and t.area == "integrals"
+                if level in t.levels and t.area == "integrals" and t.mixed_weight
             ],
         )
         # Only the topics that offer a level take part in its draw.
@@ -645,7 +671,8 @@ def test_mixed_practice_stays_within_the_chosen_area(
     monkeypatch.setattr(practice, "TOPICS", topics)
     monkeypatch.setattr(practice._RANDOM, "choices", choices)
     generate(client, "mixed", 3)
-    assert set(calls[0]) == set(practice.area_topics("integrals"))
+    # Definite integrals has weight 0: its records are drawn through their own topics.
+    assert set(calls[0]) == set(practice.area_topics("integrals")) - {"definite-integrals"}
     # The draw is all that is checked here; these topics have no catalogue in this test.
     monkeypatch.setattr(practice, "_pick", lambda *_: (_ for _ in ()).throw(LookupError))
     with pytest.raises(LookupError):

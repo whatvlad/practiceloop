@@ -103,7 +103,7 @@ class SingleUserClient(StubClient):
         if method != "GET":
             return super().request(path, method, body, schema)
         if path.startswith("/rest/v1/topics?"):
-            return 200, [{"id": f"topic-{slot}", "slug": str(slot)} for slot in range(9)]
+            return 200, [{"id": f"topic-{slot}", "slug": str(slot)} for slot in range(10)]
         if self.leak:
             return 200, [{"id": "someone-else", "user_id": "someone-else"}]
         return 200, []

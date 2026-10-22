@@ -9,7 +9,7 @@ import pytest
 import sympy as sp
 
 from app.generators.basic import X
-from app.generators.core import catalogue
+from app.generators.core import catalogue, catalogue_records
 from app.generators.core import replay as replay_exercise
 from app.generators.definite import (
     TEMPLATES,
@@ -107,6 +107,21 @@ def test_catalogue_cells_mix_definite_and_indefinite_records() -> None:
             assert replay_exercise(item.record) == item
     # Indefinite records come first: the guest demo's first exercise is unchanged.
     assert catalogue("basic-integrals", 1)[0].record["generator_version"] == "basic-v1"
+
+
+@pytest.mark.parametrize("level", [1, 2, 3, 4, 5])
+def test_definite_topic_holds_every_definite_record_of_its_level(level) -> None:
+    """#128: the Definite integrals topic holds the definite variants of every topic."""
+    expected = [
+        record
+        for name, template in TEMPLATES.items()
+        if difficulty(template) == level
+        for record in catalogue_records(template.topic, level)
+        if record.get("template") == name and record["generator_version"] == "definite-v1"
+    ]
+    cell = catalogue_records("definite-integrals", level)
+    assert sorted(map(json.dumps, cell)) == sorted(map(json.dumps, expected))
+    assert all(item.value is not None for item in catalogue("definite-integrals", level))
 
 
 @pytest.mark.parametrize(

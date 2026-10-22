@@ -3,10 +3,10 @@ import { WarningIcon } from './icons';
 import text from '../../../backend/app/content/en.json';
 
 /** Shown only when the API is configured but cannot be reached. */
-export function ApiStatusNotice({ health }: { health: ApiHealth | undefined }) {
+export function ApiStatusNotice({ health, wrap = 'pl-wrap' }: { health: ApiHealth | undefined; wrap?: string }) {
   if (health !== 'unreachable') return null;
   return (
-    <section className="pl-wrap pl-api-notice" aria-label="Server status">
+    <section className={`${wrap} pl-api-notice`} aria-label="Server status">
       <div className="pl-result pl-result--invalid" role="status">
         <WarningIcon />
         <div>

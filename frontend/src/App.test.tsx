@@ -88,6 +88,18 @@ describe('client route protection and auth UI', () => {
     expect(element.textContent).not.toContain('learner@example.invalid');
   });
 
+  it('puts the account notice in the column of the page below it (#128)', async () => {
+    const column = () => {
+      const notice = element.querySelector('[aria-label="Account status"]');
+      const main = element.querySelector('main');
+      return [notice?.classList.contains('pl-wrap--narrow'), main?.classList.contains('pl-wrap--narrow')];
+    };
+    await renderAt('/profile', signedIn);
+    expect(column()).toEqual([true, true]);
+    await renderAt('/history', signedIn);
+    expect(column()).toEqual([false, false]);
+  });
+
   it('returns a successful callback to the dashboard and a rejected callback to sign-in', async () => {
     await renderAt('/auth/callback', signedIn);
     expect(window.location.pathname).toBe('/dashboard');
