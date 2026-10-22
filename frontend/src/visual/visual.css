@@ -1,0 +1,39 @@
+/* Solution visuals (ADR-006): SVG drawn with the design-system tokens, light and dark. */
+.pl-vis{margin:0;display:flex;flex-direction:column;gap:var(--space-3);background:var(--surface-raised);border-radius:var(--radius-lg);padding:var(--space-4) var(--space-5)}
+.pl-vis-plot{width:100%;min-width:0;border-radius:var(--radius-md);background:var(--surface);overflow:hidden}
+.pl-vis-plot svg{display:block;max-width:100%;touch-action:pan-y}
+.pl-vis-axes .grid{stroke:var(--line);stroke-width:1}
+.pl-vis-axes .axis{stroke:var(--control-border);stroke-width:1}
+.pl-vis-axes text{fill:var(--ink-subtle);font-family:var(--font-mono);font-size:11px}
+.pl-vis-curve{fill:none;stroke:var(--ink);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.pl-vis-curve.f{stroke:var(--ink-muted);stroke-width:1.75}
+.pl-vis-curve.big{stroke:var(--correct);stroke-width:2.5}
+.pl-vis-area.pos,.pl-vis-riemann .pos{fill:var(--correct);fill-opacity:.28}
+.pl-vis-area.neg,.pl-vis-riemann .neg{fill:var(--incorrect);fill-opacity:.32}
+.pl-vis-riemann rect{stroke:var(--ink-subtle);stroke-width:.75}
+.pl-vis-bound{stroke:var(--ink-muted);stroke-width:1.25;stroke-dasharray:4 3}
+.pl-vis-pole{stroke:var(--invalid);stroke-width:1.25;stroke-dasharray:5 4}
+.pl-vis-point{stroke:var(--surface);stroke-width:1.5}
+.pl-vis-point.zero{fill:var(--ink-muted)}
+.pl-vis-point.extremum{fill:var(--correct)}
+.pl-vis-point.inflection{fill:var(--surface);stroke:var(--correct);stroke-width:2}
+.pl-vis-value{margin:0;font-size:18px;display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--space-2)}
+.pl-vis-controls{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-3) var(--space-5)}
+.pl-vis-slider{display:grid;grid-template-columns:1fr auto;align-items:center;gap:2px var(--space-3);flex:1 1 220px;min-width:0}
+.pl-vis-slider input{grid-column:1 / -1;width:100%;height:32px;margin:0;accent-color:var(--action);cursor:pointer}
+.pl-vis-slider output{color:var(--ink-muted)}
+.pl-vis-toggle{display:inline-flex;align-items:center;gap:var(--space-2);cursor:pointer;min-height:32px}
+.pl-vis-toggle input{width:18px;height:18px;accent-color:var(--action);margin:0}
+.pl-vis-choice{display:inline-flex;gap:var(--space-1)}
+.pl-vis-choice button{height:32px;padding:0 var(--space-3);border-radius:var(--radius-sm);border:1px solid var(--control-border);background:transparent;color:var(--ink);font-size:13px;cursor:pointer}
+.pl-vis-choice button[aria-pressed="true"]{background:var(--action);border-color:var(--action);color:var(--on-action)}
+.pl-vis-legend{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:var(--space-2) var(--space-4);color:var(--ink-muted)}
+.pl-vis-legend li{display:inline-flex;align-items:center;gap:var(--space-2)}
+.pl-vis-legend i{display:inline-block;width:18px;height:0;border-top:2px solid var(--ink-muted)}
+.pl-vis-legend i.big{border-top:3px solid var(--correct)}
+.pl-vis-legend i.pole{border-top:2px dashed var(--invalid)}
+.pl-vis-legend i.dot{width:9px;height:9px;border:0;border-radius:50%}
+.pl-vis-legend i.dot.zero{background:var(--ink-muted)}
+.pl-vis-legend i.dot.extremum{background:var(--correct)}
+.pl-vis-legend i.dot.inflection{background:var(--surface);border:2px solid var(--correct)}
+@media (max-width:560px){.pl-vis{padding:var(--space-3)}}
