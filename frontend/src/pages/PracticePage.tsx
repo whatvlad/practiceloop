@@ -4,6 +4,7 @@ import { Button, ButtonLink } from '../components/Button';
 import { ProblemCard } from '../components/ProblemCard';
 import { ReportProblem } from '../components/ReportProblem';
 import { ShareControls } from '../components/ShareControls';
+import { WorksheetBuilder } from '../components/WorksheetBuilder';
 import {
   NotFoundError,
   generateProblem,
@@ -98,6 +99,7 @@ function PracticeSession({ opened }: { opened: OpenedProblem }) {
     />
     {problem.saved && <ShareControls problemId={problem.id} initial={opened.share ?? null} />}
     {problem.saved && <ReportProblem problemId={problem.id} />}
+    {problem.saved && <WorksheetBuilder start={{ area: areaOf(problem.topic), topic: problem.mixed ? 'mixed' : problem.topic, difficulty: problem.difficulty }} />}
     </>
   );
 }

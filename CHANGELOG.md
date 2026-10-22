@@ -5,6 +5,14 @@ User-facing releases. Known limitations of the current release are in
 
 ## Unreleased
 
+- **Print a worksheet from Practice.** "Print worksheet" at the bottom of a
+  saved practice problem builds a PDF of new problems in up to 8 groups (topic
+  or mixed, a level and a count, at most 40 problems). It shows before
+  generating when a group asks for more different problems than its topic and
+  level have, and never repeats a problem. Choose A4 or Letter, one or two
+  columns, and whether to include the answer key; the problems are saved to
+  History, and with the key their answers count as revealed. (#117)
+
 - **See the solid of a triple integral.** Show solution now draws the solid E
   in 3D: its bottom and top surfaces and the side walls, translucent with
   edges, in Cartesian and cylindrical coordinates. Drag to rotate, pinch or

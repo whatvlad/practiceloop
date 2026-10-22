@@ -19,9 +19,13 @@ export type TopicSlug =
 /** A topic, or mixed practice: the server draws a topic of one area with fixed, published weights (#36). */
 export type PracticeTopic = TopicSlug | 'mixed';
 
+/** ADR-007 decision 4: how many distinct problems a worksheet group can get at each level. */
+export type WorksheetCapacity = Partial<Record<Difficulty, number>>;
+
 export interface MixedPractice {
   availableDifficulties: Difficulty[];
   weights: Partial<Record<TopicSlug, number>>;
+  worksheetCapacity?: WorksheetCapacity;
 }
 
 export interface Area {
@@ -48,6 +52,7 @@ export interface Topic {
 
 export interface AvailableTopic extends Topic {
   availableDifficulties: Difficulty[];
+  worksheetCapacity?: WorksheetCapacity;
 }
 
 export type Difficulty = 1 | 2 | 3 | 4 | 5;

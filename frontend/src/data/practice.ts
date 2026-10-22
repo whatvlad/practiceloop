@@ -4,7 +4,7 @@ import { normalizeCode } from './shares';
 import { parseVisual } from '../visual/spec';
 import { AREAS, TOPICS, areaOf } from './topics';
 import { FEEDBACK_CODES } from './types';
-import type { AreaSlug, AvailableArea, AvailableTopic, Catalogue, CheckOutcome, Difficulty, LearningStatistics, OmissionMetric, OpenedProblem, ProblemPage, ProblemShare, ProfileCounts, PublicProblem, ReportCategory, RevealedAnswer, RevealedSolution, PracticeTopic, TopicSlug } from './types';
+import type { AreaSlug, AvailableArea, AvailableTopic, Catalogue, CheckOutcome, Difficulty, LearningStatistics, OmissionMetric, OpenedProblem, ProblemPage, ProblemShare, ProfileCounts, PublicProblem, ReportCategory, RevealedAnswer, RevealedSolution, PracticeTopic, TopicSlug, WorksheetCapacity } from './types';
 
 const base = (import.meta.env.VITE_API_BASE_URL ?? '/api').trim().replace(/\/+$/, '');
 let token: Promise<string> | null = null;
@@ -79,6 +79,17 @@ async function request(path: string, body: unknown, bearer: string | null, saved
   if (started !== epoch) throw new Error(text.expired);
   return object(data);
 }
+
+/** The account's bearer for routes guests cannot use (#116 worksheets), with the epoch it belongs to. */
+export async function accountSession(guestMessage: string): Promise<{ bearer: string; started: number }> {
+  const started = epoch;
+  const { bearer, saved } = await credentials();
+  if (!saved) throw new Error(guestMessage);
+  return { bearer, started };
+}
+
+/** False once the signed-in identity changed after `started`. */
+export function sessionCurrent(started: number): boolean { return started === epoch; }
 
 async function credentials(): Promise<{ bearer: string; saved: boolean }> {
   const started = epoch;
@@ -311,13 +322,28 @@ function difficulties(value: unknown): Difficulty[] {
   return [...new Set(value)] as Difficulty[];
 }
 
+/** ADR-007 decision 4: distinct records per level; absent when the API does not publish it. */
+function capacity(value: unknown, levels: readonly Difficulty[]): WorksheetCapacity | undefined {
+  if (value === undefined || value === null) return undefined;
+  const data = object(value);
+  const result: WorksheetCapacity = {};
+  for (const [key, count] of Object.entries(data)) {
+    const level = Number(key) as Difficulty;
+    if (!levels.includes(level) || !Number.isSafeInteger(count) || (count as number) < 0) throw new Error(text.service_error);
+    result[level] = count as number;
+  }
+  return result;
+}
+
 function mixedPractice(value: unknown, area: AreaSlug): AvailableArea['mixed'] {
   if (value === null) return null;
   const data = object(value);
   const weights = object(data.weights);
   if (Object.entries(weights).some(([slug, weight]) => !TOPICS.some(t => t.slug === slug && t.area === area)
     || !Number.isSafeInteger(weight) || (weight as number) <= 0)) throw new Error(text.service_error);
-  return { availableDifficulties: difficulties(data.availableDifficulties), weights: weights as Record<TopicSlug, number> };
+  const availableDifficulties = difficulties(data.availableDifficulties);
+  const worksheetCapacity = capacity(data.worksheetCapacity, availableDifficulties);
+  return { availableDifficulties, weights: weights as Record<TopicSlug, number>, ...(worksheetCapacity ? { worksheetCapacity } : {}) };
 }
 
 export async function getTopics(): Promise<AvailableTopic[]> {
@@ -346,7 +372,9 @@ export async function getCatalogue(): Promise<Catalogue> {
       || !Array.isArray(item.availableDifficulties)
       || item.availableDifficulties.some(level => ![1, 2, 3, 4, 5].includes(level))) throw new Error(text.service_error);
     seen.add(topic.slug);
-    return { ...topic, availableDifficulties: [...new Set(item.availableDifficulties)] as Difficulty[] };
+    const availableDifficulties = [...new Set(item.availableDifficulties)] as Difficulty[];
+    const worksheetCapacity = capacity(item.worksheetCapacity, availableDifficulties);
+    return { ...topic, availableDifficulties, ...(worksheetCapacity ? { worksheetCapacity } : {}) };
   });
   if (new Set(areas.map(a => a.slug)).size !== areas.length) throw new Error(text.service_error);
   return { areas, topics };

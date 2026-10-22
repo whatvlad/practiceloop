@@ -2,10 +2,11 @@
 import { createAuthStore } from './auth';
 import { configurePracticeAuth, resetPractice } from './practice';
 import { callbackOptions, createBrowserClient } from './supabase';
+import { resetWorksheets } from './worksheets';
 
 const client = createBrowserClient();
 export const authStore = createAuthStore(client?.auth ?? null, {
-  ...callbackOptions(), onIdentityChange: resetPractice,
+  ...callbackOptions(), onIdentityChange: () => { resetPractice(); resetWorksheets(); },
 });
 
 configurePracticeAuth(async () => {
@@ -44,5 +45,6 @@ export {
   submitAttempt,
 } from './practice';
 export { lookupShare, shareCode, shareLink } from './shares';
+export { createWorksheet, downloadWorksheetPdf, fetchWorksheetPdf, DEFAULT_PAGE_OPTIONS, WORKSHEET_LIMITS } from './worksheets';
 export { checkApiHealth } from './health';
 export type { ApiHealth } from './health';
