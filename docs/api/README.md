@@ -109,9 +109,9 @@ each area's fixed mixed-practice weights (#36):
 
 ```json
 {"areas":[
-  {"slug":"integrals","name":"Integrals","mixed":{"availableDifficulties":[1,2,3,4,5],"weights":{"basic-integrals":1,"substitution":2,"integration-by-parts":2,"rational-functions":2,"trigonometric-integrals":2}}},
-  {"slug":"derivatives","name":"Derivatives","mixed":{"availableDifficulties":[1,2,3,4,5],"weights":{"derivatives":1,"partial-derivatives":1}}}],
- "items":[{"slug":"basic-integrals","name":"Basic integrals","area":"integrals","availableDifficulties":[1,2,3,4,5]}]}
+  {"slug":"integrals","name":"Integrals","mixed":{"availableDifficulties":[1,2,3,4,5],"weights":{"basic-integrals":1,"substitution":2,"integration-by-parts":2,"rational-functions":2,"trigonometric-integrals":2},"worksheetCapacity":{"1":168,"2":186}}},
+  {"slug":"derivatives","name":"Derivatives","mixed":{"availableDifficulties":[1,2,3,4,5],"weights":{"derivatives":1,"partial-derivatives":1},"worksheetCapacity":{"1":42}}}],
+ "items":[{"slug":"basic-integrals","name":"Basic integrals","area":"integrals","availableDifficulties":[1,2,3,4,5],"worksheetCapacity":{"1":54,"2":42}}]}
 ```
 
 Every topic belongs to exactly one area, and `areas` lists only areas with at
@@ -124,6 +124,10 @@ Mixed practice draws a topic of one area for each problem with these weights,
 over that area's topics offered at the chosen level; at levels 1–2 integration
 by parts is not offered, so the others share its part. Weights are constants in
 `TOPICS` in `backend/app/api/practice.py`, never adapted to a learner's history.
+
+`worksheetCapacity` maps each offered level to the number of distinct records a
+worksheet group can take from that cell (ADR-007 decision 4); for `mixed` it is
+the sum over the area's topics offered at that level.
 
 ### `POST /api/problems`
 
@@ -201,11 +205,12 @@ payload when repeated.
 
 ### `GET /api/problems`
 
-Accepts `limit` (`1..50`, default `20`) and opaque `cursor`. Returns newest first
-by `(created_at, id)`:
+Accepts `limit` (`1..50`, default `20`), opaque `cursor` and `worksheet=true`,
+which keeps only problems a generated worksheet created (ADR-007). Returns newest
+first by `(created_at, id)`:
 
 ```json
-{"items":[{"id":"uuid","topic":"basic-integrals","difficulty":1,"problemLatex":"\\int 3x^2\\,dx","createdAt":"2026-10-19T12:00:00Z","answerRevealed":false,"solutionRevealed":false,"lastAttempt":null}],"nextCursor":null}
+{"items":[{"id":"uuid","topic":"basic-integrals","difficulty":1,"problemLatex":"\\int 3x^2\\,dx","createdAt":"2026-10-19T12:00:00Z","answerRevealed":false,"solutionRevealed":false,"worksheetId":null,"lastAttempt":null}],"nextCursor":null}
 ```
 
 The cursor encodes the last visible `(created_at, id)` tuple; it is bounded and
@@ -232,7 +237,8 @@ or `null`.
 {"account":{"id":"uuid","name":"Ada","email":"ada@example.test","provider":"Google"},"counts":{"generated":4,"attempted":3,"correct":2}}
 ```
 
-Counts use one SQL aggregate snapshot and ADR-004 distinct-problem semantics:
+Counts use one SQL aggregate snapshot and ADR-004 distinct-problem semantics
+(ADR-007: a worksheet problem counts as `generated` only once it has an attempt):
 invalid-only attempts count as attempted, repeated attempts do not inflate
 counts, and any previous correct attempt keeps the problem counted as correct.
 `name` is the optional display name saved with `POST /api/profile` (#35), or
@@ -341,6 +347,53 @@ account deletes its reports. Another user's or a missing problem is `404
 problem_not_found`. Rate limits: 5 reports a minute and 30 an hour per user.
 The anonymous demo has no report button, since its problem is not stored.
 
+## Worksheets (#116, ADR-007)
+
+### `POST /api/worksheets`
+
+Requires `Idempotency-Key: <UUIDv4>`; an exact retry returns the same worksheet.
+
+```json
+{"source":"generate",
+ "groups":[{"topic":"substitution","difficulty":2,"count":5},{"topic":"mixed:integrals","difficulty":3,"count":4}],
+ "paper":"a4","columns":1,"answerKey":true}
+```
+
+or `{"source":"history","problemIds":["uuid", ...],"paper":"letter","columns":2,"answerKey":false}`.
+`paper` (`a4`, `letter`) defaults to `a4`, `columns` (`1`, `2`) to `1`,
+`answerKey` to `true`. Limits: 1-8 groups, `count` 1-20, 40 problems in total,
+1-40 distinct `problemIds`. Returns `201`:
+
+```json
+{"worksheet":{"id":"uuid","source":"generate","createdAt":"2026-10-22T14:00:00Z","paper":"a4","columns":1,"answerKey":true,
+ "groups":[{"label":"Substitution, level 2","topic":"substitution","difficulty":2,"requested":5,"count":5},
+           {"label":"Mixed integrals, level 3","topic":"mixed:integrals","difficulty":3,"requested":4,"count":4}],
+ "problemIds":["uuid", "..."]}}
+```
+
+- `generate` picks new problems: no record twice in one worksheet (across
+  groups too), distinct base problems before coefficient variants. A group whose
+  cell runs out is capped: `count < requested`, possibly `0`. The problems are
+  saved as normal problems with `worksheetId`, so they appear in History.
+- `history` uses the user's own problems, in catalogue area and topic order, then
+  level, then oldest first; each topic and level is one group. Any missing or
+  foreign id fails the whole request with `404 problem_not_found`.
+- With `answerKey` every included problem gets `answerRevealed: true` in the same
+  transaction; `solutionRevealed` never changes. Without it no flag changes.
+- `problemIds` are in print order. Rate limit: 5 a minute and 30 an hour per user.
+
+### `GET /api/worksheets/{id}/pdf`
+
+Returns `200 application/pdf` with
+`Content-Disposition: attachment; filename="practiceloop-worksheet-YYYY-MM-DD.pdf"`
+(the creation date). It is read-only: no flag changes, so it can be retried or
+repeated. One section per group, problems numbered through the whole sheet with
+writing space, and with the key an "Answers" section on a new page (final
+answers only). Rate limit: 20 a minute per user. One compile runs at a time;
+waiting over 10 s gives `503 worksheet_busy`, a failed compile
+`503 worksheet_render_failed` (both retryable). Another user's or a missing
+worksheet is `404 problem_not_found`.
+
 ## Response headers
 
 Every API response carries `X-Content-Type-Options: nosniff`,
@@ -364,7 +417,7 @@ and redirects HTTP to HTTPS.
 | `409` | `idempotency_conflict` | Same key with different input; create a new key only for a deliberate new action |
 | `422` | `invalid_request` | Malformed JSON, unknown field, empty answer, unsupported topic/level or normalized input over 256 bytes |
 | `429` | `rate_limited` | Retry only after the `Retry-After` delay |
-| `503` | `authentication_unavailable`, `math_worker_unavailable`, `math_check_inconclusive`, `database_unavailable` | No mutation committed; retry with the same idempotency key only when `retryable` is true |
+| `503` | `authentication_unavailable`, `math_worker_unavailable`, `math_check_inconclusive`, `database_unavailable`, `worksheet_busy`, `worksheet_render_failed` | No mutation committed; retry with the same idempotency key only when `retryable` is true |
 
 Unexpected failures return a generic `500 internal_error` with a correlation ID,
 not exception text. Client disconnects do not cancel a database commit already in

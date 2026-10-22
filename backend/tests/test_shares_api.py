@@ -331,6 +331,7 @@ def test_copy_preserves_exact_trusted_content_for_every_topic(
         "solutionRevealed",
         "lastAttempt",
         "attemptCount",
+        "worksheetId",
     }
     for field in ("topic", "difficulty", "problemLatex"):
         assert copied[field] == source[field]

@@ -60,6 +60,17 @@ if ! command -v python3.12 >/dev/null; then
 fi
 python3.12 -m venv --help >/dev/null || { echo "python3.12 cannot create venvs." >&2; exit 1; }
 
+# ADR-007 worksheets: pdflatex with amsmath, amssymb, geometry, multicol and Latin Modern.
+echo "==> Installing TeX for PDF worksheets"
+if command -v apt-get >/dev/null; then
+  apt-get install -y -q --no-install-recommends texlive-latex-base texlive-latex-recommended \
+    texlive-fonts-recommended lmodern
+else
+  dnf install -y -q texlive-latex texlive-amsfonts texlive-geometry texlive-tools texlive-lm \
+    || echo "Install pdflatex with amsmath, geometry, multicol and lmodern by hand." >&2
+fi
+command -v pdflatex >/dev/null || echo "Warning: pdflatex is missing; worksheet PDFs will fail." >&2
+
 echo "==> Creating the $APP_USER user"
 if ! id "$APP_USER" >/dev/null 2>&1; then
   useradd --system --create-home --home-dir "$APP_ROOT" --shell /bin/bash "$APP_USER"

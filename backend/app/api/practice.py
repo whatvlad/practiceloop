@@ -26,7 +26,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from app.core.auth import VerifiedUser, current_user
 from app.core.database import transaction
 from app.core.errors import ApiError
-from app.generators.core import Exercise, catalogue
+from app.generators.core import Exercise, catalogue, catalogue_records
 from app.services import idempotency, shares
 from app.services import owned_records as records
 from app.services.account import delete_user
@@ -48,25 +48,27 @@ class Topic(NamedTuple):
     levels: tuple[int, ...]
     # #36 mixed practice: a fixed, published weight, never adapted to a learner's history.
     mixed_weight: int
+    # ADR-007: writing space after a level-1 problem on a printed worksheet, in cm.
+    space_cm: float
 
 
 # ADR-005: practice has two areas, and every topic belongs to exactly one of them.
 AREAS = {"integrals": "Integrals", "derivatives": "Derivatives"}
 # Basic integrals are the building block of every method, so they get half the share.
 TOPICS = {
-    "basic-integrals": Topic("Basic integrals", "integrals", (1, 2, 3, 4, 5), 1),
-    "substitution": Topic("Substitution", "integrals", (1, 2, 3, 4, 5), 2),
+    "basic-integrals": Topic("Basic integrals", "integrals", (1, 2, 3, 4, 5), 1, 3),
+    "substitution": Topic("Substitution", "integrals", (1, 2, 3, 4, 5), 2, 4),
     # ADR-003 amendment: parts has three levels; the frontend hides the rest.
-    "integration-by-parts": Topic("Integration by parts", "integrals", (1, 2, 3), 2),
-    "rational-functions": Topic("Rational functions", "integrals", (1, 2, 3, 4, 5), 2),
-    "trigonometric-integrals": Topic("Trigonometric integrals", "integrals", (1, 2, 3, 4, 5), 2),
+    "integration-by-parts": Topic("Integration by parts", "integrals", (1, 2, 3), 2, 5),
+    "rational-functions": Topic("Rational functions", "integrals", (1, 2, 3, 4, 5), 2, 5),
+    "trigonometric-integrals": Topic("Trigonometric integrals", "integrals", (1, 2, 3, 4, 5), 2, 5),
     # #99 double-v1: the answer is the integral's exact value (ADR-005).
-    "double-integrals": Topic("Double integrals", "integrals", (1, 2, 3, 4, 5), 2),
+    "double-integrals": Topic("Double integrals", "integrals", (1, 2, 3, 4, 5), 2, 6),
     # #100 triple-v1: Cartesian and cylindrical, answered with the exact value.
-    "triple-integrals": Topic("Triple integrals", "integrals", (1, 2, 3, 4, 5), 2),
+    "triple-integrals": Topic("Triple integrals", "integrals", (1, 2, 3, 4, 5), 2, 7),
     # #97 derivatives-v1; with #101 partial-v1 the area has two topics and mixed practice.
-    "derivatives": Topic("Derivatives", "derivatives", (1, 2, 3, 4, 5), 1),
-    "partial-derivatives": Topic("Partial derivatives", "derivatives", (1, 2, 3, 4, 5), 1),
+    "derivatives": Topic("Derivatives", "derivatives", (1, 2, 3, 4, 5), 1, 3),
+    "partial-derivatives": Topic("Partial derivatives", "derivatives", (1, 2, 3, 4, 5), 1, 4),
 }
 MIXED = "mixed"
 MAX_ANSWER_CHARS = 512  # the parser's 256-byte limit applies after normalization
@@ -200,10 +202,20 @@ def _mixed(area: str) -> dict[str, object] | None:
     slugs = area_topics(area)
     if len(slugs) < 2:
         return None
+    levels = sorted({level for slug in slugs for level in TOPICS[slug].levels})
     return {
-        "availableDifficulties": sorted({level for slug in slugs for level in TOPICS[slug].levels}),
+        "availableDifficulties": levels,
         "weights": {slug: TOPICS[slug].mixed_weight for slug in slugs},
+        "worksheetCapacity": {
+            str(level): sum(capacity(slug, level) for slug in mixed_topics(area, level)[0])
+            for level in levels
+        },
     }
+
+
+def capacity(topic: str, difficulty: int) -> int:
+    """ADR-007 decision 4: a worksheet never repeats a record, so a cell holds this many."""
+    return len(catalogue_records(topic, difficulty))
 
 
 @router.get("/topics")
@@ -220,6 +232,7 @@ def topics(_user: User) -> dict[str, object]:
                 "name": topic.name,
                 "area": topic.area,
                 "availableDifficulties": list(topic.levels),
+                "worksheetCapacity": {str(level): capacity(slug, level) for level in topic.levels},
             }
             for slug, topic in TOPICS.items()
         ],
@@ -238,6 +251,7 @@ def _public_problem(
         "createdAt": _timestamp(problem.created_at),
         "answerRevealed": problem.answer_revealed,
         "solutionRevealed": problem.solution_revealed,
+        "worksheetId": str(problem.worksheet_id) if problem.worksheet_id else None,
         "attemptCount": summary[1] if summary else 0,
         "lastAttempt": None
         if last is None
@@ -296,10 +310,13 @@ def history(
     user: User,
     limit: Annotated[int, Query(ge=1, le=records.MAX_PAGE_SIZE)] = 20,
     cursor: Annotated[str | None, Query(max_length=256)] = None,
+    worksheet: Annotated[bool, Query()] = False,
 ) -> dict[str, Any]:
     before = _decode_cursor(cursor)
     with transaction(user.id, read_only=True) as conn:
-        page = records.list_problems(conn, user.id, limit, before, include_next=True)
+        page = records.list_problems(
+            conn, user.id, limit, before, include_next=True, worksheet_only=worksheet
+        )
         visible = page[:limit]
         summaries = records.attempt_summaries(conn, user.id, [p.id for p in visible])
     return {

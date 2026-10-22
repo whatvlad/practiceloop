@@ -170,6 +170,26 @@ owner, and includes answers only when the worksheet has `answer_key`.
 | #117 | Practice group builder | #116 |
 | #118 | History multi-select, export and worksheet filter | #116 |
 
+## Implementation notes (#116, 2026-10-22)
+
+Details the build settled within this ADR:
+
+- `public.worksheets` also stores `groups jsonb`: each group as requested and as
+  filled (`topic`, `difficulty`, `requested`, `count`). A mixed group's problems
+  carry the drawn topic, so its label cannot be rebuilt from the problems.
+  `worksheet_items` is unique per `(worksheet_id, problem_id)`.
+- No record repeats across the whole worksheet: groups take from a shared cell in
+  request order, and a group that finds nothing left gets `count: 0` and no
+  section in the PDF. `GET /api/topics` publishes each cell's size as
+  `worksheetCapacity`, so the UI shows the cap before generating.
+- `GET /api/problems` items carry `worksheetId`, and `?worksheet=true` lists only
+  worksheet problems, which is History's filter.
+- The PDF header date and the file name use the worksheet's creation date, so a
+  reprint is the same document. Template, compiler and limits:
+  `backend/app/services/worksheet_pdf.py` and `tex_worker.py`.
+- `lmodern` is installed explicitly: on Ubuntu it is only a recommendation of
+  `texlive-fonts-recommended`.
+
 ## Out of scope
 
 Worked solutions in the PDF, free-text titles or other user-written LaTeX,

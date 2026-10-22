@@ -58,6 +58,31 @@ jobs:
       - name: Check hosted verification failure handling (offline)
         run: python -m unittest discover -s ../scripts -p 'test_supabase_*_unit.py'
 
+  worksheet-tex:
+    name: Worksheet TeX
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      # The same TeX packages deploy/oracle/bootstrap.sh installs on the VM (ADR-007).
+      - name: Install TeX
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q --no-install-recommends texlive-latex-base \
+            texlive-latex-recommended texlive-fonts-recommended lmodern poppler-utils
+      - run: python -m pip install -r requirements.txt
+      - run: python -m pip install --no-deps -e .
+      - name: Compile every catalogue statement and answer, and the sandbox tests
+        run: python -m pytest -m tex
+
   database:
     name: Database isolation
     runs-on: ubuntu-latest

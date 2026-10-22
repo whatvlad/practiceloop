@@ -58,6 +58,22 @@ timeout and answers a retryable `503`. One check runs at a time in `/preview`.
 Rate limits are in the API itself: per user on the signed-in routes and a global
 window on `/preview` (`429` with `Retry-After`, see `docs/api/README.md`).
 
+Worksheet PDFs (ADR-007) run `pdflatex` from Ubuntu's TeX Live packages
+(`texlive-latex-base`, `texlive-latex-recommended`, `texlive-fonts-recommended`,
+`lmodern`, about 300 MB), one compile at a time, each in a fresh child
+(`backend/app/services/tex_worker.py`) with no shell escape, paranoid file access,
+10 s CPU, 512 MB address space, 5 MB files, a 20 s wall clock and a temporary
+directory that is deleted afterwards. `bootstrap.sh` installs the packages; on a
+VM bootstrapped before #116, install them once by hand (the deploy user cannot):
+
+```sh
+sudo apt-get update && sudo apt-get install -y --no-install-recommends \
+  texlive-latex-base texlive-latex-recommended texlive-fonts-recommended lmodern
+```
+
+Without them the API still runs, and only `GET /api/worksheets/{id}/pdf` answers
+`503 worksheet_render_failed`.
+
 ## Secrets
 
 Backend secrets (`DATABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`) live only in
@@ -101,7 +117,7 @@ artifacts or VM snapshots.
    contents of `practiceloop_deploy.pub`:
    `sudo bash bootstrap.sh <ip> "<ssh-ed25519 ... practiceloop-deploy>"`.
    It installs Python 3.12 (from the OS, or a standalone build via uv on images
-   such as Ubuntu 20.04 that lack it) and Caddy, creates the user and services, opens the
+   such as Ubuntu 20.04 that lack it), TeX for worksheet PDFs and Caddy, creates the user and services, opens the
    VM firewall and prints three values.
 4. In GitHub repo settings, add the printed values as Actions **variables** (secrets also work)
    `ORACLE_HOST`, `ORACLE_KNOWN_HOSTS` and `API_BASE_URL`, and the private key as

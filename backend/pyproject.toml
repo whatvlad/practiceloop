@@ -26,9 +26,12 @@ include = ["app*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-# Database tests need disposable Postgres; CI runs them with `-m db`.
-addopts = "-ra -m 'not db'"
-markers = ["db: needs PRACTICELOOP_TEST_DATABASE_URL (disposable Postgres only)"]
+# Database tests need disposable Postgres (`-m db`); TeX tests need pdflatex (`-m tex`).
+addopts = "-ra -m 'not db and not tex'"
+markers = [
+  "db: needs PRACTICELOOP_TEST_DATABASE_URL (disposable Postgres only)",
+  "tex: needs pdflatex and pdftotext (CI job Worksheet TeX)",
+]
 
 [tool.ruff]
 target-version = "py312"
