@@ -49,9 +49,22 @@ export interface Region2dSpec {
   region: string;
 }
 
-export type VisualSpec = DefiniteSpec | IndefiniteSpec | Region2dSpec;
+/** #114: the solution's set-up of a triple integral without its integrand; the browser draws the solid. */
+export interface Solid3dSpec {
+  kind: 'solid3d';
+  version: 1;
+  system: 'cartesian' | 'cylindrical';
+  /** `[variable, lower, upper]`, innermost first: z, then the region's middle and outer variable. */
+  bounds: readonly [readonly [string, Tree, Tree], readonly [string, Tree, Tree], readonly [string, Tree, Tree]];
+  window: { x: Interval; y: Interval; z: Interval };
+  /** The solid as inequalities (LaTeX), the text alternative. */
+  solid: string;
+}
+
+export type VisualSpec = DefiniteSpec | IndefiniteSpec | Region2dSpec | Solid3dSpec;
 
 const REGION_VARIABLES = { cartesian: ['x', 'y'], polar: ['r', 'theta'] } as const;
+const SOLID_VARIABLES = { cartesian: ['x', 'y'], cylindrical: ['r', 'theta'] } as const;
 
 const MAX_POINTS = 64;
 
@@ -118,6 +131,20 @@ const VALIDATORS: Record<string, (data: Record<string, unknown>) => VisualSpec> 
     const window = record(data.window);
     return { kind: 'region2d', version: 1, system, bounds: [inner, outer], f: tree(data.f),
       window: { x: interval(window.x), y: interval(window.y), z: interval(window.z) }, region: text(data.region) };
+  },
+  solid3d(data) {
+    if (data.system !== 'cartesian' && data.system !== 'cylindrical') throw new Error('Bad system');
+    const system = data.system;
+    const names: readonly string[] = ['z', ...SOLID_VARIABLES[system]];
+    if (!Array.isArray(data.bounds) || data.bounds.length !== 3) throw new Error('Bad bounds');
+    const [z, middle, outer] = data.bounds.map((value: unknown) => {
+      if (!Array.isArray(value) || value.length !== 3 || !names.includes(value[0])) throw new Error('Bad bound');
+      return [value[0] as string, tree(value[1]), tree(value[2])] as const;
+    });
+    if (z[0] !== 'z' || middle[0] === 'z' || outer[0] === 'z' || middle[0] === outer[0]) throw new Error('Bad order');
+    const window = record(data.window);
+    return { kind: 'solid3d', version: 1, system, bounds: [z, middle, outer],
+      window: { x: interval(window.x), y: interval(window.y), z: interval(window.z) }, solid: text(data.solid) };
   },
 };
 

@@ -13,6 +13,7 @@ from typing import Any
 from app.generators.core import Exercise, replay
 from app.visuals.region2d import region2d
 from app.visuals.single import definite, indefinite
+from app.visuals.solid3d import solid3d
 
 VERSION = 1
 MAX_BYTES = 8 * 1024
@@ -26,10 +27,10 @@ BUILDERS: dict[str, Callable[[Exercise], dict[str, Any]]] = {
     "rational-v1": indefinite,
     "trigonometric-v1": indefinite,
     "double-v1": region2d,
+    "triple-v1": solid3d,
 }
-# Triple integrals (#114) move to BUILDERS with their kind; derivatives have no
-# visual in ADR-006.
-NO_VISUAL = frozenset({"triple-v1", "derivatives-v1", "partial-v1"})
+# Derivatives have no visual in ADR-006.
+NO_VISUAL = frozenset({"derivatives-v1", "partial-v1"})
 
 
 def build_visual(record: dict[str, object]) -> dict[str, Any] | None:

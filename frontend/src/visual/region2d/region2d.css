@@ -1,4 +1,4 @@
-/* #113: region view and 3D canvas of double-integral solutions. */
+/* #113: region view of double-integral solutions. */
 .pl-visual-region{margin:0;display:flex;flex-direction:column;gap:var(--space-2)}
 .pl-visual-region svg{width:100%;max-width:420px;height:auto;overflow:visible}
 .pl-visual-region .grid line{stroke:var(--line);stroke-width:1}
@@ -7,7 +7,3 @@
 .pl-visual-region .fill{fill:var(--correct);fill-opacity:.22}
 .pl-visual-region .chords path{fill:none;stroke:var(--correct);stroke-opacity:.45;stroke-width:1;stroke-dasharray:3 3}
 .pl-visual-region .edge{fill:none;stroke:var(--correct);stroke-width:2;stroke-linejoin:round}
-.pl-visual-3d{display:flex;flex-direction:column;gap:var(--space-2);max-width:640px}
-.pl-visual-3d canvas{display:block;width:100%;border-radius:var(--radius-md);background:var(--surface-raised);touch-action:none;cursor:grab}
-.pl-visual-3d canvas:active{cursor:grabbing}
-.pl-visual-3d-bar{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);flex-wrap:wrap}

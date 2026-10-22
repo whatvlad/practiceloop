@@ -136,8 +136,8 @@ def test_indefinite_marks_zeros_extrema_inflections_and_poles() -> None:
     assert any(kind == "inflection" for _, kind in marked)
 
 
-def test_derivatives_and_triple_integrals_have_no_visual_yet() -> None:
-    for topic in ("derivatives", "partial-derivatives", "triple-integrals"):
+def test_derivatives_have_no_visual() -> None:
+    for topic in ("derivatives", "partial-derivatives"):
         record = catalogue(topic, TOPICS[topic].levels[0])[0].record
         assert build_visual(record) is None
         assert solution_payload([{"say": "s", "latex": "l"}], record) == {
