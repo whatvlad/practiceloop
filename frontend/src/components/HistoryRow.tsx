@@ -50,9 +50,37 @@ export function HistoryRow({ problem }: { problem: PublicProblem }) {
         {problem.attemptCount !== undefined && <div className="pl-small pl-subtle">{problem.attemptCount} {problem.attemptCount === 1 ? 'attempt' : 'attempts'}</div>}
         {problem.answerRevealed && <div className="pl-small pl-subtle">Answer revealed</div>}
         {problem.solutionRevealed && <div className="pl-small pl-subtle">Solution viewed</div>}
+        {problem.worksheetId && <div className="pl-small pl-subtle">From a worksheet</div>}
       </div>
       <ChevronIcon className="go" />
     </Link>
+  );
+}
+
+/** Row checkboxes for the History export (#118); the dashboard list has none. */
+export interface RowSelection {
+  selected: ReadonlySet<string>;
+  /** True when the selection is full, so unselected rows cannot be added. */
+  full: boolean;
+  onToggle: (id: string) => void;
+}
+
+/** The checkbox sits beside the row's link, so ticking it never opens the problem. */
+function SelectableRow({ problem, selection }: { problem: PublicProblem; selection: RowSelection }) {
+  const checked = selection.selected.has(problem.id);
+  return (
+    <div className={`pl-hitem${checked ? ' is-selected' : ''}`}>
+      <label className="pl-hcheck">
+        <input
+          type="checkbox"
+          checked={checked}
+          disabled={!checked && selection.full}
+          onChange={() => selection.onToggle(problem.id)}
+          aria-label={`Select ${topicName(problem.topic)}, level ${problem.difficulty}, ${formatWhen(problem.createdAt)}`}
+        />
+      </label>
+      <HistoryRow problem={problem} />
+    </div>
   );
 }
 
@@ -60,13 +88,15 @@ interface HistoryListProps {
   problems: readonly PublicProblem[];
   /** Column headings; the dashboard's short list leaves them out. */
   header?: boolean;
+  selection?: RowSelection;
 }
 
-export function HistoryList({ problems, header = false }: HistoryListProps) {
+export function HistoryList({ problems, header = false, selection }: HistoryListProps) {
   return (
-    <div className="pl-hlist">
+    <div className={`pl-hlist${selection ? ' pl-hlist--select' : ''}`}>
       {header && (
         <div className="pl-hhead" aria-hidden="true">
+          {selection && <span />}
           <span className="pl-label">Problem</span>
           <span className="pl-label">Topic</span>
           <span className="pl-label">Level</span>
@@ -74,9 +104,13 @@ export function HistoryList({ problems, header = false }: HistoryListProps) {
           <span />
         </div>
       )}
-      {problems.map((problem) => (
-        <HistoryRow key={problem.id} problem={problem} />
-      ))}
+      {problems.map((problem) =>
+        selection ? (
+          <SelectableRow key={problem.id} problem={problem} selection={selection} />
+        ) : (
+          <HistoryRow key={problem.id} problem={problem} />
+        ),
+      )}
     </div>
   );
 }

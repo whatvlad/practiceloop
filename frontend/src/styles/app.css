@@ -112,6 +112,9 @@ html,body,#root{min-height:100%}
   .pl-hrow{grid-template-columns:minmax(0,1fr) 20px;row-gap:var(--space-2)}
   .pl-hrow>*{grid-column:1}
   .pl-hrow>svg.go{grid-column:2;grid-row:1 / span 4;align-self:center}
+  .pl-hcheck{padding-left:var(--space-4);align-items:flex-start;padding-top:var(--space-4)}
+  .pl-hexport.is-active{padding:var(--space-4)}
+  .pl-hexport.is-active>.pl-btn{align-self:stretch}
 
   .pl-login{padding:var(--space-5) var(--space-4)}
   .pl-login-panel{padding:var(--space-6) var(--space-5)}
