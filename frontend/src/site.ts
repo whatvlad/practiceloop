@@ -121,3 +121,39 @@ export function crawlerFiles(config: SiteConfig): { robots: string; sitemap: str
     sitemap: `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`,
   };
 }
+
+/** Paths that stay noindex after launch; the app's own 404 sets its meta tag at runtime. */
+export const NOINDEX_PATHS = [
+  ...Object.keys(PAGES).filter((path) => !PAGES[path].indexable && !path.startsWith('/auth/')),
+  '/s/*',
+  '/shared/*',
+  '/auth/*',
+  '/graph/*',
+];
+
+/** robots meta tag in index.html, read before the app runs. */
+export function shellRobots(config: SiteConfig): string {
+  return config.indexable ? 'index, follow' : 'noindex, nofollow';
+}
+
+const GLOBAL_NOINDEX = '/*\n  X-Robots-Tag: noindex\n';
+
+/**
+ * Cloudflare Pages `_headers` for a build (#39). Preview keeps public/_headers
+ * as is. A launch build drops the global noindex, adds HSTS, keeps every
+ * non-public route noindex and keeps the *.pages.dev addresses out of search.
+ */
+export function pagesHeaders(preview: string, config: SiteConfig): string {
+  if (!config.indexable) return preview;
+  if (!preview.includes(GLOBAL_NOINDEX)) throw new Error('public/_headers no longer starts the /* rule with X-Robots-Tag: noindex.');
+  const rules = [
+    ...NOINDEX_PATHS.map((path) => `${path}\n  X-Robots-Tag: noindex`),
+    'https://:project.pages.dev/*\n  X-Robots-Tag: noindex',
+    'https://:version.:project.pages.dev/*\n  X-Robots-Tag: noindex',
+  ];
+  return `${preview.replace(GLOBAL_NOINDEX, '/*\n  Strict-Transport-Security: max-age=31536000\n').trimEnd()}
+
+# Launch build (${config.url}): only public pages are indexable.
+${rules.join('\n\n')}
+`;
+}

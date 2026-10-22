@@ -36,10 +36,12 @@ the deployed preview. Requirements and decisions are in
 
 ## Launch blockers (#39)
 
-These stay open on purpose. Do not fill them with placeholders.
+These stay open on purpose. Do not fill them with placeholders. The steps that
+turn them into a launch are in [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md).
 
-- Custom production domain, then `VITE_SITE_URL`, `VITE_SITE_INDEXABLE=true`,
-  HSTS and removing the global `X-Robots-Tag: noindex` from `_headers`.
+- Custom production domain, then the `SITE_URL` and `SITE_INDEXABLE=true`
+  repository variables (the launch build adds HSTS and drops the global
+  `X-Robots-Tag: noindex` itself).
 - Operator's full legal identity and address, a dedicated privacy contact email,
   and the legal basis for each processing purpose, checked by a qualified person.
 - Backup setup and retention for launch (the Free plan has no automatic backups).
