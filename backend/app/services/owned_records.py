@@ -29,6 +29,8 @@ class ProblemRecord:
     created_at: datetime
     answer_revealed: bool
     solution_revealed: bool
+    # Set only on problems a generated worksheet created (ADR-007).
+    worksheet_id: UUID | None = None
 
 
 @dataclass(frozen=True)
@@ -54,7 +56,7 @@ class PrivateSolution:
 
 _PROBLEM_COLUMNS = """
     p.id, t.slug as topic, p.difficulty, p.problem_latex, p.created_at,
-    p.answer_revealed, p.solution_revealed
+    p.answer_revealed, p.solution_revealed, p.worksheet_id
 """
 
 
@@ -71,15 +73,17 @@ def insert_problem(
     difficulty: int,
     problem_latex: str,
     solution: PrivateSolution,
+    worksheet_id: UUID | None = None,
 ) -> ProblemRecord:
     """The public problem and its private solution; the caller's transaction makes it atomic."""
     with conn.cursor(row_factory=dict_row) as cur:
         cur.execute(
-            "insert into public.problems(user_id, topic_id, difficulty, problem_latex)"
-            " select %s, t.id, %s, %s from public.topics t where t.slug = %s"
+            "insert into public.problems"
+            "(user_id, topic_id, difficulty, problem_latex, worksheet_id)"
+            " select %s, t.id, %s, %s, %s from public.topics t where t.slug = %s"
             " returning id, difficulty, problem_latex, created_at,"
-            " answer_revealed, solution_revealed",
-            (user_id, difficulty, problem_latex, topic),
+            " answer_revealed, solution_revealed, worksheet_id",
+            (user_id, difficulty, problem_latex, worksheet_id, topic),
         )
         row = cur.fetchone()
     if row is None:
@@ -133,8 +137,12 @@ def list_problems(
     before: tuple[datetime, UUID] | None = None,
     *,
     include_next: bool = False,
+    worksheet_only: bool = False,
 ) -> list[ProblemRecord]:
-    """Newest first by (created_at, id); `before` is the last row of the previous page."""
+    """Newest first by (created_at, id); `before` is the last row of the previous page.
+
+    `worksheet_only` keeps the problems that generated worksheets created (ADR-007).
+    """
     if not 1 <= limit <= MAX_PAGE_SIZE:
         raise ValueError("limit out of range")
     created_before, id_before = before if before else (None, None)
@@ -143,6 +151,7 @@ def list_problems(
             f"select {_PROBLEM_COLUMNS} from public.problems p"  # noqa: S608 - constant columns
             " join public.topics t on t.id = p.topic_id"
             " where p.user_id = %(user)s"
+            " and (not %(worksheets)s or p.worksheet_id is not null)"
             " and (%(created)s::timestamptz is null"
             "      or (p.created_at, p.id) < (%(created)s::timestamptz, %(id)s::uuid))"
             " order by p.created_at desc, p.id desc limit %(limit)s",
@@ -151,6 +160,7 @@ def list_problems(
                 "created": created_before,
                 "id": id_before,
                 "limit": limit + int(include_next),
+                "worksheets": worksheet_only,
             },
         )
         return [ProblemRecord(**row) for row in cur.fetchall()]
@@ -180,9 +190,14 @@ def attempt_summaries(
 
 
 def profile_counts(conn: Connection[Any], user_id: UUID) -> dict[str, int]:
-    """All three ADR-004 counts from one statement/snapshot, including invalid attempts."""
+    """All three ADR-004 counts from one statement/snapshot, including invalid attempts.
+
+    ADR-007: a worksheet problem counts as generated only once it has an attempt.
+    """
     row = conn.execute(
-        "select count(*), count(*) filter (where exists ("
+        "select count(*) filter (where p.worksheet_id is null or exists ("
+        " select 1 from public.attempts a where a.problem_id = p.id and a.user_id = p.user_id"
+        ")), count(*) filter (where exists ("
         " select 1 from public.attempts a where a.problem_id = p.id and a.user_id = p.user_id"
         ")), count(*) filter (where exists ("
         " select 1 from public.attempts a where a.problem_id = p.id and a.user_id = p.user_id"

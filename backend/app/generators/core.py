@@ -245,9 +245,12 @@ def _definite_records(topic: str, difficulty: int) -> list[dict[str, object]]:
     ]
 
 
-@lru_cache(maxsize=32)
-def catalogue(topic: str, difficulty: int) -> tuple[Exercise, ...]:
-    """Every verified record of one topic and level; empty cells are an error."""
+@lru_cache(maxsize=64)
+def catalogue_records(topic: str, difficulty: int) -> tuple[dict[str, object], ...]:
+    """The verified records of one topic and level, cheap to list; empty cells are an error.
+
+    Worksheets (#116) count and pick from these and replay only what they keep.
+    """
     if type(difficulty) is not int or difficulty not in range(1, 6):
         raise ValueError("Unsupported practice cell")
     records: list[dict[str, object]] = []
@@ -255,7 +258,7 @@ def catalogue(topic: str, difficulty: int) -> tuple[Exercise, ...]:
         records = _basic_records(difficulty)
     elif topic == PARTIAL_TOPIC:
         # Partial derivatives have no definite variants: return before they are added.
-        return tuple(replay(record) for record in partial_records(difficulty))
+        return tuple(partial_records(difficulty))
     elif topic == "substitution" and difficulty in (1, 2):
         # Saved substitution-v1 records keep their meaning; v2 adds levels 3-5.
         for family, a, b, scale in product(
@@ -286,4 +289,10 @@ def catalogue(topic: str, difficulty: int) -> tuple[Exercise, ...]:
         records += _definite_records(topic, difficulty)
     if not records:
         raise ValueError("Unsupported practice cell")
-    return tuple(replay(record) for record in records)
+    return tuple(records)
+
+
+@lru_cache(maxsize=32)
+def catalogue(topic: str, difficulty: int) -> tuple[Exercise, ...]:
+    """Every verified record of one topic and level, replayed; empty cells are an error."""
+    return tuple(replay(record) for record in catalogue_records(topic, difficulty))

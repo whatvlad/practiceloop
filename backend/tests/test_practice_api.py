@@ -537,6 +537,8 @@ def test_topics_lists_only_generated_cells(client: TestClient) -> None:
 
 def test_topics_publish_the_fixed_mixed_practice_weights(client: TestClient) -> None:
     areas = client.get("/topics").json()["areas"]
+    for area in areas:
+        area["mixed"].pop("worksheetCapacity")  # tests/test_worksheets_api.py
     assert areas[0] == {
         "slug": "integrals",
         "name": "Integrals",
@@ -573,7 +575,7 @@ def test_an_area_with_one_topic_offers_no_mixed_practice(
     client: TestClient, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     topics = dict(practice.TOPICS)
-    topics["derivatives"] = practice.Topic("Derivatives", "derivatives", (1, 2), 1)
+    topics["derivatives"] = practice.Topic("Derivatives", "derivatives", (1, 2), 1, 3)
     del topics["partial-derivatives"]
     monkeypatch.setattr(practice, "TOPICS", topics)
     areas = {area["slug"]: area for area in client.get("/topics").json()["areas"]}
@@ -638,8 +640,8 @@ def test_mixed_practice_stays_within_the_chosen_area(
         return [population[0]]
 
     topics = dict(practice.TOPICS)
-    topics["derivatives"] = practice.Topic("Derivatives", "derivatives", (3,), 1)
-    topics["partial-derivatives"] = practice.Topic("Partial derivatives", "derivatives", (3,), 1)
+    topics["derivatives"] = practice.Topic("Derivatives", "derivatives", (3,), 1, 3)
+    topics["partial-derivatives"] = practice.Topic("Partial derivatives", "derivatives", (3,), 1, 4)
     monkeypatch.setattr(practice, "TOPICS", topics)
     monkeypatch.setattr(practice._RANDOM, "choices", choices)
     generate(client, "mixed", 3)

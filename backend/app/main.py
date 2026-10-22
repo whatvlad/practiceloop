@@ -17,6 +17,7 @@ from app.api.practice import router as practice_router
 from app.api.preview import router as preview_router
 from app.api.reports import router as reports_router
 from app.api.shares import router as shares_router
+from app.api.worksheets import router as worksheets_router
 from app.core.database import close_pool
 from app.core.errors import install_error_handlers
 
@@ -63,6 +64,7 @@ app.include_router(preview_router)
 app.include_router(practice_router)
 app.include_router(shares_router)
 app.include_router(reports_router)
+app.include_router(worksheets_router)
 install_error_handlers(app)
 
 
@@ -122,7 +124,7 @@ app.add_middleware(
     allow_origins=allowed_origins(),
     allow_methods=["GET", "POST"],
     allow_headers=["Authorization", "Content-Type", "Idempotency-Key"],
-    expose_headers=["Idempotency-Replayed", "Retry-After"],
+    expose_headers=["Idempotency-Replayed", "Retry-After", "Content-Disposition"],
 )
 
 
