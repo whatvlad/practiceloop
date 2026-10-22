@@ -187,7 +187,9 @@ The response may also carry `visual`, the declarative picture of ADR-006, built
 on the server from the stored record (`backend/app/visuals/`). It holds plotting
 data only: expression trees, windows, bounds, marked points and the exact value
 the steps already show, never the record. The key is absent for versions that
-declare no visual (derivatives and, until #113/#114, multiple integrals). The
+declare no visual (derivatives and, until #114, triple integrals). Double
+integrals (`double-v1`) carry `region2d`: the solution's system, bounds and
+integrand, a window and the region as LaTeX inequalities (#113). The
 same `solution` object, with `visual`, comes back from `GET /api/problems/{id}`
 once the solution is revealed, and from the demo's `reveal-solution`.
 
