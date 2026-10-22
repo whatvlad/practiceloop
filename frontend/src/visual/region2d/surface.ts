@@ -50,5 +50,6 @@ export function surfaceScene(region: Region): Scene3D {
     meshes: [floor, ...walls, surface],
     lines: lines.filter(line => line.length >= 6),
     box: { min: [x[0], y[0], z[0] * k], max: [x[1], y[1], z[1] * k] },
+    zScale: k,
   };
 }

@@ -9,6 +9,7 @@ import {
   DoubleSide,
   Line,
   LineBasicMaterial,
+  LineSegments,
   Mesh,
   MeshLambertMaterial,
   PerspectiveCamera,
@@ -19,7 +20,7 @@ import {
   WebGLRenderer,
 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import type { Scene3D } from './geometry';
+import { axisOrigin, axisTicks, type Scene3D } from './geometry';
 import './three.css';
 
 /** The 3D view of ADR-006, in its own chunk: loaded by dynamic import only with a 3D visual. */
@@ -57,19 +58,23 @@ function palette(element: Element): Palette {
   };
 }
 
-function labelSprite(text: string, color: string, size: number): Sprite {
+/** A text label that always faces the camera; `size` is its height in scene units. */
+function labelSprite(text: string, color: string, size: number, font = 'italic 44px serif'): Sprite {
   const canvas = document.createElement('canvas');
-  canvas.width = canvas.height = 64;
   const context = canvas.getContext('2d');
+  canvas.height = 64;
+  if (context) context.font = font;
+  // Wide enough for the text, in steps of 32 px so short labels share sizes.
+  canvas.width = Math.max(64, Math.ceil(((context?.measureText(text).width ?? 0) + 12) / 32) * 32);
   if (context) {
     context.fillStyle = color;
-    context.font = 'italic 44px serif';
+    context.font = font;
     context.textAlign = 'center';
     context.textBaseline = 'middle';
-    context.fillText(text, 32, 34);
+    context.fillText(text, canvas.width / 2, 34);
   }
   const sprite = new Sprite(new SpriteMaterial({ map: new CanvasTexture(canvas), depthTest: false, transparent: true }));
-  sprite.scale.set(size, size, 1);
+  sprite.scale.set((size * canvas.width) / canvas.height, size, 1);
   return sprite;
 }
 
@@ -162,11 +167,7 @@ export default function ThreeView({ scene: data, label, onUnavailable }: { scene
     }
 
     // Axes through the origin (or the nearest corner of the box), with x, y, z labels.
-    const origin = new Vector3(
-      Math.min(Math.max(0, min.x), max.x),
-      Math.min(Math.max(0, min.y), max.y),
-      Math.min(Math.max(0, min.z), max.z),
-    );
+    const origin = new Vector3(...axisOrigin(data.box));
     const axisMaterial = new LineBasicMaterial({ color: colors.axis });
     disposables.push(axisMaterial);
     const ends: Array<[string, Vector3, Vector3]> = [
@@ -182,6 +183,25 @@ export default function ThreeView({ scene: data, label, onUnavailable }: { scene
       sprite.position.copy(to).add(to.clone().sub(from).normalize().multiplyScalar(radius * 0.08));
       disposables.push(sprite.material.map!, sprite.material);
       scene.add(sprite);
+    }
+
+    // Numeric values along each axis (#127): a short tick mark and its label beside it.
+    // x and y ticks point toward −y and −x, z ticks toward both; the default view sees them from that side.
+    const tickLength = radius * 0.04;
+    const away = { x: new Vector3(0, -1, 0), y: new Vector3(-1, 0, 0), z: new Vector3(-1, -1, 0).normalize() };
+    const tickPoints: Vector3[] = [];
+    for (const tick of axisTicks(data.box, data.zScale)) {
+      const at = new Vector3(...tick.at);
+      tickPoints.push(at, at.clone().addScaledVector(away[tick.axis], tickLength));
+      const sprite = labelSprite(tick.label, colors.label, radius * 0.08, '40px ui-monospace, monospace');
+      sprite.position.copy(at).addScaledVector(away[tick.axis], Math.max(tickLength * 3, tickLength + sprite.scale.x / 2));
+      disposables.push(sprite.material.map!, sprite.material);
+      scene.add(sprite);
+    }
+    if (tickPoints.length) {
+      const geometry = new BufferGeometry().setFromPoints(tickPoints);
+      disposables.push(geometry);
+      scene.add(new LineSegments(geometry, axisMaterial));
     }
 
     const controls = new OrbitControls(camera, renderer.domElement);
