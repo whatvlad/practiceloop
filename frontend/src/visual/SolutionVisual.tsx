@@ -1,11 +1,14 @@
 import type { ComponentType } from 'react';
+import { DefiniteView } from './DefiniteView';
+import { IndefiniteView } from './IndefiniteView';
 import type { VisualSpec } from './spec';
 import { VisualBoundary } from './VisualBoundary';
+import './visual.css';
 
 type Views = { [Kind in VisualSpec['kind']]?: ComponentType<{ spec: Extract<VisualSpec, { kind: Kind }> }> };
 
 /** One view per kind. A kind without a view yet shows nothing. */
-const VIEWS: Views = {};
+const VIEWS: Views = { definite: DefiniteView, indefinite: IndefiniteView };
 
 /** The interactive picture under a worked solution, isolated so a failure hides only itself. */
 export function SolutionVisual({ spec }: { spec: VisualSpec }) {
