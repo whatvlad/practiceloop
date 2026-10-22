@@ -47,6 +47,7 @@ class Topic(NamedTuple):
     # Only cells with a verified generator are offered; others are 422, never easy copies.
     levels: tuple[int, ...]
     # #36 mixed practice: a fixed, published weight, never adapted to a learner's history.
+    # 0 keeps a topic out of mixed practice.
     mixed_weight: int
     # ADR-007: writing space after a level-1 problem on a printed worksheet, in cm.
     space_cm: float
@@ -62,6 +63,9 @@ TOPICS = {
     "integration-by-parts": Topic("Integration by parts", "integrals", (1, 2, 3), 2, 5),
     "rational-functions": Topic("Rational functions", "integrals", (1, 2, 3, 4, 5), 2, 5),
     "trigonometric-integrals": Topic("Trigonometric integrals", "integrals", (1, 2, 3, 4, 5), 2, 5),
+    # #128: every definite-v1 variant of the topics above, at its base level. Mixed practice
+    # already draws these through their own topics, so this topic stays out of it.
+    "definite-integrals": Topic("Definite integrals", "integrals", (1, 2, 3, 4, 5), 0, 5),
     # #99 double-v1: the answer is the integral's exact value (ADR-005).
     "double-integrals": Topic("Double integrals", "integrals", (1, 2, 3, 4, 5), 2, 6),
     # #100 triple-v1: Cartesian and cylindrical, answered with the exact value.
@@ -193,13 +197,17 @@ def area_topics(area: str) -> list[str]:
 
 def mixed_topics(area: str, difficulty: int) -> tuple[list[str], list[int]]:
     """The area's topics offered at this level and their weights; a missing cell has none."""
-    slugs = [slug for slug in area_topics(area) if difficulty in TOPICS[slug].levels]
+    slugs = [
+        slug
+        for slug in area_topics(area)
+        if difficulty in TOPICS[slug].levels and TOPICS[slug].mixed_weight
+    ]
     return slugs, [TOPICS[slug].mixed_weight for slug in slugs]
 
 
 def _mixed(area: str) -> dict[str, object] | None:
     """Mixed practice needs a choice, so an area offers it only with two topics or more."""
-    slugs = area_topics(area)
+    slugs = [slug for slug in area_topics(area) if TOPICS[slug].mixed_weight]
     if len(slugs) < 2:
         return None
     levels = sorted({level for slug in slugs for level in TOPICS[slug].levels})

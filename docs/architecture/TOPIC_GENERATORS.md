@@ -125,7 +125,8 @@ into `ln(64/27)`.
 
 `core.catalogue` appends the definite records of a cell after its indefinite
 ones, so a cell offers both kinds and the guest demo's first exercise is
-unchanged. The statement is `\int_{a}^{b} (...)\,dx`, the revealed answer is
+unchanged. The `definite-integrals` topic (#128) is every definite record of
+the level from all five topics, and nothing else. The statement is `\int_{a}^{b} (...)\,dx`, the revealed answer is
 the value, and the solution is the base method's steps without `+ C`, then the
 evaluation `[F(x)]_a^b = F(b) - F(a)` and the value. The website shows
 "Calculate the definite integral." for statements that start with bounds.

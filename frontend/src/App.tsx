@@ -19,6 +19,8 @@ import { applyPageMeta, siteConfig } from './site';
 const SITE = siteConfig(import.meta.env.VITE_SITE_URL, import.meta.env.VITE_SITE_INDEXABLE);
 
 const APP_ROUTES = new Set(['/dashboard', '/practice', '/history', '/profile']);
+// Pages whose main column is .pl-wrap--narrow (760px) instead of the full 1120px.
+const NARROW_ROUTES = new Set(['/practice', '/profile']);
 
 function NotFoundPage() {
   return (
@@ -104,15 +106,17 @@ export function App() {
     if (pathname === '/auth/callback' || (needsAccount && auth.status === 'loading')) {
       return <div className="pl-page pl-login"><p role="status">Restoring your session…</p></div>;
     }
-    if (!account && pathname === '/practice' && auth.status !== 'loading') return <div className="pl-page"><PublicNav /><section className="pl-wrap" aria-label="Demo"><p className="pl-small pl-muted">Try one demo. Your answer and result are not saved.</p></section><PracticePage key="demo" id={null} demo /></div>;
+    if (!account && pathname === '/practice' && auth.status !== 'loading') return <div className="pl-page"><PublicNav /><section className="pl-wrap pl-wrap--narrow pl-api-notice" aria-label="Demo"><p className="pl-small pl-muted">Try one demo. Your answer and result are not saved.</p></section><PracticePage key="demo" id={null} demo /></div>;
     if (!APP_ROUTES.has(pathname)) return <NotFoundPage />;
     if (!account) return <div className="pl-page" />;
 
+    // Notices share the column of the page below them, so their left edges line up.
+    const wrap = NARROW_ROUTES.has(pathname) ? 'pl-wrap pl-wrap--narrow' : 'pl-wrap';
     return (
       <div className="pl-page" key={account.id}>
         <AppNav current={pathname} initial={account.name.charAt(0).toUpperCase()} onLogOut={handleLogOut} busy={auth.working} />
-        <ApiStatusNotice health={apiHealth} />
-        <section className="pl-wrap pl-api-notice" aria-label="Account status">
+        <ApiStatusNotice health={apiHealth} wrap={wrap} />
+        <section className={`${wrap} pl-api-notice`} aria-label="Account status">
           <p className="pl-small pl-muted" role="status">Problems, attempts and reveals are saved to your account.</p>
           {auth.error && <p className="pl-result pl-result--invalid" role="alert">{auth.error}</p>}
         </section>

@@ -119,6 +119,9 @@ least one topic, in display order. The topic slugs are seeded in `public.topics`
 (migration `202610210003_topic_areas.sql`, which also stores each topic's
 `area`); a seeded topic appears in `items` only once its generator ships.
 `mixed` is `null` while an area has fewer than two topics.
+`definite-integrals` (#128, migration `202610220002_definite_integrals_topic.sql`)
+has mixed weight 0, so it is not in `weights`: mixed practice already draws
+its definite records through their own topics.
 
 Mixed practice draws a topic of one area for each problem with these weights,
 over that area's topics offered at the chosen level; at levels 1–2 integration
