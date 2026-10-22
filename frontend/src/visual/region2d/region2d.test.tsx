@@ -3,7 +3,8 @@ import { act } from 'react';
 import { createRoot } from 'react-dom/client';
 import { describe, expect, it } from 'vitest';
 import { gridMesh } from '../three/geometry';
-import { compileRegion, isRegion2d, type Region2dSpec } from './region';
+import { parseVisual, type Region2dSpec } from '../spec';
+import { compileRegion } from './region';
 import { Region2dVisual } from './Region2dVisual';
 import { ticks } from './RegionView';
 import { heightScale, surfaceScene } from './surface';
@@ -34,20 +35,22 @@ const sinc: Region2dSpec = {
   f: ['mul', ['sin', 'y'], ['pow', 'y', -1]],
 };
 
-describe('isRegion2d', () => {
+const isRegion = (value: unknown) => parseVisual(value) !== undefined;
+
+describe('parseVisual for region2d', () => {
   it('accepts the specs the server sends', () => {
-    expect(isRegion2d(triangle)).toBe(true);
-    expect(isRegion2d(annulus)).toBe(true);
+    expect(parseVisual(triangle)).toEqual(triangle);
+    expect(parseVisual(annulus)).toEqual(annulus);
   });
 
   it('rejects other kinds, versions, variables and broken windows', () => {
-    expect(isRegion2d({ ...triangle, version: 2 })).toBe(false);
-    expect(isRegion2d({ ...triangle, kind: 'solid3d' })).toBe(false);
-    expect(isRegion2d({ ...triangle, bounds: [['r', 0, 1], ['x', 0, 1]] })).toBe(false);
-    expect(isRegion2d({ ...triangle, bounds: [['x', 0, 1], ['x', 0, 1]] })).toBe(false);
-    expect(isRegion2d({ ...triangle, window: { ...triangle.window, x: [1, 0] } })).toBe(false);
-    expect(isRegion2d({ ...triangle, f: [3, 'x'] })).toBe(false);
-    expect(isRegion2d(null)).toBe(false);
+    expect(isRegion({ ...triangle, version: 2 })).toBe(false);
+    expect(isRegion({ ...triangle, system: 'cylindrical' })).toBe(false);
+    expect(isRegion({ ...triangle, bounds: [['r', 0, 1], ['x', 0, 1]] })).toBe(false);
+    expect(isRegion({ ...triangle, bounds: [['x', 0, 1], ['x', 0, 1]] })).toBe(false);
+    expect(isRegion({ ...triangle, window: { ...triangle.window, x: [1, 0] } })).toBe(false);
+    expect(isRegion({ ...triangle, f: [3, 'x'] })).toBe(false);
+    expect(isRegion(null)).toBe(false);
   });
 });
 

@@ -1,7 +1,8 @@
 import { lazy, Suspense, useCallback, useMemo, useState } from 'react';
 import { Tex } from '../../components/Tex';
 import { VisualBoundary } from '../VisualBoundary';
-import { compileRegion, type Region2dSpec } from './region';
+import type { Region2dSpec } from '../spec';
+import { compileRegion } from './region';
 import { RegionView } from './RegionView';
 import { heightScale, surfaceScene } from './surface';
 import './region2d.css';

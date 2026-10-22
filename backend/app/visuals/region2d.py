@@ -13,12 +13,12 @@ from typing import Any
 
 import sympy as sp
 
+from app.generators.core import Exercise
 from app.generators.double import solution_setup
 from app.generators.multiple import Setup, bounds_latex
 from app.visuals.expression import to_tree
 
 KIND = "region2d"
-SPEC_VERSION = 1
 
 # Parameter grid used to find the window; the browser meshes its own grid.
 _SAMPLES = 41
@@ -75,8 +75,8 @@ def _interval(values: list[float], *, margin: float, include_zero: bool = False)
     return [round(low - margin, 4), round(high + margin, 4)]
 
 
-def region2d(record: dict[str, object]) -> dict[str, object]:
-    setup = solution_setup(record)
+def region2d(exercise: Exercise) -> dict[str, Any]:
+    setup = solution_setup(exercise.record)
     if len(setup.bounds) != 2 or setup.system not in ("cartesian", "polar"):
         raise ValueError("region2d needs a two-level Cartesian or polar set-up")
     (inner, _, _), (outer, _, _) = setup.bounds
@@ -91,7 +91,6 @@ def region2d(record: dict[str, object]) -> dict[str, object]:
     z_window = _interval(heights, margin=0.0, include_zero=True)
     return {
         "kind": KIND,
-        "version": SPEC_VERSION,
         "system": setup.system,
         "bounds": [
             [str(variable), to_tree(lower), to_tree(upper)]

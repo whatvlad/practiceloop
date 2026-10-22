@@ -1,44 +1,5 @@
-import { compile, type Tree } from '../expression';
-
-/** ADR-006 `region2d`: the solution's set-up of a double integral (#113). */
-export interface Region2dSpec {
-  kind: 'region2d';
-  version: 1;
-  system: 'cartesian' | 'polar';
-  /** `[variable, lower, upper]`, innermost first; the inner bounds use the outer variable. */
-  bounds: [[string, Tree, Tree], [string, Tree, Tree]];
-  /** The integrand in the system's variables, without the Jacobian. */
-  f: Tree;
-  window: { x: [number, number]; y: [number, number]; z: [number, number] };
-  /** The region as inequalities (LaTeX), the text alternative. */
-  region: string;
-}
-
-const VARIABLES = { cartesian: ['x', 'y'], polar: ['r', 'theta'] } as const;
-
-function isTree(value: unknown, depth = 0): value is Tree {
-  if (typeof value === 'number') return true;
-  if (typeof value === 'string') return true;
-  return Array.isArray(value) && depth < 64 && typeof value[0] === 'string' && value.slice(1).every(v => isTree(v, depth + 1));
-}
-
-function isPair(value: unknown): value is [number, number] {
-  return Array.isArray(value) && value.length === 2 && value.every(Number.isFinite) && value[0] < value[1];
-}
-
-export function isRegion2d(value: unknown): value is Region2dSpec {
-  if (typeof value !== 'object' || value === null) return false;
-  const spec = value as Partial<Record<keyof Region2dSpec, unknown>>;
-  if (spec.kind !== 'region2d' || spec.version !== 1) return false;
-  if (spec.system !== 'cartesian' && spec.system !== 'polar') return false;
-  const names: readonly string[] = VARIABLES[spec.system];
-  const bounds = spec.bounds;
-  if (!Array.isArray(bounds) || bounds.length !== 2) return false;
-  const bound = (b: unknown) => Array.isArray(b) && b.length === 3 && names.includes(b[0]) && isTree(b[1]) && isTree(b[2]);
-  if (!bounds.every(bound) || bounds[0][0] === bounds[1][0]) return false;
-  const window = spec.window as Record<string, unknown> | undefined;
-  return isTree(spec.f) && typeof spec.region === 'string' && !!window && isPair(window.x) && isPair(window.y) && isPair(window.z);
-}
+import { compile } from '../expression';
+import type { Region2dSpec } from '../spec';
 
 export interface RegionPoint {
   x: number;

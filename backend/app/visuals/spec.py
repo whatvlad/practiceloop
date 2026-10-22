@@ -11,6 +11,7 @@ from functools import lru_cache
 from typing import Any
 
 from app.generators.core import Exercise, replay
+from app.visuals.region2d import region2d
 from app.visuals.single import definite, indefinite
 
 VERSION = 1
@@ -24,10 +25,11 @@ BUILDERS: dict[str, Callable[[Exercise], dict[str, Any]]] = {
     "parts-v1": indefinite,
     "rational-v1": indefinite,
     "trigonometric-v1": indefinite,
+    "double-v1": region2d,
 }
-# Double (#113) and triple (#114) integrals move to BUILDERS with their kinds;
-# derivatives have no visual in ADR-006.
-NO_VISUAL = frozenset({"double-v1", "triple-v1", "derivatives-v1", "partial-v1"})
+# Triple integrals (#114) move to BUILDERS with their kind; derivatives have no
+# visual in ADR-006.
+NO_VISUAL = frozenset({"triple-v1", "derivatives-v1", "partial-v1"})
 
 
 def build_visual(record: dict[str, object]) -> dict[str, Any] | None:
