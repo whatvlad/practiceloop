@@ -514,6 +514,9 @@ def test_reveals_set_flags_return_payload_and_are_idempotent(client: TestClient,
     solution = client.post(f"/problems/{problem['id']}/reveal-solution")
     steps = solution.json()["steps"]
     assert steps and all(set(step) == {"say", "latex"} for step in steps)
+    # ADR-006: the visual comes with the steps and holds nothing they do not show.
+    assert solution.json()["visual"]["kind"] == "indefinite"
+    assert "generator" not in solution.text and "record" not in solution.text
     assert rows(url, flags, problem["id"]) == [(True, True)]
 
 

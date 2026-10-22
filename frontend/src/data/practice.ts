@@ -1,6 +1,7 @@
 // Saved account practice and an isolated, untracked guest preview. Public cache only.
 import text from '../../../backend/app/content/en.json';
 import { normalizeCode } from './shares';
+import { parseVisual } from '../visual/spec';
 import { AREAS, TOPICS, areaOf } from './topics';
 import { FEEDBACK_CODES } from './types';
 import type { AreaSlug, AvailableArea, AvailableTopic, Catalogue, CheckOutcome, Difficulty, LearningStatistics, OmissionMetric, OpenedProblem, ProblemPage, ProblemShare, ProfileCounts, PublicProblem, ReportCategory, RevealedAnswer, RevealedSolution, PracticeTopic, TopicSlug } from './types';
@@ -151,11 +152,14 @@ function cache(problem: PublicProblem): PublicProblem {
 
 function solution(data: Record<string, unknown>): RevealedSolution {
   if (!Array.isArray(data.steps) || data.steps.length > 20) throw new Error(text.service_error);
-  return { steps: data.steps.map((value: unknown) => {
+  const steps = data.steps.map((value: unknown) => {
     const step = object(value);
     if (typeof step.say !== 'string' || typeof step.latex !== 'string') throw new Error(text.service_error);
     return { say: step.say, latex: step.latex };
-  }) };
+  });
+  // A visual this build cannot read is left out; the steps never depend on it.
+  const visual = parseVisual(data.visual);
+  return visual ? { steps, visual } : { steps };
 }
 
 const SHARE_TOKEN = /^[A-Za-z0-9_-]{43}$/;

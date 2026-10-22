@@ -89,7 +89,9 @@ def test_reveal_is_scoped_and_check_does_not_leak(client):
             client.post(f"{path}/{suffix}", json=body, headers=headers(client)).status_code == 404
         )
     assert set(client.post(f"{path}/reveal-answer", headers=auth).json()) == {"answerLatex"}
-    assert set(client.post(f"{path}/reveal-solution", headers=auth).json()) == {"steps"}
+    solution = client.post(f"{path}/reveal-solution", headers=auth).json()
+    assert set(solution) == {"steps", "visual"}
+    assert solution["visual"]["kind"] == "indefinite"
     response = client.post(f"{path}/attempts", headers=auth, json={"answer": "__import__(x)"})
     assert response.json() == {"result": "invalid", "feedbackCode": None}
     assert "__import__" not in response.text

@@ -6,6 +6,8 @@ import { Button } from './Button';
 import { DifficultyDots } from './DifficultyScale';
 import { ResultBanner, RevealedAnswer } from './ResultBanner';
 import { SolutionSteps } from './SolutionSteps';
+import { SolutionVisual } from '../visual/SolutionVisual';
+import type { VisualSpec } from '../visual/spec';
 import { Tex } from './Tex';
 import text from '../../../backend/app/content/en.json';
 
@@ -33,6 +35,8 @@ interface ProblemCardProps {
   answerLatex?: string | null;
   /** Present only after the backend returns it for Show Solution. */
   solution?: readonly SolutionStep[] | null;
+  /** The solution's interactive picture (ADR-006), shown under the steps. */
+  visual?: VisualSpec | null;
 }
 
 /** Targeted feedback only for a matched mistake (#36); otherwise a general hint, never a guess. */
@@ -70,6 +74,7 @@ export function ProblemCard({
   nextLabel = 'Generate next problem',
   answerLatex,
   solution,
+  visual,
 }: ProblemCardProps) {
   const solved = result === 'correct';
   const kind = problemKind(topic, problemLatex);
@@ -126,6 +131,7 @@ export function ProblemCard({
       </div>
       {answerLatex && <RevealedAnswer latex={answerLatex} />}
       {solution && <SolutionSteps steps={solution} />}
+      {solution && visual && <SolutionVisual spec={visual} />}
     </section>
   );
 }

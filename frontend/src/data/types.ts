@@ -1,5 +1,6 @@
 // Public shapes the UI works with. None of them carries an expected answer,
 // a solution or generator data: those arrive only from the reveal calls.
+import type { VisualSpec } from '../visual/spec';
 
 /** ADR-005: practice has two areas, and every topic belongs to exactly one. */
 export type AreaSlug = 'integrals' | 'derivatives';
@@ -100,6 +101,8 @@ export interface SolutionStep {
 
 export interface RevealedSolution {
   steps: SolutionStep[];
+  /** ADR-006: an interactive picture of the solution, when this build understands it. */
+  visual?: VisualSpec;
 }
 
 /** Only the active reopened card receives previously authorized reveal payloads. */
