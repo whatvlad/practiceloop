@@ -20,6 +20,7 @@ import {
 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import type { Scene3D } from './geometry';
+import './three.css';
 
 /** The 3D view of ADR-006, in its own chunk: loaded by dynamic import only with a 3D visual. */
 

@@ -1,0 +1,5 @@
+/* #113/#114: the lazy three.js canvas shared by double- and triple-integral solutions. */
+.pl-visual-3d{display:flex;flex-direction:column;gap:var(--space-2);max-width:640px}
+.pl-visual-3d canvas{display:block;width:100%;border-radius:var(--radius-md);background:var(--surface-raised);touch-action:none;cursor:grab}
+.pl-visual-3d canvas:active{cursor:grabbing}
+.pl-visual-3d-bar{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);flex-wrap:wrap}

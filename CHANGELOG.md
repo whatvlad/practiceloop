@@ -5,6 +5,12 @@ User-facing releases. Known limitations of the current release are in
 
 ## Unreleased
 
+- **See the solid of a triple integral.** Show solution now draws the solid E
+  in 3D: its bottom and top surfaces and the side walls, translucent with
+  edges, in Cartesian and cylindrical coordinates. Drag to rotate, pinch or
+  scroll to zoom. Without WebGL only the solid's inequalities are shown, and
+  the steps are unchanged. (#114)
+
 - **Solve a shared problem.** A shared link or code now offers the exact
   exercise for practice after sign-in. Google sign-in returns to the shared
   problem, and solving saves a separate copy in the recipient's history with
