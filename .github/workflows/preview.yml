@@ -57,8 +57,11 @@ jobs:
           VITE_API_BASE_URL: ${{ env.API_ORIGIN != '' && '/api' || '' }}
           VITE_SUPABASE_URL: ${{ vars.SUPABASE_URL || secrets.SUPABASE_URL }}
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.SUPABASE_PUBLISHABLE_KEY || secrets.SUPABASE_PUBLISHABLE_KEY }}
-          # Public site token; unset keeps the beacon off. VITE_SITE_URL/INDEXABLE stay unset on preview (#39).
+          # Public site token; unset keeps the beacon off.
           VITE_CF_WEB_ANALYTICS_TOKEN: ${{ vars.CF_WEB_ANALYTICS_TOKEN }}
+          # Launch switches (#39, docs/production/LAUNCH_RUNBOOK.md). Unset keeps the noindex preview.
+          VITE_SITE_URL: ${{ vars.SITE_URL }}
+          VITE_SITE_INDEXABLE: ${{ vars.SITE_INDEXABLE }}
       # Same Graphify release as scripts/setup-graphify.sh (v0.9.92), pinned to its commit.
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
@@ -72,9 +75,17 @@ jobs:
       # Headers (noindex, CSP, anti-framing) come from frontend/public/_headers.
       # Cloudflare Pages serves index.html for unknown paths when there is no
       # 404.html, so deep links work and the app shows its own 404 page.
-      - name: Check preview headers
+      - name: Check robots headers
+        env:
+          SITE_INDEXABLE: ${{ vars.SITE_INDEXABLE }}
         run: |
-          grep -q 'X-Robots-Tag: noindex' frontend/dist/_headers
+          if [ "$SITE_INDEXABLE" = "true" ]; then
+            grep -q '^https://:project.pages.dev/\*$' frontend/dist/_headers
+            grep -q 'Strict-Transport-Security' frontend/dist/_headers
+            grep -q '^Sitemap: https://' frontend/dist/robots.txt
+          else
+            grep -A1 -x '/\*' frontend/dist/_headers | grep -q 'X-Robots-Tag: noindex'
+          fi
       - name: Deploy to Cloudflare Pages
         if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != ''
         working-directory: frontend

@@ -2,7 +2,7 @@
 import { describe, expect, it } from 'vitest';
 import headers from '../public/_headers?raw';
 import indexHtml from '../index.html?raw';
-import { PUBLIC_PATHS, applyPageMeta, crawlerFiles, pageMeta, siteConfig } from './site';
+import { PUBLIC_PATHS, applyPageMeta, crawlerFiles, pageMeta, pagesHeaders, shellRobots, siteConfig } from './site';
 
 const PREVIEW = siteConfig(undefined, undefined);
 const LAUNCHED = siteConfig('https://example.org/', 'true');
@@ -86,6 +86,28 @@ describe('Pages headers (#38)', () => {
     expect(directive('frame-ancestors')).toBe("frame-ancestors 'none'");
     expect(directive('base-uri')).toBe("base-uri 'self'");
     expect(csp).not.toMatch(/unsafe-eval|script-src[^;]*unsafe-inline|\*(?!\.supabase\.co)/);
+  });
+
+  it('leaves the preview headers untouched', () => {
+    expect(pagesHeaders(headers, PREVIEW)).toBe(headers);
+    expect(shellRobots(PREVIEW)).toBe('noindex, nofollow');
+  });
+
+  it('indexes only public pages on a launch build (#39)', () => {
+    const launched = pagesHeaders(headers, LAUNCHED);
+    const rule = (path: string) => launched.slice(launched.lastIndexOf(`\n${path}\n`) + 1).split('\n\n')[0];
+    const global = rule('/*');
+    expect(global).not.toContain('X-Robots-Tag');
+    expect(global).toContain('Strict-Transport-Security: max-age=31536000');
+    expect(global).toContain('Content-Security-Policy:');
+    for (const path of ['/login', '/dashboard', '/practice', '/history', '/profile', '/shared', '/s/*', '/shared/*', '/auth/*', '/graph/*']) {
+      expect(rule(path)).toBe(`${path}\n  X-Robots-Tag: noindex`);
+    }
+    expect(launched).not.toMatch(/^\/(privacy)?\n {2}X-Robots-Tag/m);
+    expect(rule('https://:project.pages.dev/*')).toContain('X-Robots-Tag: noindex');
+    expect(launched).toContain('/graph/*\n  ! Content-Security-Policy');
+    expect(shellRobots(LAUNCHED)).toBe('index, follow');
+    expect(() => pagesHeaders('/*\n  X-Frame-Options: DENY\n', LAUNCHED)).toThrow();
   });
 
   it('loads nothing from a third party in the page shell', () => {
