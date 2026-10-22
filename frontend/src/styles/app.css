@@ -133,3 +133,27 @@ main[tabindex="-1"]:focus{outline:none}
 .pl-report-options{border:0;margin:0;padding:0}
 .pl-report-option{gap:var(--space-3);align-items:center;cursor:pointer}
 .pl-report-comment{min-height:72px;resize:vertical;font:inherit}
+/* #117: "Print worksheet" at the bottom of the practice page */
+.pl-worksheet{margin-top:var(--space-6)}
+.pl-worksheet-groups{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--space-4)}
+.pl-worksheet-group{display:flex;flex-direction:column;gap:var(--space-3);padding:var(--space-4);border:1px solid var(--line);border-radius:var(--radius-md)}
+.pl-worksheet-group-head{justify-content:space-between}
+.pl-worksheet-fields{display:grid;grid-template-columns:1fr 120px;gap:var(--space-3);align-items:end}
+.pl-select{width:100%;height:44px;padding:0 var(--space-3);background:var(--surface-raised);border:1px solid var(--control-border);border-radius:var(--radius-md);color:var(--ink);font:inherit;font-size:16px;transition:border-color .15s}
+.pl-select:hover{border-color:var(--ink-muted)}
+.pl-select:focus{outline:2px solid var(--focus);outline-offset:2px;border-color:var(--ink)}
+.pl-count-input{height:44px;font-size:16px}
+.pl-worksheet-totals{justify-content:space-between;flex-wrap:wrap;gap:var(--space-3)}
+.pl-worksheet-options{display:flex;flex-wrap:wrap;gap:var(--space-5)}
+.pl-worksheet-check{gap:var(--space-3);align-items:center;cursor:pointer}
+.pl-worksheet-check input{width:18px;height:18px;accent-color:var(--action)}
+@media (max-width:640px){
+  .pl-worksheet.pl-card--lg{padding:var(--space-5)}
+  .pl-worksheet-group{padding:var(--space-3)}
+  .pl-worksheet-fields{grid-template-columns:1fr 76px}
+  /* Worksheet groups keep the levels in one row: the number alone, with the name for screen readers. */
+  .pl-worksheet-group .pl-seg{grid-template-columns:repeat(5,1fr)}
+  .pl-worksheet-group .pl-seg button{justify-content:center;padding:var(--space-3) var(--space-2)}
+  .pl-worksheet-group .pl-seg .n{font-size:14px;opacity:1}
+  .pl-worksheet-group .pl-seg .t{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+}
