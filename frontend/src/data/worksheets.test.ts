@@ -9,7 +9,7 @@ const json = (body: unknown, status = 200, headers: Record<string, string> = {})
   new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json', ...headers } });
 const worksheet = { worksheet: { id: 'w-1', source: 'generate', createdAt: '2026-10-22T00:00:00Z', paper: 'a4', columns: 1, answerKey: true,
   groups: [{ label: 'Substitution, level 2', topic: 'substitution', difficulty: 2, requested: 3, count: 2 }], problemIds: ['p1', 'p2'] } };
-const request = { source: 'generate' as const, groups: [{ topic: 'substitution' as const, difficulty: 2 as const, count: 3 }], paper: 'a4' as const, columns: 1 as const, answerKey: true };
+const request = { source: 'generate' as const, groups: [{ topic: 'substitution' as const, difficulty: 2 as const, count: 3 }], paper: 'a4' as const, columns: 1 as const, answerKey: true, solutions: false };
 beforeEach(() => { practice.resetPractice(); resetWorksheets(); practice.configurePracticeAuth(async () => 'account-token'); fetchMock.mockReset(); vi.stubGlobal('fetch', fetchMock); });
 afterEach(() => vi.unstubAllGlobals());
 

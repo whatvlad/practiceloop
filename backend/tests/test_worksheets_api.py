@@ -413,3 +413,70 @@ def test_a_deleted_problem_drops_out_of_its_worksheet(
         conn.execute("delete from public.problems where id = %s", (UUID(sheet["problemIds"][0]),))
     assert client.get(f"/worksheets/{sheet['id']}/pdf").status_code == 200
     assert "\\plnumber{2}" not in compiled.sources[-1]
+
+
+# Worked solutions (#130)
+
+
+def test_solutions_reveal_both_flags_and_print_steps_and_graphs(
+    client: TestClient, compiled: Compiled, users: Users, url: str
+) -> None:
+    sheet = create(client, generate(("substitution", 1, 2), ("derivatives", 1, 1), solutions=True))
+    assert sheet["solutions"] is True and sheet["answerKey"] is True
+    assert rows(
+        url,
+        "select bool_and(answer_revealed and solution_revealed) from public.problems"
+        " where user_id = %s",
+        users.alice,
+    ) == [(True,)]
+    assert rows(url, "select solutions from public.worksheets where user_id = %s", users.alice) == [
+        (True,)
+    ]
+    assert client.get(f"/worksheets/{sheet['id']}/pdf").status_code == 200
+    tex = compiled.sources[-1]
+    answers, solutions = tex.split("\\section*{Solutions}")
+    assert "\\section*{Answers}" in answers
+    assert [solutions.count(f"\\plnumber{{{n}}}") for n in (1, 2, 3)] == [1, 1, 1]
+    assert "Set u equal to the inner expression." in solutions
+    # Substitution has a visual; derivatives have none (ADR-006).
+    assert solutions.count("\\pdfliteral") == 2
+
+
+def test_history_solutions_without_the_key_still_reveal_both(
+    client: TestClient, compiled: Compiled, users: Users, url: str
+) -> None:
+    chosen, other = make_problem(client), make_problem(client)
+    sheet = create(
+        client, {"source": "history", "problemIds": [chosen], "answerKey": False, "solutions": True}
+    )
+    flags = rows(
+        url,
+        "select id::text, answer_revealed, solution_revealed from public.problems"
+        " where user_id = %s",
+        users.alice,
+    )
+    assert {r[0]: (r[1], r[2]) for r in flags} == {chosen: (True, True), other: (False, False)}
+    assert client.get(f"/worksheets/{sheet['id']}/pdf").status_code == 200
+    assert "Answers" not in compiled.sources[-1]
+    assert "\\section*{Solutions}" in compiled.sources[-1]
+
+
+def test_without_solutions_nothing_extra_is_printed_or_revealed(
+    client: TestClient, compiled: Compiled, users: Users, url: str
+) -> None:
+    sheet = create(client, generate(("substitution", 1, 1)))
+    assert sheet["solutions"] is False
+    revealed = "select bool_or(solution_revealed) from public.problems where user_id = %s"
+    assert rows(url, revealed, users.alice) == [(False,)]
+    assert client.get(f"/worksheets/{sheet['id']}/pdf").status_code == 200
+    assert "Solutions" not in compiled.sources[-1] and "pdfliteral" not in compiled.sources[-1]
+
+
+def test_graphs_stop_after_their_time_budget_but_steps_still_print(
+    client: TestClient, compiled: Compiled, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    sheet = create(client, generate(("substitution", 1, 2), solutions=True))
+    monkeypatch.setattr(worksheets, "GRAPH_SECONDS", -1.0)
+    assert client.get(f"/worksheets/{sheet['id']}/pdf").status_code == 200
+    solutions = compiled.sources[-1].split("\\section*{Solutions}")[1]
+    assert "pdfliteral" not in solutions and "Set u equal" in solutions

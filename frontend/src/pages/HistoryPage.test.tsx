@@ -139,18 +139,18 @@ it('asks the server for worksheet problems when that filter is chosen', async ()
 const sheet = (problemIds: string[]) => ({ id: 'w1', problemIds,
   groups: [{ label: 'Basic integrals, level 2', topic: 'basic-integrals' as const, difficulty: 2 as const, requested: problemIds.length, count: problemIds.length }] });
 
-it('exports the selection with the answer key by default, warns first and shows the reveal afterwards', async () => {
+it('exports the selection with the answer key and solutions by default, warns first and shows the reveal afterwards', async () => {
   vi.mocked(api.listProblemPage).mockResolvedValueOnce({ items: many(3), nextCursor: null });
   await act(async () => root.render(<HistoryPage />));
   expect(element.textContent).not.toContain('Answer revealed');
   await act(async () => { boxes()[0].click(); boxes()[2].click(); });
   const key = element.querySelector<HTMLInputElement>('.pl-hexport input[type="checkbox"]')!;
   expect(key.checked).toBe(true);
-  expect(element.querySelector('.pl-hexport')?.textContent).toContain('marked as answer revealed');
+  expect(element.querySelector('.pl-hexport')?.textContent).toContain('marked as solution revealed');
   vi.mocked(api.createWorksheet).mockResolvedValueOnce(sheet(['p2', 'p0']));
   vi.mocked(api.downloadWorksheetPdf).mockResolvedValueOnce();
   await act(async () => button('Export PDF').click());
-  expect(api.createWorksheet).toHaveBeenCalledWith({ source: 'history', problemIds: ['p0', 'p2'], paper: 'a4', columns: 1, answerKey: true });
+  expect(api.createWorksheet).toHaveBeenCalledWith({ source: 'history', problemIds: ['p0', 'p2'], paper: 'a4', columns: 1, answerKey: true, solutions: true });
   expect(api.downloadWorksheetPdf).toHaveBeenCalledWith('w1');
   expect(element.textContent).toContain('Downloaded a PDF with 2 problems.');
   expect(element.textContent?.match(/Answer revealed/g)).toHaveLength(2);
@@ -162,14 +162,17 @@ it('leaves reveals alone without the answer key and passes the page options', as
   vi.mocked(api.listProblemPage).mockResolvedValueOnce({ items: many(1), nextCursor: null });
   await act(async () => root.render(<HistoryPage />));
   await act(async () => boxes()[0].click());
-  await act(async () => element.querySelector<HTMLInputElement>('.pl-hexport input[type="checkbox"]')!.click());
+  const [key, solutions] = element.querySelectorAll<HTMLInputElement>('.pl-hexport input[type="checkbox"]');
+  await act(async () => solutions.click());
+  expect(element.querySelector('.pl-hexport')?.textContent).toContain('marked as answer revealed');
+  await act(async () => key.click());
   expect(element.querySelector('.pl-hexport')?.textContent).toContain('stay unrevealed');
   await act(async () => chip('Letter').click());
   await act(async () => chip('Two columns').click());
   vi.mocked(api.createWorksheet).mockResolvedValueOnce(sheet(['p0']));
   vi.mocked(api.downloadWorksheetPdf).mockResolvedValueOnce();
   await act(async () => button('Export PDF').click());
-  expect(api.createWorksheet).toHaveBeenCalledWith({ source: 'history', problemIds: ['p0'], paper: 'letter', columns: 2, answerKey: false });
+  expect(api.createWorksheet).toHaveBeenCalledWith({ source: 'history', problemIds: ['p0'], paper: 'letter', columns: 2, answerKey: false, solutions: false });
   expect(element.textContent).not.toContain('Answer revealed');
   expect(element.textContent).toContain('Downloaded a PDF with 1 problem.');
 });

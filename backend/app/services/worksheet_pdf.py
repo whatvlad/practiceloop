@@ -1,9 +1,10 @@
 """ADR-007 worksheet PDFs: one .tex file from a fixed template, one sandboxed pdflatex pass.
 
-The template's only inputs are server-generated LaTeX (statements and answers
-from the verified catalogue), catalogue text and enum options; users never type
-into it. pdflatex runs in a fresh child (app.services.tex_worker) with no shell
-escape, paranoid file access, CPU, memory and file-size limits, a wall-clock
+The template's only inputs are server-generated LaTeX (statements, answers and
+solution steps from the verified catalogue, graphs from
+app.services.worksheet_graphs), catalogue text and enum options; users never
+type into it. pdflatex runs in a fresh child (app.services.tex_worker) with no
+shell escape, paranoid file access, CPU, memory and file-size limits, a wall-clock
 limit, in a new temporary directory that is deleted in every case. The log
 never reaches the response.
 """
@@ -38,10 +39,19 @@ class TexRenderError(RuntimeError):
 
 
 @dataclass(frozen=True)
+class PrintedStep:
+    say: str  # catalogue text, escaped in the template
+    latex: str
+
+
+@dataclass(frozen=True)
 class PrintedProblem:
     statement: str
     answer: str
     space_cm: float
+    steps: Sequence[PrintedStep] = ()
+    # A picture from app.services.worksheet_graphs, or "" for none.
+    graph: str = ""
 
 
 @dataclass(frozen=True)
@@ -61,6 +71,10 @@ _TEXT_ESCAPES = {
     "_": r"\_",
     "^": r"\^{}",
     "~": r"\~{}",
+    # Catalogue step text names polar angles; CI compiles every step, so a new
+    # character fails there first.
+    "θ": r"$\theta$",
+    "π": r"$\pi$",
 }
 
 
@@ -101,6 +115,25 @@ def _problem(number: int, problem: PrintedProblem) -> str:
     )
 
 
+def _solution(number: int, problem: PrintedProblem) -> str:
+    # One unbreakable box per problem: the statement, its steps and its graph.
+    fit = "\\plfit{\\dimexpr\\linewidth-2em\\relax}"
+    parts = [
+        "\\par\\noindent\\begin{minipage}{\\linewidth}\n",
+        f"\\plnumber{{{number}}}{fit}{{$\\displaystyle {problem.statement}$}}\\par\\smallskip\n",
+    ]
+    for step in problem.steps:
+        parts.append(
+            f"\\hspace*{{2em}}\\parbox{{\\dimexpr\\linewidth-2em\\relax}}"
+            f"{{\\small {escape_text(step.say)}}}\\par\n"
+            f"\\hspace*{{2em}}{fit}{{$\\displaystyle {step.latex}$}}\\par\\smallskip\n"
+        )
+    if problem.graph:
+        parts.append("\\par\\smallskip\\begin{center}\n" + problem.graph + "\n\\end{center}\n")
+    parts.append("\\end{minipage}\\par\\bigskip\n")
+    return "".join(parts)
+
+
 def render_tex(
     groups: Sequence[PrintedGroup],
     *,
@@ -108,6 +141,7 @@ def render_tex(
     columns: int,
     answer_key: bool,
     day: date,
+    solutions: bool = False,
 ) -> str:
     if paper not in PAPERS or columns not in (1, 2):
         raise ValueError("Unsupported page options")
@@ -117,6 +151,7 @@ def render_tex(
         parts.append("\\begin{multicols*}{2}\n")
     number = 0
     answers: list[str] = []
+    worked: list[str] = []
     for group in groups:
         parts.append(f"\\section*{{{escape_text(group.label)}}}\n")
         for problem in group.problems:
@@ -126,12 +161,16 @@ def render_tex(
                 f"\\plnumber{{{number}}}"
                 f"\\plfit{{\\dimexpr\\linewidth-2em\\relax}}{{${problem.answer}$}}\\par\n"
             )
+            worked.append(_solution(number, problem))
     if columns == 2:
         parts.append("\\end{multicols*}\n")
     if answer_key and answers:
         parts.append("\\clearpage\n\\section*{Answers}\n\\begin{multicols}{2}\\small\n")
         parts.extend(answers)
         parts.append("\\end{multicols}\n")
+    if solutions and worked:
+        parts.append("\\clearpage\n\\section*{Solutions}\n")
+        parts.extend(worked)
     parts.append("\\end{document}\n")
     return "".join(parts)
 

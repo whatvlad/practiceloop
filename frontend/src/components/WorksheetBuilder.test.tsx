@@ -60,7 +60,7 @@ it('starts with one group from the current problem and says the problems are sav
   expect(element.textContent).toContain('saved to your history');
   const key = element.querySelector<HTMLInputElement>('input[type="checkbox"]')!;
   expect(key.checked).toBe(true);
-  expect(element.textContent).toContain('marked as answer revealed');
+  expect(element.textContent).toContain('marked as solution revealed');
   // The only group cannot be removed.
   expect(button('Remove group 1')).toBeUndefined();
 });
@@ -125,7 +125,7 @@ it('generates, shows progress, downloads and reports what each group got', async
   vi.mocked(api.createWorksheet).mockResolvedValueOnce(made);
   vi.mocked(api.downloadWorksheetPdf).mockImplementationOnce(() => new Promise(resolve => { finish = resolve; }));
   await act(async () => button('Generate PDF').click());
-  expect(api.createWorksheet).toHaveBeenCalledWith({ source: 'generate', paper: 'a4', columns: 1, answerKey: true, groups: [
+  expect(api.createWorksheet).toHaveBeenCalledWith({ source: 'generate', paper: 'a4', columns: 1, answerKey: true, solutions: true, groups: [
     { topic: 'basic-integrals', difficulty: 4, count: 5 }, { topic: 'integration-by-parts', difficulty: 3, count: 2 }] });
   expect(button('Making the PDF…')?.disabled).toBe(true);
   expect(selects()[0].disabled).toBe(true);
@@ -155,8 +155,11 @@ it('sends the page options and an answer key turned off', async () => {
   vi.mocked(api.downloadWorksheetPdf).mockResolvedValueOnce();
   await act(async () => button('Letter').click());
   await act(async () => button('Two columns').click());
-  await act(async () => element.querySelector<HTMLInputElement>('input[type="checkbox"]')!.click());
+  const [key, solutions] = element.querySelectorAll<HTMLInputElement>('input[type="checkbox"]');
+  await act(async () => solutions.click());
+  expect(element.textContent).toContain('marked as answer revealed');
+  await act(async () => key.click());
   expect(element.textContent).toContain('stay unrevealed');
   await act(async () => button('Generate PDF').click());
-  expect(api.createWorksheet).toHaveBeenCalledWith(expect.objectContaining({ paper: 'letter', columns: 2, answerKey: false }));
+  expect(api.createWorksheet).toHaveBeenCalledWith(expect.objectContaining({ paper: 'letter', columns: 2, answerKey: false, solutions: false }));
 });

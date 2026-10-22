@@ -113,8 +113,12 @@ export function HistoryPage() {
     setSelected(new Set());
     setLimitNote('');
   }
-  function exported(ids: readonly string[], revealed: boolean) {
-    if (revealed) setAll(previous => previous.map(p => ids.includes(p.id) ? { ...p, answerRevealed: true } : p));
+  function exported(ids: readonly string[], revealed: { answer: boolean; solution: boolean }) {
+    if (revealed.answer) {
+      setAll(previous => previous.map(p => ids.includes(p.id)
+        ? { ...p, answerRevealed: true, solutionRevealed: p.solutionRevealed || revealed.solution }
+        : p));
+    }
     clear();
   }
   const allShownSelected = shown.length > 0 && shown.every(p => selected.has(p.id));

@@ -190,9 +190,35 @@ Details the build settled within this ADR:
 - `lmodern` is installed explicitly: on Ubuntu it is only a recommendation of
   `texlive-fonts-recommended`.
 
+## Amendment: worked solutions and graphs (#130, 2026-10-22)
+
+Vlad asked for the worked solutions and graphs in the PDF, which the first
+version left out. This amendment brings both in:
+
+- The request has `solutions` (default `false` in the API, on by default in the
+  UI), stored as `public.worksheets.solutions` by an additive migration. A
+  printed solution is a solution reveal (ADR-004): every included problem gets
+  `answer_revealed = true` and `solution_revealed = true` when the worksheet is
+  created, with or without the answer key, and the UI says so first.
+- The PDF ends with "Solutions" on a new page, after the answers: each problem's
+  number, statement and its stored steps (the catalogue's step text, escaped,
+  and the step LaTeX), and a graph when its version has an ADR-006 visual.
+- Graphs are drawn from the same server-built spec as the site, without a TeX
+  package: lines and fills are PDF operators in pdfTeX's `\pdfliteral`, labels
+  are LaTeX in the kernel's picture environment, so the VM needs nothing beyond
+  the packages above (TikZ is not installed there). The kinds: `definite` (curve,
+  shaded area, bounds), `indefinite` (f solid, F dashed with C = 0, marked
+  points), `region2d` (the region in the plane; the surface stays online) and
+  `solid3d` (a wireframe in a fixed oblique view). Derivatives have none.
+- A first spec build costs up to about a second of CPU; one render stops
+  building graphs after 12 s and prints the remaining problems without one. A
+  graph that fails is logged and left out; it never fails the PDF.
+- CI compiles every catalogue step and a graph of every visual version and level.
+
+Code: `backend/app/services/worksheet_graphs.py` and `worksheet_pdf.py`.
+
 ## Out of scope
 
-Worked solutions in the PDF, free-text titles or other user-written LaTeX,
-stored PDFs, visuals in the PDF (the
-ADR-006 spec could feed a later TikZ sketch), saved worksheet templates and
-selecting all of History beyond the loaded pages.
+Free-text titles or other user-written LaTeX, stored PDFs, the 3D surface of a
+double integral in the PDF, saved worksheet templates and selecting all of
+History beyond the loaded pages.

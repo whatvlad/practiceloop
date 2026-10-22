@@ -12,8 +12,8 @@ interface HistoryExportProps {
   selected: readonly string[];
   /** Why a "Select all" stopped short of the loaded rows, if it did. */
   limitNote: string;
-  /** The printed ids, and whether the answer key revealed their answers. */
-  onExported: (ids: readonly string[], revealed: boolean) => void;
+  /** The printed ids, and what the PDF revealed: answers (the key) and solutions (#130). */
+  onExported: (ids: readonly string[], revealed: { answer: boolean; solution: boolean }) => void;
 }
 
 /** The bulk action bar for the History selection (#118): count, page options and "Export PDF". */
@@ -50,7 +50,7 @@ export function HistoryExport({ selected, limitNote, onExported }: HistoryExport
       const worksheet = await createWorksheet({ source: 'history', problemIds: [...selected], ...options });
       if (!active.current) return;
       // The worksheet exists now, so its reveals are already recorded.
-      onExported(worksheet.problemIds, options.answerKey);
+      onExported(worksheet.problemIds, { answer: options.answerKey || options.solutions, solution: options.solutions });
       await download(worksheet.id, worksheet.problemIds.length);
     } catch (failure) {
       if (active.current) setError(failure instanceof Error ? failure.message : text.service_error);
