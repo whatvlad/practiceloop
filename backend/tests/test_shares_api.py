@@ -146,6 +146,14 @@ def test_owner_shares_once_and_anyone_opens_it_by_link_or_code(
 def test_shared_response_never_carries_answers_results_or_identities(
     client: TestClient, users: Users, url: str, monkeypatch: pytest.MonkeyPatch
 ) -> None:
+    # An indefinite record: a definite answer such as "2" also appears in its bounds.
+    monkeypatch.setattr(
+        practice,
+        "catalogue",
+        lambda *cell: tuple(
+            item for item in catalogue(*cell) if item.record["generator_version"] != "definite-v1"
+        ),
+    )
     problem = generate(client)
     monkeypatch.setattr(
         practice, "shared_check", lambda *_: AnswerCheck("incorrect", False, "power_rule")
