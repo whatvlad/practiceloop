@@ -35,7 +35,23 @@ export interface IndefiniteSpec {
   points: readonly { x: number; kind: PointKind }[];
 }
 
-export type VisualSpec = DefiniteSpec | IndefiniteSpec;
+/** #113: the solution's set-up of a double integral; the browser draws the region and the surface z = f. */
+export interface Region2dSpec {
+  kind: 'region2d';
+  version: 1;
+  system: 'cartesian' | 'polar';
+  /** `[variable, lower, upper]`, innermost first; the inner bounds use the outer variable. */
+  bounds: readonly [readonly [string, Tree, Tree], readonly [string, Tree, Tree]];
+  /** The integrand in the system's variables, without the Jacobian. */
+  f: Tree;
+  window: { x: Interval; y: Interval; z: Interval };
+  /** The region as inequalities (LaTeX), the text alternative. */
+  region: string;
+}
+
+export type VisualSpec = DefiniteSpec | IndefiniteSpec | Region2dSpec;
+
+const REGION_VARIABLES = { cartesian: ['x', 'y'], polar: ['r', 'theta'] } as const;
 
 const MAX_POINTS = 64;
 
@@ -88,6 +104,20 @@ const VALIDATORS: Record<string, (data: Record<string, unknown>) => VisualSpec> 
       return { x: at, kind: point.kind as PointKind };
     });
     return { kind: 'indefinite', version: 1, f: tree(data.f), F: tree(data.F), x, y: interval(data.y), points };
+  },
+  region2d(data) {
+    if (data.system !== 'cartesian' && data.system !== 'polar') throw new Error('Bad system');
+    const system = data.system;
+    const names: readonly string[] = REGION_VARIABLES[system];
+    if (!Array.isArray(data.bounds) || data.bounds.length !== 2) throw new Error('Bad bounds');
+    const [inner, outer] = data.bounds.map((value: unknown) => {
+      if (!Array.isArray(value) || value.length !== 3 || !names.includes(value[0])) throw new Error('Bad bound');
+      return [value[0] as string, tree(value[1]), tree(value[2])] as const;
+    });
+    if (inner[0] === outer[0]) throw new Error('Repeated variable');
+    const window = record(data.window);
+    return { kind: 'region2d', version: 1, system, bounds: [inner, outer], f: tree(data.f),
+      window: { x: interval(window.x), y: interval(window.y), z: interval(window.z) }, region: text(data.region) };
   },
 };
 

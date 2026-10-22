@@ -396,6 +396,12 @@ def replay_value(record: dict[str, object]) -> ValueProblem:
     return ValueProblem(parameters, TOPIC, template.difficulty, a * variant.value, mistakes)
 
 
+def solution_setup(record: dict[str, object]) -> Setup:
+    """The set-up the worked solution integrates, scaled by the coefficient (#113)."""
+    parameters, _, variant = _lookup(record)
+    return variant.solution.scaled(sp.Integer(parameters.coefficient))
+
+
 @dataclass(frozen=True)
 class DoubleProblem:
     problem: ValueProblem
