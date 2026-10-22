@@ -17,16 +17,19 @@ from pathlib import Path
 import pytest
 
 from app.api.practice import TOPICS
-from app.generators.core import catalogue
+from app.generators.core import catalogue, catalogue_records, replay
 from app.services import worksheet_pdf
+from app.services.worksheet_graphs import graph
 from app.services.worksheet_pdf import (
     PrintedGroup,
     PrintedProblem,
+    PrintedStep,
     TexBusy,
     TexRenderError,
     compile_pdf,
     render_tex,
 )
+from app.visuals.spec import BUILDERS, build_visual
 
 pytestmark = pytest.mark.tex
 DAY = date(2026, 10, 22)
@@ -101,6 +104,53 @@ def test_every_catalogue_statement_and_answer_compiles() -> None:
     except TexRenderError as error:
         pytest.fail(f"A catalogue statement or answer does not compile:\n{error}")
     assert pdf.startswith(b"%PDF-")
+
+
+def steps(exercise: object) -> list[PrintedStep]:
+    return [PrintedStep(s["say"], s["latex"]) for s in exercise.steps]  # type: ignore[attr-defined]
+
+
+@pytest.mark.parametrize("slug", list(TOPICS))
+def test_every_catalogue_solution_compiles(slug: str) -> None:
+    """#130: every step's text and LaTeX, one topic per document to stay inside the limits."""
+    groups = [
+        PrintedGroup(
+            f"{TOPICS[slug].name}, level {level}",
+            [PrintedProblem(e.statement, e.answer, 0, steps(e)) for e in catalogue(slug, level)],
+        )
+        for level in TOPICS[slug].levels
+    ]
+    tex = render_tex(groups, paper="a4", columns=1, answer_key=False, day=DAY, solutions=True)
+    try:
+        pdf = compile_pdf(tex)
+    except TexRenderError as error:
+        pytest.fail(f"A catalogue solution step does not compile:\n{error}")
+    assert pdf.startswith(b"%PDF-")
+
+
+def test_graphs_of_every_visual_version_compile_beside_their_steps(tmp_path: Path) -> None:
+    first: dict[tuple[object, int], dict[str, object]] = {}
+    for slug, topic in TOPICS.items():
+        for level in topic.levels:
+            for record in catalogue_records(slug, level):
+                if record["generator_version"] in BUILDERS:
+                    first.setdefault((record["generator_version"], level), record)
+    problems = []
+    for record in first.values():
+        exercise = replay(record)
+        picture = graph(build_visual(record))
+        problems.append(
+            PrintedProblem(exercise.statement, exercise.answer, 0, steps(exercise), picture)
+        )
+    tex = render_tex(
+        [PrintedGroup("Graphs", problems)], paper="a4", columns=1, answer_key=True, day=DAY,
+        solutions=True,
+    )  # fmt: skip
+    assert tex.count("\\pdfliteral") == len(problems) > 10
+    pages = text(compile_pdf(tex), tmp_path)
+    solutions = "".join(pages[next(i for i, p in enumerate(pages) if "Solutions" in p) :])
+    for caption in ("shaded area", "antiderivative", "region of integration", "solid"):
+        assert caption in solutions
 
 
 def test_labels_numbering_and_answers_on_their_own_last_page(tmp_path: Path) -> None:

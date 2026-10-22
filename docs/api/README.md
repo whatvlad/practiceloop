@@ -361,11 +361,11 @@ Requires `Idempotency-Key: <UUIDv4>`; an exact retry returns the same worksheet.
 
 or `{"source":"history","problemIds":["uuid", ...],"paper":"letter","columns":2,"answerKey":false}`.
 `paper` (`a4`, `letter`) defaults to `a4`, `columns` (`1`, `2`) to `1`,
-`answerKey` to `true`. Limits: 1-8 groups, `count` 1-20, 40 problems in total,
+`answerKey` to `true`, `solutions` (#130) to `false`. Limits: 1-8 groups, `count` 1-20, 40 problems in total,
 1-40 distinct `problemIds`. Returns `201`:
 
 ```json
-{"worksheet":{"id":"uuid","source":"generate","createdAt":"2026-10-22T14:00:00Z","paper":"a4","columns":1,"answerKey":true,
+{"worksheet":{"id":"uuid","source":"generate","createdAt":"2026-10-22T14:00:00Z","paper":"a4","columns":1,"answerKey":true,"solutions":false,
  "groups":[{"label":"Substitution, level 2","topic":"substitution","difficulty":2,"requested":5,"count":5},
            {"label":"Mixed integrals, level 3","topic":"mixed:integrals","difficulty":3,"requested":4,"count":4}],
  "problemIds":["uuid", "..."]}}
@@ -379,7 +379,9 @@ or `{"source":"history","problemIds":["uuid", ...],"paper":"letter","columns":2,
   level, then oldest first; each topic and level is one group. Any missing or
   foreign id fails the whole request with `404 problem_not_found`.
 - With `answerKey` every included problem gets `answerRevealed: true` in the same
-  transaction; `solutionRevealed` never changes. Without it no flag changes.
+  transaction. With `solutions` every included problem gets both
+  `answerRevealed` and `solutionRevealed`, with or without the key. With
+  neither no flag changes.
 - `problemIds` are in print order. Rate limit: 5 a minute and 30 an hour per user.
 
 ### `GET /api/worksheets/{id}/pdf`
@@ -389,7 +391,11 @@ Returns `200 application/pdf` with
 (the creation date). It is read-only: no flag changes, so it can be retried or
 repeated. One section per group, problems numbered through the whole sheet with
 writing space, and with the key an "Answers" section on a new page (final
-answers only). Rate limit: 20 a minute per user. One compile runs at a time;
+answers only). With `solutions` a "Solutions" section follows on a new page:
+each problem's statement, its worked steps and, where its version has an ADR-006
+visual, a static graph (no graph for derivatives). Graphs stop after 12 s of
+building in one render, and the remaining problems print their steps without
+one. Rate limit: 20 a minute per user. One compile runs at a time;
 waiting over 10 s gives `503 worksheet_busy`, a failed compile
 `503 worksheet_render_failed` (both retryable). Another user's or a missing
 worksheet is `404 problem_not_found`.

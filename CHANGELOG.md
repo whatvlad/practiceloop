@@ -5,6 +5,12 @@ User-facing releases. Known limitations of the current release are in
 
 ## Unreleased
 
+- **Worked solutions and graphs in worksheet PDFs.** "Include worked solutions
+  and graphs", on by default next to the answer key, adds a Solutions section
+  at the end of the PDF: every problem's steps and, for integrals, a graph like
+  the one in "Show solution" (the curve and area, f and F, the region, or the
+  solid). Printed solutions mark the problems as solution revealed. (#130)
+
 - **Export problems from History as a PDF.** Each History row has a checkbox;
   "Select all" ticks the loaded rows under the current filter and "Clear"
   unticks them. "Export PDF" prints up to 40 selected problems, grouped by

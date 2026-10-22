@@ -77,6 +77,7 @@ class Worksheet:
     columns: int
     answer_key: bool
     groups: list[dict[str, Any]]
+    solutions: bool = False
 
 
 @dataclass(frozen=True)
@@ -94,6 +95,8 @@ class PrintItem:
     difficulty: int
     problem_latex: str
     answer_latex: str
+    solution_steps: list[dict[str, str]]
+    generator_data: dict[str, object]
 
 
 def insert_worksheet(
@@ -105,13 +108,15 @@ def insert_worksheet(
     columns: int,
     answer_key: bool,
     groups: list[dict[str, Any]],
+    solutions: bool = False,
 ) -> Worksheet:
     with conn.cursor(row_factory=dict_row) as cur:
         cur.execute(
-            "insert into public.worksheets(user_id, source, paper, columns, answer_key, groups)"
-            " values (%s, %s, %s, %s, %s, %s)"
-            " returning id, created_at, source, paper, columns, answer_key, groups",
-            (user_id, source, paper, columns, answer_key, Jsonb(groups)),
+            "insert into public.worksheets"
+            "(user_id, source, paper, columns, answer_key, groups, solutions)"
+            " values (%s, %s, %s, %s, %s, %s, %s)"
+            " returning id, created_at, source, paper, columns, answer_key, groups, solutions",
+            (user_id, source, paper, columns, answer_key, Jsonb(groups), solutions),
         )
         row = cur.fetchone()
     if row is None:
@@ -145,6 +150,15 @@ def owned_problems(
         return [OwnedProblem(**row) for row in cur.fetchall()]
 
 
+def reveal_solutions(conn: Connection[Any], user_id: UUID, problem_ids: Sequence[UUID]) -> None:
+    """#130: printed worked solutions are a solution reveal, which includes the answer (ADR-004)."""
+    conn.execute(
+        "update public.problems set answer_revealed = true, solution_revealed = true"
+        " where user_id = %s and id = any(%s)",
+        (user_id, list(problem_ids)),
+    )
+
+
 def reveal_answers(conn: Connection[Any], user_id: UUID, problem_ids: Sequence[UUID]) -> None:
     """ADR-007 decision 2: a printed answer key is an answer reveal (ADR-004)."""
     conn.execute(
@@ -156,7 +170,7 @@ def reveal_answers(conn: Connection[Any], user_id: UUID, problem_ids: Sequence[U
 def get_worksheet(conn: Connection[Any], user_id: UUID, worksheet_id: UUID) -> Worksheet | None:
     with conn.cursor(row_factory=dict_row) as cur:
         cur.execute(
-            "select id, created_at, source, paper, columns, answer_key, groups"
+            "select id, created_at, source, paper, columns, answer_key, groups, solutions"
             " from public.worksheets where id = %s and user_id = %s",
             (worksheet_id, user_id),
         )
@@ -165,11 +179,11 @@ def get_worksheet(conn: Connection[Any], user_id: UUID, worksheet_id: UUID) -> W
 
 
 def print_items(conn: Connection[Any], user_id: UUID, worksheet_id: UUID) -> list[PrintItem]:
-    """Statements and private answers in print order, for the owner's worksheet only."""
+    """Statements, private answers and solutions in print order, for the owner's worksheet only."""
     with conn.cursor(row_factory=dict_row) as cur:
         cur.execute(
             "select i.group_index, t.slug as topic, p.difficulty, p.problem_latex,"
-            " s.answer_latex from public.worksheet_items i"
+            " s.answer_latex, s.solution_steps, s.generator_data from public.worksheet_items i"
             " join public.worksheets w on w.id = i.worksheet_id"
             " join public.problems p on p.id = i.problem_id and p.user_id = w.user_id"
             " join public.topics t on t.id = p.topic_id"

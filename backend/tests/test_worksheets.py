@@ -10,7 +10,13 @@ import pytest
 from app.api import practice
 from app.api.worksheets import WorksheetBody, label
 from app.generators.core import catalogue_records
-from app.services.worksheet_pdf import PrintedGroup, PrintedProblem, escape_text, render_tex
+from app.services.worksheet_pdf import (
+    PrintedGroup,
+    PrintedProblem,
+    PrintedStep,
+    escape_text,
+    render_tex,
+)
 from app.services.worksheets import Picker, base_key, record_key
 
 
@@ -176,3 +182,35 @@ def test_every_topic_declares_a_writing_space() -> None:
 def test_text_is_escaped() -> None:
     assert escape_text("50% & $x_1$ #{}") == r"50\% \& \$x\_1\$ \#\{\}"
     assert "\\section*{a\\textbackslash{}input}" in tex(group("a\\input", "x"))
+
+
+# Worked solutions (#130)
+
+
+def worked(answer: str, *steps: tuple[str, str], graph: str = "") -> PrintedGroup:
+    printed = [PrintedStep(say, latex) for say, latex in steps]
+    return PrintedGroup("T", [PrintedProblem(f"\\int {answer}", answer, 3, printed, graph)])
+
+
+def test_solutions_are_off_by_default() -> None:
+    one = {"topic": "substitution", "difficulty": 1, "count": 1}
+    body = WorksheetBody.model_validate({"source": "generate", "groups": [one]})
+    assert body.solutions is False
+    assert "Solutions" not in tex(worked("a", ("Say.", "a = b")))
+
+
+def test_solutions_follow_the_answers_on_a_new_page_with_steps_and_graph() -> None:
+    source = tex(
+        worked("v", ("Integrate 50% of θ.", "u = x"), ("Add C.", "x + C"), graph="PICTURE"),
+        solutions=True,
+    )
+    answers, solutions = source.split("\\clearpage\n\\section*{Solutions}")
+    assert "\\section*{Answers}" in answers
+    assert "\\plnumber{1}" in solutions and "\\int v" in solutions
+    assert "Integrate 50\\% of $\\theta$." in solutions
+    assert solutions.index("u = x") < solutions.index("x + C") < solutions.index("PICTURE")
+
+
+def test_solutions_print_without_the_answer_key() -> None:
+    source = tex(worked("a", ("Say.", "a")), answer_key=False, solutions=True)
+    assert "Answers" not in source and "\\section*{Solutions}" in source

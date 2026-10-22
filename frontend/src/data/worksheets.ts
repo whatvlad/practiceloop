@@ -24,6 +24,8 @@ export interface WorksheetPageOptions {
   columns: 1 | 2;
   /** On by default; printing the key marks every included answer as revealed. */
   answerKey: boolean;
+  /** #130: worked steps and graphs after the answers; marks answers and solutions as revealed. */
+  solutions: boolean;
 }
 
 export type WorksheetRequest = WorksheetPageOptions & (
@@ -46,7 +48,7 @@ export interface Worksheet {
   problemIds: string[];
 }
 
-export const DEFAULT_PAGE_OPTIONS: WorksheetPageOptions = { paper: 'a4', columns: 1, answerKey: true };
+export const DEFAULT_PAGE_OPTIONS: WorksheetPageOptions = { paper: 'a4', columns: 1, answerKey: true, solutions: true };
 
 export function worksheetTopic(topic: PracticeTopic, area: AreaSlug): WorksheetTopic {
   return topic === 'mixed' ? `mixed:${area}` : topic;

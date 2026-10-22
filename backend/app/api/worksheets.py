@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import logging
 import secrets
+import time
 from datetime import UTC
 from typing import Annotated, Any, Literal
 from uuid import UUID
@@ -39,15 +40,18 @@ from app.services import idempotency
 from app.services import owned_records as records
 from app.services import worksheets as store
 from app.services.idempotency import Scope, StoredResponse
+from app.services.worksheet_graphs import graph
 from app.services.worksheet_pdf import (
     PrintedGroup,
     PrintedProblem,
+    PrintedStep,
     TexBusy,
     TexRenderError,
     compile_pdf,
     filename,
     render_tex,
 )
+from app.visuals.spec import build_visual
 
 logger = logging.getLogger("practiceloop.worksheets")
 router = APIRouter(tags=["worksheets"])
@@ -56,6 +60,9 @@ MAX_GROUPS = 8
 MAX_PER_GROUP = 20
 MAX_PROBLEMS = 40
 UUID_PATTERN = r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+# Building a visual spec the first time costs up to ~1 s CPU (ADR-006); a render
+# stops drawing new graphs after this long and prints the rest without one.
+GRAPH_SECONDS = 12.0
 
 create_minute_limit = RateLimiter(5)
 create_hour_limit = RateLimiter(30, window=3600.0)
@@ -81,6 +88,8 @@ class WorksheetBody(BaseModel):
     paper: Literal["a4", "letter"] = "a4"
     columns: Literal[1, 2] = 1
     answerKey: bool = True  # noqa: N815 - the JSON field name
+    # #130: worked steps and graphs after the answers; a solution reveal (ADR-004).
+    solutions: bool = False
 
     @model_validator(mode="after")
     def _one_source(self) -> WorksheetBody:
@@ -120,6 +129,13 @@ def _check_group(group: GroupBody) -> None:
         raise _invalid()
 
 
+def _reveal(conn: Any, body: WorksheetBody, user_id: UUID, problem_ids: list[UUID]) -> None:
+    if body.solutions:
+        store.reveal_solutions(conn, user_id, problem_ids)
+    elif body.answerKey:
+        store.reveal_answers(conn, user_id, problem_ids)
+
+
 def _limit(user_id: UUID) -> None:
     create_minute_limit.check(user_id)
     create_hour_limit.check(user_id)
@@ -136,6 +152,7 @@ def _response(worksheet: store.Worksheet, problem_ids: list[UUID]) -> StoredResp
                 "paper": worksheet.paper,
                 "columns": worksheet.columns,
                 "answerKey": worksheet.answer_key,
+                "solutions": worksheet.solutions,
                 "groups": [
                     {
                         "label": label(group["topic"], group["difficulty"]),
@@ -216,6 +233,7 @@ def _generate(body: WorksheetBody, user_id: UUID, scope: Scope) -> JSONResponse:
             columns=body.columns,
             answer_key=body.answerKey,
             groups=groups,
+            solutions=body.solutions,
         )
         items: list[tuple[UUID, int]] = []
         for index, topic, exercise in exercises:
@@ -235,8 +253,7 @@ def _generate(body: WorksheetBody, user_id: UUID, scope: Scope) -> JSONResponse:
             )
             items.append((problem.id, index))
         store.insert_items(conn, worksheet.id, items)
-        if body.answerKey:
-            store.reveal_answers(conn, user_id, [problem_id for problem_id, _ in items])
+        _reveal(conn, body, user_id, [problem_id for problem_id, _ in items])
         response = _response(worksheet, [problem_id for problem_id, _ in items])
         idempotency.store(conn, scope, response)
     return _respond(response)
@@ -289,13 +306,27 @@ def _from_history(body: WorksheetBody, user_id: UUID, scope: Scope) -> JSONRespo
             columns=body.columns,
             answer_key=body.answerKey,
             groups=groups,
+            solutions=body.solutions,
         )
         store.insert_items(conn, worksheet.id, items)
-        if body.answerKey:
-            store.reveal_answers(conn, user_id, [problem_id for problem_id, _ in items])
+        _reveal(conn, body, user_id, [problem_id for problem_id, _ in items])
         response = _response(worksheet, [problem_id for problem_id, _ in items])
         idempotency.store(conn, scope, response)
     return _respond(response)
+
+
+def _worked(item: store.PrintItem, deadline: float) -> tuple[list[PrintedStep], str]:
+    """The item's steps, and its graph unless the render is out of graph time."""
+    steps = [PrintedStep(step["say"], step["latex"]) for step in item.solution_steps]
+    if time.monotonic() > deadline:
+        return steps, ""
+    try:
+        return steps, graph(build_visual(item.generator_data))
+    except (ValueError, TypeError, ArithmeticError):
+        # The steps still print; a graph is an aid, never a reason to fail the PDF.
+        version = item.generator_data.get("generator_version")
+        logger.exception("Worksheet graph failed for %s", version)
+        return steps, ""
 
 
 @router.get("/worksheets/{worksheet_id}/pdf")
@@ -306,18 +337,20 @@ def download_pdf(worksheet_id: UUID, user: User) -> Response:
         if worksheet is None:
             raise _not_found()
         items = store.print_items(conn, user.id, worksheet_id)
+    deadline = time.monotonic() + GRAPH_SECONDS
+    printed = [
+        PrintedProblem(
+            item.problem_latex,
+            item.answer_latex,
+            _space_cm(item.topic, item.difficulty),
+            *(_worked(item, deadline) if worksheet.solutions else ()),
+        )
+        for item in items
+    ]
     groups = [
         PrintedGroup(
             label(group["topic"], group["difficulty"]),
-            [
-                PrintedProblem(
-                    item.problem_latex,
-                    item.answer_latex,
-                    _space_cm(item.topic, item.difficulty),
-                )
-                for item in items
-                if item.group_index == index
-            ],
+            [p for p, item in zip(printed, items, strict=True) if item.group_index == index],
         )
         for index, group in enumerate(worksheet.groups)
     ]
@@ -328,6 +361,7 @@ def download_pdf(worksheet_id: UUID, user: User) -> Response:
         columns=worksheet.columns,
         answer_key=worksheet.answer_key,
         day=day,
+        solutions=worksheet.solutions,
     )
     try:
         pdf = compile_pdf(tex)

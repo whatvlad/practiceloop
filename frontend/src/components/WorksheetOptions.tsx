@@ -9,6 +9,15 @@ interface WorksheetOptionsProps {
   idPrefix: string;
 }
 
+function revealNote({ answerKey, solutions }: WorksheetPageOptions): string {
+  if (solutions) {
+    return `${answerKey ? 'The final answers and then the' : 'The'} worked solutions with graphs are printed at the end, so these problems are marked as solution revealed in your history.`;
+  }
+  return answerKey
+    ? 'The final answers are printed on the last page, so these problems are marked as answer revealed in your history.'
+    : 'No answers are printed, and the problems stay unrevealed until you reveal them.';
+}
+
 /** ADR-007 page options shared by the Practice builder (#117) and the History export (#118). */
 export function WorksheetOptions({ value, onChange, disabled = false, idPrefix }: WorksheetOptionsProps) {
   const off = disabled ? [] : undefined;
@@ -33,11 +42,12 @@ export function WorksheetOptions({ value, onChange, disabled = false, idPrefix }
           aria-describedby={`${idPrefix}-key-note`} onChange={(event) => onChange({ ...value, answerKey: event.target.checked })} />
         <span>Include answer key</span>
       </label>
-      <p id={`${idPrefix}-key-note`} className="pl-small pl-muted pl-m-0">
-        {value.answerKey
-          ? 'The final answers are printed on the last page, so these problems are marked as answer revealed in your history.'
-          : 'No answers are printed, and the problems stay unrevealed until you reveal them.'}
-      </p>
+      <label className="pl-row pl-worksheet-check">
+        <input type="checkbox" checked={value.solutions} disabled={disabled}
+          aria-describedby={`${idPrefix}-key-note`} onChange={(event) => onChange({ ...value, solutions: event.target.checked })} />
+        <span>Include worked solutions and graphs</span>
+      </label>
+      <p id={`${idPrefix}-key-note`} className="pl-small pl-muted pl-m-0">{revealNote(value)}</p>
     </div>
   );
 }
