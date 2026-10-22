@@ -5,6 +5,12 @@ User-facing releases. Known limitations of the current release are in
 
 ## Unreleased
 
+- **Practise definite integrals on their own.** A new "Definite integrals"
+  topic in the Integrals area, levels 1-5, offers only integrals with bounds,
+  drawn from every single-integral method. The other topics still include
+  their definite variants, and Mixed practice is unchanged. The account line
+  on Practice and Profile now lines up with the page below it. (#128)
+
 - **Export problems from History as a PDF.** Each History row has a checkbox;
   "Select all" ticks the loaded rows under the current filter and "Clear"
   unticks them. "Export PDF" prints up to 40 selected problems, grouped by

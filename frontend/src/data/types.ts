@@ -11,6 +11,7 @@ export type TopicSlug =
   | 'integration-by-parts'
   | 'rational-functions'
   | 'trigonometric-integrals'
+  | 'definite-integrals'
   | 'double-integrals'
   | 'triple-integrals'
   | 'derivatives'

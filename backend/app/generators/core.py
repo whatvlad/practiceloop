@@ -32,6 +32,7 @@ from app.generators.triple import TOPIC as TRIPLE_TOPIC
 from app.generators.triple import records as triple_records
 from app.generators.triple import replay_triple
 
+DEFINITE_TOPIC = "definite-integrals"
 COEFFICIENTS = (-3, -2, -1, 1, 2, 3)
 FAMILY_VERSIONS = frozenset({"substitution-v2", "parts-v1", "rational-v1", "trigonometric-v1"})
 
@@ -237,10 +238,11 @@ def _family_records(topic: str, difficulty: int) -> list[dict[str, object]]:
 
 def _definite_records(topic: str, difficulty: int) -> list[dict[str, object]]:
     # Indefinite records come first, so the guest demo's first exercise is unchanged.
+    # The definite-integrals topic (#128) holds the definite variants of every topic.
     return [
         dict(generator_version="definite-v1", template=name, coefficient=a)
         for name, template in DEFINITE_TEMPLATES.items()
-        if template.topic == topic and definite_difficulty(template) == difficulty
+        if topic in (template.topic, DEFINITE_TOPIC) and definite_difficulty(template) == difficulty
         for a in COEFFICIENTS
     ]
 
@@ -283,9 +285,11 @@ def catalogue_records(topic: str, difficulty: int) -> tuple[dict[str, object], .
         records = derivative_records(difficulty)
     elif topic == TRIPLE_TOPIC:
         records = triple_records(difficulty)
+    elif topic == DEFINITE_TOPIC:
+        records = _definite_records(topic, difficulty)
     else:
         records = _family_records(topic, difficulty)
-    if records and topic not in (DOUBLE_TOPIC, TRIPLE_TOPIC):
+    if records and topic not in (DOUBLE_TOPIC, TRIPLE_TOPIC, DEFINITE_TOPIC):
         records += _definite_records(topic, difficulty)
     if not records:
         raise ValueError("Unsupported practice cell")

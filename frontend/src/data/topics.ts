@@ -13,6 +13,7 @@ export const TOPICS: readonly Topic[] = [
   { slug: 'integration-by-parts', name: 'Integration by parts', area: 'integrals' },
   { slug: 'rational-functions', name: 'Rational functions', area: 'integrals' },
   { slug: 'trigonometric-integrals', name: 'Trigonometric integrals', area: 'integrals' },
+  { slug: 'definite-integrals', name: 'Definite integrals', area: 'integrals' },
   { slug: 'double-integrals', name: 'Double integrals', area: 'integrals' },
   { slug: 'triple-integrals', name: 'Triple integrals', area: 'integrals' },
   { slug: 'derivatives', name: 'Derivatives', area: 'derivatives' },
