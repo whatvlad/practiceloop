@@ -144,14 +144,15 @@ function publicProblem(value: unknown): PublicProblem {
   if (typeof data.id !== 'string' || typeof data.problemLatex !== 'string' || typeof data.createdAt !== 'string'
     || !TOPICS.some(t => t.slug === data.topic) || ![1, 2, 3, 4, 5].includes(data.difficulty as number)
     || typeof data.answerRevealed !== 'boolean' || typeof data.solutionRevealed !== 'boolean'
-    || !Number.isSafeInteger(data.attemptCount) || (data.attemptCount as number) < 0) throw new Error(text.service_error);
+    || !Number.isSafeInteger(data.attemptCount) || (data.attemptCount as number) < 0
+    || (data.worksheetId !== undefined && data.worksheetId !== null && typeof data.worksheetId !== 'string')) throw new Error(text.service_error);
   const last = data.lastAttempt === null ? null : object(data.lastAttempt);
   if (last && typeof last.answer !== 'string') throw new Error(text.service_error);
   return { saved: true, id: data.id, topic: data.topic as TopicSlug, difficulty: data.difficulty as Difficulty,
     problemLatex: data.problemLatex, createdAt: data.createdAt, answerRevealed: data.answerRevealed,
     solutionRevealed: data.solutionRevealed, attemptCount: data.attemptCount as number,
     lastResult: last ? verdict(last).result : null, lastFeedback: last ? verdict(last).feedback : null,
-    lastAnswer: last ? last.answer as string : null };
+    lastAnswer: last ? last.answer as string : null, worksheetId: (data.worksheetId as string | null | undefined) ?? null };
 }
 
 function cache(problem: PublicProblem): PublicProblem {
@@ -238,18 +239,21 @@ export function reportProblem(id: string, category: ReportCategory, comment: str
   });
 }
 
-export async function listProblemPage({ limit = 20, cursor = null }: { limit?: number; cursor?: string | null } = {}): Promise<ProblemPage> {
+/** One history page; `worksheet` keeps only problems a generated worksheet created (ADR-007). */
+export async function listProblemPage({ limit = 20, cursor = null, worksheet = false }: { limit?: number; cursor?: string | null; worksheet?: boolean } = {}): Promise<ProblemPage> {
   if (!Number.isInteger(limit) || limit < 1 || limit > 50) throw new Error(text.service_error);
   const started = epoch;
   const { bearer, saved } = await credentials();
   if (!saved) {
     const offset = cursor === null ? 0 : Number(cursor);
     if (!Number.isSafeInteger(offset) || offset < 0) throw new Error(text.service_error);
-    return { items: structuredClone(problems.slice(offset, offset + limit)),
-      nextCursor: offset + limit < problems.length ? String(offset + limit) : null };
+    const local = worksheet ? problems.filter(p => p.worksheetId) : problems;
+    return { items: structuredClone(local.slice(offset, offset + limit)),
+      nextCursor: offset + limit < local.length ? String(offset + limit) : null };
   }
   const query = new URLSearchParams({ limit: String(limit) });
   if (cursor !== null) query.set('cursor', cursor);
+  if (worksheet) query.set('worksheet', 'true');
   const data = await request(`/problems?${query}`, undefined, bearer, true);
   if (started !== epoch) throw new Error(text.expired);
   if (!Array.isArray(data.items) || data.items.length > limit

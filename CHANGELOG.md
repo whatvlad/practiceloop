@@ -5,6 +5,13 @@ User-facing releases. Known limitations of the current release are in
 
 ## Unreleased
 
+- **Export problems from History as a PDF.** Each History row has a checkbox;
+  "Select all" ticks the loaded rows under the current filter and "Clear"
+  unticks them. "Export PDF" prints up to 40 selected problems, grouped by
+  topic and level, with the same page and answer-key options as the Practice
+  worksheet; with the key, History shows their answers as revealed. A new
+  "From worksheets" filter lists the problems generated for worksheets. (#118)
+
 - **Print a worksheet from Practice.** "Print worksheet" at the bottom of a
   saved practice problem builds a PDF of new problems in up to 8 groups (topic
   or mixed, a level and a count, at most 40 problems). It shows before
