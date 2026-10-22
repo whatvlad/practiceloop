@@ -1,5 +1,7 @@
 /** Scene data for the lazy three.js view (ADR-006). Pure: it never imports three. */
 
+import { format, ticks } from '../plot';
+
 export type Vec3 = [number, number, number];
 
 export interface Mesh3D {
@@ -16,6 +18,45 @@ export interface Scene3D {
   /** Polylines (x, y, z per point) drawn as edges. */
   lines: Float32Array[];
   box: { min: Vec3; max: Vec3 };
+  /** Factor the heights were drawn at; z labels divide by it to show true values. Default 1. */
+  zScale?: number;
+}
+
+/** Round tick values per axis in 3D: few, so the labels do not crowd the scene. */
+const AXIS_TICKS = 4;
+
+/** Where the three axes cross: the origin, or the nearest point of the box to it. */
+export function axisOrigin(box: Scene3D['box']): Vec3 {
+  return [0, 1, 2].map(i => Math.min(Math.max(0, box.min[i]), box.max[i])) as Vec3;
+}
+
+export interface AxisTick {
+  axis: 'x' | 'y' | 'z';
+  /** The tick's point on its axis, in scene units. */
+  at: Vec3;
+  label: string;
+}
+
+/**
+ * Numeric ticks along the axes through `axisOrigin(box)`. When the axes cross at the
+ * origin its 0s are left out, as in the 2D plots; z values are shown unscaled.
+ */
+export function axisTicks(box: Scene3D['box'], zScale = 1, count = AXIS_TICKS): AxisTick[] {
+  const origin = axisOrigin(box);
+  const atZero = origin.every(v => v === 0);
+  const out: AxisTick[] = [];
+  (['x', 'y', 'z'] as const).forEach((axis, i) => {
+    const k = i === 2 ? zScale : 1;
+    const [lo, hi] = [box.min[i] / k, box.max[i] / k];
+    if (!(hi > lo)) return;
+    for (const value of ticks(lo, hi, count)) {
+      if (value === 0 && atZero) continue;
+      const at = [...origin] as Vec3;
+      at[i] = value * k;
+      out.push({ axis, at, label: format(value) });
+    }
+  });
+  return out;
 }
 
 /**
