@@ -75,6 +75,7 @@ def test_labels_name_the_topic_or_the_mixed_area() -> None:
     assert label("substitution", 2) == "Substitution, level 2"
     assert label("mixed:integrals", 3) == "Mixed integrals, level 3"
     assert label("mixed:derivatives", 1) == "Mixed derivatives, level 1"
+    assert label("mixed:mathematical-analysis", 1) == "Mixed mathematical analysis, level 1"
 
 
 @pytest.mark.parametrize(

@@ -11,13 +11,12 @@ vi.mock('../data/api', async original => ({ ...await original<typeof import('../
 
 const catalogue: Catalogue = {
   areas: [
-    { slug: 'integrals', name: 'Integrals', mixed: { availableDifficulties: [1, 2, 3, 4, 5], weights: { 'basic-integrals': 1, 'integration-by-parts': 2 }, worksheetCapacity: { 1: 20, 2: 20, 3: 20, 4: 20, 5: 20 } } },
-    { slug: 'derivatives', name: 'Derivatives', mixed: null },
+    { slug: 'mathematical-analysis', name: 'Mathematical Analysis', mixed: { availableDifficulties: [1, 2, 3, 4, 5], weights: { 'basic-integrals': 1, 'integration-by-parts': 2 }, worksheetCapacity: { 1: 20, 2: 20, 3: 20, 4: 20, 5: 20 } } },
   ],
   topics: [
-    { slug: 'basic-integrals', name: 'Basic integrals', area: 'integrals', availableDifficulties: [1, 2, 3, 4, 5], worksheetCapacity: { 1: 12, 2: 12, 3: 12, 4: 12, 5: 12 } },
-    { slug: 'integration-by-parts', name: 'Integration by parts', area: 'integrals', availableDifficulties: [1, 2, 3], worksheetCapacity: { 1: 4, 2: 4, 3: 3 } },
-    { slug: 'derivatives', name: 'Derivatives', area: 'derivatives', availableDifficulties: [1, 2], worksheetCapacity: { 1: 9, 2: 9 } },
+    { slug: 'basic-integrals', name: 'Basic integrals', area: 'mathematical-analysis', availableDifficulties: [1, 2, 3, 4, 5], worksheetCapacity: { 1: 12, 2: 12, 3: 12, 4: 12, 5: 12 } },
+    { slug: 'integration-by-parts', name: 'Integration by parts', area: 'mathematical-analysis', availableDifficulties: [1, 2, 3], worksheetCapacity: { 1: 4, 2: 4, 3: 3 } },
+    { slug: 'derivatives', name: 'Derivatives', area: 'mathematical-analysis', availableDifficulties: [1, 2], worksheetCapacity: { 1: 9, 2: 9 } },
   ],
 };
 const made = { id: 'w-1', problemIds: ['a', 'b', 'c', 'd', 'e', 'f', 'g'],
@@ -46,7 +45,7 @@ beforeEach(async () => {
   element = document.createElement('div');
   document.body.append(element);
   root = createRoot(element);
-  await act(async () => root.render(<WorksheetBuilder start={{ area: 'integrals', topic: 'basic-integrals', difficulty: 4 }} />));
+  await act(async () => root.render(<WorksheetBuilder start={{ area: 'mathematical-analysis', topic: 'basic-integrals', difficulty: 4 }} />));
   expect(api.getCatalogue).not.toHaveBeenCalled();
   await act(async () => button('Build a worksheet').click());
 });
@@ -54,7 +53,7 @@ afterEach(async () => { await act(async () => root.unmount()); element.remove();
 
 it('starts with one group from the current problem and says the problems are saved and revealed by the key', () => {
   expect(groups()).toHaveLength(1);
-  expect(selects()[0].value).toBe('integrals:basic-integrals');
+  expect(selects()[0].value).toBe('mathematical-analysis:basic-integrals');
   expect(groups()[0].querySelector('[aria-pressed="true"] .n')?.textContent).toBe('4');
   expect(counts()[0].value).toBe('5');
   expect(element.textContent).toContain('saved to your history');
@@ -69,28 +68,28 @@ it('adds and removes groups, hides levels a topic lacks and offers mixed per are
   await act(async () => button('Add group').click());
   expect(groups()).toHaveLength(2);
   const options = Array.from(selects()[1].querySelectorAll('option')).map(o => o.textContent);
-  expect(options).toEqual(['Basic integrals', 'Integration by parts', 'Mixed integrals', 'Derivatives']);
-  await act(async () => setValue(selects()[1], 'integrals:integration-by-parts'));
+  expect(options).toEqual(['Basic integrals', 'Integration by parts', 'Derivatives', 'Mixed mathematical analysis']);
+  await act(async () => setValue(selects()[1], 'mathematical-analysis:integration-by-parts'));
   expect(shownLevels(1)).toEqual(['1', '2', '3']);
   // Level 4 is not offered by parts, so the group moves to the nearest level.
   expect(groups()[1].querySelector('[aria-pressed="true"] .n')?.textContent).toBe('3');
   await act(async () => button('Remove group 1').click());
   expect(groups()).toHaveLength(1);
-  expect(selects()[0].value).toBe('integrals:integration-by-parts');
+  expect(selects()[0].value).toBe('mathematical-analysis:integration-by-parts');
 });
 
 it('shows the cap before generating when a group asks for more than its cell', async () => {
-  await act(async () => setValue(selects()[0], 'integrals:integration-by-parts'));
+  await act(async () => setValue(selects()[0], 'mathematical-analysis:integration-by-parts'));
   await act(async () => setValue(counts()[0], '9'));
   expect(element.textContent).toContain('Only 3 different problems exist for Integration by parts, level 3, so this group will have 3.');
   expect(element.textContent).toContain('3 of 40 problems');
 });
 
 it('adds a new group where problems are left when the last group used up its cell', async () => {
-  await act(async () => setValue(selects()[0], 'integrals:integration-by-parts'));
+  await act(async () => setValue(selects()[0], 'mathematical-analysis:integration-by-parts'));
   await act(async () => button('Add group').click());
   // Parts level 3 holds 3 problems and group 1 takes them all, so the new group takes the nearest level.
-  expect(selects()[1].value).toBe('integrals:integration-by-parts');
+  expect(selects()[1].value).toBe('mathematical-analysis:integration-by-parts');
   expect(groups()[1].querySelector('[aria-pressed="true"] .n')?.textContent).toBe('2');
   await act(async () => groups()[1].querySelectorAll<HTMLButtonElement>('.pl-seg button')[2].click());
   expect(element.textContent).toContain('Earlier groups already use some of Integration by parts, level 3');
@@ -119,7 +118,7 @@ it('enforces the group and problem limits', async () => {
 
 it('generates, shows progress, downloads and reports what each group got', async () => {
   await act(async () => button('Add group').click());
-  await act(async () => setValue(selects()[1], 'integrals:integration-by-parts'));
+  await act(async () => setValue(selects()[1], 'mathematical-analysis:integration-by-parts'));
   await act(async () => setValue(counts()[1], '2'));
   let finish!: () => void;
   vi.mocked(api.createWorksheet).mockResolvedValueOnce(made);

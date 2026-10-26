@@ -181,9 +181,12 @@ def test_groups_are_capped_at_their_cell_and_share_it(client: TestClient) -> Non
     assert len(sheet["problemIds"]) == size
 
 
-def test_mixed_groups_draw_within_the_area(client: TestClient, url: str, users: Users) -> None:
-    sheet = create(client, generate(("mixed:derivatives", 3, 10)))
-    assert sheet["groups"][0]["label"] == "Mixed derivatives, level 3"
+@pytest.mark.parametrize("area", ["derivatives", "mathematical-analysis"])
+def test_mixed_groups_draw_within_the_area(
+    client: TestClient, url: str, users: Users, area: str
+) -> None:
+    sheet = create(client, generate((f"mixed:{area}", 3, 10)))
+    assert sheet["groups"][0]["label"] == worksheets.label(f"mixed:{area}", 3)
     assert sheet["groups"][0]["count"] == 10
     slugs = rows(
         url,
@@ -191,7 +194,7 @@ def test_mixed_groups_draw_within_the_area(client: TestClient, url: str, users: 
         " where p.user_id = %s",
         users.alice,
     )
-    assert {s[0] for s in slugs} <= {"derivatives", "partial-derivatives"}
+    assert {s[0] for s in slugs} <= set(practice.mixed_topics(area, 3)[0])
 
 
 def test_worksheet_problems_are_in_history_and_count_as_generated_once_attempted(

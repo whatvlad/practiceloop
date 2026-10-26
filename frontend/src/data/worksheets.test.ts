@@ -70,22 +70,22 @@ it('downloads the PDF with the server filename', async () => {
 });
 
 const catalogue: Catalogue = {
-  areas: [{ slug: 'integrals', name: 'Integrals', mixed: { availableDifficulties: [1, 2, 3], weights: { 'basic-integrals': 1, substitution: 2 }, worksheetCapacity: { 1: 30, 2: 30, 3: 30 } } }],
+  areas: [{ slug: 'mathematical-analysis', name: 'Mathematical Analysis', mixed: { availableDifficulties: [1, 2, 3], weights: { 'basic-integrals': 1, substitution: 2 }, worksheetCapacity: { 1: 30, 2: 30, 3: 30 } } }],
   topics: [
-    { slug: 'basic-integrals', name: 'Basic integrals', area: 'integrals', availableDifficulties: [1, 2, 3], worksheetCapacity: { 1: 12, 2: 12, 3: 12 } },
-    { slug: 'substitution', name: 'Substitution', area: 'integrals', availableDifficulties: [1, 2, 3], worksheetCapacity: { 1: 3, 2: 8, 3: 8 } },
+    { slug: 'basic-integrals', name: 'Basic integrals', area: 'mathematical-analysis', availableDifficulties: [1, 2, 3], worksheetCapacity: { 1: 12, 2: 12, 3: 12 } },
+    { slug: 'substitution', name: 'Substitution', area: 'mathematical-analysis', availableDifficulties: [1, 2, 3], worksheetCapacity: { 1: 3, 2: 8, 3: 8 } },
   ],
 };
-const group = (key: number, rest: Partial<DraftGroup>): DraftGroup => ({ key, area: 'integrals', topic: 'basic-integrals', difficulty: 1, count: 5, ...rest });
+const group = (key: number, rest: Partial<DraftGroup>): DraftGroup => ({ key, area: 'mathematical-analysis', topic: 'basic-integrals', difficulty: 1, count: 5, ...rest });
 
 it('caps a group to its cell and sends the capped count', () => {
   const plan = planWorksheet(catalogue, [group(0, { topic: 'substitution', count: 10 }), group(1, { topic: 'mixed', difficulty: 3, count: 4 })]);
   expect(plan.groups[0]).toMatchObject({ capacity: 3, count: 3, capped: true, label: 'Substitution, level 1' });
-  expect(plan.groups[1]).toMatchObject({ count: 4, capped: false, label: 'Mixed integrals, level 3' });
+  expect(plan.groups[1]).toMatchObject({ count: 4, capped: false, label: 'Mixed mathematical analysis, level 3' });
   expect(plan.total).toBe(7);
   expect(plan.blocked).toBeNull();
   expect(groupRequests(plan)).toEqual([{ topic: 'substitution', difficulty: 1, count: 3 },
-    { topic: 'mixed:integrals', difficulty: 3, count: 4 }]);
+    { topic: 'mixed:mathematical-analysis', difficulty: 3, count: 4 }]);
 });
 
 it('blocks more than 40 problems or 8 groups, a level the topic lacks and an empty worksheet', () => {

@@ -165,6 +165,24 @@ optimization and Hessians; learner-entered integral set-ups; region and solid
 plots unless they are cheap static images; any change to the existing five
 integration topics.
 
+## Amendment: practice areas (#144, 2026-10-26)
+
+The product owner approved Algebra and Mathematical Analysis as the top-level
+areas, with English content and an Area -> Topic -> Template hierarchy.
+All shipped integral and derivative topics move to `mathematical-analysis`;
+their existing slugs and generator records keep their meaning. `algebra` is a
+recognized area, hidden until #147 ships a verified topic. No empty practice
+choice is offered. The existing topic rows retain their IDs.
+
+Mixed Mathematical Analysis uses the existing fixed topic weights across the
+combined pool. The old `integrals` and `derivatives` request selectors remain
+accepted for in-flight requests and old worksheet groups, with their former
+pool boundaries. They are not advertised as areas in the new catalogue.
+
+The next curriculum releases are Algebra (#147), Analysis I (#145), then
+Analysis II (#146). The original specification remains unchanged; this amendment
+records the approved direction rather than enabling unverified new cells.
+
 ## Consequences
 
 The product now spans two areas. Topics need an area, and mixed practice and

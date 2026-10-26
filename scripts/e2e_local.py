@@ -154,7 +154,7 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
     # ADR-005: every topic names a listed area, and mixed practice is per area.
     areas = {area["slug"]: area for area in topics["areas"]}
     check(
-        all(t["area"] in areas for t in topics["items"]) and "integrals" in areas,
+        all(t["area"] in areas for t in topics["items"]) and "mathematical-analysis" in areas,
         "topics are grouped by listed areas",
         topics["areas"],
     )

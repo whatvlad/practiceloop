@@ -8,6 +8,10 @@ worked in `Order`. Post-MVP work is the open queue (#30 roadmap and its stages).
 
 Where each part is documented:
 
+Issue #144 is in progress: group shipped calculus topics under Mathematical
+Analysis and reserve Algebra for #147. The owner deferred launch #39 and its
+tracker #30 until after the curriculum expansion; both have no active Order.
+
 | Area | Issues | Document |
 |---|---|---|
 | Schema, RLS, two-user hosted isolation | #2, #3 | supabase/README.md, ADR-002 |

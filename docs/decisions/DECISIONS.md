@@ -19,5 +19,10 @@
 | 2026-10-22 | Printable LaTeX PDF worksheets from Practice and History; amends ADR-004's `generated` counter | ADR-007 (#115), accepted by accountable human (PR #119); product decisions by Vlad |
 | 2026-10-22 | Worked solutions and static graphs in worksheet PDFs (`solutions` option, a solution reveal; graphs via `\pdfliteral`, no new TeX package) | ADR-007 amendment (#130), requested by Vlad |
 
+Practice areas: ADR-005 amendment of 2026-10-26 (#144) supersedes the old
+Integrals/Derivatives grouping with Algebra/Mathematical Analysis. Launch #39
+and roadmap tracker #30 are deferred outside the active curriculum queue by
+the product owner.
+
 Open questions are in docs/decisions/OPEN_QUESTIONS.md. Record substantial choices
 in a new ADR rather than changing accepted history or the source specification.

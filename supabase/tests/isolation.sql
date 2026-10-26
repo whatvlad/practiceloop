@@ -82,7 +82,7 @@ do $$ begin
   assert (select count(*) from public.problems) = 1, 'problem isolation';
   assert (select count(*) from public.attempts) = 1, 'attempt isolation';
   assert (select count(*) from public.topics) = 10, 'topic list';
-  assert (select count(*) from public.topics where area = 'derivatives') = 2, 'topic areas';
+  assert (select count(*) from public.topics where area = 'mathematical-analysis') = 10, 'topic areas';
   assert not exists (select 1 from public.problems where user_id <> auth.uid()), 'owner filter';
   assert (select count(*) from public.worksheets) = 1, 'worksheet isolation';
   assert (select count(*) from public.worksheet_items) = 1, 'worksheet item isolation';

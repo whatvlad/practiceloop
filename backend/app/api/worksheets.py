@@ -108,7 +108,11 @@ class WorksheetBody(BaseModel):
 def label(topic: str, difficulty: int) -> str:
     """'Substitution, level 2' or 'Mixed integrals, level 3' (catalogue text only)."""
     if topic.startswith(MIXED + ":"):
-        name = "Mixed " + AREAS[topic.removeprefix(MIXED + ":")].lower()
+        area = topic.removeprefix(MIXED + ":")
+        name = (
+            "Mixed "
+            + {**AREAS, "integrals": "Integrals", "derivatives": "Derivatives"}[area].lower()
+        )
     else:
         name = TOPICS[topic].name
     return f"{name}, level {difficulty}"
@@ -121,7 +125,7 @@ def _space_cm(topic: str, difficulty: int) -> float:
 def _check_group(group: GroupBody) -> None:
     if group.topic.startswith(MIXED + ":"):
         area = group.topic.removeprefix(MIXED + ":")
-        if area not in AREAS or _mixed(area) is None or not mixed_topics(area, group.difficulty)[0]:
+        if _mixed(area) is None or not mixed_topics(area, group.difficulty)[0]:
             raise _invalid()
         return
     cell = TOPICS.get(group.topic)
