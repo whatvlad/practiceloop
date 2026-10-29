@@ -524,6 +524,10 @@ def test_reveals_set_flags_return_payload_and_are_idempotent(client: TestClient,
 def test_topics_lists_only_generated_cells(client: TestClient) -> None:
     items = client.get("/topics").json()["items"]
     assert [(item["slug"], item["availableDifficulties"]) for item in items] == [
+        ("matrices", [1, 2, 3, 4, 5]),
+        ("complex-numbers", [1, 2, 3, 4, 5]),
+        ("fundamental-theorem-algebra", [1, 2, 3, 4, 5]),
+        ("partial-fractions", [1, 2, 3, 4, 5]),
         ("basic-integrals", [1, 2, 3, 4, 5]),
         ("substitution", [1, 2, 3, 4, 5]),
         ("integration-by-parts", [1, 2, 3]),
@@ -534,6 +538,12 @@ def test_topics_lists_only_generated_cells(client: TestClient) -> None:
         ("triple-integrals", [1, 2, 3, 4, 5]),
         ("derivatives", [1, 2, 3, 4, 5]),
         ("partial-derivatives", [1, 2, 3, 4, 5]),
+        ("functions-and-sequences", [1, 2, 3, 4, 5]),
+        ("limits-and-continuity", [1, 2, 3, 4, 5]),
+        ("improper-integrals", [1, 2, 3, 4, 5]),
+        ("series", [1, 2, 3, 4, 5]),
+        ("multivariable-functions", [1, 2, 3, 4, 5]),
+        ("differential-equations", [1, 2, 3, 4, 5]),
     ]
 
 
@@ -602,6 +612,19 @@ def test_topics_publish_the_fixed_mixed_practice_weights(client: TestClient) -> 
     for area in areas:
         area["mixed"].pop("worksheetCapacity")  # tests/test_worksheets_api.py
     assert areas[0] == {
+        "slug": "algebra",
+        "name": "Algebra",
+        "mixed": {
+            "availableDifficulties": [1, 2, 3, 4, 5],
+            "weights": {
+                "matrices": 1,
+                "complex-numbers": 1,
+                "fundamental-theorem-algebra": 1,
+                "partial-fractions": 1,
+            },
+        },
+    }
+    assert areas[1] == {
         "slug": "mathematical-analysis",
         "name": "Mathematical Analysis",
         "mixed": {
@@ -616,10 +639,16 @@ def test_topics_publish_the_fixed_mixed_practice_weights(client: TestClient) -> 
                 "triple-integrals": 2,
                 "derivatives": 1,
                 "partial-derivatives": 1,
+                "functions-and-sequences": 1,
+                "limits-and-continuity": 1,
+                "improper-integrals": 1,
+                "series": 1,
+                "multivariable-functions": 1,
+                "differential-equations": 1,
             },
         },
     }
-    assert len(areas) == 1  # Algebra is hidden until a verified topic ships.
+    assert len(areas) == 2
 
 
 def test_topics_are_grouped_by_area(client: TestClient) -> None:
