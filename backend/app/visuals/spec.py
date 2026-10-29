@@ -30,7 +30,7 @@ BUILDERS: dict[str, Callable[[Exercise], dict[str, Any]]] = {
     "triple-v1": solid3d,
 }
 # Derivatives have no visual in ADR-006.
-NO_VISUAL = frozenset({"derivatives-v1", "partial-v1"})
+NO_VISUAL = frozenset({"derivatives-v1", "partial-v1", "symbolic-v1"})
 
 
 def build_visual(record: dict[str, object]) -> dict[str, Any] | None:

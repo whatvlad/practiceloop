@@ -169,7 +169,7 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
     ]
     # Algebra is intentionally hidden until its first generator ships (#147),
     # so only Mathematical Analysis contributes a mixed-practice level.
-    check(len(cells) == 53, "topics list 48 cells plus 5 mixed levels", len(cells))
+    check(len(cells) == 108, "topics list 98 cells plus 10 mixed levels", len(cells))
     created: list[str] = []
     for topic, level, extra in cells:
         reset_limits()
