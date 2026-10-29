@@ -63,7 +63,7 @@ jobs:
           VITE_SITE_URL: ${{ vars.SITE_URL }}
           VITE_SITE_INDEXABLE: ${{ vars.SITE_INDEXABLE }}
       # Same Graphify release as scripts/setup-graphify.sh (v0.9.92), pinned to its commit.
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '3.12'
       - run: python -m pip install "graphifyy @ git+https://github.com/Graphify-Labs/graphify.git@86c57be8204673c2a1b9849a3292a7dd3ab373d8"
