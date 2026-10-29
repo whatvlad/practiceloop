@@ -167,7 +167,9 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
         if area["mixed"]
         for d in area["mixed"]["availableDifficulties"]
     ]
-    check(len(cells) == 58, "topics list 48 cells plus 10 mixed levels", len(cells))
+    # Algebra is intentionally hidden until its first generator ships (#147),
+    # so only Mathematical Analysis contributes a mixed-practice level.
+    check(len(cells) == 53, "topics list 48 cells plus 5 mixed levels", len(cells))
     created: list[str] = []
     for topic, level, extra in cells:
         reset_limits()
