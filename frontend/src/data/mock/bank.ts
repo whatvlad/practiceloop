@@ -17,6 +17,38 @@ export interface MockTemplate {
 
 export const BANK: readonly MockTemplate[] = [
   {
+    id: 'matrix-determinant',
+    topic: 'matrices',
+    problemLatex: '\\det\\begin{pmatrix}2&1\\\\2&4\\end{pmatrix}',
+    answerLatex: '6',
+    accepted: ['6'],
+    steps: [{ say: 'Compute the determinant', latex: '2\\cdot4-1\\cdot2=6' }],
+  },
+  {
+    id: 'complex-modulus',
+    topic: 'complex-numbers',
+    problemLatex: '|3+4i|',
+    answerLatex: '5',
+    accepted: ['5'],
+    steps: [{ say: 'Use the complex modulus formula', latex: '\\sqrt{3^2+4^2}=5' }],
+  },
+  {
+    id: 'fta-roots',
+    topic: 'fundamental-theorem-algebra',
+    problemLatex: 'x^2+3x+2=0\\text{, sum of roots}',
+    answerLatex: '-3',
+    accepted: ['-3'],
+    steps: [{ say: 'Apply Vieta formula', latex: 'x_1+x_2=-3' }],
+  },
+  {
+    id: 'partial-fractions',
+    topic: 'partial-fractions',
+    problemLatex: '\\frac{3x+5}{(x+1)(x+2)}',
+    answerLatex: '\\frac{2}{x+1}+\\frac{1}{x+2}',
+    accepted: ['2/(x+1)+1/(x+2)'],
+    steps: [{ say: 'Split into partial fractions', latex: '\\frac{2}{x+1}+\\frac{1}{x+2}' }],
+  },
+  {
     id: 'basic-power',
     topic: 'basic-integrals',
     problemLatex: '\\int 3x^2\\,dx',

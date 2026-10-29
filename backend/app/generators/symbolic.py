@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 from random import Random
-from typing import Any
+from typing import Any, Literal
 
 import sympy as sp
 from pydantic import BaseModel, ConfigDict, Field
@@ -11,6 +11,7 @@ from app.schemas.problem import PublicProblem
 
 X = sp.Symbol("x", real=True)
 Y = sp.Symbol("y", real=True)
+type VariableDomain = Literal["real", "positive"]
 
 TOPIC_TEMPLATES: dict[str, tuple[str, ...]] = {
     "matrices": ("determinant",),
@@ -35,7 +36,7 @@ class SymbolicParameters(BaseModel):
     difficulty: int = Field(ge=1, le=5)
     a: int = Field(ge=1, le=5)
     b: int = Field(ge=1, le=5)
-    variables: dict[str, str] | None = None
+    variables: dict[str, VariableDomain] | None = None
 
 
 @dataclass(frozen=True)
@@ -45,7 +46,7 @@ class SymbolicExercise:
     difficulty: int
     statement: str
     expected: Any
-    variables: dict[str, str]
+    variables: dict[str, VariableDomain]
     steps: tuple[dict[str, str], ...]
 
     @property
@@ -59,7 +60,7 @@ class SymbolicExercise:
 def _build(parameters: SymbolicParameters) -> SymbolicExercise:
     a, b = sp.Integer(parameters.a), sp.Integer(parameters.b)
     topic, template = parameters.topic, parameters.template
-    variables: dict[str, str] = {}
+    variables: dict[str, VariableDomain] = {}
     if template == "determinant":
         c, d = b + 1, a + 2
         expected = a * d - b * c
