@@ -1,6 +1,5 @@
 import text from '../../backend/app/content/en.json';
 import { ANSWER_VARIABLES, type AnswerVariable } from './answerSyntax';
-import { areaOf } from './data/topics';
 import type { TopicSlug } from './data/types';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -32,7 +31,7 @@ export type ProblemKind = 'indefinite' | 'definite' | 'double' | 'triple' | 'der
 
 export function problemKind(topic: TopicSlug, problemLatex: string): ProblemKind {
   if (topic === 'partial-derivatives') return 'partial';
-  if (areaOf(topic) === 'derivatives') return 'derivative';
+  if (topic === 'derivatives') return 'derivative';
   // A double integral's answer is also one exact number (#99).
   if (topic === 'double-integrals') return 'double';
   if (topic === 'triple-integrals') return 'triple';

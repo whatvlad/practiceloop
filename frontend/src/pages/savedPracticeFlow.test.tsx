@@ -19,8 +19,8 @@ const calls: { path: string; body: Record<string, unknown> | null }[] = [];
 const fetchMock = vi.fn<typeof fetch>();
 const SHARE_TOKEN = 'S'.repeat(43);
 const INTEGRALS = [
-  { slug: 'basic-integrals', name: 'Basic integrals', area: 'integrals', availableDifficulties: [1, 2] },
-  { slug: 'substitution', name: 'Substitution', area: 'integrals', availableDifficulties: [1] },
+  { slug: 'basic-integrals', name: 'Basic integrals', area: 'mathematical-analysis', availableDifficulties: [1, 2] },
+  { slug: 'substitution', name: 'Substitution', area: 'mathematical-analysis', availableDifficulties: [1] },
 ];
 let catalogue: unknown;
 const response = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status });
@@ -33,7 +33,7 @@ beforeEach(() => {
   nextId = 0;
   saved.clear();
   calls.length = 0;
-  catalogue = { areas: [{ slug: 'integrals', name: 'Integrals', mixed: null }], items: INTEGRALS };
+  catalogue = { areas: [{ slug: 'mathematical-analysis', name: 'Mathematical Analysis', mixed: null }], items: INTEGRALS };
   fetchMock.mockReset().mockImplementation(async (url, options) => {
     const path = String(url);
     const body = options?.body ? JSON.parse(String(options.body)) as Record<string, unknown> : null;
@@ -184,35 +184,29 @@ it('shares a saved problem by link and code and stops sharing it (#37)', async (
   expect(button('Share problem')).toBeDefined();
 });
 
-it('picks an area first, then shows only its topics and mixed practice (#98)', async () => {
+it('shows integral and derivative topics together in Mathematical Analysis', async () => {
   catalogue = {
-    areas: [
-      { slug: 'integrals', name: 'Integrals', mixed: { availableDifficulties: [1, 2], weights: { 'basic-integrals': 1, substitution: 2 } } },
-      { slug: 'derivatives', name: 'Derivatives', mixed: null },
-    ],
-    items: [...INTEGRALS, { slug: 'derivatives', name: 'Derivatives', area: 'derivatives', availableDifficulties: [1, 2, 3] }],
+    areas: [{ slug: 'mathematical-analysis', name: 'Mathematical Analysis', mixed: null }],
+    items: [...INTEGRALS, { slug: 'derivatives', name: 'Derivatives', area: 'mathematical-analysis', availableDifficulties: [1, 2, 3] }],
   };
   await act(async () => root.render(<DashboardPage />));
-  expect(button('Integrals').getAttribute('aria-pressed')).toBe('true');
-  expect(button('Mixed practice')).toBeDefined();
+  expect(button('Basic integrals')).toBeDefined();
   await act(async () => button('Derivatives').click());
-  // The topic moves into the new area; its levels replace the old ones.
-  expect(button('Substitution')).toBeUndefined();
-  expect(button('Mixed practice')).toBeUndefined();
+  expect(button('Generate problem').disabled).toBe(false);
   expect(element.querySelectorAll('.pl-seg button')).toHaveLength(3);
   await act(async () => button('Medium').click());
   await act(async () => button('Generate problem').click());
   expect(calls.find(call => call.path === '/api/problems')?.body).toEqual({ topic: 'derivatives', difficulty: 3 });
 });
 
-it('keeps mixed practice in the integrals area', async () => {
+it('sends Mathematical Analysis as the mixed-practice area', async () => {
   catalogue = {
-    areas: [{ slug: 'integrals', name: 'Integrals', mixed: { availableDifficulties: [1, 2], weights: { 'basic-integrals': 1, substitution: 2 } } }],
+    areas: [{ slug: 'mathematical-analysis', name: 'Mathematical Analysis', mixed: { availableDifficulties: [1, 2], weights: { 'basic-integrals': 1, substitution: 2 } } }],
     items: INTEGRALS,
   };
   await act(async () => root.render(<DashboardPage />));
   await act(async () => button('Mixed practice').click());
   expect(element.querySelector('#mixed-weights')?.textContent).toContain('Basic integrals 33%, Substitution 67%');
   await act(async () => button('Generate problem').click());
-  expect(calls.find(call => call.path === '/api/problems')?.body).toEqual({ topic: 'mixed', area: 'integrals', difficulty: 1 });
+  expect(calls.find(call => call.path === '/api/problems')?.body).toEqual({ topic: 'mixed', area: 'mathematical-analysis', difficulty: 1 });
 });

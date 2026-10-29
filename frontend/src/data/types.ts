@@ -3,7 +3,7 @@
 import type { VisualSpec } from '../visual/spec';
 
 /** ADR-005: practice has two areas, and every topic belongs to exactly one. */
-export type AreaSlug = 'integrals' | 'derivatives';
+export type AreaSlug = 'algebra' | 'mathematical-analysis';
 
 export type TopicSlug =
   | 'basic-integrals'

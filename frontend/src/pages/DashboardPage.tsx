@@ -18,7 +18,7 @@ export function DashboardPage() {
   const counts = useLoad(getProfileCounts, String(dataRevision));
   const recent = useLoad(async () => (await listProblemPage({ limit: 3 })).items, String(dataRevision));
   const last = useLoad(getLastSelection);
-  const [area, setArea] = useState<AreaSlug>('integrals');
+  const [area, setArea] = useState<AreaSlug>('mathematical-analysis');
   const [topic, setTopic] = useState<PracticeTopic>('basic-integrals');
   const [difficulty, setDifficulty] = useState<Difficulty>(1);
   const [busy, setBusy] = useState(false);

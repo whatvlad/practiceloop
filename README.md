@@ -201,6 +201,10 @@ Proprietary, all rights reserved. See [LICENSE](LICENSE).
 
 ## Product direction
 
+Practice topics are grouped under Mathematical Analysis. Algebra is reserved
+for the next verified content release (#147). The curriculum expansion follows
+the [ADR-005 amendment](docs/decisions/0005-multiple-integrals-and-derivatives.md#amendment-practice-areas-144-2026-10-26).
+
 The original [MVP specification](docs/PRACTICELOOP_MVP.md) remains the product
 source of truth. Approved planning documents refine the path to production
 without silently changing that specification:

@@ -5,6 +5,11 @@ User-facing releases. Known limitations of the current release are in
 
 ## Unreleased
 
+- **Mathematical Analysis practice area.** Integral and derivative topics now
+  share one area and one mixed-practice pool. Algebra is reserved for the next
+  content release and stays hidden until its first verified topic is ready.
+  Existing topic links, saved problems and worksheet exports stay usable. (#144)
+
 - **Worked solutions and graphs in worksheet PDFs.** "Include worked solutions
   and graphs", on by default next to the answer key, adds a Solutions section
   at the end of the PDF: every problem's steps and, for integrals, a graph like

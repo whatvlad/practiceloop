@@ -53,26 +53,35 @@ class Topic(NamedTuple):
     space_cm: float
 
 
-# ADR-005: practice has two areas, and every topic belongs to exactly one of them.
-AREAS = {"integrals": "Integrals", "derivatives": "Derivatives"}
+# #144: Algebra and Mathematical Analysis are the top-level practice areas.
+# Algebra has no verified cell yet, so /topics keeps it hidden until #147 ships one.
+AREAS = {"algebra": "Algebra", "mathematical-analysis": "Mathematical Analysis"}
 # Basic integrals are the building block of every method, so they get half the share.
 TOPICS = {
-    "basic-integrals": Topic("Basic integrals", "integrals", (1, 2, 3, 4, 5), 1, 3),
-    "substitution": Topic("Substitution", "integrals", (1, 2, 3, 4, 5), 2, 4),
+    "basic-integrals": Topic("Basic integrals", "mathematical-analysis", (1, 2, 3, 4, 5), 1, 3),
+    "substitution": Topic("Substitution", "mathematical-analysis", (1, 2, 3, 4, 5), 2, 4),
     # ADR-003 amendment: parts has three levels; the frontend hides the rest.
-    "integration-by-parts": Topic("Integration by parts", "integrals", (1, 2, 3), 2, 5),
-    "rational-functions": Topic("Rational functions", "integrals", (1, 2, 3, 4, 5), 2, 5),
-    "trigonometric-integrals": Topic("Trigonometric integrals", "integrals", (1, 2, 3, 4, 5), 2, 5),
+    "integration-by-parts": Topic("Integration by parts", "mathematical-analysis", (1, 2, 3), 2, 5),
+    "rational-functions": Topic(
+        "Rational functions", "mathematical-analysis", (1, 2, 3, 4, 5), 2, 5
+    ),
+    "trigonometric-integrals": Topic(
+        "Trigonometric integrals", "mathematical-analysis", (1, 2, 3, 4, 5), 2, 5
+    ),
     # #128: every definite-v1 variant of the topics above, at its base level. Mixed practice
     # already draws these through their own topics, so this topic stays out of it.
-    "definite-integrals": Topic("Definite integrals", "integrals", (1, 2, 3, 4, 5), 0, 5),
+    "definite-integrals": Topic(
+        "Definite integrals", "mathematical-analysis", (1, 2, 3, 4, 5), 0, 5
+    ),
     # #99 double-v1: the answer is the integral's exact value (ADR-005).
-    "double-integrals": Topic("Double integrals", "integrals", (1, 2, 3, 4, 5), 2, 6),
+    "double-integrals": Topic("Double integrals", "mathematical-analysis", (1, 2, 3, 4, 5), 2, 6),
     # #100 triple-v1: Cartesian and cylindrical, answered with the exact value.
-    "triple-integrals": Topic("Triple integrals", "integrals", (1, 2, 3, 4, 5), 2, 7),
+    "triple-integrals": Topic("Triple integrals", "mathematical-analysis", (1, 2, 3, 4, 5), 2, 7),
     # #97 derivatives-v1; with #101 partial-v1 the area has two topics and mixed practice.
-    "derivatives": Topic("Derivatives", "derivatives", (1, 2, 3, 4, 5), 1, 3),
-    "partial-derivatives": Topic("Partial derivatives", "derivatives", (1, 2, 3, 4, 5), 1, 4),
+    "derivatives": Topic("Derivatives", "mathematical-analysis", (1, 2, 3, 4, 5), 1, 3),
+    "partial-derivatives": Topic(
+        "Partial derivatives", "mathematical-analysis", (1, 2, 3, 4, 5), 1, 4
+    ),
 }
 MIXED = "mixed"
 MAX_ANSWER_CHARS = 512  # the parser's 256-byte limit applies after normalization
@@ -132,7 +141,7 @@ class GenerateBody(BaseModel):
     model_config = ConfigDict(extra="forbid", strict=True)
     topic: str = Field(min_length=1, max_length=64)
     difficulty: int
-    # Only with "mixed": the area to draw from; integrals when omitted, as before #98.
+    # Only with "mixed": Mathematical Analysis when omitted; legacy selectors remain valid.
     area: str | None = Field(default=None, min_length=1, max_length=64)
 
 
@@ -192,6 +201,15 @@ def _pick(conn: Any, user_id: UUID, topic: str, difficulty: int) -> Exercise:
 
 
 def area_topics(area: str) -> list[str]:
+    # Keep in-flight requests and saved worksheet groups from pre-#144 clients usable.
+    if area in ("integrals", "derivatives"):
+        derivatives = {"derivatives", "partial-derivatives"}
+        return [
+            slug
+            for slug, topic in TOPICS.items()
+            if topic.area == "mathematical-analysis"
+            and (slug in derivatives) == (area == "derivatives")
+        ]
     return [slug for slug, topic in TOPICS.items() if topic.area == area]
 
 
@@ -408,7 +426,7 @@ def generate(body: GenerateBody, user: User, key: IdempotencyKey = None) -> JSON
     )
     topic = body.topic
     if topic == MIXED:
-        area = body.area or "integrals"
+        area = body.area or "mathematical-analysis"
         slugs, weights = mixed_topics(area, body.difficulty) if _mixed(area) else ([], [])
         if not slugs:
             raise _invalid()

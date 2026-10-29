@@ -104,14 +104,13 @@ responses never include expected answers, solution steps or generator data.
 
 ### `GET /api/topics`
 
-Returns the practice areas (ADR-005, #98), only implemented template cells, and
+Returns the practice areas (ADR-005 amendment, #144), only implemented template cells, and
 each area's fixed mixed-practice weights (#36):
 
 ```json
 {"areas":[
-  {"slug":"integrals","name":"Integrals","mixed":{"availableDifficulties":[1,2,3,4,5],"weights":{"basic-integrals":1,"substitution":2,"integration-by-parts":2,"rational-functions":2,"trigonometric-integrals":2},"worksheetCapacity":{"1":168,"2":186}}},
-  {"slug":"derivatives","name":"Derivatives","mixed":{"availableDifficulties":[1,2,3,4,5],"weights":{"derivatives":1,"partial-derivatives":1},"worksheetCapacity":{"1":42}}}],
- "items":[{"slug":"basic-integrals","name":"Basic integrals","area":"integrals","availableDifficulties":[1,2,3,4,5],"worksheetCapacity":{"1":54,"2":42}}]}
+  {"slug":"mathematical-analysis","name":"Mathematical Analysis","mixed":{"availableDifficulties":[1,2,3,4,5],"weights":{"basic-integrals":1,"substitution":2,"integration-by-parts":2,"rational-functions":2,"trigonometric-integrals":2,"double-integrals":2,"triple-integrals":2,"derivatives":1,"partial-derivatives":1},"worksheetCapacity":{"1":210,"2":222,"3":234,"4":162,"5":90}}}],
+ "items":[{"slug":"basic-integrals","name":"Basic integrals","area":"mathematical-analysis","availableDifficulties":[1,2,3,4,5],"worksheetCapacity":{"1":54,"2":42}}]}
 ```
 
 Every topic belongs to exactly one area, and `areas` lists only areas with at
@@ -119,6 +118,9 @@ least one topic, in display order. The topic slugs are seeded in `public.topics`
 (migration `202610210003_topic_areas.sql`, which also stores each topic's
 `area`); a seeded topic appears in `items` only once its generator ships.
 `mixed` is `null` while an area has fewer than two topics.
+`algebra` is reserved and will be advertised when #147 ships a verified cell.
+Migration `202610260001_mathematics_practice_areas.sql` moves all current topic
+rows to `mathematical-analysis` without changing their IDs or slugs.
 `definite-integrals` (#128, migration `202610220002_definite_integrals_topic.sql`)
 has mixed weight 0, so it is not in `weights`: mixed practice already draws
 its definite records through their own topics.
@@ -141,13 +143,15 @@ Requires `Idempotency-Key: <UUIDv4>`.
 ```
 
 `topic` may also be `"mixed"` (levels 1–5) with an optional `"area"` (default
-`"integrals"`): the server draws a topic of that area with the published
+`"mathematical-analysis"`): the server draws a topic of that area with the published
 weights, and the saved problem and the response carry the drawn topic. `area`
 with any other `topic`, an unknown area, or an area without mixed practice is
-`422 invalid_request`.
+`422 invalid_request`. Legacy selectors `integrals` and `derivatives` still
+accept old clients and retain their original topic pools, but are no longer
+advertised. Omitting the area draws from Mathematical Analysis.
 
 ```json
-{"topic":"mixed","area":"integrals","difficulty":3}
+{"topic":"mixed","area":"mathematical-analysis","difficulty":3}
 ```
 
 Returns `201` and the shared problem shape after the public problem, private

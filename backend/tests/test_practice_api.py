@@ -11,6 +11,7 @@ from __future__ import annotations
 import os
 import threading
 from collections.abc import Iterator
+from pathlib import Path
 from typing import Any
 from uuid import UUID, uuid4
 
@@ -557,13 +558,52 @@ def test_definite_topic_saves_definite_problems_under_its_own_topic(
     assert solution["visual"]["kind"] == "definite"
 
 
+def test_area_migration_preserves_saved_problems(client: TestClient, url: str) -> None:
+    problem = generate(client)
+    client.post(f"/problems/{problem['id']}/reveal-answer")
+    before = client.get(f"/problems/{problem['id']}").json()
+    migration = (
+        Path(__file__).resolve().parents[2]
+        / "supabase/migrations/202610260001_mathematics_practice_areas.sql"
+    ).read_text(encoding="utf-8")
+    # Recreate the old area constraint and rows inside a rollback-only transaction.
+    with psycopg.connect(url) as conn:
+        try:
+            topics_before = conn.execute(
+                "select id, slug from public.topics order by id"
+            ).fetchall()
+            conn.execute("alter table public.topics drop constraint topics_area_check")
+            conn.execute(
+                "update public.topics set area = case when slug in "
+                "('derivatives', 'partial-derivatives') then 'derivatives' else 'integrals' end"
+            )
+            conn.execute(
+                "alter table public.topics add constraint topics_area_check "
+                "check (area in ('integrals', 'derivatives'))"
+            )
+            conn.execute(migration.replace("begin;", "").replace("commit;", ""))
+            assert conn.execute("select id, slug from public.topics order by id").fetchall() == (
+                topics_before
+            )
+            assert conn.execute("select distinct area from public.topics").fetchall() == [
+                ("mathematical-analysis",)
+            ]
+            assert conn.execute(
+                "select problem_latex, answer_revealed from public.problems where id = %s",
+                (problem["id"],),
+            ).fetchone() == (problem["problemLatex"], True)
+        finally:
+            conn.rollback()
+    assert client.get(f"/problems/{problem['id']}").json() == before
+
+
 def test_topics_publish_the_fixed_mixed_practice_weights(client: TestClient) -> None:
     areas = client.get("/topics").json()["areas"]
     for area in areas:
         area["mixed"].pop("worksheetCapacity")  # tests/test_worksheets_api.py
     assert areas[0] == {
-        "slug": "integrals",
-        "name": "Integrals",
+        "slug": "mathematical-analysis",
+        "name": "Mathematical Analysis",
         "mixed": {
             "availableDifficulties": [1, 2, 3, 4, 5],
             "weights": {
@@ -574,19 +614,18 @@ def test_topics_publish_the_fixed_mixed_practice_weights(client: TestClient) -> 
                 "trigonometric-integrals": 2,
                 "double-integrals": 2,
                 "triple-integrals": 2,
+                "derivatives": 1,
+                "partial-derivatives": 1,
             },
         },
     }
-    assert areas[1]["mixed"] == {
-        "availableDifficulties": [1, 2, 3, 4, 5],
-        "weights": {"derivatives": 1, "partial-derivatives": 1},
-    }
+    assert len(areas) == 1  # Algebra is hidden until a verified topic ships.
 
 
 def test_topics_are_grouped_by_area(client: TestClient) -> None:
     body = client.get("/topics").json()
     areas = [area["slug"] for area in body["areas"]]
-    assert set(areas) <= set(practice.AREAS) and "integrals" in areas
+    assert set(areas) <= set(practice.AREAS) and "mathematical-analysis" in areas
     # Every topic names an area the response lists, and an area appears only with topics.
     assert {item["area"] for item in body["items"]} == set(areas)
     for item in body["items"]:
@@ -596,12 +635,14 @@ def test_topics_are_grouped_by_area(client: TestClient) -> None:
 def test_an_area_with_one_topic_offers_no_mixed_practice(
     client: TestClient, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    topics = dict(practice.TOPICS)
-    topics["derivatives"] = practice.Topic("Derivatives", "derivatives", (1, 2), 1, 3)
-    del topics["partial-derivatives"]
+    topics = {"derivatives": practice.Topic("Derivatives", "mathematical-analysis", (1, 2), 1, 3)}
     monkeypatch.setattr(practice, "TOPICS", topics)
     areas = {area["slug"]: area for area in client.get("/topics").json()["areas"]}
-    assert areas["derivatives"] == {"slug": "derivatives", "name": "Derivatives", "mixed": None}
+    assert areas["mathematical-analysis"] == {
+        "slug": "mathematical-analysis",
+        "name": "Mathematical Analysis",
+        "mixed": None,
+    }
     response = client.post(
         "/problems",
         json={"topic": "mixed", "area": "derivatives", "difficulty": 1},
@@ -618,19 +659,19 @@ def test_an_area_with_one_topic_offers_no_mixed_practice(
             [
                 s
                 for s, t in practice.TOPICS.items()
-                if level in t.levels and t.area == "integrals" and t.mixed_weight
+                if level in t.levels and t.area == "mathematical-analysis" and t.mixed_weight
             ],
             [
                 t.mixed_weight
                 for t in practice.TOPICS.values()
-                if level in t.levels and t.area == "integrals" and t.mixed_weight
+                if level in t.levels and t.area == "mathematical-analysis" and t.mixed_weight
             ],
         )
         # Only the topics that offer a level take part in its draw.
         for level in (1, 4)
     ],
 )
-@pytest.mark.parametrize("area", [None, "integrals"])
+@pytest.mark.parametrize("area", [None, "mathematical-analysis"])
 def test_mixed_practice_draws_a_topic_with_the_published_weights(
     client: TestClient, url: str, monkeypatch: pytest.MonkeyPatch, level, slugs, weights, area
 ) -> None:
@@ -666,13 +707,17 @@ def test_mixed_practice_stays_within_the_chosen_area(
         return [population[0]]
 
     topics = dict(practice.TOPICS)
-    topics["derivatives"] = practice.Topic("Derivatives", "derivatives", (3,), 1, 3)
-    topics["partial-derivatives"] = practice.Topic("Partial derivatives", "derivatives", (3,), 1, 4)
+    topics["derivatives"] = practice.Topic("Derivatives", "mathematical-analysis", (3,), 1, 3)
+    topics["partial-derivatives"] = practice.Topic(
+        "Partial derivatives", "mathematical-analysis", (3,), 1, 4
+    )
     monkeypatch.setattr(practice, "TOPICS", topics)
     monkeypatch.setattr(practice._RANDOM, "choices", choices)
     generate(client, "mixed", 3)
     # Definite integrals has weight 0: its records are drawn through their own topics.
-    assert set(calls[0]) == set(practice.area_topics("integrals")) - {"definite-integrals"}
+    assert set(calls[0]) == set(practice.area_topics("mathematical-analysis")) - {
+        "definite-integrals"
+    }
     # The draw is all that is checked here; these topics have no catalogue in this test.
     monkeypatch.setattr(practice, "_pick", lambda *_: (_ for _ in ()).throw(LookupError))
     with pytest.raises(LookupError):
@@ -698,7 +743,7 @@ def test_generation_rejects_unknown_or_misplaced_areas(client: TestClient, body)
 
 def test_mixed_practice_reaches_every_offered_topic(client: TestClient) -> None:
     seen = {generate(client, "mixed", 3)["topic"] for _ in range(25)}
-    assert seen <= set(practice.area_topics("integrals")) and len(seen) >= 3
+    assert seen <= set(practice.area_topics("mathematical-analysis")) and len(seen) >= 3
 
 
 @pytest.mark.parametrize("level", [0, 6])

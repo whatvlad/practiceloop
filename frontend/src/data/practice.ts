@@ -11,7 +11,7 @@ let token: Promise<string> | null = null;
 let epoch = 0;
 let problems: PublicProblem[] = [];
 export interface Selection { topic: PracticeTopic; difficulty: Difficulty; area: AreaSlug }
-const FIRST: Selection = { topic: 'basic-integrals', difficulty: 1, area: 'integrals' };
+const FIRST: Selection = { topic: 'basic-integrals', difficulty: 1, area: 'mathematical-analysis' };
 let selection: Selection = { ...FIRST };
 let generating: Promise<PublicProblem> | null = null;
 let accessToken: () => Promise<string | null> = async () => null;
@@ -358,7 +358,7 @@ export async function getCatalogue(): Promise<Catalogue> {
   const started = epoch;
   const bearer = await accessToken();
   if (started !== epoch) throw new Error(text.expired);
-  if (!bearer) return { areas: [{ ...AREAS[0], mixed: null }], topics: TOPICS.slice(0, 2).map(topic => ({ ...topic, availableDifficulties: [1, 2] })) };
+  if (!bearer) return { areas: [{ ...AREAS.find(area => area.slug === FIRST.area)!, mixed: null }], topics: TOPICS.slice(0, 2).map(topic => ({ ...topic, availableDifficulties: [1, 2] })) };
   const data = await request('/topics', undefined, bearer, true);
   if (started !== epoch) throw new Error(text.expired);
   if (!Array.isArray(data.items) || !Array.isArray(data.areas)) throw new Error(text.service_error);
@@ -385,7 +385,7 @@ export async function getCatalogue(): Promise<Catalogue> {
 }
 
 /** `area` picks the area mixed practice draws from; a topic carries its own area. */
-export function generateProblem(topic: PracticeTopic, difficulty: Difficulty, area: AreaSlug = 'integrals'): Promise<PublicProblem> {
+export function generateProblem(topic: PracticeTopic, difficulty: Difficulty, area: AreaSlug = 'mathematical-analysis'): Promise<PublicProblem> {
   const mixed = topic === 'mixed';
   if ((!mixed && !TOPICS.some(t => t.slug === topic)) || ![1, 2, 3, 4, 5].includes(difficulty)
     || !AREAS.some(a => a.slug === area)) return Promise.reject(new Error(text.unsupported));
