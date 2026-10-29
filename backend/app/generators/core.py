@@ -28,6 +28,8 @@ from app.generators.families import _families, replay_family
 from app.generators.partial import TOPIC as PARTIAL_TOPIC
 from app.generators.partial import records as partial_records
 from app.generators.partial import replay_partial
+from app.generators.symbolic import TOPIC_TEMPLATES as SYMBOLIC_TOPIC_TEMPLATES
+from app.generators.symbolic import replay_symbolic
 from app.generators.triple import TOPIC as TRIPLE_TOPIC
 from app.generators.triple import records as triple_records
 from app.generators.triple import replay_triple
@@ -35,6 +37,7 @@ from app.generators.triple import replay_triple
 DEFINITE_TOPIC = "definite-integrals"
 COEFFICIENTS = (-3, -2, -1, 1, 2, 3)
 FAMILY_VERSIONS = frozenset({"substitution-v2", "parts-v1", "rational-v1", "trigonometric-v1"})
+SYMBOLIC_TOPICS = frozenset(SYMBOLIC_TOPIC_TEMPLATES)
 
 
 @dataclass(frozen=True)
@@ -135,6 +138,19 @@ def replay(record: dict[str, object]) -> Exercise:
             partial.statement,
             constant=False,
             expression_latex=partial.answer_latex,
+        )
+    if record.get("generator_version") == "symbolic-v1":
+        symbolic = replay_symbolic(record)
+        return Exercise(
+            record,
+            symbolic.topic,
+            symbolic.difficulty,
+            None,
+            symbolic.expected,
+            symbolic.steps,
+            symbolic.statement,
+            constant=False,
+            expression_latex=symbolic.answer,
         )
     if record.get("generator_version") == "triple-v1":
         triple = replay_triple(record)
@@ -287,6 +303,19 @@ def catalogue_records(topic: str, difficulty: int) -> tuple[dict[str, object], .
         records = triple_records(difficulty)
     elif topic == DEFINITE_TOPIC:
         records = _definite_records(topic, difficulty)
+    elif topic in SYMBOLIC_TOPICS:
+        records = [
+            {
+                "generator_version": "symbolic-v1",
+                "topic": topic,
+                "template": template,
+                "difficulty": difficulty,
+                "a": coefficient,
+                "b": secondary,
+            }
+            for template in SYMBOLIC_TOPIC_TEMPLATES[topic]
+            for coefficient, secondary in ((1, 1), (2, 3), (3, 2), (4, 4), (5, 1))
+        ]
     else:
         records = _family_records(topic, difficulty)
     if records and topic not in (DOUBLE_TOPIC, TRIPLE_TOPIC, DEFINITE_TOPIC):

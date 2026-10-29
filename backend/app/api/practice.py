@@ -54,10 +54,15 @@ class Topic(NamedTuple):
 
 
 # #144: Algebra and Mathematical Analysis are the top-level practice areas.
-# Algebra has no verified cell yet, so /topics keeps it hidden until #147 ships one.
 AREAS = {"algebra": "Algebra", "mathematical-analysis": "Mathematical Analysis"}
 # Basic integrals are the building block of every method, so they get half the share.
 TOPICS = {
+    "matrices": Topic("Matrices", "algebra", (1, 2, 3, 4, 5), 1, 4),
+    "complex-numbers": Topic("Complex numbers", "algebra", (1, 2, 3, 4, 5), 1, 4),
+    "fundamental-theorem-algebra": Topic(
+        "Fundamental theorem of algebra", "algebra", (1, 2, 3, 4, 5), 1, 5
+    ),
+    "partial-fractions": Topic("Partial fractions", "algebra", (1, 2, 3, 4, 5), 1, 5),
     "basic-integrals": Topic("Basic integrals", "mathematical-analysis", (1, 2, 3, 4, 5), 1, 3),
     "substitution": Topic("Substitution", "mathematical-analysis", (1, 2, 3, 4, 5), 2, 4),
     # ADR-003 amendment: parts has three levels; the frontend hides the rest.
@@ -81,6 +86,22 @@ TOPICS = {
     "derivatives": Topic("Derivatives", "mathematical-analysis", (1, 2, 3, 4, 5), 1, 3),
     "partial-derivatives": Topic(
         "Partial derivatives", "mathematical-analysis", (1, 2, 3, 4, 5), 1, 4
+    ),
+    "functions-and-sequences": Topic(
+        "Functions and sequences", "mathematical-analysis", (1, 2, 3, 4, 5), 1, 4
+    ),
+    "limits-and-continuity": Topic(
+        "Limits and continuity", "mathematical-analysis", (1, 2, 3, 4, 5), 1, 4
+    ),
+    "improper-integrals": Topic(
+        "Improper integrals", "mathematical-analysis", (1, 2, 3, 4, 5), 1, 5
+    ),
+    "series": Topic("Series", "mathematical-analysis", (1, 2, 3, 4, 5), 1, 4),
+    "multivariable-functions": Topic(
+        "Multivariable functions", "mathematical-analysis", (1, 2, 3, 4, 5), 1, 5
+    ),
+    "differential-equations": Topic(
+        "Differential equations", "mathematical-analysis", (1, 2, 3, 4, 5), 1, 5
     ),
 }
 MIXED = "mixed"

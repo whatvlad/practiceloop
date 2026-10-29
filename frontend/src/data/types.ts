@@ -6,6 +6,10 @@ import type { VisualSpec } from '../visual/spec';
 export type AreaSlug = 'algebra' | 'mathematical-analysis';
 
 export type TopicSlug =
+  | 'matrices'
+  | 'complex-numbers'
+  | 'fundamental-theorem-algebra'
+  | 'partial-fractions'
   | 'basic-integrals'
   | 'substitution'
   | 'integration-by-parts'
@@ -15,7 +19,13 @@ export type TopicSlug =
   | 'double-integrals'
   | 'triple-integrals'
   | 'derivatives'
-  | 'partial-derivatives';
+  | 'partial-derivatives'
+  | 'functions-and-sequences'
+  | 'limits-and-continuity'
+  | 'improper-integrals'
+  | 'series'
+  | 'multivariable-functions'
+  | 'differential-equations';
 
 /** A topic, or mixed practice: the server draws a topic of one area with fixed, published weights (#36). */
 export type PracticeTopic = TopicSlug | 'mixed';
