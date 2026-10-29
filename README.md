@@ -78,7 +78,7 @@ backend/tests/         API, auth, generators, answer checking and public-data bo
 supabase/migrations/   applied schema migrations (deployed by supabase-deploy.yml)
 supabase/tests/        disposable SQL fixture and isolation tests
 docs/                 MVP, architecture, decisions, agents, api
-.github/              CI, issue/PR templates, owners, Dependabot, protection payload
+.github/              CI, issue/PR templates, owners, protection payload
 scripts/              repository checks, disposable database and end-to-end tests
 deploy/oracle/        VM bootstrap, release, rollback and audit scripts
 ```
