@@ -158,18 +158,16 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
         "topics are grouped by listed areas",
         topics["areas"],
     )
-    cells: list[tuple[str, int, dict[str, str]]] = [
-        (t["slug"], d, {}) for t in topics["items"] for d in t["availableDifficulties"]
-    ]
+    # Keep PR feedback fast: one representative cell per published topic/area.
+    # The full level matrix remains covered by catalogue and worksheet tests.
+    cells: list[tuple[str, int, dict[str, str]]] = [(t["slug"], 1, {}) for t in topics["items"]]
     cells += [
         ("mixed", d, {"area": slug})
         for slug, area in areas.items()
         if area["mixed"]
-        for d in area["mixed"]["availableDifficulties"]
+        for d in area["mixed"]["availableDifficulties"][:1]
     ]
-    # Algebra is intentionally hidden until its first generator ships (#147),
-    # so only Mathematical Analysis contributes a mixed-practice level.
-    check(len(cells) == 108, "topics list 98 cells plus 10 mixed levels", len(cells))
+    check(len(cells) == 22, "one cell for 20 topics plus two mixed levels", len(cells))
     created: list[str] = []
     for topic, level, extra in cells:
         reset_limits()
@@ -186,7 +184,20 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
         check(not leaked and not problem["answerRevealed"], f"generate {label} hides the answer")
         answer = correct_answer(url, pid)
         # A partial answer may use only its declared variables, so x is not always one.
-        wrong_answer = f"({answer}) + 7" if problem["topic"] == PARTIAL else "x^9 + 7"
+        no_variables = problem["topic"] in {
+            "matrices",
+            "complex-numbers",
+            "fundamental-theorem-algebra",
+            "functions-and-sequences",
+            "limits-and-continuity",
+            "improper-integrals",
+            "series",
+        }
+        wrong_answer = (
+            "999999"
+            if no_variables
+            else (f"({answer}) + 7" if problem["topic"] == PARTIAL else "x^9 + 7")
+        )
         wrong = api.post(f"/problems/{pid}/attempts", json={"answer": wrong_answer}, headers=key())
         check(
             wrong.status_code == 201 and wrong.json()["attempt"]["result"] == "incorrect",
