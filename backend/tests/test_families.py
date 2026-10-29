@@ -273,6 +273,10 @@ def test_existing_preview_versions_are_unchanged_and_new_cells_are_offered():
     from app.api.practice import TOPICS
 
     assert {topic: cell.levels for topic, cell in TOPICS.items()} == {
+        "matrices": (1, 2, 3, 4, 5),
+        "complex-numbers": (1, 2, 3, 4, 5),
+        "fundamental-theorem-algebra": (1, 2, 3, 4, 5),
+        "partial-fractions": (1, 2, 3, 4, 5),
         "basic-integrals": (1, 2, 3, 4, 5),
         "substitution": (1, 2, 3, 4, 5),
         "integration-by-parts": (1, 2, 3),
@@ -283,4 +287,10 @@ def test_existing_preview_versions_are_unchanged_and_new_cells_are_offered():
         "triple-integrals": (1, 2, 3, 4, 5),
         "derivatives": (1, 2, 3, 4, 5),
         "partial-derivatives": (1, 2, 3, 4, 5),
+        "functions-and-sequences": (1, 2, 3, 4, 5),
+        "limits-and-continuity": (1, 2, 3, 4, 5),
+        "improper-integrals": (1, 2, 3, 4, 5),
+        "series": (1, 2, 3, 4, 5),
+        "multivariable-functions": (1, 2, 3, 4, 5),
+        "differential-equations": (1, 2, 3, 4, 5),
     }
