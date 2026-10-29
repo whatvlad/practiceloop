@@ -50,7 +50,7 @@ pytest==9.1.1
 PyYAML==6.0.3
 requests==2.34.2
 rich==15.0.0
-ruff==0.17.1
+ruff==0.17.2
 sortedcontainers==2.4.0
 starlette==1.8.0
 sympy==1.14.0
