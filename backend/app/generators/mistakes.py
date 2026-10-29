@@ -100,6 +100,8 @@ _FAMILY: dict[tuple[str, str], Callable[[Any, Any], Mistakes]] = {
 def declared(record: dict[str, object], primitive: Any) -> Mistakes:
     """Wrong antiderivatives for an indefinite record; `primitive` is its answer."""
     version = record.get("generator_version")
+    if version == "symbolic-v1":
+        return ()
     # Records are validated by their replay before this runs; every value is an int.
     number = cast(dict[str, int], record)
     a = sp.Integer(number["a"] if version == "substitution-v1" else number["coefficient"])

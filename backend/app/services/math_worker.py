@@ -126,7 +126,7 @@ def _check_child() -> int:
         try:
             problem = replay_problem(request["record"])
             variables = record_variables(request["record"])
-            if getattr(problem, "variables", None) != variables:
+            if variables is not None and getattr(problem, "variables", None) != variables:
                 raise ValueError("Record variables differ from the template")
         except (KeyError, TypeError, ValueError):
             outcome = "bad_record"

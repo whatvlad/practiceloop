@@ -6,13 +6,18 @@ import pytest
 
 from app.api import practice
 from app.core.auth import VerifiedUser
+from app.generators.core import catalogue
 
 
-def test_catalogue_groups_existing_topics_and_hides_empty_algebra() -> None:
+def test_catalogue_lists_algebra_and_syllabus_topics() -> None:
     body = practice.topics(VerifiedUser(uuid4(), None))
-    assert [area["slug"] for area in body["areas"]] == ["mathematical-analysis"]
-    assert {item["area"] for item in body["items"]} == {"mathematical-analysis"}
+    assert [area["slug"] for area in body["areas"]] == ["algebra", "mathematical-analysis"]
+    assert {item["area"] for item in body["items"]} == {"algebra", "mathematical-analysis"}
     assert {item["slug"] for item in body["items"]} == {
+        "matrices",
+        "complex-numbers",
+        "fundamental-theorem-algebra",
+        "partial-fractions",
         "basic-integrals",
         "substitution",
         "integration-by-parts",
@@ -23,6 +28,12 @@ def test_catalogue_groups_existing_topics_and_hides_empty_algebra() -> None:
         "triple-integrals",
         "derivatives",
         "partial-derivatives",
+        "functions-and-sequences",
+        "limits-and-continuity",
+        "improper-integrals",
+        "series",
+        "multivariable-functions",
+        "differential-equations",
     }
 
 
@@ -38,4 +49,33 @@ def test_combined_mixed_pool_preserves_weights_and_legacy_boundaries(level: int)
     }
     assert set(derivatives) == {"derivatives", "partial-derivatives"}
     assert "definite-integrals" not in combined
-    assert practice.mixed_topics("algebra", level) == ([], [])
+    algebra, algebra_weights = practice.mixed_topics("algebra", level)
+    assert set(algebra) == {
+        "matrices",
+        "complex-numbers",
+        "fundamental-theorem-algebra",
+        "partial-fractions",
+    }
+    assert algebra_weights == [1, 1, 1, 1]
+
+
+@pytest.mark.parametrize(
+    "topic",
+    (
+        "matrices",
+        "complex-numbers",
+        "fundamental-theorem-algebra",
+        "partial-fractions",
+        "functions-and-sequences",
+        "limits-and-continuity",
+        "improper-integrals",
+        "series",
+        "multivariable-functions",
+        "differential-equations",
+    ),
+)
+def test_syllabus_topics_have_replayable_problems(topic: str) -> None:
+    exercise = catalogue(topic, 1)[0]
+    assert exercise.record["generator_version"] == "symbolic-v1"
+    assert exercise.statement
+    assert exercise.answer
