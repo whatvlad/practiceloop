@@ -33,16 +33,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: '3.12'
-      - name: Test backend
-        working-directory: backend
-        run: |
-          python -m pip install -r requirements.txt
-          python -m pip install --no-deps -e .
-          # Temporary fast deploy gate; the full suite remains available in the dedicated CI workflow.
-          python -m pytest tests/test_topic_areas.py tests/test_families.py tests/test_content.py tests/test_math_parser.py
+      # No tests here: the PR's CI already ran them on this code (README "Merge gates").
       - name: Deploy to Oracle
         id: deploy
         if: env.ORACLE_SSH_KEY != '' && env.ORACLE_HOST != '' && env.ORACLE_KNOWN_HOSTS != ''
@@ -68,7 +59,7 @@ jobs:
           exit 1
       - name: Report skipped deploy
         if: steps.deploy.outcome == 'skipped'
-        run: echo "::notice::Oracle secrets are not set, so the backend was tested but not deployed."
+        run: echo "::notice::Oracle secrets are not set, so the backend was not deployed."
       - name: Remove the deploy key
         if: always()
         run: rm -f ~/.ssh/deploy_key

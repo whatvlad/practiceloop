@@ -52,6 +52,7 @@ The agents have no permanent roles such as “frontend agent” or “backend ag
 - Do not expose private answers, generator internals, credentials, or service-role keys to the browser.
 - No approval is required: merge your own pull request into main once hosted CI passes.
 - Review by the other agent or human is optional; ask for it on database, authentication or mathematical-logic changes.
+- Open pull requests as drafts while you are still pushing fixes, and mark them ready for review when done. CI skips the slow Backend, Database isolation and Worksheet TeX jobs on drafts, which saves the repository's billed Actions minutes; merge only after the ready-for-review run is green.
 
 Coordination record: docs/agents/TASK_PROTOCOL.md. Implementation workflow and
 completion criteria: docs/agents/WORKFLOW.md. Receiving a HANDOFF and review
