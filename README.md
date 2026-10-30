@@ -189,11 +189,11 @@ These are the gates that actually exist; none is enforced by GitHub.
 
 | Gate | State |
 |---|---|
-| Hosted CI (Frontend, Backend, Database isolation, Security) | Runs on every PR and push to `main`; the author merges only when it is green (convention) |
+| Hosted CI (Frontend, Backend, Database isolation, Worksheet TeX, Security) | Runs on every PR and push to `main`; the author merges only when it is green (convention). Backend, Database isolation and Worksheet TeX skip draft PRs and changes outside `backend/`, `scripts/`, `deploy/`, `supabase/` |
 | Review | Optional; recommended for database, auth and mathematical changes (AGENTS.md) |
 | Approval | Not required; authors merge their own PRs (owner decision, 2026-10-15) |
 | Branch protection / rulesets | **Not applied.** The private repo's plan returns HTTP 403; `.github/branch-protection.json` is an unapplied payload |
-| Deploy | A push to `main` deploys the frontend (`preview.yml`), backend (`backend-deploy.yml`) and migrations (`supabase-deploy.yml`) when their files change. Deploys run alongside CI, not after it, so a red `main` can still deploy |
+| Deploy | A push to `main` deploys the frontend (`preview.yml`), backend (`backend-deploy.yml`) and migrations (`supabase-deploy.yml`) when their files change. Deploys run alongside CI, not after it, so a red `main` can still deploy; `backend-deploy.yml` runs no tests of its own |
 
 ## License
 

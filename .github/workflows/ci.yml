@@ -2,6 +2,7 @@ name: CI
 on:
   pull_request:
     branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
   push:
     branches: [main]
   workflow_dispatch:
@@ -13,7 +14,39 @@ concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+# Billed Actions minutes: Backend, Database isolation and Worksheet TeX are the slow jobs.
+# They skip draft PRs (mark the PR ready for review for the full run) and changes that
+# touch none of backend/, scripts/, deploy/, supabase/ or this file. Frontend and
+# Security are quick and always run (the frontend imports backend/app/content).
 jobs:
+  changes:
+    name: Changed areas
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      backend: ${{ steps.diff.outputs.backend }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - id: diff
+        env:
+          BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          # No usable base (manual run, new branch, force-push): run everything.
+          if [ -z "$BASE" ] || ! git cat-file -e "$BASE^{commit}" 2>/dev/null; then
+            echo "backend=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          files=$(git diff --name-only "$BASE...$HEAD")
+          printf '%s\n' "$files"
+          # backend/tests/test_mistakes.py also reads frontend/src/data/types.ts.
+          pattern='^(backend|scripts|deploy|supabase)/|^frontend/src/data/types\.ts$|^\.github/workflows/ci\.yml$'
+          if printf '%s\n' "$files" | grep -Eq "$pattern"; then backend=true; else backend=false; fi
+          echo "backend=$backend" >> "$GITHUB_OUTPUT"
+
   frontend:
     name: Frontend
     runs-on: ubuntu-latest
@@ -28,6 +61,8 @@ jobs:
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: '24'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
       - run: npm ci --ignore-scripts
       - run: npm run lint
       - run: npm run typecheck
@@ -36,6 +71,8 @@ jobs:
 
   backend:
     name: Backend
+    needs: changes
+    if: github.event.pull_request.draft != true && needs.changes.outputs.backend == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     defaults:
@@ -48,19 +85,22 @@ jobs:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.12'
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
       - run: python -m pip install -r requirements.txt
       - run: python -m pip install --no-deps -e .
       - run: shellcheck ../deploy/oracle/*.sh
       - run: python -m ruff check . ../scripts
       - run: python -m ruff format --check . ../scripts
       - run: python -m mypy
-      # Temporary fast PR gate; the database/TeX jobs and focused catalogue tests cover the new syllabus.
-      - run: python -m pytest tests/test_topic_areas.py tests/test_families.py tests/test_content.py tests/test_math_parser.py
+      - run: python -m pytest
       - name: Check hosted verification failure handling (offline)
         run: python -m unittest discover -s ../scripts -p 'test_supabase_*_unit.py'
 
   worksheet-tex:
     name: Worksheet TeX
+    needs: changes
+    if: github.event.pull_request.draft != true && needs.changes.outputs.backend == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     defaults:
@@ -73,6 +113,8 @@ jobs:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.12'
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
       # The same TeX packages deploy/oracle/bootstrap.sh installs on the VM (ADR-007).
       - name: Install TeX
         run: |
@@ -86,6 +128,8 @@ jobs:
 
   database:
     name: Database isolation
+    needs: changes
+    if: github.event.pull_request.draft != true && needs.changes.outputs.backend == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     services:
@@ -124,6 +168,8 @@ jobs:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.12'
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
       - name: Check API ownership queries as the RLS-bypassing service role
         working-directory: backend
         env:
@@ -150,9 +196,13 @@ jobs:
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: '24'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.12'
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
       - run: npm ci --ignore-scripts
         working-directory: frontend
       - run: npm audit --audit-level=moderate
