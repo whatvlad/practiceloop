@@ -153,6 +153,15 @@ run Gitleaks locally with `gitleaks git . --config .gitleaks.toml --redact` if n
 No command should report success on skipped/missing tests. CI jobs are Frontend,
 Backend, Database isolation and Security; hosted outcomes are unverified until run.
 
+Normal Backend CI runs the critical test files listed in `.github/workflows/ci.yml`:
+authentication, account, health, math input and worker limits, answer checking,
+preview, sharing, topic areas and `test_engine*.py`. Put new engine tests under that
+name and update the list when other critical tests are added. The broader generator
+and visualization tests are not part of this fast check. Run the full backend suite
+locally with the `pytest` command above, or run the CI workflow manually with
+`full_backend` enabled. Database isolation, Worksheet TeX and Security keep their
+separate checks.
+
 ## Collaboration
 
 Two developers, each with an AI agent, as equal collaborators. Rules:
