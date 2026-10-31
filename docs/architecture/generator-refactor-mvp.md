@@ -50,12 +50,22 @@ real consumer from the first PR.
 - Deterministic rejection and redraw, with a hard cap on redraws (e.g. 64).
   A generator that hits the cap fails its tests, so every shipped seed
   gives a valid problem.
-- Code format `<TYPE>-<VERSION>-<16_DIGIT_SEED>-<CHECK>`, e.g.
-  `INT-1-4821930017734529-7`. The check digit catches typos. Parsing is
-  case-insensitive, accepts spaces and dashes, and rejects unknown types and
-  versions.
+- Code format `<TYPE>-<VERSION>-<16_DIGIT_SEED>-<CHECK>`, with a two-digit
+  check. The owner approved two digits for #164: they detect any one-digit
+  substitution and any swap of two different seed digits; one decimal digit cannot
+  guarantee all such swaps across 16 positions. Parsing is case-insensitive,
+  accepts spaces and dashes, and rejects unknown types and versions.
 - A table of task-type prefixes (`INT`, `DEF`, `PFR`, `CMB`, ...) owned by the
   registry; a prefix is never reused.
+
+The v1 PRNG hashes the domain tag `PracticeLoop PRNG v1` followed by a NUL,
+the seed as eight big-endian bytes and a counter as eight big-endian bytes.
+It uses rejection sampling for bounded values. Candidate redraw stops after at
+most 64 attempts. The code check uses position-weighted version and seed digits
+modulo 97, with a prefix-derived salt; two decimal digits store the residue.
+The registry binds each prefix to one family and each numeric version to an
+existing generator version. Do not reassign a shipped prefix or change a
+shipped version's output.
 
 ### 3. Typed answers (#165)
 
