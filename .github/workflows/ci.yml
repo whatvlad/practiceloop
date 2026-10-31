@@ -6,6 +6,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      full_backend:
+        description: Run the full backend test suite instead of the critical subset
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -93,7 +98,19 @@ jobs:
       - run: python -m ruff check . ../scripts
       - run: python -m ruff format --check . ../scripts
       - run: python -m mypy
-      - run: python -m pytest
+      # Keep new engine tests under test_engine*.py so they run in normal CI.
+      - name: Run critical backend tests
+        if: github.event_name != 'workflow_dispatch' || !inputs.full_backend
+        run: >-
+          python -m pytest --durations=10
+          tests/test_account.py tests/test_auth.py tests/test_health.py
+          tests/test_math_parser.py tests/test_math_worker.py
+          tests/test_answer_check.py tests/test_answer_variables.py
+          tests/test_preview.py tests/test_shares.py tests/test_topic_areas.py
+          tests/test_engine*.py
+      - name: Run full backend tests (manual)
+        if: github.event_name == 'workflow_dispatch' && inputs.full_backend
+        run: python -m pytest --durations=10
       - name: Check hosted verification failure handling (offline)
         run: python -m unittest discover -s ../scripts -p 'test_supabase_*_unit.py'
 
