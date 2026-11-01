@@ -178,6 +178,20 @@ an HTTP validation error. A missing integration constant returns
 never needs one, and one that contains `x` or a constant is incorrect. Empty input or an
 answer longer than the ADR-003 limit is rejected before an attempt is created.
 
+An archived problem (see below) is not checked: the route returns
+`409 problem_archived` (`retryable: false`) and stores no attempt.
+
+#### Archived problems (#190)
+
+When a topic moves to the new generator engine, the problems saved before the
+move from that topic's old generator become a read-only archive. They stay in
+history, `GET /api/problems/{id}` and both reveal routes with their stored
+statement, answer and solution steps; the solution carries no `visual`, and a
+printed worksheet shows their steps without a graph. Checking an answer returns
+`409 problem_archived`. Problems the new engine issued for that topic are not
+archived. The backend decides this in `backend/app/services/archive.py`, which
+never loads the old generators.
+
 ### `POST /api/problems/{id}/reveal-answer`
 
 Returns `200` and sets the answer flag in the same transaction:
@@ -428,6 +442,7 @@ and redirects HTTP to HTTPS.
 | `404` | `share_not_found` | No share has this token or code |
 | `410` | `share_expired`, `share_revoked` | The share existed but no longer works; do not retry |
 | `409` | `idempotency_conflict` | Same key with different input; create a new key only for a deliberate new action |
+| `409` | `problem_archived` | The problem is an archived old problem (#190); its answer can no longer be checked, so do not retry |
 | `422` | `invalid_request` | Malformed JSON, unknown field, empty answer, unsupported topic/level or normalized input over 256 bytes |
 | `429` | `rate_limited` | Retry only after the `Retry-After` delay |
 | `503` | `authentication_unavailable`, `math_worker_unavailable`, `math_check_inconclusive`, `database_unavailable`, `worksheet_busy`, `worksheet_render_failed` | No mutation committed; retry with the same idempotency key only when `retryable` is true |

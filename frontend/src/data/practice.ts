@@ -38,6 +38,18 @@ export function resetPractice(): void {
   retryAfter = 0;
 }
 
+// #190: an old problem of a topic that moved to the new engine can be read but not checked.
+const ARCHIVED = 'This problem is archived, so answers can no longer be checked. Its answer and solution are still available.';
+
+/** The error envelope's code only; its message is never shown. */
+async function errorCode(response: Response): Promise<string | null> {
+  try {
+    const body: unknown = await response.json();
+    const error = body && typeof body === 'object' ? (body as { error?: { code?: unknown } }).error : undefined;
+    return typeof error?.code === 'string' ? error.code : null;
+  } catch { return null; }
+}
+
 function object(value: unknown): Record<string, unknown> {
   if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error(text.service_error);
   return value as Record<string, unknown>;
@@ -72,6 +84,10 @@ async function request(path: string, body: unknown, bearer: string | null, saved
       throw new Error('Check your selection or answer and try again.');
     }
     if (response.status === 429) throw new Error('You are going a bit fast. Wait a moment and try again.');
+    if (response.status === 409 && await errorCode(response) === 'problem_archived') {
+      if (operation) keys.delete(operation);
+      throw new Error(ARCHIVED);
+    }
     throw new Error(text.service_error);
   }
   let data: unknown;
