@@ -193,6 +193,8 @@ generator lifecycle (draw, verify, build, check), an extension example
 ("add a task type in one file"), known limitations, and unresolved design
 decisions.
 
+Done: [ADR-008 draft](../decisions/0008-generator-engine.md), the input to #172.
+
 ## GrillMe gate
 
 ### 10. Re-evaluate the generator architecture with GrillMe (#172)

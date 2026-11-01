@@ -19,6 +19,7 @@
 | 2026-10-22 | Printable LaTeX PDF worksheets from Practice and History; amends ADR-004's `generated` counter | ADR-007 (#115), accepted by accountable human (PR #119); product decisions by Vlad |
 | 2026-10-22 | Worked solutions and static graphs in worksheet PDFs (`solutions` option, a solution reveal; graphs via `\pdfliteral`, no new TeX package) | ADR-007 amendment (#130), requested by Vlad |
 | 2026-10-30 | Rebuild all problem generators and answer checks on a composable engine (blocks, `TaskGenerator`, typed `Answer`, topics as views); problem codes `<TYPE>-<VERSION>-<16-digit seed>-<check>` replace stored problems; old saved problems stay a read-only archive; new topics only on the new engine; Python + SymPy kept | Owner decision (Vlad, #162); MVP #163-#172 ends with a GrillMe gate; plan in docs/architecture/generator-refactor-mvp.md; ADR-008 follows in #171 |
+| 2026-11-01 | Generator engine architecture as merged in #163-#170: four layers (blocks, answers, generators, topics), draw/verify/build/check lifecycle, frozen PRNG v1 and problem codes, one-file extension example, known limitations and open decisions | ADR-008 **draft** (#171), input to the GrillMe review #172; not accepted |
 
 Practice areas: ADR-005 amendment of 2026-10-26 (#144) supersedes the old
 Integrals/Derivatives grouping with Algebra/Mathematical Analysis. Launch #39
