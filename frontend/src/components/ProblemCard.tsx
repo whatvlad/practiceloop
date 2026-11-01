@@ -1,5 +1,5 @@
 import type { CheckResult, Difficulty, FeedbackCode, SolutionStep, TopicSlug } from '../data/types';
-import { answerVariables, leadText, problemKind, type ProblemKind } from '../format';
+import { answerVariables, keypadVariables, leadText, problemKind, type ProblemKind } from '../format';
 import { subjectName, topicName } from '../data/topics';
 import { AnswerInput } from './AnswerInput';
 import { Button } from './Button';
@@ -43,7 +43,8 @@ interface ProblemCardProps {
 export function incorrectMessage(feedback: FeedbackCode | null, kind: ProblemKind): string {
   if (feedback) return text[`feedback_${feedback}`];
   return { indefinite: text.general_hint, definite: text.general_hint_definite, double: text.general_hint_multiple,
-    triple: text.general_hint_multiple, derivative: text.general_hint_derivative, partial: text.general_hint_derivative }[kind];
+    triple: text.general_hint_multiple, derivative: text.general_hint_derivative, partial: text.general_hint_derivative,
+    numeric: 'Check your calculation, or reveal the solution.', expression: 'Check your work, or reveal the solution.' }[kind];
 }
 
 const PLACEHOLDERS: Record<ProblemKind, string> = {
@@ -53,6 +54,8 @@ const PLACEHOLDERS: Record<ProblemKind, string> = {
   triple: 'e.g. 8pi/3 or 1/6',
   derivative: 'e.g. 2x cos(x^2)',
   partial: 'e.g. 2xy or r^2 cos(2θ)',
+  numeric: 'e.g. 3/2',
+  expression: 'e.g. 2x + 1',
 };
 
 /** The one lifted surface: a problem, its answer field and every action on it. */
@@ -106,6 +109,7 @@ export function ProblemCard({
         onEnter={solved || busy ? undefined : onCheck}
         assist
         variables={answerVariables(kind, problemLatex)}
+        keypadVariables={keypadVariables(kind, problemLatex, topic)}
         hint={
           <>
             Type <code>/</code> for a fraction, <code>^</code> for a power, <code>sqrt</code> for a root, or use the keys. Press Enter to check.

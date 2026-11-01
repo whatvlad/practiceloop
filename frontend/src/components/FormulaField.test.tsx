@@ -194,6 +194,13 @@ const labels = (variables?: Parameters<typeof keyboardLayouts>[0]) =>
   (keyboardLayouts(variables)[0] as Layout).rows.flat().map((key) => (typeof key === 'string' ? key : key.label));
 
 describe('phone keyboard answer variables (ADR-005)', () => {
+  it('offers numeric keys without empty slots or an integration constant', () => {
+    const rows = (keyboardLayouts([])[0] as Layout).rows;
+    expect(rows.flat()).not.toContain(undefined);
+    expect(labels([])).not.toContain('x');
+    expect(labels([])).not.toContain('+C');
+  });
+
   it('keeps x and +C for integration exercises', () => {
     expect(labels()).toEqual(expect.arrayContaining(['x', '+C']));
     for (const label of ['y', 'z', 'r', 'θ']) expect(labels()).not.toContain(label);

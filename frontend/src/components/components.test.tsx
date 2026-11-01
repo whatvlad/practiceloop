@@ -58,6 +58,23 @@ describe('ProblemCard', () => {
     expect(html).toContain('placeholder="e.g. 2x cos(x^2)"');
   });
 
+  it('presents combinations as a numeric problem without an integration constant', () => {
+    const html = card({ topic: 'combinations', problemLatex: '\\binom{5}{2}', result: 'incorrect' });
+    expect(html).toContain('Calculate the value.');
+    expect(html).toContain('Check your calculation, or reveal the solution.');
+    expect(html).toContain('placeholder="e.g. 3/2"');
+    expect(html).not.toContain('Calculate the indefinite integral.');
+    expect(html).not.toContain('>+C<');
+  });
+
+  it('presents partial fractions as an expression problem without an integration constant', () => {
+    const html = card({ topic: 'partial-fractions', problemLatex: '\\frac{1}{x+1}', result: 'incorrect' });
+    expect(html).toContain('Solve the problem.');
+    expect(html).toContain('Check your work, or reveal the solution.');
+    expect(html).not.toContain('Calculate the indefinite integral.');
+    expect(html).not.toContain('>+C<');
+  });
+
   it('offers the declared variables of a partial derivative on the keypad (#96, #101)', () => {
     const polar = 'f = x y,\\quad x = r \\cos{\\left(\\theta \\right)}:\\quad \\frac{\\partial f}{\\partial \\theta}'
       + '\\quad(r > 0,\\ \\theta \\in \\mathbb{R})';

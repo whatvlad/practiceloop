@@ -12,6 +12,12 @@ function meta(selector: string): string | null {
 }
 
 describe('page metadata (#38)', () => {
+  it('describes the full range of maths practice on general pages', () => {
+    for (const path of ['/', '/practice', '/shared']) {
+      expect(pageMeta(path).description).not.toMatch(/integration/i);
+    }
+    expect(indexHtml).not.toMatch(/Practice integration/);
+  });
   it('gives every route its own title and description', () => {
     const paths = ['/', '/privacy', '/login', '/dashboard', '/practice', '/history', '/profile', '/shared', '/nope'];
     const titles = new Set(paths.map((path) => pageMeta(path).title));

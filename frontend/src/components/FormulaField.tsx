@@ -105,7 +105,7 @@ export function keyboardLayouts(variables?: readonly AnswerVariable[]): (Virtual
       label: '123',
       tooltip: 'Numbers and operators',
       rows: [
-        [first, ...keys('pi', 'e to the power', 'squared'), '[separator-5]', '7', '8', '9', keycap(byName('divide'))],
+        [...(first === undefined ? [] : [first]), ...keys('pi', 'e to the power', 'squared'), '[separator-5]', '7', '8', '9', keycap(byName('divide'))],
         [...keys('power', 'square root', 'brackets', 'absolute value'), '[separator-5]', '4', '5', '6', keycap(byName('times'))],
         [...keys('sin', 'cos', 'tan', 'ln'), '[separator-5]', '1', '2', '3', keycap(byName('minus'))],
         [...rest, '[left]', '[right]', '[backspace]', '[separator-5]', '0', '.', '[return]', keycap(byName('plus'))],
@@ -161,6 +161,7 @@ interface FormulaFieldProps {
   fieldRef: { current: MathfieldElement | null };
   /** The exercise's declared answer variables; omitted for integration. */
   variables?: readonly AnswerVariable[];
+  keypadVariables?: readonly AnswerVariable[];
 }
 
 /** The answer as a 2D formula: `/` builds a fraction, `^` raises an exponent, `sqrt` a root. */
@@ -177,13 +178,14 @@ export function FormulaField({
   onEnter,
   fieldRef,
   variables,
+  keypadVariables,
 }: FormulaFieldProps) {
   const host = useRef<HTMLDivElement>(null);
   const emitted = useRef<string | null>(null);
   const complete = useRef(true);
-  const handlers = useRef({ onChange, onEnter, variables });
+  const handlers = useRef({ onChange, onEnter, variables: keypadVariables ?? variables });
   useEffect(() => {
-    handlers.current = { onChange, onEnter, variables };
+    handlers.current = { onChange, onEnter, variables: keypadVariables ?? variables };
   });
 
   useEffect(() => {
