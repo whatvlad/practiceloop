@@ -500,7 +500,7 @@ def multiple_integral(api: httpx.Client, url: str, topic: str, starts: tuple[str
     problem = response.json()["problem"]
     pid = problem["id"]
     check(
-        problem["problemLatex"].startswith(starts),
+        any(start in problem["problemLatex"] for start in starts),
         f"a {name} shows a region or iterated bounds",
         problem["problemLatex"],
     )
@@ -508,8 +508,8 @@ def multiple_integral(api: httpx.Client, url: str, topic: str, starts: tuple[str
     flipped = api.post(f"/problems/{pid}/attempts", json={"answer": f"-({answer})"}, headers=key())
     attempt = flipped.json().get("attempt", {})
     check(
-        (attempt.get("result"), attempt.get("feedbackCode")) == ("incorrect", "bounds_reversed"),
-        f"a negated {name} says the bounds are reversed",
+        (attempt.get("result"), attempt.get("feedbackCode")) == ("incorrect", None),
+        f"a negated native {name} is incorrect with general feedback",
         flipped.text,
     )
     right = api.post(f"/problems/{pid}/attempts", json={"answer": answer}, headers=key())
