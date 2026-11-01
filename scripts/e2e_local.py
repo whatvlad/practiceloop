@@ -119,6 +119,7 @@ PARTIAL = "partial-derivatives"
 
 def correct_answer(url: str, problem_id: str) -> str:
     from app.generators.core import replay
+    from app.services.engine_practice import replay_combination
 
     with psycopg.connect(url) as conn:
         row = conn.execute(
@@ -127,6 +128,8 @@ def correct_answer(url: str, problem_id: str) -> str:
         ).fetchone()
     if row is None:
         raise SystemExit(f"no private record for {problem_id}")
+    if row[0].get("generator_version") == "combinations-v1":
+        return replay_combination(row[0]).answer.latex()
     exercise = replay(row[0])
     if exercise.value is not None:
         return str(exercise.value).replace("**", "^").replace("E", "e")
@@ -167,7 +170,7 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
         if area["mixed"]
         for d in area["mixed"]["availableDifficulties"][:1]
     ]
-    check(len(cells) == 22, "one cell for 20 topics plus two mixed levels", len(cells))
+    check(len(cells) == 23, "one cell for 21 topics plus two mixed levels", len(cells))
     created: list[str] = []
     for topic, level, extra in cells:
         reset_limits()
@@ -183,6 +186,18 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
         leaked = {"answerLatex", "solution", "generator_data", "steps"} & set(problem)
         check(not leaked and not problem["answerRevealed"], f"generate {label} hides the answer")
         answer = correct_answer(url, pid)
+        if problem["topic"] == "combinations":
+            from app.services.engine_practice import replay_combination
+
+            record = private_record(url, pid)
+            task = replay_combination(record)
+            statement = task.statement.removeprefix(r"Calculate \(").removesuffix(r"\).")
+            check(
+                task.code == record["code"]
+                and statement == problem["problemLatex"]
+                and record["code"] not in str(problem),
+                "new-engine code stays private and replays the saved statement",
+            )
         # A partial answer may use only its declared variables, so x is not always one.
         no_variables = problem["topic"] in {
             "matrices",
@@ -192,6 +207,7 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
             "limits-and-continuity",
             "improper-integrals",
             "series",
+            "combinations",
         }
         wrong_answer = (
             "999999"

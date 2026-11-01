@@ -1,5 +1,8 @@
 {
   "calculate": "Calculate the indefinite integral.",
+  "calculate_combinations": "Calculate the number of combinations.",
+  "combinations": "Calculate the number of combinations.",
+  "general_hint_combinations": "Check the number of ways to choose, or reveal the solution.",
   "linearity": "Integrate each term separately.",
   "rewrite_power": "Write the integrand as a power of x.",
   "expand": "Expand the squared factor.",

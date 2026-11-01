@@ -17,8 +17,13 @@ from app.services.answer_check import check_and_diagnose, replay_problem
 from app.services.math_parser import parse_math_input
 from app.services.math_worker import AnswerCheck, check_answer
 
-# Every offered cell, from the same table `GET /topics` publishes.
-CELLS = [(topic, level) for topic, cell in TOPICS.items() for level in cell.levels]
+# Legacy cells declare these feedback codes; the new numeric topic has no mistake catalogue.
+CELLS = [
+    (topic, level)
+    for topic, cell in TOPICS.items()
+    if topic != "combinations"
+    for level in cell.levels
+]
 
 
 def learner(expression: sp.Expr) -> str:

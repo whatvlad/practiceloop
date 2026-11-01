@@ -123,18 +123,27 @@ def _check_child() -> int:
         # Imported only now, under the limits: both modules import SymPy.
         from app.services.answer_check import check_and_diagnose, replay_problem
 
-        try:
-            problem = replay_problem(request["record"])
-            variables = record_variables(request["record"])
-            if variables is not None and getattr(problem, "variables", None) != variables:
-                raise ValueError("Record variables differ from the template")
-        except (KeyError, TypeError, ValueError):
-            outcome = "bad_record"
+        record = request["record"]
+        if record.get("generator_version") == "combinations-v1":
+            from app.services.engine_practice import check_combination
+
+            try:
+                outcome = check_combination(request["answer"], record)
+            except (KeyError, TypeError, ValueError):
+                outcome = "bad_record"
         else:
-            tree = parse_math_input(request["answer"], variables)
-            outcome, code = check_and_diagnose(tree, problem, request["record"])
-            if code is not None:
-                outcome += ":" + code
+            try:
+                problem = replay_problem(record)
+                variables = record_variables(record)
+                if variables is not None and getattr(problem, "variables", None) != variables:
+                    raise ValueError("Record variables differ from the template")
+            except (KeyError, TypeError, ValueError):
+                outcome = "bad_record"
+            else:
+                tree = parse_math_input(request["answer"], variables)
+                outcome, code = check_and_diagnose(tree, problem, record)
+                if code is not None:
+                    outcome += ":" + code
         sys.stdout.buffer.write(outcome.encode("ascii"))
         sys.stdout.buffer.flush()
         return 0

@@ -169,6 +169,12 @@ existing topic changes) through the practice API: issue, check, reveal. It
 stores the problem code. The end-to-end API check covers it. Other topics
 stay on the old engine.
 
+The first connected topic is `combinations`, level 1, in the Combinatorics
+area. Its `CMB` code and expected answer remain in the private solution record;
+the checked answer uses `NumberAnswer` inside the limited worker. The additive
+topic migration preserves existing rows and access policies. Worksheet capacity
+is zero until the worksheet rework. The frontend recognizes the area and topic.
+
 ### 8. Deterministic, golden and isolation tests (#170)
 
 **Depends on:** 5, 6, 7

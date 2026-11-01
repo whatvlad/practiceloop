@@ -11,8 +11,16 @@ from app.generators.core import catalogue
 
 def test_catalogue_lists_algebra_and_syllabus_topics() -> None:
     body = practice.topics(VerifiedUser(uuid4(), None))
-    assert [area["slug"] for area in body["areas"]] == ["algebra", "mathematical-analysis"]
-    assert {item["area"] for item in body["items"]} == {"algebra", "mathematical-analysis"}
+    assert [area["slug"] for area in body["areas"]] == [
+        "algebra",
+        "mathematical-analysis",
+        "combinatorics",
+    ]
+    assert {item["area"] for item in body["items"]} == {
+        "algebra",
+        "mathematical-analysis",
+        "combinatorics",
+    }
     assert {item["slug"] for item in body["items"]} == {
         "matrices",
         "complex-numbers",
@@ -34,6 +42,7 @@ def test_catalogue_lists_algebra_and_syllabus_topics() -> None:
         "series",
         "multivariable-functions",
         "differential-equations",
+        "combinations",
     }
 
 

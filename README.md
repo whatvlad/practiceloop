@@ -11,6 +11,7 @@ https://practiceloop.pages.dev (noindex). Signed-in learners can:
 - practise basic integrals, substitution, rational functions and trigonometric
   integrals at levels 1–5, and integration by parts at levels 1–3, or choose
   mixed practice; most cells also include definite integrals;
+- practise combinations at level 1 with the new replayable generator engine;
 - type answers in a formula editor; the backend checks them symbolically
   (Correct, Incorrect or Invalid expression, with a missing-constant flag and
   targeted feedback for common mistakes);
@@ -211,8 +212,8 @@ Proprietary, all rights reserved. See [LICENSE](LICENSE).
 
 ## Product direction
 
-Practice topics are grouped under Mathematical Analysis. Algebra is reserved
-for the next verified content release (#147). The curriculum expansion follows
+Practice topics are grouped under Algebra, Mathematical Analysis and
+Combinatorics. The curriculum expansion follows
 the [ADR-005 amendment](docs/decisions/0005-multiple-integrals-and-derivatives.md#amendment-practice-areas-144-2026-10-26).
 
 The original [MVP specification](docs/PRACTICELOOP_MVP.md) remains the product

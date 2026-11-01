@@ -52,6 +52,10 @@ describe('mixed practice shares', () => {
 });
 
 describe('problem kinds', () => {
+  it('uses a numerical instruction for combinations', () => {
+    expect(problemKind('combinations', '\\binom{5}{2}')).toBe('combinations');
+    expect(leadText('combinations')).toBe('Calculate the number of combinations.');
+  });
   it('asks for a partial derivative in the partial-derivatives topic only', () => {
     expect(problemKind('partial-derivatives', '\\frac{\\partial}{\\partial x}')).toBe('partial');
     expect(problemKind('derivatives', '\\frac{d}{dx}')).toBe('derivative');

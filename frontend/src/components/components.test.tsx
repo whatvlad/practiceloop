@@ -58,6 +58,16 @@ describe('ProblemCard', () => {
     expect(html).toContain('placeholder="e.g. 2x cos(x^2)"');
   });
 
+  it('renders a combinations exercise as a number rather than an integral', () => {
+    const html = card({ topic: 'combinations', problemLatex: '\\binom{5}{2}', result: 'incorrect' });
+    expect(html).toContain('Combinatorics — Combinations');
+    expect(html).toContain(text.calculate_combinations);
+    expect(html).toContain(text.general_hint_combinations);
+    expect(html).toContain('placeholder="e.g. 10"');
+    expect(html).not.toContain('Calculate the indefinite integral.');
+    expect(html).not.toContain('>+C<');
+  });
+
   it('offers the declared variables of a partial derivative on the keypad (#96, #101)', () => {
     const polar = 'f = x y,\\quad x = r \\cos{\\left(\\theta \\right)}:\\quad \\frac{\\partial f}{\\partial \\theta}'
       + '\\quad(r > 0,\\ \\theta \\in \\mathbb{R})';

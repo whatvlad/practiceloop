@@ -27,9 +27,10 @@ export function isDefinite(problemLatex: string): boolean {
 }
 
 /** What a statement asks for: an antiderivative + C, one exact number, f'(x), or a partial (ADR-005). */
-export type ProblemKind = 'indefinite' | 'definite' | 'double' | 'triple' | 'derivative' | 'partial';
+export type ProblemKind = 'indefinite' | 'definite' | 'double' | 'triple' | 'derivative' | 'partial' | 'combinations';
 
 export function problemKind(topic: TopicSlug, problemLatex: string): ProblemKind {
+  if (topic === 'combinations') return 'combinations';
   if (topic === 'partial-derivatives') return 'partial';
   if (topic === 'derivatives') return 'derivative';
   // A double integral's answer is also one exact number (#99).
@@ -47,6 +48,7 @@ export function leadText(kind: ProblemKind): string {
     triple: text.calculate_triple,
     derivative: text.calculate_derivative,
     partial: text.calculate_partial,
+    combinations: text.calculate_combinations,
   }[kind];
 }
 
@@ -57,6 +59,7 @@ export function leadText(kind: ProblemKind): string {
  * Other kinds keep the integration grammar (undefined).
  */
 export function answerVariables(kind: ProblemKind, problemLatex: string): AnswerVariable[] | undefined {
+  if (kind === 'combinations') return [];
   if (kind !== 'partial') return undefined;
   const start = problemLatex.lastIndexOf('\\quad(');
   if (start < 0) return undefined;

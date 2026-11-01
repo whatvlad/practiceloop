@@ -293,4 +293,5 @@ def test_existing_preview_versions_are_unchanged_and_new_cells_are_offered():
         "series": (1, 2, 3, 4, 5),
         "multivariable-functions": (1, 2, 3, 4, 5),
         "differential-equations": (1, 2, 3, 4, 5),
+        "combinations": (1,),
     }

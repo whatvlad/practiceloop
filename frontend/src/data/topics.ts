@@ -4,6 +4,7 @@ import type { Area, AreaSlug, AvailableTopic, Difficulty, MixedPractice, Topic, 
 export const AREAS: readonly Area[] = [
   { slug: 'algebra', name: 'Algebra' },
   { slug: 'mathematical-analysis', name: 'Mathematical Analysis' },
+  { slug: 'combinatorics', name: 'Combinatorics' },
 ];
 
 // Matches the seed rows of public.topics. The API offers a topic only once its generator ships.
@@ -28,6 +29,7 @@ export const TOPICS: readonly Topic[] = [
   { slug: 'series', name: 'Series', area: 'mathematical-analysis' },
   { slug: 'multivariable-functions', name: 'Multivariable functions', area: 'mathematical-analysis' },
   { slug: 'differential-equations', name: 'Differential equations', area: 'mathematical-analysis' },
+  { slug: 'combinations', name: 'Combinations', area: 'combinatorics' },
 ];
 
 export const DIFFICULTIES: readonly { level: Difficulty; name: string }[] = [
@@ -48,6 +50,7 @@ export function areaOf(slug: TopicSlug): AreaSlug {
 
 /** The problem tag's subject: "Integration — Substitution", "Differentiation — Derivatives". */
 export function subjectName(slug: TopicSlug): string {
+  if (slug === 'combinations') return 'Combinatorics';
   if (['matrices', 'complex-numbers', 'fundamental-theorem-algebra', 'partial-fractions'].includes(slug)) {
     return 'Algebra';
   }

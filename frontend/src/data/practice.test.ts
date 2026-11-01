@@ -209,6 +209,17 @@ it('deduplicates attempts and retains their key on retry with a refreshed access
   expect(fetchMock.mock.calls[2][1]?.headers).toMatchObject({ 'Idempotency-Key': headers['Idempotency-Key'], Authorization: 'Bearer refreshed-token' });
 });
 
+it('loads a new-engine combinations topic from the API', async () => {
+  practice.configurePracticeAuth(async () => 'access-token');
+  fetchMock.mockResolvedValueOnce(response({
+    areas: [{ slug: 'combinatorics', name: 'Combinatorics', mixed: null }],
+    items: [{ slug: 'combinations', name: 'Combinations', area: 'combinatorics', availableDifficulties: [1], worksheetCapacity: { 1: 0 } }],
+  }));
+  const catalogue = await practice.getCatalogue();
+  expect(catalogue.areas[0].slug).toBe('combinatorics');
+  expect(catalogue.topics[0]).toMatchObject({ slug: 'combinations', availableDifficulties: [1] });
+});
+
 it('loads supported topic cells from the API, including future higher levels', async () => {
   practice.configurePracticeAuth(async () => 'access-token');
   fetchMock.mockResolvedValueOnce(response({ areas: [{ slug: 'mathematical-analysis', name: 'Mathematical Analysis', mixed: null }],

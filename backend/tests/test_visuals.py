@@ -51,11 +51,13 @@ def test_every_catalogue_version_declares_a_visual_or_none() -> None:
     versions = {
         str(exercise.record["generator_version"])
         for topic, cell in TOPICS.items()
+        if topic != "combinations"
         for level in cell.levels
         for exercise in catalogue(topic, level)
     }
     assert not set(BUILDERS) & NO_VISUAL
     assert versions <= set(BUILDERS) | NO_VISUAL
+    assert build_visual({"generator_version": "combinations-v1"}) is None
 
 
 def test_every_single_integral_record_builds_a_valid_spec() -> None:

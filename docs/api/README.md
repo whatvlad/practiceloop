@@ -118,7 +118,10 @@ least one topic, in display order. The topic slugs are seeded in `public.topics`
 (migration `202610210003_topic_areas.sql`, which also stores each topic's
 `area`); a seeded topic appears in `items` only once its generator ships.
 `mixed` is `null` while an area has fewer than two topics.
-`algebra` is reserved and will be advertised when #147 ships a verified cell.
+The `combinations` topic is the first new-engine topic, in the `combinatorics`
+area, at level 1. Its worksheet capacity is zero while worksheets are reworked.
+The task code is stored in the private solution record; it is never included in
+the public problem response. A code replays the same statement and answer.
 Migration `202610260001_mathematics_practice_areas.sql` moves all current topic
 rows to `mathematical-analysis` without changing their IDs or slugs.
 `definite-integrals` (#128, migration `202610220002_definite_integrals_topic.sql`)

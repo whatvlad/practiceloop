@@ -544,7 +544,43 @@ def test_topics_lists_only_generated_cells(client: TestClient) -> None:
         ("series", [1, 2, 3, 4, 5]),
         ("multivariable-functions", [1, 2, 3, 4, 5]),
         ("differential-equations", [1, 2, 3, 4, 5]),
+        ("combinations", [1]),
     ]
+
+
+def test_new_engine_problem_persists_code_checks_reveals_and_is_owner_scoped(
+    client: TestClient, users: Users, url: str
+) -> None:
+    from app.services.engine_practice import replay_combination
+
+    problem = generate(client, "combinations", 1)
+    record, answer = rows(
+        url,
+        "select generator_data, answer_latex from private.problem_solutions where problem_id = %s",
+        problem["id"],
+    )[0]
+    task = replay_combination(record)
+    assert task.code == record["code"] and task.answer.latex() == answer
+    assert problem["problemLatex"] == task.statement.removeprefix(r"Calculate \(").removesuffix(
+        r"\)."
+    )
+    assert record["code"] not in str(problem) and "answer" not in str(problem).lower().replace(
+        "answerrevealed", ""
+    )
+    path = f"/problems/{problem['id']}"
+    assert "answer" not in client.get(path).json()
+    wrong = client.post(path + "/attempts", json={"answer": str(int(answer) + 1)}, headers=key())
+    right = client.post(path + "/attempts", json={"answer": answer}, headers=key())
+    assert wrong.json()["attempt"]["result"] == "incorrect"
+    assert right.json()["attempt"]["result"] == "correct"
+    users.current = users.bob
+    assert client.get(path).status_code == 404
+    assert client.post(path + "/reveal-answer").status_code == 404
+    users.current = users.alice
+    assert client.post(path + "/reveal-answer").json() == {"answerLatex": answer}
+    solution = client.post(path + "/reveal-solution").json()
+    assert solution["steps"] and "visual" not in solution and record["code"] not in str(solution)
+    assert client.get(path).json()["solution"] == solution
 
 
 def test_definite_topic_saves_definite_problems_under_its_own_topic(
@@ -610,7 +646,8 @@ def test_area_migration_preserves_saved_problems(client: TestClient, url: str) -
 def test_topics_publish_the_fixed_mixed_practice_weights(client: TestClient) -> None:
     areas = client.get("/topics").json()["areas"]
     for area in areas:
-        area["mixed"].pop("worksheetCapacity")  # tests/test_worksheets_api.py
+        if area["mixed"]:
+            area["mixed"].pop("worksheetCapacity")  # tests/test_worksheets_api.py
     assert areas[0] == {
         "slug": "algebra",
         "name": "Algebra",
@@ -648,7 +685,8 @@ def test_topics_publish_the_fixed_mixed_practice_weights(client: TestClient) -> 
             },
         },
     }
-    assert len(areas) == 2
+    assert areas[2] == {"slug": "combinatorics", "name": "Combinatorics", "mixed": None}
+    assert len(areas) == 3
 
 
 def test_topics_are_grouped_by_area(client: TestClient) -> None:

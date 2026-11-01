@@ -6,7 +6,7 @@ import re
 
 import pytest
 
-from app.api.practice import TOPICS
+from app.api.practice import TOPICS, capacity
 from app.generators.core import catalogue_records
 from app.services.worksheet_graphs import DRAWERS, graph, nice_ticks
 from app.visuals.spec import BUILDERS, build_visual
@@ -22,6 +22,8 @@ def first_records() -> list[dict[str, object]]:
     first: dict[tuple[object, int], dict[str, object]] = {}
     for slug, topic in TOPICS.items():
         for level in topic.levels:
+            if not capacity(slug, level):
+                continue
             for record in catalogue_records(slug, level):
                 if record["generator_version"] in BUILDERS:
                     first.setdefault((record["generator_version"], level), record)

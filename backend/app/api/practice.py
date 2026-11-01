@@ -30,6 +30,7 @@ from app.generators.core import Exercise, catalogue, catalogue_records
 from app.services import idempotency, shares
 from app.services import owned_records as records
 from app.services.account import delete_user
+from app.services.engine_practice import issue_combination
 from app.services.idempotency import Scope, StoredResponse
 from app.services.learning_stats import statistics
 from app.services.math_parser import MathInputTooLong
@@ -54,7 +55,11 @@ class Topic(NamedTuple):
 
 
 # #144: Algebra and Mathematical Analysis are the top-level practice areas.
-AREAS = {"algebra": "Algebra", "mathematical-analysis": "Mathematical Analysis"}
+AREAS = {
+    "algebra": "Algebra",
+    "mathematical-analysis": "Mathematical Analysis",
+    "combinatorics": "Combinatorics",
+}
 # Basic integrals are the building block of every method, so they get half the share.
 TOPICS = {
     "matrices": Topic("Matrices", "algebra", (1, 2, 3, 4, 5), 1, 4),
@@ -103,6 +108,7 @@ TOPICS = {
     "differential-equations": Topic(
         "Differential equations", "mathematical-analysis", (1, 2, 3, 4, 5), 1, 5
     ),
+    "combinations": Topic("Combinations", "combinatorics", (1,), 1, 3),
 }
 MIXED = "mixed"
 MAX_ANSWER_CHARS = 512  # the parser's 256-byte limit applies after normalization
@@ -262,6 +268,8 @@ def _mixed(area: str) -> dict[str, object] | None:
 
 def capacity(topic: str, difficulty: int) -> int:
     """ADR-007 decision 4: a worksheet never repeats a record, so a cell holds this many."""
+    if topic == "combinations":
+        return 0  # The new engine is not part of worksheets yet.
     return len(catalogue_records(topic, difficulty))
 
 
@@ -463,19 +471,24 @@ def generate(body: GenerateBody, user: User, key: IdempotencyKey = None) -> JSON
         stored = idempotency.claim(conn, scope)
         if stored is not None:
             return _respond(stored, replayed=True)
-        exercise = _pick(conn, user.id, topic, body.difficulty)
+        if topic == "combinations":
+            statement, solution = issue_combination(secrets.randbelow(10**16))
+        else:
+            exercise = _pick(conn, user.id, topic, body.difficulty)
+            statement = exercise.statement
+            solution = records.PrivateSolution(
+                generator_version=str(exercise.record["generator_version"]),
+                generator_data=exercise.record,
+                answer_latex=exercise.answer,
+                solution_steps=list(exercise.steps),
+            )
         problem = records.insert_problem(
             conn,
             user.id,
             topic,
             body.difficulty,
-            exercise.statement,
-            records.PrivateSolution(
-                generator_version=str(exercise.record["generator_version"]),
-                generator_data=exercise.record,
-                answer_latex=exercise.answer,
-                solution_steps=list(exercise.steps),
-            ),
+            statement,
+            solution,
         )
         response = StoredResponse(
             201,

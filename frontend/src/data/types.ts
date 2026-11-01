@@ -3,9 +3,10 @@
 import type { VisualSpec } from '../visual/spec';
 
 /** ADR-005: practice has two areas, and every topic belongs to exactly one. */
-export type AreaSlug = 'algebra' | 'mathematical-analysis';
+export type AreaSlug = 'algebra' | 'mathematical-analysis' | 'combinatorics';
 
 export type TopicSlug =
+  | 'combinations'
   | 'matrices'
   | 'complex-numbers'
   | 'fundamental-theorem-algebra'
