@@ -174,6 +174,37 @@ def test_without_the_key_no_reveal_flag_changes(client: TestClient, users: Users
     ) == [(False,)]
 
 
+def test_combinations_worksheet_saves_pool_fields_and_prints_stored_solutions(
+    client: TestClient,
+    users: Users,
+    url: str,
+    compiled: Compiled,
+) -> None:
+    from app.engine import practice as engine
+
+    sheet = create(client, generate(("combinations", 1, 3), solutions=True))
+    saved = rows(
+        url,
+        "select p.problem_latex, s.answer_latex, s.solution_steps, s.generator_data"
+        " from public.problems p join private.problem_solutions s on s.problem_id = p.id"
+        " where p.user_id = %s and p.worksheet_id = %s",
+        users.alice,
+        sheet["id"],
+    )
+    assert len(saved) == len({r[3]["code"] for r in saved}) == 3
+    for statement, answer, steps, record in saved:
+        issued = engine.pooled(record)
+        assert (statement, answer, steps) == (
+            issued.statement,
+            issued.answer_latex,
+            list(issued.steps),
+        )
+    pdf = client.get(f"/worksheets/{sheet['id']}/pdf")
+    assert pdf.status_code == 200
+    assert "Combinations, level 1" in compiled.sources[-1]
+    assert "Evaluate the binomial coefficient." in compiled.sources[-1]
+
+
 def test_groups_are_capped_at_their_cell_and_share_it(client: TestClient) -> None:
     size = len(catalogue_records("basic-integrals", 5))
     sheet = create(client, generate(("basic-integrals", 5, 20), ("basic-integrals", 5, 3)))

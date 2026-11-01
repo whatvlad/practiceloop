@@ -159,7 +159,7 @@ A task goes through three stages.
    anything outside its bounded rational subset; the three symbolic kinds apply
    ADR-003 and ADR-005 through the helpers in `_symbolic.py`.
 
-A topic view runs stages 1-2 for a learner: `Topic.generate(level, seed,
+At catalogue build time, a topic view runs stages 1-2: `Topic.generate(level, seed,
 registry)` picks a `Choice` of that level with the PRNG, then draws candidate
 seeds, at most 64 (`MAX_DRAWS`). A candidate is skipped when the choice's
 predicate rejects its typed parameters (`_rational` reads
@@ -181,19 +181,54 @@ entries with `served=True`; `api/practice.py` lists each of them in `TOPICS`
 (replacing an old-engine topic of the same slug in place), `GET /topics`
 returns that list, and the frontend reads it from there. `visuals/spec.py` takes
 an engine record's visual from its topic entry. Only `combinations` is served
-(#169); it is in Algebra mixed practice with weight 1, and joins worksheets with
-the deploy-time catalogue (#192). Symbolic topics are not served before #192.
+(#169); it is in Algebra mixed practice with weight 1 and in worksheets
+through the deploy-time catalogue (#192). Symbolic topic migrations remain
+in #193-#197.
 
-`api/practice.py` calls `engine.issue(topic, level)`, which takes a seed from
-`secrets`, generates the task and stores a private record with exactly
-`generator_version` and `code`, plus the statement, answer LaTeX and steps as
-for legacy problems. The learner text of each step comes from the generator's
-`step_text`; a step key without text is refused. To check an answer, the
-resource-limited math worker
-recognises the record by its `code` key, rebuilds the task from the code
-(`engine.replay`: parse the code, find the generator, build, and require the
-same code back) and calls `answer.check`. An unusable record is `bad_record`.
-Nothing private reaches the browser before a reveal.
+`api/practice.py` calls `engine.issue(topic, level)`, which randomly picks
+already-rendered private data from that cell's pool. It stores exactly
+`generator_version` and `code` as the generator record, plus the statement,
+answer LaTeX and steps as for legacy problems. Worksheet picking uses the same
+pools, without rebuilding selected tasks. Checking remains in the
+resource-limited math worker: it recognises the `code` key, rebuilds the task
+from its versioned code (`engine.replay`) and calls `answer.check`. An unusable
+record is `bad_record`. Nothing private reaches the browser before a reveal.
+
+### Amendment: verified release catalogue (#192)
+
+Every engine topic x level, including entries not yet served, has **64 unique
+codes** in `backend/.engine-catalogue.json`. This is a private, ignored JSON
+artifact alongside the backend in each release, not a frontend asset, database
+migration or runtime service. Format version 1 holds the pool size and cells;
+each code stores its generator version, rendered statement, answer LaTeX and
+steps with English learner text. The pool deduplicates codes, not equivalent
+mathematical exercises: different seeds may render the same exercise.
+
+`python -m app.engine.catalogue` builds all cells deterministically, trying
+topic seeds 0..255 in each cell until it has 64 codes. Each topic call retains
+its existing 64-candidate cap. Generators verify their mathematics in `build`;
+rejected candidates are logged, duplicates skipped, and any unfillable cell or
+invalid rendering fails the complete build. Tests replay **every pooled code**
+and compare all stored fields, including steps. Existing PRNG, code format,
+shipped generator versions and golden fixtures are unchanged.
+
+The writer replaces the artifact atomically only after a complete build and
+structural validation. Oracle `release.sh` builds it after installing pinned
+dependencies and **before** changing `current` or restarting the API: failure
+leaves the old release live. Each retained release keeps its own artifact for
+rollback. API startup validates the format, exact topic/level coverage, sizes,
+unique codes, check digits and generator versions, then caches immutable data.
+This validation and picking perform no SymPy calls. There is no request-time
+build or fallback for missing pools, including for integer combinations.
+
+The size 64 covers a maximum 40-problem worksheet from one cell with room to
+spare. Worksheet capacity is the pool length, and repeated groups and mixed
+groups share the picker so no code repeats on one worksheet. Generated engine
+worksheets store the pool's statement, answer and steps directly; PDF reads
+those saved fields. Saved problems and worker replay do not depend on a code
+remaining in the current release's pool. Public symbolic topic migrations and
+their Supabase rows belong to #193-#197; building an unserved pool does not
+expose its topic to learners.
 
 ## Problem codes and the PRNG
 
@@ -314,8 +349,8 @@ practice, visual decision and frontend follow from the entry.
 ## Known limitations
 
 The list is the draft's, kept with its numbers. Items 2-5, 7, 8 and 10 were
-resolved by #189 and item 1 by #191 as described above; the rest are tracked in
-the review.
+resolved by #189, item 1 by #191 and item 6 by #192 as described above;
+the rest are tracked in the review.
 
 1. *Resolved in #191: one declarative topic entry; the frontend reads topics
    from the API.* **Serving a topic touched many files.** #169 changed `api/practice.py`
@@ -342,10 +377,10 @@ the review.
    **Build-time rejections were not redrawn.** If `build` raises for a seed, the
    topic does not try another one. The 1,000-seed sweep is the evidence that
    this does not happen, while the API draws from 10**16 seeds.
-6. **Issuing runs in the API process** (#192). `engine.issue` builds the task outside
-   the resource-limited worker. That is harmless for integer combinations, but
-   a symbolic generator (indefinite, definite, derivative) served this way
-   would run SymPy without limits. Only checks run in the worker.
+6. *Resolved in #192: issuing and worksheets pick rendered private pools.*
+   **Issuing ran in the API process.** Before #192, `engine.issue` built tasks
+   outside the resource-limited worker. It now only picks rendered data;
+   checks still run in the worker.
 7. *Resolved in #189: outer parameters hold inner parameters, and inner
    generators expose `Decomposition` and `Integral`.* **Composition rebuilt
    from the same seed.** `indefinite-v1` and
@@ -366,9 +401,8 @@ the review.
 12. **Scope of the slice.** Polynomials of degree 1-4, rational functions with
     two symmetric simple poles at ±2…±6 and equal numerators (their definite
     integral on [-1, 1] is always 0), one level for partial fractions and
-    combinations, no matrices, vectors, intervals, sets or distributions. The
-    engine topic is outside mixed practice and worksheets, and no `/p/<code>`
-    page exists.
+    combinations, no matrices, vectors, intervals, sets or distributions. `combinations`
+    joins mixed practice (#191) and worksheets (#192); no `/p/<code>` page exists.
 13. **Worker test needs Linux.** `test_the_worker_checks_a_new_engine_record`
     fails on Windows because the worker requires Linux resource limits; CI runs
     it on Linux.

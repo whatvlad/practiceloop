@@ -467,3 +467,9 @@ verified user in SQL even though the backend service role bypasses RLS. All
 access to another user's problem returns the same `404` as a missing UUID.
 Transaction and retry boundaries are defined in ADR-004; mathematical input and
 equivalence rules are defined in ADR-003.
+
+Engine worksheet cells (#192), including `combinations` level 1, report the
+private release pool's capacity (64). Engine generation and worksheet creation
+pick pre-rendered verified data; answer checks still replay the versioned code
+inside the limited math worker. No codes, catalogue answers or internal fields
+are added to the public topic or problem DTOs.

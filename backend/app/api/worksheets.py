@@ -36,6 +36,7 @@ from app.api.practice import (
 )
 from app.core.database import transaction
 from app.core.errors import ApiError
+from app.engine import practice as engine
 from app.generators.core import replay
 from app.services import archive, idempotency
 from app.services import owned_records as records
@@ -130,8 +131,11 @@ def _check_group(group: GroupBody) -> None:
             raise _invalid()
         return
     cell = TOPICS.get(group.topic)
-    # New-engine topics (#169) have no worksheet catalogue yet.
-    if cell is None or group.difficulty not in cell.levels or not capacity(group.topic, 1):
+    if (
+        cell is None
+        or group.difficulty not in cell.levels
+        or not capacity(group.topic, group.difficulty)
+    ):
         raise _invalid()
 
 
@@ -201,7 +205,7 @@ def _generate(body: WorksheetBody, user_id: UUID, scope: Scope) -> JSONResponse:
     assert body.groups is not None  # noqa: S101 - checked by the model
     # Pick and replay before the transaction: replay is CPU work and needs no connection.
     picker = store.Picker(_RANDOM)
-    picked: list[tuple[int, str, dict[str, object]]] = []
+    picked: list[tuple[int, str, int, dict[str, object]]] = []
     groups: list[dict[str, Any]] = []
     for index, group in enumerate(body.groups):
         count = 0
@@ -215,7 +219,7 @@ def _generate(body: WorksheetBody, user_id: UUID, scope: Scope) -> JSONResponse:
                 drawn = None if record is None else (group.topic, record)
             if drawn is None:
                 break
-            picked.append((index, *drawn))
+            picked.append((index, drawn[0], group.difficulty, drawn[1]))
             count += 1
         groups.append(
             {
@@ -225,7 +229,9 @@ def _generate(body: WorksheetBody, user_id: UUID, scope: Scope) -> JSONResponse:
                 "count": count,
             }
         )
-    exercises = [(index, topic, replay(record)) for index, topic, record in picked]
+    exercises = [
+        (index, topic, difficulty, *_prepare(record)) for index, topic, difficulty, record in picked
+    ]
     with transaction(user_id) as conn:
         records.ensure_profile(conn, user_id)
         stored = idempotency.claim(conn, scope)
@@ -242,19 +248,14 @@ def _generate(body: WorksheetBody, user_id: UUID, scope: Scope) -> JSONResponse:
             solutions=body.solutions,
         )
         items: list[tuple[UUID, int]] = []
-        for index, topic, exercise in exercises:
+        for index, topic, difficulty, statement, solution in exercises:
             problem = records.insert_problem(
                 conn,
                 user_id,
                 topic,
-                exercise.difficulty,
-                exercise.statement,
-                records.PrivateSolution(
-                    generator_version=str(exercise.record["generator_version"]),
-                    generator_data=exercise.record,
-                    answer_latex=exercise.answer,
-                    solution_steps=list(exercise.steps),
-                ),
+                difficulty,
+                statement,
+                solution,
                 worksheet_id=worksheet.id,
             )
             items.append((problem.id, index))
@@ -263,6 +264,24 @@ def _generate(body: WorksheetBody, user_id: UUID, scope: Scope) -> JSONResponse:
         response = _response(worksheet, [problem_id for problem_id, _ in items])
         idempotency.store(conn, scope, response)
     return _respond(response)
+
+
+def _prepare(record: dict[str, object]) -> tuple[str, records.PrivateSolution]:
+    if engine.is_engine_record(record):
+        issued = engine.pooled(record)
+        return issued.statement, records.PrivateSolution(
+            generator_version=str(issued.record["generator_version"]),
+            generator_data=issued.record,
+            answer_latex=issued.answer_latex,
+            solution_steps=list(issued.steps),
+        )
+    exercise = replay(record)
+    return exercise.statement, records.PrivateSolution(
+        generator_version=str(exercise.record["generator_version"]),
+        generator_data=exercise.record,
+        answer_latex=exercise.answer,
+        solution_steps=list(exercise.steps),
+    )
 
 
 _TOPIC_ORDER = {slug: n for n, slug in enumerate(TOPICS)}

@@ -268,15 +268,12 @@ def mixed_topics(
 ) -> tuple[list[str], list[int]]:
     """The area's topics offered at this level and their weights; a missing cell has none.
 
-    A worksheet draws only from topics with worksheet records: new-engine topics join
-    worksheets with the deploy-time catalogue (#192).
+    Engine worksheet records come from the release catalogue (#192).
     """
     slugs = [
         slug
         for slug in area_topics(area)
-        if difficulty in TOPICS[slug].levels
-        and TOPICS[slug].mixed_weight
-        and not (worksheet and slug in engine.ENGINE_TOPICS)
+        if difficulty in TOPICS[slug].levels and TOPICS[slug].mixed_weight
     ]
     return slugs, [TOPICS[slug].mixed_weight for slug in slugs]
 
@@ -302,10 +299,10 @@ def _mixed(area: str) -> dict[str, object] | None:
 def capacity(topic: str, difficulty: int) -> int:
     """ADR-007 decision 4: a worksheet never repeats a record, so a cell holds this many.
 
-    New-engine topics (#169) are not offered on worksheets yet.
+    Engine topics use the private deploy-time pools (#192).
     """
     if topic in engine.ENGINE_TOPICS:
-        return 0
+        return len(engine.pool(topic, difficulty))
     return len(catalogue_records(topic, difficulty))
 
 

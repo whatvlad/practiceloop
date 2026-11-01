@@ -6,32 +6,24 @@ so the stored code alone reproduces the problem. Nothing here crosses the public
 API except the statement, and, after a reveal, the answer and solution steps.
 """
 
-import re
 import secrets
-from dataclasses import dataclass
 from functools import cache
 from typing import Any
 
+from app.engine.catalogue import lookup
+from app.engine.catalogue import pool as pool
 from app.engine.codes import parse_code
 from app.engine.generators.catalogue import registry
 from app.engine.models import Outcome, Task
 from app.engine.registry import Registry
+from app.engine.rendering import Issued, render
+from app.engine.rendering import statement_latex as statement_latex
 from app.engine.topics.catalogue import Topic, topics
 from app.services.math_parser import MathNode
 
 # Public topic slug -> its served engine entry (#191), derived from the topic catalogue;
 # never edit it by hand. Other public topics stay on the old engine.
 ENGINE_TOPICS: dict[str, Topic] = {slug: t for slug, t in topics().items() if t.served}
-
-_INLINE_MATH = re.compile(r"\\\((.*?)\\\)", re.DOTALL)
-
-
-@dataclass(frozen=True, slots=True)
-class Issued:
-    statement: str
-    record: dict[str, object]
-    answer_latex: str
-    steps: tuple[dict[str, str], ...]
 
 
 @cache
@@ -57,46 +49,23 @@ def visual(version: str) -> str | None:
     return next(iter(declared), None)
 
 
-def statement_latex(statement: str) -> str:
-    """Turn "Text \\(math\\) text" into one LaTeX string, as problemLatex is rendered."""
-    parts: list[str] = []
-    position = 0
-    for match in _INLINE_MATH.finditer(statement):
-        if match.start() > position:
-            parts.append(_text(statement[position : match.start()]))
-        parts.append(match.group(1))
-        position = match.end()
-    if position < len(statement):
-        parts.append(_text(statement[position:]))
-    return "".join(parts)
-
-
-def _text(value: str) -> str:
-    if re.search(r"[\\{}$%&#^_~]", value):
-        raise ValueError("Statement text must be plain")
-    return rf"\text{{{value}}}"
-
-
 def _public(task: Task) -> Issued:
-    step_text = _registry().get(task.generator_version).step_text
-    steps = []
-    for step in task.steps:
-        if step.text_key not in step_text:
-            raise ValueError(f"No learner text for step {step.text_key}")
-        steps.append({"say": step_text[step.text_key], "latex": step.latex})
-    return Issued(
-        statement=statement_latex(task.statement),
-        record={"generator_version": task.generator_version, "code": task.code},
-        answer_latex=task.answer.latex(),
-        steps=tuple(steps),
-    )
+    return render(task, _registry())
 
 
 def issue(slug: str, level: int, seed: int | None = None) -> Issued:
-    """A fresh problem of a public new-engine topic; the seed only picks it."""
+    """Pick rendered private data; even a cold symbolic cell runs no SymPy."""
     topic = ENGINE_TOPICS[slug]
-    chosen = secrets.randbelow(10**16) if seed is None else seed
-    return _public(topic.generate(level, chosen, _registry()))
+    if type(level) is not int or level not in topic.levels:
+        raise ValueError("Unknown topic level")
+    candidates = pool(slug, level)
+    chosen = secrets.randbelow(len(candidates)) if seed is None else seed % len(candidates)
+    return candidates[chosen].issued()
+
+
+def pooled(record: dict[str, object]) -> Issued:
+    """Read the rendered fields for a worksheet pick without rebuilding its task."""
+    return lookup(record)
 
 
 def is_engine_record(record: Any) -> bool:

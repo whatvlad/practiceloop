@@ -55,7 +55,7 @@ def test_combined_mixed_pool_preserves_weights_and_legacy_boundaries(level: int)
     # #191: combinations has level 1 only, so it joins Algebra mixed practice there.
     assert set(algebra) == (legacy | {"combinations"} if level == 1 else legacy)
     assert algebra_weights == [1] * len(algebra)
-    assert set(practice.mixed_topics("algebra", level, worksheet=True)[0]) == legacy
+    assert set(practice.mixed_topics("algebra", level, worksheet=True)[0]) == set(algebra)
 
 
 @pytest.mark.parametrize(

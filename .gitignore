@@ -28,3 +28,6 @@ graphify-out/*
 !graphify-out/GRAPH_REPORT.md
 !graphify-out/graph.json
 !graphify-out/manifest.json
+
+# Private release artifact; contains answers and steps.
+.engine-catalogue.json*
