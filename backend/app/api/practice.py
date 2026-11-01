@@ -64,8 +64,8 @@ TOPICS = {
         "Fundamental theorem of algebra", "algebra", (1, 2, 3, 4, 5), 1, 5
     ),
     "partial-fractions": Topic("Partial fractions", "algebra", (1, 2, 3, 4, 5), 1, 5),
-    # #169: the first topic served by the new generator engine. It stays out of mixed
-    # practice and worksheets until the GrillMe review (#172) accepts the engine.
+    # #169: the first topic served by the new generator engine. It joins mixed practice
+    # with #191 and worksheets with #192 (GrillMe review #172).
     "combinations": Topic("Combinations", "algebra", engine.levels("combinations"), 0, 4),
     "basic-integrals": Topic("Basic integrals", "mathematical-analysis", (1, 2, 3, 4, 5), 1, 3),
     "substitution": Topic("Substitution", "mathematical-analysis", (1, 2, 3, 4, 5), 2, 4),

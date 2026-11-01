@@ -1,9 +1,10 @@
 # ADR-008: composable generator engine
 
-Date: 2026-11-01. Status: **draft** for the GrillMe review (#172); accountable
-human Vlad (whatvlad). Issue #171, part of #162. It becomes accepted, amended or
-replaced when Vlad accepts the #172 findings; a final ADR-008 closes the main
-refactor goal.
+Date: 2026-11-01. Status: **accepted with amendments** by Vlad (whatvlad) in the
+GrillMe review (#172, `docs/architecture/generator-engine-review.md`). Issue
+#171, part of #162. The review's decisions amend the open decisions below; #189
+implements the core changes and updates this ADR, and a final ADR-008 (#199)
+closes the main refactor goal.
 
 Vlad decided on 2026-10-30 to rebuild problem generators and answer checks on a
 composable engine (`docs/decisions/DECISIONS.md`, plan in
@@ -18,8 +19,9 @@ The legacy generators in `backend/app/generators/` are topic-specific templates
 whose answers are checked by one function in `app/services/answer_check.py`.
 Each new task type touched shared code, and a saved problem could only be
 replayed from its stored generator data. The engine lives next to the legacy
-code in `backend/app/engine/` and does not change it: a test pins the SHA-256 of
-`app/generators/` (`tests/test_engine_isolation.py`).
+code in `backend/app/engine/` and did not change it during the MVP. The #170
+test that pinned the SHA-256 of `app/generators/` was removed by the #172
+review, since migrations now replace legacy modules.
 
 ## Architecture: four layers
 
@@ -311,6 +313,9 @@ separate step, listed under known limitations.
     it on Linux.
 
 ## Open decisions for the GrillMe review (#172)
+
+Resolved on 2026-11-01: see `docs/architecture/generator-engine-review.md` for
+the decision on each item and the issue that implements it.
 
 1. **Real parameters in `draw`.** Should `draw(seed)` return the drawn values
    (`n`, `k`, poles, coefficients) as typed `Parameters`, with `build` pure over

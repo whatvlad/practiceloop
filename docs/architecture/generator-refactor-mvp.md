@@ -212,6 +212,9 @@ GrillMe reviews the whole slice and decides:
 Accepted when its findings are written down and Vlad accepts them. No
 other topic migration starts before this issue is accepted.
 
+Done: [GrillMe review](generator-engine-review.md), accepted by Vlad on
+2026-11-01. The main goal below is split into #189-#200 in that file.
+
 ## MVP done when
 
 - [ ] Adding a task type is one new generator file plus its topic entry, with
