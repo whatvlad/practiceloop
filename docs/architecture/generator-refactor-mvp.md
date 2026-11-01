@@ -132,6 +132,15 @@ Build natively on the new interfaces:
   `NumberAnswer`, to prove the engine works with no SymPy answer and for the
   future Probability and Statistics topics.
 
+The first version draws polynomials of degrees 1–4 and rational functions with
+two simple symmetric poles at ±2…±6 and equal nonzero numerators. The latter
+allows the definite generator to wrap the same indefinite task on [-1, 1]
+without crossing a pole; the exact rational value is zero. This is a limited
+vertical slice, not the eventual curriculum catalogue. Combinations use
+integer arithmetic. Codes PFR, INT, DEF, DRV and CMB identify the respective
+version-1 generators. Symbolic answer checking remains inside the limited worker
+when the slice is later connected to the API.
+
 ### 6. Topic registration (#168)
 
 **Depends on:** 5
