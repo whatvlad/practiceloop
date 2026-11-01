@@ -1352,5 +1352,223 @@
         "template": "even_power"
       }
     }
+  ],
+  "practice-double-v1": [
+    {
+      "code": "DBL-1-0000000000000000-42",
+      "statement": "Calculate \\(\\int_{0}^{1}\\int_{0}^{y} \\left(- 2 x\\right)\\,dx\\,dy\\).",
+      "steps": [
+        [
+          "integrate_inner",
+          "\\int_{0}^{y} \\left(- 2 x\\right)\\,dx = - y^{2}"
+        ],
+        [
+          "integrate_outer",
+          "\\int_{0}^{1} \\left(- y^{2}\\right)\\,dy = - \\frac{1}{3}"
+        ],
+        [
+          "check_other",
+          "\\int_{0}^{1}\\int_{x}^{1} \\left(- 2 x\\right)\\,dy\\,dx = - \\frac{1}{3}"
+        ],
+        [
+          "multiple_value",
+          "- \\frac{1}{3}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "- \\frac{1}{3}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "type_two",
+        "variant": 0
+      }
+    },
+    {
+      "code": "DBL-1-0000000000000001-59",
+      "statement": "Calculate \\(\\iint_D \\left(\\frac{1}{x^{2} + y^{2}}\\right)\\,dA,\\quad D = \\left\\{(x,y) : 1 \\le x^{2}+y^{2} \\le e^{2}\\right\\}\\quad\\text{(polar coordinates)}\\).",
+      "steps": [
+        [
+          "describe_polar",
+          "0 \\le \\theta \\le 2 \\pi,\\quad 1 \\le r \\le e"
+        ],
+        [
+          "polar_change",
+          "\\int_{0}^{2 \\pi}\\int_{1}^{e} \\left(\\frac{1}{r^{2}}\\right)\\,r\\,dr\\,d\\theta"
+        ],
+        [
+          "integrate_inner",
+          "\\int_{1}^{e} \\left(\\frac{1}{r}\\right)\\,dr = 1"
+        ],
+        [
+          "integrate_outer",
+          "\\int_{0}^{2 \\pi} \\left(1\\right)\\,d\\theta = 2 \\pi"
+        ],
+        [
+          "multiple_value",
+          "2 \\pi"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2 \\pi",
+      "metadata": {
+        "difficulty": 3,
+        "template": "polar_annulus",
+        "variant": 1
+      }
+    },
+    {
+      "code": "DBL-1-0000000000000002-76",
+      "statement": "Calculate \\(\\int_{0}^{1}\\int_{y}^{1} \\left(- 2 e^{x^{2}}\\right)\\,dx\\,dy\\).",
+      "steps": [
+        [
+          "describe_region",
+          "0 \\le x \\le 1,\\quad 0 \\le y \\le x"
+        ],
+        [
+          "reverse_order",
+          "\\int_{0}^{1}\\int_{0}^{x} \\left(- 2 e^{x^{2}}\\right)\\,dy\\,dx"
+        ],
+        [
+          "integrate_inner",
+          "\\int_{0}^{x} \\left(- 2 e^{x^{2}}\\right)\\,dy = - 2 x e^{x^{2}}"
+        ],
+        [
+          "integrate_outer",
+          "\\int_{0}^{1} \\left(- 2 x e^{x^{2}}\\right)\\,dx = 1 - e"
+        ],
+        [
+          "check_other",
+          "\\int_{0}^{1}\\int_{y}^{1} \\left(- 2 e^{x^{2}}\\right)\\,dx\\,dy = 1 - e"
+        ],
+        [
+          "multiple_value",
+          "1 - e"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "1 - e",
+      "metadata": {
+        "difficulty": 4,
+        "template": "reverse_order",
+        "variant": 0
+      }
+    }
+  ],
+  "practice-triple-v1": [
+    {
+      "code": "TPL-1-0000000000000000-10",
+      "statement": "Calculate \\(\\iiint_E \\left(- x^{2} - y^{2}\\right)\\,dV,\\quad E = \\left\\{x^{2}+y^{2} \\le 1,\\ 0 \\le z \\le 3\\right\\}\\quad\\text{(cylindrical coordinates)}\\).",
+      "steps": [
+        [
+          "describe_solid",
+          "0 \\le \\theta \\le 2 \\pi,\\quad 0 \\le r \\le 1,\\quad 0 \\le z \\le 3"
+        ],
+        [
+          "cylindrical_change",
+          "\\int_{0}^{2 \\pi}\\int_{0}^{1}\\int_{0}^{3} \\left(- r^{2}\\right)\\,dz\\,r\\,dr\\,d\\theta"
+        ],
+        [
+          "integrate_inner",
+          "\\int_{0}^{3} \\left(- r^{3}\\right)\\,dz = - 3 r^{3}"
+        ],
+        [
+          "integrate_middle",
+          "\\int_{0}^{1} \\left(- 3 r^{3}\\right)\\,dr = - \\frac{3}{4}"
+        ],
+        [
+          "integrate_outer",
+          "\\int_{0}^{2 \\pi} \\left(- \\frac{3}{4}\\right)\\,d\\theta = - \\frac{3 \\pi}{2}"
+        ],
+        [
+          "check_other",
+          "\\int_{-1}^{1}\\int_{- \\sqrt{1 - x^{2}}}^{\\sqrt{1 - x^{2}}}\\int_{0}^{3} \\left(- x^{2} - y^{2}\\right)\\,dz\\,dy\\,dx = - \\frac{3 \\pi}{2}"
+        ],
+        [
+          "multiple_value",
+          "- \\frac{3 \\pi}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "- \\frac{3 \\pi}{2}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "cylinder",
+        "variant": 0
+      }
+    },
+    {
+      "code": "TPL-1-0000000000000001-27",
+      "statement": "Calculate \\(\\int_{0}^{1}\\int_{0}^{1 - x}\\int_{0}^{- x - y + 1} \\left(1\\right)\\,dz\\,dy\\,dx\\).",
+      "steps": [
+        [
+          "integrate_inner",
+          "\\int_{0}^{- x - y + 1} \\left(1\\right)\\,dz = - x - y + 1"
+        ],
+        [
+          "integrate_middle",
+          "\\int_{0}^{1 - x} \\left(- x - y + 1\\right)\\,dy = \\frac{\\left(x - 1\\right)^{2}}{2}"
+        ],
+        [
+          "integrate_outer",
+          "\\int_{0}^{1} \\left(\\frac{\\left(x - 1\\right)^{2}}{2}\\right)\\,dx = \\frac{1}{6}"
+        ],
+        [
+          "check_other",
+          "\\int_{0}^{1}\\int_{0}^{1 - z}\\int_{0}^{- y - z + 1} \\left(1\\right)\\,dx\\,dy\\,dz = \\frac{1}{6}"
+        ],
+        [
+          "multiple_value",
+          "\\frac{1}{6}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{6}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "simplex",
+        "variant": 1
+      }
+    },
+    {
+      "code": "TPL-1-0000000000000002-44",
+      "statement": "Calculate \\(\\iiint_E -2\\,dV,\\quad E = \\left\\{0 \\le z \\le 4 - x^{2} - y^{2}\\right\\}\\).",
+      "steps": [
+        [
+          "describe_solid",
+          "0 \\le \\theta \\le 2 \\pi,\\quad 0 \\le r \\le 2,\\quad 0 \\le z \\le 4 - r^{2}"
+        ],
+        [
+          "cylindrical_change",
+          "\\int_{0}^{2 \\pi}\\int_{0}^{2}\\int_{0}^{4 - r^{2}} \\left(-2\\right)\\,dz\\,r\\,dr\\,d\\theta"
+        ],
+        [
+          "integrate_inner",
+          "\\int_{0}^{4 - r^{2}} \\left(- 2 r\\right)\\,dz = 2 r \\left(r^{2} - 4\\right)"
+        ],
+        [
+          "integrate_middle",
+          "\\int_{0}^{2} \\left(2 r \\left(r^{2} - 4\\right)\\right)\\,dr = -8"
+        ],
+        [
+          "integrate_outer",
+          "\\int_{0}^{2 \\pi} \\left(-8\\right)\\,d\\theta = - 16 \\pi"
+        ],
+        [
+          "check_other",
+          "\\int_{-2}^{2}\\int_{- \\sqrt{4 - x^{2}}}^{\\sqrt{4 - x^{2}}}\\int_{0}^{- x^{2} - y^{2} + 4} \\left(-2\\right)\\,dz\\,dy\\,dx = - 16 \\pi"
+        ],
+        [
+          "multiple_value",
+          "- 16 \\pi"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "- 16 \\pi",
+      "metadata": {
+        "difficulty": 4,
+        "template": "solid_of_revolution",
+        "variant": 1
+      }
+    }
   ]
 }

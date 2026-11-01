@@ -13,9 +13,9 @@ from typing import Any
 
 import sympy as sp
 
+from app.engine.blocks.multiple.setup import SetupLike, bounds_latex
 from app.generators.core import Exercise
 from app.generators.double import solution_setup
-from app.generators.multiple import Setup, bounds_latex
 from app.visuals.expression import to_tree
 
 KIND = "region2d"
@@ -39,7 +39,7 @@ def _numeric(variables: tuple[Any, ...], expression: Any) -> Callable[..., float
     return value
 
 
-def parameter_points(setup: Setup, samples: int = _SAMPLES) -> list[tuple[float, float]]:
+def parameter_points(setup: SetupLike, samples: int = _SAMPLES) -> list[tuple[float, float]]:
     """The (inner, outer) parameter values on a grid over the region.
 
     `s` runs over the outer interval and `t` from the inner lower to the inner
@@ -58,7 +58,7 @@ def parameter_points(setup: Setup, samples: int = _SAMPLES) -> list[tuple[float,
     return points
 
 
-def to_xy(setup: Setup, inner: float, outer: float) -> tuple[float, float]:
+def to_xy(setup: SetupLike, inner: float, outer: float) -> tuple[float, float]:
     values = {str(setup.bounds[0][0]): inner, str(setup.bounds[1][0]): outer}
     if setup.system == "polar":
         return values["r"] * math.cos(values["theta"]), values["r"] * math.sin(values["theta"])
@@ -76,7 +76,11 @@ def _interval(values: list[float], *, margin: float, include_zero: bool = False)
 
 
 def region2d(exercise: Exercise) -> dict[str, Any]:
-    setup = solution_setup(exercise.record)
+    return region2d_setup(solution_setup(exercise.record))
+
+
+def region2d_setup(setup: SetupLike) -> dict[str, Any]:
+    """Render the typed solution setup shared by native and old records."""
     if len(setup.bounds) != 2 or setup.system not in ("cartesian", "polar"):
         raise ValueError("region2d needs a two-level Cartesian or polar set-up")
     (inner, _, _), (outer, _, _) = setup.bounds

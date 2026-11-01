@@ -14,10 +14,11 @@ from typing import Any
 from app.engine import practice as engine
 from app.engine.codes import parse_code
 from app.engine.generators.integrals import IntegralGenerator
+from app.engine.generators.multiple import DoubleIntegrals
 from app.generators.core import Exercise, replay
-from app.visuals.region2d import region2d
+from app.visuals.region2d import region2d, region2d_setup
 from app.visuals.single import definite, definite_data, indefinite
-from app.visuals.solid3d import solid3d
+from app.visuals.solid3d import solid3d, solid3d_setup
 
 VERSION = 1
 MAX_BYTES = 8 * 1024
@@ -47,17 +48,24 @@ def _build(canonical: str) -> dict[str, Any] | None:
     record = json.loads(canonical)
     version = record.get("generator_version")
     if engine.is_engine_record(record):
-        if engine.visual(str(version)) is None:
+        visual = engine.visual(str(version))
+        if visual is None:
             return None
-        if engine.visual(str(version)) != "single-integral":
-            raise ValueError("No builder for the engine visual of this version")
         generators = engine._registry()
         code = parse_code(record["code"], generators)
         generator = generators.get_code(code.prefix, code.version)
-        if not isinstance(generator, IntegralGenerator):
-            raise ValueError("Unsupported engine integral visual")
-        data = generator.data(generator.draw(code.seed))
-        built = definite_data(data) if data.lower is not None else indefinite(data)
+        if visual == "single-integral" and isinstance(generator, IntegralGenerator):
+            data = generator.data(generator.draw(code.seed))
+            built = definite_data(data) if data.lower is not None else indefinite(data)
+        elif visual in {"region2d", "solid3d"} and isinstance(generator, DoubleIntegrals):
+            multiple = generator.data(generator.draw(code.seed))
+            built = (
+                region2d_setup(multiple.setup)
+                if visual == "region2d"
+                else solid3d_setup(multiple.setup)
+            )
+        else:
+            raise ValueError("No builder for the engine visual of this version")
         spec = {**built, "version": VERSION}
         if len(json.dumps(spec, separators=(",", ":"))) > MAX_BYTES:
             raise ValueError("Visual spec exceeds 8 KB")

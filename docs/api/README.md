@@ -480,3 +480,9 @@ under the existing `problem_archived` contract. Missing-constant feedback is
 retained; other incorrect native integral answers use general feedback rather
 than the old generator-specific mistake classifiers. Worksheet capacities are
 the release pool lengths; solution reveals still include the integral graph.
+
+After #194, double-integrals and triple-integrals retain levels 1-5 and weight 2
+but issue engine codes. Old saved records follow the existing archive contract.
+Answers remain exact scalar values without C; native wrong answers use general
+feedback. Solution payloads retain region2d/solid3d visuals, and worksheets use
+the release pools at their published capacities.

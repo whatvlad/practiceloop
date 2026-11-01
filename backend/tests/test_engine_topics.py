@@ -36,6 +36,8 @@ def test_five_topics_have_nonempty_levels_and_replay_for_many_seeds() -> None:
         "integration-by-parts",
         "rational-functions",
         "trigonometric-integrals",
+        "double-integrals",
+        "triple-integrals",
     }
     generators = registry()
     expected_kinds = {
@@ -44,6 +46,8 @@ def test_five_topics_have_nonempty_levels_and_replay_for_many_seeds() -> None:
         "indefinite-integrals": "antiderivative",
         "definite-integrals": "expression",
         "combinations": "number",
+        "double-integrals": "expression",
+        "triple-integrals": "expression",
     }
     for topic in topics.values():
         assert topic.slug in topics and topic.area and topic.mixed_weight >= 0

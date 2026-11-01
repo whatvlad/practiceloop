@@ -9,8 +9,8 @@ along its boundary. The integrand, a scalar field, is not part of the spec.
 import math
 from typing import Any
 
+from app.engine.blocks.multiple.setup import SetupLike, bounds_latex
 from app.generators.core import Exercise
-from app.generators.multiple import Setup, bounds_latex
 from app.generators.triple import solution_setup
 from app.visuals.expression import to_tree
 from app.visuals.region2d import _interval, _numeric
@@ -23,7 +23,7 @@ _SAMPLES = 41
 _MARGIN = 0.06
 
 
-def solid_points(setup: Setup, samples: int = _SAMPLES) -> list[tuple[float, float, float]]:
+def solid_points(setup: SetupLike, samples: int = _SAMPLES) -> list[tuple[float, float, float]]:
     """Points (x, y, z) on the bottom and top surfaces over a grid of the region.
 
     `s` runs over the outer interval and `t` from the middle lower to the middle
@@ -48,7 +48,7 @@ def solid_points(setup: Setup, samples: int = _SAMPLES) -> list[tuple[float, flo
     return points
 
 
-def to_xy(setup: Setup, middle: float, outer: float) -> tuple[float, float]:
+def to_xy(setup: SetupLike, middle: float, outer: float) -> tuple[float, float]:
     values = {str(setup.bounds[1][0]): middle, str(setup.bounds[2][0]): outer}
     if setup.system == "cylindrical":
         return values["r"] * math.cos(values["theta"]), values["r"] * math.sin(values["theta"])
@@ -56,7 +56,11 @@ def to_xy(setup: Setup, middle: float, outer: float) -> tuple[float, float]:
 
 
 def solid3d(exercise: Exercise) -> dict[str, Any]:
-    setup = solution_setup(exercise.record)
+    return solid3d_setup(solution_setup(exercise.record))
+
+
+def solid3d_setup(setup: SetupLike) -> dict[str, Any]:
+    """Render the typed solution setup shared by native and old records."""
     if len(setup.bounds) != 3 or setup.system not in ("cartesian", "cylindrical"):
         raise ValueError("solid3d needs a three-level Cartesian or cylindrical set-up")
     if str(setup.bounds[0][0]) != "z":
