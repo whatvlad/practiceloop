@@ -7,6 +7,8 @@ import pytest
 import sympy as sp
 
 from app.api.practice import TOPICS
+from app.engine.practice import ENGINE_TOPICS
+from app.engine.practice import issue as engine_issue
 from app.generators.basic import X
 from app.generators.core import catalogue
 from app.generators.definite import replay_definite, value_latex
@@ -51,8 +53,15 @@ def test_every_catalogue_version_declares_a_visual_or_none() -> None:
     versions = {
         str(exercise.record["generator_version"])
         for topic, cell in TOPICS.items()
+        if topic not in ENGINE_TOPICS
         for level in cell.levels
         for exercise in catalogue(topic, level)
+    }
+    # New-engine topics (#169) have no legacy catalogue; their versions come from the code.
+    versions |= {
+        str(engine_issue(topic, level, seed=0).record["generator_version"])
+        for topic in ENGINE_TOPICS
+        for level in TOPICS[topic].levels
     }
     assert not set(BUILDERS) & NO_VISUAL
     assert versions <= set(BUILDERS) | NO_VISUAL

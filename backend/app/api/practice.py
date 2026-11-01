@@ -26,6 +26,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from app.core.auth import VerifiedUser, current_user
 from app.core.database import transaction
 from app.core.errors import ApiError
+from app.engine import practice as engine
 from app.generators.core import Exercise, catalogue, catalogue_records
 from app.services import idempotency, shares
 from app.services import owned_records as records
@@ -63,6 +64,9 @@ TOPICS = {
         "Fundamental theorem of algebra", "algebra", (1, 2, 3, 4, 5), 1, 5
     ),
     "partial-fractions": Topic("Partial fractions", "algebra", (1, 2, 3, 4, 5), 1, 5),
+    # #169: the first topic served by the new generator engine. It stays out of mixed
+    # practice and worksheets until the GrillMe review (#172) accepts the engine.
+    "combinations": Topic("Combinations", "algebra", engine.levels("combinations"), 0, 4),
     "basic-integrals": Topic("Basic integrals", "mathematical-analysis", (1, 2, 3, 4, 5), 1, 3),
     "substitution": Topic("Substitution", "mathematical-analysis", (1, 2, 3, 4, 5), 2, 4),
     # ADR-003 amendment: parts has three levels; the frontend hides the rest.
@@ -261,7 +265,12 @@ def _mixed(area: str) -> dict[str, object] | None:
 
 
 def capacity(topic: str, difficulty: int) -> int:
-    """ADR-007 decision 4: a worksheet never repeats a record, so a cell holds this many."""
+    """ADR-007 decision 4: a worksheet never repeats a record, so a cell holds this many.
+
+    New-engine topics (#169) are not offered on worksheets yet.
+    """
+    if topic in engine.ENGINE_TOPICS:
+        return 0
     return len(catalogue_records(topic, difficulty))
 
 
@@ -463,20 +472,29 @@ def generate(body: GenerateBody, user: User, key: IdempotencyKey = None) -> JSON
         stored = idempotency.claim(conn, scope)
         if stored is not None:
             return _respond(stored, replayed=True)
-        exercise = _pick(conn, user.id, topic, body.difficulty)
-        problem = records.insert_problem(
-            conn,
-            user.id,
-            topic,
-            body.difficulty,
-            exercise.statement,
-            records.PrivateSolution(
-                generator_version=str(exercise.record["generator_version"]),
-                generator_data=exercise.record,
-                answer_latex=exercise.answer,
-                solution_steps=list(exercise.steps),
-            ),
-        )
+        if topic in engine.ENGINE_TOPICS:
+            issued = engine.issue(topic, body.difficulty)
+            statement, solution = (
+                issued.statement,
+                records.PrivateSolution(
+                    generator_version=str(issued.record["generator_version"]),
+                    generator_data=issued.record,
+                    answer_latex=issued.answer_latex,
+                    solution_steps=list(issued.steps),
+                ),
+            )
+        else:
+            exercise = _pick(conn, user.id, topic, body.difficulty)
+            statement, solution = (
+                exercise.statement,
+                records.PrivateSolution(
+                    generator_version=str(exercise.record["generator_version"]),
+                    generator_data=exercise.record,
+                    answer_latex=exercise.answer,
+                    solution_steps=list(exercise.steps),
+                ),
+            )
+        problem = records.insert_problem(conn, user.id, topic, body.difficulty, statement, solution)
         response = StoredResponse(
             201,
             {

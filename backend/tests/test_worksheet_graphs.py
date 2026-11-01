@@ -7,6 +7,7 @@ import re
 import pytest
 
 from app.api.practice import TOPICS
+from app.engine.practice import ENGINE_TOPICS
 from app.generators.core import catalogue_records
 from app.services.worksheet_graphs import DRAWERS, graph, nice_ticks
 from app.visuals.spec import BUILDERS, build_visual
@@ -21,6 +22,8 @@ def first_records() -> list[dict[str, object]]:
     """The first record of every generator version with a visual, at every level."""
     first: dict[tuple[object, int], dict[str, object]] = {}
     for slug, topic in TOPICS.items():
+        if slug in ENGINE_TOPICS:
+            continue
         for level in topic.levels:
             for record in catalogue_records(slug, level):
                 if record["generator_version"] in BUILDERS:

@@ -9,6 +9,7 @@ from test_definite import linux_only
 
 from app.api.practice import TOPICS
 from app.content.catalogue import TEXT
+from app.engine.practice import ENGINE_TOPICS
 from app.generators.core import catalogue
 from app.generators.definite import TEMPLATES, base_record, replay_definite
 from app.generators.mistakes import declared
@@ -18,7 +19,13 @@ from app.services.math_parser import parse_math_input
 from app.services.math_worker import AnswerCheck, check_answer
 
 # Every offered cell, from the same table `GET /topics` publishes.
-CELLS = [(topic, level) for topic, cell in TOPICS.items() for level in cell.levels]
+# New-engine topics (#169) declare no mistakes; tests/test_engine_practice.py covers them.
+CELLS = [
+    (topic, level)
+    for topic, cell in TOPICS.items()
+    if topic not in ENGINE_TOPICS
+    for level in cell.levels
+]
 
 
 def learner(expression: sp.Expr) -> str:

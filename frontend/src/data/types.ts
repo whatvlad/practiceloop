@@ -10,6 +10,7 @@ export type TopicSlug =
   | 'complex-numbers'
   | 'fundamental-theorem-algebra'
   | 'partial-fractions'
+  | 'combinations'
   | 'basic-integrals'
   | 'substitution'
   | 'integration-by-parts'
