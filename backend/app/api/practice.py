@@ -113,9 +113,9 @@ _LEGACY_TOPICS = {
 def listed_topics(served: Mapping[str, EngineTopic]) -> dict[str, Topic]:
     """#191: a topic served by the new engine is listed from its engine entry alone.
 
-    It replaces an old-engine topic of the same slug in place.
+    It replaces an old-engine topic of the same slug in place; a new one ends its area.
     """
-    return {
+    merged = {
         **_LEGACY_TOPICS,
         **{
             slug: Topic(
@@ -128,6 +128,8 @@ def listed_topics(served: Mapping[str, EngineTopic]) -> dict[str, Topic]:
             for slug, entry in served.items()
         },
     }
+    order = list(AREAS)
+    return dict(sorted(merged.items(), key=lambda item: order.index(item[1].area)))
 
 
 TOPICS = listed_topics(engine.ENGINE_TOPICS)

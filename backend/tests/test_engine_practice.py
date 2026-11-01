@@ -64,6 +64,7 @@ def test_a_served_entry_replaces_an_old_topic_of_its_slug_in_place() -> None:
     entry = replace(engine.ENGINE_TOPICS["combinations"], slug="matrices", title="Matrices")
     listed = practice.listed_topics({"matrices": entry})
     assert list(listed) == list(practice.listed_topics({}))
+    assert list(practice.TOPICS)[4] == "combinations"  # it ends Algebra, as in the catalogue
     assert listed["matrices"].levels == (1,)
 
 
