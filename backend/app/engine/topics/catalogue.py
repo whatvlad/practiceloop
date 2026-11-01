@@ -7,6 +7,7 @@ from functools import partial
 
 from app.engine.blocks.integral_forms.form import BOUNDS, METHODS
 from app.engine.generators.algebra import AlgebraParams, algebra_generators
+from app.engine.generators.analysis import AnalysisParams, analysis_generators
 from app.engine.generators.definite import DefiniteParams
 from app.engine.generators.derivative import DerivativeParams
 from app.engine.generators.differentiation import (
@@ -284,10 +285,40 @@ def topics() -> dict[str, Topic]:
             space_cm=space,
             served=True,
         )
+    for analysis_generator, (slug, title, space) in zip(
+        analysis_generators(),
+        (
+            ("functions-and-sequences", "Functions and sequences", 4),
+            ("limits-and-continuity", "Limits and continuity", 4),
+            ("improper-integrals", "Improper integrals", 5),
+            ("series", "Series", 4),
+            ("multivariable-functions", "Multivariable functions", 5),
+            ("differential-equations", "Differential equations", 5),
+        ),
+        strict=True,
+    ):
+        declared[slug] = Topic(
+            slug,
+            "mathematical-analysis",
+            {
+                level: (Choice(analysis_generator.version, partial(_analysis_level, level)),)
+                for level in range(1, 6)
+            },
+            1,
+            title=title,
+            space_cm=space,
+            served=True,
+        )
     return declared
 
 
 def _algebra_level(level: int, params: Drawn) -> bool:
     if not isinstance(params, AlgebraParams):
         raise ValueError("Expected Algebra parameters")
+    return params.difficulty == level
+
+
+def _analysis_level(level: int, params: Drawn) -> bool:
+    if not isinstance(params, AnalysisParams):
+        raise ValueError("Expected analysis parameters")
     return params.difficulty == level

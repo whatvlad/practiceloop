@@ -589,3 +589,34 @@ worksheet space. Legacy symbolic records become archives; shipped PFR-1 codes
 and all previous golden entries remain unchanged. New golden entries, every
 coefficient pair, the 1,000-seed sweep, pool replay, archive/worksheet tests and
 limited Linux workers cover all twenty migrated cells.
+
+## Amendment: remaining analysis migration (#197)
+
+Functions/sequences, limits/continuity, improper integrals, series, multivariable
+functions and differential equations now use native pools at their existing
+levels 1-5. New code families are SEQ, LIM, IMP, SER, MVF and ODE (code version 1),
+with generator versions `practice-sequence-v1`, `practice-limits-v1`,
+`practice-improper-v1`, `practice-series-v1`, `practice-multivariable-v1` and
+`practice-ode-v1`. The existing exact-expression answer kind/editor covers the
+scalar and real x/y expressions. No arbitrary integration constant is accepted
+for the convergent integral or the initial-value problem.
+
+Strict `AnalysisForm` values hold the template and coefficients 1-5. Independent
+proofs substitute the sequence index, take both one-sided limits, integrate the
+improper integral, sum the infinite series, differentiate the multivariable
+function, and verify both the ODE and its initial condition. Builds cache only
+pure drawn mathematical values. Variable metadata for x/y comes directly from
+the code without symbolic work in the API.
+
+Two legacy mathematical errors are corrected only in these new versions:
+the geometric series with ratio a/(a+1) sums to a+1, rather than (a+1)/a;
+the x derivative of a*x^2*y+b*y is 2*a*x*y, without the held-constant b term.
+Statements, template coverage, level ranges, mixed weights and worksheet space
+are preserved. Legacy modules and saved archive answers remain unchanged.
+Regressions independently prove the corrected answers and reject the former
+wrong ones. New golden entries, the 1,000-seed sweep, pooled-code replay,
+archive/worksheet tests and limited workers cover every new cell.
+
+All 21 public topics now issue through the new engine. Legacy cleanup and the
+code-sharing page remain separate tasks (#199 and #198). Existing frozen
+interfaces, versions, PRNG and golden output are unchanged.

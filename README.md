@@ -55,7 +55,8 @@ the order of the [Implementation Queue](https://github.com/users/whatvlad/projec
   only sign-in provider.
 - **Content is fixed.** Problems come from a verified catalogue (no repeats
   within half a cell's catalogue per learner), not open-ended generation. Only
-  Integration is covered. Mistake feedback covers declared common mistakes only;
+  the current Algebra and Mathematical Analysis syllabus is covered. Mistake
+  feedback covers declared common mistakes only;
   other wrong answers get a general hint.
 - **Answer language is bounded** (ADR-003): real domain only, a 256-byte limit,
   and an allowlisted grammar. The formula editor's phone keyboard was checked
