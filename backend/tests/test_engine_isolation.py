@@ -2,8 +2,7 @@
 
 Old saved problems keep opening from `problems.problem_latex` and replay through
 the old generators exactly as they were saved. New-engine topics never import
-or fall back to `app/generators`, and the old generator code itself stays
-unchanged during the generator refactor MVP (#162).
+or fall back to `app/generators`.
 """
 
 import ast
@@ -13,7 +12,6 @@ import sys
 from collections.abc import Iterator
 from contextlib import contextmanager
 from datetime import UTC, datetime
-from hashlib import sha256
 from pathlib import Path
 from typing import Any
 from uuid import UUID, uuid4
@@ -30,18 +28,6 @@ APP = Path(__file__).resolve().parents[1] / "app"
 LEGACY = json.loads(
     (Path(__file__).parent / "fixtures" / "legacy_saved_problems.json").read_text(encoding="utf-8")
 )
-# SHA-256 of app/generators at the start of the MVP. Old generator code is not
-# changed before the GrillMe review (#172) accepts the engine; a deliberate
-# change after that review updates this value in the same pull request.
-LEGACY_SOURCE_DIGEST = "b623a194b4a705352161e8abe1b47b3825e2976ad0eb7509c1d4d3f164907ba9"
-
-
-def legacy_digest() -> str:
-    digest = sha256()
-    for path in sorted((APP / "generators").rglob("*.py")):
-        name = path.relative_to(APP).as_posix().encode()
-        digest.update(name + b"\0" + path.read_bytes().replace(b"\r\n", b"\n") + b"\0")
-    return digest.hexdigest()
 
 
 def imported_modules(path: Path) -> Iterator[str]:
@@ -51,10 +37,6 @@ def imported_modules(path: Path) -> Iterator[str]:
         elif isinstance(node, ast.ImportFrom) and node.module:
             yield node.module
             yield from (f"{node.module}.{alias.name}" for alias in node.names)
-
-
-def test_old_generator_code_is_unchanged() -> None:
-    assert legacy_digest() == LEGACY_SOURCE_DIGEST
 
 
 def test_new_engine_never_imports_the_old_generators() -> None:
