@@ -19,7 +19,7 @@ from app.engine.registry import Registry
 from app.engine.rendering import Issued, render
 from app.engine.rendering import statement_latex as statement_latex
 from app.engine.topics.catalogue import Topic, topics
-from app.services.math_parser import MathNode
+from app.services.math_parser import MathNode, VariableDomain, declared_variables
 
 # Public topic slug -> its served engine entry (#191), derived from the topic catalogue;
 # never edit it by hand. Other public topics stay on the old engine.
@@ -95,6 +95,24 @@ def replay(record: dict[str, object]) -> Task:
 
 def public_replay(record: dict[str, object]) -> Issued:
     return _public(replay(record))
+
+
+def input_variables(record: dict[str, object]) -> dict[str, VariableDomain] | None:
+    """Optional plain grammar metadata from drawn parameters, without building a task.
+
+    The frozen generator protocol is unchanged. A multivariable generator may
+    expose this private helper; its saved record still contains only the code.
+    """
+    if set(record) != {"generator_version", "code"} or not isinstance(record["code"], str):
+        raise ValueError("Invalid new-engine record")
+    code = parse_code(record["code"], _registry())
+    generator = _registry().get_code(code.prefix, code.version)
+    if generator.version != record["generator_version"]:
+        raise ValueError("Record version differs from its code")
+    describe = getattr(generator, "input_variables", None)
+    if describe is None:
+        return None
+    return declared_variables(describe(generator.draw(code.seed)))
 
 
 def check(record: dict[str, object], tree: MathNode) -> Outcome:

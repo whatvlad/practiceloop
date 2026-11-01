@@ -8,6 +8,12 @@ from functools import partial
 from app.engine.blocks.integral_forms.form import BOUNDS, METHODS
 from app.engine.generators.definite import DefiniteParams
 from app.engine.generators.derivative import DerivativeParams
+from app.engine.generators.differentiation import (
+    PartialDerivativeParams,
+    PartialDerivatives,
+    SingleDerivativeParams,
+    SingleDerivatives,
+)
 from app.engine.generators.indefinite import IndefiniteParams
 from app.engine.generators.integrals import IntegralParams, integral_generators
 from app.engine.generators.multiple import DoubleIntegrals, MultipleParams, TripleIntegrals
@@ -112,6 +118,12 @@ def _integral_level(level: int, params: Drawn) -> bool:
 def _multiple_level(level: int, params: Drawn) -> bool:
     if not isinstance(params, MultipleParams):
         raise ValueError("Expected native multiple-integral parameters")
+    return params.form.difficulty == level
+
+
+def _differentiation_level(level: int, params: Drawn) -> bool:
+    if not isinstance(params, SingleDerivativeParams | PartialDerivativeParams):
+        raise ValueError("Expected differentiation parameters")
     return params.form.difficulty == level
 
 
@@ -228,5 +240,25 @@ def topics() -> dict[str, Topic]:
             space_cm=space,
             served=True,
             visual=visual,
+        )
+    for differentiation_generator, slug, title, space in (
+        (SingleDerivatives(), "derivatives", "Derivatives", 3),
+        (PartialDerivatives(), "partial-derivatives", "Partial derivatives", 4),
+    ):
+        declared[slug] = Topic(
+            slug,
+            "mathematical-analysis",
+            {
+                level: (
+                    Choice(
+                        differentiation_generator.version, partial(_differentiation_level, level)
+                    ),
+                )
+                for level in range(1, 6)
+            },
+            1,
+            title=title,
+            space_cm=space,
+            served=True,
         )
     return declared

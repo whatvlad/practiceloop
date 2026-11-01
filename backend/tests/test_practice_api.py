@@ -432,6 +432,8 @@ def test_higher_levels_persist_their_family_record_and_check_answers(
             {
                 "basic-v1": "practice-basic-v1",
                 "double-v1": "practice-double-v1",
+                "derivatives-v1": "practice-derivative-v1",
+                "partial-v1": "practice-partial-v1",
                 "substitution-v2": "practice-substitution-v1",
                 "parts-v1": "practice-parts-v1",
                 "rational-v1": "practice-rational-v1",
@@ -794,8 +796,10 @@ def test_mixed_practice_stays_within_the_chosen_area(
     assert set(calls[0]) == set(practice.area_topics("mathematical-analysis")) - {
         "definite-integrals"
     }
-    # The draw is all that is checked here; these topics have no catalogue in this test.
-    monkeypatch.setattr(practice, "_pick", lambda *_: (_ for _ in ()).throw(LookupError))
+    # Stop after the draw; derivative topics now issue through the engine catalogue.
+    monkeypatch.setattr(
+        practice.engine, "issue", lambda *_, **__: (_ for _ in ()).throw(LookupError)
+    )
     with pytest.raises(LookupError):
         client.post(
             "/problems",

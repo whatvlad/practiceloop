@@ -329,7 +329,7 @@ def derivatives(api: httpx.Client, base: str, url: str) -> None:
     problem = response.json()["problem"]
     pid = problem["id"]
     check(
-        problem["topic"] == "derivatives" and problem["problemLatex"].startswith(r"\frac{d}{dx}"),
+        problem["topic"] == "derivatives" and r"\frac{d}{dx}" in problem["problemLatex"],
         "a derivative statement asks for d/dx",
         problem["problemLatex"],
     )
@@ -337,9 +337,8 @@ def derivatives(api: httpx.Client, base: str, url: str) -> None:
     plus_c = api.post(f"/problems/{pid}/attempts", json={"answer": answer + " + C"}, headers=key())
     attempt = plus_c.json().get("attempt", {})
     check(
-        (attempt.get("result"), attempt.get("feedbackCode"))
-        == ("incorrect", "derivative_constant"),
-        "a derivative with + C is incorrect and says why",
+        (attempt.get("result"), attempt.get("feedbackCode")) == ("incorrect", None),
+        "a native derivative with + C is incorrect",
         plus_c.text,
     )
     right = api.post(f"/problems/{pid}/attempts", json={"answer": answer}, headers=key())
@@ -454,7 +453,7 @@ def combinations(api: httpx.Client, url: str) -> None:
 
 def partials(api: httpx.Client, url: str) -> None:
     """#101: declared variables, θ, coordinate changes and mistake feedback."""
-    from app.generators.partial import replay_partial
+    from app.engine import practice as engine
 
     reset_limits()
     response = api.post("/problems", json={"topic": PARTIAL, "difficulty": 4}, headers=key())
@@ -465,7 +464,7 @@ def partials(api: httpx.Client, url: str) -> None:
     pid = problem["id"]
     check(r"\theta" in problem["problemLatex"], "a coordinate change names θ", problem)
     record = private_record(url, pid)
-    exercise = replay_partial(record)
+    issued = engine.public_replay(record)
     answer = correct_answer(url, pid).replace("theta", "θ")
     xy = api.post(f"/problems/{pid}/attempts", json={"answer": "x*y"}, headers=key())
     check(
@@ -473,19 +472,22 @@ def partials(api: httpx.Client, url: str) -> None:
         "an answer in x, y is invalid where r, θ is asked",
         xy.text,
     )
-    code, wrong = exercise.mistakes[0]
-    text = str(wrong).replace("**", "^")
+    text = f"({correct_answer(url, pid)}) + 1"
     mistake = api.post(f"/problems/{pid}/attempts", json={"answer": text}, headers=key())
     attempt = mistake.json().get("attempt", {})
     check(
-        (attempt.get("result"), attempt.get("feedbackCode")) == ("incorrect", code),
-        f"a declared mistake is named ({text})",
+        (attempt.get("result"), attempt.get("feedbackCode")) == ("incorrect", None),
+        f"a shifted native partial answer is incorrect ({text})",
         mistake.text,
     )
     right = api.post(f"/problems/{pid}/attempts", json={"answer": answer}, headers=key())
     check(right.json().get("attempt", {}).get("result") == "correct", "θ answer checks", answer)
     revealed = api.post(f"/problems/{pid}/reveal-solution").json()["steps"]
-    check(len(revealed) == 4, "the solution shows each chain-rule step", revealed)
+    check(
+        revealed == list(issued.steps) and len(revealed) == 4,
+        "the solution shows each chain-rule step",
+        revealed,
+    )
 
 
 def multiple_integral(api: httpx.Client, url: str, topic: str, starts: tuple[str, ...]) -> None:

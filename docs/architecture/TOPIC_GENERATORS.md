@@ -217,3 +217,11 @@ Double and triple integrals also use native engine pools after #194. Their
 Cartesian, polar and cylindrical curriculum variants, levels and solution
 visuals are retained. Native setup blocks verify the exact primary integral
 with the correct Jacobian; old saved double-v1/triple-v1 records are archived.
+
+After #195, derivatives and partial derivatives also issue native engine pools
+at levels 1-5. The single/partial template matrices and domains described above
+remain the curriculum; new records use `practice-derivative-v1` / SDV-1 and
+`practice-partial-v1` / PDV-1. Existing saved legacy records are archives.
+The engine derives partial-answer variable declarations from the code before
+parsing, without symbolic construction in the API. Native incorrect-answer
+feedback is general rather than the legacy mistake codes described above.
