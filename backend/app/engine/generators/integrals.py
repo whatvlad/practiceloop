@@ -1,12 +1,14 @@
 """Native engine generators for the approved single-integral curriculum (#193)."""
 
+from typing import Any
+
 import sympy as sp
 
 from app.engine.answers.antiderivative import AntiderivativeAnswer
 from app.engine.answers.expression import ExpressionAnswer
 from app.engine.blocks.integral_forms.form import Family, IntegralData, IntegralForm
 from app.engine.codes import encode
-from app.engine.models import Answer, Drawn, Step, Task
+from app.engine.models import Answer, Drawn, Step, Task, TaskGenerator
 from app.engine.prng import DeterministicRNG
 
 STEP_TEXT = {
@@ -179,3 +181,8 @@ def integral_generators() -> tuple[IntegralGenerator, ...]:
         TrigonometricIntegrals(),
         DefiniteTrigonometricIntegrals(),
     )
+
+
+def generators() -> tuple[TaskGenerator[Any], ...]:
+    """Contribute this module's frozen versions to registry discovery."""
+    return integral_generators()

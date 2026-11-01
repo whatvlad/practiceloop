@@ -8,7 +8,7 @@ from pydantic import ValidationError
 
 from app.engine.models import Answer, Drawn, Outcome, Step, Task, TaskGenerator
 from app.engine.registry import Registry
-from app.services.math_parser import MathNode, parse_math_input
+from app.math_input import MathNode, parse_math_input
 
 
 class TinyParams(Drawn):

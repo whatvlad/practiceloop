@@ -1,5 +1,11 @@
 # Integration topic generators
 
+The rollout notes below describe the historical curriculum. After #199 the
+legacy modules mentioned below are removed; current implementations are native
+`app/engine/` forms and generators. See [final ADR-008](../decisions/0008-generator-engine.md)
+for current module paths, extension instructions and verification commands.
+
+
 Issue #9 was split before implementation into #77 (substitution), #78 (parts),
 #79 (rational functions) and #80 (trigonometric integrals). These internal
 libraries implement the remaining rows of

@@ -1,18 +1,40 @@
-import json
 from itertools import product
 
 import pytest
-import sympy as sp
+from engine_fixtures import native_record
 from fastapi.testclient import TestClient
 
 from app.api import preview
-from app.generators.basic import X
-from app.generators.core import catalogue, replay
+from app.engine import practice as engine
 from app.main import app
-from app.services.answer_check import check_tree, replay_problem
-from app.services.math_parser import parse_math_input
 from app.services.math_worker import MathCheckInconclusive, MathWorkerError
 from app.services.preview_check import check_answer
+
+
+def test_fixed_demo_picks_rendered_data_without_symbolic_work() -> None:
+    import sys
+
+    preview._sessions.clear()
+    preview._requests.clear()
+    token = preview.start_session()["token"]
+    calls = []
+
+    def profile(frame, event, _):
+        if event == "call" and frame.f_globals.get("__name__", "").startswith("sympy"):
+            calls.append(frame.f_code.co_name)
+
+    previous = sys.getprofile()
+    engine._registry.cache_clear()
+    sys.setprofile(profile)
+    try:
+        public = preview.generate(
+            preview.Generate(topic="basic-integrals", difficulty=1), authorization=f"Bearer {token}"
+        )
+    finally:
+        sys.setprofile(previous)
+    assert not calls
+    assert "answerLatex" not in public and "solution" not in public
+
 
 CELLS = tuple(product(("basic-integrals", "substitution"), (1, 2)))
 
@@ -29,30 +51,6 @@ def headers(client):
     response = client.post("/preview/sessions")
     assert response.status_code == 201
     return {"Authorization": "Bearer " + response.json()["token"]}
-
-
-@pytest.mark.parametrize("topic,level", CELLS)
-def test_entire_catalogue_has_valid_replay_domain_clean_values_and_answers(topic, level):
-    exercises = catalogue(topic, level)
-    assert len(exercises) >= 36
-    assert len({item.statement for item in exercises}) == len(exercises)
-    for exercise in exercises:
-        assert sp.simplify(sp.diff(exercise.primitive, X) - exercise.integrand) == 0
-        assert exercise.primitive.is_real is True
-        assert exercise.integrand.is_real is True
-        assert not exercise.primitive.atoms(sp.Float)
-        assert (
-            max((abs(number.p) for number in exercise.primitive.atoms(sp.Rational)), default=0) <= 4
-        )
-        assert replay(json.loads(json.dumps(exercise.record))) == exercise
-        if exercise.value is not None:
-            # Definite records (#36) answer with the exact value and no constant.
-            source = str(exercise.value).replace("**", "^").replace("E", "e")
-            assert not exercise.steps[-1]["latex"].endswith(" + C")
-        else:
-            source = str(exercise.primitive).replace("**", "^") + " + C"
-            assert exercise.steps[-1]["latex"].endswith(" + C")
-        assert check_tree(parse_math_input(source), replay_problem(exercise.record)) == "correct"
 
 
 def test_one_fixed_demo_requires_login_for_more_and_never_saves_outcomes(client):
@@ -104,7 +102,7 @@ def test_generate_check_and_reveal_through_shared_worker(client, topic, level):
         "/preview/problems", headers=auth, json={"topic": topic, "difficulty": level}
     ).json()
     private = next(iter(preview._sessions.values())).problems[public["id"]]
-    source = str(private.primitive).replace("**", "^")
+    source = str(engine.replay(private.record).answer.primitive).replace("**", "^")
     path = f"/preview/problems/{public['id']}"
     checked = client.post(f"{path}/attempts", headers=auth, json={"answer": source + "+C"})
     assert checked.status_code == 200
@@ -134,7 +132,7 @@ def test_generate_check_and_reveal_through_shared_worker(client, topic, level):
     ],
 )
 def test_worker_equivalence_and_original_domains(answer, expected):
-    record = {"generator_version": "basic-v1", "template": "power", "coefficient": 1}
+    record = native_record("basic", "power")
     assert check_answer(answer, record) == expected
 
 
@@ -187,7 +185,7 @@ def test_check_failure_is_retryable_not_a_verdict(client, monkeypatch):
 def test_worker_saturation_does_not_queue_and_slot_is_released(monkeypatch):
     from app.services import preview_check
 
-    record = {"generator_version": "basic-v1", "template": "power", "coefficient": 1}
+    record = native_record("basic", "power")
     assert preview_check.CHECK_SLOTS.acquire(blocking=False)
     try:
         with pytest.raises(MathWorkerError, match="busy"):

@@ -1,11 +1,11 @@
 """Native Cartesian, polar and cylindrical multiple-integral generators (#194)."""
 
-from typing import Literal
+from typing import Any, Literal
 
 from app.engine.answers.expression import ExpressionAnswer
 from app.engine.blocks.multiple.form import MultipleData, MultipleForm
 from app.engine.codes import encode
-from app.engine.models import Drawn, Task
+from app.engine.models import Drawn, Task, TaskGenerator
 from app.engine.prng import DeterministicRNG
 
 
@@ -72,3 +72,8 @@ class TripleIntegrals(DoubleIntegrals):
         "write_triple": "Write the triple integral as an iterated integral.",
         "integrate_middle": "Integrate the middle integral, keeping the outer variable constant.",
     }
+
+
+def generators() -> tuple[TaskGenerator[Any], ...]:
+    """Contribute this module's frozen versions to registry discovery."""
+    return (DoubleIntegrals(), TripleIntegrals())

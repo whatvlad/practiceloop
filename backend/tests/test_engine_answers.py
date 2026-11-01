@@ -13,7 +13,7 @@ from app.engine.answers.derivative import DerivativeAnswer
 from app.engine.answers.expression import ExpressionAnswer
 from app.engine.answers.number import NumberAnswer
 from app.engine.models import Answer
-from app.services.math_parser import parse_math_input
+from app.math_input import parse_math_input
 
 X = sp.Symbol("x", real=True)
 Y = sp.Symbol("y", real=True)
@@ -150,7 +150,7 @@ from app.services.math_worker import _apply_limits
 _apply_limits()
 import sympy as sp
 from app.engine.answers.expression import ExpressionAnswer
-from app.services.math_parser import parse_math_input
+from app.math_input import parse_math_input
 x = sp.Symbol('x', positive=True)
 y = sp.Symbol('y', real=True)
 answer = ExpressionAnswer(2 * sp.log(x) + y, {'x': 'positive', 'y': 'real'})
@@ -162,7 +162,7 @@ from app.services.math_worker import _apply_limits
 _apply_limits()
 import sympy as sp
 from app.engine.answers.antiderivative import AntiderivativeAnswer
-from app.services.math_parser import parse_math_input
+from app.math_input import parse_math_input
 x = sp.Symbol('x', real=True)
 domain = sp.Union(sp.Interval.open(-sp.oo, -1), sp.Interval.open(-1, 0),
                   sp.Interval.open(0, sp.oo))

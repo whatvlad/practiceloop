@@ -8,9 +8,9 @@ import pytest
 
 from app.api.practice import TOPICS
 from app.engine.practice import ENGINE_TOPICS
-from app.generators.core import catalogue_records
 from app.services.worksheet_graphs import DRAWERS, graph, nice_ticks
-from app.visuals.spec import BUILDERS, build_visual
+from app.services.worksheets import catalogue_records
+from app.visuals.spec import build_visual
 
 # The PDF path, painting and graphics-state operators the drawer emits.
 _NUMBER = re.compile(r"\[?-?[\d.]*\]?")
@@ -22,11 +22,11 @@ def first_records() -> list[dict[str, object]]:
     """The first record of every generator version with a visual, at every level."""
     first: dict[tuple[object, int], dict[str, object]] = {}
     for slug, topic in TOPICS.items():
-        if slug in ENGINE_TOPICS:
+        if ENGINE_TOPICS[slug].visual is None:
             continue
         for level in topic.levels:
             for record in catalogue_records(slug, level):
-                if record["generator_version"] in BUILDERS:
+                if (record["generator_version"], level) not in first:
                     first.setdefault((record["generator_version"], level), record)
     return list(first.values())
 

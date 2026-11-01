@@ -10,7 +10,7 @@ from app.engine.answers.antiderivative import AntiderivativeAnswer
 from app.engine.blocks.polynomial import Polynomial
 from app.engine.codes import encode
 from app.engine.generators.partial_fractions import PartialFractionParams, PartialFractions
-from app.engine.models import Drawn, Step, Task
+from app.engine.models import Drawn, Step, Task, TaskGenerator
 from app.engine.prng import DeterministicRNG
 
 
@@ -87,3 +87,8 @@ class IndefiniteIntegral:
             code=encode(self.prefix, self.code_version, params.seed),
             generator_version=self.version,
         )
+
+
+def generators() -> tuple[TaskGenerator[Any], ...]:
+    """Contribute this module's frozen versions to registry discovery."""
+    return (IndefiniteIntegral(),)

@@ -23,7 +23,6 @@ from app.core import database
 from app.core.auth import VerifiedUser, current_user, token_verifier
 from app.engine import practice as engine
 from app.engine.codes import encode
-from app.generators.core import catalogue
 from app.main import app
 from app.services import shares as share_service
 from app.services.math_worker import AnswerCheck
@@ -150,12 +149,12 @@ def test_owner_shares_once_and_anyone_opens_it_by_link_or_code(
 def test_shared_response_never_carries_answers_results_or_identities(
     client: TestClient, users: Users, url: str, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    # An indefinite record: a definite answer such as "2" also appears in its bounds.
+    original = engine.pool
     monkeypatch.setattr(
-        practice,
-        "catalogue",
+        engine,
+        "pool",
         lambda *cell: tuple(
-            item for item in catalogue(*cell) if item.record["generator_version"] != "definite-v1"
+            item for item in original(*cell) if "definite" not in item.generator_version
         ),
     )
     problem = generate(client)

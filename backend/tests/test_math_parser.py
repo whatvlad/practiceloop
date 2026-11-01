@@ -3,8 +3,7 @@ from __future__ import annotations
 import pytest
 from sympy import Abs, E, Rational, Symbol, log, pi, simplify, sin, sqrt
 
-from app.services.math_parser import MathInputError, MathInputTooLong, parse_math_input
-from app.services.math_worker import _build_sympy
+from app.math_input import MathInputError, MathInputTooLong, build_expression, parse_math_input
 
 X = Symbol("x", real=True)
 
@@ -45,7 +44,7 @@ X = Symbol("x", real=True)
     ],
 )
 def test_supported_notation(source: str, expected: object) -> None:
-    assert simplify(_build_sympy(parse_math_input(source)) - expected) == 0
+    assert simplify(build_expression(parse_math_input(source)) - expected) == 0
 
 
 @pytest.mark.parametrize(

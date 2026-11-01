@@ -8,12 +8,12 @@ solution reveal, history and a profile. [Original specification](docs/PRACTICELO
 **Status: MVP complete (0.1.0, see [CHANGELOG](CHANGELOG.md)).** Live at
 https://practiceloop.pages.dev (noindex). Signed-in learners can:
 
-- practise basic integrals, substitution, rational functions and trigonometric
-  integrals at levels 1–5, and integration by parts at levels 1–3, or choose
-  mixed practice; most cells also include definite integrals;
-- type answers in a formula editor; the backend checks them symbolically
-  (Correct, Incorrect or Invalid expression, with a missing-constant flag and
-  targeted feedback for common mistakes);
+- practise the current 21 Algebra and Mathematical Analysis topics, with their
+  available levels and mixed practice supplied by the API;
+- type answers in a formula editor; typed engine answers check them symbolically
+  (Correct, Incorrect or Invalid expression, with explicit missing-constant feedback);
+- open a permanent problem code at `/p/<code>` and sign in to solve that exact
+  exercise in their own history;
 - reveal the answer or the full step-by-step solution;
 - reopen every generated problem from history after a reload;
 - share a problem's statement by link or short code for 90 days, and stop
@@ -56,8 +56,7 @@ the order of the [Implementation Queue](https://github.com/users/whatvlad/projec
 - **Content is fixed.** Problems come from a verified catalogue (no repeats
   within half a cell's catalogue per learner), not open-ended generation. Only
   the current Algebra and Mathematical Analysis syllabus is covered. Mistake
-  feedback covers declared common mistakes only;
-  other wrong answers get a general hint.
+  native wrong answers get general feedback; historical named feedback remains readable.
 - **Answer language is bounded** (ADR-003): real domain only, a 256-byte limit,
   and an allowlisted grammar. The formula editor's phone keyboard was checked
   on iOS in an emulator only.
@@ -74,7 +73,7 @@ trusted outcomes; owner-filtered browser reads use RLS. [Architecture](docs/arch
 
 ```text
 frontend/src/          React app: components/, pages/, styles/, data/api.ts (the only API boundary)
-backend/app/           main.py, api/, core/, models/, services/, generators/, schemas/
+backend/app/           main.py, api/, core/, models/, services/, engine/, math_input/, schemas/
 backend/tests/         API, auth, generators, answer checking and public-data boundary
 supabase/migrations/   applied schema migrations (deployed by supabase-deploy.yml)
 supabase/tests/        disposable SQL fixture and isolation tests
@@ -221,8 +220,8 @@ Proprietary, all rights reserved. See [LICENSE](LICENSE).
 
 ## Product direction
 
-Practice topics are grouped under Mathematical Analysis. Algebra is reserved
-for the next verified content release (#147). The curriculum expansion follows
+Current topics use the native engine in Algebra and Mathematical Analysis.
+Further syllabus expansion remains in #147, #145, #146 and #200. The curriculum expansion follows
 the [ADR-005 amendment](docs/decisions/0005-multiple-integrals-and-derivatives.md#amendment-practice-areas-144-2026-10-26).
 
 The original [MVP specification](docs/PRACTICELOOP_MVP.md) remains the product

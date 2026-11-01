@@ -29,13 +29,12 @@ from app.core.database import transaction
 from app.core.errors import ApiError
 from app.engine import practice as engine
 from app.engine.topics.catalogue import Topic as EngineTopic
-from app.generators.core import Exercise, catalogue, catalogue_records
+from app.math_input import MathInputTooLong
 from app.services import archive, idempotency, shares
 from app.services import owned_records as records
 from app.services.account import delete_user
 from app.services.idempotency import Scope, StoredResponse
 from app.services.learning_stats import statistics
-from app.services.math_parser import MathInputTooLong
 from app.services.math_worker import AnswerCheck, MathCheckInconclusive, MathWorkerError
 from app.services.math_worker import check_answer as shared_check
 from app.services.preview_check import CHECK_SLOTS
@@ -58,75 +57,18 @@ class Topic(NamedTuple):
 
 # #144: Algebra and Mathematical Analysis are the top-level practice areas.
 AREAS = {"algebra": "Algebra", "mathematical-analysis": "Mathematical Analysis"}
-# Old-engine topics. Basic integrals are the building block of every method, so they get
-# half the share.
-_LEGACY_TOPICS = {
-    "matrices": Topic("Matrices", "algebra", (1, 2, 3, 4, 5), 1, 4),
-    "complex-numbers": Topic("Complex numbers", "algebra", (1, 2, 3, 4, 5), 1, 4),
-    "fundamental-theorem-algebra": Topic(
-        "Fundamental theorem of algebra", "algebra", (1, 2, 3, 4, 5), 1, 5
-    ),
-    "partial-fractions": Topic("Partial fractions", "algebra", (1, 2, 3, 4, 5), 1, 5),
-    "basic-integrals": Topic("Basic integrals", "mathematical-analysis", (1, 2, 3, 4, 5), 1, 3),
-    "substitution": Topic("Substitution", "mathematical-analysis", (1, 2, 3, 4, 5), 2, 4),
-    # ADR-003 amendment: parts has three levels; the frontend hides the rest.
-    "integration-by-parts": Topic("Integration by parts", "mathematical-analysis", (1, 2, 3), 2, 5),
-    "rational-functions": Topic(
-        "Rational functions", "mathematical-analysis", (1, 2, 3, 4, 5), 2, 5
-    ),
-    "trigonometric-integrals": Topic(
-        "Trigonometric integrals", "mathematical-analysis", (1, 2, 3, 4, 5), 2, 5
-    ),
-    # #128: every definite-v1 variant of the topics above, at its base level. Mixed practice
-    # already draws these through their own topics, so this topic stays out of it.
-    "definite-integrals": Topic(
-        "Definite integrals", "mathematical-analysis", (1, 2, 3, 4, 5), 0, 5
-    ),
-    # #99 double-v1: the answer is the integral's exact value (ADR-005).
-    "double-integrals": Topic("Double integrals", "mathematical-analysis", (1, 2, 3, 4, 5), 2, 6),
-    # #100 triple-v1: Cartesian and cylindrical, answered with the exact value.
-    "triple-integrals": Topic("Triple integrals", "mathematical-analysis", (1, 2, 3, 4, 5), 2, 7),
-    # #97 derivatives-v1; with #101 partial-v1 the area has two topics and mixed practice.
-    "derivatives": Topic("Derivatives", "mathematical-analysis", (1, 2, 3, 4, 5), 1, 3),
-    "partial-derivatives": Topic(
-        "Partial derivatives", "mathematical-analysis", (1, 2, 3, 4, 5), 1, 4
-    ),
-    "functions-and-sequences": Topic(
-        "Functions and sequences", "mathematical-analysis", (1, 2, 3, 4, 5), 1, 4
-    ),
-    "limits-and-continuity": Topic(
-        "Limits and continuity", "mathematical-analysis", (1, 2, 3, 4, 5), 1, 4
-    ),
-    "improper-integrals": Topic(
-        "Improper integrals", "mathematical-analysis", (1, 2, 3, 4, 5), 1, 5
-    ),
-    "series": Topic("Series", "mathematical-analysis", (1, 2, 3, 4, 5), 1, 4),
-    "multivariable-functions": Topic(
-        "Multivariable functions", "mathematical-analysis", (1, 2, 3, 4, 5), 1, 5
-    ),
-    "differential-equations": Topic(
-        "Differential equations", "mathematical-analysis", (1, 2, 3, 4, 5), 1, 5
-    ),
-}
 
 
 def listed_topics(served: Mapping[str, EngineTopic]) -> dict[str, Topic]:
     """#191: a topic served by the new engine is listed from its engine entry alone.
 
-    It replaces an old-engine topic of the same slug in place; a new one ends its area.
+    Entry order is kept within each public area; no legacy topic fallback remains.
     """
     merged = {
-        **_LEGACY_TOPICS,
-        **{
-            slug: Topic(
-                entry.title,
-                entry.area,
-                tuple(sorted(entry.levels)),
-                entry.mixed_weight,
-                entry.space_cm,
-            )
-            for slug, entry in served.items()
-        },
+        slug: Topic(
+            entry.title, entry.area, tuple(sorted(entry.levels)), entry.mixed_weight, entry.space_cm
+        )
+        for slug, entry in served.items()
     }
     order = list(AREAS)
     return dict(sorted(merged.items(), key=lambda item: order.index(item[1].area)))
@@ -242,14 +184,6 @@ def _respond(stored: StoredResponse, replayed: bool = False) -> JSONResponse:
     return JSONResponse(stored.body, status_code=stored.status_code, headers=headers)
 
 
-def _pick(conn: Any, user_id: UUID, topic: str, difficulty: int) -> Exercise:
-    """Random record, avoiding the ones behind the user's latest half-pool in this cell."""
-    pool = catalogue(topic, difficulty)
-    recent = records.recent_generator_data(conn, user_id, topic, difficulty, len(pool) // 2)
-    fresh = [exercise for exercise in pool if exercise.record not in recent]
-    return secrets.choice(fresh or list(pool))
-
-
 def area_topics(area: str) -> list[str]:
     # Keep in-flight requests and saved worksheet groups from pre-#144 clients usable.
     if area in ("integrals", "derivatives"):
@@ -301,9 +235,7 @@ def capacity(topic: str, difficulty: int) -> int:
 
     Engine topics use the private deploy-time pools (#192).
     """
-    if topic in engine.ENGINE_TOPICS:
-        return len(engine.pool(topic, difficulty))
-    return len(catalogue_records(topic, difficulty))
+    return len(engine.pool(topic, difficulty))
 
 
 @router.get("/topics")
@@ -503,31 +435,19 @@ def generate(body: GenerateBody, user: User, key: IdempotencyKey = None) -> JSON
         stored = idempotency.claim(conn, scope)
         if stored is not None:
             return _respond(stored, replayed=True)
-        if topic in engine.ENGINE_TOPICS:
-            recent = records.recent_generator_data(
-                conn, user.id, topic, body.difficulty, len(engine.pool(topic, body.difficulty)) // 2
-            )
-            issued = engine.issue(topic, body.difficulty, recent=tuple(recent))
-            statement, solution = (
-                issued.statement,
-                records.PrivateSolution(
-                    generator_version=str(issued.record["generator_version"]),
-                    generator_data=issued.record,
-                    answer_latex=issued.answer_latex,
-                    solution_steps=list(issued.steps),
-                ),
-            )
-        else:
-            exercise = _pick(conn, user.id, topic, body.difficulty)
-            statement, solution = (
-                exercise.statement,
-                records.PrivateSolution(
-                    generator_version=str(exercise.record["generator_version"]),
-                    generator_data=exercise.record,
-                    answer_latex=exercise.answer,
-                    solution_steps=list(exercise.steps),
-                ),
-            )
+        recent = records.recent_generator_data(
+            conn, user.id, topic, body.difficulty, len(engine.pool(topic, body.difficulty)) // 2
+        )
+        issued = engine.issue(topic, body.difficulty, recent=tuple(recent))
+        statement, solution = (
+            issued.statement,
+            records.PrivateSolution(
+                generator_version=str(issued.record["generator_version"]),
+                generator_data=issued.record,
+                answer_latex=issued.answer_latex,
+                solution_steps=list(issued.steps),
+            ),
+        )
         problem = records.insert_problem(conn, user.id, topic, body.difficulty, statement, solution)
         response = StoredResponse(
             201,

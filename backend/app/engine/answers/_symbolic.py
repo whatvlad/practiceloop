@@ -12,8 +12,7 @@ import sympy as sp
 from sympy.calculus.util import continuous_domain
 
 from app.engine.models import Outcome
-from app.services.math_parser import MathNode, VariableDomain
-from app.services.math_worker import _build_sympy
+from app.math_input import MathNode, VariableDomain, build_expression
 
 Verdict = Literal["yes", "no", "unknown"]
 X = sp.Symbol("x", real=True)
@@ -126,7 +125,7 @@ def check_domain(tree: MathNode, domain: Any) -> Outcome | None:
     stack = [tree]
     while stack:
         item = stack.pop()
-        value = _build_sympy(item)
+        value = build_expression(item)
         if value.has(sp.zoo, sp.oo, -sp.oo, sp.nan):
             return "invalid"
         try:
@@ -152,10 +151,10 @@ def evaluated_tree(tree: MathNode) -> Any | None:
     stack = [tree]
     while stack:
         item = stack.pop()
-        if _build_sympy(item, evaluate=True).has(sp.zoo, sp.oo, -sp.oo, sp.nan):
+        if build_expression(item, evaluate=True).has(sp.zoo, sp.oo, -sp.oo, sp.nan):
             return None
         stack.extend(item.children)
-    return _build_sympy(tree, evaluate=True)
+    return build_expression(tree, evaluate=True)
 
 
 def classify_expression(

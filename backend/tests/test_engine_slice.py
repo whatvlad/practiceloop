@@ -15,7 +15,7 @@ from app.engine.answers.derivative import DerivativeAnswer
 from app.engine.answers.expression import ExpressionAnswer
 from app.engine.answers.number import NumberAnswer
 from app.engine.codes import parse_code
-from app.services.math_parser import parse_math_input
+from app.math_input import parse_math_input
 
 
 def catalogue():
@@ -108,9 +108,9 @@ def test_derivatives_cover_polynomial_and_rational_functions() -> None:
         # The first solution step records the function being differentiated.
         expression = task.metadata["function"]
         tree = parse_math_input(str(expression))
-        from app.services.math_worker import _build_sympy
+        from app.math_input import build_expression
 
-        original = _build_sympy(tree, evaluate=True)
+        original = build_expression(tree, evaluate=True)
         assert sp.simplify(task.answer.expected - sp.diff(original, X)) == 0
         forms.add(original.as_numer_denom()[1].has(X))
     assert forms == {False, True}
@@ -130,7 +130,7 @@ def test_combinations_use_exact_integer_arithmetic() -> None:
 def test_combination_generation_and_check_do_not_load_sympy() -> None:
     script = (
         "import sys; from app.engine.generators.combinations import Combinations; "
-        "from app.services.math_parser import parse_math_input; "
+        "from app.math_input import parse_math_input; "
         "g = Combinations(); task = g.build(g.draw(123)); "
         "assert task.answer.check(parse_math_input(str(task.answer.expected))) == 'correct'; "
         "assert 'sympy' not in sys.modules"

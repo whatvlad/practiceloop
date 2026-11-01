@@ -9,16 +9,19 @@ from typing import Any
 
 import pytest
 import sympy as sp
+from engine_fixtures import check, native_record
 
-from app.services import math_worker
-from app.services.answer_check import ExpressionProblem, check_tree, variable_symbol
-from app.services.math_parser import (
+from app.engine import practice as engine
+from app.engine.answers._symbolic import variable_symbol
+from app.engine.answers.expression import ExpressionAnswer
+from app.math_input import (
     MathInputError,
     MathInputTooLong,
     declared_variables,
     parse_math_input,
 )
-from app.services.math_worker import AnswerCheck, _build_sympy, check_answer, record_variables
+from app.services import math_worker
+from app.services.math_worker import AnswerCheck, build_expression, check_answer, record_variables
 
 linux_only = pytest.mark.skipif(not sys.platform.startswith("linux"), reason="Linux worker")
 
@@ -31,7 +34,7 @@ CYLINDRICAL = {"r", "theta", "z"}
 
 
 def tree(source: str, variables: set[str]) -> Any:
-    return _build_sympy(parse_math_input(source, variables))
+    return build_expression(parse_math_input(source, variables))
 
 
 # Shared with frontend/src/answerSyntax.test.ts (VARIABLE_SUPPORTED).
@@ -180,35 +183,35 @@ def test_exact_boundaries_remain_accepted_with_variables(source: str) -> None:
     parse_math_input(source, {"x", "y", "r", "theta"})
 
 
-def problem(expected: Any, **variables: Any) -> ExpressionProblem:
-    return ExpressionProblem(expected, variables)
+def problem(expected: Any, **variables: Any) -> ExpressionAnswer:
+    return ExpressionAnswer(expected, variables)
 
 
 def symbols(**variables: Any) -> list[Any]:
     return [variable_symbol(name, domain) for name, domain in variables.items()]
 
 
-def _partial_xy() -> ExpressionProblem:
+def _partial_xy() -> ExpressionAnswer:
     x, y = symbols(x="real", y="real")
     return problem(y * sp.cos(x * y), x="real", y="real")
 
 
-def _polar() -> ExpressionProblem:
+def _polar() -> ExpressionAnswer:
     r, theta = symbols(r="positive", theta="real")
     return problem(r * sp.cos(theta) ** 2, r="positive", theta="real")
 
 
-def _log_positive() -> ExpressionProblem:
+def _log_positive() -> ExpressionAnswer:
     x, y = symbols(x="positive", y="real")
     return problem(2 * sp.log(x) + y, x="positive", y="real")
 
 
-def _log_real() -> ExpressionProblem:
+def _log_real() -> ExpressionAnswer:
     x, y = symbols(x="real", y="real")
     return problem(sp.log(x**2) + y, x="real", y="real")
 
 
-def _cylindrical() -> ExpressionProblem:
+def _cylindrical() -> ExpressionAnswer:
     r, theta, z = symbols(r="positive", theta="real", z="real")
     return problem(z * r**2 * sp.sin(theta), r="positive", theta="real", z="real")
 
@@ -241,7 +244,7 @@ def _cylindrical() -> ExpressionProblem:
 def test_equivalence_on_the_declared_domain(
     make: Any, variables: set[str], answer: str, expected: str
 ) -> None:
-    assert check_tree(parse_math_input(answer, variables), make()) == expected
+    assert check(parse_math_input(answer, variables), make()) == expected
 
 
 @pytest.mark.parametrize(
@@ -261,7 +264,7 @@ def test_representative_checks_fit_half_the_worker_cpu_limit(
 ) -> None:
     # ADR-005 check budget: at most 1 s CPU in CI, half the worker's 2 s limit.
     started = time.process_time()
-    check_tree(parse_math_input(answer, variables), make())
+    check(parse_math_input(answer, variables), make())
     assert time.process_time() - started < math_worker.CPU_SECONDS / 2
 
 
@@ -281,12 +284,13 @@ import sys
 from app.services.math_worker import _apply_limits
 _apply_limits()
 import sympy as sp
-from app.services.answer_check import ExpressionProblem, check_tree, variable_symbol
-from app.services.math_parser import parse_math_input
+from app.engine.answers.expression import ExpressionAnswer
+from app.engine.answers._symbolic import variable_symbol
+from app.math_input import parse_math_input
 names = sys.argv[2].split(",")
 domains = {name: "positive" if name == "r" else "real" for name in names}
 expected = sp.Add(*(variable_symbol(name, domain) for name, domain in domains.items()))
-print(check_tree(parse_math_input(sys.argv[1], names), ExpressionProblem(expected, domains)))
+print(ExpressionAnswer(expected, domains).check(parse_math_input(sys.argv[1], names)))
 """
 
 
@@ -306,16 +310,28 @@ def test_adversarial_multivariable_answers_end_within_the_worker_limits(
     # A decided result, or the CPU/memory limit stopping the child: never a hang.
     if result.returncode == 0:
         assert result.stdout.strip() in {b"correct", b"incorrect", b"invalid", b"inconclusive"}
+    assert b"ModuleNotFoundError" not in result.stderr and b"ImportError" not in result.stderr
+
+
+@linux_only
+def test_public_expression_checker_starts_under_the_limits() -> None:
+    result = subprocess.run(  # noqa: S603 - fixed trusted test script
+        (sys.executable, "-B", "-c", _LIMITED_CHECK, "x+y", "x,y"),
+        capture_output=True,
+        timeout=math_worker.WALL_SECONDS,
+        check=False,
+    )
+    assert result.returncode == 0 and result.stdout.strip() == b"correct", result.stderr
 
 
 def test_record_variables_are_read_and_validated() -> None:
-    assert record_variables({"generator_version": "basic-v1"}) is None
-    assert record_variables({"variables": {"x": "real", "y": "positive"}}) == {
-        "x": "real",
-        "y": "positive",
-    }
+    assert record_variables(native_record("basic", "power")) is None
+    record = engine.issue("partial-derivatives", 4, seed=199).record
+    variables = record_variables(record)
+    assert variables["r"] == "positive" and variables["theta"] == "real"
+    assert set(variables) <= {"r", "theta", "z"}
     with pytest.raises(ValueError):
-        record_variables({"variables": {"r": "real"}})
+        record_variables({**record, "variables": {"r": "real"}})
 
 
 def test_answers_are_parsed_with_the_record_variables(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -323,7 +339,7 @@ def test_answers_are_parsed_with_the_record_variables(monkeypatch: pytest.Monkey
         pytest.fail("worker started for an undeclared variable")
 
     monkeypatch.setattr(math_worker.subprocess, "Popen", forbidden)
-    record = {"generator_version": "partial-v1", "variables": {"r": "positive", "theta": "real"}}
+    record = engine.issue("partial-derivatives", 4, seed=199).record
     assert check_answer("x + y", record) == AnswerCheck("invalid")
     with pytest.raises(ValueError):
         check_answer("r", {**record, "variables": {"r": "real"}})
@@ -332,12 +348,8 @@ def test_answers_are_parsed_with_the_record_variables(monkeypatch: pytest.Monkey
 @linux_only
 def test_a_record_whose_variables_differ_from_its_template_cannot_be_replayed() -> None:
     record = {
-        "generator_version": "basic-v1",
-        "template": "power",
-        "coefficient": 2,
-        "secondary": 1,
-        "power": 3,
+        **native_record("basic", "power", 2, power=3),
         "variables": {"x": "real", "y": "real"},
     }
-    with pytest.raises(ValueError, match="replayed"):
+    with pytest.raises(ValueError):
         check_answer("2xy", record)

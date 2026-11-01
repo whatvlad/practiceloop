@@ -9,7 +9,7 @@ from app.api import practice
 from app.core.auth import VerifiedUser
 from app.engine import practice as engine
 from app.engine.catalogue import POOL_SIZE
-from app.services.math_parser import parse_math_input
+from app.math_input import parse_math_input
 from app.services.math_worker import check_answer
 from app.visuals.spec import solution_payload
 
@@ -71,7 +71,8 @@ def test_a_served_entry_alone_lists_a_topic(monkeypatch: pytest.MonkeyPatch) -> 
 def test_a_served_entry_replaces_an_old_topic_of_its_slug_in_place() -> None:
     entry = replace(engine.ENGINE_TOPICS["combinations"], slug="matrices", title="Matrices")
     listed = practice.listed_topics({"matrices": entry})
-    assert list(listed) == list(practice.listed_topics({}))
+    assert list(listed) == ["matrices"]
+    assert practice.listed_topics({}) == {}
     assert list(practice.TOPICS)[4] == "combinations"  # it ends Algebra, as in the catalogue
     assert listed["matrices"].levels == (1,)
 
