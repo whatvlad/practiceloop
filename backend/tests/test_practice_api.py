@@ -796,8 +796,10 @@ def test_mixed_practice_stays_within_the_chosen_area(
     assert set(calls[0]) == set(practice.area_topics("mathematical-analysis")) - {
         "definite-integrals"
     }
-    # The draw is all that is checked here; these topics have no catalogue in this test.
-    monkeypatch.setattr(practice, "_pick", lambda *_: (_ for _ in ()).throw(LookupError))
+    # Stop after the draw; derivative topics now issue through the engine catalogue.
+    monkeypatch.setattr(
+        practice.engine, "issue", lambda *_, **__: (_ for _ in ()).throw(LookupError)
+    )
     with pytest.raises(LookupError):
         client.post(
             "/problems",
