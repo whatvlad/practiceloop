@@ -9,7 +9,25 @@ from uuid import UUID
 
 from psycopg import Connection
 
-CONSTANT_FREE_VERSIONS = ["definite-v1", "double-v1", "triple-v1", "derivatives-v1", "partial-v1"]
+from app.engine.generators.catalogue import registry
+
+_ENGINE = registry()
+CONSTANT_FREE_VERSIONS = list(
+    dict.fromkeys(
+        [
+            "definite-v1",
+            "double-v1",
+            "triple-v1",
+            "derivatives-v1",
+            "partial-v1",
+            *(
+                version
+                for version in _ENGINE.versions()
+                if getattr(_ENGINE.get(version).answer, "kind", None) != "antiderivative"
+            ),
+        ]
+    )
+)
 
 
 def metric(checked: int, omitted: int) -> dict[str, Any]:

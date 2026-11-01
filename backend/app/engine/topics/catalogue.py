@@ -3,10 +3,13 @@
 import logging
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
+from functools import partial
 
+from app.engine.blocks.integral_forms.form import BOUNDS, METHODS
 from app.engine.generators.definite import DefiniteParams
 from app.engine.generators.derivative import DerivativeParams
 from app.engine.generators.indefinite import IndefiniteParams
+from app.engine.generators.integrals import IntegralParams, integral_generators
 from app.engine.models import Drawn, Task
 from app.engine.prng import DeterministicRNG
 from app.engine.registry import Registry
@@ -65,8 +68,8 @@ class Topic:
             raise ValueError("Topic needs a title and positive worksheet space")
         if self.area not in AREAS:
             raise ValueError(f"Unknown topic area: {self.area}")
-        if self.mixed_weight < 1 or not self.levels:
-            raise ValueError("Topic needs positive mixed weight and at least one level")
+        if self.mixed_weight < 0 or not self.levels:
+            raise ValueError("Topic needs nonnegative mixed weight and at least one level")
         if any(
             type(level) is not int or not 1 <= level <= 5 or not choices
             for level, choices in self.levels.items()
@@ -97,6 +100,12 @@ class Topic:
                     exc_info=True,
                 )
         raise ValueError(f"No valid candidate after {MAX_DRAWS} draws")
+
+
+def _integral_level(level: int, params: Drawn) -> bool:
+    if not isinstance(params, IntegralParams):
+        raise ValueError("Expected native integral parameters")
+    return params.form.difficulty == level
 
 
 def topics() -> dict[str, Topic]:
@@ -132,17 +141,6 @@ def topics() -> dict[str, Topic]:
             space_cm=3,
         ),
         Topic(
-            "definite-integrals",
-            "mathematical-analysis",
-            {
-                1: (Choice("definite-v1", _polynomial),),
-                2: (Choice("definite-v1", _rational),),
-            },
-            1,
-            title="Definite integrals",
-            space_cm=5,
-        ),
-        Topic(
             "combinations",
             "algebra",
             {1: (Choice("combinations-v1"),)},
@@ -152,4 +150,59 @@ def topics() -> dict[str, Topic]:
             served=True,
         ),
     )
-    return {topic.slug: topic for topic in result}
+    declared = {topic.slug: topic for topic in result}
+    families = {
+        "basic": ("basic-integrals", "Basic integrals", 1, 3),
+        "substitution": ("substitution", "Substitution", 2, 4),
+        "parts": ("integration-by-parts", "Integration by parts", 2, 5),
+        "rational": ("rational-functions", "Rational functions", 2, 5),
+        "trigonometric": ("trigonometric-integrals", "Trigonometric integrals", 2, 5),
+    }
+    generators = integral_generators()
+    for family, (slug, title, weight, space) in families.items():
+        indefinite = next(g for g in generators if g.form_family == family and not g.bounded)
+        definite = next(g for g in generators if g.form_family == family and g.bounded)
+        offered = sorted({t.difficulty for t in METHODS[family].TEMPLATES.values()})
+        declared[slug] = Topic(
+            slug,
+            "mathematical-analysis",
+            {
+                level: (Choice(indefinite.version, partial(_integral_level, level)),)
+                + (
+                    (Choice(definite.version, partial(_integral_level, level)),)
+                    if any(
+                        f == family and METHODS[f].TEMPLATES[n].difficulty == level
+                        for f, n in BOUNDS
+                    )
+                    else ()
+                )
+                for level in offered
+            },
+            weight,
+            title=title,
+            space_cm=space,
+            served=True,
+            visual="single-integral",
+        )
+    declared["definite-integrals"] = Topic(
+        "definite-integrals",
+        "mathematical-analysis",
+        {
+            level: tuple(
+                Choice(g.version, partial(_integral_level, level))
+                for g in generators
+                if g.bounded
+                and any(
+                    f == g.form_family and METHODS[f].TEMPLATES[n].difficulty == level
+                    for f, n in BOUNDS
+                )
+            )
+            for level in range(1, 6)
+        },
+        0,
+        title="Definite integrals",
+        space_cm=5,
+        served=True,
+        visual="single-integral",
+    )
+    return declared

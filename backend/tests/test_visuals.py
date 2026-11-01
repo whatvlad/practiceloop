@@ -74,9 +74,13 @@ def test_a_served_engine_topic_takes_the_visual_of_its_entry(slug: str) -> None:
     # #191: no NO_VISUAL edit; the topic entry decides, and no engine builder exists yet.
     for level in TOPICS[slug].levels:
         record = engine_issue(slug, level, seed=0).record
-        assert ENGINE_TOPICS[slug].visual is None
+        expected = ENGINE_TOPICS[slug].visual
         assert record["generator_version"] not in NO_VISUAL | set(BUILDERS)
-        assert build_visual(record) is None
+        spec = build_visual(record)
+        if expected is None:
+            assert spec is None
+        else:
+            assert spec and spec["kind"] in {"indefinite", "definite"}
 
 
 def test_an_engine_visual_without_a_builder_fails_loudly(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -172,7 +176,8 @@ def test_indefinite_marks_zeros_extrema_inflections_and_poles() -> None:
 def test_derivatives_have_no_visual() -> None:
     for topic in ("derivatives", "partial-derivatives"):
         record = catalogue(topic, TOPICS[topic].levels[0])[0].record
-        assert build_visual(record) is None
+        spec = build_visual(record)
+        assert spec is None
         assert solution_payload([{"say": "s", "latex": "l"}], record) == {
             "steps": [{"say": "s", "latex": "l"}]
         }

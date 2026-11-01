@@ -130,8 +130,17 @@ def correct_answer(url: str, problem_id: str) -> str:
     from app.engine import practice as engine
 
     if engine.is_engine_record(row[0]):
-        # #169: rebuilt from the stored problem code alone.
-        return engine.public_replay(row[0]).answer_latex
+        # Use the answer kind's trusted expression, not its display LaTeX.
+        import sympy as sp
+
+        from app.engine.answers.antiderivative import AntiderivativeAnswer
+
+        answer = engine.replay(row[0]).answer
+        if isinstance(answer, AntiderivativeAnswer):
+            value, constant = answer.primitive, " + C"
+        else:
+            value, constant = answer.expected, ""  # type: ignore[attr-defined]
+        return sp.sstr(value).replace("**", "^").replace("Abs", "abs").replace("E", "e") + constant
     exercise = replay(row[0])
     if exercise.value is not None:
         return str(exercise.value).replace("**", "^").replace("E", "e")
@@ -188,22 +197,9 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
         leaked = {"answerLatex", "solution", "generator_data", "steps"} & set(problem)
         check(not leaked and not problem["answerRevealed"], f"generate {label} hides the answer")
         answer = correct_answer(url, pid)
-        # A partial answer may use only its declared variables, so x is not always one.
-        no_variables = problem["topic"] in {
-            "matrices",
-            "complex-numbers",
-            "fundamental-theorem-algebra",
-            "combinations",
-            "functions-and-sequences",
-            "limits-and-continuity",
-            "improper-integrals",
-            "series",
-        }
-        wrong_answer = (
-            "999999"
-            if no_variables
-            else (f"({answer}) + 7" if problem["topic"] == PARTIAL else "x^9 + 7")
-        )
+        # A numeric wrong answer is valid input for both numeric and symbolic cells.
+        # A partial answer keeps its declared variables and adds a nonzero offset.
+        wrong_answer = f"({answer}) + 7" if problem["topic"] == PARTIAL else "999999"
         wrong = api.post(f"/problems/{pid}/attempts", json={"answer": wrong_answer}, headers=key())
         check(
             wrong.status_code == 201 and wrong.json()["attempt"]["result"] == "incorrect",

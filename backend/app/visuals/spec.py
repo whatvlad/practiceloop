@@ -12,9 +12,11 @@ from functools import lru_cache
 from typing import Any
 
 from app.engine import practice as engine
+from app.engine.codes import parse_code
+from app.engine.generators.integrals import IntegralGenerator
 from app.generators.core import Exercise, replay
 from app.visuals.region2d import region2d
-from app.visuals.single import definite, indefinite
+from app.visuals.single import definite, definite_data, indefinite
 from app.visuals.solid3d import solid3d
 
 VERSION = 1
@@ -47,8 +49,19 @@ def _build(canonical: str) -> dict[str, Any] | None:
     if engine.is_engine_record(record):
         if engine.visual(str(version)) is None:
             return None
-        # The first engine topic with a visual (#193) adds its builder here.
-        raise ValueError("No builder for the engine visual of this version")
+        if engine.visual(str(version)) != "single-integral":
+            raise ValueError("No builder for the engine visual of this version")
+        generators = engine._registry()
+        code = parse_code(record["code"], generators)
+        generator = generators.get_code(code.prefix, code.version)
+        if not isinstance(generator, IntegralGenerator):
+            raise ValueError("Unsupported engine integral visual")
+        data = generator.data(generator.draw(code.seed))
+        built = definite_data(data) if data.lower is not None else indefinite(data)
+        spec = {**built, "version": VERSION}
+        if len(json.dumps(spec, separators=(",", ":"))) > MAX_BYTES:
+            raise ValueError("Visual spec exceeds 8 KB")
+        return spec
     if version in NO_VISUAL:
         return None
     builder = BUILDERS.get(version)

@@ -473,3 +473,10 @@ private release pool's capacity (64). Engine generation and worksheet creation
 pick pre-rendered verified data; answer checks still replay the versioned code
 inside the limited math worker. No codes, catalogue answers or internal fields
 are added to the public topic or problem DTOs.
+
+After #193, the six single-integral topic slugs keep their published levels and
+weights but issue engine codes internally. Their old saved records are archived
+under the existing `problem_archived` contract. Missing-constant feedback is
+retained; other incorrect native integral answers use general feedback rather
+than the old generator-specific mistake classifiers. Worksheet capacities are
+the release pool lengths; solution reveals still include the integral graph.

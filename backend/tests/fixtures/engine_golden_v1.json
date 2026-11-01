@@ -496,5 +496,861 @@
         "k": 7
       }
     }
+  ],
+  "practice-basic-v1": [
+    {
+      "code": "BAS-1-0000000000000000-86",
+      "statement": "Find \\(\\int \\left(- \\frac{1}{\\sqrt{x}}\\right)\\,dx\\) for \\(x\\in \\left(0, \\infty\\right)\\).",
+      "steps": [
+        [
+          "rewrite_power",
+          "\\int -1x^{- \\frac{1}{2}}\\,dx"
+        ],
+        [
+          "integrate",
+          "- 2 \\sqrt{x}"
+        ],
+        [
+          "constant",
+          "- 2 \\sqrt{x} + C"
+        ]
+      ],
+      "answer_kind": "antiderivative",
+      "answer_latex": "- 2 \\sqrt{x} + C",
+      "metadata": {
+        "difficulty": 3,
+        "template": "fractional_power"
+      }
+    },
+    {
+      "code": "BAS-1-0000000000000001-06",
+      "statement": "Find \\(\\int \\left(\\frac{3}{\\sqrt{x}}\\right)\\,dx\\) for \\(x\\in \\left(0, \\infty\\right)\\).",
+      "steps": [
+        [
+          "rewrite_power",
+          "\\int 3x^{- \\frac{1}{2}}\\,dx"
+        ],
+        [
+          "integrate",
+          "6 \\sqrt{x}"
+        ],
+        [
+          "constant",
+          "6 \\sqrt{x} + C"
+        ]
+      ],
+      "answer_kind": "antiderivative",
+      "answer_latex": "6 \\sqrt{x} + C",
+      "metadata": {
+        "difficulty": 3,
+        "template": "fractional_power"
+      }
+    },
+    {
+      "code": "BAS-1-0000000000000002-23",
+      "statement": "Find \\(\\int \\left(\\left(x + 2\\right)^{2}\\right)\\,dx\\) for \\(x\\in \\mathbb{R}\\).",
+      "steps": [
+        [
+          "expand",
+          "\\int \\left(x^{2} + 4 x + 4\\right)\\,dx"
+        ],
+        [
+          "integrate",
+          "\\frac{x^{3}}{3} + 2 x^{2} + 4 x"
+        ],
+        [
+          "constant",
+          "\\frac{x^{3}}{3} + 2 x^{2} + 4 x + C"
+        ]
+      ],
+      "answer_kind": "antiderivative",
+      "answer_latex": "\\frac{x^{3}}{3} + 2 x^{2} + 4 x + C",
+      "metadata": {
+        "difficulty": 4,
+        "template": "expand_square"
+      }
+    }
+  ],
+  "practice-basic-definite-v1": [
+    {
+      "code": "BAS-2-0000000000000000-87",
+      "statement": "Calculate \\(\\int_{0}^{1} \\left(- \\left(x + 1\\right)^{2}\\right)\\,dx\\).",
+      "steps": [
+        [
+          "expand",
+          "\\int \\left(- x^{2} - 2 x - 1\\right)\\,dx"
+        ],
+        [
+          "integrate",
+          "- \\frac{x^{3}}{3} - x^{2} - x"
+        ],
+        [
+          "evaluate_bounds",
+          "\\left[- \\frac{x^{3}}{3} - x^{2} - x\\right]_{0}^{1} = - \\frac{7}{3}"
+        ],
+        [
+          "definite_value",
+          "- \\frac{7}{3}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "- \\frac{7}{3}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "expand_square"
+      }
+    },
+    {
+      "code": "BAS-2-0000000000000001-07",
+      "statement": "Calculate \\(\\int_{1}^{4} \\left(\\frac{3}{\\sqrt{x}}\\right)\\,dx\\).",
+      "steps": [
+        [
+          "rewrite_power",
+          "\\int 3x^{- \\frac{1}{2}}\\,dx"
+        ],
+        [
+          "integrate",
+          "6 \\sqrt{x}"
+        ],
+        [
+          "evaluate_bounds",
+          "\\left[6 \\sqrt{x}\\right]_{1}^{4} = 6"
+        ],
+        [
+          "definite_value",
+          "6"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "6",
+      "metadata": {
+        "difficulty": 3,
+        "template": "fractional_power"
+      }
+    },
+    {
+      "code": "BAS-2-0000000000000002-24",
+      "statement": "Calculate \\(\\int_{1}^{4} \\left(\\frac{1}{\\sqrt{x}}\\right)\\,dx\\).",
+      "steps": [
+        [
+          "rewrite_power",
+          "\\int 1x^{- \\frac{1}{2}}\\,dx"
+        ],
+        [
+          "integrate",
+          "2 \\sqrt{x}"
+        ],
+        [
+          "evaluate_bounds",
+          "\\left[2 \\sqrt{x}\\right]_{1}^{4} = 2"
+        ],
+        [
+          "definite_value",
+          "2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 3,
+        "template": "fractional_power"
+      }
+    }
+  ],
+  "practice-substitution-v1": [
+    {
+      "code": "SUB-1-0000000000000000-87",
+      "statement": "Find \\(\\int \\left(- 3 x^{2} e^{x^{3}}\\right)\\,dx\\) for \\(x\\in \\mathbb{R}\\).",
+      "steps": [
+        [
+          "substitution_integral",
+          "\\left. \\int \\left(- e^{u}\\right)\\, du \\right|_{\\substack{ u=x^{3} }}"
+        ],
+        [
+          "substitute_back",
+          "\\left. - e^{u} \\right|_{\\substack{ u=x^{3} }}"
+        ],
+        [
+          "integrate",
+          "- e^{x^{3}}"
+        ],
+        [
+          "constant",
+          "- e^{x^{3}} + C"
+        ]
+      ],
+      "answer_kind": "antiderivative",
+      "answer_latex": "- e^{x^{3}} + C",
+      "metadata": {
+        "difficulty": 3,
+        "template": "polynomial_inner"
+      }
+    },
+    {
+      "code": "SUB-1-0000000000000001-07",
+      "statement": "Find \\(\\int \\left(9 x^{2} e^{x^{3}}\\right)\\,dx\\) for \\(x\\in \\mathbb{R}\\).",
+      "steps": [
+        [
+          "substitution_integral",
+          "\\left. \\int 3 e^{u}\\, du \\right|_{\\substack{ u=x^{3} }}"
+        ],
+        [
+          "substitute_back",
+          "\\left. 3 e^{u} \\right|_{\\substack{ u=x^{3} }}"
+        ],
+        [
+          "integrate",
+          "3 e^{x^{3}}"
+        ],
+        [
+          "constant",
+          "3 e^{x^{3}} + C"
+        ]
+      ],
+      "answer_kind": "antiderivative",
+      "answer_latex": "3 e^{x^{3}} + C",
+      "metadata": {
+        "difficulty": 3,
+        "template": "polynomial_inner"
+      }
+    },
+    {
+      "code": "SUB-1-0000000000000002-24",
+      "statement": "Find \\(\\int \\left(x \\left(x^{4} + 2 x^{2} + 1\\right)\\right)\\,dx\\) for \\(x\\in \\mathbb{R}\\).",
+      "steps": [
+        [
+          "factor",
+          "\\int x \\left(x^{2} + 1\\right)^{2}\\, dx"
+        ],
+        [
+          "substitution_integral",
+          "\\left. \\int \\frac{u^{2}}{2}\\, du \\right|_{\\substack{ u=x^{2} + 1 }}"
+        ],
+        [
+          "substitute_back",
+          "\\left. \\frac{u^{3}}{6} \\right|_{\\substack{ u=x^{2} + 1 }}"
+        ],
+        [
+          "integrate",
+          "\\frac{\\left(x^{2} + 1\\right)^{3}}{6}"
+        ],
+        [
+          "constant",
+          "\\frac{\\left(x^{2} + 1\\right)^{3}}{6} + C"
+        ]
+      ],
+      "answer_kind": "antiderivative",
+      "answer_latex": "\\frac{\\left(x^{2} + 1\\right)^{3}}{6} + C",
+      "metadata": {
+        "difficulty": 4,
+        "template": "factor_square"
+      }
+    }
+  ],
+  "practice-substitution-definite-v1": [
+    {
+      "code": "SUB-2-0000000000000000-88",
+      "statement": "Calculate \\(\\int_{0}^{1} \\left(- x \\left(x^{4} + 2 x^{2} + 1\\right)\\right)\\,dx\\).",
+      "steps": [
+        [
+          "factor",
+          "\\int \\left(- x \\left(x^{2} + 1\\right)^{2}\\right)\\, dx"
+        ],
+        [
+          "substitution_integral",
+          "\\left. \\int \\left(- \\frac{u^{2}}{2}\\right)\\, du \\right|_{\\substack{ u=x^{2} + 1 }}"
+        ],
+        [
+          "substitute_back",
+          "\\left. - \\frac{u^{3}}{6} \\right|_{\\substack{ u=x^{2} + 1 }}"
+        ],
+        [
+          "integrate",
+          "- \\frac{\\left(x^{2} + 1\\right)^{3}}{6}"
+        ],
+        [
+          "evaluate_bounds",
+          "\\left[- \\frac{\\left(x^{2} + 1\\right)^{3}}{6}\\right]_{0}^{1} = - \\frac{7}{6}"
+        ],
+        [
+          "definite_value",
+          "- \\frac{7}{6}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "- \\frac{7}{6}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "factor_square"
+      }
+    },
+    {
+      "code": "SUB-2-0000000000000001-08",
+      "statement": "Calculate \\(\\int_{0}^{1} \\left(9 x^{2} e^{x^{3}}\\right)\\,dx\\).",
+      "steps": [
+        [
+          "substitution_integral",
+          "\\left. \\int 3 e^{u}\\, du \\right|_{\\substack{ u=x^{3} }}"
+        ],
+        [
+          "substitute_back",
+          "\\left. 3 e^{u} \\right|_{\\substack{ u=x^{3} }}"
+        ],
+        [
+          "integrate",
+          "3 e^{x^{3}}"
+        ],
+        [
+          "evaluate_bounds",
+          "\\left[3 e^{x^{3}}\\right]_{0}^{1} = -3 + 3 e"
+        ],
+        [
+          "definite_value",
+          "-3 + 3 e"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-3 + 3 e",
+      "metadata": {
+        "difficulty": 3,
+        "template": "polynomial_inner"
+      }
+    },
+    {
+      "code": "SUB-2-0000000000000002-25",
+      "statement": "Calculate \\(\\int_{0}^{1} \\left(3 x^{2} e^{x^{3}}\\right)\\,dx\\).",
+      "steps": [
+        [
+          "substitution_integral",
+          "\\left. \\int e^{u}\\, du \\right|_{\\substack{ u=x^{3} }}"
+        ],
+        [
+          "substitute_back",
+          "\\left. e^{u} \\right|_{\\substack{ u=x^{3} }}"
+        ],
+        [
+          "integrate",
+          "e^{x^{3}}"
+        ],
+        [
+          "evaluate_bounds",
+          "\\left[e^{x^{3}}\\right]_{0}^{1} = -1 + e"
+        ],
+        [
+          "definite_value",
+          "-1 + e"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-1 + e",
+      "metadata": {
+        "difficulty": 3,
+        "template": "polynomial_inner"
+      }
+    }
+  ],
+  "practice-parts-v1": [
+    {
+      "code": "IPT-1-0000000000000000-33",
+      "statement": "Find \\(\\int \\left(- x^{2} e^{x}\\right)\\,dx\\) for \\(x\\in \\mathbb{R}\\).",
+      "steps": [
+        [
+          "parts",
+          "- x^{2} e^{x} - \\int \\left(- 2 x e^{x}\\right)\\, dx"
+        ],
+        [
+          "repeat_parts",
+          "- x^{2} e^{x} + 2 x e^{x} - 2 \\int e^{x}\\, dx"
+        ],
+        [
+          "integrate",
+          "- \\left(x^{2} - 2 x + 2\\right) e^{x}"
+        ],
+        [
+          "constant",
+          "- \\left(x^{2} - 2 x + 2\\right) e^{x} + C"
+        ]
+      ],
+      "answer_kind": "antiderivative",
+      "answer_latex": "- \\left(x^{2} - 2 x + 2\\right) e^{x} + C",
+      "metadata": {
+        "difficulty": 2,
+        "template": "quadratic_exponential"
+      }
+    },
+    {
+      "code": "IPT-1-0000000000000001-50",
+      "statement": "Find \\(\\int \\left(3 x e^{x}\\right)\\,dx\\) for \\(x\\in \\mathbb{R}\\).",
+      "steps": [
+        [
+          "parts",
+          "3 x e^{x} - \\int 3 e^{x}\\, dx"
+        ],
+        [
+          "integrate",
+          "3 \\left(x - 1\\right) e^{x}"
+        ],
+        [
+          "constant",
+          "3 \\left(x - 1\\right) e^{x} + C"
+        ]
+      ],
+      "answer_kind": "antiderivative",
+      "answer_latex": "3 \\left(x - 1\\right) e^{x} + C",
+      "metadata": {
+        "difficulty": 1,
+        "template": "linear_exponential"
+      }
+    },
+    {
+      "code": "IPT-1-0000000000000002-67",
+      "statement": "Find \\(\\int \\left(x e^{x}\\right)\\,dx\\) for \\(x\\in \\mathbb{R}\\).",
+      "steps": [
+        [
+          "parts",
+          "x e^{x} - \\int e^{x}\\, dx"
+        ],
+        [
+          "integrate",
+          "\\left(x - 1\\right) e^{x}"
+        ],
+        [
+          "constant",
+          "\\left(x - 1\\right) e^{x} + C"
+        ]
+      ],
+      "answer_kind": "antiderivative",
+      "answer_latex": "\\left(x - 1\\right) e^{x} + C",
+      "metadata": {
+        "difficulty": 1,
+        "template": "linear_exponential"
+      }
+    }
+  ],
+  "practice-parts-definite-v1": [
+    {
+      "code": "IPT-2-0000000000000000-34",
+      "statement": "Calculate \\(\\int_{0}^{1} \\left(- x^{2} e^{x}\\right)\\,dx\\).",
+      "steps": [
+        [
+          "parts",
+          "- x^{2} e^{x} - \\int \\left(- 2 x e^{x}\\right)\\, dx"
+        ],
+        [
+          "repeat_parts",
+          "- x^{2} e^{x} + 2 x e^{x} - 2 \\int e^{x}\\, dx"
+        ],
+        [
+          "integrate",
+          "- \\left(x^{2} - 2 x + 2\\right) e^{x}"
+        ],
+        [
+          "evaluate_bounds",
+          "\\left[- \\left(x^{2} - 2 x + 2\\right) e^{x}\\right]_{0}^{1} = 2 - e"
+        ],
+        [
+          "definite_value",
+          "2 - e"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2 - e",
+      "metadata": {
+        "difficulty": 2,
+        "template": "quadratic_exponential"
+      }
+    },
+    {
+      "code": "IPT-2-0000000000000001-51",
+      "statement": "Calculate \\(\\int_{0}^{1} \\left(3 x e^{x}\\right)\\,dx\\).",
+      "steps": [
+        [
+          "parts",
+          "3 x e^{x} - \\int 3 e^{x}\\, dx"
+        ],
+        [
+          "integrate",
+          "3 \\left(x - 1\\right) e^{x}"
+        ],
+        [
+          "evaluate_bounds",
+          "\\left[3 \\left(x - 1\\right) e^{x}\\right]_{0}^{1} = 3"
+        ],
+        [
+          "definite_value",
+          "3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3",
+      "metadata": {
+        "difficulty": 1,
+        "template": "linear_exponential"
+      }
+    },
+    {
+      "code": "IPT-2-0000000000000002-68",
+      "statement": "Calculate \\(\\int_{0}^{1} \\left(x e^{x}\\right)\\,dx\\).",
+      "steps": [
+        [
+          "parts",
+          "x e^{x} - \\int e^{x}\\, dx"
+        ],
+        [
+          "integrate",
+          "\\left(x - 1\\right) e^{x}"
+        ],
+        [
+          "evaluate_bounds",
+          "\\left[\\left(x - 1\\right) e^{x}\\right]_{0}^{1} = 1"
+        ],
+        [
+          "definite_value",
+          "1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 1,
+        "template": "linear_exponential"
+      }
+    }
+  ],
+  "practice-rational-v1": [
+    {
+      "code": "RNI-1-0000000000000000-65",
+      "statement": "Find \\(\\int \\left(- \\frac{1}{x \\left(x + 1\\right)}\\right)\\,dx\\) for \\(x\\in \\left(-\\infty, -1\\right) \\cup \\left(-1, 0\\right) \\cup \\left(0, \\infty\\right)\\).",
+      "steps": [
+        [
+          "partial_fractions",
+          "\\int \\left(\\frac{1}{x + 1} - \\frac{1}{x}\\right)\\, dx"
+        ],
+        [
+          "integrate",
+          "- \\log{\\left(\\left|{x}\\right| \\right)} + \\log{\\left(\\left|{x + 1}\\right| \\right)}"
+        ],
+        [
+          "constant",
+          "- \\log{\\left(\\left|{x}\\right| \\right)} + \\log{\\left(\\left|{x + 1}\\right| \\right)} + C"
+        ]
+      ],
+      "answer_kind": "antiderivative",
+      "answer_latex": "- \\log{\\left(\\left|{x}\\right| \\right)} + \\log{\\left(\\left|{x + 1}\\right| \\right)} + C",
+      "metadata": {
+        "difficulty": 3,
+        "template": "distinct_factors"
+      }
+    },
+    {
+      "code": "RNI-1-0000000000000001-82",
+      "statement": "Find \\(\\int \\left(\\frac{3}{x \\left(x + 1\\right)}\\right)\\,dx\\) for \\(x\\in \\left(-\\infty, -1\\right) \\cup \\left(-1, 0\\right) \\cup \\left(0, \\infty\\right)\\).",
+      "steps": [
+        [
+          "partial_fractions",
+          "\\int \\left(- \\frac{3}{x + 1} + \\frac{3}{x}\\right)\\, dx"
+        ],
+        [
+          "integrate",
+          "3 \\log{\\left(\\left|{x}\\right| \\right)} - 3 \\log{\\left(\\left|{x + 1}\\right| \\right)}"
+        ],
+        [
+          "constant",
+          "3 \\log{\\left(\\left|{x}\\right| \\right)} - 3 \\log{\\left(\\left|{x + 1}\\right| \\right)} + C"
+        ]
+      ],
+      "answer_kind": "antiderivative",
+      "answer_latex": "3 \\log{\\left(\\left|{x}\\right| \\right)} - 3 \\log{\\left(\\left|{x + 1}\\right| \\right)} + C",
+      "metadata": {
+        "difficulty": 3,
+        "template": "distinct_factors"
+      }
+    },
+    {
+      "code": "RNI-1-0000000000000002-02",
+      "statement": "Find \\(\\int \\left(\\frac{1}{x \\left(x + 1\\right)^{2}}\\right)\\,dx\\) for \\(x\\in \\left(-\\infty, -1\\right) \\cup \\left(-1, 0\\right) \\cup \\left(0, \\infty\\right)\\).",
+      "steps": [
+        [
+          "partial_fractions",
+          "\\int \\left(- \\frac{1}{x + 1} - \\frac{1}{\\left(x + 1\\right)^{2}} + \\frac{1}{x}\\right)\\, dx"
+        ],
+        [
+          "integrate",
+          "\\log{\\left(\\left|{x}\\right| \\right)} - \\log{\\left(\\left|{x + 1}\\right| \\right)} + \\frac{1}{x + 1}"
+        ],
+        [
+          "constant",
+          "\\log{\\left(\\left|{x}\\right| \\right)} - \\log{\\left(\\left|{x + 1}\\right| \\right)} + \\frac{1}{x + 1} + C"
+        ]
+      ],
+      "answer_kind": "antiderivative",
+      "answer_latex": "\\log{\\left(\\left|{x}\\right| \\right)} - \\log{\\left(\\left|{x + 1}\\right| \\right)} + \\frac{1}{x + 1} + C",
+      "metadata": {
+        "difficulty": 4,
+        "template": "repeated_factor"
+      }
+    }
+  ],
+  "practice-rational-definite-v1": [
+    {
+      "code": "RNI-2-0000000000000000-66",
+      "statement": "Calculate \\(\\int_{1}^{2} \\left(- \\frac{1}{x \\left(x + 1\\right)}\\right)\\,dx\\).",
+      "steps": [
+        [
+          "partial_fractions",
+          "\\int \\left(\\frac{1}{x + 1} - \\frac{1}{x}\\right)\\, dx"
+        ],
+        [
+          "integrate",
+          "- \\log{\\left(\\left|{x}\\right| \\right)} + \\log{\\left(\\left|{x + 1}\\right| \\right)}"
+        ],
+        [
+          "evaluate_bounds",
+          "\\left[- \\log{\\left(\\left|{x}\\right| \\right)} + \\log{\\left(\\left|{x + 1}\\right| \\right)}\\right]_{1}^{2} = - \\log{\\left(\\frac{4}{3} \\right)}"
+        ],
+        [
+          "definite_value",
+          "- \\log{\\left(\\frac{4}{3} \\right)}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "- \\log{\\left(\\frac{4}{3} \\right)}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "distinct_factors"
+      }
+    },
+    {
+      "code": "RNI-2-0000000000000001-83",
+      "statement": "Calculate \\(\\int_{1}^{2} \\left(\\frac{3}{x \\left(x + 1\\right)}\\right)\\,dx\\).",
+      "steps": [
+        [
+          "partial_fractions",
+          "\\int \\left(- \\frac{3}{x + 1} + \\frac{3}{x}\\right)\\, dx"
+        ],
+        [
+          "integrate",
+          "3 \\log{\\left(\\left|{x}\\right| \\right)} - 3 \\log{\\left(\\left|{x + 1}\\right| \\right)}"
+        ],
+        [
+          "evaluate_bounds",
+          "\\left[3 \\log{\\left(\\left|{x}\\right| \\right)} - 3 \\log{\\left(\\left|{x + 1}\\right| \\right)}\\right]_{1}^{2} = 3 \\log{\\left(\\frac{4}{3} \\right)}"
+        ],
+        [
+          "definite_value",
+          "3 \\log{\\left(\\frac{4}{3} \\right)}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3 \\log{\\left(\\frac{4}{3} \\right)}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "distinct_factors"
+      }
+    },
+    {
+      "code": "RNI-2-0000000000000002-03",
+      "statement": "Calculate \\(\\int_{1}^{2} \\left(\\frac{1}{x \\left(x + 1\\right)^{2}}\\right)\\,dx\\).",
+      "steps": [
+        [
+          "partial_fractions",
+          "\\int \\left(- \\frac{1}{x + 1} - \\frac{1}{\\left(x + 1\\right)^{2}} + \\frac{1}{x}\\right)\\, dx"
+        ],
+        [
+          "integrate",
+          "\\log{\\left(\\left|{x}\\right| \\right)} - \\log{\\left(\\left|{x + 1}\\right| \\right)} + \\frac{1}{x + 1}"
+        ],
+        [
+          "evaluate_bounds",
+          "\\left[\\log{\\left(\\left|{x}\\right| \\right)} - \\log{\\left(\\left|{x + 1}\\right| \\right)} + \\frac{1}{x + 1}\\right]_{1}^{2} = - \\frac{1}{6} + \\log{\\left(\\frac{4}{3} \\right)}"
+        ],
+        [
+          "definite_value",
+          "- \\frac{1}{6} + \\log{\\left(\\frac{4}{3} \\right)}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "- \\frac{1}{6} + \\log{\\left(\\frac{4}{3} \\right)}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "repeated_factor"
+      }
+    }
+  ],
+  "practice-trigonometric-v1": [
+    {
+      "code": "TGI-1-0000000000000000-16",
+      "statement": "Find \\(\\int \\left(- \\sin^{3}{\\left(x \\right)}\\right)\\,dx\\) for \\(x\\in \\mathbb{R}\\).",
+      "steps": [
+        [
+          "identity",
+          "\\int \\left(- \\left(1 - \\cos^{2}{\\left(x \\right)}\\right) \\sin{\\left(x \\right)}\\right)\\, dx"
+        ],
+        [
+          "substitution_integral",
+          "\\left. \\int \\left(1 - u^{2}\\right)\\, du \\right|_{\\substack{ u=\\cos{\\left(x \\right)} }}"
+        ],
+        [
+          "integrate",
+          "- \\frac{\\cos^{3}{\\left(x \\right)}}{3} + \\cos{\\left(x \\right)}"
+        ],
+        [
+          "constant",
+          "- \\frac{\\cos^{3}{\\left(x \\right)}}{3} + \\cos{\\left(x \\right)} + C"
+        ]
+      ],
+      "answer_kind": "antiderivative",
+      "answer_latex": "- \\frac{\\cos^{3}{\\left(x \\right)}}{3} + \\cos{\\left(x \\right)} + C",
+      "metadata": {
+        "difficulty": 3,
+        "template": "odd_power"
+      }
+    },
+    {
+      "code": "TGI-1-0000000000000001-33",
+      "statement": "Find \\(\\int \\left(3 \\sin^{3}{\\left(x \\right)}\\right)\\,dx\\) for \\(x\\in \\mathbb{R}\\).",
+      "steps": [
+        [
+          "identity",
+          "\\int 3 \\left(1 - \\cos^{2}{\\left(x \\right)}\\right) \\sin{\\left(x \\right)}\\, dx"
+        ],
+        [
+          "substitution_integral",
+          "\\left. \\int \\left(3 u^{2} - 3\\right)\\, du \\right|_{\\substack{ u=\\cos{\\left(x \\right)} }}"
+        ],
+        [
+          "integrate",
+          "\\cos^{3}{\\left(x \\right)} - 3 \\cos{\\left(x \\right)}"
+        ],
+        [
+          "constant",
+          "\\cos^{3}{\\left(x \\right)} - 3 \\cos{\\left(x \\right)} + C"
+        ]
+      ],
+      "answer_kind": "antiderivative",
+      "answer_latex": "\\cos^{3}{\\left(x \\right)} - 3 \\cos{\\left(x \\right)} + C",
+      "metadata": {
+        "difficulty": 3,
+        "template": "odd_power"
+      }
+    },
+    {
+      "code": "TGI-1-0000000000000002-50",
+      "statement": "Find \\(\\int \\left(\\sin^{2}{\\left(x \\right)}\\right)\\,dx\\) for \\(x\\in \\mathbb{R}\\).",
+      "steps": [
+        [
+          "identity",
+          "\\int \\left(\\frac{1}{2} - \\frac{\\cos{\\left(2 x \\right)}}{2}\\right)\\, dx"
+        ],
+        [
+          "integrate",
+          "\\frac{x}{2} - \\frac{\\sin{\\left(2 x \\right)}}{4}"
+        ],
+        [
+          "constant",
+          "\\frac{x}{2} - \\frac{\\sin{\\left(2 x \\right)}}{4} + C"
+        ]
+      ],
+      "answer_kind": "antiderivative",
+      "answer_latex": "\\frac{x}{2} - \\frac{\\sin{\\left(2 x \\right)}}{4} + C",
+      "metadata": {
+        "difficulty": 4,
+        "template": "even_power"
+      }
+    }
+  ],
+  "practice-trigonometric-definite-v1": [
+    {
+      "code": "TGI-2-0000000000000000-17",
+      "statement": "Calculate \\(\\int_{0}^{\\pi} \\left(- \\sin^{3}{\\left(x \\right)}\\right)\\,dx\\).",
+      "steps": [
+        [
+          "identity",
+          "\\int \\left(- \\left(1 - \\cos^{2}{\\left(x \\right)}\\right) \\sin{\\left(x \\right)}\\right)\\, dx"
+        ],
+        [
+          "substitution_integral",
+          "\\left. \\int \\left(1 - u^{2}\\right)\\, du \\right|_{\\substack{ u=\\cos{\\left(x \\right)} }}"
+        ],
+        [
+          "integrate",
+          "- \\frac{\\cos^{3}{\\left(x \\right)}}{3} + \\cos{\\left(x \\right)}"
+        ],
+        [
+          "evaluate_bounds",
+          "\\left[- \\frac{\\cos^{3}{\\left(x \\right)}}{3} + \\cos{\\left(x \\right)}\\right]_{0}^{\\pi} = - \\frac{4}{3}"
+        ],
+        [
+          "definite_value",
+          "- \\frac{4}{3}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "- \\frac{4}{3}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "odd_power"
+      }
+    },
+    {
+      "code": "TGI-2-0000000000000001-34",
+      "statement": "Calculate \\(\\int_{0}^{\\pi} \\left(3 \\sin^{3}{\\left(x \\right)}\\right)\\,dx\\).",
+      "steps": [
+        [
+          "identity",
+          "\\int 3 \\left(1 - \\cos^{2}{\\left(x \\right)}\\right) \\sin{\\left(x \\right)}\\, dx"
+        ],
+        [
+          "substitution_integral",
+          "\\left. \\int \\left(3 u^{2} - 3\\right)\\, du \\right|_{\\substack{ u=\\cos{\\left(x \\right)} }}"
+        ],
+        [
+          "integrate",
+          "\\cos^{3}{\\left(x \\right)} - 3 \\cos{\\left(x \\right)}"
+        ],
+        [
+          "evaluate_bounds",
+          "\\left[\\cos^{3}{\\left(x \\right)} - 3 \\cos{\\left(x \\right)}\\right]_{0}^{\\pi} = 4"
+        ],
+        [
+          "definite_value",
+          "4"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "4",
+      "metadata": {
+        "difficulty": 3,
+        "template": "odd_power"
+      }
+    },
+    {
+      "code": "TGI-2-0000000000000002-51",
+      "statement": "Calculate \\(\\int_{0}^{\\pi} \\left(\\sin^{2}{\\left(x \\right)}\\right)\\,dx\\).",
+      "steps": [
+        [
+          "identity",
+          "\\int \\left(\\frac{1}{2} - \\frac{\\cos{\\left(2 x \\right)}}{2}\\right)\\, dx"
+        ],
+        [
+          "integrate",
+          "\\frac{x}{2} - \\frac{\\sin{\\left(2 x \\right)}}{4}"
+        ],
+        [
+          "evaluate_bounds",
+          "\\left[\\frac{x}{2} - \\frac{\\sin{\\left(2 x \\right)}}{4}\\right]_{0}^{\\pi} = \\frac{\\pi}{2}"
+        ],
+        [
+          "definite_value",
+          "\\frac{\\pi}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{\\pi}{2}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "even_power"
+      }
+    }
   ]
 }

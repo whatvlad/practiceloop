@@ -108,7 +108,7 @@ jobs:
           tests/test_math_parser.py tests/test_math_worker.py
           tests/test_answer_check.py tests/test_answer_variables.py
           tests/test_preview.py tests/test_shares.py tests/test_topic_areas.py
-          tests/test_worksheets.py
+          tests/test_worksheets.py tests/test_archive.py
           tests/test_engine*.py
       - name: Run full backend tests (manual)
         if: github.event_name == 'workflow_dispatch' && inputs.full_backend

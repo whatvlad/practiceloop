@@ -22,6 +22,7 @@ from fastapi.testclient import TestClient
 from app.api import practice
 from app.core import database
 from app.core.auth import VerifiedUser, current_user
+from app.engine import practice as engine
 from app.generators.core import catalogue
 from app.main import app
 from app.services import idempotency, learning_stats
@@ -86,6 +87,17 @@ def pin_version(monkeypatch: pytest.MonkeyPatch, version: str | None) -> None:
         return tuple(item for item in catalogue(*cell) if keep(item.record))
 
     monkeypatch.setattr(practice, "catalogue", pinned)
+    from app.engine.catalogue import pool
+
+    def engine_pool(topic: str, level: int):
+        candidates = pool(topic, level)
+        if topic == "definite-integrals":
+            return candidates
+        if version == "definite-v1":
+            return tuple(p for p in candidates if "definite" in p.generator_version)
+        return tuple(p for p in candidates if "definite" not in p.generator_version)
+
+    monkeypatch.setattr(engine, "pool", engine_pool)
 
 
 def key() -> dict[str, str]:
@@ -138,7 +150,7 @@ def test_generation_persists_public_problem_and_private_solution_atomically(
         problem["id"],
     )
     assert saved and saved[0][0] == users.alice and saved[0][1] == problem["problemLatex"]
-    assert saved[0][2] == "basic-v1" and saved[0][3].endswith("+ C")
+    assert saved[0][2] == "practice-basic-v1" and saved[0][3].endswith("+ C")
     assert rows(url, "select 1 from public.profiles where id = %s", users.alice)
 
 
@@ -157,7 +169,7 @@ def test_generation_response_never_carries_private_data(client: TestClient, url:
 
 
 def test_no_repeat_within_the_latest_half_of_a_cell(client: TestClient, url: str) -> None:
-    window = len(practice.catalogue("basic-integrals", 1)) // 2 + 1
+    window = len(engine.pool("basic-integrals", 1)) // 2 + 1
     ids = [generate(client)["id"] for _ in range(window)]
     data = rows(
         url,
@@ -320,7 +332,12 @@ def primitive_of(url: str, problem_id: str) -> str:
         "select generator_data from private.problem_solutions where problem_id = %s",
         problem_id,
     )[0]
-    return str(replay(data).primitive).replace("**", "^")
+    value = (
+        engine.replay(data).answer.primitive
+        if engine.is_engine_record(data)
+        else replay(data).primitive
+    )
+    return str(value).replace("**", "^").replace("Abs", "abs").replace("E", "e")
 
 
 def answer_of(url: str, problem_id: str) -> str:
@@ -332,6 +349,16 @@ def answer_of(url: str, problem_id: str) -> str:
         "select generator_data from private.problem_solutions where problem_id = %s",
         problem_id,
     )[0]
+    if engine.is_engine_record(data):
+        from app.engine.answers.antiderivative import AntiderivativeAnswer
+
+        answer = engine.replay(data).answer
+        if isinstance(answer, AntiderivativeAnswer):
+            return (
+                str(answer.primitive).replace("**", "^").replace("Abs", "abs").replace("E", "e")
+                + " + C"
+            )
+        return str(answer.expected).replace("**", "^").replace("E", "e")
     exercise = replay(data)
     if exercise.value is not None:
         return str(exercise.value).replace("**", "^").replace("E", "e")
@@ -349,7 +376,7 @@ def test_attempts_are_checked_by_the_real_worker_and_persisted(
         problem["id"],
     )
     # #36: substitution-v1 sine and cosine records declare a lost trigonometric sign.
-    sign = None if data["family"] == "exp" else "trig_sign"
+    sign = None  # Native engine kinds use general incorrect feedback; +C stays explicit.
     cases = [
         (primitive + " + C", "correct", None, True, False),
         (primitive, "incorrect", "missing_constant", False, True),
@@ -400,7 +427,20 @@ def test_higher_levels_persist_their_family_record_and_check_answers(
         url,
         "select generator_version from private.problem_solutions where problem_id = %s",
         problem["id"],
-    ) == [(version,)]
+    ) == [
+        (
+            {
+                "basic-v1": "practice-basic-v1",
+                "substitution-v2": "practice-substitution-v1",
+                "parts-v1": "practice-parts-v1",
+                "rational-v1": "practice-rational-v1",
+                "trigonometric-v1": "practice-trigonometric-v1",
+                "definite-v1": "practice-parts-definite-v1"
+                if topic == "integration-by-parts"
+                else "practice-rational-definite-v1",
+            }.get(version, version),
+        )
+    ]
     response = attempt(client, problem["id"], answer_of(url, problem["id"]))
     assert response.status_code == 201, response.text
     assert response.json()["attempt"]["result"] == "correct"
@@ -556,13 +596,16 @@ def test_definite_topic_saves_definite_problems_under_its_own_topic(
     problem = generate(client, "definite-integrals", 2)
     assert problem["topic"] == "definite-integrals"
     assert problem["problemLatex"].startswith(r"\int_{")
-    assert rows(
-        url,
-        "select t.slug, s.generator_version from public.problems p"
-        " join public.topics t on t.id = p.topic_id"
-        " join private.problem_solutions s on s.problem_id = p.id where p.id = %s",
-        problem["id"],
-    ) == [("definite-integrals", "definite-v1")]
+    assert (
+        rows(
+            url,
+            "select t.slug, s.generator_version from public.problems p"
+            " join public.topics t on t.id = p.topic_id"
+            " join private.problem_solutions s on s.problem_id = p.id where p.id = %s",
+            problem["id"],
+        )[0][0]
+        == "definite-integrals"
+    )
     answer = client.post(f"/problems/{problem['id']}/reveal-answer").json()["answerLatex"]
     assert "C" not in answer
     solution = client.post(f"/problems/{problem['id']}/reveal-solution").json()
