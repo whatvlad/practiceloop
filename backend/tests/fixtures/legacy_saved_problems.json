@@ -1,0 +1,500 @@
+[
+  {
+    "topic": "matrices",
+    "difficulty": 1,
+    "problem_latex": "\\det\\begin{pmatrix}1&1\\\\2&3\\end{pmatrix}",
+    "generator_data": {
+      "generator_version": "symbolic-v1",
+      "topic": "matrices",
+      "template": "determinant",
+      "difficulty": 1,
+      "a": 1,
+      "b": 1
+    },
+    "answer_latex": "1",
+    "solution_steps": [
+      {
+        "say": "Compute the determinant",
+        "latex": "1\\cdot3-1\\cdot2=1"
+      }
+    ]
+  },
+  {
+    "topic": "complex-numbers",
+    "difficulty": 1,
+    "problem_latex": "|1+1i|",
+    "generator_data": {
+      "generator_version": "symbolic-v1",
+      "topic": "complex-numbers",
+      "template": "modulus",
+      "difficulty": 1,
+      "a": 1,
+      "b": 1
+    },
+    "answer_latex": "\\sqrt{2}",
+    "solution_steps": [
+      {
+        "say": "Use the complex modulus formula",
+        "latex": "\\sqrt{1^2+1^2}=\\sqrt{2}"
+      }
+    ]
+  },
+  {
+    "topic": "fundamental-theorem-algebra",
+    "difficulty": 1,
+    "problem_latex": "x^2+1x+1=0: \\text{sum of the roots}",
+    "generator_data": {
+      "generator_version": "symbolic-v1",
+      "topic": "fundamental-theorem-algebra",
+      "template": "root-sum",
+      "difficulty": 1,
+      "a": 1,
+      "b": 1
+    },
+    "answer_latex": "-1",
+    "solution_steps": [
+      {
+        "say": "Apply Vi\u00e8te's formula",
+        "latex": "x_1+x_2=-1=-1"
+      }
+    ]
+  },
+  {
+    "topic": "partial-fractions",
+    "difficulty": 1,
+    "problem_latex": "\\frac{2 x + 3}{(x+1)(x+2)}= ?",
+    "generator_data": {
+      "generator_version": "symbolic-v1",
+      "topic": "partial-fractions",
+      "template": "decompose",
+      "difficulty": 1,
+      "a": 1,
+      "b": 1
+    },
+    "answer_latex": "\\frac{1}{x + 2} + \\frac{1}{x + 1}",
+    "solution_steps": [
+      {
+        "say": "Split into partial fractions",
+        "latex": "\\frac{1}{x + 2} + \\frac{1}{x + 1}"
+      }
+    ]
+  },
+  {
+    "topic": "basic-integrals",
+    "difficulty": 1,
+    "problem_latex": "\\int \\left(-3\\right)\\,dx\\quad (x\\in\\mathbb{R})",
+    "generator_data": {
+      "generator_version": "basic-v1",
+      "template": "constant",
+      "coefficient": -3,
+      "secondary": 1,
+      "power": 2
+    },
+    "answer_latex": "- 3 x + C",
+    "solution_steps": [
+      {
+        "say": "Apply the standard integral rules to each term.",
+        "latex": "- 3 x"
+      },
+      {
+        "say": "Add an arbitrary integration constant C.",
+        "latex": "- 3 x + C"
+      }
+    ]
+  },
+  {
+    "topic": "basic-integrals",
+    "difficulty": 1,
+    "problem_latex": "\\int_{0}^{2} \\left(- 3 x\\right)\\,dx",
+    "generator_data": {
+      "generator_version": "definite-v1",
+      "template": "power",
+      "coefficient": -3
+    },
+    "answer_latex": "-6",
+    "solution_steps": [
+      {
+        "say": "Apply the standard integral rules to each term.",
+        "latex": "- \\frac{3 x^{2}}{2}"
+      },
+      {
+        "say": "Evaluate the antiderivative at the upper bound and subtract its value at the lower bound.",
+        "latex": "\\left[- \\frac{3 x^{2}}{2}\\right]_{0}^{2} = -6 - \\left(0\\right)"
+      },
+      {
+        "say": "Simplify the result. A definite integral has no integration constant.",
+        "latex": "-6"
+      }
+    ]
+  },
+  {
+    "topic": "substitution",
+    "difficulty": 1,
+    "problem_latex": "\\int \\left(- 6 x \\cos{\\left(x^{2} + 1 \\right)}\\right)\\,dx\\quad(x\\in\\mathbb{R})",
+    "generator_data": {
+      "generator_version": "substitution-v1",
+      "family": "sin",
+      "a": -3,
+      "b": 1,
+      "scale": 1,
+      "difficulty": 1
+    },
+    "answer_latex": "- 3 \\sin{\\left(x^{2} + 1 \\right)} + C",
+    "solution_steps": [
+      {
+        "say": "Set u equal to the inner expression.",
+        "latex": "u = x^{2} + 1"
+      },
+      {
+        "say": "Differentiate the inner expression.",
+        "latex": "du = 2 x\\,dx"
+      },
+      {
+        "say": "Write the integral in terms of u.",
+        "latex": "\\int - 6 x \\cos{\\left(x^{2} + 1 \\right)}\\,dx = \\int - 3 \\cos{\\left(u \\right)}\\,du"
+      },
+      {
+        "say": "Apply the standard integral rules to each term.",
+        "latex": "- 3 \\sin{\\left(u \\right)} + C"
+      },
+      {
+        "say": "Replace u with the original expression.",
+        "latex": "- 3 \\sin{\\left(x^{2} + 1 \\right)} + C"
+      }
+    ]
+  },
+  {
+    "topic": "integration-by-parts",
+    "difficulty": 1,
+    "problem_latex": "\\int \\left(- 3 x e^{x}\\right)\\,dx\\quad (x\\in \\mathbb{R})",
+    "generator_data": {
+      "generator_version": "parts-v1",
+      "template": "linear_exponential",
+      "coefficient": -3
+    },
+    "answer_latex": "- 3 \\left(x - 1\\right) e^{x} + C",
+    "solution_steps": [
+      {
+        "say": "Apply integration by parts: integrate one factor and differentiate the other.",
+        "latex": "- 3 x e^{x} - \\int \\left(- 3 e^{x}\\right)\\, dx"
+      },
+      {
+        "say": "Apply the standard integral rules to each term.",
+        "latex": "- 3 \\left(x - 1\\right) e^{x}"
+      },
+      {
+        "say": "Add an arbitrary integration constant C.",
+        "latex": "- 3 \\left(x - 1\\right) e^{x} + C"
+      }
+    ]
+  },
+  {
+    "topic": "rational-functions",
+    "difficulty": 1,
+    "problem_latex": "\\int \\left(- \\frac{3}{x}\\right)\\,dx\\quad (x\\in \\left(-\\infty, 0\\right) \\cup \\left(0, \\infty\\right))",
+    "generator_data": {
+      "generator_version": "rational-v1",
+      "template": "linear_denominator",
+      "coefficient": -3
+    },
+    "answer_latex": "- 3 \\log{\\left(\\left|{x}\\right| \\right)} + C",
+    "solution_steps": [
+      {
+        "say": "Apply the standard integral rules to each term.",
+        "latex": "- 3 \\log{\\left(\\left|{x}\\right| \\right)}"
+      },
+      {
+        "say": "Add an arbitrary integration constant C.",
+        "latex": "- 3 \\log{\\left(\\left|{x}\\right| \\right)} + C"
+      }
+    ]
+  },
+  {
+    "topic": "trigonometric-integrals",
+    "difficulty": 1,
+    "problem_latex": "\\int \\left(- 3 \\sin{\\left(x \\right)}\\right)\\,dx\\quad (x\\in \\mathbb{R})",
+    "generator_data": {
+      "generator_version": "trigonometric-v1",
+      "template": "sine",
+      "coefficient": -3
+    },
+    "answer_latex": "3 \\cos{\\left(x \\right)} + C",
+    "solution_steps": [
+      {
+        "say": "Apply the standard integral rules to each term.",
+        "latex": "3 \\cos{\\left(x \\right)}"
+      },
+      {
+        "say": "Add an arbitrary integration constant C.",
+        "latex": "3 \\cos{\\left(x \\right)} + C"
+      }
+    ]
+  },
+  {
+    "topic": "definite-integrals",
+    "difficulty": 1,
+    "problem_latex": "\\int_{0}^{2} \\left(- 3 x\\right)\\,dx",
+    "generator_data": {
+      "generator_version": "definite-v1",
+      "template": "power",
+      "coefficient": -3
+    },
+    "answer_latex": "-6",
+    "solution_steps": [
+      {
+        "say": "Apply the standard integral rules to each term.",
+        "latex": "- \\frac{3 x^{2}}{2}"
+      },
+      {
+        "say": "Evaluate the antiderivative at the upper bound and subtract its value at the lower bound.",
+        "latex": "\\left[- \\frac{3 x^{2}}{2}\\right]_{0}^{2} = -6 - \\left(0\\right)"
+      },
+      {
+        "say": "Simplify the result. A definite integral has no integration constant.",
+        "latex": "-6"
+      }
+    ]
+  },
+  {
+    "topic": "double-integrals",
+    "difficulty": 1,
+    "problem_latex": "\\iint_D \\left(- 9 x y\\right)\\,dA,\\quad D = [0,2]\\times[0,1]\\quad\\text{(Cartesian coordinates)}",
+    "generator_data": {
+      "generator_version": "double-v1",
+      "template": "rectangle_product",
+      "variant": 0,
+      "coefficient": -3
+    },
+    "answer_latex": "-9",
+    "solution_steps": [
+      {
+        "say": "Describe the region with bounds for each variable.",
+        "latex": "0 \\le x \\le 2,\\quad 0 \\le y \\le 1"
+      },
+      {
+        "say": "Write the double integral as an iterated integral.",
+        "latex": "\\int_{0}^{2}\\int_{0}^{1} \\left(- 9 x y\\right)\\,dy\\,dx"
+      },
+      {
+        "say": "Integrate the inner integral. Keep the outer variable constant.",
+        "latex": "\\int_{0}^{1} \\left(- 9 x y\\right)\\,dy = - \\frac{9 x}{2}"
+      },
+      {
+        "say": "Integrate the result between the outer bounds.",
+        "latex": "\\int_{0}^{2} \\left(- \\frac{9 x}{2}\\right)\\,dx = -9"
+      },
+      {
+        "say": "Check the value with the other set-up of the same region.",
+        "latex": "\\int_{0}^{1}\\int_{0}^{2} \\left(- 9 x y\\right)\\,dx\\,dy = -9"
+      },
+      {
+        "say": "Simplify the result. This is the exact value of the integral.",
+        "latex": "-9"
+      }
+    ]
+  },
+  {
+    "topic": "triple-integrals",
+    "difficulty": 1,
+    "problem_latex": "\\iiint_E \\left(- 3 x y z\\right)\\,dV,\\quad E = [0,1]\\times[0,2]\\times[0,1]\\quad\\text{(Cartesian coordinates)}",
+    "generator_data": {
+      "generator_version": "triple-v1",
+      "template": "box_product",
+      "variant": 0,
+      "coefficient": -3
+    },
+    "answer_latex": "- \\frac{3}{2}",
+    "solution_steps": [
+      {
+        "say": "Describe the solid with bounds for each variable.",
+        "latex": "0 \\le x \\le 1,\\quad 0 \\le y \\le 2,\\quad 0 \\le z \\le 1"
+      },
+      {
+        "say": "Write the triple integral as an iterated integral.",
+        "latex": "\\int_{0}^{1}\\int_{0}^{2}\\int_{0}^{1} \\left(- 3 x y z\\right)\\,dz\\,dy\\,dx"
+      },
+      {
+        "say": "Integrate the inner integral. Keep the outer variable constant.",
+        "latex": "\\int_{0}^{1} \\left(- 3 x y z\\right)\\,dz = - \\frac{3 x y}{2}"
+      },
+      {
+        "say": "Integrate the middle integral. Keep the outermost variable constant.",
+        "latex": "\\int_{0}^{2} \\left(- \\frac{3 x y}{2}\\right)\\,dy = - 3 x"
+      },
+      {
+        "say": "Integrate the result between the outer bounds.",
+        "latex": "\\int_{0}^{1} \\left(- 3 x\\right)\\,dx = - \\frac{3}{2}"
+      },
+      {
+        "say": "Check the value with the other set-up of the same region.",
+        "latex": "\\int_{0}^{1}\\int_{0}^{2}\\int_{0}^{1} \\left(- 3 x y z\\right)\\,dx\\,dy\\,dz = - \\frac{3}{2}"
+      },
+      {
+        "say": "Simplify the result. This is the exact value of the integral.",
+        "latex": "- \\frac{3}{2}"
+      }
+    ]
+  },
+  {
+    "topic": "derivatives",
+    "difficulty": 1,
+    "problem_latex": "\\frac{d}{dx}\\left(- 3 x^{4}\\right)\\quad (x\\in \\mathbb{R})",
+    "generator_data": {
+      "generator_version": "derivatives-v1",
+      "template": "power",
+      "coefficient": -3
+    },
+    "answer_latex": "- 12 x^{3}",
+    "solution_steps": [
+      {
+        "say": "Apply the power rule: multiply by the power, then lower the power by one.",
+        "latex": "f'(x) = - 12 x^{4 - 1}"
+      },
+      {
+        "say": "Simplify the result. A derivative has no arbitrary constant.",
+        "latex": "f'(x) = - 12 x^{3}"
+      }
+    ]
+  },
+  {
+    "topic": "partial-derivatives",
+    "difficulty": 1,
+    "problem_latex": "\\frac{\\partial}{\\partial x}\\left(- 3 x^{3} y + 2 y^{2}\\right)\\quad(x, y \\in \\mathbb{R})",
+    "generator_data": {
+      "generator_version": "partial-v1",
+      "template": "polynomial_x",
+      "coefficient": -3,
+      "variables": {
+        "x": "real",
+        "y": "real"
+      }
+    },
+    "answer_latex": "- 9 x^{2} y",
+    "solution_steps": [
+      {
+        "say": "Differentiate with respect to the named variable. Hold every other variable constant.",
+        "latex": "y\\ \\text{constant}:\\quad \\frac{\\partial}{\\partial x}\\left(- 3 x^{3} y + 2 y^{2}\\right) = - 9 x^{2} y"
+      }
+    ]
+  },
+  {
+    "topic": "functions-and-sequences",
+    "difficulty": 1,
+    "problem_latex": "a_n=1n+1;\\quad a_5=?",
+    "generator_data": {
+      "generator_version": "symbolic-v1",
+      "topic": "functions-and-sequences",
+      "template": "sequence-value",
+      "difficulty": 1,
+      "a": 1,
+      "b": 1
+    },
+    "answer_latex": "6",
+    "solution_steps": [
+      {
+        "say": "Substitute n = 5",
+        "latex": "a_5=1\\cdot5+1=6"
+      }
+    ]
+  },
+  {
+    "topic": "limits-and-continuity",
+    "difficulty": 1,
+    "problem_latex": "\\lim_{x\\to1}\\frac{x^2-1}{x-1}=?",
+    "generator_data": {
+      "generator_version": "symbolic-v1",
+      "topic": "limits-and-continuity",
+      "template": "limit",
+      "difficulty": 1,
+      "a": 1,
+      "b": 1
+    },
+    "answer_latex": "2",
+    "solution_steps": [
+      {
+        "say": "Cancel the common factor",
+        "latex": "\\lim_{x\\to1}(x+1)=2"
+      }
+    ]
+  },
+  {
+    "topic": "improper-integrals",
+    "difficulty": 1,
+    "problem_latex": "\\int_{1}^\\infty \\frac{1}{x^{2}}\\,dx=?",
+    "generator_data": {
+      "generator_version": "symbolic-v1",
+      "topic": "improper-integrals",
+      "template": "improper-integral",
+      "difficulty": 1,
+      "a": 1,
+      "b": 1
+    },
+    "answer_latex": "1",
+    "solution_steps": [
+      {
+        "say": "Evaluate the convergent improper integral",
+        "latex": "1"
+      }
+    ]
+  },
+  {
+    "topic": "series",
+    "difficulty": 1,
+    "problem_latex": "\\sum_{n=0}^\\infty \\left(\\frac{1}{2}\\right)^n=?",
+    "generator_data": {
+      "generator_version": "symbolic-v1",
+      "topic": "series",
+      "template": "geometric-series",
+      "difficulty": 1,
+      "a": 1,
+      "b": 1
+    },
+    "answer_latex": "2",
+    "solution_steps": [
+      {
+        "say": "Use the geometric series formula",
+        "latex": "\\frac{1}{1-1/2}=2"
+      }
+    ]
+  },
+  {
+    "topic": "multivariable-functions",
+    "difficulty": 1,
+    "problem_latex": "f(x,y)=1x^2y+1y;\\quad \\frac{\\partial f}{\\partial x}=?",
+    "generator_data": {
+      "generator_version": "symbolic-v1",
+      "topic": "multivariable-functions",
+      "template": "partial-value",
+      "difficulty": 1,
+      "a": 1,
+      "b": 1
+    },
+    "answer_latex": "2 x y + 1",
+    "solution_steps": [
+      {
+        "say": "Differentiate with respect to x",
+        "latex": "f_x=2 x y + 1"
+      }
+    ]
+  },
+  {
+    "topic": "differential-equations",
+    "difficulty": 1,
+    "problem_latex": "y'=1y,\\ y(0)=1;\\quad y(x)=?",
+    "generator_data": {
+      "generator_version": "symbolic-v1",
+      "topic": "differential-equations",
+      "template": "exponential-solution",
+      "difficulty": 1,
+      "a": 1,
+      "b": 1
+    },
+    "answer_latex": "e^{x}",
+    "solution_steps": [
+      {
+        "say": "Solve the separable equation",
+        "latex": "y(x)=e^{x}"
+      }
+    ]
+  }
+]
