@@ -39,6 +39,7 @@ export function isSharedPath(pathname: string): boolean {
 }
 
 export function pageMeta(pathname: string): PageMeta {
+  if (/^\/p\/[^/]+$/.test(pathname)) return page('Problem from code', 'Open a mathematics problem by its code.');
   if (isSharedPath(pathname)) return PAGES['/shared'];
   return Object.hasOwn(PAGES, pathname) ? PAGES[pathname] : NOT_FOUND;
 }
@@ -127,6 +128,7 @@ export const NOINDEX_PATHS = [
   ...Object.keys(PAGES).filter((path) => !PAGES[path].indexable && !path.startsWith('/auth/')),
   '/s/*',
   '/shared/*',
+  '/p/*',
   '/auth/*',
   '/graph/*',
 ];

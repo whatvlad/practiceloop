@@ -67,6 +67,12 @@ describe('client route protection and auth UI', () => {
     expect(element.textContent).toContain('That link or code is not valid.');
   });
 
+  it('handles malformed URL escapes on permanent-code pages without crashing', async () => {
+    await renderAt('/p/%E0%A4%A', signedOut);
+    expect(element.querySelector('h1')?.textContent).toContain('not valid or is unknown');
+    expect(window.location.pathname).toBe('/p/%E0%A4%A');
+  });
+
   it('does not render a protected profile while restoring the session', async () => {
     await renderAt('/profile', { ...signedOut, status: 'loading' });
     expect(element.textContent).toContain('Restoring your session');
@@ -112,7 +118,7 @@ describe('client route protection and auth UI', () => {
     expect(element.querySelector('[role="alert"]')?.textContent).toBe('Google sign-in did not finish.');
   });
 
-  it.each([`/s/${'a'.repeat(43)}`, '/shared?code=K7M2QX9P'])('returns from Google to the selected shared problem: %s', async path => {
+  it.each([`/s/${'a'.repeat(43)}`, '/shared?code=K7M2QX9P', '/p/CMB-1-0000000000000000-32'])('returns from Google to the selected shared problem: %s', async path => {
     await renderAt(`/login?next=${encodeURIComponent(path)}`);
     await act(async () => element.querySelector('button')!.click());
     expect(harness.store.signIn).toHaveBeenCalledOnce();

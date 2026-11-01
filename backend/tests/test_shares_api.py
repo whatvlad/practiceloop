@@ -17,10 +17,12 @@ import psycopg
 import pytest
 from fastapi.testclient import TestClient
 
+from app.api import codes as code_api
 from app.api import practice, shares
 from app.core import database
 from app.core.auth import VerifiedUser, current_user, token_verifier
 from app.engine import practice as engine
+from app.engine.codes import encode
 from app.generators.core import catalogue
 from app.main import app
 from app.services import shares as share_service
@@ -58,8 +60,10 @@ def users(url: str, monkeypatch: pytest.MonkeyPatch) -> Iterator[Users]:
         practice.reveal_limit,
         shares.share_limit,
         shares.lookup_limit,
+        code_api.lookup_limit,
     ):
         limiter.reset()
+    code_api._opened.cache_clear()
 
     def signed_in() -> VerifiedUser:
         if people.current is None:
@@ -485,3 +489,71 @@ def test_copy_requires_verified_authentication_and_idempotency_key(
     # Exercise the real missing-credentials dependency without requiring JWKS configuration.
     monkeypatch.setitem(app.dependency_overrides, token_verifier, lambda: None)
     assert start_copy(client, {"token": created["token"]}).status_code == 401
+
+
+def test_permanent_code_creates_isolated_practice_with_normal_reveals(
+    client: TestClient,
+    users: Users,
+    url: str,
+) -> None:
+    code = encode("CMB", 1, 198)
+    lookup = client.get("/codes", params={"code": code.lower()})
+    assert lookup.status_code == 200
+    assert set(lookup.json()["problem"]) == {"topic", "difficulty", "problemLatex"}
+    request_key = str(uuid4())
+    headers = {"Idempotency-Key": request_key}
+    first = client.post("/codes/practice", json={"code": code.lower()}, headers=headers)
+    again = client.post("/codes/practice", json={"code": code.replace("-", " ")}, headers=headers)
+    assert first.status_code == 201 and again.json() == first.json()
+    assert again.headers["Idempotency-Replayed"] == "true"
+    problem = first.json()["problem"]
+    assert problem["problemLatex"] == lookup.json()["problem"]["problemLatex"]
+    assert not problem["answerRevealed"] and not problem["solutionRevealed"]
+    with psycopg.connect(url) as conn:
+        saved = conn.execute(
+            "select generator_data from private.problem_solutions where problem_id = %s",
+            (problem["id"],),
+        ).fetchone()[0]
+    assert saved == {"generator_version": "combinations-v1", "code": code}
+    users.current = users.bob
+    assert client.get(f"/problems/{problem['id']}").status_code == 404
+    other = client.post(
+        "/codes/practice", json={"code": code}, headers={"Idempotency-Key": str(uuid4())}
+    )
+    assert other.status_code == 201 and other.json()["problem"]["id"] != problem["id"]
+    pid = other.json()["problem"]["id"]
+    assert set(client.get(f"/problems/{pid}").json()) == {"problem", "share"}
+    answer = engine.replay(saved).answer.latex()
+    checked = client.post(
+        f"/problems/{pid}/attempts",
+        json={"answer": answer},
+        headers={"Idempotency-Key": str(uuid4())},
+    )
+    assert checked.status_code == 201 and checked.json()["attempt"]["result"] == "correct"
+    assert client.post(f"/problems/{pid}/reveal-answer").json() == {"answerLatex": answer}
+    assert client.post(f"/problems/{pid}/reveal-solution").json()["steps"]
+
+
+def test_permanent_code_requires_authentication_key_and_rejects_private_payloads(
+    client: TestClient,
+    users: Users,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    body = {"code": encode("CMB", 1, 198)}
+    assert client.post("/codes/practice", json=body).status_code == 422
+    assert (
+        client.post(
+            "/codes/practice",
+            json={**body, "answerLatex": "private"},
+            headers={"Idempotency-Key": str(uuid4())},
+        ).status_code
+        == 422
+    )
+    app.dependency_overrides.pop(current_user)
+    monkeypatch.setitem(app.dependency_overrides, token_verifier, lambda: None)
+    assert (
+        client.post(
+            "/codes/practice", json=body, headers={"Idempotency-Key": str(uuid4())}
+        ).status_code
+        == 401
+    )

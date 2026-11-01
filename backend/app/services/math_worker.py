@@ -203,6 +203,29 @@ def validate_math_input(source: str) -> None:
         raise MathWorkerError("Math worker failed within its resource limits")
 
 
+def _code_child() -> int:
+    try:
+        _apply_limits()
+        from app.engine.opening import rebuild
+
+        try:
+            opened = rebuild(sys.stdin.buffer.read(129).decode("ascii"))
+        except (ValueError, KeyError):
+            payload = b"invalid_code"
+        else:
+            payload = opened.model_dump_json().encode("utf-8")
+        sys.stdout.buffer.write(payload)
+        sys.stdout.buffer.flush()
+        return 0
+    except Exception:
+        return 1
+
+
+def open_problem_code(code: str) -> bytes:
+    """Rebuild a permanent code in the bounded child, never in the API process."""
+    return _run_worker(("open-code",), code.encode("ascii"))
+
+
 type CheckResult = Literal["correct", "incorrect", "invalid"]
 
 
@@ -259,4 +282,6 @@ def check_answer(answer: str, record: Mapping[str, object]) -> AnswerCheck:
 
 
 if __name__ == "__main__":
+    if sys.argv[1:] == ["open-code"]:
+        sys.exit(_code_child())
     sys.exit(_check_child() if sys.argv[1:] == ["check"] else _child())

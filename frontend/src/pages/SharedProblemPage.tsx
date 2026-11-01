@@ -4,7 +4,8 @@ import { Button, ButtonLink } from '../components/Button';
 import { DifficultyDots } from '../components/DifficultyScale';
 import { Tex } from '../components/Tex';
 import { lookupShare, type ShareLookup } from '../data/shares';
-import { practiceSharedProblem } from '../data/api';
+import { practiceCodeProblem, practiceSharedProblem } from '../data/api';
+import { lookupProblemCode } from '../data/problemCodes';
 import { problemTag } from '../data/topics';
 import type { ShareUnavailable } from '../data/types';
 import { leadText, problemKind } from '../format';
@@ -19,17 +20,17 @@ const UNAVAILABLE: Record<ShareUnavailable, { title: string; detail: string }> =
   revoked: { title: 'This problem is no longer shared.', detail: 'Its owner stopped sharing it.' },
 };
 
-function CodeForm({ initial = '' }: { initial?: string }) {
+function CodeForm({ initial = '', permanent = false }: { initial?: string; permanent?: boolean }) {
   const [code, setCode] = useState(initial);
   function open(event: FormEvent) {
     event.preventDefault();
-    if (code.trim()) navigate(`/shared?code=${encodeURIComponent(code.trim())}`);
+    if (code.trim()) navigate(permanent ? `/p/${encodeURIComponent(code.trim())}` : `/shared?code=${encodeURIComponent(code.trim())}`);
   }
   return (
     <form className="pl-stack pl-gap-3" onSubmit={open}>
       <label className="pl-field">
-        <span className="pl-small pl-muted">Share code</span>
-        <input className="pl-input" value={code} onChange={(event) => setCode(event.target.value)} placeholder="K7M2-QX9P" autoComplete="off" spellCheck={false} maxLength={32} />
+        <span className="pl-small pl-muted">{permanent ? 'Problem code' : 'Share code'}</span>
+        <input className="pl-input" value={code} onChange={(event) => setCode(event.target.value)} placeholder={permanent ? 'CMB-1-0000000000000000-00' : 'K7M2-QX9P'} autoComplete="off" spellCheck={false} maxLength={permanent ? 128 : 32} />
       </label>
       <div>
         <Button type="submit" arrow disabled={!code.trim()}>Open problem</Button>
@@ -38,7 +39,7 @@ function CodeForm({ initial = '' }: { initial?: string }) {
   );
 }
 
-type ShareRef = { token: string } | { code: string };
+type ShareRef = { token: string } | { code: string } | { problemCode: string };
 
 function Result({ found, shareRef, signedIn, authLoading }: { found: ShareLookup; shareRef: ShareRef; signedIn: boolean; authLoading: boolean }) {
   const [busy, setBusy] = useState(false);
@@ -46,7 +47,8 @@ function Result({ found, shareRef, signedIn, authLoading }: { found: ShareLookup
   const pending = useRef(false);
   const active = useRef(true);
   useEffect(() => { active.current = true; return () => { active.current = false; }; }, []);
-  const path = 'token' in shareRef ? `/s/${shareRef.token}` : `/shared?code=${encodeURIComponent(shareRef.code)}`;
+  const permanent = 'problemCode' in shareRef;
+  const path = 'problemCode' in shareRef ? `/p/${encodeURIComponent(shareRef.problemCode)}` : 'token' in shareRef ? `/s/${shareRef.token}` : `/shared?code=${encodeURIComponent(shareRef.code)}`;
   const signIn = `/login?next=${encodeURIComponent(path)}`;
 
   async function solve() {
@@ -55,7 +57,7 @@ function Result({ found, shareRef, signedIn, authLoading }: { found: ShareLookup
     setBusy(true);
     setError('');
     try {
-      const problem = await practiceSharedProblem(shareRef);
+      const problem = await ('problemCode' in shareRef ? practiceCodeProblem(shareRef.problemCode) : practiceSharedProblem(shareRef));
       if (active.current) navigate(`/practice?id=${encodeURIComponent(problem.id)}`);
     } catch (failure) {
       if (active.current) setError(failure instanceof Error ? failure.message : text.service_error);
@@ -67,16 +69,16 @@ function Result({ found, shareRef, signedIn, authLoading }: { found: ShareLookup
   if ('unavailable' in found) {
     const { title, detail } = UNAVAILABLE[found.unavailable];
     return (
-      <section className="pl-card pl-card--lg pl-stack pl-gap-4" aria-label="Shared problem">
-        <h1 className="pl-h-lg pl-m-0">{title}</h1>
-        <p className="pl-muted pl-m-0">{detail}</p>
-        <CodeForm />
+      <section className="pl-card pl-card--lg pl-stack pl-gap-4" aria-label={permanent ? 'Problem from code' : 'Shared problem'}>
+        <h1 className="pl-h-lg pl-m-0">{permanent ? 'That problem code is not valid or is unknown.' : title}</h1>
+        <p className="pl-muted pl-m-0">{permanent ? 'Check the code for typos and try again.' : detail}</p>
+        <CodeForm permanent={permanent} />
       </section>
     );
   }
   const { topic, difficulty, problemLatex } = found.problem;
   return (
-    <section className="pl-problem" aria-label="Shared problem">
+    <section className="pl-problem" aria-label={permanent ? 'Problem from code' : 'Shared problem'}>
       <div className="pl-problem-head">
         <div className="meta">
           <span className="pl-tag">{problemTag(topic)}</span>
@@ -84,7 +86,7 @@ function Result({ found, shareRef, signedIn, authLoading }: { found: ShareLookup
             <DifficultyDots level={difficulty} />
           </span>
         </div>
-        <span className="pl-label">Shared problem</span>
+        <span className="pl-label">{permanent ? 'Problem from code' : 'Shared problem'}</span>
       </div>
       <div className="pl-stack pl-gap-3">
         <p className="pl-lead">{leadText(problemKind(topic, problemLatex))}</p>
@@ -106,10 +108,11 @@ function Result({ found, shareRef, signedIn, authLoading }: { found: ShareLookup
 }
 
 /** `/s/<token>` opens a shared link; `/shared` takes a code (#37). */
-export function SharedProblemPage({ token, code, signedIn = false, authLoading = false }: { token: string | null; code: string | null; signedIn?: boolean; authLoading?: boolean }) {
-  const ref = token !== null ? { token } : code !== null ? { code } : null;
-  const found = useLoad(() => (ref ? lookupShare(ref) : Promise.resolve(null)), `${token}:${code}`);
-  const returnPath = token !== null ? `/s/${token}` : code !== null ? `/shared?code=${encodeURIComponent(code)}` : null;
+export function SharedProblemPage({ token, code, problemCode, signedIn = false, authLoading = false }: { token: string | null; code: string | null; problemCode?: string; signedIn?: boolean; authLoading?: boolean }) {
+  const ref: ShareRef | null = problemCode !== undefined ? { problemCode } : token !== null ? { token } : code !== null ? { code } : null;
+  const referenceKey = `${token}:${code}:${problemCode}`;
+  const found = useLoad(() => (ref ? 'problemCode' in ref ? lookupProblemCode(ref.problemCode) : lookupShare(ref) : Promise.resolve(null)), referenceKey);
+  const returnPath = problemCode !== undefined ? `/p/${encodeURIComponent(problemCode)}` : token !== null ? `/s/${token}` : code !== null ? `/shared?code=${encodeURIComponent(code)}` : null;
   return (
     <div className="pl-page">
       <header className="pl-nav pl-nav--bare">
@@ -124,8 +127,8 @@ export function SharedProblemPage({ token, code, signedIn = false, authLoading =
             <CodeForm />
           </section>
         )}
-        {ref && found.status === 'loading' && <p role="status">Loading shared problem…</p>}
-        {ref && found.status === 'ready' && found.data && <Result key={`${token}:${code}`} found={found.data} shareRef={ref} signedIn={signedIn} authLoading={authLoading} />}
+        {ref && found.status === 'loading' && <p role="status">{problemCode !== undefined ? 'Loading problem…' : 'Loading shared problem…'}</p>}
+        {ref && found.status === 'ready' && found.data && <Result key={referenceKey} found={found.data} shareRef={ref} signedIn={signedIn} authLoading={authLoading} />}
         {ref && found.status === 'error' && (
           <section className="pl-card pl-card--lg pl-stack pl-gap-4" role="alert">
             <h1 className="pl-h-lg pl-m-0">{found.error instanceof Error ? found.error.message : text.service_error}</h1>

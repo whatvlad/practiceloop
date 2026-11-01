@@ -98,6 +98,12 @@ export function App() {
   function route() {
     if (pathname === '/') return <LandingPage onSignIn={handleSignIn} disabled={authDisabled} busy={auth.working} error={auth.error} signedIn={!!account} />;
     // Shared problems (#37) open the same way signed in or not.
+    const coded = /^\/p\/([^/]+)$/.exec(pathname);
+    if (coded) {
+      let code = coded[1];
+      try { code = decodeURIComponent(code); } catch { /* The page displays an invalid-code message. */ }
+      return <SharedProblemPage key={`${account?.id ?? auth.status}:code:${code}`} token={null} code={null} problemCode={code} signedIn={!!account} authLoading={auth.status === 'loading'} />;
+    }
     if (pathname === '/shared') return <SharedProblemPage key={`${account?.id ?? auth.status}:${params.get('code')}`} token={null} code={params.get('code')} signedIn={!!account} authLoading={auth.status === 'loading'} />;
     const shared = /^\/(?:s|shared)\/([^/]+)$/.exec(pathname);
     if (shared) return <SharedProblemPage key={`${account?.id ?? auth.status}:${shared[1]}`} token={decodeURIComponent(shared[1])} code={null} signedIn={!!account} authLoading={auth.status === 'loading'} />;
