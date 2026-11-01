@@ -385,7 +385,7 @@ def combinations(api: httpx.Client, url: str) -> None:
     )
     algebra = next((a for a in catalogue["areas"] if a["slug"] == "algebra"), {})
     weights = (algebra.get("mixed") or {}).get("weights", {})
-    # #191: the engine entry publishes its weight; worksheets wait for #192.
+    # #191 publishes the mixed weight; #192 supplies worksheet pools.
     check(weights.get("combinations") == 1, "combinations is in Algebra mixed practice", weights)
     response = api.post("/problems", json={"topic": "combinations", "difficulty": 1}, headers=key())
     check(response.status_code == 201, "generate a combinations problem", response.text)
@@ -433,11 +433,27 @@ def combinations(api: httpx.Client, url: str) -> None:
         "/worksheets",
         json={
             "source": "generate",
-            "groups": [{"topic": "combinations", "difficulty": 1, "count": 1}],
+            "groups": [{"topic": "combinations", "difficulty": 1, "count": 3}],
+            "solutions": True,
         },
         headers=key(),
     )
-    check(sheet.status_code == 422, "combinations is not offered on worksheets yet", sheet.text)
+    check(sheet.status_code == 201, "generate a combinations worksheet from the pool", sheet.text)
+    if sheet.status_code == 201:
+        ids = sheet.json()["worksheet"]["problemIds"]
+        check(len(ids) == 3, "the worksheet has three problems", ids)
+        records = [private_record(url, pid) for pid in ids]
+        check(len({r["code"] for r in records}) == 3, "worksheet codes do not repeat", records)
+        for pid, record in zip(ids, records, strict=True):
+            opened = api.get(f"/problems/{pid}").json()
+            pooled = engine.pooled(record)
+            check(
+                opened["problem"]["problemLatex"] == pooled.statement
+                and opened["answer"]["answerLatex"] == pooled.answer_latex
+                and opened["solution"]["steps"] == list(pooled.steps),
+                "worksheet stores the pooled statement, answer and steps",
+                opened,
+            )
 
 
 def partials(api: httpx.Client, url: str) -> None:

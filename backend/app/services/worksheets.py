@@ -19,7 +19,18 @@ from psycopg import Connection
 from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
 
-from app.generators.core import catalogue_records
+from app.engine import practice as engine
+from app.generators.core import catalogue_records as legacy_records
+
+
+def catalogue_records(topic: str, difficulty: int) -> tuple[dict[str, object], ...]:
+    """Engine worksheets pick only verified codes; legacy cells keep their records."""
+    if topic in engine.ENGINE_TOPICS:
+        return tuple(
+            {"generator_version": problem.generator_version, "code": problem.code}
+            for problem in engine.pool(topic, difficulty)
+        )
+    return legacy_records(topic, difficulty)
 
 
 def record_key(record: dict[str, object]) -> str:

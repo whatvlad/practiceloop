@@ -92,6 +92,7 @@ PowerShell examples, from repository root:
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r backend/requirements.txt
 .\.venv\Scripts\python.exe -m pip install --no-deps -e backend
+.\.venv\Scripts\python.exe -m app.engine.catalogue
 cd frontend
 npm ci --ignore-scripts
 cd ..
@@ -100,6 +101,14 @@ Do not commit .env. Copy the example only when configuring real services:
 ```powershell
 Copy-Item .env.example .env
 ```
+Build the private engine catalogue after changing an engine generator or topic:
+`.\.venv\Scripts\python.exe -m app.engine.catalogue`. It writes the ignored
+`backend/.engine-catalogue.json` (64 verified codes per engine topic x level,
+including rendered answers and steps). Startup refuses a missing or incomplete
+catalogue; never copy this private artifact into frontend assets. The Oracle
+release script builds it before switching releases; rollback keeps the prior
+release's own catalogue. See [ADR-008](docs/decisions/0008-generator-engine.md).
+
 Frontend sign-in needs the public Supabase settings in frontend/.env.local;
 copy only the VITE_* public values there. Saved practice needs backend database
 and auth configuration (docs/production/ORACLE_DEPLOY.md).

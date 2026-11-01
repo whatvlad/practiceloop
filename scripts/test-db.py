@@ -108,6 +108,7 @@ def main() -> int:
             "PRACTICELOOP_TEST_DATABASE_URL": f"postgresql://postgres:{PASSWORD}@127.0.0.1:{port}/postgres"
         }
         backend = ROOT / "backend"
+        run([sys.executable, "-m", "app.engine.catalogue"], cwd=backend, env=env)
         run([sys.executable, "-m", "pytest", "-m", "db"], cwd=backend, env=env)
         run(
             [

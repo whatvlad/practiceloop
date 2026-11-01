@@ -8,6 +8,7 @@ import pytest
 from app.api import practice
 from app.core.auth import VerifiedUser
 from app.engine import practice as engine
+from app.engine.catalogue import POOL_SIZE
 from app.services.math_parser import parse_math_input
 from app.services.math_worker import check_answer
 from app.visuals.spec import solution_payload
@@ -21,10 +22,10 @@ def test_combinations_is_listed_from_its_engine_entry_and_joins_algebra_mixed() 
         "name": "Combinations",
         "area": "algebra",
         "availableDifficulties": [1],
-        "worksheetCapacity": {"1": 0},
+        "worksheetCapacity": {"1": POOL_SIZE},
     }
     algebra = next(area for area in body["areas"] if area["slug"] == "algebra")
-    # #191 (review decision 13): a published weight; worksheets wait for #192.
+    # #191 publishes the weight; #192 adds the worksheet pool.
     assert algebra["mixed"]["weights"]["combinations"] == 1
     assert algebra["mixed"]["worksheetCapacity"]["1"] == sum(
         practice.capacity(slug, 1)
@@ -33,16 +34,23 @@ def test_combinations_is_listed_from_its_engine_entry_and_joins_algebra_mixed() 
             "complex-numbers",
             "fundamental-theorem-algebra",
             "partial-fractions",
+            "combinations",
         )
     )
     assert "combinations" in practice.mixed_topics("algebra", 1)[0]
-    assert "combinations" not in practice.mixed_topics("algebra", 1, worksheet=True)[0]
+    assert "combinations" in practice.mixed_topics("algebra", 1, worksheet=True)[0]
 
 
 def test_a_served_entry_alone_lists_a_topic(monkeypatch: pytest.MonkeyPatch) -> None:
     """Acceptance of #191: the engine entry is the only code a new engine topic needs."""
     entry = replace(
         engine.ENGINE_TOPICS["combinations"], slug="counting", title="Counting", mixed_weight=3
+    )
+    original_pool = engine.pool
+    monkeypatch.setattr(
+        engine,
+        "pool",
+        lambda slug, level: original_pool("combinations" if slug == "counting" else slug, level),
     )
     monkeypatch.setitem(engine.ENGINE_TOPICS, "counting", entry)
     monkeypatch.setattr(practice, "TOPICS", practice.listed_topics(engine.ENGINE_TOPICS))
@@ -53,7 +61,7 @@ def test_a_served_entry_alone_lists_a_topic(monkeypatch: pytest.MonkeyPatch) -> 
         "name": "Counting",
         "area": "algebra",
         "availableDifficulties": [1],
-        "worksheetCapacity": {"1": 0},
+        "worksheetCapacity": {"1": POOL_SIZE},
     }
     algebra = next(area for area in body["areas"] if area["slug"] == "algebra")
     assert algebra["mixed"]["weights"]["counting"] == 3
@@ -83,7 +91,7 @@ def test_a_served_step_without_learner_text_is_refused(monkeypatch: pytest.Monke
     generator = engine._registry().get("combinations-v1")
     monkeypatch.setattr(generator, "step_text", {"other": "Some other step."})
     with pytest.raises(ValueError, match="No learner text for step combinations"):
-        engine.issue("combinations", 1, seed=1234)
+        engine.public_replay(engine.issue("combinations", 1, seed=1234).record)
 
 
 @pytest.mark.parametrize("seed", range(40))

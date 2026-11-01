@@ -93,6 +93,8 @@ jobs:
           cache-dependency-path: backend/requirements.txt
       - run: python -m pip install -r requirements.txt
       - run: python -m pip install --no-deps -e .
+      - name: Build verified engine catalogue
+        run: python -m app.engine.catalogue
       - run: shellcheck ../deploy/oracle/*.sh
       - run: python -m ruff check . ../scripts
       - run: python -m ruff format --check . ../scripts
@@ -106,6 +108,7 @@ jobs:
           tests/test_math_parser.py tests/test_math_worker.py
           tests/test_answer_check.py tests/test_answer_variables.py
           tests/test_preview.py tests/test_shares.py tests/test_topic_areas.py
+          tests/test_worksheets.py
           tests/test_engine*.py
       - name: Run full backend tests (manual)
         if: github.event_name == 'workflow_dispatch' && inputs.full_backend
@@ -140,6 +143,8 @@ jobs:
             texlive-latex-recommended texlive-fonts-recommended lmodern poppler-utils
       - run: python -m pip install -r requirements.txt
       - run: python -m pip install --no-deps -e .
+      - name: Build verified engine catalogue
+        run: python -m app.engine.catalogue
       - name: Compile every catalogue statement and answer, and the sandbox tests
         run: python -m pytest -m tex
 
@@ -194,6 +199,7 @@ jobs:
         run: |
           python -m pip install -r requirements.txt
           python -m pip install --no-deps -e .
+          python -m app.engine.catalogue
           python -m pytest -m db
       - name: End-to-end API flow over HTTP (#13)
         working-directory: backend

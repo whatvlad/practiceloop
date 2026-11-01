@@ -18,7 +18,7 @@ import pytest
 
 from app.api.practice import TOPICS
 from app.engine.practice import ENGINE_TOPICS
-from app.engine.practice import issue as engine_issue
+from app.engine.practice import pool as engine_pool
 from app.generators.core import catalogue, catalogue_records, replay
 from app.services import worksheet_pdf
 from app.services.worksheet_graphs import graph
@@ -101,13 +101,17 @@ def test_every_catalogue_statement_and_answer_compiles() -> None:
         if slug not in ENGINE_TOPICS
         for level in topic.levels
     ]
-    # #169: a new-engine statement prints on a worksheet made from history.
-    issued = engine_issue("combinations", 1, seed=0)
-    groups.append(
-        PrintedGroup(
-            "Combinations, level 1", [PrintedProblem(issued.statement, issued.answer_latex, 0)]
-        )
-    )
+    for slug, topic in ENGINE_TOPICS.items():
+        for level in topic.levels:
+            groups.append(
+                PrintedGroup(
+                    f"{topic.title}, level {level}",
+                    [
+                        PrintedProblem(p.statement, p.answer_latex, 0)
+                        for p in engine_pool(slug, level)
+                    ],
+                )
+            )
     assert sum(len(group.problems) for group in groups) > 500
     try:
         pdf = compile_pdf(render_tex(groups, paper="a4", columns=2, answer_key=True, day=DAY))
@@ -231,3 +235,19 @@ def test_one_compile_at_a_time(monkeypatch: pytest.MonkeyPatch) -> None:
     finally:
         worksheet_pdf.COMPILE_SLOT.release()
     assert compile_pdf(document("x")).startswith(b"%PDF-")
+
+
+@pytest.mark.parametrize("slug", sorted(ENGINE_TOPICS))
+def test_every_engine_pool_solution_compiles(slug: str) -> None:
+    groups = [
+        PrintedGroup(
+            f"{TOPICS[slug].name}, level {level}",
+            [
+                PrintedProblem(p.statement, p.answer_latex, 0, steps(p.issued()))
+                for p in engine_pool(slug, level)
+            ],
+        )
+        for level in TOPICS[slug].levels
+    ]
+    source = render_tex(groups, paper="a4", columns=1, answer_key=True, day=DAY, solutions=True)
+    assert compile_pdf(source).startswith(b"%PDF-")

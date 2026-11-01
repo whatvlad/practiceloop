@@ -20,6 +20,7 @@ from app.api.shares import router as shares_router
 from app.api.worksheets import router as worksheets_router
 from app.core.database import close_pool
 from app.core.errors import install_error_handlers
+from app.engine.catalogue import load as load_engine_catalogue
 
 logger = logging.getLogger("practiceloop.api")
 
@@ -55,6 +56,7 @@ def allowed_origins() -> list[str]:
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
+    load_engine_catalogue()
     yield
     close_pool()
 

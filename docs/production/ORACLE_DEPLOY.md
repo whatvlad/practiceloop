@@ -242,3 +242,21 @@ curl.exe -sS https://practiceloop.pages.dev/api/health  # {"status":"ok"}
 curl.exe -sSI -X OPTIONS https://92-5-92-72.sslip.io/topics -H "Origin: https://evil.example" -H "Access-Control-Request-Method: GET"  # 400, no Allow-Origin
 ```
 
+
+## Verified engine catalogue (#192)
+
+Each Oracle release builds its own private `backend/.engine-catalogue.json`
+with that release's pinned dependencies: `release.sh` runs
+`.venv/bin/python -m app.engine.catalogue` from `backend/` before switching
+`current` or restarting the service. All declared engine cells must fill
+64-code pools; an error aborts the deploy while the previous release stays
+active. API startup validates and caches the artifact and refuses to start
+with a missing or incomplete catalogue. Requests never rebuild it.
+
+The artifact contains private answers and solution steps. Keep it within the
+backend release; never upload it as a public CI artifact or frontend asset.
+Rollback uses the retained release's own catalogue. No environment variable,
+new systemd write permission or database migration is needed. Locally, build
+with `python -m app.engine.catalogue` after installing the backend and after
+changing engine generators/topics; CI does so before backend/worksheet tests.
+Pool size and format are documented in ADR-008.

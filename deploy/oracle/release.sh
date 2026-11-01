@@ -28,6 +28,9 @@ echo "==> Installing dependencies for $id"
 python3.12 -m venv "$release/.venv"
 "$release/.venv/bin/pip" install --quiet --disable-pip-version-check -r "$release/backend/requirements.txt"
 
+echo "==> Building verified engine catalogue for $id"
+(cd "$release/backend" && "$release/.venv/bin/python" -m app.engine.catalogue)
+
 previous="$(readlink -f "$APP_ROOT/current" || true)"
 echo "==> Starting $id"
 activate "$release"
