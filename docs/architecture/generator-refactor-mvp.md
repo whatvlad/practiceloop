@@ -80,8 +80,16 @@ One `Answer` type per kind, each with its own `check`, no `isinstance` chain:
 - `DerivativeAnswer`: equal on every component, no added constant (ADR-005).
 
 Shared SymPy helpers sit underneath (sampling points, domain components).
-The ADR-003/005 rules are moved over from `services/answer_check.py`, not
-rewritten, and its existing test cases are run against the new types.
+The new types apply the ADR-003/005 rules without importing legacy generator
+implementations.
+
+For #165, `NumberAnswer` checks exact rational arithmetic without importing
+SymPy. Expressions outside that bounded rational subset are inconclusive;
+the caller selects `ExpressionAnswer` for answers requiring symbolic forms,
+including symbolic numeric values. There is no automatic symbolic fallback.
+Symbolic answer checks must run inside the resource-limited math worker; the
+new types do not connect themselves to the practice API in this issue. The
+owner does not require replay compatibility with older generator versions.
 
 ### 4. Math blocks (#166)
 
