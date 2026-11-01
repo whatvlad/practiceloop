@@ -80,7 +80,7 @@ def test_a_served_engine_topic_takes_the_visual_of_its_entry(slug: str) -> None:
         if expected is None:
             assert spec is None
         else:
-            assert spec and spec["kind"] in {"indefinite", "definite"}
+            assert spec and spec["kind"] in {"indefinite", "definite", "region2d", "solid3d"}
 
 
 def test_an_engine_visual_without_a_builder_fails_loudly(monkeypatch: pytest.MonkeyPatch) -> None:

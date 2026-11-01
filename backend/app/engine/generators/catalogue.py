@@ -7,6 +7,7 @@ from app.engine.generators.definite import DefiniteIntegral
 from app.engine.generators.derivative import Derivative
 from app.engine.generators.indefinite import IndefiniteIntegral
 from app.engine.generators.integrals import integral_generators
+from app.engine.generators.multiple import DoubleIntegrals, TripleIntegrals
 from app.engine.generators.partial_fractions import PartialFractions
 from app.engine.models import TaskGenerator
 from app.engine.registry import Registry
@@ -21,6 +22,8 @@ def registry() -> Registry:
         Derivative(),
         Combinations(),
         *integral_generators(),
+        DoubleIntegrals(),
+        TripleIntegrals(),
     )
     for generator in generators:
         result.register(generator)

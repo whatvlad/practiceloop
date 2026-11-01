@@ -512,3 +512,34 @@ sweep covers all migrated cells. Exact form tests, own-answer and constant
 checks, no-SymPy issuing tests, archive tests, worksheet/persistence tests and
 Linux limited-worker tests cover the migration. No database migration or
 frontend input change is required because topic rows and answer kinds exist.
+
+## Amendment: multiple-integral migration (#194)
+
+Double and triple integrals now use `practice-double-v1` (DBL-1) and
+`practice-triple-v1` (TPL-1). Both retain levels 1-5, mixed weight 2 and their
+existing worksheet writing space. The former records become read-only archive
+entries; new records contain the engine version and code only.
+
+No new answer kind or editor is required: each result is an exact real scalar,
+so both generators use `ExpressionAnswer` with no variables. Answers may contain
+rational values, pi, exponentials or logarithms and never an integration constant.
+Native incorrect answers use general feedback rather than the legacy-specific
+missing-Jacobian or wrong-bound classifiers.
+
+`MultipleForm` is a strict frozen block holding dimension, allowlisted template,
+variant and nonzero small coefficient. `draw` picks only these values. Typed
+`Setup` objects retain innermost-first bounds, coordinate system and integrand
+without the Jacobian. Exact setup integration inserts r for polar/cylindrical
+coordinates. A cached proof checks the coordinate substitution against the
+stated integrand and recomputes the primary exact value before a task can build;
+worked steps integrate the scaled setup in the declared order. No task metadata,
+serialized expression or legacy generator is used by another generator.
+
+The curriculum tables, geometric variants and declared values are preserved;
+tests compare every variant to the verified pre-migration curriculum and check
+alternate integration orders where they were declared exact. The release
+catalogue covers all ten public multiple-integral cells. Typed setup adapters
+retain `region2d` and `solid3d` graphs on solution reveals without changing the
+browser contract. The 1,000-seed sweep, new golden entries, every pooled-code
+replay and Linux limited-worker tests cover each new cell. Existing versions,
+code formats and frozen generator/answer interfaces are unchanged.

@@ -10,6 +10,7 @@ from app.engine.generators.definite import DefiniteParams
 from app.engine.generators.derivative import DerivativeParams
 from app.engine.generators.indefinite import IndefiniteParams
 from app.engine.generators.integrals import IntegralParams, integral_generators
+from app.engine.generators.multiple import DoubleIntegrals, MultipleParams, TripleIntegrals
 from app.engine.models import Drawn, Task
 from app.engine.prng import DeterministicRNG
 from app.engine.registry import Registry
@@ -105,6 +106,12 @@ class Topic:
 def _integral_level(level: int, params: Drawn) -> bool:
     if not isinstance(params, IntegralParams):
         raise ValueError("Expected native integral parameters")
+    return params.form.difficulty == level
+
+
+def _multiple_level(level: int, params: Drawn) -> bool:
+    if not isinstance(params, MultipleParams):
+        raise ValueError("Expected native multiple-integral parameters")
     return params.form.difficulty == level
 
 
@@ -205,4 +212,21 @@ def topics() -> dict[str, Topic]:
         served=True,
         visual="single-integral",
     )
+    for generator, slug, title, space, visual in (
+        (DoubleIntegrals(), "double-integrals", "Double integrals", 6, "region2d"),
+        (TripleIntegrals(), "triple-integrals", "Triple integrals", 7, "solid3d"),
+    ):
+        declared[slug] = Topic(
+            slug,
+            "mathematical-analysis",
+            {
+                level: (Choice(generator.version, partial(_multiple_level, level)),)
+                for level in range(1, 6)
+            },
+            2,
+            title=title,
+            space_cm=space,
+            served=True,
+            visual=visual,
+        )
     return declared
