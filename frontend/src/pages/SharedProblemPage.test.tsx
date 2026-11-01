@@ -53,6 +53,13 @@ it('shows only the statement, topic and difficulty, even when the server sends m
   expect(element.textContent).not.toMatch(/Show answer|Check answer/);
 });
 
+it('shows a numeric instruction for a shared combinations problem', async () => {
+  fetchMock.mockResolvedValue(json({ problem: { topic: 'combinations', difficulty: 1, problemLatex: '\\binom{5}{2}' } }));
+  await render({ token: TOKEN, code: null });
+  expect(element.textContent).toContain('Calculate the value.');
+  expect(element.textContent).not.toContain('Calculate the indefinite integral.');
+});
+
 it.each([{ token: TOKEN, code: null }, { token: null, code: 'k7m2-qx9p' }])('keeps the exact shared reference in the sign-in action', async props => {
   fetchMock.mockResolvedValue(json({ problem: { topic: 'basic-integrals', difficulty: 4, problemLatex: '\\int (x+2)^2\\,dx' } }));
   await render(props);

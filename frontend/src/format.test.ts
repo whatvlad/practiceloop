@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { mixedShares } from './data/topics';
-import type { AvailableTopic, Difficulty } from './data/types';
-import { answerVariables, formatWhen, isDefinite, leadText, problemKind } from './format';
+import type { AvailableTopic, Difficulty, TopicSlug } from './data/types';
+import { answerVariables, formatWhen, isDefinite, keypadVariables, leadText, problemKind } from './format';
 import text from '../../backend/app/content/en.json';
 
 const NOW = new Date(2026, 9, 16, 15, 0);
@@ -52,6 +52,31 @@ describe('mixed practice shares', () => {
 });
 
 describe('problem kinds', () => {
+  it.each<TopicSlug>([
+    'matrices', 'complex-numbers', 'fundamental-theorem-algebra', 'combinations',
+    'functions-and-sequences', 'limits-and-continuity', 'series',
+  ])('does not describe %s as an integral', topic => {
+    expect(problemKind(topic, 'x')).toBe('numeric');
+    expect(leadText('numeric')).toBe('Calculate the value.');
+    expect(keypadVariables('numeric', 'x', topic)).toEqual([]);
+    expect(answerVariables('numeric', 'x')).toBeUndefined();
+  });
+
+  it.each<TopicSlug>(['partial-fractions', 'multivariable-functions', 'differential-equations'])(
+    'uses a general expression instruction for %s', topic => {
+      expect(problemKind(topic, 'x')).toBe('expression');
+      expect(leadText('expression')).toBe('Solve the problem.');
+    },
+  );
+
+  it('allows the variables of expression problems without an integration constant', () => {
+    expect(keypadVariables('expression', '', 'partial-fractions')).toEqual(['x']);
+    expect(keypadVariables('expression', '', 'multivariable-functions')).toEqual(['x', 'y']);
+    expect(keypadVariables('expression', '', 'differential-equations')).toEqual(['x']);
+    expect(keypadVariables('derivative', '', 'derivatives')).toEqual(['x']);
+    expect(keypadVariables('definite', '', 'definite-integrals')).toEqual([]);
+  });
+
   it('asks for a partial derivative in the partial-derivatives topic only', () => {
     expect(problemKind('partial-derivatives', '\\frac{\\partial}{\\partial x}')).toBe('partial');
     expect(problemKind('derivatives', '\\frac{d}{dx}')).toBe('derivative');

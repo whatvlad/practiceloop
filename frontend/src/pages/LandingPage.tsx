@@ -6,8 +6,8 @@ import { Tex } from '../components/Tex';
 import { Link } from '../router';
 
 const STEPS = [
-  { title: 'Choose a topic', text: 'Basic integrals, substitution, by parts, rational and trigonometric.' },
-  { title: 'Set the difficulty', text: 'Five levels, from Basic to Advanced.' },
+  { title: 'Choose a topic', text: 'Explore algebra, mathematical analysis and combinations.' },
+  { title: 'Set the difficulty', text: 'Choose an available level for your topic.' },
   { title: 'Type your answer', text: 'Write 3pi, sqrt(3) or pi/4 + 2. Equivalent forms all count.' },
   { title: 'Learn, then loop', text: 'Reveal the answer or the full solution, then generate the next problem.' },
 ];
@@ -18,8 +18,8 @@ const PRINCIPLES = [
     text: 'Problems are built from predefined mathematical rules, not written freehand by a language model.',
   },
   {
-    title: 'Verified symbolically',
-    text: 'Every answer is calculated and checked by a symbolic mathematics engine before you see the problem.',
+    title: 'Checked with mathematics',
+    text: 'Answers are checked with exact arithmetic or symbolic mathematics.',
   },
   { title: 'Checked by equivalence', text: '1/2 and 2/4 are the same answer. We compare mathematics, not text.' },
 ];
@@ -39,7 +39,7 @@ function DemoCard() {
               <DifficultyDots level={3} />
             </span>
           </div>
-          <span className="pl-label">Generated just now</span>
+          <span className="pl-label">Example problem</span>
         </div>
         <div className="pl-expr">
           <Tex latex={'\\int 2x\\cos(x^2)\\,dx'} />
@@ -63,14 +63,14 @@ export function LandingPage({ onSignIn, disabled = false, busy = false, error = 
       <PublicNav landing />
       <main id="main" tabIndex={-1}>
         <section className="pl-wrap pl-hero">
-          <div className="pl-label pl-hero-eyebrow">Calculus · Integration</div>
+          <div className="pl-label pl-hero-eyebrow">Mathematics practice</div>
           <h1 className="pl-display-xl">
             Practice until
             <br />
             it <em>clicks.</em>
           </h1>
           <p className="pl-lead pl-hero-lead">
-            Fresh integration problems, built from mathematical rules and verified by a symbolic engine. Check your
+            Fresh mathematics problems, built from mathematical rules. Check your
             answer, reveal the solution, go again.
           </p>
           <div className="pl-actions pl-hero-actions">

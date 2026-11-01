@@ -31,6 +31,8 @@ interface AnswerInputProps {
    * phone keyboard then use them; omitted, the integration grammar applies.
    */
   variables?: readonly AnswerVariable[];
+  /** Suggested keys, independent of the answer parser's accepted variables. */
+  keypadVariables?: readonly AnswerVariable[];
 }
 
 export function AnswerInput({
@@ -46,6 +48,7 @@ export function AnswerInput({
   readOnly,
   assist = false,
   variables,
+  keypadVariables,
 }: AnswerInputProps) {
   const input = useRef<HTMLInputElement>(null);
   const formula = useRef<MathfieldElement | null>(null);
@@ -137,6 +140,7 @@ export function AnswerInput({
           onEnter={onEnter}
           fieldRef={formula}
           variables={variables}
+          keypadVariables={keypadVariables}
         />
       ) : (
         <input
@@ -170,7 +174,7 @@ export function AnswerInput({
           />
         </div>
       )}
-      {assist && !readOnly && !(mathLive && usesPhoneKeyboard()) && <MathKeypad onInsert={insert} onMove={move} variables={variables} />}
+      {assist && !readOnly && !(mathLive && usesPhoneKeyboard()) && <MathKeypad onInsert={insert} onMove={move} variables={keypadVariables ?? variables} />}
       {hint && (
         <div id={hintId} className="pl-hint">
           {hint}

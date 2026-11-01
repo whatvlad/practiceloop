@@ -114,6 +114,14 @@ describe('AnswerInput assist', () => {
 });
 
 describe('AnswerInput answer variables (ADR-005)', () => {
+  it('changes suggested keys without changing the accepted answer grammar', () => {
+    act(() => root.render(<AnswerInput id="answer" value="x-x+2" onChange={() => {}} assist keypadVariables={[]} />));
+    expect(keyLabels()).not.toContain('x');
+    expect(keyLabels()).not.toContain('+C');
+    expect(element.querySelector('.pl-preview-math')).not.toBeNull();
+    expect(field().getAttribute('aria-invalid')).toBeNull();
+  });
+
   it('keeps the integration keys when the exercise declares no variables', () => {
     render();
     expect(keyLabels()).toContain('x');

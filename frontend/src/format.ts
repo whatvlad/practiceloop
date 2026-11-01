@@ -26,8 +26,8 @@ export function isDefinite(problemLatex: string): boolean {
   return problemLatex.startsWith('\\int_');
 }
 
-/** What a statement asks for: an antiderivative + C, one exact number, f'(x), or a partial (ADR-005). */
-export type ProblemKind = 'indefinite' | 'definite' | 'double' | 'triple' | 'derivative' | 'partial';
+/** What kind of answer the problem asks for. */
+export type ProblemKind = 'indefinite' | 'definite' | 'double' | 'triple' | 'derivative' | 'partial' | 'numeric' | 'expression';
 
 export function problemKind(topic: TopicSlug, problemLatex: string): ProblemKind {
   if (topic === 'partial-derivatives') return 'partial';
@@ -35,7 +35,12 @@ export function problemKind(topic: TopicSlug, problemLatex: string): ProblemKind
   // A double integral's answer is also one exact number (#99).
   if (topic === 'double-integrals') return 'double';
   if (topic === 'triple-integrals') return 'triple';
-  return isDefinite(problemLatex) ? 'definite' : 'indefinite';
+  if (topic === 'improper-integrals') return 'definite';
+  if (['basic-integrals', 'substitution', 'integration-by-parts', 'rational-functions', 'trigonometric-integrals', 'definite-integrals'].includes(topic)) {
+    return isDefinite(problemLatex) ? 'definite' : 'indefinite';
+  }
+  if (['matrices', 'complex-numbers', 'fundamental-theorem-algebra', 'combinations', 'functions-and-sequences', 'limits-and-continuity', 'series'].includes(topic)) return 'numeric';
+  return 'expression';
 }
 
 /** The instruction above a statement. */
@@ -47,6 +52,8 @@ export function leadText(kind: ProblemKind): string {
     triple: text.calculate_triple,
     derivative: text.calculate_derivative,
     partial: text.calculate_partial,
+    numeric: 'Calculate the value.',
+    expression: 'Solve the problem.',
   }[kind];
 }
 
@@ -64,4 +71,12 @@ export function answerVariables(kind: ProblemKind, problemLatex: string): Answer
   const names = new Set(Array.from(domain.matchAll(/\\theta|[a-z]/g), match => match[0].replace('\\', '')));
   const found = ANSWER_VARIABLES.filter(name => names.has(name));
   return found.length ? found : undefined;
+}
+
+/** Suggested keypad variables do not change which answers the parser accepts. */
+export function keypadVariables(kind: ProblemKind, problemLatex: string, topic: TopicSlug): AnswerVariable[] | undefined {
+  if (kind === 'numeric' || kind === 'definite' || kind === 'double' || kind === 'triple') return [];
+  if (kind === 'derivative') return ['x'];
+  if (kind === 'expression') return topic === 'multivariable-functions' ? ['x', 'y'] : ['x'];
+  return answerVariables(kind, problemLatex);
 }
