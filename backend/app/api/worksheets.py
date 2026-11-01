@@ -126,7 +126,7 @@ def _space_cm(topic: str, difficulty: int) -> float:
 def _check_group(group: GroupBody) -> None:
     if group.topic.startswith(MIXED + ":"):
         area = group.topic.removeprefix(MIXED + ":")
-        if _mixed(area) is None or not mixed_topics(area, group.difficulty)[0]:
+        if _mixed(area) is None or not mixed_topics(area, group.difficulty, worksheet=True)[0]:
             raise _invalid()
         return
     cell = TOPICS.get(group.topic)
@@ -208,7 +208,7 @@ def _generate(body: WorksheetBody, user_id: UUID, scope: Scope) -> JSONResponse:
         for _ in range(group.count):
             if group.topic.startswith(MIXED + ":"):
                 area = group.topic.removeprefix(MIXED + ":")
-                topics, weights = mixed_topics(area, group.difficulty)
+                topics, weights = mixed_topics(area, group.difficulty, worksheet=True)
                 drawn = picker.pick_mixed(topics, weights, group.difficulty)
             else:
                 record = picker.pick(group.topic, group.difficulty)

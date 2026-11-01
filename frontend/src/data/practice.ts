@@ -2,7 +2,7 @@
 import text from '../../../backend/app/content/en.json';
 import { normalizeCode } from './shares';
 import { parseVisual } from '../visual/spec';
-import { AREAS, TOPICS, areaOf } from './topics';
+import { AREAS, areaOf, isTopicSlug, listedArea, rememberTopics } from './topics';
 import { FEEDBACK_CODES } from './types';
 import type { AreaSlug, AvailableArea, AvailableTopic, Catalogue, CheckOutcome, Difficulty, LearningStatistics, OmissionMetric, OpenedProblem, ProblemPage, ProblemShare, ProfileCounts, PublicProblem, ReportCategory, RevealedAnswer, RevealedSolution, PracticeTopic, TopicSlug, WorksheetCapacity } from './types';
 
@@ -158,7 +158,7 @@ function verdict(data: Record<string, unknown>): CheckOutcome {
 function publicProblem(value: unknown): PublicProblem {
   const data = object(value);
   if (typeof data.id !== 'string' || typeof data.problemLatex !== 'string' || typeof data.createdAt !== 'string'
-    || !TOPICS.some(t => t.slug === data.topic) || ![1, 2, 3, 4, 5].includes(data.difficulty as number)
+    || !isTopicSlug(data.topic) || ![1, 2, 3, 4, 5].includes(data.difficulty as number)
     || typeof data.answerRevealed !== 'boolean' || typeof data.solutionRevealed !== 'boolean'
     || !Number.isSafeInteger(data.attemptCount) || (data.attemptCount as number) < 0
     || (data.worksheetId !== undefined && data.worksheetId !== null && typeof data.worksheetId !== 'string')) throw new Error(text.service_error);
@@ -355,11 +355,11 @@ function capacity(value: unknown, levels: readonly Difficulty[]): WorksheetCapac
   return result;
 }
 
-function mixedPractice(value: unknown, area: AreaSlug): AvailableArea['mixed'] {
+function mixedPractice(value: unknown, area: AreaSlug, topics: readonly AvailableTopic[]): AvailableArea['mixed'] {
   if (value === null) return null;
   const data = object(value);
   const weights = object(data.weights);
-  if (Object.entries(weights).some(([slug, weight]) => !TOPICS.some(t => t.slug === slug && t.area === area)
+  if (Object.entries(weights).some(([slug, weight]) => !topics.some(t => t.slug === slug && t.area === area)
     || !Number.isSafeInteger(weight) || (weight as number) <= 0)) throw new Error(text.service_error);
   const availableDifficulties = difficulties(data.availableDifficulties);
   const worksheetCapacity = capacity(data.worksheetCapacity, availableDifficulties);
@@ -370,47 +370,59 @@ export async function getTopics(): Promise<AvailableTopic[]> {
   return (await getCatalogue()).topics;
 }
 
+// The guest preview serves only these cells (see generateProblem); the API lists the rest.
+const PREVIEW_TOPICS: readonly AvailableTopic[] = [
+  { slug: 'basic-integrals', name: 'Basic integrals', area: 'mathematical-analysis', availableDifficulties: [1, 2] },
+  { slug: 'substitution', name: 'Substitution', area: 'mathematical-analysis', availableDifficulties: [1, 2] },
+];
+
+/** #191: the topic list is the API's; this build has no copy of its own. */
 export async function getCatalogue(): Promise<Catalogue> {
   const started = epoch;
   const bearer = await accessToken();
   if (started !== epoch) throw new Error(text.expired);
-  if (!bearer) return { areas: [{ ...AREAS.find(area => area.slug === FIRST.area)!, mixed: null }], topics: TOPICS.slice(0, 2).map(topic => ({ ...topic, availableDifficulties: [1, 2] })) };
+  if (!bearer) {
+    rememberTopics(PREVIEW_TOPICS);
+    return { areas: [{ ...AREAS.find(area => area.slug === FIRST.area)!, mixed: null }], topics: structuredClone([...PREVIEW_TOPICS]) };
+  }
   const data = await request('/topics', undefined, bearer, true);
   if (started !== epoch) throw new Error(text.expired);
   if (!Array.isArray(data.items) || !Array.isArray(data.areas)) throw new Error(text.service_error);
+  const seen = new Set<string>();
+  const topics: AvailableTopic[] = data.items.map((value: unknown) => {
+    const item = object(value);
+    const area = AREAS.find(a => a.slug === item.area);
+    if (!isTopicSlug(item.slug) || seen.has(item.slug) || typeof item.name !== 'string' || !item.name.trim()
+      || item.name.length > 80 || !area || !Array.isArray(item.availableDifficulties)
+      || item.availableDifficulties.some(level => ![1, 2, 3, 4, 5].includes(level))) throw new Error(text.service_error);
+    seen.add(item.slug);
+    const availableDifficulties = [...new Set(item.availableDifficulties)] as Difficulty[];
+    const worksheetCapacity = capacity(item.worksheetCapacity, availableDifficulties);
+    return { slug: item.slug, name: item.name, area: area.slug, availableDifficulties, ...(worksheetCapacity ? { worksheetCapacity } : {}) };
+  });
   const areas = data.areas.map((value: unknown) => {
     const item = object(value);
     const area = AREAS.find(a => a.slug === item.slug);
     if (!area) throw new Error(text.service_error);
-    return { ...area, mixed: mixedPractice(item.mixed, area.slug) };
+    return { ...area, mixed: mixedPractice(item.mixed, area.slug, topics) };
   });
-  const seen = new Set<string>();
-  const topics = data.items.map((value: unknown) => {
-    const item = object(value);
-    const topic = TOPICS.find(t => t.slug === item.slug);
-    if (!topic || seen.has(topic.slug) || item.area !== topic.area || !areas.some(a => a.slug === topic.area)
-      || !Array.isArray(item.availableDifficulties)
-      || item.availableDifficulties.some(level => ![1, 2, 3, 4, 5].includes(level))) throw new Error(text.service_error);
-    seen.add(topic.slug);
-    const availableDifficulties = [...new Set(item.availableDifficulties)] as Difficulty[];
-    const worksheetCapacity = capacity(item.worksheetCapacity, availableDifficulties);
-    return { ...topic, availableDifficulties, ...(worksheetCapacity ? { worksheetCapacity } : {}) };
-  });
-  if (new Set(areas.map(a => a.slug)).size !== areas.length) throw new Error(text.service_error);
+  if (new Set(areas.map(a => a.slug)).size !== areas.length
+    || topics.some(t => !areas.some(a => a.slug === t.area))) throw new Error(text.service_error);
+  rememberTopics(topics);
   return { areas, topics };
 }
 
 /** `area` picks the area mixed practice draws from; a topic carries its own area. */
 export function generateProblem(topic: PracticeTopic, difficulty: Difficulty, area: AreaSlug = 'mathematical-analysis'): Promise<PublicProblem> {
   const mixed = topic === 'mixed';
-  if ((!mixed && !TOPICS.some(t => t.slug === topic)) || ![1, 2, 3, 4, 5].includes(difficulty)
+  if ((!mixed && !isTopicSlug(topic)) || ![1, 2, 3, 4, 5].includes(difficulty)
     || !AREAS.some(a => a.slug === area)) return Promise.reject(new Error(text.unsupported));
   const drawFrom = mixed ? area : areaOf(topic);
   if (generating) return generating;
   const started = epoch;
   const operation = (async () => {
     const { bearer, saved } = await credentials();
-    if (!saved && (mixed || !['basic-integrals', 'substitution'].includes(topic) || ![1, 2].includes(difficulty))) throw new Error(text.unsupported);
+    if (!saved && (mixed || !PREVIEW_TOPICS.some(t => t.slug === topic && t.availableDifficulties.includes(difficulty)))) throw new Error(text.unsupported);
     const operation = mixed ? `generate:mixed:${drawFrom}:${difficulty}` : `generate:${topic}:${difficulty}`;
     const authorized = await authorize(started, saved, bearer);
     const body = mixed ? { topic, area: drawFrom, difficulty } : { topic, difficulty };
@@ -418,7 +430,7 @@ export function generateProblem(topic: PracticeTopic, difficulty: Difficulty, ar
     const data = saved ? object(response.problem) : response;
     if (started !== epoch) throw new Error(text.expired);
     if (typeof data.id !== 'string' || typeof data.problemLatex !== 'string' || typeof data.createdAt !== 'string'
-        || (mixed ? !TOPICS.some(t => t.slug === data.topic && t.area === drawFrom) : data.topic !== topic)
+        || (mixed ? !isTopicSlug(data.topic) || listedArea(data.topic) !== drawFrom : data.topic !== topic)
         || data.difficulty !== difficulty) throw new Error(text.service_error);
     // Explicit projection: even a malformed server response cannot cache private fields.
     const problem: PublicProblem = { saved, id: data.id, topic: data.topic as TopicSlug, difficulty,
@@ -497,7 +509,7 @@ export async function getLearningStatistics(): Promise<LearningStatistics> {
   if (!Array.isArray(data.byTopicDifficulty) || !Array.isArray(data.weekly) || data.weekly.length !== 8) throw new Error(text.service_error);
   return { ...omissionMetric(data), byTopicDifficulty: data.byTopicDifficulty.map(value => {
     const item = object(value);
-    if (!TOPICS.some(t => t.slug === item.topic) || ![1, 2, 3, 4, 5].includes(item.difficulty as number)) throw new Error(text.service_error);
+    if (!isTopicSlug(item.topic) || ![1, 2, 3, 4, 5].includes(item.difficulty as number)) throw new Error(text.service_error);
     return { ...omissionMetric(item), topic: item.topic as TopicSlug, difficulty: item.difficulty as Difficulty };
   }), weekly: data.weekly.map(value => {
     const item = object(value);

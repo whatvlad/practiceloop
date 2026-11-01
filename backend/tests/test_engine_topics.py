@@ -93,6 +93,8 @@ def test_topic_extension_and_invalid_inputs() -> None:
         area="algebra",
         levels={1: (module.Choice("combinations-v1"),)},
         mixed_weight=1,
+        title="Demo",
+        space_cm=4,
     )
     assert extra.generate(1, 12, registry()).answer.kind == "number"
     with pytest.raises(ValueError):
@@ -101,13 +103,17 @@ def test_topic_extension_and_invalid_inputs() -> None:
         with pytest.raises(ValueError):
             extra.generate(1, bad, registry())
     with pytest.raises(ValueError):
-        module.Topic(slug="empty", area="algebra", levels={1: ()}, mixed_weight=1)
+        module.Topic(
+            slug="empty", area="algebra", levels={1: ()}, mixed_weight=1, title="Demo", space_cm=4
+        )
     with pytest.raises(ValueError, match="area"):
         module.Topic(
             slug="bad-area",
             area="analysis",
             levels={1: (module.Choice("combinations-v1"),)},
             mixed_weight=1,
+            title="Demo",
+            space_cm=4,
         )
     with pytest.raises(ValueError):
         module.Topic(
@@ -115,7 +121,18 @@ def test_topic_extension_and_invalid_inputs() -> None:
             area="algebra",
             levels={1: (module.Choice("combinations-v1"),)},
             mixed_weight=0,
+            title="Demo",
+            space_cm=4,
         )
+    for product in ({"title": ""}, {"space_cm": 0}):
+        with pytest.raises(ValueError, match="title and positive worksheet space"):
+            module.Topic(
+                slug="bad-product",
+                area="algebra",
+                levels={1: (module.Choice("combinations-v1"),)},
+                mixed_weight=1,
+                **{"title": "Demo", "space_cm": 4, **product},
+            )
 
 
 def test_filter_has_bounded_redraw() -> None:
@@ -124,6 +141,8 @@ def test_filter_has_bounded_redraw() -> None:
         slug="never",
         area="algebra",
         mixed_weight=1,
+        title="Demo",
+        space_cm=4,
         levels={1: (module.Choice("combinations-v1", predicate=lambda _: False),)},
     )
     with pytest.raises(ValueError, match="after 64"):
@@ -134,7 +153,14 @@ def test_a_candidate_that_fails_to_build_is_redrawn_and_logged(
     monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
 ) -> None:
     module = topic_module()
-    topic = module.Topic("combinations", "algebra", {1: (module.Choice("combinations-v1"),)}, 1)
+    topic = module.Topic(
+        "combinations",
+        "algebra",
+        {1: (module.Choice("combinations-v1"),)},
+        1,
+        title="Combinations",
+        space_cm=4,
+    )
     generators = registry()
     expected = topic.generate(1, 5, generators)
     first = DeterministicRNG(5)
@@ -166,6 +192,8 @@ def test_a_level_can_choose_between_multiple_generators_deterministically() -> N
         slug="mixed-demo",
         area="algebra",
         mixed_weight=1,
+        title="Demo",
+        space_cm=4,
         levels={1: (module.Choice("combinations-v1"), module.Choice("partial-fractions-v1"))},
     )
     generators = registry()

@@ -622,6 +622,8 @@ def test_topics_publish_the_fixed_mixed_practice_weights(client: TestClient) -> 
                 "complex-numbers": 1,
                 "fundamental-theorem-algebra": 1,
                 "partial-fractions": 1,
+                # #191: published by its engine topic entry.
+                "combinations": 1,
             },
         },
     }

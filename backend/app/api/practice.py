@@ -14,6 +14,7 @@ import math
 import secrets
 import time
 from collections import deque
+from collections.abc import Mapping
 from datetime import UTC, datetime
 from threading import Lock
 from typing import Annotated, Any, NamedTuple
@@ -27,6 +28,7 @@ from app.core.auth import VerifiedUser, current_user
 from app.core.database import transaction
 from app.core.errors import ApiError
 from app.engine import practice as engine
+from app.engine.topics.catalogue import Topic as EngineTopic
 from app.generators.core import Exercise, catalogue, catalogue_records
 from app.services import archive, idempotency, shares
 from app.services import owned_records as records
@@ -56,17 +58,15 @@ class Topic(NamedTuple):
 
 # #144: Algebra and Mathematical Analysis are the top-level practice areas.
 AREAS = {"algebra": "Algebra", "mathematical-analysis": "Mathematical Analysis"}
-# Basic integrals are the building block of every method, so they get half the share.
-TOPICS = {
+# Old-engine topics. Basic integrals are the building block of every method, so they get
+# half the share.
+_LEGACY_TOPICS = {
     "matrices": Topic("Matrices", "algebra", (1, 2, 3, 4, 5), 1, 4),
     "complex-numbers": Topic("Complex numbers", "algebra", (1, 2, 3, 4, 5), 1, 4),
     "fundamental-theorem-algebra": Topic(
         "Fundamental theorem of algebra", "algebra", (1, 2, 3, 4, 5), 1, 5
     ),
     "partial-fractions": Topic("Partial fractions", "algebra", (1, 2, 3, 4, 5), 1, 5),
-    # #169: the first topic served by the new generator engine. It joins mixed practice
-    # with #191 and worksheets with #192 (GrillMe review #172).
-    "combinations": Topic("Combinations", "algebra", engine.levels("combinations"), 0, 4),
     "basic-integrals": Topic("Basic integrals", "mathematical-analysis", (1, 2, 3, 4, 5), 1, 3),
     "substitution": Topic("Substitution", "mathematical-analysis", (1, 2, 3, 4, 5), 2, 4),
     # ADR-003 amendment: parts has three levels; the frontend hides the rest.
@@ -108,6 +108,31 @@ TOPICS = {
         "Differential equations", "mathematical-analysis", (1, 2, 3, 4, 5), 1, 5
     ),
 }
+
+
+def listed_topics(served: Mapping[str, EngineTopic]) -> dict[str, Topic]:
+    """#191: a topic served by the new engine is listed from its engine entry alone.
+
+    It replaces an old-engine topic of the same slug in place; a new one ends its area.
+    """
+    merged = {
+        **_LEGACY_TOPICS,
+        **{
+            slug: Topic(
+                entry.title,
+                entry.area,
+                tuple(sorted(entry.levels)),
+                entry.mixed_weight,
+                entry.space_cm,
+            )
+            for slug, entry in served.items()
+        },
+    }
+    order = list(AREAS)
+    return dict(sorted(merged.items(), key=lambda item: order.index(item[1].area)))
+
+
+TOPICS = listed_topics(engine.ENGINE_TOPICS)
 MIXED = "mixed"
 MAX_ANSWER_CHARS = 512  # the parser's 256-byte limit applies after normalization
 
@@ -238,12 +263,20 @@ def area_topics(area: str) -> list[str]:
     return [slug for slug, topic in TOPICS.items() if topic.area == area]
 
 
-def mixed_topics(area: str, difficulty: int) -> tuple[list[str], list[int]]:
-    """The area's topics offered at this level and their weights; a missing cell has none."""
+def mixed_topics(
+    area: str, difficulty: int, worksheet: bool = False
+) -> tuple[list[str], list[int]]:
+    """The area's topics offered at this level and their weights; a missing cell has none.
+
+    A worksheet draws only from topics with worksheet records: new-engine topics join
+    worksheets with the deploy-time catalogue (#192).
+    """
     slugs = [
         slug
         for slug in area_topics(area)
-        if difficulty in TOPICS[slug].levels and TOPICS[slug].mixed_weight
+        if difficulty in TOPICS[slug].levels
+        and TOPICS[slug].mixed_weight
+        and not (worksheet and slug in engine.ENGINE_TOPICS)
     ]
     return slugs, [TOPICS[slug].mixed_weight for slug in slugs]
 
@@ -258,7 +291,9 @@ def _mixed(area: str) -> dict[str, object] | None:
         "availableDifficulties": levels,
         "weights": {slug: TOPICS[slug].mixed_weight for slug in slugs},
         "worksheetCapacity": {
-            str(level): sum(capacity(slug, level) for slug in mixed_topics(area, level)[0])
+            str(level): sum(
+                capacity(slug, level) for slug in mixed_topics(area, level, worksheet=True)[0]
+            )
             for level in levels
         },
     }

@@ -2,6 +2,7 @@
 
 import json
 import math
+from dataclasses import replace
 
 import pytest
 import sympy as sp
@@ -13,7 +14,14 @@ from app.generators.basic import X
 from app.generators.core import catalogue
 from app.generators.definite import replay_definite, value_latex
 from app.visuals.expression import HEADS, UnsupportedExpression, evaluate, to_tree
-from app.visuals.spec import BUILDERS, MAX_BYTES, NO_VISUAL, build_visual, solution_payload
+from app.visuals.spec import (
+    BUILDERS,
+    MAX_BYTES,
+    NO_VISUAL,
+    _build,
+    build_visual,
+    solution_payload,
+)
 
 SINGLE = ("basic-integrals", "substitution", "integration-by-parts")
 SINGLE += ("rational-functions", "trigonometric-integrals")
@@ -57,14 +65,30 @@ def test_every_catalogue_version_declares_a_visual_or_none() -> None:
         for level in cell.levels
         for exercise in catalogue(topic, level)
     }
-    # New-engine topics (#169) have no legacy catalogue; their versions come from the code.
-    versions |= {
-        str(engine_issue(topic, level, seed=0).record["generator_version"])
-        for topic in ENGINE_TOPICS
-        for level in TOPICS[topic].levels
-    }
     assert not set(BUILDERS) & NO_VISUAL
     assert versions <= set(BUILDERS) | NO_VISUAL
+
+
+@pytest.mark.parametrize("slug", sorted(ENGINE_TOPICS))
+def test_a_served_engine_topic_takes_the_visual_of_its_entry(slug: str) -> None:
+    # #191: no NO_VISUAL edit; the topic entry decides, and no engine builder exists yet.
+    for level in TOPICS[slug].levels:
+        record = engine_issue(slug, level, seed=0).record
+        assert ENGINE_TOPICS[slug].visual is None
+        assert record["generator_version"] not in NO_VISUAL | set(BUILDERS)
+        assert build_visual(record) is None
+
+
+def test_an_engine_visual_without_a_builder_fails_loudly(monkeypatch: pytest.MonkeyPatch) -> None:
+    record = engine_issue("combinations", 1, seed=0).record
+    entry = ENGINE_TOPICS["combinations"]
+    monkeypatch.setitem(ENGINE_TOPICS, "combinations", replace(entry, visual="region2d"))
+    _build.cache_clear()
+    try:
+        with pytest.raises(ValueError, match="engine visual"):
+            build_visual(record)
+    finally:
+        _build.cache_clear()
 
 
 def test_every_single_integral_record_builds_a_valid_spec() -> None:

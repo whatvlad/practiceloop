@@ -1,5 +1,6 @@
 """#169: the combinations topic served through the practice API on the new engine."""
 
+from dataclasses import replace
 from uuid import uuid4
 
 import pytest
@@ -12,7 +13,7 @@ from app.services.math_worker import check_answer
 from app.visuals.spec import solution_payload
 
 
-def test_combinations_is_listed_under_algebra_outside_mixed_and_worksheets() -> None:
+def test_combinations_is_listed_from_its_engine_entry_and_joins_algebra_mixed() -> None:
     body = practice.topics(VerifiedUser(uuid4(), None))
     item = next(item for item in body["items"] if item["slug"] == "combinations")
     assert item == {
@@ -23,13 +24,48 @@ def test_combinations_is_listed_under_algebra_outside_mixed_and_worksheets() -> 
         "worksheetCapacity": {"1": 0},
     }
     algebra = next(area for area in body["areas"] if area["slug"] == "algebra")
-    assert "combinations" not in algebra["mixed"]["weights"]
-    assert practice.mixed_topics("algebra", 1)[0] == [
-        "matrices",
-        "complex-numbers",
-        "fundamental-theorem-algebra",
-        "partial-fractions",
-    ]
+    # #191 (review decision 13): a published weight; worksheets wait for #192.
+    assert algebra["mixed"]["weights"]["combinations"] == 1
+    assert algebra["mixed"]["worksheetCapacity"]["1"] == sum(
+        practice.capacity(slug, 1)
+        for slug in (
+            "matrices",
+            "complex-numbers",
+            "fundamental-theorem-algebra",
+            "partial-fractions",
+        )
+    )
+    assert "combinations" in practice.mixed_topics("algebra", 1)[0]
+    assert "combinations" not in practice.mixed_topics("algebra", 1, worksheet=True)[0]
+
+
+def test_a_served_entry_alone_lists_a_topic(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Acceptance of #191: the engine entry is the only code a new engine topic needs."""
+    entry = replace(
+        engine.ENGINE_TOPICS["combinations"], slug="counting", title="Counting", mixed_weight=3
+    )
+    monkeypatch.setitem(engine.ENGINE_TOPICS, "counting", entry)
+    monkeypatch.setattr(practice, "TOPICS", practice.listed_topics(engine.ENGINE_TOPICS))
+    body = practice.topics(VerifiedUser(uuid4(), None))
+    item = next(item for item in body["items"] if item["slug"] == "counting")
+    assert item == {
+        "slug": "counting",
+        "name": "Counting",
+        "area": "algebra",
+        "availableDifficulties": [1],
+        "worksheetCapacity": {"1": 0},
+    }
+    algebra = next(area for area in body["areas"] if area["slug"] == "algebra")
+    assert algebra["mixed"]["weights"]["counting"] == 3
+    assert practice.TOPICS["counting"].space_cm == entry.space_cm
+
+
+def test_a_served_entry_replaces_an_old_topic_of_its_slug_in_place() -> None:
+    entry = replace(engine.ENGINE_TOPICS["combinations"], slug="matrices", title="Matrices")
+    listed = practice.listed_topics({"matrices": entry})
+    assert list(listed) == list(practice.listed_topics({}))
+    assert list(practice.TOPICS)[4] == "combinations"  # it ends Algebra, as in the catalogue
+    assert listed["matrices"].levels == (1,)
 
 
 def test_issue_stores_only_the_code_and_the_code_replays_the_problem() -> None:

@@ -19,8 +19,9 @@ from app.engine.registry import Registry
 from app.engine.topics.catalogue import Topic, topics
 from app.services.math_parser import MathNode
 
-# Public topic slug -> new-engine topic slug. Other public topics stay on the old engine.
-ENGINE_TOPICS = {"combinations": "combinations"}
+# Public topic slug -> its served engine entry (#191), derived from the topic catalogue;
+# never edit it by hand. Other public topics stay on the old engine.
+ENGINE_TOPICS: dict[str, Topic] = {slug: t for slug, t in topics().items() if t.served}
 
 _INLINE_MATH = re.compile(r"\\\((.*?)\\\)", re.DOTALL)
 
@@ -38,13 +39,22 @@ def _registry() -> Registry:
     return registry()
 
 
-@cache
-def _topics() -> dict[str, Topic]:
-    return topics()
-
-
 def levels(slug: str) -> tuple[int, ...]:
-    return tuple(sorted(_topics()[ENGINE_TOPICS[slug]].levels))
+    return tuple(sorted(ENGINE_TOPICS[slug].levels))
+
+
+def visual(version: str) -> str | None:
+    """The visual its served topics declare for a generator version; one per version."""
+    declared = {
+        topic.visual
+        for topic in ENGINE_TOPICS.values()
+        for choices in topic.levels.values()
+        for choice in choices
+        if choice.generator == version
+    }
+    if len(declared) > 1:
+        raise ValueError(f"Served topics declare different visuals for {version}")
+    return next(iter(declared), None)
 
 
 def statement_latex(statement: str) -> str:
@@ -84,7 +94,7 @@ def _public(task: Task) -> Issued:
 
 def issue(slug: str, level: int, seed: int | None = None) -> Issued:
     """A fresh problem of a public new-engine topic; the seed only picks it."""
-    topic = _topics()[ENGINE_TOPICS[slug]]
+    topic = ENGINE_TOPICS[slug]
     chosen = secrets.randbelow(10**16) if seed is None else seed
     return _public(topic.generate(level, chosen, _registry()))
 

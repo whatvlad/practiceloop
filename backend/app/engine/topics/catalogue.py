@@ -2,7 +2,7 @@
 
 import logging
 from collections.abc import Callable, Mapping
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from app.engine.generators.definite import DefiniteParams
 from app.engine.generators.derivative import DerivativeParams
@@ -42,14 +42,27 @@ class Choice:
 
 @dataclass(frozen=True, slots=True)
 class Topic:
+    """One declarative entry: the practice API builds its topic list from it (#191)."""
+
     slug: str
     area: str
     levels: Mapping[int, tuple[Choice, ...]]
+    # #36: a fixed, published share of mixed practice in the topic's area.
     mixed_weight: int
+    # The learner-facing name, as in the Supabase `topics` row.
+    title: str = field(kw_only=True)
+    # ADR-007: writing space after a level-1 problem on a printed worksheet, in cm.
+    space_cm: float = field(kw_only=True)
+    # Issued by the practice API. A symbolic topic waits for the deploy-time catalogue (#192).
+    served: bool = field(default=False, kw_only=True)
+    # The ADR-006 visual of the worked solution; None when the topic has none.
+    visual: str | None = field(default=None, kw_only=True)
 
     def __post_init__(self) -> None:
         if not self.slug or type(self.mixed_weight) is not int:
             raise ValueError("Topic needs a slug and integer mixed weight")
+        if not self.title or self.space_cm <= 0:
+            raise ValueError("Topic needs a title and positive worksheet space")
         if self.area not in AREAS:
             raise ValueError(f"Unknown topic area: {self.area}")
         if self.mixed_weight < 1 or not self.levels:
@@ -88,7 +101,14 @@ class Topic:
 
 def topics() -> dict[str, Topic]:
     result = (
-        Topic("partial-fractions", "algebra", {1: (Choice("partial-fractions-v1"),)}, 1),
+        Topic(
+            "partial-fractions",
+            "algebra",
+            {1: (Choice("partial-fractions-v1"),)},
+            1,
+            title="Partial fractions",
+            space_cm=5,
+        ),
         Topic(
             "derivatives",
             "mathematical-analysis",
@@ -97,6 +117,8 @@ def topics() -> dict[str, Topic]:
                 2: (Choice("derivative-v1", _rational),),
             },
             1,
+            title="Derivatives",
+            space_cm=3,
         ),
         Topic(
             "indefinite-integrals",
@@ -106,6 +128,8 @@ def topics() -> dict[str, Topic]:
                 2: (Choice("indefinite-v1", _rational),),
             },
             1,
+            title="Indefinite integrals",
+            space_cm=3,
         ),
         Topic(
             "definite-integrals",
@@ -115,7 +139,17 @@ def topics() -> dict[str, Topic]:
                 2: (Choice("definite-v1", _rational),),
             },
             1,
+            title="Definite integrals",
+            space_cm=5,
         ),
-        Topic("combinations", "algebra", {1: (Choice("combinations-v1"),)}, 1),
+        Topic(
+            "combinations",
+            "algebra",
+            {1: (Choice("combinations-v1"),)},
+            1,
+            title="Combinations",
+            space_cm=4,
+            served=True,
+        ),
     )
     return {topic.slug: topic for topic in result}

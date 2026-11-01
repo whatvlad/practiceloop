@@ -376,12 +376,17 @@ def combinations(api: httpx.Client, url: str) -> None:
     from app.engine import practice as engine
 
     reset_limits()
-    listed = {t["slug"]: t for t in api.get("/topics").json()["items"]}
+    catalogue = api.get("/topics").json()
+    listed = {t["slug"]: t for t in catalogue["items"]}
     check(
         listed.get("combinations", {}).get("area") == "algebra",
         "combinations is listed under Algebra",
         listed.get("combinations"),
     )
+    algebra = next((a for a in catalogue["areas"] if a["slug"] == "algebra"), {})
+    weights = (algebra.get("mixed") or {}).get("weights", {})
+    # #191: the engine entry publishes its weight; worksheets wait for #192.
+    check(weights.get("combinations") == 1, "combinations is in Algebra mixed practice", weights)
     response = api.post("/problems", json={"topic": "combinations", "difficulty": 1}, headers=key())
     check(response.status_code == 201, "generate a combinations problem", response.text)
     if response.status_code != 201:

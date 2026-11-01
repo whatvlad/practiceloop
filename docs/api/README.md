@@ -129,6 +129,14 @@ Mixed practice draws a topic of one area for each problem with these weights,
 over that area's topics offered at the chosen level; at levels 1–2 integration
 by parts is not offered, so the others share its part. Weights are constants in
 `TOPICS` in `backend/app/api/practice.py`, never adapted to a learner's history.
+A topic served by the new generator engine takes its name, area, levels, weight
+and worksheet space from its engine topic entry (#191): `combinations` is in
+Algebra mixed practice with weight 1 at level 1, but not in mixed worksheet
+groups, which draw only from topics with worksheet records until #192.
+
+The frontend has no topic list of its own: it shows the `items` and `areas` of
+this response, so a new topic needs no frontend change. Signed out, it offers
+only the guest preview's cells.
 
 `worksheetCapacity` maps each offered level to the number of distinct records a
 worksheet group can take from that cell (ADR-007 decision 4); for `mixed` it is

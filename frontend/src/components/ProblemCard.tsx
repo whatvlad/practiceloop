@@ -1,6 +1,6 @@
 import type { CheckResult, Difficulty, FeedbackCode, SolutionStep, TopicSlug } from '../data/types';
 import { answerVariables, keypadVariables, leadText, problemKind, type ProblemKind } from '../format';
-import { subjectName, topicName } from '../data/topics';
+import { problemTag } from '../data/topics';
 import { AnswerInput } from './AnswerInput';
 import { Button } from './Button';
 import { DifficultyDots } from './DifficultyScale';
@@ -86,7 +86,7 @@ export function ProblemCard({
     <section className="pl-problem" aria-label="Problem" aria-busy={busy}>
       <div className="pl-problem-head">
         <div className="meta">
-          <span className="pl-tag">{subjectName(topic)} — {topicName(topic)}{mixed && ' · Mixed practice'}</span>
+          <span className="pl-tag">{problemTag(topic)}{mixed && ' · Mixed practice'}</span>
           <span className="pl-small pl-muted">
             <DifficultyDots level={difficulty} />
           </span>

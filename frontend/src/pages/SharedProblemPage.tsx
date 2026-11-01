@@ -5,7 +5,7 @@ import { DifficultyDots } from '../components/DifficultyScale';
 import { Tex } from '../components/Tex';
 import { lookupShare, type ShareLookup } from '../data/shares';
 import { practiceSharedProblem } from '../data/api';
-import { subjectName, topicName } from '../data/topics';
+import { problemTag } from '../data/topics';
 import type { ShareUnavailable } from '../data/types';
 import { leadText, problemKind } from '../format';
 import { navigate } from '../router';
@@ -79,7 +79,7 @@ function Result({ found, shareRef, signedIn, authLoading }: { found: ShareLookup
     <section className="pl-problem" aria-label="Shared problem">
       <div className="pl-problem-head">
         <div className="meta">
-          <span className="pl-tag">{subjectName(topic)} — {topicName(topic)}</span>
+          <span className="pl-tag">{problemTag(topic)}</span>
           <span className="pl-small pl-muted">
             <DifficultyDots level={difficulty} />
           </span>
