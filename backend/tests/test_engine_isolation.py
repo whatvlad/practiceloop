@@ -21,7 +21,8 @@ import pytest
 from app.api import practice
 from app.core.auth import VerifiedUser
 from app.engine import practice as engine
-from app.generators.core import catalogue_records, replay
+from app.generators.core import replay
+from app.services import archive
 from app.services import owned_records as records
 
 APP = Path(__file__).resolve().parents[1] / "app"
@@ -66,16 +67,13 @@ def test_new_engine_topics_are_served_only_by_the_new_engine(slug: str) -> None:
         assert engine.replay(issued.record).code == issued.record["code"]
 
 
-def test_old_topics_stay_on_the_old_generators() -> None:
-    old = set(practice.TOPICS) - set(engine.ENGINE_TOPICS)
-    assert old and old <= {item["topic"] for item in LEGACY}
+def test_all_public_topics_use_the_engine_and_old_records_are_archives() -> None:
+    assert set(practice.TOPICS) == set(engine.ENGINE_TOPICS)
     for item in LEGACY:
-        if item["topic"] not in old:
-            continue
-        # Old definite-v1 records share a version string with the new engine; the
-        # missing problem code is what keeps them on the old path.
+        # Even when a legacy version string overlaps, the missing code makes
+        # the saved record an archive rather than a new-engine problem.
         assert not engine.is_engine_record(item["generator_data"])
-        assert item["generator_data"] in catalogue_records(item["topic"], item["difficulty"])
+        assert archive.is_archived(item["topic"], item["generator_data"])
 
 
 @pytest.mark.parametrize("item", LEGACY, ids=lambda item: item["topic"])

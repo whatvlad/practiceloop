@@ -231,3 +231,12 @@ fractions use native engine pools at their existing levels 1-5. Their current
 scalar/expression curriculum is unchanged: determinant, modulus, sum of roots
 and rational decomposition. ADR-008 lists versions and independent proofs;
 legacy `symbolic-v1` records of these topics are read-only archives.
+
+After #197, the six remaining analysis topics also use native engine pools:
+functions/sequences, limits/continuity, improper integrals, series,
+multivariable functions and differential equations. All existing levels, mixed
+weights and worksheet spaces remain. The native series sums to a+1 for ratio
+a/(a+1), and the x derivative of a*x^2*y+b*y is 2*a*x*y; both correct legacy
+formula errors and have independent regression proofs. Old saved answers are
+preserved in the read-only archive. All public topics now issue through the
+engine; ADR-008 documents the versions, proofs and grammar metadata.

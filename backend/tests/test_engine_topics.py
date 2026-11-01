@@ -42,6 +42,12 @@ def test_five_topics_have_nonempty_levels_and_replay_for_many_seeds() -> None:
         "matrices",
         "complex-numbers",
         "fundamental-theorem-algebra",
+        "functions-and-sequences",
+        "limits-and-continuity",
+        "improper-integrals",
+        "series",
+        "multivariable-functions",
+        "differential-equations",
     }
     generators = registry()
     expected_kinds = {
