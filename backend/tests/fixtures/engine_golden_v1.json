@@ -1570,5 +1570,141 @@
         "variant": 1
       }
     }
+  ],
+  "practice-derivative-v1": [
+    {
+      "code": "SDV-1-0000000000000000-42",
+      "statement": "Find \\(\\frac{d}{dx}\\left(- \\frac{x}{x + 1}\\right)\\) for \\(x\\in \\left(-\\infty, -1\\right) \\cup \\left(-1, \\infty\\right)\\).",
+      "steps": [
+        [
+          "derivative_quotient_rule",
+          "f'(x) = \\frac{x \\left(1 + x\\right)' - \\left(1 + x\\right) \\left(x\\right)'}{\\left(1 + x\\right)^{2}}"
+        ],
+        [
+          "derivative_result",
+          "f'(x) = - \\frac{1}{\\left(1 + x\\right)^{2}}"
+        ]
+      ],
+      "answer_kind": "derivative",
+      "answer_latex": "- \\frac{1}{\\left(x + 1\\right)^{2}}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "quotient"
+      }
+    },
+    {
+      "code": "SDV-1-0000000000000001-59",
+      "statement": "Find \\(\\frac{d}{dx}\\left(3 e^{x^{2}}\\right)\\) for \\(x\\in \\mathbb{R}\\).",
+      "steps": [
+        [
+          "derivative_chain_rule",
+          "f'(x) = 3 \\left(x^{2}\\right)' \\left(e^{u}\\right)'\\Big|_{u = x^{2}}"
+        ],
+        [
+          "derivative_result",
+          "f'(x) = 6 x e^{x^{2}}"
+        ]
+      ],
+      "answer_kind": "derivative",
+      "answer_latex": "6 x e^{x^{2}}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "chain_exponential"
+      }
+    },
+    {
+      "code": "SDV-1-0000000000000002-76",
+      "statement": "Find \\(\\frac{d}{dx}\\left(\\sqrt{x^{2} + 1}\\right)\\) for \\(x\\in \\mathbb{R}\\).",
+      "steps": [
+        [
+          "derivative_rewrite_power",
+          "f(x) = \\left(1 + x^{2}\\right)^{\\frac{1}{2}}"
+        ],
+        [
+          "derivative_chain_rule",
+          "f'(x) = \\left(\\sqrt{u}\\right)'\\Big|_{u = 1 + x^{2}} \\left(1 + x^{2}\\right)'"
+        ],
+        [
+          "derivative_result",
+          "f'(x) = \\frac{x}{\\sqrt{1 + x^{2}}}"
+        ]
+      ],
+      "answer_kind": "derivative",
+      "answer_latex": "\\frac{x}{\\sqrt{x^{2} + 1}}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "root_chain"
+      }
+    }
+  ],
+  "practice-partial-v1": [
+    {
+      "code": "PDV-1-0000000000000000-65",
+      "statement": "Calculate \\(\\frac{\\partial}{\\partial z}\\left(- x y^{2} z^{3}\\right)\\quad(x, y, z \\in \\mathbb{R})\\).",
+      "steps": [
+        [
+          "partial_hold",
+          "x, y\\ \\text{constant}:\\quad \\frac{\\partial}{\\partial z}\\left(- x y^{2} z^{3}\\right) = - 3 x y^{2} z^{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "- 3 x y^{2} z^{2}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "three_variables"
+      }
+    },
+    {
+      "code": "PDV-1-0000000000000001-82",
+      "statement": "Calculate \\(\\frac{\\partial^2}{\\partial x\\,\\partial y}\\left(3 x^{2} e^{x y}\\right)\\quad(x, y \\in \\mathbb{R})\\).",
+      "steps": [
+        [
+          "partial_hold",
+          "x\\ \\text{constant}:\\quad \\frac{\\partial}{\\partial y}\\left(3 x^{2} e^{x y}\\right) = 3 x^{3} e^{x y}"
+        ],
+        [
+          "partial_second",
+          "y\\ \\text{constant}:\\quad \\frac{\\partial}{\\partial x}\\left(3 x^{3} e^{x y}\\right) = 3 x^{2} \\left(x y + 3\\right) e^{x y}"
+        ],
+        [
+          "partial_mixed_check",
+          "\\frac{\\partial^2 f}{\\partial y\\,\\partial x} = 3 x^{2} \\left(x y + 3\\right) e^{x y}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3 x^{2} \\left(x y + 3\\right) e^{x y}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "mixed_exponential"
+      }
+    },
+    {
+      "code": "PDV-1-0000000000000002-02",
+      "statement": "Calculate \\(f = z \\left(x + y\\right),\\quad x = r \\cos{\\left(\\theta \\right)},\\ y = r \\sin{\\left(\\theta \\right)}:\\quad \\frac{\\partial f}{\\partial \\theta}\\ \\text{in}\\ r, \\theta, z\\quad(r > 0,\\ \\theta, z \\in \\mathbb{R})\\).",
+      "steps": [
+        [
+          "coordinate_substitute",
+          "x = r \\cos{\\left(\\theta \\right)},\\quad y = r \\sin{\\left(\\theta \\right)},\\quad z = z"
+        ],
+        [
+          "chain_partials",
+          "\\frac{\\partial f}{\\partial x} = z,\\ \\frac{\\partial x}{\\partial \\theta} = - r \\sin{\\left(\\theta \\right)};\\quad \\frac{\\partial f}{\\partial y} = z,\\ \\frac{\\partial y}{\\partial \\theta} = r \\cos{\\left(\\theta \\right)};\\quad \\frac{\\partial f}{\\partial z} = x + y,\\ \\frac{\\partial z}{\\partial \\theta} = 0"
+        ],
+        [
+          "chain_rule_sum",
+          "\\frac{\\partial f}{\\partial \\theta} = \\frac{\\partial f}{\\partial x}\\frac{\\partial x}{\\partial \\theta} + \\frac{\\partial f}{\\partial y}\\frac{\\partial y}{\\partial \\theta} + \\frac{\\partial f}{\\partial z}\\frac{\\partial z}{\\partial \\theta} = - r z \\sin{\\left(\\theta \\right)} + r z \\cos{\\left(\\theta \\right)}"
+        ],
+        [
+          "simplify_result",
+          "r z \\left(- \\sin{\\left(\\theta \\right)} + \\cos{\\left(\\theta \\right)}\\right)"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "r z \\left(- \\sin{\\left(\\theta \\right)} + \\cos{\\left(\\theta \\right)}\\right)",
+      "metadata": {
+        "difficulty": 4,
+        "template": "cylindrical_angle"
+      }
+    }
   ]
 }

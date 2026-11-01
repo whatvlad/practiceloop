@@ -38,6 +38,7 @@ def test_five_topics_have_nonempty_levels_and_replay_for_many_seeds() -> None:
         "trigonometric-integrals",
         "double-integrals",
         "triple-integrals",
+        "partial-derivatives",
     }
     generators = registry()
     expected_kinds = {
@@ -48,6 +49,7 @@ def test_five_topics_have_nonempty_levels_and_replay_for_many_seeds() -> None:
         "combinations": "number",
         "double-integrals": "expression",
         "triple-integrals": "expression",
+        "partial-derivatives": "expression",
     }
     for topic in topics.values():
         assert topic.slug in topics and topic.area and topic.mixed_weight >= 0
@@ -71,7 +73,7 @@ def test_five_topics_have_nonempty_levels_and_replay_for_many_seeds() -> None:
 def test_levels_filter_polynomial_and_rational_parameters() -> None:
     topics = topic_module().topics()
     generators = registry()
-    for slug in ("derivatives", "indefinite-integrals"):
+    for slug in ("indefinite-integrals",):
         for level, rational in ((1, False), (2, True)):
             for seed in range(8):
                 task = topics[slug].generate(level, seed, generators)

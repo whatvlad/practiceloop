@@ -10,6 +10,7 @@ import pytest
 from app.api import practice
 from app.api.worksheets import WorksheetBody, label
 from app.generators.core import catalogue_records as legacy_catalogue_records
+from app.services import worksheets as worksheet_store
 from app.services.worksheet_pdf import (
     PrintedGroup,
     PrintedProblem,
@@ -33,10 +34,16 @@ def test_a_cell_is_used_up_without_repeats_and_then_capped() -> None:
     assert pick.pick("basic-integrals", 5) is None
 
 
-@pytest.mark.parametrize(("topic", "level"), [("derivatives", 1), ("derivatives", 2)])
-def test_distinct_base_problems_come_before_coefficient_variants(topic: str, level: int) -> None:
+@pytest.mark.parametrize(("topic", "level"), [("substitution", 1), ("substitution", 3)])
+def test_distinct_base_problems_come_before_coefficient_variants(
+    topic: str,
+    level: int,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    # Retain the picker rule for legacy records independently of migrated public topics.
+    monkeypatch.setattr(worksheet_store, "catalogue_records", legacy_catalogue_records)
     pick = picker()
-    cell = catalogue_records(topic, level)
+    cell = legacy_catalogue_records(topic, level)
     bases = {base_key(record) for record in cell}
     assert len(bases) < len(cell), "the cell has coefficient variants"
     first = [pick.pick(topic, level) for _ in range(len(bases))]

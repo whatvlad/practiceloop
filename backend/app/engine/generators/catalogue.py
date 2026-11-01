@@ -5,6 +5,7 @@ from typing import Any
 from app.engine.generators.combinations import Combinations
 from app.engine.generators.definite import DefiniteIntegral
 from app.engine.generators.derivative import Derivative
+from app.engine.generators.differentiation import PartialDerivatives, SingleDerivatives
 from app.engine.generators.indefinite import IndefiniteIntegral
 from app.engine.generators.integrals import integral_generators
 from app.engine.generators.multiple import DoubleIntegrals, TripleIntegrals
@@ -24,6 +25,8 @@ def registry() -> Registry:
         *integral_generators(),
         DoubleIntegrals(),
         TripleIntegrals(),
+        SingleDerivatives(),
+        PartialDerivatives(),
     )
     for generator in generators:
         result.register(generator)

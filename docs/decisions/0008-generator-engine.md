@@ -543,3 +543,27 @@ retain `region2d` and `solid3d` graphs on solution reveals without changing the
 browser contract. The 1,000-seed sweep, new golden entries, every pooled-code
 replay and Linux limited-worker tests cover each new cell. Existing versions,
 code formats and frozen generator/answer interfaces are unchanged.
+
+## Amendment: derivative migration (#195)
+
+Single and partial derivatives now use native release pools at levels 1-5:
+`practice-derivative-v1` (SDV-1) and `practice-partial-v1` (PDV-1).
+Strict frozen forms retain the complete template tables, coefficients, real
+domains, differentiation rules, coordinate substitutions and Jacobians.
+Cached builds independently prove every derivative and displayed step; mixed
+partials are also verified in the other order. No legacy generator is imported.
+
+Existing `DerivativeAnswer` and `ExpressionAnswer` cover these answers. Native
+incorrect answers use general feedback; arbitrary constants remain disallowed.
+Mixed weights, worksheet space and the absence of solution visuals are retained.
+Old derivative records are read-only archives; new records contain only code
+and generator version. New golden entries and the 1,000-seed sweep cover all
+ten migrated cells, with exact curriculum comparisons and limited-worker checks.
+
+A generator may additionally expose private `input_variables(drawn_params)`
+metadata. This optional helper does not change the frozen generator protocol.
+The partial generator returns a fresh plain mapping from its allowlisted
+template, including positive r/y and real theta where required. The API obtains
+the exact answer grammar from the code without building a task or calling SymPy.
+The limited worker reconstructs the task once and checks with that grammar.
+No variable declarations or mathematical internals are added to public records.

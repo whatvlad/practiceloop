@@ -111,6 +111,10 @@ def record_variables(record: Mapping[str, object]) -> dict[str, VariableDomain] 
 
     The generator copies them from its template; replay checks they still match.
     """
+    if "code" in record:
+        from app.engine import practice as engine
+
+        return engine.input_variables(dict(record))
     if "variables" not in record:
         return None
     return declared_variables(record["variables"])
@@ -122,19 +126,21 @@ def _check_child() -> int:
         request = json.loads(sys.stdin.buffer.read(MAX_CHECK_REQUEST_BYTES + 1))
         # Imported only now, under the limits: both modules import SymPy.
         from app.engine import practice as engine
-        from app.services.answer_check import check_and_diagnose, replay_problem
 
         if engine.is_engine_record(request["record"]):
             try:
-                engine.replay(request["record"])
+                variables = engine.input_variables(request["record"])
+                task = engine.replay(request["record"])
             except (KeyError, TypeError, ValueError):
                 outcome = "bad_record"
             else:
-                tree = parse_math_input(request["answer"])
-                outcome = engine.check(request["record"], tree)
+                tree = parse_math_input(request["answer"], variables)
+                outcome = task.answer.check(tree)
             sys.stdout.buffer.write(outcome.encode("ascii"))
             sys.stdout.buffer.flush()
             return 0
+        from app.services.answer_check import check_and_diagnose, replay_problem
+
         try:
             problem = replay_problem(request["record"])
             variables = record_variables(request["record"])

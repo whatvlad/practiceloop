@@ -432,6 +432,8 @@ def test_higher_levels_persist_their_family_record_and_check_answers(
             {
                 "basic-v1": "practice-basic-v1",
                 "double-v1": "practice-double-v1",
+                "derivatives-v1": "practice-derivative-v1",
+                "partial-v1": "practice-partial-v1",
                 "substitution-v2": "practice-substitution-v1",
                 "parts-v1": "practice-parts-v1",
                 "rational-v1": "practice-rational-v1",
