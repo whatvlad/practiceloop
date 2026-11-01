@@ -504,7 +504,10 @@ def generate(body: GenerateBody, user: User, key: IdempotencyKey = None) -> JSON
         if stored is not None:
             return _respond(stored, replayed=True)
         if topic in engine.ENGINE_TOPICS:
-            issued = engine.issue(topic, body.difficulty)
+            recent = records.recent_generator_data(
+                conn, user.id, topic, body.difficulty, len(engine.pool(topic, body.difficulty)) // 2
+            )
+            issued = engine.issue(topic, body.difficulty, recent=tuple(recent))
             statement, solution = (
                 issued.statement,
                 records.PrivateSolution(

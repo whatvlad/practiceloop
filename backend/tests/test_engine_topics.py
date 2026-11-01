@@ -31,23 +31,31 @@ def test_five_topics_have_nonempty_levels_and_replay_for_many_seeds() -> None:
         "indefinite-integrals",
         "definite-integrals",
         "combinations",
+        "basic-integrals",
+        "substitution",
+        "integration-by-parts",
+        "rational-functions",
+        "trigonometric-integrals",
     }
     generators = registry()
     expected_kinds = {
         "partial-fractions": "expression",
         "derivatives": "derivative",
         "indefinite-integrals": "antiderivative",
-        "definite-integrals": "number",
+        "definite-integrals": "expression",
         "combinations": "number",
     }
     for topic in topics.values():
-        assert topic.slug in topics and topic.area and topic.mixed_weight > 0
+        assert topic.slug in topics and topic.area and topic.mixed_weight >= 0
         assert topic.levels
         for level, choices in topic.levels.items():
             assert choices
             for seed in range(8):
                 task = topic.generate(level, seed, generators)
-                assert task.answer.kind == expected_kinds[topic.slug]
+                if topic.slug in expected_kinds:
+                    assert task.answer.kind == expected_kinds[topic.slug]
+                else:
+                    assert task.answer.kind in {"antiderivative", "expression"}
                 assert task.statement and task.steps
                 code = parse_code(task.code, generators)
                 generator = generators.get_code(code.prefix, code.version)
@@ -59,7 +67,7 @@ def test_five_topics_have_nonempty_levels_and_replay_for_many_seeds() -> None:
 def test_levels_filter_polynomial_and_rational_parameters() -> None:
     topics = topic_module().topics()
     generators = registry()
-    for slug in ("derivatives", "indefinite-integrals", "definite-integrals"):
+    for slug in ("derivatives", "indefinite-integrals"):
         for level, rational in ((1, False), (2, True)):
             for seed in range(8):
                 task = topics[slug].generate(level, seed, generators)
@@ -120,7 +128,7 @@ def test_topic_extension_and_invalid_inputs() -> None:
             slug="bad",
             area="algebra",
             levels={1: (module.Choice("combinations-v1"),)},
-            mixed_weight=0,
+            mixed_weight=-1,
             title="Demo",
             space_cm=4,
         )

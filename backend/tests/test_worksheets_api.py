@@ -18,7 +18,6 @@ from fastapi.testclient import TestClient
 from app.api import practice, worksheets
 from app.core import database
 from app.core.auth import VerifiedUser, current_user
-from app.generators.core import catalogue_records
 from app.main import app
 from app.services.worksheet_pdf import TexBusy, TexRenderError
 
@@ -206,10 +205,10 @@ def test_combinations_worksheet_saves_pool_fields_and_prints_stored_solutions(
 
 
 def test_groups_are_capped_at_their_cell_and_share_it(client: TestClient) -> None:
-    size = len(catalogue_records("basic-integrals", 5))
-    sheet = create(client, generate(("basic-integrals", 5, 20), ("basic-integrals", 5, 3)))
-    assert [(g["requested"], g["count"]) for g in sheet["groups"]] == [(20, size), (3, 0)]
-    assert len(sheet["problemIds"]) == size
+    # The release pool has 64 unique codes, exceeding the 40-problem worksheet limit.
+    sheet = create(client, generate(("basic-integrals", 5, 20), ("basic-integrals", 5, 20)))
+    assert [(g["requested"], g["count"]) for g in sheet["groups"]] == [(20, 20), (20, 20)]
+    assert len(sheet["problemIds"]) == len(set(sheet["problemIds"])) == 40
 
 
 @pytest.mark.parametrize("area", ["derivatives", "mathematical-analysis"])
@@ -471,7 +470,7 @@ def test_solutions_reveal_both_flags_and_print_steps_and_graphs(
     answers, solutions = tex.split("\\section*{Solutions}")
     assert "\\section*{Answers}" in answers
     assert [solutions.count(f"\\plnumber{{{n}}}") for n in (1, 2, 3)] == [1, 1, 1]
-    assert "Set u equal to the inner expression." in solutions
+    assert "Apply the substitution shown below the integral." in solutions
     # Substitution has a visual; derivatives have none (ADR-006).
     assert solutions.count("\\pdfliteral") == 2
 
@@ -513,4 +512,4 @@ def test_graphs_stop_after_their_time_budget_but_steps_still_print(
     monkeypatch.setattr(worksheets, "GRAPH_SECONDS", -1.0)
     assert client.get(f"/worksheets/{sheet['id']}/pdf").status_code == 200
     solutions = compiled.sources[-1].split("\\section*{Solutions}")[1]
-    assert "pdfliteral" not in solutions and "Set u equal" in solutions
+    assert "pdfliteral" not in solutions and "Apply the substitution" in solutions

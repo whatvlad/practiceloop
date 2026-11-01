@@ -9,7 +9,7 @@ import pytest
 
 from app.api import practice
 from app.api.worksheets import WorksheetBody, label
-from app.generators.core import catalogue_records
+from app.generators.core import catalogue_records as legacy_catalogue_records
 from app.services.worksheet_pdf import (
     PrintedGroup,
     PrintedProblem,
@@ -17,7 +17,7 @@ from app.services.worksheet_pdf import (
     escape_text,
     render_tex,
 )
-from app.services.worksheets import Picker, base_key, record_key
+from app.services.worksheets import Picker, base_key, catalogue_records, record_key
 
 
 def picker(seed: int = 7) -> Picker:
@@ -33,7 +33,7 @@ def test_a_cell_is_used_up_without_repeats_and_then_capped() -> None:
     assert pick.pick("basic-integrals", 5) is None
 
 
-@pytest.mark.parametrize(("topic", "level"), [("substitution", 3), ("substitution", 1)])
+@pytest.mark.parametrize(("topic", "level"), [("derivatives", 1), ("derivatives", 2)])
 def test_distinct_base_problems_come_before_coefficient_variants(topic: str, level: int) -> None:
     pick = picker()
     cell = catalogue_records(topic, level)
@@ -44,7 +44,7 @@ def test_distinct_base_problems_come_before_coefficient_variants(topic: str, lev
 
 
 def test_substitution_v1_variants_differ_only_in_a() -> None:
-    record = dict(catalogue_records("substitution", 1)[0])
+    record = dict(legacy_catalogue_records("substitution", 1)[0])
     other = {**record, "a": -int(str(record["a"]))}
     assert base_key(record) == base_key(other) and record_key(record) != record_key(other)
 

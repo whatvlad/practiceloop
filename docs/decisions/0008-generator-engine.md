@@ -469,3 +469,46 @@ generators are additions, not changes.
   every shipped generator version's output are frozen; a change means a new
   version and new golden entries.
 - Topic migrations (#193-#197) are written against the frozen interfaces.
+
+## Amendment: integral curriculum migration (#193)
+
+The six public integral topics now issue native engine codes at their existing
+levels (basic, substitution, rational and trigonometric: 1-5; parts: 1-3;
+definite integrals: 1-5). Five families each register an indefinite version
+(code version 1) and a bounded version (code version 2), with prefixes BAS,
+SUB, IPT, RNI and TGI. Existing v1 engine codes and golden entries are retained.
+
+`IntegralForm` is a strict frozen mathematical block: family, allowlisted
+template, nonzero small coefficient, secondary coefficient and power/scale.
+All PRNG calls occur in `draw`. The native generators consume this typed block;
+there are no legacy records, imports or task-metadata lookups in the engine.
+The block caches pure results by drawn values, excluding the seed. It proves
+the primitive and each displayed transformation exactly on every real-domain
+component. A bounded form uses the approved interval inside that domain and
+computes the exact finite real difference F(b)-F(a).
+
+No new answer kind or input syntax is needed: indefinite tasks use
+`AntiderivativeAnswer` with the existing constant/domain policy; bounded tasks
+use `ExpressionAnswer` with no variables, permitting exact logarithms, pi and
+exponentials as well as rationals. Incorrect native answers use the engine's
+general feedback; missing constants retain their explicit outcome. The old
+legacy mistake classifiers are not imported by engine tasks.
+
+One compatible change to the frozen Topic contract is approved by this
+amendment: `mixed_weight` may be zero to exclude an entry from mixed practice.
+This preserves the definite-integrals topic's existing weight 0; other fields,
+the generator/answer interfaces, PRNG and code format are unchanged. The
+existing nonnegative weights and worksheet space are retained for every topic.
+
+The release pools now cover the migrated cells; issuing excludes the learner's
+latest half-pool records, and worksheets select only pre-rendered data. A
+`single-integral` visual declaration routes native typed integral data to the
+existing definite/indefinite plotting logic after a solution reveal. Archived
+legacy problems still reopen/reveal/print solely from stored fields and refuse
+new attempts with `409 problem_archived` (#190).
+
+New versions have three golden entries each; the existing 1,000-seed topic
+sweep covers all migrated cells. Exact form tests, own-answer and constant
+checks, no-SymPy issuing tests, archive tests, worksheet/persistence tests and
+Linux limited-worker tests cover the migration. No database migration or
+frontend input change is required because topic rows and answer kinds exist.

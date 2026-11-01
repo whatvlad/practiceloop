@@ -53,12 +53,19 @@ def _public(task: Task) -> Issued:
     return render(task, _registry())
 
 
-def issue(slug: str, level: int, seed: int | None = None) -> Issued:
+def issue(
+    slug: str,
+    level: int,
+    seed: int | None = None,
+    *,
+    recent: tuple[dict[str, object], ...] = (),
+) -> Issued:
     """Pick rendered private data; even a cold symbolic cell runs no SymPy."""
     topic = ENGINE_TOPICS[slug]
     if type(level) is not int or level not in topic.levels:
         raise ValueError("Unknown topic level")
-    candidates = pool(slug, level)
+    complete = pool(slug, level)
+    candidates = tuple(p for p in complete if p.issued().record not in recent) or complete
     chosen = secrets.randbelow(len(candidates)) if seed is None else seed % len(candidates)
     return candidates[chosen].issued()
 

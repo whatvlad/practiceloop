@@ -201,3 +201,14 @@ only when exactly one code matches. Replay plus a check of each form takes well
 under the 1 s CPU budget (`test_checks_fit_half_the_worker_cpu_limit`).
 
 Focused check: `.venv/bin/python -m pytest backend/tests/test_partial.py`.
+
+## Integral engine migration (#193)
+
+New practice for basic integrals, substitution, integration by parts, rational
+functions, trigonometric integrals and definite integrals comes from native
+engine release pools. The existing structural levels, mixed weights and
+worksheet writing space are unchanged. Indefinite/definite variants retain
+their exact answer policy, real domains and solution graphs. See ADR-008's
+integral amendment for versions, blocks and verification. Legacy saved records
+of these topics are read-only archives; the old modules remain for the fixed
+guest preview and archive fixtures until #199 removes the legacy system.

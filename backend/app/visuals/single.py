@@ -10,6 +10,7 @@ from typing import Any
 import sympy as sp
 from sympy.calculus.util import continuous_domain
 
+from app.engine.blocks.integral_forms.form import IntegralData
 from app.generators.basic import X
 from app.generators.core import Exercise
 from app.generators.definite import replay_definite, value_latex
@@ -61,7 +62,11 @@ def _component(integrand: Any, lower: Any, upper: Any) -> sp.Interval:
 
 
 def definite(exercise: Exercise) -> dict[str, Any]:
-    problem = replay_definite(exercise.record, verify=False)
+    return definite_data(replay_definite(exercise.record, verify=False))
+
+
+def definite_data(problem: Any) -> dict[str, Any]:
+    """Render already rebuilt integral data; shared by old and native records."""
     a, b = float(problem.lower), float(problem.upper)
     margin = max(1.0, (b - a) / 2)
     part = _component(problem.integrand, problem.lower, problem.upper)
@@ -173,7 +178,7 @@ def _poles(integrand: Any, lo: float, hi: float) -> list[float]:
     return sorted(poles)
 
 
-def indefinite(exercise: Exercise) -> dict[str, Any]:
+def indefinite(exercise: Exercise | IntegralData) -> dict[str, Any]:
     integrand, primitive = exercise.integrand, exercise.primitive
     f, big_f = to_tree(integrand), to_tree(primitive)
     lo, hi = _x_window(integrand, f, big_f)

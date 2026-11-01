@@ -1,22 +1,28 @@
 """Register the v1 generator slice; each generator carries its own code prefix."""
 
+from typing import Any
+
 from app.engine.generators.combinations import Combinations
 from app.engine.generators.definite import DefiniteIntegral
 from app.engine.generators.derivative import Derivative
 from app.engine.generators.indefinite import IndefiniteIntegral
+from app.engine.generators.integrals import integral_generators
 from app.engine.generators.partial_fractions import PartialFractions
+from app.engine.models import TaskGenerator
 from app.engine.registry import Registry
 
 
 def registry() -> Registry:
     result = Registry()
-    for generator in (
+    generators: tuple[TaskGenerator[Any], ...] = (
         PartialFractions(),
         IndefiniteIntegral(),
         DefiniteIntegral(),
         Derivative(),
         Combinations(),
-    ):
+        *integral_generators(),
+    )
+    for generator in generators:
         result.register(generator)
     result.validate_dependencies()
     return result

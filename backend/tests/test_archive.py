@@ -119,8 +119,9 @@ def test_only_old_records_of_a_migrated_topic_are_archived() -> None:
     issued = engine.issue("combinations", engine.levels("combinations")[0], seed=190)
     assert not archive.is_archived("combinations", issued.record)
     for item in LEGACY:
-        # Every legacy topic is still served by the old generators today.
-        assert not archive.is_archived(item["topic"], item["generator_data"])
+        assert archive.is_archived(item["topic"], item["generator_data"]) == (
+            item["topic"] in engine.ENGINE_TOPICS
+        )
 
 
 @each_legacy_topic
