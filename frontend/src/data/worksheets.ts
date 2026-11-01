@@ -2,7 +2,7 @@
 // Shared by the Practice builder (#117) and the History export (#118).
 import text from '../../../backend/app/content/en.json';
 import { accountSession, sessionCurrent } from './practice';
-import { AREAS, TOPICS } from './topics';
+import { AREAS, isTopicSlug } from './topics';
 import type { AreaSlug, Difficulty, PracticeTopic, TopicSlug } from './types';
 
 const base = (import.meta.env.VITE_API_BASE_URL ?? '/api').trim().replace(/\/+$/, '');
@@ -55,7 +55,7 @@ export function worksheetTopic(topic: PracticeTopic, area: AreaSlug): WorksheetT
 }
 
 function isWorksheetTopic(value: unknown): value is WorksheetTopic {
-  return TOPICS.some(t => t.slug === value) || AREAS.some(a => value === `mixed:${a.slug}`);
+  return isTopicSlug(value) || AREAS.some(a => value === `mixed:${a.slug}`);
 }
 
 const keys = new Map<string, string>();

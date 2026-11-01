@@ -39,7 +39,7 @@ def legacy_code_is_never_run(*_: Any) -> NoReturn:
 def migrated(request: pytest.FixtureRequest, monkeypatch: pytest.MonkeyPatch) -> dict[str, Any]:
     """The legacy item's topic, as if its migration to the new engine had landed."""
     item: dict[str, Any] = request.param
-    monkeypatch.setitem(engine.ENGINE_TOPICS, item["topic"], "combinations")
+    monkeypatch.setitem(engine.ENGINE_TOPICS, item["topic"], engine.ENGINE_TOPICS["combinations"])
     monkeypatch.setattr(practice, "solution_payload", legacy_code_is_never_run)
     monkeypatch.setattr(practice, "shared_check", legacy_code_is_never_run)
     monkeypatch.setattr(worksheets, "build_visual", legacy_code_is_never_run)

@@ -1,5 +1,6 @@
 import { beforeEach, afterEach, expect, it, vi } from 'vitest';
 import * as practice from './practice';
+import { areaOf, problemTag, topicName } from './topics';
 
 const fetchMock = vi.fn<typeof fetch>();
 const publicProblem = { id: 'problem-1', topic: 'basic-integrals', difficulty: 1, problemLatex: '\\int x\\,dx', createdAt: '2026-10-19T00:00:00Z' };
@@ -223,7 +224,8 @@ it('loads supported topic cells from the API, including future higher levels', a
 it('reads published mixed-practice weights and keeps the drawn topic with a mixed flag', async () => {
   practice.configurePracticeAuth(async () => 'access-token');
   const weights = { 'basic-integrals': 1, substitution: 2 };
-  fetchMock.mockResolvedValueOnce(response({ items: [{ slug: 'basic-integrals', area: 'mathematical-analysis', availableDifficulties: [1] }],
+  fetchMock.mockResolvedValueOnce(response({ items: [{ slug: 'basic-integrals', name: 'Basic integrals', area: 'mathematical-analysis', availableDifficulties: [1] },
+    { slug: 'substitution', name: 'Substitution', area: 'mathematical-analysis', availableDifficulties: [3] }],
     areas: [{ slug: 'mathematical-analysis', name: 'Mathematical Analysis', mixed: { availableDifficulties: [1, 2, 3, 4, 5], weights } }] }));
   expect((await practice.getCatalogue()).areas[0].mixed).toEqual({ availableDifficulties: [1, 2, 3, 4, 5], weights });
   fetchMock.mockResolvedValueOnce(response({ problem: { ...publicProblem, topic: 'substitution', difficulty: 3 } }, 201));
@@ -242,8 +244,8 @@ it('groups existing topics under Mathematical Analysis and preserves derivative 
   fetchMock.mockResolvedValueOnce(response({
     areas: [{ slug: 'mathematical-analysis', name: 'Mathematical Analysis', mixed: null }],
     items: [
-      { slug: 'basic-integrals', area: 'mathematical-analysis', availableDifficulties: [1] },
-      { slug: 'derivatives', area: 'mathematical-analysis', availableDifficulties: [1, 2, 3, 4, 5] },
+      { slug: 'basic-integrals', name: 'Basic integrals', area: 'mathematical-analysis', availableDifficulties: [1] },
+      { slug: 'derivatives', name: 'Derivatives', area: 'mathematical-analysis', availableDifficulties: [1, 2, 3, 4, 5] },
     ] }));
   const catalogue = await practice.getCatalogue();
   expect(catalogue.areas.map(area => area.slug)).toEqual(['mathematical-analysis']);
@@ -257,13 +259,41 @@ it('groups existing topics under Mathematical Analysis and preserves derivative 
   await expect(practice.generateProblem('mixed', 2, 'algebra')).rejects.toThrow();
 });
 
-it('rejects a topic listed under the wrong area or an area the build does not know', async () => {
+it('rejects a topic outside the listed areas, an area the build does not know or a malformed topic', async () => {
   practice.configurePracticeAuth(async () => 'access-token');
-  fetchMock.mockResolvedValueOnce(response({ areas: [{ slug: 'algebra', mixed: null }],
-    items: [{ slug: 'derivatives', area: 'algebra', availableDifficulties: [1] }] }));
+  fetchMock.mockResolvedValueOnce(response({ areas: [{ slug: 'mathematical-analysis', mixed: null }],
+    items: [{ slug: 'matrices', name: 'Matrices', area: 'algebra', availableDifficulties: [1] }] }));
   await expect(practice.getCatalogue()).rejects.toThrow();
   fetchMock.mockResolvedValueOnce(response({ areas: [{ slug: 'geometry', mixed: null }], items: [] }));
   await expect(practice.getCatalogue()).rejects.toThrow();
+  for (const item of [{ slug: 'Not A Slug', name: 'X' }, { slug: 'counting' }, { slug: 'counting', name: ' ' }]) {
+    fetchMock.mockResolvedValueOnce(response({ areas: [{ slug: 'algebra', mixed: null }],
+      items: [{ ...item, area: 'algebra', availableDifficulties: [1] }] }));
+    await expect(practice.getCatalogue()).rejects.toThrow();
+  }
+});
+
+it('takes the topic list, names and areas from the API, so a new topic needs no frontend change (#191)', async () => {
+  practice.configurePracticeAuth(async () => 'access-token');
+  fetchMock.mockResolvedValueOnce(response({
+    areas: [{ slug: 'algebra', name: 'Algebra', mixed: { availableDifficulties: [1], weights: { matrices: 1, counting: 2 } } }],
+    items: [
+      { slug: 'matrices', name: 'Matrices', area: 'algebra', availableDifficulties: [1] },
+      { slug: 'counting', name: 'Counting principles', area: 'algebra', availableDifficulties: [1] },
+    ] }));
+  const catalogue = await practice.getCatalogue();
+  expect(catalogue.topics.map(topic => [topic.slug, topic.name, topic.area])).toEqual([
+    ['matrices', 'Matrices', 'algebra'], ['counting', 'Counting principles', 'algebra']]);
+  expect(catalogue.areas[0].mixed?.weights).toEqual({ matrices: 1, counting: 2 });
+  expect([topicName('counting'), areaOf('counting'), problemTag('counting')]).toEqual(['Counting principles', 'algebra', 'Algebra — Counting principles']);
+  fetchMock.mockResolvedValueOnce(response({ problem: { ...publicProblem, topic: 'counting', difficulty: 1 } }, 201));
+  expect((await practice.generateProblem('mixed', 1, 'algebra')).topic).toBe('counting');
+});
+
+it('offers guests the two preview topics the guest server serves', async () => {
+  expect((await practice.getCatalogue()).topics.map(topic => [topic.slug, topic.availableDifficulties])).toEqual([
+    ['basic-integrals', [1, 2]], ['substitution', [1, 2]]]);
+  expect(fetchMock).not.toHaveBeenCalled();
 });
 
 it('offers guests no mixed practice', async () => {

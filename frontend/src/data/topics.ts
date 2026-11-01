@@ -6,30 +6,19 @@ export const AREAS: readonly Area[] = [
   { slug: 'mathematical-analysis', name: 'Mathematical Analysis' },
 ];
 
-// Matches the seed rows of public.topics. The API offers a topic only once its generator ships.
-export const TOPICS: readonly Topic[] = [
-  { slug: 'matrices', name: 'Matrices', area: 'algebra' },
-  { slug: 'complex-numbers', name: 'Complex numbers', area: 'algebra' },
-  { slug: 'fundamental-theorem-algebra', name: 'Fundamental theorem of algebra', area: 'algebra' },
-  { slug: 'partial-fractions', name: 'Partial fractions', area: 'algebra' },
-  { slug: 'combinations', name: 'Combinations', area: 'algebra' },
-  { slug: 'basic-integrals', name: 'Basic integrals', area: 'mathematical-analysis' },
-  { slug: 'substitution', name: 'Substitution', area: 'mathematical-analysis' },
-  { slug: 'integration-by-parts', name: 'Integration by parts', area: 'mathematical-analysis' },
-  { slug: 'rational-functions', name: 'Rational functions', area: 'mathematical-analysis' },
-  { slug: 'trigonometric-integrals', name: 'Trigonometric integrals', area: 'mathematical-analysis' },
-  { slug: 'definite-integrals', name: 'Definite integrals', area: 'mathematical-analysis' },
-  { slug: 'double-integrals', name: 'Double integrals', area: 'mathematical-analysis' },
-  { slug: 'triple-integrals', name: 'Triple integrals', area: 'mathematical-analysis' },
-  { slug: 'derivatives', name: 'Derivatives', area: 'mathematical-analysis' },
-  { slug: 'partial-derivatives', name: 'Partial derivatives', area: 'mathematical-analysis' },
-  { slug: 'functions-and-sequences', name: 'Functions and sequences', area: 'mathematical-analysis' },
-  { slug: 'limits-and-continuity', name: 'Limits and continuity', area: 'mathematical-analysis' },
-  { slug: 'improper-integrals', name: 'Improper integrals', area: 'mathematical-analysis' },
-  { slug: 'series', name: 'Series', area: 'mathematical-analysis' },
-  { slug: 'multivariable-functions', name: 'Multivariable functions', area: 'mathematical-analysis' },
-  { slug: 'differential-equations', name: 'Differential equations', area: 'mathematical-analysis' },
-];
+// #191: topics come from GET /topics. This build keeps only the latest list it was sent,
+// so a new topic needs no frontend change.
+const known = new Map<TopicSlug, Topic>();
+const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+export function isTopicSlug(value: unknown): value is TopicSlug {
+  return typeof value === 'string' && value.length <= 64 && SLUG.test(value);
+}
+
+/** Names and areas for history rows, tags and statistics; called with each catalogue. */
+export function rememberTopics(topics: readonly Topic[]): void {
+  for (const { slug, name, area } of topics) known.set(slug, { slug, name, area });
+}
 
 export const DIFFICULTIES: readonly { level: Difficulty; name: string }[] = [
   { level: 1, name: 'Basic' },
@@ -40,22 +29,32 @@ export const DIFFICULTIES: readonly { level: Difficulty; name: string }[] = [
 ];
 
 export function topicName(slug: TopicSlug): string {
-  return TOPICS.find((t) => t.slug === slug)?.name ?? slug;
+  const name = known.get(slug)?.name;
+  if (name) return name;
+  // Before the catalogue arrives (a shared link, say), the slug reads as the name.
+  const words = slug.replaceAll('-', ' ');
+  return words.charAt(0).toUpperCase() + words.slice(1);
+}
+
+/** The area the latest catalogue lists the topic under, if it lists the topic. */
+export function listedArea(slug: TopicSlug): AreaSlug | undefined {
+  return known.get(slug)?.area;
 }
 
 export function areaOf(slug: TopicSlug): AreaSlug {
-  return TOPICS.find((t) => t.slug === slug)?.area ?? 'mathematical-analysis';
+  return listedArea(slug) ?? 'mathematical-analysis';
 }
 
-/** The problem tag's subject: "Integration — Substitution", "Differentiation — Derivatives". */
-export function subjectName(slug: TopicSlug): string {
-  if (['matrices', 'complex-numbers', 'fundamental-theorem-algebra', 'partial-fractions', 'combinations'].includes(slug)) {
-    return 'Algebra';
-  }
-  if (['functions-and-sequences', 'limits-and-continuity', 'improper-integrals', 'series', 'multivariable-functions', 'differential-equations'].includes(slug)) {
-    return 'Mathematical Analysis';
-  }
-  return ['derivatives', 'partial-derivatives'].includes(slug) ? 'Differentiation' : 'Integration';
+const INTEGRATION = ['basic-integrals', 'substitution', 'integration-by-parts', 'rational-functions',
+  'trigonometric-integrals', 'definite-integrals', 'double-integrals', 'triple-integrals'];
+const DIFFERENTIATION = ['derivatives', 'partial-derivatives'];
+
+/** The problem tag: "Integration — Substitution", "Algebra — Combinations", or the name alone. */
+export function problemTag(slug: TopicSlug): string {
+  const area = listedArea(slug);
+  const subject = DIFFERENTIATION.includes(slug) ? 'Differentiation' : INTEGRATION.includes(slug) ? 'Integration'
+    : AREAS.find(a => a.slug === area)?.name;
+  return subject ? `${subject} — ${topicName(slug)}` : topicName(slug);
 }
 
 /** Each topic's share of mixed practice at one level: its weight over the weights offered there. */

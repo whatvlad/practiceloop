@@ -1,7 +1,7 @@
 // Shared problems (#37): anyone with a link or code may look one up, signed in or not.
 // No Authorization header is sent, and only the statement, topic and difficulty are kept.
 import text from '../../../backend/app/content/en.json';
-import { TOPICS } from './topics';
+import { isTopicSlug } from './topics';
 import type { Difficulty, ProblemShare, SharedProblem, ShareUnavailable, TopicSlug } from './types';
 
 const base = (import.meta.env.VITE_API_BASE_URL ?? '/api').trim().replace(/\/+$/, '');
@@ -59,7 +59,7 @@ export async function lookupShare(ref: { token: string } | { code: string }): Pr
     throw new Error(text.service_error);
   }
   const problem = (data as { problem?: Record<string, unknown> } | null)?.problem;
-  if (!problem || typeof problem.problemLatex !== 'string' || !TOPICS.some(t => t.slug === problem.topic)
+  if (!problem || typeof problem.problemLatex !== 'string' || !isTopicSlug(problem.topic)
     || ![1, 2, 3, 4, 5].includes(problem.difficulty as number)) throw new Error(text.service_error);
   // Explicit projection: even a malformed response cannot carry more into the page.
   return { problem: { topic: problem.topic as TopicSlug, difficulty: problem.difficulty as Difficulty, problemLatex: problem.problemLatex } };

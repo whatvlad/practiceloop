@@ -5,28 +5,8 @@ import type { VisualSpec } from '../visual/spec';
 /** ADR-005: practice has two areas, and every topic belongs to exactly one. */
 export type AreaSlug = 'algebra' | 'mathematical-analysis';
 
-export type TopicSlug =
-  | 'matrices'
-  | 'complex-numbers'
-  | 'fundamental-theorem-algebra'
-  | 'partial-fractions'
-  | 'combinations'
-  | 'basic-integrals'
-  | 'substitution'
-  | 'integration-by-parts'
-  | 'rational-functions'
-  | 'trigonometric-integrals'
-  | 'definite-integrals'
-  | 'double-integrals'
-  | 'triple-integrals'
-  | 'derivatives'
-  | 'partial-derivatives'
-  | 'functions-and-sequences'
-  | 'limits-and-continuity'
-  | 'improper-integrals'
-  | 'series'
-  | 'multivariable-functions'
-  | 'differential-equations';
+/** A topic's slug. The list of topics comes from GET /topics (#191), not from this build. */
+export type TopicSlug = string;
 
 /** A topic, or mixed practice: the server draws a topic of one area with fixed, published weights (#36). */
 export type PracticeTopic = TopicSlug | 'mixed';

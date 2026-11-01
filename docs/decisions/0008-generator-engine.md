@@ -173,7 +173,17 @@ public areas (`AREAS`: `algebra`, `mathematical-analysis`).
 
 ### Through the practice API
 
-Only the public `combinations` topic is served by the engine (#169).
+A topic entry is also the product side of a topic (#191, an amendment of the
+frozen `Topic`): besides slug, area, levels and mixed-practice weight it holds
+the learner-facing `title`, the worksheet `space_cm`, the solution `visual`
+(`None` for none) and `served`. `engine.ENGINE_TOPICS` is derived from the
+entries with `served=True`; `api/practice.py` lists each of them in `TOPICS`
+(replacing an old-engine topic of the same slug in place), `GET /topics`
+returns that list, and the frontend reads it from there. `visuals/spec.py` takes
+an engine record's visual from its topic entry. Only `combinations` is served
+(#169); it is in Algebra mixed practice with weight 1, and joins worksheets with
+the deploy-time catalogue (#192). Symbolic topics are not served before #192.
+
 `api/practice.py` calls `engine.issue(topic, level)`, which takes a seed from
 `secrets`, generates the task and stores a private record with exactly
 `generator_version` and `code`, plus the statement, answer LaTeX and steps as
@@ -280,7 +290,8 @@ interfaces. It is modelled on `backend/app/engine/generators/combinations.py`.
 2. **Register it** in `backend/app/engine/generators/catalogue.py`: import the
    class (keep the imports sorted) and add `Permutations()` to the list.
 3. **Add a topic entry** in `backend/app/engine/topics/catalogue.py`:
-   `Topic("permutations", "algebra", {1: (Choice("permutations-v1"),)}, 1)`,
+   `Topic("permutations", "algebra", {1: (Choice("permutations-v1"),)}, 1,
+   title="Permutations", space_cm=4)`,
    or add a `Choice` to an existing topic's level, with a predicate over the
    typed parameters if only some of them belong there.
 4. **Pin golden problems.** Add `"permutations-v1"` to
@@ -295,15 +306,19 @@ interfaces. It is modelled on `backend/app/engine/generators/combinations.py`.
    1,000-seed sweep tests cover the new generator without further test code.
 
 No engine module, `answer_check.py` or other generator changes. The test edits
-in steps 4-5 are data, not test logic. Serving the topic to learners is a
-separate step (#191).
+in steps 4-5 are data, not test logic. Serving the topic to learners (#191) is
+`served=True` on its entry plus an additive Supabase migration for its `topics`
+row, because saved records reference that row; the API topic list, mixed
+practice, visual decision and frontend follow from the entry.
 
 ## Known limitations
 
 The list is the draft's, kept with its numbers. Items 2-5, 7, 8 and 10 were
-resolved by #189 as described above; the rest are tracked in the review.
+resolved by #189 and item 1 by #191 as described above; the rest are tracked in
+the review.
 
-1. **Serving a topic touches many files** (#191). #169 changed `api/practice.py`
+1. *Resolved in #191: one declarative topic entry; the frontend reads topics
+   from the API.* **Serving a topic touched many files.** #169 changed `api/practice.py`
    (`TOPICS`), `engine/practice.py` (`ENGINE_TOPICS`; learner text moved to the
    generators in #189), `visuals/spec.py` (`NO_VISUAL`), a Supabase migration for the
    `topics` row, and the frontend topic list, types and mock bank, plus the

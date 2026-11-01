@@ -1,7 +1,8 @@
 """Which generator versions get which visual (ADR-006), and the cached builder.
 
 Every catalogue version is either in BUILDERS or declared in NO_VISUAL; the
-catalogue-wide test in tests/test_visuals.py keeps that true. A spec is built from
+catalogue-wide test in tests/test_visuals.py keeps that true. A new-engine record
+takes the visual its topic entry declares (#191). A spec is built from
 the replayed exercise only, so it reveals nothing the solution steps do not.
 """
 
@@ -10,6 +11,7 @@ from collections.abc import Callable
 from functools import lru_cache
 from typing import Any
 
+from app.engine import practice as engine
 from app.generators.core import Exercise, replay
 from app.visuals.region2d import region2d
 from app.visuals.single import definite, indefinite
@@ -30,8 +32,7 @@ BUILDERS: dict[str, Callable[[Exercise], dict[str, Any]]] = {
     "triple-v1": solid3d,
 }
 # Derivatives have no visual in ADR-006.
-# combinations-v1 is the first new-engine version served (#169).
-NO_VISUAL = frozenset({"derivatives-v1", "partial-v1", "symbolic-v1", "combinations-v1"})
+NO_VISUAL = frozenset({"derivatives-v1", "partial-v1", "symbolic-v1"})
 
 
 def build_visual(record: dict[str, object]) -> dict[str, Any] | None:
@@ -43,6 +44,11 @@ def build_visual(record: dict[str, object]) -> dict[str, Any] | None:
 def _build(canonical: str) -> dict[str, Any] | None:
     record = json.loads(canonical)
     version = record.get("generator_version")
+    if engine.is_engine_record(record):
+        if engine.visual(str(version)) is None:
+            return None
+        # The first engine topic with a visual (#193) adds its builder here.
+        raise ValueError("No builder for the engine visual of this version")
     if version in NO_VISUAL:
         return None
     builder = BUILDERS.get(version)
