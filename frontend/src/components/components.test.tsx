@@ -75,6 +75,33 @@ describe('ProblemCard', () => {
     expect(html).not.toContain('+ C');
   });
 
+  it('asks for combinations with general text, a number placeholder and no x or +C keys (#202)', () => {
+    const html = card({ topic: 'combinations', problemLatex: 'Calculate \\(\\binom{5}{2}\\).', result: 'incorrect' });
+    expect(html).toContain('Algebra — Combinations');
+    expect(html).toContain(text.calculate_general);
+    expect(html).toContain(text.general_hint_general);
+    expect(html).toContain('placeholder="e.g. 12 or 3/4"');
+    expect(html).not.toMatch(/integral|integrand|\+ ?C/);
+    expect(html).not.toContain('aria-label="x"');
+  });
+
+  it('offers x but no +C for a partial fractions answer (#202)', () => {
+    const html = card({ topic: 'partial-fractions', problemLatex: '\\frac{3x+4}{(x+1)(x+2)}= ?' });
+    expect(html).toContain(text.calculate_general);
+    expect(html).toContain('placeholder="e.g. 2x + 1"');
+    expect(html).not.toContain('>+C<');
+    expect(html).not.toMatch(/integral/);
+  });
+
+  it('keeps the integration hint, placeholder and +C key for integral topics (#202)', () => {
+    const html = card({ result: 'incorrect' });
+    expect(html).toContain(text.calculate);
+    expect(html).toContain(text.general_hint);
+    expect(html).toContain('placeholder="e.g. x^2/2 + C"');
+    expect(html).toContain('aria-label="x"');
+    expect(html).toContain('>+C<');
+  });
+
   it('flags invalid input for assistive tech', () => {
     expect(card({ result: 'invalid', answer: 'x +' })).toContain('aria-invalid="true"');
   });

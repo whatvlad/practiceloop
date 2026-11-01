@@ -97,6 +97,7 @@ function configureKeyboard() {
  */
 export function keyboardLayouts(variables?: readonly AnswerVariable[]): (VirtualKeyboardLayout | VirtualKeyboardName)[] {
   const keys = (...names: string[]) => names.map((name) => keycap(byName(name)));
+  // A number answer declares no variables, so it has neither x nor +C.
   const [first, ...rest] = mainKeys(variables)
     .filter((key) => key.name === 'x' || key.name === 'plus constant' || isVariableKey(key, variables))
     .map(keycap);
@@ -105,7 +106,7 @@ export function keyboardLayouts(variables?: readonly AnswerVariable[]): (Virtual
       label: '123',
       tooltip: 'Numbers and operators',
       rows: [
-        [first, ...keys('pi', 'e to the power', 'squared'), '[separator-5]', '7', '8', '9', keycap(byName('divide'))],
+        [...(first ? [first] : []), ...keys('pi', 'e to the power', 'squared'), '[separator-5]', '7', '8', '9', keycap(byName('divide'))],
         [...keys('power', 'square root', 'brackets', 'absolute value'), '[separator-5]', '4', '5', '6', keycap(byName('times'))],
         [...keys('sin', 'cos', 'tan', 'ln'), '[separator-5]', '1', '2', '3', keycap(byName('minus'))],
         [...rest, '[left]', '[right]', '[backspace]', '[separator-5]', '0', '.', '[return]', keycap(byName('plus'))],

@@ -100,5 +100,7 @@ type TextKey = Literal[
     "feedback_jacobian_missing_r",
     "feedback_jacobian_sign",
     "general_hint_derivative",
+    "calculate_general",
+    "general_hint_general",
 ]
 TEXT: dict[TextKey, str] = json.loads(Path(__file__).with_name("en.json").read_text())

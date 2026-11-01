@@ -1,3 +1,4 @@
+import type { AnswerVariable } from '../answerSyntax';
 import type { CheckResult, Difficulty, FeedbackCode, SolutionStep, TopicSlug } from '../data/types';
 import { answerVariables, leadText, problemKind, type ProblemKind } from '../format';
 import { subjectName, topicName } from '../data/topics';
@@ -43,10 +44,17 @@ interface ProblemCardProps {
 export function incorrectMessage(feedback: FeedbackCode | null, kind: ProblemKind): string {
   if (feedback) return text[`feedback_${feedback}`];
   return { indefinite: text.general_hint, definite: text.general_hint_definite, double: text.general_hint_multiple,
-    triple: text.general_hint_multiple, derivative: text.general_hint_derivative, partial: text.general_hint_derivative }[kind];
+    triple: text.general_hint_multiple, derivative: text.general_hint_derivative, partial: text.general_hint_derivative,
+    general: text.general_hint_general }[kind];
 }
 
-const PLACEHOLDERS: Record<ProblemKind, string> = {
+/** A general answer's example: a number, or an expression in the topic's variables. */
+export function answerPlaceholder(kind: ProblemKind, variables?: readonly AnswerVariable[]): string {
+  if (kind !== 'general') return PLACEHOLDERS[kind];
+  return variables?.length ? `e.g. 2${variables.join('')} + 1` : 'e.g. 12 or 3/4';
+}
+
+const PLACEHOLDERS: Record<Exclude<ProblemKind, 'general'>, string> = {
   indefinite: 'e.g. x^2/2 + C',
   definite: 'e.g. 3/2 or e - 1',
   double: 'e.g. 8pi or (e - 1)/2',
@@ -79,6 +87,7 @@ export function ProblemCard({
   const solved = result === 'correct';
   const kind = problemKind(topic, problemLatex);
   const message = result === 'incorrect' ? incorrectMessage(feedback, kind) : undefined;
+  const variables = answerVariables(kind, problemLatex, topic);
   return (
     <section className="pl-problem" aria-label="Problem" aria-busy={busy}>
       <div className="pl-problem-head">
@@ -101,11 +110,11 @@ export function ProblemCard({
         value={answer}
         onChange={onAnswerChange}
         state={result}
-        placeholder={PLACEHOLDERS[kind]}
+        placeholder={answerPlaceholder(kind, variables)}
         describedBy={result ? 'answer-result' : undefined}
         onEnter={solved || busy ? undefined : onCheck}
         assist
-        variables={answerVariables(kind, problemLatex)}
+        variables={variables}
         hint={
           <>
             Type <code>/</code> for a fraction, <code>^</code> for a power, <code>sqrt</code> for a root, or use the keys. Press Enter to check.

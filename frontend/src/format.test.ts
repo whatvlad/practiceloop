@@ -67,4 +67,28 @@ describe('problem kinds', () => {
     expect(answerVariables('partial', 'f\\quad(r > 0,\\ \\theta, z \\in \\mathbb{R})')).toEqual(['z', 'r', 'theta']);
     expect(answerVariables('derivative', '\\frac{d}{dx} x\\quad(x > 0)')).toBeUndefined();
   });
+
+  it('gives non-integral topics a general kind, never an integral (#202)', () => {
+    for (const topic of ['combinations', 'matrices', 'complex-numbers', 'fundamental-theorem-algebra', 'partial-fractions',
+      'functions-and-sequences', 'limits-and-continuity', 'series', 'multivariable-functions', 'differential-equations'] as const) {
+      expect(problemKind(topic, 'Calculate \\(\\binom{5}{2}\\).')).toBe('general');
+    }
+    expect(leadText('general')).toBe(text.calculate_general);
+    expect(leadText('general')).not.toMatch(/integral/);
+  });
+
+  it('keeps integral kinds for integral topics (#202)', () => {
+    expect(problemKind('substitution', '\\int 2x\\cos(x^2)\\,dx')).toBe('indefinite');
+    expect(problemKind('definite-integrals', '\\int_{0}^{1} x\\,dx')).toBe('definite');
+    expect(problemKind('improper-integrals', '\\int_{1}^\\infty \\frac{1}{x^{2}}\\,dx=?')).toBe('definite');
+    expect(leadText('indefinite')).toBe('Calculate the indefinite integral.');
+  });
+
+  it("uses a general topic's own variables, none for a number (#202)", () => {
+    expect(answerVariables('general', 'Calculate \\(\\binom{5}{2}\\).', 'combinations')).toEqual([]);
+    expect(answerVariables('general', '|1+2i|', 'complex-numbers')).toEqual([]);
+    expect(answerVariables('general', '\\frac{3x+4}{(x+1)(x+2)}= ?', 'partial-fractions')).toEqual(['x']);
+    expect(answerVariables('general', 'f(x,y)=x^2y', 'multivariable-functions')).toEqual(['x', 'y']);
+    expect(answerVariables('indefinite', '\\int x\\,dx', 'basic-integrals')).toBeUndefined();
+  });
 });

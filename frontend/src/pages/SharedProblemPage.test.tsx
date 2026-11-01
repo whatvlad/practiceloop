@@ -5,6 +5,7 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { SharedProblemPage } from './SharedProblemPage';
 import { lookupShare, normalizeCode, shareCode, shareLink } from '../data/shares';
 import { practiceSharedProblem } from '../data/api';
+import text from '../../../backend/app/content/en.json';
 
 vi.mock('../data/api', () => ({ practiceSharedProblem: vi.fn() }));
 
@@ -51,6 +52,17 @@ it('shows only the statement, topic and difficulty, even when the server sends m
   expect(element.querySelector('.katex')).not.toBeNull();
   expect(element.innerHTML).not.toMatch(/LEAKED/);
   expect(element.textContent).not.toMatch(/Show answer|Check answer/);
+});
+
+it.each([
+  { topic: 'combinations', problemLatex: 'Calculate \\(\\binom{5}{2}\\).', lead: text.calculate_general },
+  { topic: 'limits-and-continuity', problemLatex: '\\lim_{x\\to2}\\frac{x^2-4}{x-2}=?', lead: text.calculate_general },
+  { topic: 'basic-integrals', problemLatex: '\\int x\\,dx', lead: text.calculate },
+  { topic: 'definite-integrals', problemLatex: '\\int_{0}^{1} x\\,dx', lead: text.calculate_definite },
+])('gives a shared $topic problem the same instruction as practice (#202)', async ({ topic, problemLatex, lead }) => {
+  fetchMock.mockResolvedValue(json({ problem: { topic, difficulty: 1, problemLatex } }));
+  await render({ token: TOKEN, code: null });
+  expect(element.querySelector('.pl-lead')?.textContent).toBe(lead);
 });
 
 it.each([{ token: TOKEN, code: null }, { token: null, code: 'k7m2-qx9p' }])('keeps the exact shared reference in the sign-in action', async props => {

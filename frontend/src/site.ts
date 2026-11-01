@@ -5,7 +5,7 @@
 
 export const SITE_NAME = 'PracticeLoop';
 const DESCRIPTION =
-  'Practice integration with fresh generated problems. Answers are checked by equivalence, with full solutions and a saved history.';
+  'Practice algebra and mathematical analysis with fresh generated problems. Answers are checked by equivalence, with full solutions and a saved history.';
 
 export interface PageMeta {
   title: string;
@@ -23,10 +23,10 @@ const PAGES: Record<string, PageMeta> = {
   '/privacy': page('Privacy', 'What PracticeLoop stores, why, who processes it and how to delete it.', true),
   '/login': page('Sign in', 'Sign in with Google to save problems, attempts and statistics.'),
   '/dashboard': page('Dashboard', 'Your practice overview.'),
-  '/practice': page('Practice', 'Solve a generated integration problem.'),
+  '/practice': page('Practice', 'Solve a generated mathematics problem.'),
   '/history': page('History', 'Every problem you have generated.'),
   '/profile': page('Profile', 'Your account, statistics and data.'),
-  '/shared': page('Shared problem', 'An integration problem shared from PracticeLoop.'),
+  '/shared': page('Shared problem', 'A mathematics problem shared from PracticeLoop.'),
   '/auth/callback': page('Signing in', 'Finishing Google sign-in.'),
 };
 const NOT_FOUND = page('Page not found', 'There is no page at this address.');

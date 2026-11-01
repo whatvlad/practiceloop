@@ -93,5 +93,7 @@
   "write_triple": "Write the triple integral as an iterated integral.",
   "cylindrical_change": "Change to cylindrical coordinates. Use x = r cos θ, y = r sin θ and dV = r dz dr dθ.",
   "integrate_middle": "Integrate the middle integral. Keep the outermost variable constant.",
-  "feedback_z_bounds": "Check the bounds for z. They go from the lower surface of the solid to the upper surface."
+  "feedback_z_bounds": "Check the bounds for z. They go from the lower surface of the solid to the upper surface.",
+  "calculate_general": "Solve the problem and give the exact answer.",
+  "general_hint_general": "Check each step of your working, or reveal the solution."
 }

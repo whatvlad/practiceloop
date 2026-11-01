@@ -20,6 +20,12 @@ describe('page metadata (#38)', () => {
     expect(pageMeta('/shared/abc')).toBe(pageMeta('/shared'));
   });
 
+  it('describes mathematics practice, not only integration (#202)', () => {
+    for (const path of ['/', '/practice', '/shared']) expect(pageMeta(path).description).not.toMatch(/integration/i);
+    expect(pageMeta('/').description).toMatch(/algebra and mathematical analysis/);
+    expect(indexHtml).toContain(`<meta name="description" content="${pageMeta('/').description}" />`);
+  });
+
   it('only lists public pages in the sitemap', () => {
     expect(PUBLIC_PATHS).toEqual(['/', '/privacy']);
   });

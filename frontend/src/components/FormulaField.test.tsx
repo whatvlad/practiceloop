@@ -206,6 +206,11 @@ describe('phone keyboard answer variables (ADR-005)', () => {
     expect(theta).toMatchObject({ insert: '\\theta' });
   });
 
+  it('leaves out x and +C for a number answer (#202)', () => {
+    for (const label of ['x', '+C']) expect(labels([])).not.toContain(label);
+    expect(labels([])).toEqual(expect.arrayContaining(['π', '7']));
+  });
+
   it("switches the shared keyboard to the focused exercise's variables", async () => {
     const keyboard = { layouts: [] as unknown, addEventListener: () => {}, visible: false };
     vi.stubGlobal('mathVirtualKeyboard', keyboard);
