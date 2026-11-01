@@ -17,6 +17,8 @@ from pathlib import Path
 import pytest
 
 from app.api.practice import TOPICS
+from app.engine.practice import ENGINE_TOPICS
+from app.engine.practice import issue as engine_issue
 from app.generators.core import catalogue, catalogue_records, replay
 from app.services import worksheet_pdf
 from app.services.worksheet_graphs import graph
@@ -96,8 +98,16 @@ def test_every_catalogue_statement_and_answer_compiles() -> None:
             [PrintedProblem(e.statement, e.answer, 0) for e in catalogue(slug, level)],
         )
         for slug, topic in TOPICS.items()
+        if slug not in ENGINE_TOPICS
         for level in topic.levels
     ]
+    # #169: a new-engine statement prints on a worksheet made from history.
+    issued = engine_issue("combinations", 1, seed=0)
+    groups.append(
+        PrintedGroup(
+            "Combinations, level 1", [PrintedProblem(issued.statement, issued.answer_latex, 0)]
+        )
+    )
     assert sum(len(group.problems) for group in groups) > 500
     try:
         pdf = compile_pdf(render_tex(groups, paper="a4", columns=2, answer_key=True, day=DAY))
@@ -110,7 +120,7 @@ def steps(exercise: object) -> list[PrintedStep]:
     return [PrintedStep(s["say"], s["latex"]) for s in exercise.steps]  # type: ignore[attr-defined]
 
 
-@pytest.mark.parametrize("slug", list(TOPICS))
+@pytest.mark.parametrize("slug", [slug for slug in TOPICS if slug not in ENGINE_TOPICS])
 def test_every_catalogue_solution_compiles(slug: str) -> None:
     """#130: every step's text and LaTeX, one topic per document to stay inside the limits."""
     groups = [
@@ -131,6 +141,8 @@ def test_every_catalogue_solution_compiles(slug: str) -> None:
 def test_graphs_of_every_visual_version_compile_beside_their_steps(tmp_path: Path) -> None:
     first: dict[tuple[object, int], dict[str, object]] = {}
     for slug, topic in TOPICS.items():
+        if slug in ENGINE_TOPICS:
+            continue
         for level in topic.levels:
             for record in catalogue_records(slug, level):
                 if record["generator_version"] in BUILDERS:

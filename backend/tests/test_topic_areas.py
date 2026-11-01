@@ -18,6 +18,7 @@ def test_catalogue_lists_algebra_and_syllabus_topics() -> None:
         "complex-numbers",
         "fundamental-theorem-algebra",
         "partial-fractions",
+        "combinations",
         "basic-integrals",
         "substitution",
         "integration-by-parts",

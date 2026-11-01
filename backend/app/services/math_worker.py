@@ -121,8 +121,20 @@ def _check_child() -> int:
         _apply_limits()
         request = json.loads(sys.stdin.buffer.read(MAX_CHECK_REQUEST_BYTES + 1))
         # Imported only now, under the limits: both modules import SymPy.
+        from app.engine import practice as engine
         from app.services.answer_check import check_and_diagnose, replay_problem
 
+        if engine.is_engine_record(request["record"]):
+            try:
+                engine.replay(request["record"])
+            except (KeyError, TypeError, ValueError):
+                outcome = "bad_record"
+            else:
+                tree = parse_math_input(request["answer"])
+                outcome = engine.check(request["record"], tree)
+            sys.stdout.buffer.write(outcome.encode("ascii"))
+            sys.stdout.buffer.flush()
+            return 0
         try:
             problem = replay_problem(request["record"])
             variables = record_variables(request["record"])

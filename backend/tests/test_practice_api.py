@@ -528,6 +528,7 @@ def test_topics_lists_only_generated_cells(client: TestClient) -> None:
         ("complex-numbers", [1, 2, 3, 4, 5]),
         ("fundamental-theorem-algebra", [1, 2, 3, 4, 5]),
         ("partial-fractions", [1, 2, 3, 4, 5]),
+        ("combinations", [1]),
         ("basic-integrals", [1, 2, 3, 4, 5]),
         ("substitution", [1, 2, 3, 4, 5]),
         ("integration-by-parts", [1, 2, 3]),
@@ -1072,3 +1073,32 @@ def test_hard_delete_cascades_all_learning_data_and_old_identity_is_denied(
     assert client.post("/profile", json={"name": "recreate"}).status_code == 401
     users.current = users.bob
     assert client.get(f"/problems/{other['id']}").status_code == 200
+
+
+def test_combinations_runs_on_the_new_engine_end_to_end(client: TestClient, url: str) -> None:
+    """#169: issue, check with the real worker, reveal; the private record is only the code."""
+    from app.engine import practice as engine
+
+    problem = generate(client, "combinations")
+    [(record, answer, steps)] = rows(
+        url,
+        "select generator_data, answer_latex, solution_steps"
+        " from private.problem_solutions where problem_id = %s",
+        UUID(problem["id"]),
+    )
+    replayed = engine.public_replay(record)
+    assert set(record) == {"generator_version", "code"}
+    assert problem["problemLatex"] == replayed.statement
+    assert (answer, steps) == (replayed.answer_latex, list(replayed.steps))
+    wrong = client.post(
+        f"/problems/{problem['id']}/attempts", json={"answer": answer + "+1"}, headers=key()
+    )
+    right = client.post(
+        f"/problems/{problem['id']}/attempts", json={"answer": answer}, headers=key()
+    )
+    assert wrong.json()["attempt"]["result"] == "incorrect"
+    assert right.json()["attempt"]["result"] == "correct"
+    assert client.post(f"/problems/{problem['id']}/reveal-answer").json() == {"answerLatex": answer}
+    solution = client.post(f"/problems/{problem['id']}/reveal-solution").json()
+    assert solution == {"steps": list(replayed.steps)}
+    assert record["code"] not in client.get(f"/problems/{problem['id']}").text

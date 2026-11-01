@@ -12,6 +12,7 @@ export const TOPICS: readonly Topic[] = [
   { slug: 'complex-numbers', name: 'Complex numbers', area: 'algebra' },
   { slug: 'fundamental-theorem-algebra', name: 'Fundamental theorem of algebra', area: 'algebra' },
   { slug: 'partial-fractions', name: 'Partial fractions', area: 'algebra' },
+  { slug: 'combinations', name: 'Combinations', area: 'algebra' },
   { slug: 'basic-integrals', name: 'Basic integrals', area: 'mathematical-analysis' },
   { slug: 'substitution', name: 'Substitution', area: 'mathematical-analysis' },
   { slug: 'integration-by-parts', name: 'Integration by parts', area: 'mathematical-analysis' },
@@ -48,7 +49,7 @@ export function areaOf(slug: TopicSlug): AreaSlug {
 
 /** The problem tag's subject: "Integration — Substitution", "Differentiation — Derivatives". */
 export function subjectName(slug: TopicSlug): string {
-  if (['matrices', 'complex-numbers', 'fundamental-theorem-algebra', 'partial-fractions'].includes(slug)) {
+  if (['matrices', 'complex-numbers', 'fundamental-theorem-algebra', 'partial-fractions', 'combinations'].includes(slug)) {
     return 'Algebra';
   }
   if (['functions-and-sequences', 'limits-and-continuity', 'improper-integrals', 'series', 'multivariable-functions', 'differential-equations'].includes(slug)) {

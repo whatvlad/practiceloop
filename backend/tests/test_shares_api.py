@@ -317,7 +317,7 @@ def test_copy_preserves_exact_trusted_content_for_every_topic(
 ) -> None:
     source = client.post(
         "/problems",
-        json={"topic": topic, "difficulty": 3},
+        json={"topic": topic, "difficulty": min(3, max(practice.TOPICS[topic].levels))},
         headers={"Idempotency-Key": str(uuid4())},
     ).json()["problem"]
     created = share(client, source["id"])

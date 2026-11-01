@@ -5,6 +5,13 @@ User-facing releases. Known limitations of the current release are in
 
 ## Unreleased
 
+- **Combinations topic (new generator engine).** Algebra has a new
+  "Combinations" topic, level 1: calculate a binomial coefficient C(n, k) and
+  answer with the exact number. It is the first topic served by the new
+  generator engine; each saved problem keeps a private problem code that
+  rebuilds it exactly. It is not part of mixed practice or generated
+  worksheets yet. (#169)
+
 - **Mathematical Analysis practice area.** Integral and derivative topics now
   share one area and one mixed-practice pool. Algebra is reserved for the next
   content release and stays hidden until its first verified topic is ready.

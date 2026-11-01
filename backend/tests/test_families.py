@@ -277,6 +277,7 @@ def test_existing_preview_versions_are_unchanged_and_new_cells_are_offered():
         "complex-numbers": (1, 2, 3, 4, 5),
         "fundamental-theorem-algebra": (1, 2, 3, 4, 5),
         "partial-fractions": (1, 2, 3, 4, 5),
+        "combinations": (1,),
         "basic-integrals": (1, 2, 3, 4, 5),
         "substitution": (1, 2, 3, 4, 5),
         "integration-by-parts": (1, 2, 3),

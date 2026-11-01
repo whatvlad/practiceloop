@@ -31,6 +31,7 @@ from app.api.practice import (
     _not_found,
     _respond,
     _timestamp,
+    capacity,
     mixed_topics,
 )
 from app.core.database import transaction
@@ -129,7 +130,8 @@ def _check_group(group: GroupBody) -> None:
             raise _invalid()
         return
     cell = TOPICS.get(group.topic)
-    if cell is None or group.difficulty not in cell.levels:
+    # New-engine topics (#169) have no worksheet catalogue yet.
+    if cell is None or group.difficulty not in cell.levels or not capacity(group.topic, 1):
         raise _invalid()
 
 

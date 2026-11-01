@@ -49,6 +49,14 @@ export const BANK: readonly MockTemplate[] = [
     steps: [{ say: 'Split into partial fractions', latex: '\\frac{2}{x+1}+\\frac{1}{x+2}' }],
   },
   {
+    id: 'combinations',
+    topic: 'combinations',
+    problemLatex: '\\text{Calculate }\\binom{5}{2}\\text{.}',
+    answerLatex: '10',
+    accepted: ['10'],
+    steps: [{ say: 'Evaluate the binomial coefficient.', latex: '\\binom{5}{2} = 10' }],
+  },
+  {
     id: 'basic-power',
     topic: 'basic-integrals',
     problemLatex: '\\int 3x^2\\,dx',

@@ -127,6 +127,11 @@ def correct_answer(url: str, problem_id: str) -> str:
         ).fetchone()
     if row is None:
         raise SystemExit(f"no private record for {problem_id}")
+    from app.engine import practice as engine
+
+    if engine.is_engine_record(row[0]):
+        # #169: rebuilt from the stored problem code alone.
+        return engine.public_replay(row[0]).answer_latex
     exercise = replay(row[0])
     if exercise.value is not None:
         return str(exercise.value).replace("**", "^").replace("E", "e")
@@ -167,7 +172,7 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
         if area["mixed"]
         for d in area["mixed"]["availableDifficulties"][:1]
     ]
-    check(len(cells) == 22, "one cell for 20 topics plus two mixed levels", len(cells))
+    check(len(cells) == 23, "one cell for 21 topics plus two mixed levels", len(cells))
     created: list[str] = []
     for topic, level, extra in cells:
         reset_limits()
@@ -188,6 +193,7 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
             "matrices",
             "complex-numbers",
             "fundamental-theorem-algebra",
+            "combinations",
             "functions-and-sequences",
             "limits-and-continuity",
             "improper-integrals",
@@ -363,6 +369,70 @@ def derivatives(api: httpx.Client, base: str, url: str) -> None:
         "mixed derivatives practice draws within its area",
         mixed.text,
     )
+
+
+def combinations(api: httpx.Client, url: str) -> None:
+    """#169: the new-engine topic stores only its problem code, which replays the problem."""
+    from app.engine import practice as engine
+
+    reset_limits()
+    listed = {t["slug"]: t for t in api.get("/topics").json()["items"]}
+    check(
+        listed.get("combinations", {}).get("area") == "algebra",
+        "combinations is listed under Algebra",
+        listed.get("combinations"),
+    )
+    response = api.post("/problems", json={"topic": "combinations", "difficulty": 1}, headers=key())
+    check(response.status_code == 201, "generate a combinations problem", response.text)
+    if response.status_code != 201:
+        return
+    problem = response.json()["problem"]
+    pid = problem["id"]
+    record = private_record(url, pid)
+    check(
+        set(record) == {"generator_version", "code"}
+        and record["generator_version"] == "combinations-v1"
+        and str(record["code"]).startswith("CMB-1-"),
+        "a combinations problem stores its problem code",
+        record,
+    )
+    replayed = engine.public_replay(record)
+    check(
+        replayed.statement == problem["problemLatex"] and r"\binom" in problem["problemLatex"],
+        "replaying the code gives the same statement",
+        (replayed.statement, problem["problemLatex"]),
+    )
+    check(
+        str(record["code"]) not in response.text and "code" not in problem,
+        "the problem code stays private",
+        response.text,
+    )
+    shared = api.get(f"/problems/{pid}").text
+    check(str(record["code"]) not in shared, "a reopened problem hides its code")
+    fraction = api.post(f"/problems/{pid}/attempts", json={"answer": "1/2"}, headers=key())
+    check(
+        fraction.json().get("attempt", {}).get("result") == "incorrect",
+        "a non-integer count is incorrect",
+        fraction.text,
+    )
+    answer = replayed.answer_latex
+    right = api.post(f"/problems/{pid}/attempts", json={"answer": f"{answer}/1"}, headers=key())
+    check(right.json().get("attempt", {}).get("result") == "correct", "an equal fraction checks")
+    steps = api.post(f"/problems/{pid}/reveal-solution").json()
+    check(
+        steps.get("steps") == list(replayed.steps) and "visual" not in steps,
+        "the solution is the replayed steps, with no visual",
+        steps,
+    )
+    sheet = api.post(
+        "/worksheets",
+        json={
+            "source": "generate",
+            "groups": [{"topic": "combinations", "difficulty": 1, "count": 1}],
+        },
+        headers=key(),
+    )
+    check(sheet.status_code == 422, "combinations is not offered on worksheets yet", sheet.text)
 
 
 def partials(api: httpx.Client, url: str) -> None:
@@ -547,6 +617,7 @@ def main() -> int:
             multiple_integral(api_a, url, "double-integrals", (r"\iint_D", r"\int_"))
             multiple_integral(api_a, url, "triple-integrals", (r"\iiint_E", r"\int_"))
             partials(api_a, url)
+            combinations(api_a, url)
             malicious(api_a, created[0])
             saturation(api_a, url, created[0])
         if args.stop_db and args.start_db:
