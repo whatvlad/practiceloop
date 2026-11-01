@@ -159,8 +159,9 @@ preview, sharing, topic areas and `test_engine*.py`. Put new engine tests under 
 name and update the list when other critical tests are added. The broader generator
 and visualization tests are not part of this fast check. Run the full backend suite
 locally with the `pytest` command above, or run the CI workflow manually with
-`full_backend` enabled. Database isolation, Worksheet TeX and Security keep their
-separate checks.
+`full_backend` enabled. Database isolation and Security keep their separate checks.
+Worksheet TeX is temporarily disabled in CI until the worksheet is reworked
+([#181](https://github.com/whatvlad/practiceloop/issues/181)).
 
 ## Collaboration
 
@@ -198,7 +199,7 @@ These are the gates that actually exist; none is enforced by GitHub.
 
 | Gate | State |
 |---|---|
-| Hosted CI (Frontend, Backend, Database isolation, Worksheet TeX, Security) | Runs on every PR and push to `main`; the author merges only when it is green (convention). Backend, Database isolation and Worksheet TeX skip draft PRs and changes outside `backend/`, `scripts/`, `deploy/`, `supabase/` |
+| Hosted CI (Frontend, Backend, Database isolation, Security) | Runs on every PR and push to `main`; the author merges only when it is green (convention). Backend and Database isolation skip draft PRs and changes outside `backend/`, `scripts/`, `deploy/`, `supabase/`. Worksheet TeX is temporarily disabled until the worksheet is reworked. |
 | Review | Optional; recommended for database, auth and mathematical changes (AGENTS.md) |
 | Approval | Not required; authors merge their own PRs (owner decision, 2026-10-15) |
 | Branch protection / rulesets | **Not applied.** The private repo's plan returns HTTP 403; `.github/branch-protection.json` is an unapplied payload |
