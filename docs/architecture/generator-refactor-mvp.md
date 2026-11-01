@@ -104,6 +104,16 @@ Pure math objects with integer parameters, no topic or text knowledge:
 
 Each block validates its parameters and can be drawn from the PRNG.
 
+`IntegerRange` draws from a range within -12…12 after excluding forbidden
+values. `Polynomial` stores coefficients in ascending power order, supports
+degrees 0–5 and coefficients up to 100,000 in magnitude, and can be built
+from integer roots in -6…6. `PartialFractionRational` represents one to four
+simple fractions with distinct integer poles and nonzero integer numerators in
+-6…6. Its combined expression and decomposition use the same exact terms;
+the poles remain available to the generator for domain construction.
+Draws use the supplied deterministic PRNG and do not import topic or generator
+code. Other denominator families are outside this slice.
+
 ### 5. Generators for the slice (#167)
 
 **Depends on:** 2, 3, 4
