@@ -25,6 +25,9 @@ in [BASIC_GENERATOR.md](BASIC_GENERATOR.md)), never an expression string.
 | `MathCheckInconclusive` | `503 math_check_inconclusive`, no attempt |
 | `ValueError` | the stored record cannot be replayed: a server fault (`500`) |
 
+An archived problem (#190: an old record of a topic now on the new engine) never
+reaches the checker; the route returns `409 problem_archived` and stores no attempt.
+
 ## How it decides
 
 The parent only parses the answer. A fresh worker with the ADR-003 limits

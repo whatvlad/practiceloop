@@ -295,6 +295,15 @@ it('honors Retry-After and keeps rate-limit, authentication and server errors ou
   } finally { clock.mockRestore(); }
 });
 
+it('explains an archived problem instead of a service error and keeps it out of verdict state', async () => {
+  const problem = await savedProblem();
+  fetchMock.mockResolvedValueOnce(response({ error: { code: 'problem_archived', message: 'PRIVATE text', retryable: false } }, 409));
+  await expect(practice.submitAttempt(problem.id, 'x')).rejects.toThrow('archived');
+  fetchMock.mockResolvedValueOnce(response({ error: { code: 'idempotency_conflict', message: 'PRIVATE text', retryable: false } }, 409));
+  await expect(practice.submitAttempt(problem.id, 'y')).rejects.toThrow('Try again');
+  expect((await practice.getProblem(problem.id)).lastResult).toBeNull();
+});
+
 it('drops saved responses and credentials that finish after an identity change', async () => {
   const problem = await savedProblem();
   let finish!: (value: Response) => void;

@@ -28,7 +28,7 @@ from app.core.database import transaction
 from app.core.errors import ApiError
 from app.engine import practice as engine
 from app.generators.core import Exercise, catalogue, catalogue_records
-from app.services import idempotency, shares
+from app.services import archive, idempotency, shares
 from app.services import owned_records as records
 from app.services.account import delete_user
 from app.services.idempotency import Scope, StoredResponse
@@ -394,8 +394,7 @@ def reopen(problem_id: UUID, user: User) -> dict[str, Any]:
         share = shares.active_share(conn, user.id, problem.id)
     if stored is not None:
         # Built after the transaction: the visual is CPU work and needs no connection.
-        steps = revealed["solution"]["steps"]
-        revealed["solution"] = solution_payload(steps, stored.generator_data)
+        revealed["solution"] = _solution(problem.topic, revealed["solution"]["steps"], stored)
     return {"problem": _public_problem(problem, summary), "share": _public_share(share), **revealed}
 
 
@@ -535,6 +534,21 @@ def _check(answer: str, record: dict[str, object]) -> AnswerCheck:
     return result
 
 
+def _solution(topic: str, steps: Any, stored: records.PrivateSolution) -> dict[str, Any]:
+    if archive.is_archived(topic, stored.generator_data):
+        return archive.stored_solution(steps)
+    return solution_payload(steps, stored.generator_data)
+
+
+def _archived() -> ApiError:
+    return ApiError(
+        409,
+        "problem_archived",
+        "This problem is archived, so answers can't be checked anymore. "
+        "Its answer and solution are still available.",
+    )
+
+
 def _worker_unavailable() -> ApiError:
     return ApiError(
         503,
@@ -565,9 +579,12 @@ def attempt(
         stored = idempotency.lookup(conn, scope)
         if stored is not None:
             return _respond(stored, replayed=True)
+        problem = records.get_problem(conn, user.id, problem_id)
         solution = records.solution_for_check(conn, user.id, problem_id)
-    if solution is None:
+    if problem is None or solution is None:
         raise _not_found()
+    if archive.is_archived(problem.topic, solution.generator_data):
+        raise _archived()
     checked = _check(body.answer, dict(solution.generator_data))
     is_correct = None if checked.result == "invalid" else checked.result == "correct"
     with transaction(user.id) as conn:
@@ -621,7 +638,8 @@ def reveal_solution(problem_id: UUID, user: User) -> dict[str, Any]:
     reveal_limit.check(user.id)
     with transaction(user.id) as conn:
         steps = records.reveal_solution(conn, user.id, problem_id)
+        problem = records.get_problem(conn, user.id, problem_id) if steps else None
         stored = records.solution_for_check(conn, user.id, problem_id) if steps else None
-    if steps is None or stored is None:
+    if steps is None or problem is None or stored is None:
         raise _not_found()
-    return solution_payload(steps, stored.generator_data)
+    return _solution(problem.topic, steps, stored)

@@ -37,7 +37,7 @@ from app.api.practice import (
 from app.core.database import transaction
 from app.core.errors import ApiError
 from app.generators.core import replay
-from app.services import idempotency
+from app.services import archive, idempotency
 from app.services import owned_records as records
 from app.services import worksheets as store
 from app.services.idempotency import Scope, StoredResponse
@@ -324,7 +324,8 @@ def _from_history(body: WorksheetBody, user_id: UUID, scope: Scope) -> JSONRespo
 def _worked(item: store.PrintItem, deadline: float) -> tuple[list[PrintedStep], str]:
     """The item's steps, and its graph unless the render is out of graph time."""
     steps = [PrintedStep(step["say"], step["latex"]) for step in item.solution_steps]
-    if time.monotonic() > deadline:
+    # An archived problem (#190) prints its stored steps; its graph needs the old generators.
+    if time.monotonic() > deadline or archive.is_archived(item.topic, item.generator_data):
         return steps, ""
     try:
         return steps, graph(build_visual(item.generator_data))
