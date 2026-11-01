@@ -25,14 +25,22 @@ def _check(prefix: str, version: int, seed: int) -> str:
     return f"{value:02d}"
 
 
+def encode(prefix: str, version: int, seed: int) -> str:
+    """Write a code for a generator's own prefix and code version; no registry needed."""
+    if not isinstance(prefix, str) or re.fullmatch(r"[A-Z]{2,8}", prefix, re.ASCII) is None:
+        raise ValueError("Code prefix must be 2 to 8 uppercase ASCII letters")
+    if type(version) is not int or not 1 <= version <= 9999:
+        raise ValueError("Code version must be an integer from 1 through 9999")
+    if type(seed) is not int or not 0 <= seed < 10**16:
+        raise ValueError("Code seed must be a 16-digit nonnegative integer")
+    return f"{prefix}-{version}-{seed:016d}-{_check(prefix, version, seed)}"
+
+
 def format_code(code: ProblemCode, registry: Registry) -> str:
     if type(code.version) is not int:
         raise ValueError("Invalid problem code version")
     registry.get_code(code.prefix, code.version)
-    if type(code.seed) is not int or not 0 <= code.seed < 10**16:
-        raise ValueError("Code seed must be a 16-digit nonnegative integer")
-    check = _check(code.prefix, code.version, code.seed)
-    return f"{code.prefix}-{code.version}-{code.seed:016d}-{check}"
+    return encode(code.prefix, code.version, code.seed)
 
 
 def parse_code(text: str, registry: Registry) -> ProblemCode:

@@ -7,7 +7,7 @@ from types import SimpleNamespace
 import pytest
 from test_engine_core import TinyGenerator
 
-from app.engine.codes import ProblemCode, format_code, parse_code
+from app.engine.codes import ProblemCode, encode, format_code, parse_code
 from app.engine.prng import DeterministicRNG, draw_valid
 from app.engine.registry import Registry
 
@@ -91,12 +91,9 @@ def test_new_engine_does_not_import_global_random() -> None:
 @pytest.fixture
 def registry() -> Registry:
     result = Registry()
-    result.register(TinyGenerator(version="tiny-v1"))
-    result.register(TinyGenerator(version="tiny-v2"))
-    result.register(TinyGenerator(version="other-v1"))
-    result.register_code("TNY", "tiny", 1, "tiny-v1")
-    result.register_code("TNY", "tiny", 2, "tiny-v2")
-    result.register_code("OTH", "other", 1, "other-v1")
+    result.register(TinyGenerator(version="tiny-v1", prefix="TNY"))
+    result.register(TinyGenerator(version="tiny-v2", prefix="TNY", code_version=2))
+    result.register(TinyGenerator(version="other-v1", prefix="OTH"))
     return result
 
 
@@ -113,6 +110,14 @@ def test_codes_round_trip_and_normalise_separators(registry: Registry) -> None:
     for _ in range(1000):
         code = ProblemCode("TNY", 1, rng.randbelow(10**16))
         assert parse_code(format_code(code, registry), registry) == code
+
+
+def test_a_generator_writes_the_same_code_without_a_registry(registry: Registry) -> None:
+    for seed in (0, 4821930017734529):
+        assert encode("TNY", 2, seed) == format_code(ProblemCode("TNY", 2, seed), registry)
+    for prefix, version, seed in (("tny", 1, 0), ("TNY", 0, 0), ("TNY", 1, 10**16)):
+        with pytest.raises(ValueError):
+            encode(prefix, version, seed)
 
 
 def test_every_single_digit_change_is_rejected(registry: Registry) -> None:
@@ -143,13 +148,15 @@ def test_every_swap_of_distinct_seed_digits_is_rejected(registry: Registry) -> N
 
 def test_registry_rejects_reused_prefixes_and_unknown_versions(registry: Registry) -> None:
     with pytest.raises(ValueError, match="another family"):
-        registry.register_code("TNY", "other", 3, "other-v1")
+        registry.register(TinyGenerator(version="x-v1", prefix="TNY", family="other"))
     with pytest.raises(ValueError, match="already has a prefix"):
-        registry.register_code("NEW", "tiny", 3, "tiny-v1")
+        registry.register(TinyGenerator(version="x-v1", prefix="NEW", family="tiny"))
     with pytest.raises(ValueError, match="Duplicate code version"):
-        registry.register_code("TNY", "tiny", 1, "tiny-v1")
-    with pytest.raises(ValueError, match="Unknown generator"):
-        registry.register_code("NEW", "new", 1, "missing-v1")
+        registry.register(TinyGenerator(version="x-v1", prefix="TNY", family="tiny"))
+    for bad in ({"prefix": "tn"}, {"family": "Bad Family"}, {"code_version": 0}):
+        with pytest.raises(ValueError):
+            registry.register(TinyGenerator(version="x-v1", **bad))  # type: ignore[arg-type]
+    assert registry.versions() == ("tiny-v1", "tiny-v2", "other-v1")
     with pytest.raises(ValueError, match="Unknown code"):
         registry.get_code("TNY", 3)
     with pytest.raises(ValueError, match="Invalid code"):

@@ -7,6 +7,7 @@ generator version adds its own entries; an existing entry is never rewritten.
 """
 
 import json
+import logging
 from functools import cache
 from pathlib import Path
 from typing import Any
@@ -18,6 +19,7 @@ from app.engine.codes import parse_code
 from app.engine.generators import indefinite
 from app.engine.generators.catalogue import registry
 from app.engine.models import Task
+from app.engine.topics import catalogue
 from app.engine.topics.catalogue import topics
 
 GOLDEN = json.loads(
@@ -48,8 +50,7 @@ def rebuild(code: str) -> Task:
 
 
 def test_every_generator_version_has_golden_problems() -> None:
-    # Registry has no public listing; the private map is the set of shipped versions.
-    assert set(GOLDEN) == set(registry()._generators)
+    assert set(GOLDEN) == set(registry().versions())
     for version, items in GOLDEN.items():
         assert len(items) >= 3, version
         assert len({item["code"] for item in items}) == len(items), version
@@ -80,26 +81,29 @@ def test_dependency_graph_and_topic_views_are_valid() -> None:
         for choices in topic.levels.values():
             for choice in choices:
                 generators.get(choice.generator)
-                if choice.wrapper is not None:
-                    assert choice.generator in generators.get(choice.wrapper).requires
 
 
 @pytest.mark.parametrize(
     "slug, level", [(slug, level) for slug, topic in topics().items() for level in topic.levels]
 )
 def test_every_topic_level_gives_a_valid_problem_for_every_swept_seed(
-    slug: str, level: int, monkeypatch: pytest.MonkeyPatch
+    slug: str, level: int, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
 ) -> None:
     monkeypatch.setattr(indefinite, "is_primitive", _cached_is_primitive)
     generators = registry()
     topic = topics()[slug]
-    versions = {choice.wrapper or choice.generator for choice in topic.levels[level]}
+    versions = {choice.generator for choice in topic.levels[level]}
     for seed in SWEEP_SEEDS:
-        # A seed that exhausts the 64-draw cap, or a generator that rejects its own
-        # parameters, raises ValueError here and fails the sweep.
-        task = topic.generate(level, seed, generators)
+        # A seed that exhausts the 64-draw cap raises ValueError here. A candidate
+        # whose build raises is skipped and logged; the sweep fails on that log.
+        with caplog.at_level(logging.WARNING, logger=catalogue.__name__):
+            task = topic.generate(level, seed, generators)
+        assert not caplog.records, (slug, level, seed)
         assert task.generator_version in versions
         assert task.answer.kind == generators.get(task.generator_version).answer.kind
         assert task.statement and task.steps and task.answer.latex()
+        # Every step a learner can be shown has its English text in the generator.
+        step_text = generators.get(task.generator_version).step_text
+        assert {step.text_key for step in task.steps} <= set(step_text), (slug, level, seed)
         code = parse_code(task.code, generators)
         assert generators.get_code(code.prefix, code.version).version == task.generator_version

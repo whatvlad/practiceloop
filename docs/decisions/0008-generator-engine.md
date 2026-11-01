@@ -2,16 +2,17 @@
 
 Date: 2026-11-01. Status: **accepted with amendments** by Vlad (whatvlad) in the
 GrillMe review (#172, `docs/architecture/generator-engine-review.md`). Issue
-#171, part of #162. The review's decisions amend the open decisions below; #189
-implements the core changes and updates this ADR, and a final ADR-008 (#199)
-closes the main refactor goal.
+#171, part of #162. The review's decisions amend the open decisions below. #189
+reworked the core accordingly; this ADR describes the engine after #189, and
+the section "Frozen interfaces" lists what may no longer change without an
+amendment. A final ADR-008 (#199) closes the main refactor goal.
 
 Vlad decided on 2026-10-30 to rebuild problem generators and answer checks on a
 composable engine (`docs/decisions/DECISIONS.md`, plan in
 `docs/architecture/generator-refactor-mvp.md`). This ADR describes the engine as
-merged in #163-#170 (PRs up to #186, main at `4b111db`), not as planned. Where
+merged in #163-#170 (PRs up to #186) and reworked in #189, not as planned. Where
 the code and the plan differ, the code is described and the difference is listed
-under known limitations or open decisions.
+under known limitations.
 
 ## Context
 
@@ -35,12 +36,12 @@ review, since migrations now replace legacy modules.
 Below the layers sit the core modules shared by all of them, and above them one
 adapter to the practice API:
 
-- `engine/models.py`: `Task`, `Step`, `Parameters`, `Outcome` and the
+- `engine/models.py`: `Task`, `Step`, `Parameters`, `Drawn`, `Outcome` and the
   `TaskGenerator` and `Answer` protocols.
 - `engine/prng.py`: `DeterministicRNG` and `draw_valid`.
-- `engine/codes.py`: `ProblemCode`, `format_code`, `parse_code`.
-- `engine/registry.py`: `Registry` of generator versions and code prefixes,
-  with dependency validation.
+- `engine/codes.py`: `ProblemCode`, `encode`, `format_code`, `parse_code`.
+- `engine/registry.py`: `Registry` of generator versions and the code prefixes
+  they declare, with dependency validation and a `versions()` listing.
 - `engine/practice.py`: issue, replay and check for the public topics served by
   the engine (#169).
 
@@ -48,10 +49,10 @@ adapter to the practice API:
 
 ```text
 backend/app/engine/
-  models.py            Task, Step, Parameters, Answer, TaskGenerator, Outcome
+  models.py            Task, Step, Parameters, Drawn, Answer, TaskGenerator, Outcome
   prng.py              DeterministicRNG (SHA-256 stream), draw_valid (64-draw cap)
   codes.py             <PREFIX>-<VERSION>-<16-digit seed>-<2-digit check>
-  registry.py          versions, prefixes, families, dependency graph
+  registry.py          versions, prefixes, families, dependency graph, versions()
   practice.py          adapter: issue / replay / check for the practice API
   blocks/
     integers.py        IntegerRange (-12..12 with exclusions)
@@ -64,12 +65,12 @@ backend/app/engine/
     derivative.py      DerivativeAnswer: equal on every domain component
     _symbolic.py       shared sampling, domain and trust helpers
   generators/
-    common.py          Seed parameters, code() helper
     partial_fractions.py, indefinite.py, definite.py, derivative.py,
-    combinations.py    the five v1 generators
-    catalogue.py       registry(): versions and permanent code prefixes
+    combinations.py    the five v1 generators, each with its parameters,
+                       prefix, family, code version and step text
+    catalogue.py       registry(): the list of shipped generators
   topics/
-    catalogue.py       Topic, Choice, topics(): five topic views
+    catalogue.py       Topic, Choice, topics(): five topic views, AREAS
 ```
 
 ### Dependency diagram
@@ -86,6 +87,7 @@ flowchart TD
   ADAPT --> CODES["codes.py"]
   TOPICS --> REG["registry.py"]
   TOPICS --> PRNG["prng.py"]
+  TOPICS -- "reads typed parameters" --> DEF & INT & DRV
   GCAT --> REG
   GCAT --> PFR["partial_fractions<br/>PFR"]
   GCAT --> INT["indefinite<br/>INT"]
@@ -93,13 +95,13 @@ flowchart TD
   GCAT --> DRV["derivative<br/>DRV"]
   GCAT --> CMB["combinations<br/>CMB"]
   INT -- "composes (requires)" --> PFR
-  DEF -- "wraps (requires)" --> INT
+  DRV -- "composes (requires)" --> PFR
+  DEF -- "composes (requires)" --> INT
   PFR --> BLOCKS["blocks/*"]
   INT --> BLOCKS
   DRV --> BLOCKS
   PFR & INT & DEF & DRV & CMB --> ANSWERS["answers/*"]
-  PFR & INT & DEF & DRV & CMB --> COMMON["generators/common.py"]
-  COMMON --> CODES
+  PFR & INT & DEF & DRV & CMB --> CODES
   CODES --> REG
   BLOCKS --> PRNG
   BLOCKS & ANSWERS & REG --> MODELS["models.py"]
@@ -110,43 +112,64 @@ The engine never imports `app/generators/` or `app/services/answer_check.py`.
 It does import two legacy services: `math_parser` for the `MathNode` input tree
 and `math_worker._build_sympy` to turn that tree into SymPy.
 
-## Generator lifecycle: draw, verify, build, check
+## Generator lifecycle: draw, build and verify, check
 
-A `TaskGenerator` has `version`, `params` (a `Parameters` subclass), `answer`
-(an `Answer` class), `requires` (the generator versions it uses) and two
-methods. A task goes through four stages.
+A `TaskGenerator` declares, as class attributes:
 
-1. **Draw.** `draw(seed) -> Parameters`. Every v1 generator returns
-   `Seed(seed=seed)`; the seed is the only parameter, validated as
-   `0 <= seed < 10**16` by a strict, frozen Pydantic model.
-2. **Build.** `build(params) -> Task`. The generator creates its own
-   `DeterministicRNG(seed)`, draws its values in a fixed order (directly or
-   through blocks), and returns a `Task`: statement (text with `\( \)` math),
-   structured `Step`s (`text_key` plus LaTeX), a typed `Answer`, metadata, the
-   problem code and the generator version. A composing generator builds the
-   other generator's task from the same seed and reuses its steps or metadata:
-   `indefinite-v1` uses `partial-fractions-v1`'s decomposition, and
-   `definite-v1` wraps `indefinite-v1` and adds the bounds.
-3. **Verify.** Inside `build`, before returning, the generator checks its own
-   result and raises `ValueError` if it is wrong: the decomposition recombines
-   (`cancel`), the antiderivative differentiates back (`is_primitive`), the
-   bounds stay inside the domain and the definite value is rational. The topic
-   layer redraws with `draw_valid` (at most 64 candidates) only against its
-   parameter predicates. The seed sweep in `tests/test_engine_golden.py` runs
-   every topic level for 1,000 seeds, so a predicate that hits the cap or a
-   build that rejects its own seed fails CI.
-4. **Check.** `Task.answer.check(tree) -> Outcome`, where `Outcome` is
+- `version`: the generator version string (`combinations-v1`);
+- `prefix`, `family`, `code_version`: its permanent code prefix, family name
+  and numeric code version (`CMB`, `combinations`, `1`), written once in the
+  generator's file. `Registry.register` reads them and binds the code, and
+  `build` writes the task's code from them with `codes.encode`;
+- `params`: a `Drawn` subclass (strict, frozen Pydantic, with `seed` in
+  `0 <= seed < 10**16`);
+- `answer`: its `Answer` class;
+- `requires`: the generator versions it composes;
+- `step_text`: every step key it can emit, with its English learner text.
+
+A task goes through three stages.
+
+1. **Draw.** `draw(seed) -> Drawn`. All PRNG calls happen here: the generator
+   creates `DeterministicRNG(seed)` and returns the drawn values as typed
+   parameters (`CombinationParams(seed, n, k)`, `PartialFractionParams(seed,
+   pole, numerator)`). A composing generator's parameters hold the inner
+   generator's parameters, drawn by calling `inner.draw(seed)`:
+   `IndefiniteParams.function` is either `PartialFractionParams` or a
+   `Polynomial` block, `DerivativeParams` likewise, and
+   `DefiniteParams.integral` is an `IndefiniteParams`. #189 kept the v1 PRNG
+   call order exactly, so every shipped code still rebuilds the same task.
+2. **Build and verify.** `build(params) -> Task` is pure over the parameters.
+   It returns a `Task`: statement (text with `\( \)` math), structured `Step`s
+   (`text_key` plus LaTeX), a typed `Answer`, metadata (display and test data,
+   which no other generator reads), the problem code and the generator version.
+   A generator that others compose also exposes a typed result for them:
+   `PartialFractions.decompose(params) -> Decomposition` (combined fraction,
+   decomposition, domain, steps) and `IndefiniteIntegral.integrate(params) ->
+   Integral` (integrand, primitive, domain, steps). Outer generators call these
+   with the inner parameters they hold; no generator reads another generator's
+   `Task` through `isinstance` or `metadata`. Before returning, the generator
+   checks its own result and raises `ValueError` if it is wrong: the
+   decomposition recombines (`cancel`), the antiderivative differentiates back
+   (`is_primitive`), the bounds stay inside the domain and the definite value
+   is rational.
+3. **Check.** `Task.answer.check(tree) -> Outcome`, where `Outcome` is
    `correct`, `incorrect`, `missing_constant`, `invalid` or `inconclusive`. Each
    answer kind owns its rule, with no `isinstance` chain: `NumberAnswer`
    compares exact fractions without SymPy and returns `inconclusive` for
    anything outside its bounded rational subset; the three symbolic kinds apply
    ADR-003 and ADR-005 through the helpers in `_symbolic.py`.
 
-A topic view runs stages 1-3 for a learner: `Topic.generate(level, seed,
-registry)` picks a `Choice` of that level with the PRNG, draws candidate seeds
-until the choice's predicate holds, and builds the task, or the wrapper's task
-for the same seed when the choice names one. The returned task carries the
-generator's own seed in its code, not the topic seed.
+A topic view runs stages 1-2 for a learner: `Topic.generate(level, seed,
+registry)` picks a `Choice` of that level with the PRNG, then draws candidate
+seeds, at most 64 (`MAX_DRAWS`). A candidate is skipped when the choice's
+predicate rejects its typed parameters (`_rational` reads
+`IndefiniteParams.rational`, through `DefiniteParams.integral` for definite
+integrals), or when `build` raises `ValueError`; the latter is logged as a
+warning. Every seed of a shipped version is still expected to build: the seed
+sweep in `tests/test_engine_golden.py` runs every topic level for 1,000 seeds
+and fails on such a warning or on the cap. The returned task carries the
+generator's own seed in its code, not the topic seed. Topic areas are the
+public areas (`AREAS`: `algebra`, `mathematical-analysis`).
 
 ### Through the practice API
 
@@ -154,7 +177,9 @@ Only the public `combinations` topic is served by the engine (#169).
 `api/practice.py` calls `engine.issue(topic, level)`, which takes a seed from
 `secrets`, generates the task and stores a private record with exactly
 `generator_version` and `code`, plus the statement, answer LaTeX and steps as
-for legacy problems. To check an answer, the resource-limited math worker
+for legacy problems. The learner text of each step comes from the generator's
+`step_text`; a step key without text is refused. To check an answer, the
+resource-limited math worker
 recognises the record by its `code` key, rebuilds the task from the code
 (`engine.replay`: parse the code, find the generator, build, and require the
 same code back) and calls `answer.check`. An unusable record is `bad_record`.
@@ -176,8 +201,8 @@ domain tag and new generator versions.
 - `PREFIX`: 2-8 uppercase letters naming a generator family (`PFR`, `INT`,
   `DEF`, `DRV`, `CMB`). The registry binds a prefix to one family and a family
   to one prefix; a shipped prefix is never reused.
-- `VERSION`: 1-9999, bound by `register_code` to exactly one generator version
-  (`CMB-1` is `combinations-v1`).
+- `VERSION`: 1-9999, the generator's `code_version`, bound by the registry to
+  exactly one generator version (`CMB-1` is `combinations-v1`).
 - `SEED`: 16 decimal digits.
 - `CHECK`: two digits, `(salt + sum(i * digit_i)) mod 97` over the version and
   seed digits, with a salt from the prefix's SHA-256. It catches any one-digit
@@ -191,10 +216,9 @@ engine change that alters a shipped problem fails CI.
 
 ## Extension example: add a task type
 
-This walkthrough was followed on 2026-11-01 against main `4b111db` with a
-trial `permutations-v1` generator (not merged): after these steps the engine
-tests, ruff and mypy passed. It is modelled on
-`backend/app/engine/generators/combinations.py`.
+This walkthrough was first followed on 2026-11-01 against main `4b111db` with a
+trial `permutations-v1` generator (not merged) and updated for the #189
+interfaces. It is modelled on `backend/app/engine/generators/combinations.py`.
 
 1. **Write the generator in one new file**,
    `backend/app/engine/generators/permutations.py`:
@@ -204,49 +228,61 @@ tests, ruff and mypy passed. It is modelled on
 
    from math import perm
 
+   from pydantic import Field
+
    from app.engine.answers.number import NumberAnswer
-   from app.engine.generators.common import Seed, code
-   from app.engine.models import Step, Task
+   from app.engine.codes import encode
+   from app.engine.models import Drawn, Step, Task
    from app.engine.prng import DeterministicRNG
+
+
+   class PermutationParams(Drawn):
+       n: int = Field(ge=2, le=10)
+       k: int = Field(ge=1, le=10)
 
 
    class Permutations:
        version = "permutations-v1"
-       params = Seed
+       prefix = "PRM"
+       family = "permutations"
+       code_version = 1
+       params = PermutationParams
        answer = NumberAnswer
        requires: tuple[str, ...] = ()
+       step_text = {"permutations": "Count the ordered selections."}
 
-       def draw(self, seed: int) -> Seed:
-           return Seed(seed=seed)
-
-       def build(self, params: Seed) -> Task:
-           rng = DeterministicRNG(params.seed)
+       def draw(self, seed: int) -> PermutationParams:
+           rng = DeterministicRNG(seed)
            n = 2 + rng.randbelow(9)
-           k = 1 + rng.randbelow(n)
+           return PermutationParams(seed=seed, n=n, k=1 + rng.randbelow(n))
+
+       def build(self, params: PermutationParams) -> Task:
+           n, k = params.n, params.k
            value = perm(n, k)
            return Task(
                statement=rf"Calculate \(P({n}, {k})\).",
                steps=(Step("permutations", rf"P({n}, {k}) = \frac{{{n}!}}{{{n - k}!}} = {value}"),),
                answer=NumberAnswer(value),
                metadata={"n": n, "k": k},
-               code=code(self, "PRM", "permutations", params.seed),
+               code=encode(self.prefix, self.code_version, params.seed),
                generator_version=self.version,
            )
    ```
 
-   Use an existing `Answer` type and blocks. A generator that uses another one
-   lists its version in `requires` and builds it from the same seed, as
-   `indefinite.py` does. Verify the result inside `build` and raise
-   `ValueError` when it is wrong.
+   Use an existing `Answer` type and blocks, and a new, never-used prefix and
+   family. A generator that uses another one lists its version in `requires`,
+   holds the inner parameters in its own (`inner.draw(seed)` inside `draw`),
+   and calls the inner generator's typed result method, as `definite.py` does
+   with `IndefiniteIntegral.integrate`; its `step_text` includes the inner
+   generator's keys. Verify the result inside `build` and raise `ValueError`
+   when it is wrong.
 
 2. **Register it** in `backend/app/engine/generators/catalogue.py`: import the
-   class (keep the imports sorted) and add one tuple with a new, never-used
-   prefix and family, `(Permutations(), "PRM", "permutations")`. The prefix
-   must match the one passed to `code()` in step 1.
+   class (keep the imports sorted) and add `Permutations()` to the list.
 3. **Add a topic entry** in `backend/app/engine/topics/catalogue.py`:
-   `Topic("permutations", "combinatorics", {1: (Choice("permutations-v1"),)}, 1)`,
-   or add a `Choice` to an existing topic's level, with a predicate if only
-   some parameters belong there.
+   `Topic("permutations", "algebra", {1: (Choice("permutations-v1"),)}, 1)`,
+   or add a `Choice` to an existing topic's level, with a predicate over the
+   typed parameters if only some of them belong there.
 4. **Pin golden problems.** Add `"permutations-v1"` to
    `backend/tests/fixtures/engine_golden_v1.json` with at least three entries,
    produced by `snapshot(generator.build(generator.draw(seed)))` from
@@ -255,50 +291,60 @@ tests, ruff and mypy passed. It is modelled on
    `backend/tests/test_engine_topics.py` (the expected topic set and answer kind
    for the new topic).
 6. **Run** `..\.venv\Scripts\python.exe -m pytest tests/test_engine*.py`, ruff
-   and mypy from `backend/`. The golden, dependency-graph and 1,000-seed sweep
-   tests cover the new generator without further test code.
+   and mypy from `backend/`. The golden, dependency-graph, step-text and
+   1,000-seed sweep tests cover the new generator without further test code.
 
 No engine module, `answer_check.py` or other generator changes. The test edits
 in steps 4-5 are data, not test logic. Serving the topic to learners is a
-separate step, listed under known limitations.
+separate step (#191).
 
 ## Known limitations
 
-1. **Serving a topic touches many files.** #169 changed `api/practice.py`
-   (`TOPICS`), `engine/practice.py` (`ENGINE_TOPICS`, learner text in
-   `STEP_TEXT`), `visuals/spec.py` (`NO_VISUAL`), a Supabase migration for the
+The list is the draft's, kept with its numbers. Items 2-5, 7, 8 and 10 were
+resolved by #189 as described above; the rest are tracked in the review.
+
+1. **Serving a topic touches many files** (#191). #169 changed `api/practice.py`
+   (`TOPICS`), `engine/practice.py` (`ENGINE_TOPICS`; learner text moved to the
+   generators in #189), `visuals/spec.py` (`NO_VISUAL`), a Supabase migration for the
    `topics` row, and the frontend topic list, types and mock bank, plus the
    end-to-end script. The engine side is one file; the product side is not.
-2. **Prefix and code version are written twice.** Each generator passes its
+2. *Resolved in #189: prefix, family and code version are generator class
+   attributes.* **Prefix and code version were written twice.** Each generator passes its
    prefix, family and version `1` to `code()`, and `generators/catalogue.py`
    registers them again. `code()` builds a throwaway one-generator registry on
    every build. A mismatch is caught by the golden tests, not by construction.
-3. **`draw` does nothing yet.** Every v1 generator's parameters are `Seed`, and
+3. *Resolved in #189: `draw` returns typed parameters.* **`draw` did nothing.** Every v1 generator's parameters are `Seed`, and
    all values are drawn in `build`. The typed, validated parameters the
    protocol promises are not used, so topic predicates cannot filter on real
    parameters.
-4. **Topic predicates mirror generator internals.** `_rational` and
+4. *Resolved in #189: predicates read the typed parameters.* **Topic
+   predicates mirrored generator internals.** `_rational` and
    `_polynomial` in `topics/catalogue.py` re-run the first PRNG draw of
    `derivative-v1` and `indefinite-v1` to guess the family. A change of draw
    order in those generators would silently move tasks between levels; only
    their tests protect the link.
-5. **Build-time rejections are not redrawn.** If `build` raises for a seed, the
+5. *Resolved in #189: the topic takes the next candidate and logs it.*
+   **Build-time rejections were not redrawn.** If `build` raises for a seed, the
    topic does not try another one. The 1,000-seed sweep is the evidence that
    this does not happen, while the API draws from 10**16 seeds.
-6. **Issuing runs in the API process.** `engine.issue` builds the task outside
+6. **Issuing runs in the API process** (#192). `engine.issue` builds the task outside
    the resource-limited worker. That is harmless for integer combinations, but
    a symbolic generator (indefinite, definite, derivative) served this way
    would run SymPy without limits. Only checks run in the worker.
-7. **Composition rebuilds from the same seed.** `indefinite-v1` and
+7. *Resolved in #189: outer parameters hold inner parameters, and inner
+   generators expose `Decomposition` and `Integral`.* **Composition rebuilt
+   from the same seed.** `indefinite-v1` and
    `definite-v1` build their inner task from their own seed and read it through
    `isinstance` checks and `metadata["pole"]`. Inner and outer generators share
    one PRNG stream by convention, not by an interface.
-8. **Areas disagree.** The engine topic `combinations` has area
+8. *Resolved in #189: engine topics use only the public areas.* **Areas
+   disagreed.** The engine topic `combinations` has area
    `combinatorics`; the public topic is in `algebra`.
 9. **Version strings overlap with legacy ones.** Legacy saved records also use
    `definite-v1`; only the presence of a `code` key routes a record to the
    engine.
-10. **The registry has no public listing.** The golden test reads the private
+10. *Resolved in #189: `Registry.versions()`.* **The registry had no public
+    listing.** The golden test reads the private
     `Registry._generators` to compare shipped versions.
 11. **Answers depend on legacy services.** The symbolic answers import
     `math_worker._build_sympy` (a private function) and the legacy parser.
@@ -348,6 +394,24 @@ the decision on each item and the issue that implements it.
 10. **Interface stability.** Which of `TaskGenerator`, `Answer`, `Task` and
     `Topic` are frozen for the migration of the remaining topics.
 
+## Frozen interfaces
+
+Since #189 (decision 12 of the review) these are frozen; changing any of them
+needs an amendment to this ADR:
+
+- `Answer` (`kind`, `latex()`, `check(tree)`) and `Outcome`;
+- `Task` and `Step`;
+- `TaskGenerator`: `version`, `prefix`, `family`, `code_version`, `params` (a
+  `Drawn` subclass), `answer`, `requires`, `step_text`, `draw(seed)` and
+  `build(params)`;
+- `Topic` and `Choice`: slug, public area, levels 1-5 of choices, mixed weight,
+  predicates over typed parameters, at most 64 candidates per generation;
+- PRNG v1 (`DeterministicRNG`) and the code format with its check digits.
+
+Engine version strings stay as they are (`definite-v1` also exists in legacy
+records); records route by the `code` key. New answer kinds, blocks and
+generators are additions, not changes.
+
 ## Consequences
 
 - New task types are written only against these interfaces; the legacy
@@ -355,4 +419,4 @@ the decision on each item and the issue that implements it.
 - A saved engine problem is its code. The PRNG v1 output, the code format and
   every shipped generator version's output are frozen; a change means a new
   version and new golden entries.
-- No further topic migration starts before #172 is accepted.
+- Topic migrations (#193-#197) are written against the frozen interfaces.
