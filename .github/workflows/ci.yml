@@ -19,10 +19,9 @@ concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-# Billed Actions minutes: Backend, Database isolation and Worksheet TeX are the slow jobs.
-# They skip draft PRs (mark the PR ready for review for the full run) and changes that
-# touch none of backend/, scripts/, deploy/, supabase/ or this file. Frontend and
-# Security are quick and always run (the frontend imports backend/app/content).
+# Backend and Database isolation skip draft PRs and changes outside their areas.
+# Worksheet TeX is temporarily disabled until the worksheet is reworked.
+# Frontend and Security always run (the frontend imports backend/app/content).
 jobs:
   changes:
     name: Changed areas
@@ -117,7 +116,8 @@ jobs:
   worksheet-tex:
     name: Worksheet TeX
     needs: changes
-    if: github.event.pull_request.draft != true && needs.changes.outputs.backend == 'true'
+    # Disabled at the owner's request; revisit with the worksheet rework (#181).
+    if: ${{ false }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     defaults:
