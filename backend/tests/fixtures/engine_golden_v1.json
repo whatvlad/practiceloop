@@ -1,0 +1,500 @@
+{
+  "partial-fractions-v1": [
+    {
+      "code": "PFR-1-0000000000000000-29",
+      "statement": "Decompose into partial fractions: \\(\\frac{4 x}{x^{2} - 16}\\).",
+      "steps": [
+        [
+          "decompose",
+          "\\frac{4 x}{x^{2} - 16} = \\frac{2}{x + 4} + \\frac{2}{x - 4}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{2}{x + 4} + \\frac{2}{x - 4}",
+      "metadata": {
+        "pole": 4
+      }
+    },
+    {
+      "code": "PFR-1-0000000000000001-46",
+      "statement": "Decompose into partial fractions: \\(- \\frac{10 x}{x^{2} - 16}\\).",
+      "steps": [
+        [
+          "decompose",
+          "- \\frac{10 x}{x^{2} - 16} = - \\frac{5}{x + 4} - \\frac{5}{x - 4}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "- \\frac{5}{x + 4} - \\frac{5}{x - 4}",
+      "metadata": {
+        "pole": 4
+      }
+    },
+    {
+      "code": "PFR-1-0000000000000002-63",
+      "statement": "Decompose into partial fractions: \\(- \\frac{2 x}{x^{2} - 25}\\).",
+      "steps": [
+        [
+          "decompose",
+          "- \\frac{2 x}{x^{2} - 25} = - \\frac{1}{x + 5} - \\frac{1}{x - 5}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "- \\frac{1}{x + 5} - \\frac{1}{x - 5}",
+      "metadata": {
+        "pole": 5
+      }
+    },
+    {
+      "code": "PFR-1-0000000000000003-80",
+      "statement": "Decompose into partial fractions: \\(\\frac{12 x}{x^{2} - 9}\\).",
+      "steps": [
+        [
+          "decompose",
+          "\\frac{12 x}{x^{2} - 9} = \\frac{6}{x + 3} + \\frac{6}{x - 3}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{6}{x + 3} + \\frac{6}{x - 3}",
+      "metadata": {
+        "pole": 3
+      }
+    },
+    {
+      "code": "PFR-1-0000000000000123-30",
+      "statement": "Decompose into partial fractions: \\(\\frac{12 x}{x^{2} - 36}\\).",
+      "steps": [
+        [
+          "decompose",
+          "\\frac{12 x}{x^{2} - 36} = \\frac{6}{x + 6} + \\frac{6}{x - 6}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{6}{x + 6} + \\frac{6}{x - 6}",
+      "metadata": {
+        "pole": 6
+      }
+    },
+    {
+      "code": "PFR-1-9999999999999999-39",
+      "statement": "Decompose into partial fractions: \\(\\frac{4 x}{x^{2} - 16}\\).",
+      "steps": [
+        [
+          "decompose",
+          "\\frac{4 x}{x^{2} - 16} = \\frac{2}{x + 4} + \\frac{2}{x - 4}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{2}{x + 4} + \\frac{2}{x - 4}",
+      "metadata": {
+        "pole": 4
+      }
+    }
+  ],
+  "indefinite-v1": [
+    {
+      "code": "INT-1-0000000000000000-31",
+      "statement": "Find \\(\\int \\frac{4 x}{x^{2} - 16}\\,dx\\).",
+      "steps": [
+        [
+          "decompose",
+          "\\frac{4 x}{x^{2} - 16} = \\frac{2}{x + 4} + \\frac{2}{x - 4}"
+        ],
+        [
+          "integrate",
+          "2 \\log{\\left(\\left|{x - 4}\\right| \\right)} + 2 \\log{\\left(\\left|{x + 4}\\right| \\right)} + C"
+        ]
+      ],
+      "answer_kind": "antiderivative",
+      "answer_latex": "2 \\log{\\left(\\left|{x - 4}\\right| \\right)} + 2 \\log{\\left(\\left|{x + 4}\\right| \\right)} + C",
+      "metadata": {}
+    },
+    {
+      "code": "INT-1-0000000000000001-48",
+      "statement": "Find \\(\\int 4 x - 6\\,dx\\).",
+      "steps": [
+        [
+          "integrate",
+          "2 x^{2} - 6 x + C"
+        ]
+      ],
+      "answer_kind": "antiderivative",
+      "answer_latex": "2 x^{2} - 6 x + C",
+      "metadata": {}
+    },
+    {
+      "code": "INT-1-0000000000000002-65",
+      "statement": "Find \\(\\int - 2 x^{3} - 6 x^{2} - x + 6\\,dx\\).",
+      "steps": [
+        [
+          "integrate",
+          "- \\frac{x^{4}}{2} - 2 x^{3} - \\frac{x^{2}}{2} + 6 x + C"
+        ]
+      ],
+      "answer_kind": "antiderivative",
+      "answer_latex": "- \\frac{x^{4}}{2} - 2 x^{3} - \\frac{x^{2}}{2} + 6 x + C",
+      "metadata": {}
+    },
+    {
+      "code": "INT-1-0000000000000003-82",
+      "statement": "Find \\(\\int \\frac{12 x}{x^{2} - 9}\\,dx\\).",
+      "steps": [
+        [
+          "decompose",
+          "\\frac{12 x}{x^{2} - 9} = \\frac{6}{x + 3} + \\frac{6}{x - 3}"
+        ],
+        [
+          "integrate",
+          "6 \\log{\\left(\\left|{x - 3}\\right| \\right)} + 6 \\log{\\left(\\left|{x + 3}\\right| \\right)} + C"
+        ]
+      ],
+      "answer_kind": "antiderivative",
+      "answer_latex": "6 \\log{\\left(\\left|{x - 3}\\right| \\right)} + 6 \\log{\\left(\\left|{x + 3}\\right| \\right)} + C",
+      "metadata": {}
+    },
+    {
+      "code": "INT-1-0000000000000123-32",
+      "statement": "Find \\(\\int \\frac{12 x}{x^{2} - 36}\\,dx\\).",
+      "steps": [
+        [
+          "decompose",
+          "\\frac{12 x}{x^{2} - 36} = \\frac{6}{x + 6} + \\frac{6}{x - 6}"
+        ],
+        [
+          "integrate",
+          "6 \\log{\\left(\\left|{x - 6}\\right| \\right)} + 6 \\log{\\left(\\left|{x + 6}\\right| \\right)} + C"
+        ]
+      ],
+      "answer_kind": "antiderivative",
+      "answer_latex": "6 \\log{\\left(\\left|{x - 6}\\right| \\right)} + 6 \\log{\\left(\\left|{x + 6}\\right| \\right)} + C",
+      "metadata": {}
+    },
+    {
+      "code": "INT-1-9999999999999999-41",
+      "statement": "Find \\(\\int \\frac{4 x}{x^{2} - 16}\\,dx\\).",
+      "steps": [
+        [
+          "decompose",
+          "\\frac{4 x}{x^{2} - 16} = \\frac{2}{x + 4} + \\frac{2}{x - 4}"
+        ],
+        [
+          "integrate",
+          "2 \\log{\\left(\\left|{x - 4}\\right| \\right)} + 2 \\log{\\left(\\left|{x + 4}\\right| \\right)} + C"
+        ]
+      ],
+      "answer_kind": "antiderivative",
+      "answer_latex": "2 \\log{\\left(\\left|{x - 4}\\right| \\right)} + 2 \\log{\\left(\\left|{x + 4}\\right| \\right)} + C",
+      "metadata": {}
+    }
+  ],
+  "definite-v1": [
+    {
+      "code": "DEF-1-0000000000000000-16",
+      "statement": "Calculate \\(\\int_{-1}^1 \\frac{4 x}{x^{2} - 16}\\,dx\\).",
+      "steps": [
+        [
+          "decompose",
+          "\\frac{4 x}{x^{2} - 16} = \\frac{2}{x + 4} + \\frac{2}{x - 4}"
+        ],
+        [
+          "integrate",
+          "2 \\log{\\left(\\left|{x - 4}\\right| \\right)} + 2 \\log{\\left(\\left|{x + 4}\\right| \\right)} + C"
+        ],
+        [
+          "evaluate_bounds",
+          "\\left[2 \\log{\\left(\\left|{x - 4}\\right| \\right)} + 2 \\log{\\left(\\left|{x + 4}\\right| \\right)}\\right]_{-1}^1 = 0"
+        ]
+      ],
+      "answer_kind": "number",
+      "answer_latex": "0",
+      "metadata": {}
+    },
+    {
+      "code": "DEF-1-0000000000000001-33",
+      "statement": "Calculate \\(\\int_{-1}^1 4 x - 6\\,dx\\).",
+      "steps": [
+        [
+          "integrate",
+          "2 x^{2} - 6 x + C"
+        ],
+        [
+          "evaluate_bounds",
+          "\\left[2 x^{2} - 6 x\\right]_{-1}^1 = -12"
+        ]
+      ],
+      "answer_kind": "number",
+      "answer_latex": "-12",
+      "metadata": {}
+    },
+    {
+      "code": "DEF-1-0000000000000002-50",
+      "statement": "Calculate \\(\\int_{-1}^1 - 2 x^{3} - 6 x^{2} - x + 6\\,dx\\).",
+      "steps": [
+        [
+          "integrate",
+          "- \\frac{x^{4}}{2} - 2 x^{3} - \\frac{x^{2}}{2} + 6 x + C"
+        ],
+        [
+          "evaluate_bounds",
+          "\\left[- \\frac{x^{4}}{2} - 2 x^{3} - \\frac{x^{2}}{2} + 6 x\\right]_{-1}^1 = 8"
+        ]
+      ],
+      "answer_kind": "number",
+      "answer_latex": "8",
+      "metadata": {}
+    },
+    {
+      "code": "DEF-1-0000000000000003-67",
+      "statement": "Calculate \\(\\int_{-1}^1 \\frac{12 x}{x^{2} - 9}\\,dx\\).",
+      "steps": [
+        [
+          "decompose",
+          "\\frac{12 x}{x^{2} - 9} = \\frac{6}{x + 3} + \\frac{6}{x - 3}"
+        ],
+        [
+          "integrate",
+          "6 \\log{\\left(\\left|{x - 3}\\right| \\right)} + 6 \\log{\\left(\\left|{x + 3}\\right| \\right)} + C"
+        ],
+        [
+          "evaluate_bounds",
+          "\\left[6 \\log{\\left(\\left|{x - 3}\\right| \\right)} + 6 \\log{\\left(\\left|{x + 3}\\right| \\right)}\\right]_{-1}^1 = 0"
+        ]
+      ],
+      "answer_kind": "number",
+      "answer_latex": "0",
+      "metadata": {}
+    },
+    {
+      "code": "DEF-1-0000000000000123-17",
+      "statement": "Calculate \\(\\int_{-1}^1 \\frac{12 x}{x^{2} - 36}\\,dx\\).",
+      "steps": [
+        [
+          "decompose",
+          "\\frac{12 x}{x^{2} - 36} = \\frac{6}{x + 6} + \\frac{6}{x - 6}"
+        ],
+        [
+          "integrate",
+          "6 \\log{\\left(\\left|{x - 6}\\right| \\right)} + 6 \\log{\\left(\\left|{x + 6}\\right| \\right)} + C"
+        ],
+        [
+          "evaluate_bounds",
+          "\\left[6 \\log{\\left(\\left|{x - 6}\\right| \\right)} + 6 \\log{\\left(\\left|{x + 6}\\right| \\right)}\\right]_{-1}^1 = 0"
+        ]
+      ],
+      "answer_kind": "number",
+      "answer_latex": "0",
+      "metadata": {}
+    },
+    {
+      "code": "DEF-1-9999999999999999-26",
+      "statement": "Calculate \\(\\int_{-1}^1 \\frac{4 x}{x^{2} - 16}\\,dx\\).",
+      "steps": [
+        [
+          "decompose",
+          "\\frac{4 x}{x^{2} - 16} = \\frac{2}{x + 4} + \\frac{2}{x - 4}"
+        ],
+        [
+          "integrate",
+          "2 \\log{\\left(\\left|{x - 4}\\right| \\right)} + 2 \\log{\\left(\\left|{x + 4}\\right| \\right)} + C"
+        ],
+        [
+          "evaluate_bounds",
+          "\\left[2 \\log{\\left(\\left|{x - 4}\\right| \\right)} + 2 \\log{\\left(\\left|{x + 4}\\right| \\right)}\\right]_{-1}^1 = 0"
+        ]
+      ],
+      "answer_kind": "number",
+      "answer_latex": "0",
+      "metadata": {}
+    }
+  ],
+  "derivative-v1": [
+    {
+      "code": "DRV-1-0000000000000000-44",
+      "statement": "Differentiate \\(\\frac{4 x}{x^{2} - 16}\\).",
+      "steps": [
+        [
+          "differentiate",
+          "\\frac{d}{dx}\\left(\\frac{4 x}{x^{2} - 16}\\right) = - \\frac{8 x^{2}}{\\left(x^{2} - 16\\right)^{2}} + \\frac{4}{x^{2} - 16}"
+        ]
+      ],
+      "answer_kind": "derivative",
+      "answer_latex": "- \\frac{8 x^{2}}{\\left(x^{2} - 16\\right)^{2}} + \\frac{4}{x^{2} - 16}",
+      "metadata": {
+        "function": "4*x/(x^2 - 16)"
+      }
+    },
+    {
+      "code": "DRV-1-0000000000000001-61",
+      "statement": "Differentiate \\(4 x - 6\\).",
+      "steps": [
+        [
+          "differentiate",
+          "\\frac{d}{dx}\\left(4 x - 6\\right) = 4"
+        ]
+      ],
+      "answer_kind": "derivative",
+      "answer_latex": "4",
+      "metadata": {
+        "function": "4*x - 6"
+      }
+    },
+    {
+      "code": "DRV-1-0000000000000002-78",
+      "statement": "Differentiate \\(- 2 x^{3} - 6 x^{2} - x + 6\\).",
+      "steps": [
+        [
+          "differentiate",
+          "\\frac{d}{dx}\\left(- 2 x^{3} - 6 x^{2} - x + 6\\right) = - 6 x^{2} - 12 x - 1"
+        ]
+      ],
+      "answer_kind": "derivative",
+      "answer_latex": "- 6 x^{2} - 12 x - 1",
+      "metadata": {
+        "function": "-2*x^3 - 6*x^2 - x + 6"
+      }
+    },
+    {
+      "code": "DRV-1-0000000000000003-95",
+      "statement": "Differentiate \\(\\frac{12 x}{x^{2} - 9}\\).",
+      "steps": [
+        [
+          "differentiate",
+          "\\frac{d}{dx}\\left(\\frac{12 x}{x^{2} - 9}\\right) = - \\frac{24 x^{2}}{\\left(x^{2} - 9\\right)^{2}} + \\frac{12}{x^{2} - 9}"
+        ]
+      ],
+      "answer_kind": "derivative",
+      "answer_latex": "- \\frac{24 x^{2}}{\\left(x^{2} - 9\\right)^{2}} + \\frac{12}{x^{2} - 9}",
+      "metadata": {
+        "function": "12*x/(x^2 - 9)"
+      }
+    },
+    {
+      "code": "DRV-1-0000000000000123-45",
+      "statement": "Differentiate \\(\\frac{12 x}{x^{2} - 36}\\).",
+      "steps": [
+        [
+          "differentiate",
+          "\\frac{d}{dx}\\left(\\frac{12 x}{x^{2} - 36}\\right) = - \\frac{24 x^{2}}{\\left(x^{2} - 36\\right)^{2}} + \\frac{12}{x^{2} - 36}"
+        ]
+      ],
+      "answer_kind": "derivative",
+      "answer_latex": "- \\frac{24 x^{2}}{\\left(x^{2} - 36\\right)^{2}} + \\frac{12}{x^{2} - 36}",
+      "metadata": {
+        "function": "12*x/(x^2 - 36)"
+      }
+    },
+    {
+      "code": "DRV-1-9999999999999999-54",
+      "statement": "Differentiate \\(\\frac{4 x}{x^{2} - 16}\\).",
+      "steps": [
+        [
+          "differentiate",
+          "\\frac{d}{dx}\\left(\\frac{4 x}{x^{2} - 16}\\right) = - \\frac{8 x^{2}}{\\left(x^{2} - 16\\right)^{2}} + \\frac{4}{x^{2} - 16}"
+        ]
+      ],
+      "answer_kind": "derivative",
+      "answer_latex": "- \\frac{8 x^{2}}{\\left(x^{2} - 16\\right)^{2}} + \\frac{4}{x^{2} - 16}",
+      "metadata": {
+        "function": "4*x/(x^2 - 16)"
+      }
+    }
+  ],
+  "combinations-v1": [
+    {
+      "code": "CMB-1-0000000000000000-16",
+      "statement": "Calculate \\(\\binom{8}{7}\\).",
+      "steps": [
+        [
+          "combinations",
+          "\\binom{8}{7} = 8"
+        ]
+      ],
+      "answer_kind": "number",
+      "answer_latex": "8",
+      "metadata": {
+        "n": 8,
+        "k": 7
+      }
+    },
+    {
+      "code": "CMB-1-0000000000000001-33",
+      "statement": "Calculate \\(\\binom{3}{0}\\).",
+      "steps": [
+        [
+          "combinations",
+          "\\binom{3}{0} = 1"
+        ]
+      ],
+      "answer_kind": "number",
+      "answer_latex": "1",
+      "metadata": {
+        "n": 3,
+        "k": 0
+      }
+    },
+    {
+      "code": "CMB-1-0000000000000002-50",
+      "statement": "Calculate \\(\\binom{17}{0}\\).",
+      "steps": [
+        [
+          "combinations",
+          "\\binom{17}{0} = 1"
+        ]
+      ],
+      "answer_kind": "number",
+      "answer_latex": "1",
+      "metadata": {
+        "n": 17,
+        "k": 0
+      }
+    },
+    {
+      "code": "CMB-1-0000000000000003-67",
+      "statement": "Calculate \\(\\binom{5}{5}\\).",
+      "steps": [
+        [
+          "combinations",
+          "\\binom{5}{5} = 1"
+        ]
+      ],
+      "answer_kind": "number",
+      "answer_latex": "1",
+      "metadata": {
+        "n": 5,
+        "k": 5
+      }
+    },
+    {
+      "code": "CMB-1-0000000000000123-17",
+      "statement": "Calculate \\(\\binom{11}{5}\\).",
+      "steps": [
+        [
+          "combinations",
+          "\\binom{11}{5} = 462"
+        ]
+      ],
+      "answer_kind": "number",
+      "answer_latex": "462",
+      "metadata": {
+        "n": 11,
+        "k": 5
+      }
+    },
+    {
+      "code": "CMB-1-9999999999999999-26",
+      "statement": "Calculate \\(\\binom{15}{7}\\).",
+      "steps": [
+        [
+          "combinations",
+          "\\binom{15}{7} = 6435"
+        ]
+      ],
+      "answer_kind": "number",
+      "answer_latex": "6435",
+      "metadata": {
+        "n": 15,
+        "k": 7
+      }
+    }
+  ]
+}
