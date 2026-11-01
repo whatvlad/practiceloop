@@ -13,6 +13,7 @@ from fastapi.responses import JSONResponse
 from starlette.middleware.base import RequestResponseEndpoint
 from starlette.responses import Response
 
+from app.api.codes import router as codes_router
 from app.api.practice import router as practice_router
 from app.api.preview import router as preview_router
 from app.api.reports import router as reports_router
@@ -64,6 +65,7 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
 app = FastAPI(title="PracticeLoop API", version="0.0.0", lifespan=lifespan)
 app.include_router(preview_router)
 app.include_router(practice_router)
+app.include_router(codes_router)
 app.include_router(shares_router)
 app.include_router(reports_router)
 app.include_router(worksheets_router)

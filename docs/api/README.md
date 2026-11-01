@@ -429,6 +429,30 @@ waiting over 10 s gives `503 worksheet_busy`, a failed compile
 `503 worksheet_render_failed` (both retryable). Another user's or a missing
 worksheet is `404 problem_not_found`.
 
+## Permanent problem codes (#198)
+
+`GET /codes?code=<code>` needs no account and returns only
+`{problem: {topic, difficulty, problemLatex}}`. The frontend route `/p/<code>`
+uses this projection. Codes accept ASCII case, whitespace and dashes; the
+checksum, registered prefix and version are validated before construction.
+Invalid/unknown codes return `400 problem_code_invalid`, never a replay traceback.
+Requests over 128 characters are `422 invalid_request`. Public lookups share a
+120/minute window. Arbitrary codes rebuild in the same 2 s CPU / 256 MiB / 3 s
+wall-limited worker used for checking, with one shared admission slot and a
+bounded release-local private cache. Normal practice/worksheets still pick
+prebuilt catalogue data without symbolic construction in the API.
+
+`POST /codes/practice` requires verified Google authentication and an
+`Idempotency-Key`; the body is `{code: string}` only. It saves the exact code's
+statement, answer and steps privately as a new recipient-owned problem, with
+no attempts or reveals. Equivalent spellings share an idempotency hash.
+The response is the normal public problem DTO. Attempts and explicit reveals
+then use the existing owner-scoped routes. No answer, solution or generator
+parameters are returned by public lookup or the creation response. Historical
+engine-slice codes remain registered and resolve to compatible public topic
+views; this is separate from the read-only pre-engine archive. Permanent codes
+have no expiry or revocation; revocable shares keep their existing contract.
+
 ## Response headers
 
 Every API response carries `X-Content-Type-Options: nosniff`,

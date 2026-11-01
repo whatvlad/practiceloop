@@ -8,6 +8,21 @@ const response = (body: unknown, status = 200) => new Response(JSON.stringify(bo
 beforeEach(() => { practice.resetPractice(); practice.configurePracticeAuth(async () => null); fetchMock.mockReset(); vi.stubGlobal('fetch', fetchMock); });
 afterEach(() => vi.unstubAllGlobals());
 
+it('requires sign-in for a permanent code and retains one idempotency key on retries', async () => {
+  const code = 'CMB-1-0000000000000000-32';
+  await expect(practice.practiceCodeProblem(code)).rejects.toThrow('Sign in');
+  expect(fetchMock).not.toHaveBeenCalled();
+  practice.configurePracticeAuth(async () => 'account-token');
+  fetchMock.mockRejectedValueOnce(new TypeError('response lost'));
+  await expect(practice.practiceCodeProblem(code.toLowerCase())).rejects.toThrow();
+  fetchMock.mockResolvedValueOnce(response({ problem: { ...publicProblem, attemptCount: 0, lastAttempt: null, answerRevealed: false, solutionRevealed: false, answerLatex: 'PRIVATE' } }, 201));
+  const result = await practice.practiceCodeProblem(code);
+  expect(fetchMock.mock.calls[1][0]).toBe('/api/codes/practice');
+  expect(fetchMock.mock.calls[1][1]?.headers).toEqual(fetchMock.mock.calls[0][1]?.headers);
+  expect(JSON.parse(String(fetchMock.mock.calls[1][1]?.body))).toEqual({ code });
+  expect(JSON.stringify(result)).not.toContain('PRIVATE');
+});
+
 it('requires an account to solve a share and never falls back to a random guest demo', async () => {
   await expect(practice.practiceSharedProblem({ token: 'a'.repeat(43) })).rejects.toThrow('Sign in');
   expect(fetchMock).not.toHaveBeenCalled();

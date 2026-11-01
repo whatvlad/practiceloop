@@ -4,9 +4,10 @@ import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { SharedProblemPage } from './SharedProblemPage';
 import { lookupShare, normalizeCode, shareCode, shareLink } from '../data/shares';
-import { practiceSharedProblem } from '../data/api';
+import { practiceCodeProblem, practiceSharedProblem } from '../data/api';
+import { normalizeProblemCode } from '../data/problemCodes';
 
-vi.mock('../data/api', () => ({ practiceSharedProblem: vi.fn() }));
+vi.mock('../data/api', () => ({ practiceSharedProblem: vi.fn(), practiceCodeProblem: vi.fn() }));
 
 const TOKEN = 'A'.repeat(21) + '_' + 'b'.repeat(20) + '-';
 const fetchMock = vi.fn<typeof fetch>();
@@ -19,6 +20,7 @@ beforeEach(() => {
   (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
   fetchMock.mockReset();
   vi.mocked(practiceSharedProblem).mockReset();
+  vi.mocked(practiceCodeProblem).mockReset();
   vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
   vi.stubGlobal('fetch', fetchMock);
   element = document.createElement('div');
@@ -33,10 +35,48 @@ afterEach(async () => {
   vi.restoreAllMocks();
 });
 
-async function render(props: { token: string | null; code: string | null; signedIn?: boolean; authLoading?: boolean }) {
+async function render(props: { token: string | null; code: string | null; problemCode?: string; signedIn?: boolean; authLoading?: boolean }) {
   await act(async () => root.render(<SharedProblemPage {...props} />));
   await act(async () => {});
 }
+
+const PROBLEM_CODE = 'CMB-1-0000000000000000-32';
+
+it('opens a permanent code anonymously and keeps its private fields out of the page', async () => {
+  fetchMock.mockResolvedValue(json({ problem: { topic: 'combinations', difficulty: 1, problemLatex: '\\binom{5}{2}', answerLatex: 'PRIVATE', steps: ['PRIVATE'] } }));
+  await render({ token: null, code: null, problemCode: PROBLEM_CODE.toLowerCase() });
+  expect(fetchMock.mock.calls[0][0]).toBe(`/api/codes?code=${PROBLEM_CODE}`);
+  expect(element.textContent).toContain('Problem from code');
+  expect(element.innerHTML).not.toContain('PRIVATE');
+  const next = new URL([...element.querySelectorAll('a')].find(a => a.textContent?.includes('Sign in to solve'))!.href).searchParams.get('next');
+  expect(next).toBe(`/p/${PROBLEM_CODE.toLowerCase()}`);
+});
+
+it('saves the exact permanent code once and navigates to normal practice', async () => {
+  fetchMock.mockResolvedValue(json({ problem: { topic: 'combinations', difficulty: 1, problemLatex: '1' } }));
+  vi.mocked(practiceCodeProblem).mockResolvedValue({ id: 'code-copy' } as Awaited<ReturnType<typeof practiceCodeProblem>>);
+  await render({ token: null, code: null, problemCode: PROBLEM_CODE, signedIn: true });
+  const button = [...element.querySelectorAll('button')].find(b => b.textContent?.includes('Solve this problem'))!;
+  await act(async () => { button.click(); button.click(); });
+  expect(practiceCodeProblem).toHaveBeenCalledExactlyOnceWith(PROBLEM_CODE);
+  expect(practiceSharedProblem).not.toHaveBeenCalled();
+  expect(window.location.pathname + window.location.search).toBe('/practice?id=code-copy');
+});
+
+it('shows a clear invalid-code message and a problem-code form', async () => {
+  fetchMock.mockResolvedValue(failure('problem_code_invalid', 400));
+  await render({ token: null, code: null, problemCode: PROBLEM_CODE });
+  expect(element.querySelector('h1')?.textContent).toContain('not valid or is unknown');
+  expect(element.textContent).toContain('Problem code');
+  expect(element.querySelector('.katex')).toBeNull();
+});
+
+it('normalizes case, whitespace and dashes without accepting URL fragments or non-ASCII', () => {
+  expect(normalizeProblemCode(PROBLEM_CODE.toLowerCase().replaceAll('-', ' '))).toBe(PROBLEM_CODE);
+  expect(normalizeProblemCode(PROBLEM_CODE.replaceAll('-', ''))).toBe(PROBLEM_CODE);
+  expect(normalizeProblemCode('https://example.com')).toBeNull();
+  expect(normalizeProblemCode('\u03c0')).toBeNull();
+});
 
 it('shows only the statement, topic and difficulty, even when the server sends more', async () => {
   fetchMock.mockResolvedValue(json({ problem: { topic: 'substitution', difficulty: 3, problemLatex: '\\int 2x\\cos(x^2)\\,dx',

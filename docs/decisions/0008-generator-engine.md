@@ -620,3 +620,23 @@ archive/worksheet tests and limited workers cover every new cell.
 All 21 public topics now issue through the new engine. Legacy cleanup and the
 code-sharing page remain separate tasks (#199 and #198). Existing frozen
 interfaces, versions, PRNG and golden output are unchanged.
+
+## Amendment: permanent code opening (#198)
+
+`/p/<code>` looks up a permanent engine problem with case/space/dash-tolerant
+parsing and checksum validation. Anonymous lookup exposes only the statement,
+topic and difficulty. Signing in preserves this route across OAuth; the solve
+action creates an idempotent recipient-owned saved problem with hidden reveals.
+Existing owner-scoped attempt and reveal endpoints handle the rest. Revocable
+shares remain separate from permanent codes.
+
+Arbitrary codes (including every frozen golden sample) need not be in a release
+pool. They rebuild inside the existing 2 s CPU / 256 MiB / 3 s wall-limited child,
+sharing one admission slot with answer checks. The API only validates the code,
+reads a bounded private cache and projects public fields; it performs no symbolic
+construction. Release-pool practice and worksheets retain their existing path.
+Historical engine-slice versions have declarative compatible views over existing
+public topics without changing their frozen output or the normal issuing pool.
+Unknown prefixes, versions and wrong check digits are clear invalid-code errors;
+resource failures are retryable service errors. No generator internals, answers
+or solutions are returned before an authorized reveal.

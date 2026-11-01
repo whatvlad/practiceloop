@@ -1,6 +1,7 @@
 // Saved account practice and an isolated, untracked guest preview. Public cache only.
 import text from '../../../backend/app/content/en.json';
 import { normalizeCode } from './shares';
+import { normalizeProblemCode } from './problemCodes';
 import { parseVisual } from '../visual/spec';
 import { AREAS, areaOf, isTopicSlug, listedArea, rememberTopics } from './topics';
 import { FEEDBACK_CODES } from './types';
@@ -236,6 +237,21 @@ export function practiceSharedProblem(ref: { token: string } | { code: string })
     const { bearer, saved } = await credentials();
     if (!saved) throw new Error('Sign in to solve this problem.');
     const data = await request('/shares/practice', body, bearer, true, operation);
+    if (started !== epoch) throw new Error(text.expired);
+    return structuredClone(cache(publicProblem(data.problem)));
+  });
+}
+
+/** Save a separate exercise from a permanent code, with normal private reveals. */
+export function practiceCodeProblem(value: string): Promise<PublicProblem> {
+  const code = normalizeProblemCode(value);
+  if (!code) return Promise.reject(new Error('That problem code is not valid.'));
+  const operation = `practice-code:${code}`;
+  return once(operation, async () => {
+    const started = epoch;
+    const { bearer, saved } = await credentials();
+    if (!saved) throw new Error('Sign in to solve this problem.');
+    const data = await request('/codes/practice', { code }, bearer, true, operation);
     if (started !== epoch) throw new Error(text.expired);
     return structuredClone(cache(publicProblem(data.problem)));
   });

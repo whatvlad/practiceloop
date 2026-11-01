@@ -607,6 +607,57 @@ def database_failure(api: httpx.Client, stop: str, start: str) -> None:
     check(response.status_code == 200, "API recovers once the database is back", response.text)
 
 
+def permanent_code_flow(api: httpx.Client, base: str, url: str) -> None:
+    from app.engine.codes import encode
+
+    reset_limits()
+    code = encode("CMB", 1, 198)
+    with httpx.Client(base_url=base, timeout=10) as guest:
+        found = guest.get("/codes", params={"code": code.lower().replace("-", " ")})
+        check(
+            found.status_code == 200
+            and set(found.json()["problem"]) == {"topic", "difficulty", "problemLatex"},
+            "permanent code opens publicly without private data",
+            found.text,
+        )
+        invalid = guest.get("/codes", params={"code": code[:-2] + "99"})
+        unknown = guest.get("/codes", params={"code": encode("ZZZ", 1, 0)})
+        check(
+            invalid.status_code == unknown.status_code == 400,
+            "wrong checksum and unknown prefix are clear errors",
+        )
+    headers = key()
+    created = api.post("/codes/practice", json={"code": code}, headers=headers)
+    replayed = api.post("/codes/practice", json={"code": code.lower()}, headers=headers)
+    check(
+        created.status_code == 201 and replayed.json() == created.json(),
+        "permanent code practice is saved once on retry",
+        created.text,
+    )
+    if created.status_code != 201:
+        return
+    problem = created.json()["problem"]
+    pid = problem["id"]
+    check(
+        not problem["answerRevealed"] and not problem["solutionRevealed"],
+        "code practice starts with both reveals hidden",
+    )
+    checked = api.post(
+        f"/problems/{pid}/attempts", json={"answer": correct_answer(url, pid)}, headers=key()
+    )
+    check(
+        checked.status_code == 201 and checked.json()["attempt"]["result"] == "correct",
+        "code practice uses normal answer checking",
+        checked.text,
+    )
+    answer = api.post(f"/problems/{pid}/reveal-answer")
+    solution = api.post(f"/problems/{pid}/reveal-solution")
+    check(
+        answer.status_code == solution.status_code == 200 and bool(solution.json()["steps"]),
+        "code practice reveals only on request",
+    )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--stop-db")
@@ -637,6 +688,7 @@ def main() -> int:
             multiple_integral(api_a, url, "triple-integrals", (r"\iiint_E", r"\int_"))
             partials(api_a, url)
             combinations(api_a, url)
+            permanent_code_flow(api_a, base, url)
             malicious(api_a, created[0])
             saturation(api_a, url, created[0])
         if args.stop_db and args.start_db:
