@@ -225,3 +225,9 @@ remain the curriculum; new records use `practice-derivative-v1` / SDV-1 and
 The engine derives partial-answer variable declarations from the code before
 parsing, without symbolic construction in the API. Native incorrect-answer
 feedback is general rather than the legacy mistake codes described above.
+
+After #196, matrices, complex numbers, fundamental theorem of algebra and partial
+fractions use native engine pools at their existing levels 1-5. Their current
+scalar/expression curriculum is unchanged: determinant, modulus, sum of roots
+and rational decomposition. ADR-008 lists versions and independent proofs;
+legacy `symbolic-v1` records of these topics are read-only archives.

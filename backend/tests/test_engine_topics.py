@@ -39,6 +39,9 @@ def test_five_topics_have_nonempty_levels_and_replay_for_many_seeds() -> None:
         "double-integrals",
         "triple-integrals",
         "partial-derivatives",
+        "matrices",
+        "complex-numbers",
+        "fundamental-theorem-algebra",
     }
     generators = registry()
     expected_kinds = {

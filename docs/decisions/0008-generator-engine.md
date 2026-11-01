@@ -567,3 +567,25 @@ template, including positive r/y and real theta where required. The API obtains
 the exact answer grammar from the code without building a task or calling SymPy.
 The limited worker reconstructs the task once and checks with that grammar.
 No variable declarations or mathematical internals are added to public records.
+
+## Amendment: Algebra migration (#196)
+
+The current Algebra tasks need exact real scalar/expression answers: a 2x2
+determinant, complex modulus, quadratic root sum (with multiplicity), or rational
+partial fractions. `ExpressionAnswer` and the existing editor suffice; matrix
+and complex-valued answer kinds belong to future content that needs them.
+
+Native `AlgebraForm` holds an allowlisted kind and two integers 1-5. Independent
+proofs use a matrix determinant, complex absolute value, all polynomial roots
+(including nonreal/repeated roots), and exact rational decomposition. Drawn
+parameters retain the existing levels 1-5 and their coefficient ranges; this
+migration does not invent harder content for previously identical levels.
+
+The four new versions are `practice-matrices-v1` (MTR-1),
+`practice-complex-v1` (CPX-1), `practice-root-sum-v1` (VRS-1) and
+`practice-partial-fractions-v1` (PFA-1). Partial fractions declare real x through
+the private code-derived grammar helper. Each topic keeps its mixed weight and
+worksheet space. Legacy symbolic records become archives; shipped PFR-1 codes
+and all previous golden entries remain unchanged. New golden entries, every
+coefficient pair, the 1,000-seed sweep, pool replay, archive/worksheet tests and
+limited Linux workers cover all twenty migrated cells.

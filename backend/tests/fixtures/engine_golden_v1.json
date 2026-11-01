@@ -1706,5 +1706,205 @@
         "template": "cylindrical_angle"
       }
     }
+  ],
+  "practice-matrices-v1": [
+    {
+      "code": "MTR-1-0000000000000000-46",
+      "statement": "Calculate \\(\\det\\begin{pmatrix}2&3\\\\4&4\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "determinant",
+          "2\\cdot4-3\\cdot4=-4"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-4",
+      "metadata": {
+        "difficulty": 3,
+        "template": "determinant"
+      }
+    },
+    {
+      "code": "MTR-1-0000000000000001-63",
+      "statement": "Calculate \\(\\det\\begin{pmatrix}4&4\\\\5&6\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "determinant",
+          "4\\cdot6-4\\cdot5=4"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "4",
+      "metadata": {
+        "difficulty": 3,
+        "template": "determinant"
+      }
+    },
+    {
+      "code": "MTR-1-0000000000000196-16",
+      "statement": "Calculate \\(\\det\\begin{pmatrix}2&3\\\\4&4\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "determinant",
+          "2\\cdot4-3\\cdot4=-4"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-4",
+      "metadata": {
+        "difficulty": 3,
+        "template": "determinant"
+      }
+    }
+  ],
+  "practice-complex-v1": [
+    {
+      "code": "CPX-1-0000000000000000-57",
+      "statement": "Calculate \\(|2+3i|\\).",
+      "steps": [
+        [
+          "modulus",
+          "\\sqrt{2^2+3^2}=\\sqrt{13}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\sqrt{13}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "modulus"
+      }
+    },
+    {
+      "code": "CPX-1-0000000000000001-74",
+      "statement": "Calculate \\(|4+4i|\\).",
+      "steps": [
+        [
+          "modulus",
+          "\\sqrt{4^2+4^2}=4 \\sqrt{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "4 \\sqrt{2}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "modulus"
+      }
+    },
+    {
+      "code": "CPX-1-0000000000000196-27",
+      "statement": "Calculate \\(|2+3i|\\).",
+      "steps": [
+        [
+          "modulus",
+          "\\sqrt{2^2+3^2}=\\sqrt{13}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\sqrt{13}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "modulus"
+      }
+    }
+  ],
+  "practice-root-sum-v1": [
+    {
+      "code": "VRS-1-0000000000000000-22",
+      "statement": "Calculate \\(x^2+2x+3=0: \\text{sum of the roots}\\).",
+      "steps": [
+        [
+          "root_sum",
+          "x_1+x_2=-2=-2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-2",
+      "metadata": {
+        "difficulty": 3,
+        "template": "root-sum"
+      }
+    },
+    {
+      "code": "VRS-1-0000000000000001-39",
+      "statement": "Calculate \\(x^2+4x+4=0: \\text{sum of the roots}\\).",
+      "steps": [
+        [
+          "root_sum",
+          "x_1+x_2=-4=-4"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-4",
+      "metadata": {
+        "difficulty": 3,
+        "template": "root-sum"
+      }
+    },
+    {
+      "code": "VRS-1-0000000000000196-89",
+      "statement": "Calculate \\(x^2+2x+3=0: \\text{sum of the roots}\\).",
+      "steps": [
+        [
+          "root_sum",
+          "x_1+x_2=-2=-2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-2",
+      "metadata": {
+        "difficulty": 3,
+        "template": "root-sum"
+      }
+    }
+  ],
+  "practice-partial-fractions-v1": [
+    {
+      "code": "PFA-1-0000000000000000-44",
+      "statement": "Calculate \\(\\frac{5 x + 7}{(x+1)(x+2)}= ?\\).",
+      "steps": [
+        [
+          "decompose",
+          "\\frac{3}{x + 2} + \\frac{2}{x + 1}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{3}{x + 2} + \\frac{2}{x + 1}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "decompose"
+      }
+    },
+    {
+      "code": "PFA-1-0000000000000001-61",
+      "statement": "Calculate \\(\\frac{8 x + 12}{(x+1)(x+2)}= ?\\).",
+      "steps": [
+        [
+          "decompose",
+          "\\frac{4}{x + 2} + \\frac{4}{x + 1}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{4}{x + 2} + \\frac{4}{x + 1}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "decompose"
+      }
+    },
+    {
+      "code": "PFA-1-0000000000000196-14",
+      "statement": "Calculate \\(\\frac{5 x + 7}{(x+1)(x+2)}= ?\\).",
+      "steps": [
+        [
+          "decompose",
+          "\\frac{3}{x + 2} + \\frac{2}{x + 1}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{3}{x + 2} + \\frac{2}{x + 1}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "decompose"
+      }
+    }
   ]
 }

@@ -2,6 +2,7 @@
 
 from typing import Any
 
+from app.engine.generators.algebra import algebra_generators
 from app.engine.generators.combinations import Combinations
 from app.engine.generators.definite import DefiniteIntegral
 from app.engine.generators.derivative import Derivative
@@ -27,6 +28,7 @@ def registry() -> Registry:
         TripleIntegrals(),
         SingleDerivatives(),
         PartialDerivatives(),
+        *algebra_generators(),
     )
     for generator in generators:
         result.register(generator)

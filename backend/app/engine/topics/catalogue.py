@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 from functools import partial
 
 from app.engine.blocks.integral_forms.form import BOUNDS, METHODS
+from app.engine.generators.algebra import AlgebraParams, algebra_generators
 from app.engine.generators.definite import DefiniteParams
 from app.engine.generators.derivative import DerivativeParams
 from app.engine.generators.differentiation import (
@@ -261,4 +262,32 @@ def topics() -> dict[str, Topic]:
             space_cm=space,
             served=True,
         )
+    for algebra_generator, (slug, title, space) in zip(
+        algebra_generators(),
+        (
+            ("matrices", "Matrices", 4),
+            ("complex-numbers", "Complex numbers", 4),
+            ("fundamental-theorem-algebra", "Fundamental theorem of algebra", 5),
+            ("partial-fractions", "Partial fractions", 5),
+        ),
+        strict=True,
+    ):
+        declared[slug] = Topic(
+            slug,
+            "algebra",
+            {
+                level: (Choice(algebra_generator.version, partial(_algebra_level, level)),)
+                for level in range(1, 6)
+            },
+            1,
+            title=title,
+            space_cm=space,
+            served=True,
+        )
     return declared
+
+
+def _algebra_level(level: int, params: Drawn) -> bool:
+    if not isinstance(params, AlgebraParams):
+        raise ValueError("Expected Algebra parameters")
+    return params.difficulty == level
