@@ -150,6 +150,16 @@ with parameter filters. Register partial fractions, derivatives, indefinite
 integrals, definite integrals and combinations. One generator may appear in
 several topics.
 
+The private topic catalogue declares all five topic views without changing the
+practice API. Derivative and integral levels 1 and 2 select polynomial and
+rational v1 parameters, respectively; the other topics currently offer level 1.
+Integral topics share `indefinite-v1`: the definite view applies `definite-v1`
+as its wrapper. Selection and filter retries use the deterministic PRNG with a
+64-draw cap. The returned task's code retains its actual generator seed, so it
+can be replayed independently of the topic selection seed. The v1 family filters
+mirror the first PRNG draw used by the existing derivative and indefinite
+generators; their tests protect that relationship.
+
 ### 7. One topic through the real API (#169)
 
 **Depends on:** 6
