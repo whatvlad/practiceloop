@@ -23,7 +23,6 @@ from app.api import practice
 from app.core import database
 from app.core.auth import VerifiedUser, current_user
 from app.engine import practice as engine
-from app.generators.core import catalogue
 from app.main import app
 from app.services import idempotency, learning_stats
 from app.services import owned_records as records
@@ -78,15 +77,6 @@ def client(users: Users, monkeypatch: pytest.MonkeyPatch) -> Iterator[TestClient
 def pin_version(monkeypatch: pytest.MonkeyPatch, version: str | None) -> None:
     """Cells mix definite and indefinite records (#36): pin one version, or None for indefinite."""
 
-    def keep(record: dict[str, object]) -> bool:
-        if version is None:
-            return record["generator_version"] != "definite-v1"
-        return record["generator_version"] == version
-
-    def pinned(*cell: Any) -> tuple[Any, ...]:
-        return tuple(item for item in catalogue(*cell) if keep(item.record))
-
-    monkeypatch.setattr(practice, "catalogue", pinned)
     from app.engine.catalogue import pool
 
     def engine_pool(topic: str, level: int):
@@ -325,44 +315,33 @@ def attempt(client: TestClient, problem_id: str, answer: str, headers: Any = Non
 
 def primitive_of(url: str, problem_id: str) -> str:
     """The stored answer as learner input (tests only; the API never returns it unrevealed)."""
-    from app.generators.core import replay
 
     (data,) = rows(
         url,
         "select generator_data from private.problem_solutions where problem_id = %s",
         problem_id,
     )[0]
-    value = (
-        engine.replay(data).answer.primitive
-        if engine.is_engine_record(data)
-        else replay(data).primitive
-    )
+    value = engine.replay(data).answer.primitive
     return str(value).replace("**", "^").replace("Abs", "abs").replace("E", "e")
 
 
 def answer_of(url: str, problem_id: str) -> str:
     """A correct learner answer: the exact value, or the antiderivative plus C."""
-    from app.generators.core import replay
 
     (data,) = rows(
         url,
         "select generator_data from private.problem_solutions where problem_id = %s",
         problem_id,
     )[0]
-    if engine.is_engine_record(data):
-        from app.engine.answers.antiderivative import AntiderivativeAnswer
+    from app.engine.answers.antiderivative import AntiderivativeAnswer
 
-        answer = engine.replay(data).answer
-        if isinstance(answer, AntiderivativeAnswer):
-            return (
-                str(answer.primitive).replace("**", "^").replace("Abs", "abs").replace("E", "e")
-                + " + C"
-            )
-        return str(answer.expected).replace("**", "^").replace("E", "e")
-    exercise = replay(data)
-    if exercise.value is not None:
-        return str(exercise.value).replace("**", "^").replace("E", "e")
-    return str(exercise.primitive).replace("**", "^").replace("Abs", "abs") + " + C"
+    answer = engine.replay(data).answer
+    if isinstance(answer, AntiderivativeAnswer):
+        return (
+            str(answer.primitive).replace("**", "^").replace("Abs", "abs").replace("E", "e")
+            + " + C"
+        )
+    return str(answer.expected).replace("**", "^").replace("E", "e")
 
 
 def test_attempts_are_checked_by_the_real_worker_and_persisted(
@@ -595,7 +574,6 @@ def test_definite_topic_saves_definite_problems_under_its_own_topic(
     client: TestClient, url: str, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     """#128: the topic offers only bounded integrals, checked and revealed as numbers."""
-    monkeypatch.setattr(practice, "catalogue", catalogue)
     problem = generate(client, "definite-integrals", 2)
     assert problem["topic"] == "definite-integrals"
     assert r"\int_{" in problem["problemLatex"]

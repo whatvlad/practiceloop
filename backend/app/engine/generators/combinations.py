@@ -1,13 +1,13 @@
 """Combination counts using integer arithmetic."""
 
 from math import comb
-from typing import Self
+from typing import Any, Self
 
 from pydantic import Field, model_validator
 
 from app.engine.answers.number import NumberAnswer
 from app.engine.codes import encode
-from app.engine.models import Drawn, Step, Task
+from app.engine.models import Drawn, Step, Task, TaskGenerator
 from app.engine.prng import DeterministicRNG
 
 
@@ -48,3 +48,8 @@ class Combinations:
             code=encode(self.prefix, self.code_version, params.seed),
             generator_version=self.version,
         )
+
+
+def generators() -> tuple[TaskGenerator[Any], ...]:
+    """Contribute this module's frozen versions to registry discovery."""
+    return (Combinations(),)

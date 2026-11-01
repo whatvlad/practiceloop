@@ -1,13 +1,15 @@
 """Native generators for the current scalar Algebra curriculum (#196)."""
 
+from typing import Any
+
 from pydantic import Field
 
 from app.engine.answers.expression import ExpressionAnswer
 from app.engine.blocks.algebra import AlgebraForm, AlgebraKind
 from app.engine.codes import encode
-from app.engine.models import Drawn, Task
+from app.engine.models import Drawn, Task, TaskGenerator
 from app.engine.prng import DeterministicRNG
-from app.services.math_parser import VariableDomain
+from app.math_input import VariableDomain
 
 
 class AlgebraParams(Drawn):
@@ -89,3 +91,8 @@ class PracticePartialFractions(AlgebraGenerator):
 
 def algebra_generators() -> tuple[AlgebraGenerator, ...]:
     return Matrices(), ComplexNumbers(), RootSum(), PracticePartialFractions()
+
+
+def generators() -> tuple[TaskGenerator[Any], ...]:
+    """Contribute this module's frozen versions to registry discovery."""
+    return algebra_generators()

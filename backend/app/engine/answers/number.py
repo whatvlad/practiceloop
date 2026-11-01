@@ -6,7 +6,7 @@ from math import isqrt
 from typing import ClassVar, cast
 
 from app.engine.models import Outcome
-from app.services.math_parser import MathNode
+from app.math_input import MathNode
 
 _MAX_BITS = 4096
 

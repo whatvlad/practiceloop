@@ -1,6 +1,7 @@
 """Definite integrals over an indefinite integral drawn from the same seed."""
 
 from fractions import Fraction
+from typing import Any
 
 import sympy as sp
 
@@ -8,7 +9,7 @@ from app.engine.answers._symbolic import X
 from app.engine.answers.number import NumberAnswer
 from app.engine.codes import encode
 from app.engine.generators.indefinite import IndefiniteIntegral, IndefiniteParams
-from app.engine.models import Drawn, Step, Task
+from app.engine.models import Drawn, Step, Task, TaskGenerator
 
 
 class DefiniteParams(Drawn):
@@ -54,3 +55,8 @@ class DefiniteIntegral:
             code=encode(self.prefix, self.code_version, params.seed),
             generator_version=self.version,
         )
+
+
+def generators() -> tuple[TaskGenerator[Any], ...]:
+    """Contribute this module's frozen versions to registry discovery."""
+    return (DefiniteIntegral(),)

@@ -1,13 +1,15 @@
 """Native generators for the remaining existing analysis topics (#197)."""
 
+from typing import Any
+
 from pydantic import Field
 
 from app.engine.answers.expression import ExpressionAnswer
 from app.engine.blocks.analysis import AnalysisForm, AnalysisKind
 from app.engine.codes import encode
-from app.engine.models import Drawn, Task
+from app.engine.models import Drawn, Task, TaskGenerator
 from app.engine.prng import DeterministicRNG
-from app.services.math_parser import VariableDomain
+from app.math_input import VariableDomain
 
 
 class AnalysisParams(Drawn):
@@ -122,3 +124,8 @@ def analysis_generators() -> tuple[AnalysisGenerator, ...]:
         MultivariableFunctions(),
         DifferentialEquations(),
     )
+
+
+def generators() -> tuple[TaskGenerator[Any], ...]:
+    """Contribute this module's frozen versions to registry discovery."""
+    return analysis_generators()

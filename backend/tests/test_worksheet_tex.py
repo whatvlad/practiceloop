@@ -15,11 +15,12 @@ from datetime import date
 from pathlib import Path
 
 import pytest
+from engine_fixtures import catalogue
 
 from app.api.practice import TOPICS
 from app.engine.practice import ENGINE_TOPICS
 from app.engine.practice import pool as engine_pool
-from app.generators.core import catalogue, catalogue_records, replay
+from app.engine.practice import public_replay as replay
 from app.services import worksheet_pdf
 from app.services.worksheet_graphs import graph
 from app.services.worksheet_pdf import (
@@ -31,7 +32,8 @@ from app.services.worksheet_pdf import (
     compile_pdf,
     render_tex,
 )
-from app.visuals.spec import BUILDERS, build_visual
+from app.services.worksheets import catalogue_records
+from app.visuals.spec import build_visual
 
 pytestmark = pytest.mark.tex
 DAY = date(2026, 10, 22)
@@ -75,12 +77,15 @@ def sample(answer_key: bool = True, **options: object) -> str:
     groups = [
         PrintedGroup(
             "Substitution, level 3",
-            [PrintedProblem(e.statement, e.answer, 6) for e in catalogue("substitution", 3)[:2]],
+            [
+                PrintedProblem(e.statement, e.answer_latex, 6)
+                for e in catalogue("substitution", 3)[:2]
+            ],
         ),
         PrintedGroup(
             "Triple integrals, level 3",
             [
-                PrintedProblem(e.statement, e.answer, 10.5)
+                PrintedProblem(e.statement, e.answer_latex, 10.5)
                 for e in catalogue("triple-integrals", 3)[:2]
             ],
         ),
@@ -95,7 +100,7 @@ def test_every_catalogue_statement_and_answer_compiles() -> None:
     groups = [
         PrintedGroup(
             f"{topic.name}, level {level}",
-            [PrintedProblem(e.statement, e.answer, 0) for e in catalogue(slug, level)],
+            [PrintedProblem(e.statement, e.answer_latex, 0) for e in catalogue(slug, level)],
         )
         for slug, topic in TOPICS.items()
         if slug not in ENGINE_TOPICS
@@ -130,7 +135,10 @@ def test_every_catalogue_solution_compiles(slug: str) -> None:
     groups = [
         PrintedGroup(
             f"{TOPICS[slug].name}, level {level}",
-            [PrintedProblem(e.statement, e.answer, 0, steps(e)) for e in catalogue(slug, level)],
+            [
+                PrintedProblem(e.statement, e.answer_latex, 0, steps(e))
+                for e in catalogue(slug, level)
+            ],
         )
         for level in TOPICS[slug].levels
     ]
@@ -145,18 +153,18 @@ def test_every_catalogue_solution_compiles(slug: str) -> None:
 def test_graphs_of_every_visual_version_compile_beside_their_steps(tmp_path: Path) -> None:
     first: dict[tuple[object, int], dict[str, object]] = {}
     for slug, topic in TOPICS.items():
-        if slug in ENGINE_TOPICS:
+        if ENGINE_TOPICS[slug].visual is None:
             continue
         for level in topic.levels:
             for record in catalogue_records(slug, level):
-                if record["generator_version"] in BUILDERS:
+                if build_visual(record) is not None:
                     first.setdefault((record["generator_version"], level), record)
     problems = []
     for record in first.values():
         exercise = replay(record)
         picture = graph(build_visual(record))
         problems.append(
-            PrintedProblem(exercise.statement, exercise.answer, 0, steps(exercise), picture)
+            PrintedProblem(exercise.statement, exercise.answer_latex, 0, steps(exercise), picture)
         )
     tex = render_tex(
         [PrintedGroup("Graphs", problems)], paper="a4", columns=1, answer_key=True, day=DAY,

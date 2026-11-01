@@ -7,8 +7,7 @@ import sympy as sp
 
 from app.engine.answers._symbolic import X, check_domain, components, differs, trusted_expression
 from app.engine.models import Outcome
-from app.services.math_parser import MathNode
-from app.services.math_worker import _build_sympy
+from app.math_input import MathNode, build_expression
 
 
 @dataclass(frozen=True, slots=True)
@@ -27,7 +26,7 @@ class DerivativeAnswer:
         problem = check_domain(tree, self.domain)
         if problem is not None:
             return problem
-        answer = _build_sympy(tree, evaluate=True)
+        answer = build_expression(tree, evaluate=True)
         if answer.has(sp.nan, sp.zoo, sp.oo, -sp.oo):
             return "invalid"
         if answer.free_symbols - {X}:

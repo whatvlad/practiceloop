@@ -14,8 +14,6 @@ from typing import Any
 import sympy as sp
 
 from app.engine.blocks.multiple.setup import SetupLike, bounds_latex
-from app.generators.core import Exercise
-from app.generators.double import solution_setup
 from app.visuals.expression import to_tree
 
 KIND = "region2d"
@@ -73,10 +71,6 @@ def _interval(values: list[float], *, margin: float, include_zero: bool = False)
     if high - low < 1e-9:
         low, high = low - 1, high + 1
     return [round(low - margin, 4), round(high + margin, 4)]
-
-
-def region2d(exercise: Exercise) -> dict[str, Any]:
-    return region2d_setup(solution_setup(exercise.record))
 
 
 def region2d_setup(setup: SetupLike) -> dict[str, Any]:

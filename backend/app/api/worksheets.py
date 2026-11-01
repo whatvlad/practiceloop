@@ -37,7 +37,6 @@ from app.api.practice import (
 from app.core.database import transaction
 from app.core.errors import ApiError
 from app.engine import practice as engine
-from app.generators.core import replay
 from app.services import archive, idempotency
 from app.services import owned_records as records
 from app.services import worksheets as store
@@ -267,20 +266,12 @@ def _generate(body: WorksheetBody, user_id: UUID, scope: Scope) -> JSONResponse:
 
 
 def _prepare(record: dict[str, object]) -> tuple[str, records.PrivateSolution]:
-    if engine.is_engine_record(record):
-        issued = engine.pooled(record)
-        return issued.statement, records.PrivateSolution(
-            generator_version=str(issued.record["generator_version"]),
-            generator_data=issued.record,
-            answer_latex=issued.answer_latex,
-            solution_steps=list(issued.steps),
-        )
-    exercise = replay(record)
-    return exercise.statement, records.PrivateSolution(
-        generator_version=str(exercise.record["generator_version"]),
-        generator_data=exercise.record,
-        answer_latex=exercise.answer,
-        solution_steps=list(exercise.steps),
+    issued = engine.pooled(record)
+    return issued.statement, records.PrivateSolution(
+        generator_version=str(issued.record["generator_version"]),
+        generator_data=issued.record,
+        answer_latex=issued.answer_latex,
+        solution_steps=list(issued.steps),
     )
 
 

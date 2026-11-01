@@ -10,7 +10,7 @@ from typing import Literal, Protocol
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from app.services.math_parser import MathNode
+from app.math_input import MathNode
 
 type Outcome = Literal["correct", "incorrect", "missing_constant", "invalid", "inconclusive"]
 

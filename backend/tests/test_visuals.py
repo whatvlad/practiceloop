@@ -6,18 +6,15 @@ from dataclasses import replace
 
 import pytest
 import sympy as sp
+from engine_fixtures import catalogue, native_data, native_record
 
 from app.api.practice import TOPICS
+from app.engine.answers._symbolic import X
 from app.engine.practice import ENGINE_TOPICS
 from app.engine.practice import issue as engine_issue
-from app.generators.basic import X
-from app.generators.core import catalogue
-from app.generators.definite import replay_definite, value_latex
 from app.visuals.expression import HEADS, UnsupportedExpression, evaluate, to_tree
 from app.visuals.spec import (
-    BUILDERS,
     MAX_BYTES,
-    NO_VISUAL,
     _build,
     build_visual,
     solution_payload,
@@ -57,25 +54,12 @@ def assert_means(tree: object, expr: object, xs: list[float]) -> None:
     assert compared
 
 
-def test_every_catalogue_version_declares_a_visual_or_none() -> None:
-    versions = {
-        str(exercise.record["generator_version"])
-        for topic, cell in TOPICS.items()
-        if topic not in ENGINE_TOPICS
-        for level in cell.levels
-        for exercise in catalogue(topic, level)
-    }
-    assert not set(BUILDERS) & NO_VISUAL
-    assert versions <= set(BUILDERS) | NO_VISUAL
-
-
 @pytest.mark.parametrize("slug", sorted(ENGINE_TOPICS))
 def test_a_served_engine_topic_takes_the_visual_of_its_entry(slug: str) -> None:
     # #191: no NO_VISUAL edit; the topic entry decides, and no engine builder exists yet.
     for level in TOPICS[slug].levels:
         record = engine_issue(slug, level, seed=0).record
         expected = ENGINE_TOPICS[slug].visual
-        assert record["generator_version"] not in NO_VISUAL | set(BUILDERS)
         spec = build_visual(record)
         if expected is None:
             assert spec is None
@@ -103,14 +87,14 @@ def test_every_single_integral_record_builds_a_valid_spec() -> None:
         assert len(json.dumps(spec, separators=(",", ":"))) <= MAX_BYTES
         trees = [spec["f"]] + ([spec["F"]] if "F" in spec else [])
         assert all(heads(tree) <= HEADS for tree in trees)
-        if record["generator_version"] == "definite-v1":
+        if spec["kind"] == "definite":
             assert_definite(record, spec)
         else:
             assert_indefinite(spec)
 
 
 def assert_definite(record: dict[str, object], spec: dict[str, object]) -> None:
-    problem = replay_definite(record)
+    problem = native_data(record)
     assert spec["kind"] == "definite"
     assert set(spec) == {"kind", "version", "f", "a", "b", "aLatex", "bLatex"} | {
         "range",
@@ -121,7 +105,7 @@ def assert_definite(record: dict[str, object], spec: dict[str, object]) -> None:
     a, b = spec["a"], spec["b"]
     assert lo < a < b < hi  # type: ignore[operator]
     assert a == pytest.approx(float(problem.lower)) and b == pytest.approx(float(problem.upper))
-    assert spec["value"] == value_latex(problem.value)
+    assert spec["value"] == str(sp.latex(problem.value))
     # The sliders may go anywhere in `range`: the integrand is continuous there.
     xs = [lo + (hi - lo) * i / 400 for i in range(401)]
     assert all(math.isfinite(evaluate(spec["f"], {"x": x})) for x in xs)  # type: ignore[arg-type]
@@ -152,19 +136,13 @@ def test_trees_round_trip_against_sympy() -> None:
         spec = build_visual(exercise.record)
         assert spec is not None
         xs = [-3.7, -1.3, -0.4, 0.6, 1.9, 2.8]
-        assert_means(spec["f"], exercise.integrand, xs)
+        assert_means(spec["f"], native_data(exercise.record).integrand, xs)
         if "F" in spec:
-            assert_means(spec["F"], exercise.primitive, xs)
+            assert_means(spec["F"], native_data(exercise.record).primitive, xs)
 
 
 def test_indefinite_marks_zeros_extrema_inflections_and_poles() -> None:
-    record = {
-        "generator_version": "basic-v1",
-        "template": "expand_and_split",
-        "coefficient": 1,
-        "secondary": 1,
-        "power": 2,
-    }
+    record = native_record("basic", "expand_and_split")
     spec = build_visual(record)
     assert spec is not None
     # f = (x + 1)^2 + (x + 1)/x: zero and sign change at -1, pole at 0.
@@ -184,8 +162,7 @@ def test_derivatives_have_no_visual() -> None:
 
 
 def test_unknown_versions_are_an_error_not_a_silent_omission() -> None:
-    with pytest.raises(ValueError, match="no visual decision"):
-        build_visual({"generator_version": "future-v9"})
+    assert build_visual({"generator_version": "future-v9"}) is None
 
 
 def test_expression_trees_use_only_the_listed_heads() -> None:

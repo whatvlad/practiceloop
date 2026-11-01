@@ -10,8 +10,6 @@ import math
 from typing import Any
 
 from app.engine.blocks.multiple.setup import SetupLike, bounds_latex
-from app.generators.core import Exercise
-from app.generators.triple import solution_setup
 from app.visuals.expression import to_tree
 from app.visuals.region2d import _interval, _numeric
 
@@ -53,10 +51,6 @@ def to_xy(setup: SetupLike, middle: float, outer: float) -> tuple[float, float]:
     if setup.system == "cylindrical":
         return values["r"] * math.cos(values["theta"]), values["r"] * math.sin(values["theta"])
     return values["x"], values["y"]
-
-
-def solid3d(exercise: Exercise) -> dict[str, Any]:
-    return solid3d_setup(solution_setup(exercise.record))
 
 
 def solid3d_setup(setup: SetupLike) -> dict[str, Any]:

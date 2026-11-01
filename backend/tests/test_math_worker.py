@@ -12,8 +12,8 @@ from typing import Any
 
 import pytest
 
+from app.math_input import MathInputError
 from app.services import math_worker
-from app.services.math_parser import MathInputError
 from app.services.math_worker import MathWorkerError, validate_math_input
 
 pytestmark = pytest.mark.skipif(
@@ -43,7 +43,7 @@ def _replace_child_computation(monkeypatch: pytest.MonkeyPatch, body: str) -> No
         "from app.services import math_worker as worker\n"
         "def compute(node):\n"
         + "\n".join("    " + line for line in body.splitlines())
-        + "\nworker._build_sympy = compute\nraise SystemExit(worker._child())\n"
+        + "\nworker.build_expression = compute\nraise SystemExit(worker._child())\n"
     )
     monkeypatch.setattr(math_worker, "_WORKER_COMMAND", (sys.executable, "-B", "-c", script))
 
@@ -128,7 +128,7 @@ def test_symbolic_construction_never_runs_in_parent(monkeypatch: pytest.MonkeyPa
     def fail(_node: object) -> None:
         pytest.fail("symbolic construction ran in request process")
 
-    monkeypatch.setattr(math_worker, "_build_sympy", fail)
+    monkeypatch.setattr(math_worker, "build_expression", fail)
     validate_math_input("x")
 
 

@@ -13,8 +13,7 @@ from app.engine.answers._symbolic import (
     trusted_expression,
 )
 from app.engine.models import Outcome
-from app.services.math_parser import MathNode
-from app.services.math_worker import _build_sympy
+from app.math_input import MathNode, build_expression
 
 
 @dataclass(frozen=True, slots=True)
@@ -35,7 +34,7 @@ class AntiderivativeAnswer:
         problem = check_domain(tree, self.domain)
         if problem is not None:
             return problem
-        answer = _build_sympy(tree, evaluate=True)
+        answer = build_expression(tree, evaluate=True)
         if answer.has(sp.nan, sp.zoo, sp.oo, -sp.oo):
             return "invalid"
         constants = answer.free_symbols - {X}

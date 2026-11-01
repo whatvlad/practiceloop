@@ -19,7 +19,7 @@ from app.engine.registry import Registry
 from app.engine.rendering import Issued, render
 from app.engine.rendering import statement_latex as statement_latex
 from app.engine.topics.catalogue import Topic, topics
-from app.services.math_parser import MathNode, VariableDomain, declared_variables
+from app.math_input import MathNode, VariableDomain, declared_variables
 
 # Public topic slug -> its served engine entry (#191), derived from the topic catalogue;
 # never edit it by hand. Other public topics stay on the old engine.

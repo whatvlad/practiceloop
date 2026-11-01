@@ -5,15 +5,15 @@ from typing import Any
 
 import pytest
 import sympy as sp
+from engine_fixtures import PUBLISHED_TOPICS
 from pydantic import ValidationError
 
 from app.api import practice
 from app.engine import practice as engine
 from app.engine.blocks.algebra import AlgebraForm
 from app.engine.generators.algebra import AlgebraParams, algebra_generators
-from app.generators.symbolic import replay_symbolic
+from app.math_input import MathInputError, parse_math_input
 from app.services import archive
-from app.services.math_parser import MathInputError, parse_math_input
 from app.services.math_worker import check_answer, record_variables
 
 KINDS = {
@@ -29,32 +29,11 @@ def answer_text(record: dict[str, object]) -> str:
     return sp.sstr(engine.replay(record).answer.expected).replace("**", "^")
 
 
-@pytest.mark.parametrize("slug,kind", KINDS.items())
-def test_every_existing_formula_and_coefficient_is_preserved(slug: str, kind: str) -> None:
-    for a in range(1, 6):
-        for b in range(1, 6):
-            form = AlgebraForm(kind=kind, a=a, b=b)
-            native = form.evaluate()
-            old = replay_symbolic(
-                dict(
-                    generator_version="symbolic-v1",
-                    topic=slug,
-                    template=kind,
-                    difficulty=1,
-                    a=a,
-                    b=b,
-                )
-            )
-            assert native.statement == old.statement
-            assert sp.simplify(native.expected - old.expected) == 0
-            assert [step.latex for step in native.steps] == [step["latex"] for step in old.steps]
-
-
 @pytest.mark.parametrize("slug,level", CASES)
 def test_all_algebra_levels_preserve_public_contracts_and_check_answers(
     slug: str, level: int
 ) -> None:
-    entry, old = engine.ENGINE_TOPICS[slug], practice._LEGACY_TOPICS[slug]
+    entry, old = engine.ENGINE_TOPICS[slug], PUBLISHED_TOPICS[slug]
     assert (tuple(entry.levels), entry.mixed_weight, entry.space_cm) == (
         old.levels,
         old.mixed_weight,

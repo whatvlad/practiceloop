@@ -1,5 +1,7 @@
 """Native full-curriculum single and partial derivative generators (#195)."""
 
+from typing import Any
+
 import sympy as sp
 
 from app.engine.answers.derivative import DerivativeAnswer
@@ -7,9 +9,9 @@ from app.engine.answers.expression import ExpressionAnswer
 from app.engine.blocks.differentiation.partial import PartialForm
 from app.engine.blocks.differentiation.single import DerivativeForm
 from app.engine.codes import encode
-from app.engine.models import Drawn, Step, Task
+from app.engine.models import Drawn, Step, Task, TaskGenerator
 from app.engine.prng import DeterministicRNG
-from app.services.math_parser import VariableDomain
+from app.math_input import VariableDomain
 
 STEP_TEXT = {
     "split_fraction": "Divide each numerator term by x.",
@@ -109,3 +111,8 @@ class PartialDerivatives:
             code=encode(self.prefix, self.code_version, params.seed),
             generator_version=self.version,
         )
+
+
+def generators() -> tuple[TaskGenerator[Any], ...]:
+    """Contribute this module's frozen versions to registry discovery."""
+    return (SingleDerivatives(), PartialDerivatives())

@@ -1,8 +1,6 @@
-"""#170: the new engine stays apart from the old generators and old saved problems.
+"""#199: the runtime has no legacy generators; saved archives use stored fields.
 
-Old saved problems keep opening from `problems.problem_latex` and replay through
-the old generators exactly as they were saved. New-engine topics never import
-or fall back to `app/generators`.
+Native codes retain replay. Pre-engine records reopen/reveal/print without it.
 """
 
 import ast
@@ -21,7 +19,6 @@ import pytest
 from app.api import practice
 from app.core.auth import VerifiedUser
 from app.engine import practice as engine
-from app.generators.core import replay
 from app.services import archive
 from app.services import owned_records as records
 
@@ -41,8 +38,8 @@ def imported_modules(path: Path) -> Iterator[str]:
 
 
 def test_new_engine_never_imports_the_old_generators() -> None:
-    sources = sorted((APP / "engine").rglob("*.py"))
-    assert sources
+    sources = sorted(APP.rglob("*.py"))
+    assert sources and not (APP / "generators").exists()
     for path in sources:
         for module in imported_modules(path):
             assert module != "app.generators" and not module.startswith("app.generators."), (
@@ -74,14 +71,6 @@ def test_all_public_topics_use_the_engine_and_old_records_are_archives() -> None
         # the saved record an archive rather than a new-engine problem.
         assert not engine.is_engine_record(item["generator_data"])
         assert archive.is_archived(item["topic"], item["generator_data"])
-
-
-@pytest.mark.parametrize("item", LEGACY, ids=lambda item: item["topic"])
-def test_old_saved_problem_still_replays_as_saved(item: dict[str, Any]) -> None:
-    exercise = replay(item["generator_data"])
-    assert exercise.statement == item["problem_latex"]
-    assert exercise.answer == item["answer_latex"]
-    assert list(exercise.steps) == item["solution_steps"]
 
 
 @pytest.mark.parametrize("item", LEGACY, ids=lambda item: item["topic"])

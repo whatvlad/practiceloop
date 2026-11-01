@@ -22,11 +22,13 @@
 | 2026-11-01 | Generator engine architecture as merged in #163-#170: four layers (blocks, answers, generators, topics), draw/verify/build/check lifecycle, frozen PRNG v1 and problem codes, one-file extension example, known limitations and open decisions | ADR-008 **draft** (#171), input to the GrillMe review #172 |
 | 2026-11-01 | GrillMe review of the engine: keep the four layers, typed answers, PRNG v1 and codes; typed parameters in `draw`, prefix on the generator, explicit composition, redraw on build failure, step text in generators (#189); one declarative topic entry with public areas (#191); deploy-time catalogue for symbolic topics (#192); core interfaces frozen after #189; legacy source-hash test removed; remaining refactor split into #189-#200 | ADR-008 accepted with amendments by Vlad (#172); docs/architecture/generator-engine-review.md |
 | 2026-11-01 | Engine core reworked: `draw` returns typed `Drawn` parameters and `build` is pure over them; prefix, family, code version and step text are generator class attributes; outer parameters hold inner parameters and inner generators expose typed results; topic predicates read parameters; a candidate whose build raises is skipped and logged within 64 draws; engine topics use public areas; `Answer`, `Outcome`, `Task`, `TaskGenerator`, `Topic`, PRNG v1 and the code format frozen | ADR-008 updated (#189); golden codes unchanged |
+| 2026-11-01 | Final native generator engine: all current topics, permanent codes, verified release pools, typed checking, public app.math_input, provider discovery and read-only archives; legacy source removed | [Final ADR-008](0008-generator-engine.md), #199/#162; owner acceptance recorded in linked PR |
 
 Practice areas: ADR-005 amendment of 2026-10-26 (#144) supersedes the old
 Integrals/Derivatives grouping with Algebra/Mathematical Analysis. Launch #39
 and roadmap tracker #30 are deferred outside the active curriculum queue by
 the product owner.
+
 
 Open questions are in docs/decisions/OPEN_QUESTIONS.md. Record substantial choices
 in a new ADR rather than changing accepted history or the source specification.

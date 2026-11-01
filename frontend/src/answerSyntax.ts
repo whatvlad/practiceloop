@@ -1,4 +1,4 @@
-// Browser mirror of backend/app/services/math_parser.py (ADR-003). It only previews
+// Browser mirror of backend/app/math_input/parser.py (ADR-003). It only previews
 // how the backend will read an answer and explains syntax mistakes; it never decides
 // correctness, and the submitted text is never rewritten behind the learner's back.
 // Keep the rules and limits in step with the backend parser.
@@ -79,7 +79,7 @@ const isLetter = (c: string) => (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')
 /**
  * ADR-005 rule for templates with declared variables: a run of letters is read from
  * the left, each time as the longest function, variable, `pi` or `e` that starts
- * there, so `2xy` is 2*x*y and `rtheta` is r*theta. Mirrors math_parser._split_name.
+ * there, so `2xy` is 2*x*y and `rtheta` is r*theta. Mirrors math_input.parser._split_name.
  */
 function splitName(run: string, last: boolean): string[] {
   const names: string[] = [];

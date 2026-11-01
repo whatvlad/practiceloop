@@ -5,6 +5,7 @@ from itertools import product
 
 import pytest
 import sympy as sp
+from engine_fixtures import PUBLISHED_TOPICS
 
 from app.api import practice
 from app.engine import practice as engine
@@ -12,8 +13,8 @@ from app.engine.answers._symbolic import X, components
 from app.engine.answers.antiderivative import AntiderivativeAnswer
 from app.engine.blocks.integral_forms.form import BOUNDS, METHODS, IntegralForm
 from app.engine.generators.integrals import IntegralGenerator, integral_generators
+from app.math_input import parse_math_input
 from app.services import archive
-from app.services.math_parser import parse_math_input
 from app.services.math_worker import check_answer
 from app.visuals.spec import build_visual
 
@@ -38,7 +39,7 @@ def answer_text(record: dict[str, object]) -> str:
 def test_migrated_topics_keep_levels_weights_worksheet_space_and_archive_legacy() -> None:
     for slug, levels in MIGRATED.items():
         entry = engine.ENGINE_TOPICS[slug]
-        old = practice._LEGACY_TOPICS[slug]
+        old = PUBLISHED_TOPICS[slug]
         assert tuple(entry.levels) == old.levels == levels
         assert (entry.mixed_weight, entry.space_cm) == (old.mixed_weight, old.space_cm)
         assert archive.is_archived(slug, {"generator_version": "legacy"})

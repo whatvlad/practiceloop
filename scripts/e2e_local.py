@@ -118,7 +118,6 @@ PARTIAL = "partial-derivatives"
 
 
 def correct_answer(url: str, problem_id: str) -> str:
-    from app.generators.core import replay
 
     with psycopg.connect(url) as conn:
         row = conn.execute(
@@ -127,25 +126,18 @@ def correct_answer(url: str, problem_id: str) -> str:
         ).fetchone()
     if row is None:
         raise SystemExit(f"no private record for {problem_id}")
+    # Use the answer kind's trusted expression, not its display LaTeX.
+    import sympy as sp
+
     from app.engine import practice as engine
+    from app.engine.answers.antiderivative import AntiderivativeAnswer
 
-    if engine.is_engine_record(row[0]):
-        # Use the answer kind's trusted expression, not its display LaTeX.
-        import sympy as sp
-
-        from app.engine.answers.antiderivative import AntiderivativeAnswer
-
-        answer = engine.replay(row[0]).answer
-        if isinstance(answer, AntiderivativeAnswer):
-            value, constant = answer.primitive, " + C"
-        else:
-            value, constant = answer.expected, ""  # type: ignore[attr-defined]
-        return sp.sstr(value).replace("**", "^").replace("Abs", "abs").replace("E", "e") + constant
-    exercise = replay(row[0])
-    if exercise.value is not None:
-        return str(exercise.value).replace("**", "^").replace("E", "e")
-    constant = " + C" if exercise.constant else ""
-    return str(exercise.primitive).replace("**", "^").replace("Abs", "abs") + constant
+    answer = engine.replay(row[0]).answer
+    if isinstance(answer, AntiderivativeAnswer):
+        value, constant = answer.primitive, " + C"
+    else:
+        value, constant = answer.expected, ""  # type: ignore[attr-defined]
+    return sp.sstr(value).replace("**", "^").replace("Abs", "abs").replace("E", "e") + constant
 
 
 def private_record(url: str, problem_id: str) -> dict[str, object]:

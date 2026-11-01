@@ -130,48 +130,47 @@ def _differentiation_level(level: int, params: Drawn) -> bool:
 
 
 def topics() -> dict[str, Topic]:
-    result = (
-        Topic(
-            "partial-fractions",
-            "algebra",
-            {1: (Choice("partial-fractions-v1"),)},
-            1,
-            title="Partial fractions",
-            space_cm=5,
-        ),
-        Topic(
-            "derivatives",
-            "mathematical-analysis",
-            {
-                1: (Choice("derivative-v1", _polynomial),),
-                2: (Choice("derivative-v1", _rational),),
-            },
-            1,
-            title="Derivatives",
-            space_cm=3,
-        ),
-        Topic(
+    declared = {
+        "indefinite-integrals": Topic(
             "indefinite-integrals",
             "mathematical-analysis",
-            {
-                1: (Choice("indefinite-v1", _polynomial),),
-                2: (Choice("indefinite-v1", _rational),),
-            },
+            {1: (Choice("indefinite-v1", _polynomial),), 2: (Choice("indefinite-v1", _rational),)},
             1,
             title="Indefinite integrals",
             space_cm=3,
+        )
+    }
+    for algebra_generator, (slug, title, space) in zip(
+        algebra_generators(),
+        (
+            ("matrices", "Matrices", 4),
+            ("complex-numbers", "Complex numbers", 4),
+            ("fundamental-theorem-algebra", "Fundamental theorem of algebra", 5),
+            ("partial-fractions", "Partial fractions", 5),
         ),
-        Topic(
-            "combinations",
+        strict=True,
+    ):
+        declared[slug] = Topic(
+            slug,
             "algebra",
-            {1: (Choice("combinations-v1"),)},
+            {
+                level: (Choice(algebra_generator.version, partial(_algebra_level, level)),)
+                for level in range(1, 6)
+            },
             1,
-            title="Combinations",
-            space_cm=4,
+            title=title,
+            space_cm=space,
             served=True,
-        ),
+        )
+    declared["combinations"] = Topic(
+        "combinations",
+        "algebra",
+        {1: (Choice("combinations-v1"),)},
+        1,
+        title="Combinations",
+        space_cm=4,
+        served=True,
     )
-    declared = {topic.slug: topic for topic in result}
     families = {
         "basic": ("basic-integrals", "Basic integrals", 1, 3),
         "substitution": ("substitution", "Substitution", 2, 4),
@@ -256,28 +255,6 @@ def topics() -> dict[str, Topic]:
                         differentiation_generator.version, partial(_differentiation_level, level)
                     ),
                 )
-                for level in range(1, 6)
-            },
-            1,
-            title=title,
-            space_cm=space,
-            served=True,
-        )
-    for algebra_generator, (slug, title, space) in zip(
-        algebra_generators(),
-        (
-            ("matrices", "Matrices", 4),
-            ("complex-numbers", "Complex numbers", 4),
-            ("fundamental-theorem-algebra", "Fundamental theorem of algebra", 5),
-            ("partial-fractions", "Partial fractions", 5),
-        ),
-        strict=True,
-    ):
-        declared[slug] = Topic(
-            slug,
-            "algebra",
-            {
-                level: (Choice(algebra_generator.version, partial(_algebra_level, level)),)
                 for level in range(1, 6)
             },
             1,

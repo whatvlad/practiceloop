@@ -1,13 +1,9 @@
-"""Which generator versions get which visual (ADR-006), and the cached builder.
+"""Typed native solution visuals declared by topics (ADR-006).
 
-Every catalogue version is either in BUILDERS or declared in NO_VISUAL; the
-catalogue-wide test in tests/test_visuals.py keeps that true. A new-engine record
-takes the visual its topic entry declares (#191). A spec is built from
-the replayed exercise only, so it reveals nothing the solution steps do not.
+Archived records use stored solution fields without replay or regenerated graphs.
 """
 
 import json
-from collections.abc import Callable
 from functools import lru_cache
 from typing import Any
 
@@ -15,27 +11,12 @@ from app.engine import practice as engine
 from app.engine.codes import parse_code
 from app.engine.generators.integrals import IntegralGenerator
 from app.engine.generators.multiple import DoubleIntegrals
-from app.generators.core import Exercise, replay
-from app.visuals.region2d import region2d, region2d_setup
-from app.visuals.single import definite, definite_data, indefinite
-from app.visuals.solid3d import solid3d, solid3d_setup
+from app.visuals.region2d import region2d_setup
+from app.visuals.single import definite_data, indefinite
+from app.visuals.solid3d import solid3d_setup
 
 VERSION = 1
 MAX_BYTES = 8 * 1024
-
-BUILDERS: dict[str, Callable[[Exercise], dict[str, Any]]] = {
-    "definite-v1": definite,
-    "basic-v1": indefinite,
-    "substitution-v1": indefinite,
-    "substitution-v2": indefinite,
-    "parts-v1": indefinite,
-    "rational-v1": indefinite,
-    "trigonometric-v1": indefinite,
-    "double-v1": region2d,
-    "triple-v1": solid3d,
-}
-# Derivatives have no visual in ADR-006.
-NO_VISUAL = frozenset({"derivatives-v1", "partial-v1", "symbolic-v1"})
 
 
 def build_visual(record: dict[str, object]) -> dict[str, Any] | None:
@@ -70,15 +51,7 @@ def _build(canonical: str) -> dict[str, Any] | None:
         if len(json.dumps(spec, separators=(",", ":"))) > MAX_BYTES:
             raise ValueError("Visual spec exceeds 8 KB")
         return spec
-    if version in NO_VISUAL:
-        return None
-    builder = BUILDERS.get(version)
-    if builder is None:
-        raise ValueError("Generator version declares no visual decision")
-    spec = {**builder(replay(record)), "version": VERSION}
-    if len(json.dumps(spec, separators=(",", ":"))) > MAX_BYTES:
-        raise ValueError("Visual spec exceeds 8 KB")
-    return spec
+    return None
 
 
 def solution_payload(steps: Any, record: dict[str, object]) -> dict[str, Any]:

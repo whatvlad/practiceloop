@@ -20,28 +20,18 @@ from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
 
 from app.engine import practice as engine
-from app.generators.core import catalogue_records as legacy_records
 
 
 def catalogue_records(topic: str, difficulty: int) -> tuple[dict[str, object], ...]:
-    """Engine worksheets pick only verified codes; legacy cells keep their records."""
-    if topic in engine.ENGINE_TOPICS:
-        return tuple(
-            {"generator_version": problem.generator_version, "code": problem.code}
-            for problem in engine.pool(topic, difficulty)
-        )
-    return legacy_records(topic, difficulty)
+    """Pick only verified code records from the private release pool."""
+    return tuple(
+        {"generator_version": p.generator_version, "code": p.code}
+        for p in engine.pool(topic, difficulty)
+    )
 
 
 def record_key(record: dict[str, object]) -> str:
     return json.dumps(record, sort_keys=True, separators=(",", ":"))
-
-
-def base_key(record: dict[str, object]) -> str:
-    """The record without its coefficient: variants of one base problem share this key."""
-    # substitution-v1 predates `coefficient` and calls the outer coefficient `a`.
-    variant = "a" if record.get("generator_version") == "substitution-v1" else "coefficient"
-    return record_key({k: v for k, v in record.items() if k != variant})
 
 
 class Picker:
@@ -50,7 +40,6 @@ class Picker:
     def __init__(self, rng: random.Random) -> None:
         self._rng = rng
         self._used: set[str] = set()
-        self._bases: set[str] = set()
 
     def remaining(self, topic: str, difficulty: int) -> list[dict[str, object]]:
         return [r for r in catalogue_records(topic, difficulty) if record_key(r) not in self._used]
@@ -59,10 +48,8 @@ class Picker:
         pool = self.remaining(topic, difficulty)
         if not pool:
             return None
-        fresh = [record for record in pool if base_key(record) not in self._bases]
-        record = self._rng.choice(fresh or pool)
+        record = self._rng.choice(pool)
         self._used.add(record_key(record))
-        self._bases.add(base_key(record))
         return record
 
     def pick_mixed(

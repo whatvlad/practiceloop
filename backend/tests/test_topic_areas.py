@@ -6,7 +6,7 @@ import pytest
 
 from app.api import practice
 from app.core.auth import VerifiedUser
-from app.generators.core import catalogue
+from app.engine import practice as engine
 
 
 def test_catalogue_lists_algebra_and_syllabus_topics() -> None:
@@ -74,7 +74,7 @@ def test_combined_mixed_pool_preserves_weights_and_legacy_boundaries(level: int)
     ),
 )
 def test_syllabus_topics_have_replayable_problems(topic: str) -> None:
-    exercise = catalogue(topic, 1)[0]
-    assert exercise.record["generator_version"] == "symbolic-v1"
+    exercise = engine.issue(topic, 1, seed=199)
+    assert "code" in exercise.record
     assert exercise.statement
-    assert exercise.answer
+    assert exercise.answer_latex

@@ -1,136 +1,43 @@
 # Answer checking
 
-Issue #8 implements the equivalence rules of [ADR-003](../decisions/0003-mathematical-input-and-equivalence.md)
-as a backend library. No endpoint calls it yet; the practice API (#34, #10) does.
+All current practice uses typed engine answers. Pre-engine saved problems are
+read-only archives: their stored statement, answer and steps remain available,
+and checking returns `409 problem_archived` before any replay or worker.
+The obsolete `services/answer_check.py` and generator-type dispatch are removed.
+[ADR-008](../decisions/0008-generator-engine.md) is the architecture record.
 
-```python
-from app.services.math_worker import check_answer
+`app.math_input` exposes the bounded parser/AST and safe SymPy builder.
+`services/math_worker.py` starts a fresh child, applies 2 s CPU / 256 MiB memory /
+64 KiB combined-output / 3 s wall limits, rebuilds the trusted code once, parses
+the answer with its code-derived variable declaration and calls `Answer.check`.
+One shared admission slot bounds checking and arbitrary-code reconstruction.
+The API never sends raw learner text to SymPy parsing/eval.
 
-result = check_answer("2/3(x+2)^3 + 2x + 2ln|x| + C", private_record)
-# AnswerCheck(result="correct", missing_constant=False)
-```
+The answer kinds own their policy:
 
-`private_record` is the stored generator record (for example the `basic-v1` JSON
-in [BASIC_GENERATOR.md](BASIC_GENERATOR.md)), never an expression string.
+- Exact numbers, including combinations, compare exact rational values.
+- Expressions use only declared real/positive variables. Symbolic equality is
+  proof; sampling may only certify a difference, never equality.
+- Antiderivatives prove the derivative on every component of the stated real
+  domain, require an explicit nonzero affine arbitrary constant and require one
+  numeric offset across components. A valid primitive without C is
+  `missing_constant`; a per-component offset such as |x|/x is incorrect.
+- Derivatives compare the exact function on its domain, without arbitrary C.
+  Definite/multiple integrals and initial-value solutions also reject C.
 
-| Outcome | API meaning |
-|---|---|
-| `AnswerCheck("correct")` | `result: "correct"` |
-| `AnswerCheck("incorrect", missing_constant=True)` | `result: "incorrect"`, `feedbackCode: "missing_constant"` |
-| `AnswerCheck("incorrect", feedback_code="trig_sign")` | `result: "incorrect"`, `feedbackCode: "trig_sign"` |
-| `AnswerCheck("incorrect")` | `result: "incorrect"`, a general hint |
-| `AnswerCheck("invalid")` | grammar rejection, or an expression that evaluates to an undefined value such as `1/(x-x)`; a persisted invalid attempt |
-| `MathInputTooLong` | `422`, no attempt |
-| `MathWorkerError` | retryable `503 math_worker_unavailable`, no attempt |
-| `MathCheckInconclusive` | `503 math_check_inconclusive`, no attempt |
-| `ValueError` | the stored record cannot be replayed: a server fault (`500`) |
+Unevaluated subexpressions are checked before cancellation. An all-real answer
+containing a hole (including tan(x)'s poles or a cancelled denominator) is invalid.
+On a restricted domain, a gap within the domain makes an answer incorrect; an
+expression defined nowhere is invalid. If neither equality nor a difference can
+be established, the outcome is inconclusive and the API returns a retryable 503.
+Timeouts, failed children and malformed worker output are also service failures,
+never incorrectly recorded learner answers. Every child is killed/reaped on a
+wall timeout or interruption.
 
-An archived problem (#190: an old record of a topic now on the new engine) never
-reaches the checker; the route returns `409 problem_archived` and stores no attempt.
+Native incorrect answers use general feedback; missing-constant feedback remains
+explicit. Historical named feedback stays readable from saved attempts without
+running the deleted mistake classifiers.
 
-## How it decides
-
-The parent only parses the answer. A fresh worker with the ADR-003 limits
-replays the record (integrand, primitive and declared domain), builds the
-answer from the syntax tree, and runs `app.services.answer_check.classify`:
-
-1. At most one symbol other than `x` is the arbitrary constant `K`. Its
-   derivative `dF/dK` must be a nonzero real number, so the answer is `aK + b`.
-   `K^2`, `K*x` and `e^K` are incorrect.
-2. With `K = 0`, the rest must differentiate to the integrand and be real on
-   every connected component of the domain. Each component is an open interval
-   written in a positive symbol `t`: `a + t` or `b - t` when it is unbounded and
-   `a + (b - a)t/(1 + t)` for a finite one such as the rational templates'
-   `(-1, 0)`. So `ln|x|` passes on `x != 0` and `ln(x)` fails there. When SymPy
-   cannot infer realness in `t` (for example `ln|x^2 + x|`), the answer's own
-   `continuous_domain` must cover the whole domain instead.
-3. With no constant, a valid primitive is `missing_constant`; adding a number
-   such as `+ 7` does not count.
-4. The primitive minus the template's own primitive must be one number on all
-   components. `ln|x| + |x|/x + C` has derivative `1/x`, but the offset differs
-   on each side of zero, so it is incorrect. Both primitives are already proven
-   here, so when the offset does not simplify in `t`, its exact value at `t = 1`
-   is that component's constant.
-
-Before evaluation, every subexpression of the parsed answer is checked with
-`continuous_domain`, so evaluation cannot cancel a hole. On all-real domains a
-hole is `invalid`, as before. On other domains a part that is undefined somewhere
-in the domain makes the answer `incorrect`, the same as `ln(x)` where `x < 0` is
-allowed; a part defined nowhere, such as `1/(x-x)`, is `invalid`.
-
-`sympy.simplify` returning zero is the only proof of equality. When it cannot
-prove a difference is zero, the answer is evaluated at fixed sample points of
-each component with 50-digit adaptive precision. A value above `1e-12`, or a
-non-real or undefined value, certifies `incorrect`. If neither happens the
-result is `inconclusive`, never a guess. For example `log(x^2)` on all reals is
-undefined at 0, which no sample point hits, so it is inconclusive.
-
-## Cost and limits
-
-Measured locally, one check takes about 0.6–0.9 s of wall time; most of it is
-importing SymPy and replaying the record (which re-verifies the generator's own
-solution). That leaves about 1 s of the 2 s CPU limit for the answer itself.
-Answers that need more, such as `((x+1)^12 + 1)^12 + C` or twelve nested `sin`,
-end as a retryable `MathWorkerError`, never as `incorrect`. The corpus in
-`backend/tests/test_answer_check.py` runs such answers through the real worker
-and checks that each ends within the wall limit with its child reaped.
-
-The #77–#80 records are replayed in the worker with `verify=False`: the
-catalogue already proved each one when it was generated, and repeating that proof
-cost most of the CPU budget for rational level 5 on CI runners. Their slowest
-check, rational level 5, then uses about 0.5 s of child CPU locally. `replay_problem` accepts `basic-v1`,
-`substitution-v1`, the four #77–#80 versions and `definite-v1`. A new generator
-version adds its replay to `answer_check.replay_problem`.
-
-## Mistake diagnosis
-
-After an `incorrect` result, the worker compares the answer with the mistakes
-its template declares in `app/generators/mistakes.py`. Each declared mistake is
-the wrong antiderivative it produces, for example `ln(x)` for `ln|x|`
-(`log_absolute`) or `-cos(x)` with its sign lost (`trig_sign`). The answer,
-without its constant, matches when the difference is proven constant on every
-component; numbers are never used as proof. Definite templates reuse their base
-template's mistakes evaluated at the bounds, skipping any that still give the
-correct value, and add `definite_not_evaluated` (an antiderivative instead of a
-number), `bounds_reversed` and `definite_constant`. Exactly one matching code is
-returned as `incorrect:<code>`; none, or two different codes, give no diagnosis
-and the learner sees a general hint. The attempt stores the code in
-`attempts.feedback_code` (migration `202610200001`). Correct, invalid and
-missing-constant answers never carry one. Diagnosis adds 0.01–0.4 s of CPU to
-an incorrect check.
-
-## Multiple integrals
-
-ADR-005 answers a double integral (`double-v1`, #99) with its exact value, so it
-is checked like a definite integral: one real number, compared exactly with no
-`x` and no constant. The worker never integrates. Each template variant in
-`app/generators/double.py` declares its value and, for polar set-ups, the value
-without the Jacobian factor `r`; a record's coefficient scales both. Replays
-with `verify=True` (catalogue and tests) recompute them with SymPy, check them
-clean, and cross-check every other set-up of the same region by 25-digit
-numerical quadrature, exactly where SymPy manages. Diagnosis adds
-`bounds_reversed` (the negated value) and `missing_jacobian`, each only on an
-unambiguous match. The shared pieces live in `app/generators/multiple.py`.
-
-Triple integrals (`triple-v1`, #100, `app/generators/triple.py`) work the same
-way in Cartesian and cylindrical coordinates (`dV = r dz dr dθ`). Variants also
-declare `z_bounds`, the value a learner gets with the wrong `z` bounds (for
-example a cone filled down to `z = 0`). The numerical cross-check integrates
-the innermost level of a triple set-up exactly with SymPy and nests mpmath only
-over the outer two, splitting an interval at 0 so the kink of `√(x² + y²)` on
-the axis is a quadrature node.
-
-## Definite integrals
-
-A `definite-v1` answer (#36) must be one real number: an answer containing `x`
-or any constant symbol is `incorrect`, so `e - 1 + C` is not accepted. Every
-subexpression is evaluated first, and one without a value (such as
-`ln(1 - 1)`) makes the answer `invalid`. Then `simplify(answer - value) == 0`
-proves `correct`, so `2ln(2) - ln(3)`, `ln|4/3|` and `-ln(3/4)` all pass. A
-difference above `1e-12` at 50 digits, or a non-real value such as `ln(-4/3)`,
-is `incorrect`; a decimal such as `1.5708` for `π/2` is therefore incorrect.
-Anything else is `inconclusive`. A definite check uses about 0.7–1.0 s of child
-CPU locally, about the same as the slowest indefinite checks.
-
-Verification, from `backend/`: `python -m pytest tests/test_answer_check.py`
-(worker tests skip off Linux).
+Verification: `python -m pytest tests/test_answer_check.py tests/test_answer_variables.py tests/test_engine_answers.py tests/test_math_worker.py` from backend.
+Worker tests require Linux. The shared parser corpus is also checked in the
+frontend; API/DB/E2E tests cover the persistence and reveal boundaries.

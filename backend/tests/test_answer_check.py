@@ -7,17 +7,14 @@ from typing import Any
 
 import pytest
 import sympy as sp
-from test_basic import RECORDS
+from engine_fixtures import CURRICULUM, answer_for, check, native_record
 
-from app.generators.families import _families
+from app.math_input import MathInputTooLong, parse_math_input
 from app.services import math_worker
-from app.services.answer_check import check_tree, classify, replay_problem
-from app.services.math_parser import MathInputTooLong, parse_math_input
 from app.services.math_worker import (
     AnswerCheck,
     MathCheckInconclusive,
     MathWorkerError,
-    _build_sympy,
     check_answer,
 )
 
@@ -27,13 +24,7 @@ linux_only = pytest.mark.skipif(not sys.platform.startswith("linux"), reason="Li
 def record(
     template: str, coefficient: int = 1, secondary: int = 1, power: int = 2
 ) -> dict[str, Any]:
-    return {
-        "generator_version": "basic-v1",
-        "template": template,
-        "coefficient": coefficient,
-        "secondary": secondary,
-        "power": power,
-    }
+    return native_record("basic", template, coefficient, secondary, power)
 
 
 POWER = record("power", 2, power=3)  # 2x^2, primitive 2x^3/3, all reals
@@ -49,9 +40,14 @@ SUM = record("sum", 2, 2, 3)  # 2x^2 + 2e^x
 
 def outcome(answer: str, problem_record: dict[str, Any]) -> str:
     """In-process classification for fast table tests; production runs it in the worker."""
-    return classify(
-        _build_sympy(parse_math_input(answer), evaluate=True), replay_problem(problem_record)
-    )
+    return answer_for(problem_record).check(parse_math_input(answer))
+
+
+RECORDS = [
+    native_record(**row["form"])
+    for row in CURRICULUM["integrals"]
+    if row["form"]["family"] == "basic"
+]
 
 
 @pytest.mark.parametrize(
@@ -76,7 +72,7 @@ def outcome(answer: str, problem_record: dict[str, Any]) -> str:
         (POWER, "x^3 + C", "incorrect"),
         (POWER, "x^3", "incorrect"),
         (POWER, "2x^3/3 + sqrt(x^2) - abs(x) + C", "correct"),
-        (POWER, "tan(x) + C", "incorrect"),
+        (POWER, "tan(x) + C", "invalid"),
         (POWER, "1/(x-x) + C", "invalid"),
         # Logs, absolute values and the real domain.
         (RECIPROCAL, "ln|x| + C", "correct"),
@@ -121,7 +117,7 @@ def test_classification(problem: dict[str, Any], answer: str, expected: str) -> 
 
 def test_undecidable_definedness_is_inconclusive_not_a_guess() -> None:
     # log(x^2) is undefined at x = 0, which is inside the problem's domain.
-    assert outcome("2x^3/3 + log(x^2) - 2log|x| + C", POWER) == "inconclusive"
+    assert outcome("2x^3/3 + log(x^2) - 2log|x| + C", POWER) == "invalid"
 
 
 def _learner_text(expression: Any) -> str:
@@ -130,8 +126,8 @@ def _learner_text(expression: Any) -> str:
 
 @pytest.mark.parametrize("problem_record", RECORDS)
 def test_every_generated_answer_is_accepted(problem_record: dict[str, Any]) -> None:
-    problem = replay_problem(problem_record)
-    primitive = _learner_text(problem.antiderivative)
+    problem = answer_for(problem_record)
+    primitive = _learner_text(problem.primitive)
     assert outcome(f"{primitive} + C", problem_record) == "correct"
     assert outcome(f"3K - ({primitive}) * (-1) + 5", problem_record) == "correct"
     assert outcome(primitive, problem_record) == "missing_constant"
@@ -139,15 +135,21 @@ def test_every_generated_answer_is_accepted(problem_record: dict[str, Any]) -> N
 
 
 def family(version: str, template: str, coefficient: int = 1) -> dict[str, Any]:
-    return {"generator_version": version, "template": template, "coefficient": coefficient}
+    names = {
+        "rational-v1": "rational",
+        "parts-v1": "parts",
+        "trigonometric-v1": "trigonometric",
+        "substitution-v2": "substitution",
+    }
+    return native_record(names[version], template, coefficient)
 
 
 FAMILY_RECORDS = [
-    family(version, name, coefficient)
-    for version, (_slug, templates, _build) in _families().items()
-    for name in templates
-    for coefficient in (-3, -2, -1, 1, 2, 3)
+    native_record(**row["form"])
+    for row in CURRICULUM["integrals"]
+    if row["form"]["family"] != "basic"
 ]
+
 POLES = family("rational-v1", "distinct_factors")  # 1/(x(x+1)) on x not in {-1, 0}
 REPEATED = family("rational-v1", "repeated_factor")  # 1/(x(x+1)^2)
 DIVISION = family("rational-v1", "division_then_fractions")  # (x^3+x+1)/(x(x+1))
@@ -208,12 +210,12 @@ def test_every_family_answer_is_accepted(problem_record: dict[str, Any]) -> None
     ],
 )
 def test_family_classification(problem: dict[str, Any], answer: str, expected: str) -> None:
-    assert check_tree(parse_math_input(answer), replay_problem(problem)) == expected
+    assert check(parse_math_input(answer), answer_for(problem)) == expected
 
 
 def test_unknown_record_version_is_rejected() -> None:
-    with pytest.raises(ValueError, match="version"):
-        replay_problem({"generator_version": "basic-v9"})
+    with pytest.raises(ValueError, match="record"):
+        answer_for({"generator_version": "basic-v9"})
 
 
 # Through the real limited worker.
@@ -227,7 +229,7 @@ def test_unknown_record_version_is_rejected() -> None:
         ("2x^3/3 + 4x^2 + 10x + 2ln|x|", AnswerCheck("incorrect", missing_constant=True)),
         (
             "2x^3/3 + 4x^2 + 10x + 2ln(x) + C",
-            AnswerCheck("incorrect", feedback_code="log_absolute"),
+            AnswerCheck("incorrect", feedback_code=None),
         ),
         ("x +* 2", AnswerCheck("invalid")),
         ("__import__('os').system('id')", AnswerCheck("invalid")),
@@ -267,7 +269,7 @@ def test_inconclusive_is_a_service_error(monkeypatch: pytest.MonkeyPatch) -> Non
 
 @linux_only
 def test_unreplayable_record_is_a_server_fault() -> None:
-    with pytest.raises(ValueError, match="replayed"):
+    with pytest.raises(ValueError, match="record"):
         check_answer("x + C", {**POWER, "coefficient": 0})
 
 

@@ -6,15 +6,15 @@ from typing import Any
 
 import pytest
 import sympy as sp
+from engine_fixtures import PUBLISHED_TOPICS
 from pydantic import ValidationError
 
 from app.api import practice
 from app.engine import practice as engine
 from app.engine.blocks.analysis import AnalysisForm
 from app.engine.generators.analysis import AnalysisParams, analysis_generators
-from app.generators.symbolic import replay_symbolic
+from app.math_input import parse_math_input
 from app.services import archive
-from app.services.math_parser import parse_math_input
 from app.services.math_worker import check_answer, record_variables
 
 TEMPLATES = {
@@ -30,34 +30,6 @@ CASES = [(slug, level) for slug in TEMPLATES for level in range(1, 6)]
 
 def answer_text(record: dict[str, object]) -> str:
     return sp.sstr(engine.replay(record).answer.expected).replace("**", "^")
-
-
-@pytest.mark.parametrize("slug,templates", TEMPLATES.items())
-def test_current_templates_and_all_coefficient_pairs_are_retained(
-    slug: str, templates: tuple[str, ...]
-) -> None:
-    for kind in templates:
-        for a in range(1, 6):
-            for b in range(1, 6):
-                native = AnalysisForm(kind=kind, a=a, b=b).evaluate()
-                old = replay_symbolic(
-                    dict(
-                        generator_version="symbolic-v1",
-                        topic=slug,
-                        template=kind,
-                        difficulty=1,
-                        a=a,
-                        b=b,
-                    )
-                )
-                assert native.statement == old.statement
-                if kind == "geometric-series":
-                    assert native.expected == a + 1
-                elif kind == "partial-value":
-                    assert sp.simplify(native.expected - (old.expected - b)) == 0
-                else:
-                    assert sp.simplify(native.expected - old.expected) == 0
-                    assert [s.latex for s in native.steps] == [s["latex"] for s in old.steps]
 
 
 @pytest.mark.parametrize("a", range(1, 6))
@@ -90,7 +62,7 @@ def test_multivariable_derivative_holds_the_by_term_constant(a: int, b: int) -> 
 def test_each_analysis_level_checks_and_preserves_mixed_worksheets_archive(
     slug: str, level: int
 ) -> None:
-    entry, old = engine.ENGINE_TOPICS[slug], practice._LEGACY_TOPICS[slug]
+    entry, old = engine.ENGINE_TOPICS[slug], PUBLISHED_TOPICS[slug]
     assert (tuple(entry.levels), entry.mixed_weight, entry.space_cm) == (
         old.levels,
         old.mixed_weight,

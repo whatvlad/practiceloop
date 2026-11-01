@@ -8,7 +8,7 @@ import sympy as sp
 
 from app.engine.answers._symbolic import classify_expression, evaluated_tree, trusted_expression
 from app.engine.models import Outcome
-from app.services.math_parser import MathNode, VariableDomain, declared_variables
+from app.math_input import MathNode, VariableDomain, declared_variables
 
 
 @dataclass(frozen=True, slots=True)

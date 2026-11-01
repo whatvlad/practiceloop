@@ -8,9 +8,11 @@ worked in `Order`. Post-MVP work is the open queue (#30 roadmap and its stages).
 
 Where each part is documented:
 
-Issue #144 is in progress: group shipped calculus topics under Mathematical
-Analysis and reserve Algebra for #147. The owner deferred launch #39 and its
-tracker #30 until after the curriculum expansion; both have no active Order.
+The current 21 public topics use the native engine (#193-#197), and permanent
+problem codes open at `/p/<code>` (#198). #199 removes the obsolete runtime and
+records the final ADR-008; #162 is the parent completion audit. Future curriculum
+issues (#147/#145/#146/#200) remain separate. The GitHub Project is authoritative
+for their order and the final acceptance/merge state.
 
 | Area | Issues | Document |
 |---|---|---|
@@ -31,6 +33,6 @@ tracker #30 until after the curriculum expansion; both have no active Order.
 | Operations docs, gates, license, release | #15 | README.md, CHANGELOG.md, LICENSE |
 
 Keep these in sync when behaviour changes: `frontend/src/answerSyntax.ts` mirrors
-the backend parser grammar (`backend/app/services/math_parser.py`, shared corpus
+the backend parser grammar (`backend/app/math_input/parser.py`, shared corpus
 in `frontend/src/answerSyntax.test.ts`); `frontend/src/mathEditor.ts` turns the
 MathLive editor's LaTeX into ADR-003 text before checking.

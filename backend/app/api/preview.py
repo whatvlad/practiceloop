@@ -12,8 +12,9 @@ from uuid import uuid4
 from fastapi import APIRouter, Header, HTTPException
 from pydantic import BaseModel, ConfigDict, Field
 
-from app.generators.core import Exercise, catalogue
-from app.services.math_parser import MathInputTooLong
+from app.engine import practice as engine
+from app.engine.rendering import Issued
+from app.math_input import MathInputTooLong
 from app.services.math_worker import MathWorkerError
 from app.services.preview_check import check_answer
 from app.visuals.spec import solution_payload
@@ -29,7 +30,7 @@ _requests: deque[float] = deque()
 @dataclass
 class Session:
     expires: float
-    problems: dict[str, Exercise] = field(default_factory=dict)
+    problems: dict[str, Issued] = field(default_factory=dict)
 
 
 _sessions: dict[str, Session] = {}
@@ -99,11 +100,13 @@ def generate(body: Generate, authorization: Annotated[str, Header()] = "") -> di
             raise HTTPException(403, "sign_in_for_more_practice")
         if len(session.problems) >= MAX_PROBLEMS:
             raise HTTPException(403, "sign_in_for_more_practice")
-        cell = (body.topic, body.difficulty)
-        exercises = catalogue(*cell)
-        # One fixed demo across sessions; resetting admission never unlocks new practice.
-        index = 0
-        exercise = exercises[index]
+        # A single deterministic pre-rendered indefinite demo across sessions.
+        exercise = next(
+            p.issued()
+            for p in engine.pool(body.topic, body.difficulty)
+            if getattr(engine._registry().get(p.generator_version).answer, "kind", None)
+            == "antiderivative"
+        )
         identifier = str(uuid4())
         session.problems[identifier] = exercise
         return {
@@ -119,7 +122,7 @@ def generate(body: Generate, authorization: Annotated[str, Header()] = "") -> di
         }
 
 
-def _problem(identifier: str, authorization: str) -> Exercise:
+def _problem(identifier: str, authorization: str) -> Issued:
     with _lock:
         problem = _session(authorization).problems.get(identifier)
         if problem is None:
@@ -145,7 +148,7 @@ def attempt(
 
 @router.post("/problems/{identifier}/reveal-answer")
 def answer(identifier: str, authorization: Annotated[str, Header()] = "") -> dict[str, str]:
-    return {"answerLatex": _problem(identifier, authorization).answer}
+    return {"answerLatex": _problem(identifier, authorization).answer_latex}
 
 
 @router.post("/problems/{identifier}/reveal-solution")

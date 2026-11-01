@@ -13,7 +13,7 @@ from pydantic import Field, model_validator
 from app.engine.answers._symbolic import X
 from app.engine.models import Parameters
 from app.engine.prng import DeterministicRNG
-from app.services.math_parser import VariableDomain, declared_variables
+from app.math_input import VariableDomain, declared_variables
 
 type TextKey = str
 type MistakeCode = str

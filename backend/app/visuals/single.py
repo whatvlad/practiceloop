@@ -10,10 +10,8 @@ from typing import Any
 import sympy as sp
 from sympy.calculus.util import continuous_domain
 
+from app.engine.answers._symbolic import X
 from app.engine.blocks.integral_forms.form import IntegralData
-from app.generators.basic import X
-from app.generators.core import Exercise
-from app.generators.definite import replay_definite, value_latex
 from app.visuals.expression import Tree, evaluate, to_tree
 
 _SAMPLES = 801
@@ -61,10 +59,6 @@ def _component(integrand: Any, lower: Any, upper: Any) -> sp.Interval:
     raise ValueError("Bounds are not inside one interval of continuity")
 
 
-def definite(exercise: Exercise) -> dict[str, Any]:
-    return definite_data(replay_definite(exercise.record, verify=False))
-
-
 def definite_data(problem: Any) -> dict[str, Any]:
     """Render already rebuilt integral data; shared by old and native records."""
     a, b = float(problem.lower), float(problem.upper)
@@ -90,7 +84,7 @@ def definite_data(problem: Any) -> dict[str, Any]:
         "bLatex": str(sp.latex(problem.upper)),
         "range": [_f(lo), _f(hi)],
         "y": _y_window(inside, inside),
-        "value": value_latex(problem.value),
+        "value": str(sp.latex(problem.value)),
     }
 
 
@@ -178,7 +172,7 @@ def _poles(integrand: Any, lo: float, hi: float) -> list[float]:
     return sorted(poles)
 
 
-def indefinite(exercise: Exercise | IntegralData) -> dict[str, Any]:
+def indefinite(exercise: IntegralData) -> dict[str, Any]:
     integrand, primitive = exercise.integrand, exercise.primitive
     f, big_f = to_tree(integrand), to_tree(primitive)
     lo, hi = _x_window(integrand, f, big_f)

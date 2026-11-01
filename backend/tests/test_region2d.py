@@ -6,16 +6,27 @@ from typing import Any
 
 import pytest
 import sympy as sp
+from engine_fixtures import multiple_record, native_data, native_params
 
-from app.generators import double
-from app.generators.double import records, solution_setup
+from app.engine.blocks.multiple import double
 from app.visuals.expression import evaluate
 from app.visuals.region2d import parameter_points, to_xy
 from app.visuals.spec import build_visual
 
-ALL = [record for level in range(1, 6) for record in records(level)]
+ALL = [
+    multiple_record(2, n, i, c)
+    for n, t in double.TEMPLATES.items()
+    for i in range(len(t.variants))
+    for c in (-3, -2, -1, 1, 2, 3)
+]
+
+
+def solution_setup(record):
+    return native_data(record).setup
+
+
 # One coefficient per variant is enough for the slower numerical checks.
-UNSCALED = [record for record in ALL if record["coefficient"] == 1]
+UNSCALED = [record for record in ALL if native_params(record).form.coefficient == 1]
 
 
 def _spec(record: dict[str, object]) -> dict[str, Any]:
@@ -25,7 +36,8 @@ def _spec(record: dict[str, object]) -> dict[str, Any]:
 
 
 def _name(record: dict[str, object]) -> str:
-    return f"{record['template']}-{record['variant']}-{record['coefficient']}"
+    form = native_params(record).form
+    return f"{form.template}-{form.variant}-{form.coefficient}"
 
 
 @pytest.mark.parametrize("record", ALL, ids=_name)
@@ -73,15 +85,14 @@ def test_the_window_contains_the_region(record: dict[str, object]) -> None:
 
 
 def test_the_spec_follows_the_coefficient() -> None:
-    base = {"generator_version": "double-v1", "template": "polar_sector", "variant": 0}
-    up = _spec({**base, "coefficient": 2})
-    down = _spec({**base, "coefficient": -2})
+    up = _spec(multiple_record(2, "polar_sector", 0, 2))
+    down = _spec(multiple_record(2, "polar_sector", 0, -2))
     env = {"r": 1.0, "theta": 0.3}
     assert evaluate(up["f"], env) == pytest.approx(-evaluate(down["f"], env))
     assert down["window"]["z"][0] < 0 <= down["window"]["z"][1]
 
 
 def test_every_template_is_covered() -> None:
-    assert {record["template"] for record in ALL} == set(double.TEMPLATES)
+    assert {native_params(record).form.template for record in ALL} == set(double.TEMPLATES)
     assert {spec["system"] for spec in map(_spec, UNSCALED)} == {"cartesian", "polar"}
     assert sp.Symbol("x", real=True) in {b[0] for r in UNSCALED for b in solution_setup(r).bounds}

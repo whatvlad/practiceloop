@@ -1,0 +1,290 @@
+[
+  {
+    "slug": "matrices",
+    "name": "Matrices",
+    "area": "algebra",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mixed_weight": 1,
+    "space_cm": 4
+  },
+  {
+    "slug": "complex-numbers",
+    "name": "Complex numbers",
+    "area": "algebra",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mixed_weight": 1,
+    "space_cm": 4
+  },
+  {
+    "slug": "fundamental-theorem-algebra",
+    "name": "Fundamental theorem of algebra",
+    "area": "algebra",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mixed_weight": 1,
+    "space_cm": 5
+  },
+  {
+    "slug": "partial-fractions",
+    "name": "Partial fractions",
+    "area": "algebra",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mixed_weight": 1,
+    "space_cm": 5
+  },
+  {
+    "slug": "combinations",
+    "name": "Combinations",
+    "area": "algebra",
+    "levels": [
+      1
+    ],
+    "mixed_weight": 1,
+    "space_cm": 4
+  },
+  {
+    "slug": "basic-integrals",
+    "name": "Basic integrals",
+    "area": "mathematical-analysis",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mixed_weight": 1,
+    "space_cm": 3
+  },
+  {
+    "slug": "substitution",
+    "name": "Substitution",
+    "area": "mathematical-analysis",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mixed_weight": 2,
+    "space_cm": 4
+  },
+  {
+    "slug": "integration-by-parts",
+    "name": "Integration by parts",
+    "area": "mathematical-analysis",
+    "levels": [
+      1,
+      2,
+      3
+    ],
+    "mixed_weight": 2,
+    "space_cm": 5
+  },
+  {
+    "slug": "rational-functions",
+    "name": "Rational functions",
+    "area": "mathematical-analysis",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mixed_weight": 2,
+    "space_cm": 5
+  },
+  {
+    "slug": "trigonometric-integrals",
+    "name": "Trigonometric integrals",
+    "area": "mathematical-analysis",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mixed_weight": 2,
+    "space_cm": 5
+  },
+  {
+    "slug": "definite-integrals",
+    "name": "Definite integrals",
+    "area": "mathematical-analysis",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mixed_weight": 0,
+    "space_cm": 5
+  },
+  {
+    "slug": "double-integrals",
+    "name": "Double integrals",
+    "area": "mathematical-analysis",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mixed_weight": 2,
+    "space_cm": 6
+  },
+  {
+    "slug": "triple-integrals",
+    "name": "Triple integrals",
+    "area": "mathematical-analysis",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mixed_weight": 2,
+    "space_cm": 7
+  },
+  {
+    "slug": "derivatives",
+    "name": "Derivatives",
+    "area": "mathematical-analysis",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mixed_weight": 1,
+    "space_cm": 3
+  },
+  {
+    "slug": "partial-derivatives",
+    "name": "Partial derivatives",
+    "area": "mathematical-analysis",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mixed_weight": 1,
+    "space_cm": 4
+  },
+  {
+    "slug": "functions-and-sequences",
+    "name": "Functions and sequences",
+    "area": "mathematical-analysis",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mixed_weight": 1,
+    "space_cm": 4
+  },
+  {
+    "slug": "limits-and-continuity",
+    "name": "Limits and continuity",
+    "area": "mathematical-analysis",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mixed_weight": 1,
+    "space_cm": 4
+  },
+  {
+    "slug": "improper-integrals",
+    "name": "Improper integrals",
+    "area": "mathematical-analysis",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mixed_weight": 1,
+    "space_cm": 5
+  },
+  {
+    "slug": "series",
+    "name": "Series",
+    "area": "mathematical-analysis",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mixed_weight": 1,
+    "space_cm": 4
+  },
+  {
+    "slug": "multivariable-functions",
+    "name": "Multivariable functions",
+    "area": "mathematical-analysis",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mixed_weight": 1,
+    "space_cm": 5
+  },
+  {
+    "slug": "differential-equations",
+    "name": "Differential equations",
+    "area": "mathematical-analysis",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mixed_weight": 1,
+    "space_cm": 5
+  }
+]

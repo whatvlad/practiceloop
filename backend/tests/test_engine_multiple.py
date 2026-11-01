@@ -3,18 +3,14 @@
 import sys
 
 import pytest
-import sympy as sp
+from engine_fixtures import PUBLISHED_TOPICS
 
 from app.api import practice
 from app.engine import practice as engine
-from app.engine.blocks.multiple import double, triple
 from app.engine.blocks.multiple.form import MultipleForm
-from app.engine.blocks.multiple.setup import Setup, integrate_setup
 from app.engine.generators.multiple import DoubleIntegrals, TripleIntegrals
-from app.generators import double as old_double
-from app.generators import triple as old_triple
+from app.math_input import parse_math_input
 from app.services import archive
-from app.services.math_parser import parse_math_input
 from app.services.math_worker import check_answer
 from app.visuals.spec import build_visual
 
@@ -27,40 +23,12 @@ def answer_text(record: dict[str, object]) -> str:
     return str(engine.replay(record).answer.expected).replace("**", "^").replace("E", "e")
 
 
-@pytest.mark.parametrize("dimension", [2, 3])
-def test_every_previous_geometry_variant_value_and_level_is_retained(dimension: int) -> None:
-    native = double.TEMPLATES if dimension == 2 else triple.TEMPLATES
-    old = old_double.TEMPLATES if dimension == 2 else old_triple.TEMPLATES
-    assert native.keys() == old.keys()
-    for name, template in native.items():
-        previous = old[name]
-        assert (template.difficulty, template.named) == (previous.difficulty, previous.named)
-        assert len(template.variants) == len(previous.variants)
-        for index, variant in enumerate(template.variants):
-            prior = previous.variants[index]
-            assert variant.value == prior.value
-            assert variant.problem_integrand() == prior.problem_integrand()
-            assert variant.solution.bounds == prior.solution.bounds
-            assert variant.solution.integrand == prior.solution.integrand
-            assert variant.solution.system == prior.solution.system
-            assert getattr(variant, "region", None) == getattr(prior, "region", None)
-            assert getattr(variant, "solid", None) == getattr(prior, "solid", None)
-            if template.variants[index].exact_checks:
-                for other in variant.checks:
-                    check = Setup(other.system, variant.problem_integrand(), other.bounds)
-                    assert sp.simplify(integrate_setup(check) - variant.value) == 0
-            form = MultipleForm(dimension=dimension, template=name, variant=index, coefficient=1)
-            data = form.evaluate()
-            assert sp.simplify(integrate_setup(data.setup) - data.value) == 0
-            assert data.steps and all(step.text_key and step.latex for step in data.steps)
-
-
 @pytest.mark.parametrize("slug,level", CASES)
 def test_every_multiple_cell_checks_and_keeps_its_visual_and_worksheet(
     slug: str, level: int
 ) -> None:
     entry = engine.ENGINE_TOPICS[slug]
-    old = practice._LEGACY_TOPICS[slug]
+    old = PUBLISHED_TOPICS[slug]
     assert (tuple(entry.levels), entry.mixed_weight, entry.space_cm) == (
         old.levels,
         old.mixed_weight,

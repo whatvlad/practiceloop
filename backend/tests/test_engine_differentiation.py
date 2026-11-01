@@ -5,17 +5,15 @@ from types import FrameType
 from typing import Any
 
 import pytest
-import sympy as sp
+from engine_fixtures import PUBLISHED_TOPICS
 
 from app.api import practice
 from app.engine import practice as engine
 from app.engine.answers.expression import ExpressionAnswer
-from app.engine.blocks.differentiation import partial, single
+from app.engine.blocks.differentiation import partial
 from app.engine.generators.differentiation import PartialDerivatives, SingleDerivatives
-from app.generators import derivatives as old_single
-from app.generators import partial as old_partial
+from app.math_input import parse_math_input
 from app.services import archive
-from app.services.math_parser import parse_math_input
 from app.services.math_worker import check_answer, record_variables
 
 CASES = [(slug, level) for slug in ("derivatives", "partial-derivatives") for level in range(1, 6)]
@@ -30,60 +28,11 @@ def answer_text(record: dict[str, object]) -> str:
     )
 
 
-def test_all_single_rules_steps_domains_and_levels_are_retained() -> None:
-    assert single.TEMPLATES.keys() == old_single.TEMPLATES.keys()
-    for name, template in single.TEMPLATES.items():
-        assert (template.difficulty, template.domain, template.rules) == (
-            old_single.TEMPLATES[name].difficulty,
-            old_single.TEMPLATES[name].domain,
-            old_single.TEMPLATES[name].rules,
-        )
-        for coefficient in (-3, -2, -1, 1, 2, 3):
-            data = single.DerivativeForm(template=name, coefficient=coefficient).evaluate()
-            previous = old_single.replay_derivative(
-                {
-                    "generator_version": "derivatives-v1",
-                    "template": name,
-                    "coefficient": coefficient,
-                }
-            )
-            assert data.function == previous.function
-            assert sp.simplify(data.derivative - previous.derivative) == 0
-            assert [s.latex for s in data.solution_steps] == [
-                s.latex for s in previous.solution_steps
-            ]
-
-
-def test_all_partial_templates_variables_domains_and_proofs_are_retained() -> None:
-    assert partial.TEMPLATES.keys() == old_partial.TEMPLATES.keys()
-    for name, template in partial.TEMPLATES.items():
-        previous = old_partial.TEMPLATES[name]
-        assert (template.difficulty, template.kind, template.coefficients) == (
-            previous.difficulty,
-            previous.kind,
-            previous.coefficients,
-        )
-        assert partial.VARIABLES[name] == old_partial.declared(previous)
-        for coefficient in template.coefficients:
-            data = partial.PartialForm(template=name, coefficient=coefficient).evaluate()
-            old = old_partial.replay_partial(
-                {
-                    "generator_version": "partial-v1",
-                    "template": name,
-                    "coefficient": coefficient,
-                    "variables": old_partial.declared(previous),
-                }
-            )
-            assert data.statement == old.statement
-            assert sp.simplify(data.answer - old.answer) == 0
-            assert [s.latex for s in data.steps] == [s.latex for s in old.solution_steps]
-
-
 @pytest.mark.parametrize("slug,level", CASES)
 def test_each_derivative_cell_checks_with_its_exact_declared_variables(
     slug: str, level: int
 ) -> None:
-    entry, old = engine.ENGINE_TOPICS[slug], practice._LEGACY_TOPICS[slug]
+    entry, old = engine.ENGINE_TOPICS[slug], PUBLISHED_TOPICS[slug]
     assert (tuple(entry.levels), entry.mixed_weight, entry.space_cm) == (
         old.levels,
         old.mixed_weight,
