@@ -1,4 +1,4 @@
-"""Register the v1 generator slice and its permanent code prefixes."""
+"""Register the v1 generator slice; each generator carries its own code prefix."""
 
 from app.engine.generators.combinations import Combinations
 from app.engine.generators.definite import DefiniteIntegral
@@ -10,14 +10,13 @@ from app.engine.registry import Registry
 
 def registry() -> Registry:
     result = Registry()
-    for generator, prefix, family in (
-        (PartialFractions(), "PFR", "partial-fractions"),
-        (IndefiniteIntegral(), "INT", "indefinite"),
-        (DefiniteIntegral(), "DEF", "definite"),
-        (Derivative(), "DRV", "derivative"),
-        (Combinations(), "CMB", "combinations"),
+    for generator in (
+        PartialFractions(),
+        IndefiniteIntegral(),
+        DefiniteIntegral(),
+        Derivative(),
+        Combinations(),
     ):
         result.register(generator)
-        result.register_code(prefix, family, 1, generator.version)
     result.validate_dependencies()
     return result

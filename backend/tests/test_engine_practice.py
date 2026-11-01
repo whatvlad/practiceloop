@@ -40,7 +40,14 @@ def test_issue_stores_only_the_code_and_the_code_replays_the_problem() -> None:
     assert engine.public_replay(issued.record) == issued
     assert engine.issue("combinations", 1, seed=1234) == issued
     assert issued.statement.startswith(r"\text{Calculate }\binom{")
-    assert issued.steps[0]["say"] == engine.STEP_TEXT["combinations"]
+    assert issued.steps[0]["say"] == "Evaluate the binomial coefficient."
+
+
+def test_a_served_step_without_learner_text_is_refused(monkeypatch: pytest.MonkeyPatch) -> None:
+    generator = engine._registry().get("combinations-v1")
+    monkeypatch.setattr(generator, "step_text", {"other": "Some other step."})
+    with pytest.raises(ValueError, match="No learner text for step combinations"):
+        engine.issue("combinations", 1, seed=1234)
 
 
 @pytest.mark.parametrize("seed", range(40))

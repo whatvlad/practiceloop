@@ -1,32 +1,43 @@
 """Private topic views over the registered v1 generators."""
 
+import logging
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 
-from app.engine.generators.common import Seed
-from app.engine.models import Parameters, Task
-from app.engine.prng import DeterministicRNG, draw_valid
+from app.engine.generators.definite import DefiniteParams
+from app.engine.generators.derivative import DerivativeParams
+from app.engine.generators.indefinite import IndefiniteParams
+from app.engine.models import Drawn, Task
+from app.engine.prng import DeterministicRNG
 from app.engine.registry import Registry
 
+logger = logging.getLogger(__name__)
 
-def _any(_: Parameters) -> bool:
+# The public areas of the practice API; engine topics use no others.
+AREAS = frozenset({"algebra", "mathematical-analysis"})
+MAX_DRAWS = 64
+
+
+def _any(_: Drawn) -> bool:
     return True
 
 
-def _rational(params: Parameters) -> bool:
-    # These v1 generators use the first PRNG draw to select the function family.
-    return isinstance(params, Seed) and bool(DeterministicRNG(params.seed).randbelow(2))
+def _rational(params: Drawn) -> bool:
+    if isinstance(params, DefiniteParams):
+        params = params.integral
+    if not isinstance(params, IndefiniteParams | DerivativeParams):
+        raise ValueError("These parameters have no function family")
+    return params.rational
 
 
-def _polynomial(params: Parameters) -> bool:
-    return isinstance(params, Seed) and not _rational(params)
+def _polynomial(params: Drawn) -> bool:
+    return not _rational(params)
 
 
 @dataclass(frozen=True, slots=True)
 class Choice:
     generator: str
-    predicate: Callable[[Parameters], bool] = _any
-    wrapper: str | None = None
+    predicate: Callable[[Drawn], bool] = _any
 
 
 @dataclass(frozen=True, slots=True)
@@ -37,8 +48,10 @@ class Topic:
     mixed_weight: int
 
     def __post_init__(self) -> None:
-        if not self.slug or not self.area or type(self.mixed_weight) is not int:
-            raise ValueError("Topic needs a slug, area and integer mixed weight")
+        if not self.slug or type(self.mixed_weight) is not int:
+            raise ValueError("Topic needs a slug and integer mixed weight")
+        if self.area not in AREAS:
+            raise ValueError(f"Unknown topic area: {self.area}")
         if self.mixed_weight < 1 or not self.levels:
             raise ValueError("Topic needs positive mixed weight and at least one level")
         if any(
@@ -48,24 +61,29 @@ class Topic:
             raise ValueError("Topic levels must be nonempty and numbered 1 through 5")
 
     def generate(self, level: int, seed: int, generators: Registry) -> Task:
+        """Draw candidates in order until one passes the level filter and builds."""
         if type(level) is not int or level not in self.levels:
             raise ValueError("Unknown topic level")
         rng = DeterministicRNG(seed)
         choices = self.levels[level]
         choice = choices[rng.randbelow(len(choices))]
         generator = generators.get(choice.generator)
-        wrapper = generators.get(choice.wrapper) if choice.wrapper else None
-        if wrapper is not None and generator.version not in wrapper.requires:
-            raise ValueError("Wrapper must depend on its generator")
-
-        def draw() -> tuple[int, Parameters]:
-            candidate_seed = rng.randbelow(10**16)
-            return candidate_seed, generator.draw(candidate_seed)
-
-        candidate_seed, params = draw_valid(draw, lambda item: choice.predicate(item[1]))
-        if wrapper is not None:
-            return wrapper.build(wrapper.draw(candidate_seed))
-        return generator.build(params)
+        for _ in range(MAX_DRAWS):
+            params = generator.draw(rng.randbelow(10**16))
+            if not choice.predicate(params):
+                continue
+            try:
+                return generator.build(params)
+            except ValueError:
+                # Every seed of a shipped version is expected to build; a miss is
+                # logged and skipped instead of reaching the learner.
+                logger.warning(
+                    "%s did not build seed %d; drawing the next candidate",
+                    generator.version,
+                    params.seed,
+                    exc_info=True,
+                )
+        raise ValueError(f"No valid candidate after {MAX_DRAWS} draws")
 
 
 def topics() -> dict[str, Topic]:
@@ -73,7 +91,7 @@ def topics() -> dict[str, Topic]:
         Topic("partial-fractions", "algebra", {1: (Choice("partial-fractions-v1"),)}, 1),
         Topic(
             "derivatives",
-            "analysis",
+            "mathematical-analysis",
             {
                 1: (Choice("derivative-v1", _polynomial),),
                 2: (Choice("derivative-v1", _rational),),
@@ -82,7 +100,7 @@ def topics() -> dict[str, Topic]:
         ),
         Topic(
             "indefinite-integrals",
-            "analysis",
+            "mathematical-analysis",
             {
                 1: (Choice("indefinite-v1", _polynomial),),
                 2: (Choice("indefinite-v1", _rational),),
@@ -91,13 +109,13 @@ def topics() -> dict[str, Topic]:
         ),
         Topic(
             "definite-integrals",
-            "analysis",
+            "mathematical-analysis",
             {
-                1: (Choice("indefinite-v1", _polynomial, "definite-v1"),),
-                2: (Choice("indefinite-v1", _rational, "definite-v1"),),
+                1: (Choice("definite-v1", _polynomial),),
+                2: (Choice("definite-v1", _rational),),
             },
             1,
         ),
-        Topic("combinations", "combinatorics", {1: (Choice("combinations-v1"),)}, 1),
+        Topic("combinations", "algebra", {1: (Choice("combinations-v1"),)}, 1),
     )
     return {topic.slug: topic for topic in result}

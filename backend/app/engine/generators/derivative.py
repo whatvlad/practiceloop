@@ -4,40 +4,46 @@ import sympy as sp
 
 from app.engine.answers._symbolic import X
 from app.engine.answers.derivative import DerivativeAnswer
-from app.engine.answers.expression import ExpressionAnswer
 from app.engine.blocks.polynomial import Polynomial
-from app.engine.generators.common import Seed, code
-from app.engine.generators.partial_fractions import PartialFractions
-from app.engine.models import Step, Task
+from app.engine.codes import encode
+from app.engine.generators.partial_fractions import PartialFractionParams, PartialFractions
+from app.engine.models import Drawn, Step, Task
 from app.engine.prng import DeterministicRNG
+
+
+class DerivativeParams(Drawn):
+    # A rational function is a partial fraction problem drawn from the same seed.
+    function: PartialFractionParams | Polynomial
+
+    @property
+    def rational(self) -> bool:
+        return isinstance(self.function, PartialFractionParams)
 
 
 class Derivative:
     version = "derivative-v1"
-    params = Seed
+    prefix = "DRV"
+    family = "derivative"
+    code_version = 1
+    params = DerivativeParams
     answer = DerivativeAnswer
     requires = ("partial-fractions-v1",)
+    step_text = {"differentiate": "Differentiate the function."}
 
-    def draw(self, seed: int) -> Seed:
-        return Seed(seed=seed)
-
-    def build(self, params: Seed) -> Task:
-        rng = DeterministicRNG(params.seed)
+    def draw(self, seed: int) -> DerivativeParams:
+        rng = DeterministicRNG(seed)
         if rng.randbelow(2):
-            partial = PartialFractions().build(params)
-            if not isinstance(partial.answer, ExpressionAnswer):
-                raise ValueError("Unexpected partial fraction answer")
-            expression = sp.cancel(sp.together(partial.answer.expected))
-            pole = partial.metadata["pole"]
-            if type(pole) is not int:
-                raise ValueError("Invalid pole")
-            domain = sp.Union(
-                sp.Interval.open(-sp.oo, -pole),
-                sp.Interval.open(-pole, pole),
-                sp.Interval.open(pole, sp.oo),
-            )
+            return DerivativeParams(seed=seed, function=PartialFractions().draw(seed))
+        return DerivativeParams(seed=seed, function=Polynomial.draw(rng, 1 + rng.randbelow(4)))
+
+    def build(self, params: DerivativeParams) -> Task:
+        function = params.function
+        if isinstance(function, PartialFractionParams):
+            partial = PartialFractions().decompose(function)
+            expression = sp.cancel(sp.together(partial.decomposition))
+            domain = partial.domain
         else:
-            expression = Polynomial.draw(rng, 1 + rng.randbelow(4)).expression(X)
+            expression = function.expression(X)
             domain = sp.S.Reals
         result = sp.diff(expression, X)
         return Task(
@@ -50,6 +56,6 @@ class Derivative:
             ),
             answer=DerivativeAnswer(result, domain),
             metadata={"function": str(expression).replace("**", "^")},
-            code=code(self, "DRV", "derivative", params.seed),
+            code=encode(self.prefix, self.code_version, params.seed),
             generator_version=self.version,
         )

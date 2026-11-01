@@ -1,9 +1,10 @@
 """Registry of private generators and validation of their dependencies."""
 
 import re
+from collections.abc import Mapping
 from typing import Any
 
-from app.engine.models import Parameters, TaskGenerator
+from app.engine.models import Drawn, TaskGenerator
 
 
 class Registry:
@@ -19,8 +20,8 @@ class Registry:
             raise ValueError("Generator version must be non-empty and have no surrounding space")
         if version in self._generators:
             raise ValueError(f"Duplicate generator version: {version}")
-        if not isinstance(generator.params, type) or not issubclass(generator.params, Parameters):
-            raise ValueError("Generator parameters must inherit Parameters")
+        if not isinstance(generator.params, type) or not issubclass(generator.params, Drawn):
+            raise ValueError("Generator parameters must inherit Drawn")
         answer = generator.answer
         kind = getattr(answer, "kind", None)
         if (
@@ -38,9 +39,18 @@ class Registry:
             raise ValueError("Generator dependencies must be version strings")
         if len(set(requires)) != len(requires):
             raise ValueError(f"Duplicate dependency for {version}")
+        step_text = generator.step_text
+        if not isinstance(step_text, Mapping) or any(
+            not isinstance(key, str) or not key or not isinstance(text, str) or not text.strip()
+            for key, text in step_text.items()
+        ):
+            raise ValueError(f"Invalid step text for {version}")
+        self._register_code(generator.prefix, generator.family, generator.code_version, version)
         self._generators[version] = generator
 
-    def register_code(self, prefix: str, family: str, version: int, generator_version: str) -> None:
+    def _register_code(
+        self, prefix: str, family: str, version: int, generator_version: str
+    ) -> None:
         """Permanently associate a prefix and numeric version with a generator."""
         if not isinstance(prefix, str) or re.fullmatch(r"[A-Z]{2,8}", prefix) is None:
             raise ValueError("Code prefix must be 2 to 8 uppercase ASCII letters")
@@ -48,7 +58,6 @@ class Registry:
             raise ValueError("Invalid generator family")
         if type(version) is not int or not 1 <= version <= 9999:
             raise ValueError("Code version must be an integer from 1 through 9999")
-        self.get(generator_version)
         if prefix in self._prefixes and self._prefixes[prefix] != family:
             raise ValueError(f"Code prefix already belongs to another family: {prefix}")
         if family in self._families and self._families[family] != prefix:
@@ -70,6 +79,10 @@ class Registry:
         except KeyError as exc:
             raise ValueError(f"Unknown code prefix or version: {prefix}-{version}") from exc
         return self.get(generator_version)
+
+    def versions(self) -> tuple[str, ...]:
+        """Every registered generator version, in registration order."""
+        return tuple(self._generators)
 
     def get(self, version: str) -> TaskGenerator[Any]:
         try:

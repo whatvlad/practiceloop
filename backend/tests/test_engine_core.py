@@ -6,12 +6,12 @@ from typing import ClassVar
 import pytest
 from pydantic import ValidationError
 
-from app.engine.models import Answer, Outcome, Parameters, Step, Task, TaskGenerator
+from app.engine.models import Answer, Drawn, Outcome, Step, Task, TaskGenerator
 from app.engine.registry import Registry
 from app.services.math_parser import MathNode, parse_math_input
 
 
-class TinyParams(Parameters):
+class TinyParams(Drawn):
     number: int
 
 
@@ -28,16 +28,28 @@ class TinyAnswer:
 
 
 class TinyGenerator:
-    version = "tiny-v1"
     params = TinyParams
     answer = TinyAnswer
+    step_text = {"read_number": "Read the number."}
 
-    def __init__(self, requires: tuple[str, ...] = (), version: str = "tiny-v1") -> None:
+    def __init__(
+        self,
+        requires: tuple[str, ...] = (),
+        version: str = "tiny-v1",
+        prefix: str | None = None,
+        family: str | None = None,
+        code_version: int = 1,
+    ) -> None:
         self.version = version
         self.requires = requires
+        # Each test generator gets its own family unless a test shares one.
+        name = version.rsplit("-v", 1)[0]
+        self.family = family or name
+        self.prefix = prefix or "T" + "".join(char for char in name.upper() if char.isalpha())[:7]
+        self.code_version = code_version
 
     def draw(self, seed: int) -> TinyParams:
-        return TinyParams(number=seed)
+        return TinyParams(seed=seed, number=seed)
 
     def build(self, params: TinyParams) -> Task:
         return Task(
@@ -64,11 +76,13 @@ def test_generator_consumer_and_parameter_validation() -> None:
     assert task.steps == (Step(text_key="read_number", latex="3"),)
     assert task.generator_version == "tiny-v1"
     with pytest.raises(ValidationError):
-        TinyParams.model_validate({"number": "3"})
+        TinyParams.model_validate({"seed": 3, "number": "3"})
     with pytest.raises(ValidationError):
-        TinyParams(number=3).number = 4
+        TinyParams(seed=3, number=3).number = 4
     with pytest.raises(ValidationError):
-        TinyParams.model_validate({"number": 3, "extra": 1})
+        TinyParams.model_validate({"seed": 3, "number": 3, "extra": 1})
+    with pytest.raises(ValidationError):
+        TinyParams.model_validate({"seed": 10**16, "number": 3})
 
 
 def test_registry_rejects_duplicate_unknown_and_invalid_metadata() -> None:
@@ -90,6 +104,10 @@ def test_registry_rejects_duplicate_unknown_and_invalid_metadata() -> None:
     invalid_params.params = object  # type: ignore[assignment]
     with pytest.raises(ValueError, match="parameters"):
         registry.register(invalid_params)
+    no_text = TinyGenerator(version="no-text-v1")
+    no_text.step_text = {"read_number": " "}  # type: ignore[assignment]
+    with pytest.raises(ValueError, match="step text"):
+        registry.register(no_text)
 
 
 def test_dependency_graph_accepts_shared_dependency_and_rejects_missing_and_cycles() -> None:

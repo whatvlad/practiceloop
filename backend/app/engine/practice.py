@@ -22,9 +22,6 @@ from app.services.math_parser import MathNode
 # Public topic slug -> new-engine topic slug. Other public topics stay on the old engine.
 ENGINE_TOPICS = {"combinations": "combinations"}
 
-# Learner-facing text for each step key the served generators use.
-STEP_TEXT = {"combinations": "Evaluate the binomial coefficient."}
-
 _INLINE_MATH = re.compile(r"\\\((.*?)\\\)", re.DOTALL)
 
 
@@ -71,11 +68,12 @@ def _text(value: str) -> str:
 
 
 def _public(task: Task) -> Issued:
+    step_text = _registry().get(task.generator_version).step_text
     steps = []
     for step in task.steps:
-        if step.text_key not in STEP_TEXT:
+        if step.text_key not in step_text:
             raise ValueError(f"No learner text for step {step.text_key}")
-        steps.append({"say": STEP_TEXT[step.text_key], "latex": step.latex})
+        steps.append({"say": step_text[step.text_key], "latex": step.latex})
     return Issued(
         statement=statement_latex(task.statement),
         record={"generator_version": task.generator_version, "code": task.code},
