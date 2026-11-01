@@ -470,7 +470,7 @@ def test_solutions_reveal_both_flags_and_print_steps_and_graphs(
     answers, solutions = tex.split("\\section*{Solutions}")
     assert "\\section*{Answers}" in answers
     assert [solutions.count(f"\\plnumber{{{n}}}") for n in (1, 2, 3)] == [1, 1, 1]
-    assert "Set u equal to the inner expression." in solutions
+    assert "Apply the substitution shown below the integral." in solutions
     # Substitution has a visual; derivatives have none (ADR-006).
     assert solutions.count("\\pdfliteral") == 2
 
@@ -512,4 +512,4 @@ def test_graphs_stop_after_their_time_budget_but_steps_still_print(
     monkeypatch.setattr(worksheets, "GRAPH_SECONDS", -1.0)
     assert client.get(f"/worksheets/{sheet['id']}/pdf").status_code == 200
     solutions = compiled.sources[-1].split("\\section*{Solutions}")[1]
-    assert "pdfliteral" not in solutions and "Set u equal" in solutions
+    assert "pdfliteral" not in solutions and "Apply the substitution" in solutions

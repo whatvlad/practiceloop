@@ -20,7 +20,7 @@ from fastapi.testclient import TestClient
 from app.api import practice, shares
 from app.core import database
 from app.core.auth import VerifiedUser, current_user, token_verifier
-from app.generators.basic import replay_basic
+from app.engine import practice as engine
 from app.generators.core import catalogue
 from app.main import app
 from app.services import shares as share_service
@@ -360,8 +360,12 @@ def test_copy_preserves_exact_trusted_content_for_every_topic(
 def test_recipient_solves_reveals_and_reopens_without_changing_sender(
     client: TestClient, users: Users, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    exercise = catalogue("basic-integrals", 4)[0]
-    monkeypatch.setattr(practice, "_pick", lambda *_: exercise)
+    issued = next(
+        p.issued()
+        for p in engine.pool("basic-integrals", 4)
+        if "definite" not in p.generator_version
+    )
+    monkeypatch.setattr(engine, "issue", lambda *_args, **_kwargs: issued)
     source = client.post(
         "/problems",
         json={"topic": "basic-integrals", "difficulty": 4},
@@ -373,7 +377,7 @@ def test_recipient_solves_reveals_and_reopens_without_changing_sender(
     response = start_copy(client, {"code": created["code"].lower()})
     assert response.status_code == 201, response.text
     copied = response.json()["problem"]
-    answer = str(replay_basic(dict(exercise.record)).antiderivative).replace("**", "^") + "+C"
+    answer = str(engine.replay(issued.record).answer.primitive).replace("**", "^") + "+C"
     checked = client.post(
         f"/problems/{copied['id']}/attempts",
         json={"answer": answer},
@@ -382,17 +386,17 @@ def test_recipient_solves_reveals_and_reopens_without_changing_sender(
     assert checked.status_code == 201, checked.text
     assert checked.json()["attempt"]["result"] == "correct"
     assert client.post(f"/problems/{copied['id']}/reveal-answer").json() == {
-        "answerLatex": exercise.answer
+        "answerLatex": issued.answer_latex
     }
     assert client.post(f"/problems/{copied['id']}/reveal-solution").json() == {
-        "steps": list(exercise.steps),
-        "visual": build_visual(exercise.record),
+        "steps": list(issued.steps),
+        "visual": build_visual(issued.record),
     }
     reopened = client.get(f"/problems/{copied['id']}").json()
     assert reopened["problem"]["lastAttempt"]["answer"] == answer
     assert reopened["problem"]["answerRevealed"] is True
     assert reopened["problem"]["solutionRevealed"] is True
-    assert reopened["answer"]["answerLatex"] == exercise.answer
+    assert reopened["answer"]["answerLatex"] == issued.answer_latex
     assert reopened["share"] is None
     history = client.get("/problems").json()["items"]
     assert [item["id"] for item in history] == [copied["id"]]

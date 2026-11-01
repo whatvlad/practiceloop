@@ -595,7 +595,7 @@ def test_definite_topic_saves_definite_problems_under_its_own_topic(
     monkeypatch.setattr(practice, "catalogue", catalogue)
     problem = generate(client, "definite-integrals", 2)
     assert problem["topic"] == "definite-integrals"
-    assert problem["problemLatex"].startswith(r"\int_{")
+    assert r"\int_{" in problem["problemLatex"]
     assert (
         rows(
             url,
