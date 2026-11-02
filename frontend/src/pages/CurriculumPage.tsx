@@ -17,11 +17,11 @@ export function CurriculumPage() {
       <div className="pl-stack pl-gap-4 pl-mt-4">
         {sections.map(section => (
           <details className="pl-card" key={section.name}>
-            <summary className="pl-h-lg">{section.name}</summary>
+            <summary className="pl-h-lg">{section.name} <span className="pl-small pl-muted">— In develop</span></summary>
             <div className="pl-stack pl-gap-3 pl-mt-4">
               {section.types.map(type => (
                 <details className="pl-card" key={type.name}>
-                  <summary className="pl-h-md">{type.name}</summary>
+                  <summary className="pl-h-md">{type.name} <span className="pl-small pl-muted">— In develop</span></summary>
                   <p className="pl-muted">{type.description}</p>
                   {type.subtypes && <ul>{type.subtypes.map(subtype => <li key={subtype}>{subtype}</li>)}</ul>}
                   <p className="pl-display-md" role="status">In develop</p>
