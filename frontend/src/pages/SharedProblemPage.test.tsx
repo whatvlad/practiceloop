@@ -35,12 +35,20 @@ afterEach(async () => {
   vi.restoreAllMocks();
 });
 
-async function render(props: { token: string | null; code: string | null; problemCode?: string; signedIn?: boolean; authLoading?: boolean }) {
+async function render(props: { token: string | null; code: string | null; problemCode?: string; signedIn?: boolean; authLoading?: boolean; inactive?: boolean }) {
   await act(async () => root.render(<SharedProblemPage {...props} />));
   await act(async () => {});
 }
 
 const PROBLEM_CODE = 'CMB-1-0000000000000000-32';
+
+it('shows shared problems without offering a practice session when inactive', async () => {
+  fetchMock.mockResolvedValue(json({ problem: { topic: 'combinations', difficulty: 1, problemLatex: '1' } }));
+  await render({ token: null, code: null, problemCode: PROBLEM_CODE, signedIn: true, inactive: true });
+  expect(element.textContent).toContain('In develop');
+  expect(element.textContent).not.toContain('Solve this problem');
+  expect(practiceCodeProblem).not.toHaveBeenCalled();
+});
 
 it('opens a permanent code anonymously and keeps its private fields out of the page', async () => {
   fetchMock.mockResolvedValue(json({ problem: { topic: 'combinations', difficulty: 1, problemLatex: '\\binom{5}{2}', answerLatex: 'PRIVATE', steps: ['PRIVATE'] } }));

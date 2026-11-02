@@ -23,6 +23,15 @@ beforeEach(() => {
 });
 afterEach(async () => { await act(async () => root.unmount()); element.remove(); });
 
+it('keeps saved history visible without exporting or selecting inactive problems', async () => {
+  vi.mocked(api.listProblemPage).mockResolvedValueOnce({ items: [problem('one')], nextCursor: null });
+  await act(async () => root.render(<HistoryPage inactive />));
+  expect(element.textContent).toContain('Latest answer: x^2/2+C');
+  expect(element.textContent).toContain('Saved problems are currently inactive');
+  expect(element.querySelector('input[type="checkbox"]')).toBeNull();
+  expect(api.createWorksheet).not.toHaveBeenCalled();
+});
+
 it('shows persisted metadata, keeps the first page on error and retries the same cursor once for duplicate clicks', async () => {
   vi.mocked(api.listProblemPage).mockResolvedValueOnce({ items: [problem('one')], nextCursor: 'cursor-1' });
   await act(async () => root.render(<HistoryPage />));

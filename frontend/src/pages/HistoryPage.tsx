@@ -34,7 +34,7 @@ function matches(problem: PublicProblem, filter: Filter): boolean {
   }
 }
 
-export function HistoryPage() {
+export function HistoryPage({ inactive = false }: { inactive?: boolean }) {
   const [all, setAll] = useState<PublicProblem[]>([]);
   const [nextCursor, setNextCursor] = useState<string | null>(null);
   const [loaded, setLoaded] = useState(false);
@@ -131,7 +131,7 @@ export function HistoryPage() {
           Every problem, <em>saved.</em>
         </h1>
         <ButtonLink to="/dashboard" arrow>
-          New problem
+          {inactive ? 'Browse topics' : 'New problem'}
         </ButtonLink>
       </div>
       <div className="pl-mb-5">
@@ -141,7 +141,7 @@ export function HistoryPage() {
       {error && <div role="alert"><p>{error}</p><Button variant="secondary" onClick={() => void load(failedCursor.current, worksheet)} disabled={busy}>Retry loading history</Button></div>}
       {loaded && (
         <>
-          {shown.length > 0 && (
+          {!inactive && shown.length > 0 && (
             <div className="pl-hselect" role="group" aria-label="Select problems">
               <Button variant="secondary" size="sm" onClick={selectAll} disabled={allShownSelected || selected.size >= MAX_EXPORT}>
                 Select all
@@ -152,16 +152,16 @@ export function HistoryPage() {
               <span className="pl-small pl-muted">Tick problems to print them as a PDF.</span>
             </div>
           )}
-          <HistoryExport selected={[...selected]} limitNote={limitNote} onExported={exported} />
+          {!inactive && <HistoryExport selected={[...selected]} limitNote={limitNote} onExported={exported} />}
           {shown.length > 0 ? (
-            <HistoryList problems={shown} header selection={{ selected, full: selected.size >= MAX_EXPORT, onToggle: toggle }} />
+            <HistoryList problems={shown} header selection={inactive ? undefined : { selected, full: selected.size >= MAX_EXPORT, onToggle: toggle }} />
           ) : (
             <p className="pl-muted">{all.length === 0
-              ? worksheet ? 'No problems from worksheets yet. Print a worksheet from the practice page.' : 'No saved problems yet. Generate your first problem from the dashboard.'
+              ? worksheet ? 'No problems from worksheets yet.' : inactive ? 'No saved problems yet.' : 'No saved problems yet. Generate your first problem from the dashboard.'
               : 'No loaded problems match this filter.'}</p>
           )}
           <p className="pl-small pl-subtle pl-mt-4">
-            Showing {shown.length} of {all.length} loaded problems · Select any row to reopen it.
+            Showing {shown.length} of {all.length} loaded problems · {inactive ? 'Saved problems are currently inactive.' : 'Select any row to reopen it.'}
           </p>
           {nextCursor && <Button variant="secondary" onClick={() => void load(nextCursor, worksheet)} disabled={busy}>Load more problems</Button>}
           {nextCursor && filter !== 'all' && !worksheet && <p className="pl-small pl-muted">Load more to include older problems in this filter.</p>}

@@ -57,6 +57,18 @@ async function renderAt(path: string, state = signedOut) {
 }
 
 describe('client route protection and auth UI', () => {
+  it.each([signedOut, signedIn])('shows the curriculum instead of starting a practice session', async state => {
+    await renderAt('/practice', state);
+    expect(element.textContent).toContain('Explore mathematics');
+    expect(element.textContent).toContain('In develop');
+    expect(element.textContent).not.toContain('Generate problem');
+  });
+
+  it('keeps saved problems inactive when opened directly', async () => {
+    await renderAt('/practice?id=old', signedIn);
+    expect(element.textContent).toContain('In develop');
+    expect(element.textContent).not.toContain('Check answer');
+  });
   it.each([signedOut, signedIn])('opens shared problems without redirecting (#37)', async state => {
     await renderAt('/shared', state);
     expect(window.location.pathname).toBe('/shared');
