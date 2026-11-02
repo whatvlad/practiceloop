@@ -5,11 +5,10 @@ import { ButtonLink } from './components/Button';
 import { SkipLink } from './components/SkipLink';
 import { type ApiHealth, authStore, checkApiHealth } from './data/api';
 import { rememberSharedReturn, sharedReturn, takeSharedReturn } from './data/sharedReturn';
-import { DashboardPage } from './pages/DashboardPage';
+import { CurriculumPage } from './pages/CurriculumPage';
 import { HistoryPage } from './pages/HistoryPage';
 import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/LoginPage';
-import { PracticePage } from './pages/PracticePage';
 import { PrivacyPage } from './pages/PrivacyPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { SharedProblemPage } from './pages/SharedProblemPage';
@@ -102,17 +101,17 @@ export function App() {
     if (coded) {
       let code = coded[1];
       try { code = decodeURIComponent(code); } catch { /* The page displays an invalid-code message. */ }
-      return <SharedProblemPage key={`${account?.id ?? auth.status}:code:${code}`} token={null} code={null} problemCode={code} signedIn={!!account} authLoading={auth.status === 'loading'} />;
+      return <SharedProblemPage key={`${account?.id ?? auth.status}:code:${code}`} token={null} code={null} problemCode={code} signedIn={!!account} authLoading={auth.status === 'loading'} inactive />;
     }
-    if (pathname === '/shared') return <SharedProblemPage key={`${account?.id ?? auth.status}:${params.get('code')}`} token={null} code={params.get('code')} signedIn={!!account} authLoading={auth.status === 'loading'} />;
+    if (pathname === '/shared') return <SharedProblemPage key={`${account?.id ?? auth.status}:${params.get('code')}`} token={null} code={params.get('code')} signedIn={!!account} authLoading={auth.status === 'loading'} inactive />;
     const shared = /^\/(?:s|shared)\/([^/]+)$/.exec(pathname);
-    if (shared) return <SharedProblemPage key={`${account?.id ?? auth.status}:${shared[1]}`} token={decodeURIComponent(shared[1])} code={null} signedIn={!!account} authLoading={auth.status === 'loading'} />;
+    if (shared) return <SharedProblemPage key={`${account?.id ?? auth.status}:${shared[1]}`} token={decodeURIComponent(shared[1])} code={null} signedIn={!!account} authLoading={auth.status === 'loading'} inactive />;
     if (pathname === '/privacy') return <PrivacyPage />;
     if (pathname === '/login') return <LoginPage onSignIn={handleSignIn} disabled={authDisabled} busy={auth.working} error={auth.error} />;
     if (pathname === '/auth/callback' || (needsAccount && auth.status === 'loading')) {
       return <div className="pl-page pl-login"><p role="status">Restoring your session…</p></div>;
     }
-    if (!account && pathname === '/practice' && auth.status !== 'loading') return <div className="pl-page"><PublicNav /><section className="pl-wrap pl-wrap--narrow pl-api-notice" aria-label="Demo"><p className="pl-small pl-muted">Try one demo. Your answer and result are not saved.</p></section><PracticePage key="demo" id={null} demo /></div>;
+    if (!account && pathname === '/practice' && auth.status !== 'loading') return <div className="pl-page"><PublicNav /><CurriculumPage /></div>;
     if (!APP_ROUTES.has(pathname)) return <NotFoundPage />;
     if (!account) return <div className="pl-page" />;
 
@@ -126,9 +125,11 @@ export function App() {
           <p className="pl-small pl-muted" role="status">Problems, attempts and reveals are saved to your account.</p>
           {auth.error && <p className="pl-result pl-result--invalid" role="alert">{auth.error}</p>}
         </section>
-        {pathname === '/dashboard' && <DashboardPage />}
-        {pathname === '/practice' && <PracticePage key={params.get('id') ?? 'latest'} id={params.get('id')} />}
-        {pathname === '/history' && <HistoryPage />}
+        {pathname === '/dashboard' && <CurriculumPage />}
+        {pathname === '/practice' && (params.has('id')
+          ? <main id="main" tabIndex={-1} className="pl-wrap pl-app-main"><h1 className="pl-display-md">In develop</h1><p>Saved problems are currently inactive.</p><ButtonLink to="/history">View history</ButtonLink></main>
+          : <CurriculumPage />)}
+        {pathname === '/history' && <HistoryPage inactive />}
         {pathname === '/profile' && <ProfilePage account={account} onLogOut={handleLogOut} onDeleted={handleDeleted} busy={auth.working} />}
       </div>
     );

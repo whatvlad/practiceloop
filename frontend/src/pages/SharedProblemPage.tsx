@@ -41,7 +41,7 @@ function CodeForm({ initial = '', permanent = false }: { initial?: string; perma
 
 type ShareRef = { token: string } | { code: string } | { problemCode: string };
 
-function Result({ found, shareRef, signedIn, authLoading }: { found: ShareLookup; shareRef: ShareRef; signedIn: boolean; authLoading: boolean }) {
+function Result({ found, shareRef, signedIn, authLoading, inactive }: { found: ShareLookup; shareRef: ShareRef; signedIn: boolean; authLoading: boolean; inactive: boolean }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const pending = useRef(false);
@@ -94,21 +94,21 @@ function Result({ found, shareRef, signedIn, authLoading }: { found: ShareLookup
           <Tex latex={problemLatex} display />
         </div>
       </div>
-      <p className="pl-small pl-muted pl-m-0">Solve this problem with answer checking and a full solution. Your work is saved separately in your own history.</p>
+      {inactive ? <p className="pl-h-lg" role="status">In develop</p> : <p className="pl-small pl-muted pl-m-0">Solve this problem with answer checking and a full solution. Your work is saved separately in your own history.</p>}
       {error && <p role="alert">{error}</p>}
       <div>
-        {signedIn
+        {!inactive && (signedIn
           ? <Button onClick={() => void solve()} disabled={busy} aria-busy={busy} arrow>{busy ? 'Opening problem…' : 'Solve this problem'}</Button>
           : authLoading
             ? <Button disabled>Restoring your session…</Button>
-            : <ButtonLink to={signIn} arrow>Sign in to solve this problem</ButtonLink>}
+            : <ButtonLink to={signIn} arrow>Sign in to solve this problem</ButtonLink>)}
       </div>
     </section>
   );
 }
 
 /** `/s/<token>` opens a shared link; `/shared` takes a code (#37). */
-export function SharedProblemPage({ token, code, problemCode, signedIn = false, authLoading = false }: { token: string | null; code: string | null; problemCode?: string; signedIn?: boolean; authLoading?: boolean }) {
+export function SharedProblemPage({ token, code, problemCode, signedIn = false, authLoading = false, inactive = false }: { token: string | null; code: string | null; problemCode?: string; signedIn?: boolean; authLoading?: boolean; inactive?: boolean }) {
   const ref: ShareRef | null = problemCode !== undefined ? { problemCode } : token !== null ? { token } : code !== null ? { code } : null;
   const referenceKey = `${token}:${code}:${problemCode}`;
   const found = useLoad(() => (ref ? 'problemCode' in ref ? lookupProblemCode(ref.problemCode) : lookupShare(ref) : Promise.resolve(null)), referenceKey);
@@ -128,7 +128,7 @@ export function SharedProblemPage({ token, code, problemCode, signedIn = false, 
           </section>
         )}
         {ref && found.status === 'loading' && <p role="status">{problemCode !== undefined ? 'Loading problem…' : 'Loading shared problem…'}</p>}
-        {ref && found.status === 'ready' && found.data && <Result key={referenceKey} found={found.data} shareRef={ref} signedIn={signedIn} authLoading={authLoading} />}
+        {ref && found.status === 'ready' && found.data && <Result key={referenceKey} found={found.data} shareRef={ref} signedIn={signedIn} authLoading={authLoading} inactive={inactive} />}
         {ref && found.status === 'error' && (
           <section className="pl-card pl-card--lg pl-stack pl-gap-4" role="alert">
             <h1 className="pl-h-lg pl-m-0">{found.error instanceof Error ? found.error.message : text.service_error}</h1>
