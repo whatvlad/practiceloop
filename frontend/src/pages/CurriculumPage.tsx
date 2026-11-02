@@ -39,6 +39,17 @@ export function CurriculumPage() {
         <button type="button" className="pl-chip" aria-pressed={area === 'algebra'} onClick={() => setArea('algebra')}>Algebra</button>
         <button type="button" className="pl-chip" aria-pressed={area === 'analysis'} onClick={() => setArea('analysis')}>Mathematical Analysis</button>
       </div>
+      <section className="pl-card pl-mt-4" aria-labelledby="ready-to-practise">
+        <h2 id="ready-to-practise" className="pl-h-lg">Ready to practise</h2>
+        <p className="pl-muted">Choose an available exercise to start practising.</p>
+        <ul>
+          {sections.flatMap(section => section.types).filter(type => PRACTICE[type.name]).map(type => (
+            <li key={type.name}>
+              <Link to={`/dashboard?area=${area === 'algebra' ? 'algebra' : 'mathematical-analysis'}&topic=${PRACTICE[type.name].topic}`}>{PRACTICE[type.name].scope}</Link>
+            </li>
+          ))}
+        </ul>
+      </section>
       <div className="pl-stack pl-gap-4 pl-mt-4">
         {sections.map(section => (
           <details className="pl-card" key={section.name}>
