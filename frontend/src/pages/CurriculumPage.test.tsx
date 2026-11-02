@@ -22,12 +22,16 @@ it('shows both areas, descriptions, subtypes and an inactive placeholder', async
   await act(async () => root.render(<CurriculumPage />));
   expect(element.textContent).toContain('Algebra');
   expect(element.textContent).toContain('Mathematical Analysis');
+  const ready = element.querySelector('section[aria-labelledby="ready-to-practise"]')!;
+  expect(ready.textContent).toContain('Ready to practise');
+  expect(ready.querySelector('a[href="/dashboard?area=algebra&topic=matrices"]')).not.toBeNull();
+  expect(ready.textContent).not.toContain('Inverse matrices');
   expect(element.textContent).toContain('Inverse matrices');
   const typeSummary = [...element.querySelectorAll('summary')].find(summary => summary.textContent?.includes('Inverse matrices'))!;
   expect(typeSummary.textContent).toContain('In develop');
   expect(element.querySelector('button[aria-label="Start practice"]')).toBeNull();
-  const matrixLink = element.querySelector<HTMLAnchorElement>('a[href="/dashboard?area=algebra&topic=matrices"]');
-  expect(matrixLink?.textContent).toContain('Practice');
+  const matrixLinks = element.querySelectorAll<HTMLAnchorElement>('a[href="/dashboard?area=algebra&topic=matrices"]');
+  expect([...matrixLinks].some(link => link.textContent?.includes('Practice'))).toBe(true);
   const polynomialLink = element.querySelector<HTMLAnchorElement>('a[href="/dashboard?area=algebra&topic=fundamental-theorem-algebra"]');
   expect(polynomialLink).not.toBeNull();
   expect(element.textContent).toContain('Elementary row operations');
@@ -35,6 +39,8 @@ it('shows both areas, descriptions, subtypes and an inactive placeholder', async
   expect(element.querySelector('button')?.textContent).not.toContain('Generate');
   const analysis = [...element.querySelectorAll('button')].find(button => button.textContent === 'Mathematical Analysis')!;
   await act(async () => analysis.click());
+  expect(ready.querySelector('a[href="/dashboard?area=mathematical-analysis&topic=derivatives"]')).not.toBeNull();
+  expect(ready.textContent).not.toContain('Determinants of 2 × 2 matrices');
   expect(element.textContent).toContain('Partial derivatives');
   expect(element.textContent).toContain('Differential equations');
   expect(element.querySelector('a[href="/dashboard?area=mathematical-analysis&topic=derivatives"]')).not.toBeNull();
