@@ -8,6 +8,7 @@ from functools import partial
 from app.engine.blocks.integral_forms.form import BOUNDS, METHODS
 from app.engine.generators.algebra import AlgebraParams, algebra_generators
 from app.engine.generators.algebra_expansion import PolynomialQuotient, RemainderTheorem
+from app.engine.generators.algebra_expressions import RationalizeDenominator, SimplifyRadicals
 from app.engine.generators.analysis import AnalysisParams, analysis_generators
 from app.engine.generators.definite import DefiniteParams
 from app.engine.generators.derivative import DerivativeParams
@@ -163,6 +164,15 @@ def topics() -> dict[str, Topic]:
             space_cm=space,
             served=True,
         )
+    declared["algebraic-expressions"] = Topic(
+        "algebraic-expressions",
+        "algebra",
+        {1: (Choice(SimplifyRadicals.version),), 2: (Choice(RationalizeDenominator.version),)},
+        0,
+        title="Algebraic expressions",
+        space_cm=4,
+        served=True,
+    )
     declared["polynomial-division"] = Topic(
         "polynomial-division",
         "algebra",

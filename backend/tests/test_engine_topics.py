@@ -42,6 +42,7 @@ def test_five_topics_have_nonempty_levels_and_replay_for_many_seeds() -> None:
         "matrices",
         "complex-numbers",
         "fundamental-theorem-algebra",
+        "algebraic-expressions",
         "polynomial-division",
         "functions-and-sequences",
         "limits-and-continuity",

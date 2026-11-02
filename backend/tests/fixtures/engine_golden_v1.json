@@ -2306,5 +2306,129 @@
         "template": "polynomial-quotient"
       }
     }
+  ],
+  "algebra-simplify-radicals-v1": [
+    {
+      "code": "ASR-1-0000000000000000-80",
+      "statement": "Simplify \\(3\\sqrt{14}-\\sqrt{350}\\).",
+      "steps": [
+        [
+          "simplify_radical",
+          "\\sqrt{350}=5\\sqrt{14}"
+        ],
+        [
+          "combine",
+          "(3-5)\\sqrt{14}=- 2 \\sqrt{14}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "- 2 \\sqrt{14}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "simplify-radicals"
+      }
+    },
+    {
+      "code": "ASR-1-0000000000000001-00",
+      "statement": "Simplify \\(3\\sqrt{10}-\\sqrt{40}\\).",
+      "steps": [
+        [
+          "simplify_radical",
+          "\\sqrt{40}=2\\sqrt{10}"
+        ],
+        [
+          "combine",
+          "(3-2)\\sqrt{10}=\\sqrt{10}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\sqrt{10}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "simplify-radicals"
+      }
+    },
+    {
+      "code": "ASR-1-0000000000000002-17",
+      "statement": "Simplify \\(4\\sqrt{15}-\\sqrt{240}\\).",
+      "steps": [
+        [
+          "simplify_radical",
+          "\\sqrt{240}=4\\sqrt{15}"
+        ],
+        [
+          "combine",
+          "(4-4)\\sqrt{15}=0"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 1,
+        "template": "simplify-radicals"
+      }
+    }
+  ],
+  "algebra-rationalize-denominator-v1": [
+    {
+      "code": "ARD-1-0000000000000000-23",
+      "statement": "Rationalize the denominator of \\(\\frac{1}{5+\\sqrt{13}}\\).",
+      "steps": [
+        [
+          "conjugate",
+          "\\frac{1}{5+\\sqrt{13}}=\\frac{5-\\sqrt{13}}{(5+\\sqrt{13})(5-\\sqrt{13})}"
+        ],
+        [
+          "simplify",
+          "\\frac{5-\\sqrt{13}}{12}=\\frac{5}{12} - \\frac{\\sqrt{13}}{12}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{5}{12} - \\frac{\\sqrt{13}}{12}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "rationalize-denominator"
+      }
+    },
+    {
+      "code": "ARD-1-0000000000000001-40",
+      "statement": "Rationalize the denominator of \\(\\frac{1}{1+\\sqrt{7}}\\).",
+      "steps": [
+        [
+          "conjugate",
+          "\\frac{1}{1+\\sqrt{7}}=\\frac{1-\\sqrt{7}}{(1+\\sqrt{7})(1-\\sqrt{7})}"
+        ],
+        [
+          "simplify",
+          "\\frac{1-\\sqrt{7}}{-6}=- \\frac{1}{6} + \\frac{\\sqrt{7}}{6}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "- \\frac{1}{6} + \\frac{\\sqrt{7}}{6}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "rationalize-denominator"
+      }
+    },
+    {
+      "code": "ARD-1-0000000000000002-57",
+      "statement": "Rationalize the denominator of \\(\\frac{1}{7+\\sqrt{11}}\\).",
+      "steps": [
+        [
+          "conjugate",
+          "\\frac{1}{7+\\sqrt{11}}=\\frac{7-\\sqrt{11}}{(7+\\sqrt{11})(7-\\sqrt{11})}"
+        ],
+        [
+          "simplify",
+          "\\frac{7-\\sqrt{11}}{38}=\\frac{7}{38} - \\frac{\\sqrt{11}}{38}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{7}{38} - \\frac{\\sqrt{11}}{38}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "rationalize-denominator"
+      }
+    }
   ]
 }

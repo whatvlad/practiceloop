@@ -15,6 +15,12 @@ it('uses a numeric answer for a polynomial remainder', () => {
   expect(problemKind('polynomial-division', '\\text{Find the remainder when }P(x)=x^2')).toBe('numeric');
 });
 
+it('uses a numeric answer without variable keys for radical exercises', () => {
+  const kind = problemKind('algebraic-expressions', '');
+  expect(kind).toBe('numeric');
+  expect(keypadVariables(kind, '', 'algebraic-expressions')).toEqual([]);
+});
+
 const NOW = new Date(2026, 9, 16, 15, 0);
 
 describe('history timestamps', () => {

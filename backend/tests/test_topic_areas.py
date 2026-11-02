@@ -17,6 +17,7 @@ def test_catalogue_lists_algebra_and_syllabus_topics() -> None:
         "matrices",
         "complex-numbers",
         "fundamental-theorem-algebra",
+        "algebraic-expressions",
         "polynomial-division",
         "partial-fractions",
         "combinations",
