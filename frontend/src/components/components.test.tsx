@@ -30,7 +30,9 @@ describe('ProblemCard', () => {
   it.each([
     ['algebraic-expressions', '\\text{Simplify }2\\sqrt{3}-\\sqrt{27}\\text{.}', 'Simplify', '2\\sqrt{3}-\\sqrt{27}'],
     ['algebraic-expressions', '\\text{Rationalize the denominator of }\\frac{1}{2+\\sqrt{3}}\\text{.}', 'Rationalize the denominator', '\\frac{1}{2+\\sqrt{3}}'],
-    ['polynomial-division', '\\text{Find the remainder when }P(x)=x^{2}+1\\text{ is divided by }x-1\\text{.}', 'Find the remainder', 'P(x)=x^{2}+1'],
+    ['polynomial-division', '\\text{Find the remainder when }P(x)=x^{2}+1\\text{ is divided by }x-1\\text{.}', 'Find the remainder', 'x^{2}+1'],
+    ['fundamental-theorem-algebra', 'x^2+1x+1=0: \\text{sum of the roots}', 'sum of the roots', 'x^2+1x+1=0'],
+    ['limits-and-continuity', '\\text{Calculate }f(x)=\\frac{x^2-1}{x-1},\\quad f(1)=?\\text{ for continuity}\\text{.}', 'continuous', 'f(x)=\\frac{x^2-1}{x-1}'],
   ] as const)('separates the instruction from the formula for %s', (topic, problemLatex, instruction, formula) => {
     const html = card({ topic, problemLatex });
     const lead = html.match(/<p class="pl-lead">(.*?)<\/p>/)?.[1];
@@ -40,6 +42,16 @@ describe('ProblemCard', () => {
     expect(expression).not.toContain(instruction);
     expect(expression).not.toContain('is divided by');
     if (topic === 'polynomial-division') expect(expression).toContain('x-1');
+  });
+
+  it('groups the polynomial and divisor as complete operands', () => {
+    const html = card({ topic: 'polynomial-division', problemLatex: '\\text{Find the quotient when }x^{2}+1\\text{ is divided by }x-1\\text{.}' });
+    expect(html).toContain('\\frac{x^{2}+1}{x-1}');
+  });
+
+  it('tells a learner how to solve an older partial-fractions exercise', () => {
+    const html = card({ topic: 'partial-fractions', problemLatex: '\\frac{2x+3}{(x+1)(x+2)}=?' });
+    expect(html).toContain('Decompose into partial fractions.');
   });
 
   it('renders no answer or solution before they are revealed', () => {
@@ -83,7 +95,7 @@ describe('ProblemCard', () => {
 
   it('presents partial fractions as an expression problem without an integration constant', () => {
     const html = card({ topic: 'partial-fractions', problemLatex: '\\frac{1}{x+1}', result: 'incorrect' });
-    expect(html).toContain('Solve the problem.');
+    expect(html).toContain('Decompose into partial fractions.');
     expect(html).toContain('Check your work, or reveal the solution.');
     expect(html).not.toContain('Calculate the indefinite integral.');
     expect(html).not.toContain('>+C<');

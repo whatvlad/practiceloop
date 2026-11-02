@@ -65,8 +65,15 @@ export function displayProblem(topic: TopicSlug, problemLatex: string): { instru
   if (division) {
     return {
       instruction: `Find the ${division[1]} when the polynomial is divided by the divisor.`,
-      formula: `${division[2]}\\quad\\div\\quad ${division[3]}`,
+      formula: `\\frac{${division[2].replace(/^P\(x\)=/, '')}}{${division[3]}}`,
     };
+  }
+  const unwrapped = problemLatex.replace(/^\\text\{Calculate \}(.+)\\text\{\.\}$/, '$1');
+  if (topic === 'fundamental-theorem-algebra' && unwrapped.endsWith(': \\text{sum of the roots}')) {
+    return { instruction: 'Find the sum of the roots.', formula: unwrapped.replace(/: \\text\{sum of the roots\}$/, '') };
+  }
+  if (topic === 'limits-and-continuity' && unwrapped.endsWith('\\text{ for continuity}')) {
+    return { instruction: 'Find the value that makes the function continuous.', formula: unwrapped.replace(/\\text\{ for continuity\}$/, '') };
   }
   const generated = problemLatex.match(/^\\text\{(Calculate|Find|Differentiate|Simplify|Rationalize the denominator of|Decompose into partial fractions:) \}(.+)\\text\{\.\}$/);
   if (generated) {
@@ -77,7 +84,7 @@ export function displayProblem(topic: TopicSlug, problemLatex: string): { instru
       : `${generated[1].replace(/:$/, '').replace(/ of$/, '')}.`;
     return { instruction, formula };
   }
-  return { instruction: leadText(problemKind(topic, problemLatex)), formula: problemLatex };
+  return { instruction: topic === 'partial-fractions' ? 'Decompose into partial fractions.' : leadText(problemKind(topic, problemLatex)), formula: problemLatex };
 }
 
 /**
