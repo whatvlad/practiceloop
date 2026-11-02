@@ -15,7 +15,9 @@ asked through a scalar they determine, or stay in development.
 |---|---|---|---|
 | 1, 3 | Simplifying radicals, rationalizing denominators | Partial (1a, 3a) | algebraic-expressions 1–2 |
 | 2 | Order of operations, fractional powers | In develop | |
-| 4–7 | Binomial theorem | In develop | |
+| 4 | Binomial expansions | In develop (whole expansions) | |
+| 5, 7 | Coefficients, constant terms, finding n | Covered | binomial-theorem 1–3 |
+| 6 | Numerical application | In develop | |
 | 8–9 | Matrix sums, products, transposes | In develop | |
 | 10–11 | Orthogonal/symmetric matrices, true or false | In develop (proofs) | |
 | 12–13 | Matrix equations | Covered (13, 22a style) | inverse-matrices 3 |
@@ -45,11 +47,31 @@ asked through a scalar they determine, or stay in development.
 | 49 | n-th roots | Covered (root with the smallest argument) | complex-polar-form 3 |
 | 50, 52–53 | Identities, conjugate roots, true or false | In develop (proofs) | |
 | 51 | Complex polynomial equations | Partial (quadratics) | complex-arithmetic 5 |
-| 54–58 | Polynomial roots and factorization | Partial (sum of roots) | fundamental-theorem-algebra |
-| 59–60 | Partial fractions | Partial | partial-fractions |
-| 61–63 | Remainders and divisibility | Partial (63a, 63b) | polynomial-division 1–2 |
-| 64–71 | Eigenvalues, diagonalization | In develop | |
-| 72–97 | Vectors and analytic geometry | In develop | |
+| 54 | Listing candidate roots | In develop (sets) | |
+| 55 | Rational roots | Covered (largest rational root) | polynomial-roots 1 |
+| 56 | All real and complex roots | Partial (sum of roots) | fundamental-theorem-algebra |
+| 57 | Roots from a known complex root | Covered (the real root of a cubic) | polynomial-roots 2 |
+| 58 | Irreducible real factorization | Covered (cubics) | polynomial-roots 3 |
+| 59 | Decomposition form without constants | In develop | |
+| 60 | Partial fractions | Covered (distinct linear; repeated or quadratic factor constants) | partial-fractions |
+| 61–63 | Remainders and divisibility | Covered (61, 62, 63a–c) | polynomial-division 1–5 |
+| 64 | Checking eigenvectors | Covered | eigenvalues 2 |
+| 65, 69 | Eigenvalues; A^n by diagonalization | Covered (real 2 × 2) | eigenvalues 1, 3 |
+| 66 | Eigenvalues of a triangular power | Covered | eigenvalues 4 |
+| 67–68 | Matrices from eigenpairs | Partial (67) | eigenvalues 5 |
+| 70 | Diagonalization of a given matrix | In develop (whole matrices) | |
+| 71, 97 | True or false | In develop (proofs) | |
+| 72 | Vector expressions | Partial (triple product) | vectors 1 |
+| 73–74 | Angles and lengths | Partial (73) | vectors 2 |
+| 75–77 | Collinearity, perpendicular unit vectors | In develop (vectors) | |
+| 78–79 | Areas, volumes, heights | Covered | vectors 3–5 |
+| 80–81, 83–84, 87 | Equations of planes and lines | In develop (equations) | |
+| 82 | Intersections | Partial (line and plane) | lines-and-planes 4 |
+| 85 | Vector from conditions | In develop | |
+| 86 | Distances | Partial (point–plane, parallel planes) | lines-and-planes 1–2 |
+| 88–89 | Angles between lines or planes | Partial (planes) | lines-and-planes 3 |
+| 90–95 | Parameters, projections, sides, line reflections | In develop | |
+| 96 | Reflection in a plane | Covered | lines-and-planes 5 |
 
 Out of scope for #221: numerical methods, complex analysis, learner-entered
 solution methods and localization.

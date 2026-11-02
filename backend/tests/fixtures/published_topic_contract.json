@@ -67,8 +67,8 @@
     "slug": "polynomial-division",
     "name": "Polynomial division",
     "area": "algebra",
-    "levels": [1, 2],
-    "mixed_weight": 0,
+    "levels": [1, 2, 3, 4, 5],
+    "mixed_weight": 1,
     "space_cm": 5
   },
   {
@@ -128,6 +128,46 @@
     "levels": [1, 2, 3],
     "mixed_weight": 1,
     "space_cm": 5
+  },
+  {
+    "slug": "binomial-theorem",
+    "name": "Binomial theorem",
+    "area": "algebra",
+    "levels": [1, 2, 3],
+    "mixed_weight": 1,
+    "space_cm": 4
+  },
+  {
+    "slug": "polynomial-roots",
+    "name": "Polynomial roots and factors",
+    "area": "algebra",
+    "levels": [1, 2, 3],
+    "mixed_weight": 1,
+    "space_cm": 5
+  },
+  {
+    "slug": "eigenvalues",
+    "name": "Eigenvalues and eigenvectors",
+    "area": "algebra",
+    "levels": [1, 2, 3, 4, 5],
+    "mixed_weight": 1,
+    "space_cm": 5
+  },
+  {
+    "slug": "vectors",
+    "name": "Vectors, areas and volumes",
+    "area": "algebra",
+    "levels": [1, 2, 3, 4, 5],
+    "mixed_weight": 1,
+    "space_cm": 5
+  },
+  {
+    "slug": "lines-and-planes",
+    "name": "Lines and planes",
+    "area": "algebra",
+    "levels": [1, 2, 3, 4, 5],
+    "mixed_weight": 1,
+    "space_cm": 6
   },
   {
     "slug": "basic-integrals",

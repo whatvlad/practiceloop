@@ -25,6 +25,11 @@ def test_catalogue_lists_algebra_and_syllabus_topics() -> None:
         "matrix-rank",
         "complex-arithmetic",
         "complex-polar-form",
+        "binomial-theorem",
+        "polynomial-roots",
+        "eigenvalues",
+        "vectors",
+        "lines-and-planes",
         "partial-fractions",
         "combinations",
         "basic-integrals",
@@ -70,6 +75,12 @@ def test_combined_mixed_pool_preserves_weights_and_legacy_boundaries(level: int)
             ("matrix-rank", 2),
             ("complex-arithmetic", 5),
             ("complex-polar-form", 3),
+            ("binomial-theorem", 3),
+            ("polynomial-roots", 3),
+            ("eigenvalues", 5),
+            ("vectors", 5),
+            ("lines-and-planes", 5),
+            ("polynomial-division", 5),
         )
         if level <= levels
     }

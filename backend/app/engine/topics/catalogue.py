@@ -2,7 +2,7 @@
 
 import logging
 from collections.abc import Callable, Mapping
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from functools import partial
 
 from app.engine.blocks.integral_forms.form import BOUNDS, METHODS
@@ -32,6 +32,23 @@ from app.engine.generators.differentiation import (
     SingleDerivativeParams,
     SingleDerivatives,
 )
+from app.engine.generators.eigen_geometry import (
+    DiagonalPower,
+    EigenvectorValue,
+    LargestEigenvalue,
+    LinePlaneIntersection,
+    MatrixFromEigenvectors,
+    ParallelPlanesDistance,
+    PlaneReflection,
+    PlanesAngle,
+    PointPlaneDistance,
+    TetrahedronHeight,
+    TetrahedronVolume,
+    TriangleAngle,
+    TriangleArea,
+    TriangularPowerEigenvalue,
+    TripleProduct,
+)
 from app.engine.generators.indefinite import IndefiniteParams
 from app.engine.generators.integrals import IntegralParams, integral_generators
 from app.engine.generators.linear_algebra import (
@@ -52,6 +69,18 @@ from app.engine.generators.linear_algebra import (
     SingularParameter,
 )
 from app.engine.generators.multiple import DoubleIntegrals, MultipleParams, TripleIntegrals
+from app.engine.generators.polynomials import (
+    BinomialCoefficient,
+    BinomialConstantTerm,
+    BinomialExponent,
+    CubicRemainder,
+    Divisibility,
+    IrreducibleFactor,
+    KnownComplexRoot,
+    PartialFractionCoefficient,
+    RationalRoots,
+    RemainderConditions,
+)
 from app.engine.models import Drawn, Task
 from app.engine.prng import DeterministicRNG
 from app.engine.registry import Registry
@@ -195,6 +224,15 @@ def topics() -> dict[str, Topic]:
             space_cm=space,
             served=True,
         )
+    # #221: algebra30 60 adds a repeated or quadratic factor's constant at level 4.
+    fractions = declared["partial-fractions"]
+    declared["partial-fractions"] = replace(
+        fractions,
+        levels={
+            **fractions.levels,
+            4: (*fractions.levels[4], Choice(PartialFractionCoefficient.version)),
+        },
+    )
     declared["algebraic-expressions"] = Topic(
         "algebraic-expressions",
         "algebra",
@@ -210,8 +248,13 @@ def topics() -> dict[str, Topic]:
         {
             1: (Choice(RemainderTheorem.version),),
             2: (Choice(PolynomialQuotient.version), Choice(QuadraticRemainder.version)),
+            # #221: algebra30 61-63.
+            3: (Choice(RemainderConditions.version),),
+            4: (Choice(Divisibility.version),),
+            5: (Choice(CubicRemainder.version),),
         },
-        0,
+        # #221 adds it to mixed practice once every level has a structural template.
+        1,
         title="Polynomial division",
         space_cm=5,
         served=True,
@@ -225,7 +268,7 @@ def topics() -> dict[str, Topic]:
         space_cm=4,
         served=True,
     )
-    # #221: algebra30 exercises 14-51, each level one structural template.
+    # #221: algebra30 exercises 5-96, each level one structural template.
     for slug, title, space, levels in (
         (
             "determinants",
@@ -278,6 +321,62 @@ def topics() -> dict[str, Topic]:
             "Polar form and De Moivre's formula",
             5,
             {1: (ComplexArgument.version,), 2: (DeMoivre.version,), 3: (ComplexRoot.version,)},
+        ),
+        (
+            "binomial-theorem",
+            "Binomial theorem",
+            4,
+            {
+                1: (BinomialCoefficient.version,),
+                2: (BinomialConstantTerm.version,),
+                3: (BinomialExponent.version,),
+            },
+        ),
+        (
+            "polynomial-roots",
+            "Polynomial roots and factors",
+            5,
+            {
+                1: (RationalRoots.version,),
+                2: (KnownComplexRoot.version,),
+                3: (IrreducibleFactor.version,),
+            },
+        ),
+        (
+            "eigenvalues",
+            "Eigenvalues and eigenvectors",
+            5,
+            {
+                1: (LargestEigenvalue.version,),
+                2: (EigenvectorValue.version,),
+                3: (DiagonalPower.version,),
+                4: (TriangularPowerEigenvalue.version,),
+                5: (MatrixFromEigenvectors.version,),
+            },
+        ),
+        (
+            "vectors",
+            "Vectors, areas and volumes",
+            5,
+            {
+                1: (TripleProduct.version,),
+                2: (TriangleAngle.version,),
+                3: (TriangleArea.version,),
+                4: (TetrahedronVolume.version,),
+                5: (TetrahedronHeight.version,),
+            },
+        ),
+        (
+            "lines-and-planes",
+            "Lines and planes",
+            6,
+            {
+                1: (PointPlaneDistance.version,),
+                2: (ParallelPlanesDistance.version,),
+                3: (PlanesAngle.version,),
+                4: (LinePlaneIntersection.version,),
+                5: (PlaneReflection.version,),
+            },
         ),
     ):
         declared[slug] = Topic(

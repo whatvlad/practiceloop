@@ -277,6 +277,19 @@ structural template with its own generator version (in
 | complex-polar-form | 1 | principal argument in (-pi, pi] (45) | CXG |
 | complex-polar-form | 2 | De Moivre power answered as a + bi (46) | CXD |
 | complex-polar-form | 3 | the n-th root with the smallest nonnegative argument (49) | CXN |
+| binomial-theorem | 1-3 | coefficient of x^k in (ax+b)^n; constant term of (ax^p+b/x^q)^n; n from the x^2 coefficient (5, 7) | BNC, BNT, BNE |
+| polynomial-roots | 1 | largest rational root of a quartic with an irreducible quadratic factor (55) | PRR |
+| polynomial-roots | 2-3 | real root of a cubic with a known complex root; its monic irreducible quadratic factor (57, 58) | PKR, PIF |
+| polynomial-division | 3-5 | third remainder from two remainder conditions; a or b from divisibility; remainder modulo x^3 - x (61, 62, 63c) | PRC, PDB, PCR |
+| partial-fractions | 4 | one constant with a repeated linear or irreducible quadratic factor (60), beside the existing level-4 pool | PFC |
+| eigenvalues | 1-2 | largest eigenvalue from the characteristic equation; eigenvalue of a given eigenvector (64, 65, 69) | EGL, EGV |
+| eigenvalues | 3-5 | entry of A^n by diagonalization; largest eigenvalue of a triangular power; entry of A from eigenpairs (66, 67, 69) | EGP, EGT, EGM |
+| vectors | 1-5 | scalar triple product; cosine of a triangle angle; triangle area; tetrahedron volume; tetrahedron height (72, 73, 78, 79) | VTP, VTA, VTR, VTV, VTH |
+| lines-and-planes | 1-5 | point-plane distance; distance of parallel planes; cosine between planes; line-plane intersection coordinate; reflection in a plane (82, 86, 89, 96) | GPP, GPL, GPA, GLP, GPR |
+
+Eigen tasks use A = P D P^-1 with a unimodular integer P, so A, A^n and the
+eigenvectors stay integer. Geometry tasks use bounded integer points and
+normals; non-collinear and non-coplanar points are drawn with `draw_valid`.
 
 The complex topics answer with `ComplexAnswer` in the form a + bi (the argument
 with a real expression); their generators declare the imaginary unit `i`, see
