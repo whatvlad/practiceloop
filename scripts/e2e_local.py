@@ -173,7 +173,7 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
         if area["mixed"]
         for d in area["mixed"]["availableDifficulties"][:1]
     ]
-    check(len(cells) == 23, "one cell for 21 topics plus two mixed levels", len(cells))
+    check(len(cells) == 24, "one cell for 22 topics plus two mixed levels", len(cells))
     created: list[str] = []
     for topic, level, extra in cells:
         reset_limits()
