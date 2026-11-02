@@ -79,7 +79,8 @@ export function displayProblem(topic: TopicSlug, problemLatex: string): { instru
   if (generated) {
     const formula = generated[2].replace(/\\text\{ for \}/, '\\quad ');
     const kind = problemKind(topic, formula);
-    const instruction = generated[1] === 'Calculate' || generated[1] === 'Find'
+    const instruction = topic === 'partial-fractions' ? 'Decompose into partial fractions.'
+      : generated[1] === 'Calculate' || generated[1] === 'Find'
       ? leadText(kind)
       : `${generated[1].replace(/:$/, '').replace(/ of$/, '')}.`;
     return { instruction, formula };

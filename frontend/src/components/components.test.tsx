@@ -49,8 +49,8 @@ describe('ProblemCard', () => {
     expect(html).toContain('\\frac{x^{2}+1}{x-1}');
   });
 
-  it('tells a learner how to solve an older partial-fractions exercise', () => {
-    const html = card({ topic: 'partial-fractions', problemLatex: '\\frac{2x+3}{(x+1)(x+2)}=?' });
+  it.each(['\\frac{2x+3}{(x+1)(x+2)}=?', '\\text{Calculate }\\frac{2x+3}{(x+1)(x+2)}=?\\text{.}'])('tells a learner how to solve a partial-fractions exercise', problemLatex => {
+    const html = card({ topic: 'partial-fractions', problemLatex });
     expect(html).toContain('Decompose into partial fractions.');
   });
 
