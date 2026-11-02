@@ -2,13 +2,12 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { Logo } from '../components/AppNav';
 import { Button, ButtonLink } from '../components/Button';
 import { DifficultyDots } from '../components/DifficultyScale';
-import { Tex } from '../components/Tex';
+import { ProblemStatement } from '../components/ProblemStatement';
 import { lookupShare, type ShareLookup } from '../data/shares';
 import { practiceCodeProblem, practiceSharedProblem } from '../data/api';
 import { lookupProblemCode } from '../data/problemCodes';
 import { problemTag } from '../data/topics';
 import type { ShareUnavailable } from '../data/types';
-import { leadText, problemKind } from '../format';
 import { navigate } from '../router';
 import { useLoad } from '../useLoad';
 import text from '../../../backend/app/content/en.json';
@@ -88,12 +87,7 @@ function Result({ found, shareRef, signedIn, authLoading, inactive }: { found: S
         </div>
         <span className="pl-label">{permanent ? 'Problem from code' : 'Shared problem'}</span>
       </div>
-      <div className="pl-stack pl-gap-3">
-        <p className="pl-lead">{leadText(problemKind(topic, problemLatex))}</p>
-        <div className="pl-expr">
-          <Tex latex={problemLatex} display />
-        </div>
-      </div>
+      <ProblemStatement topic={topic} problemLatex={problemLatex} />
       {inactive ? <p className="pl-h-lg" role="status">In develop</p> : <p className="pl-small pl-muted pl-m-0">Solve this problem with answer checking and a full solution. Your work is saved separately in your own history.</p>}
       {error && <p role="alert">{error}</p>}
       <div>

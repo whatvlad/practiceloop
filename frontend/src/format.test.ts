@@ -37,6 +37,10 @@ describe('definite statements', () => {
     expect(isDefinite('\\int_{0}^{\\pi} \\left(\\sin{\\left(x \\right)}\\right)\\,dx')).toBe(true);
     expect(isDefinite('\\int \\left(x\\right)\\,dx\\quad(x\\in\\mathbb{R})')).toBe(false);
   });
+
+  it('recognizes generated definite integrals even when the instruction is included', () => {
+    expect(problemKind('basic-integrals', '\\text{Calculate }\\int_{0}^{1}x\\,dx\\text{.}')).toBe('definite');
+  });
 });
 
 describe('double integral statements', () => {

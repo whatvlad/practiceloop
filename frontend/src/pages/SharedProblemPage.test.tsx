@@ -108,6 +108,15 @@ it('shows a numeric instruction for a shared combinations problem', async () => 
   expect(element.textContent).not.toContain('Calculate the indefinite integral.');
 });
 
+it('places a shared radical instruction above its formula', async () => {
+  fetchMock.mockResolvedValue(json({ problem: { topic: 'algebraic-expressions', difficulty: 1,
+    problemLatex: '\\text{Simplify }2\\sqrt{3}-\\sqrt{27}\\text{.}' } }));
+  await render({ token: TOKEN, code: null });
+  expect(element.querySelector('.pl-lead')?.textContent).toContain('Simplify');
+  expect(element.querySelector('.pl-expr')?.textContent).not.toContain('Simplify');
+  expect(element.querySelector('.pl-expr .katex')).not.toBeNull();
+});
+
 it.each([{ token: TOKEN, code: null }, { token: null, code: 'k7m2-qx9p' }])('keeps the exact shared reference in the sign-in action', async props => {
   fetchMock.mockResolvedValue(json({ problem: { topic: 'basic-integrals', difficulty: 4, problemLatex: '\\int (x+2)^2\\,dx' } }));
   await render(props);

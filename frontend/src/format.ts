@@ -23,7 +23,7 @@ export function formatWhen(iso: string, now: Date = new Date()): string {
 
 /** Definite statements start with bounds, `\int_{a}^{b}`; their answer is a number with no `+ C`. */
 export function isDefinite(problemLatex: string): boolean {
-  return problemLatex.startsWith('\\int_');
+  return problemLatex.replace(/^\\text\{Calculate \}/, '').startsWith('\\int_');
 }
 
 /** What kind of answer the problem asks for. */
@@ -57,6 +57,27 @@ export function leadText(kind: ProblemKind): string {
     numeric: 'Calculate the value.',
     expression: 'Solve the problem.',
   }[kind];
+}
+
+/** Separate the engine's text-and-math statements without changing saved records. */
+export function displayProblem(topic: TopicSlug, problemLatex: string): { instruction: string; formula: string } {
+  const division = problemLatex.match(/^\\text\{Find the (remainder|quotient) when \}(.+)\\text\{ is divided by \}(.+)\\text\{\.\}$/);
+  if (division) {
+    return {
+      instruction: `Find the ${division[1]} when the polynomial is divided by the divisor.`,
+      formula: `${division[2]}\\quad\\div\\quad ${division[3]}`,
+    };
+  }
+  const generated = problemLatex.match(/^\\text\{(Calculate|Find|Differentiate|Simplify|Rationalize the denominator of|Decompose into partial fractions:) \}(.+)\\text\{\.\}$/);
+  if (generated) {
+    const formula = generated[2].replace(/\\text\{ for \}/, '\\quad ');
+    const kind = problemKind(topic, formula);
+    const instruction = generated[1] === 'Calculate' || generated[1] === 'Find'
+      ? leadText(kind)
+      : `${generated[1].replace(/:$/, '').replace(/ of$/, '')}.`;
+    return { instruction, formula };
+  }
+  return { instruction: leadText(problemKind(topic, problemLatex)), formula: problemLatex };
 }
 
 /**

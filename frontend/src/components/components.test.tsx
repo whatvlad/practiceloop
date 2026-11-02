@@ -27,6 +27,21 @@ function card(props: Partial<Parameters<typeof ProblemCard>[0]> = {}) {
 }
 
 describe('ProblemCard', () => {
+  it.each([
+    ['algebraic-expressions', '\\text{Simplify }2\\sqrt{3}-\\sqrt{27}\\text{.}', 'Simplify', '2\\sqrt{3}-\\sqrt{27}'],
+    ['algebraic-expressions', '\\text{Rationalize the denominator of }\\frac{1}{2+\\sqrt{3}}\\text{.}', 'Rationalize the denominator', '\\frac{1}{2+\\sqrt{3}}'],
+    ['polynomial-division', '\\text{Find the remainder when }P(x)=x^{2}+1\\text{ is divided by }x-1\\text{.}', 'Find the remainder', 'P(x)=x^{2}+1'],
+  ] as const)('separates the instruction from the formula for %s', (topic, problemLatex, instruction, formula) => {
+    const html = card({ topic, problemLatex });
+    const lead = html.match(/<p class="pl-lead">(.*?)<\/p>/)?.[1];
+    const expression = html.match(/<div class="pl-expr">([\s\S]*?)<\/div>/)?.[1];
+    expect(lead).toContain(instruction);
+    expect(expression).toContain(formula);
+    expect(expression).not.toContain(instruction);
+    expect(expression).not.toContain('is divided by');
+    if (topic === 'polynomial-division') expect(expression).toContain('x-1');
+  });
+
   it('renders no answer or solution before they are revealed', () => {
     const html = card();
     expect(html).not.toContain('pl-answer');
