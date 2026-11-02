@@ -23,6 +23,9 @@ it('shows both areas, descriptions, subtypes and an inactive placeholder', async
   expect(element.textContent).toContain('Algebra');
   expect(element.textContent).toContain('Mathematical Analysis');
   expect(element.textContent).toContain('Inverse matrices');
+  const typeSummary = [...element.querySelectorAll('summary')].find(summary => summary.textContent?.includes('Inverse matrices'))!;
+  expect(typeSummary.textContent).toContain('In develop');
+  expect(element.querySelector('button[aria-label="Start practice"]')).toBeNull();
   expect(element.textContent).toContain('Elementary row operations');
   expect(element.textContent).toContain('In develop');
   expect(element.querySelector('button')?.textContent).not.toContain('Generate');
