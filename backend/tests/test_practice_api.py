@@ -344,6 +344,21 @@ def answer_of(url: str, problem_id: str) -> str:
     return str(answer.expected).replace("**", "^").replace("E", "e")
 
 
+@pytest.mark.parametrize("level", [1, 2])
+def test_polynomial_division_practice_saves_checks_and_reveals(
+    client: TestClient, url: str, level: int
+) -> None:
+    problem = generate(client, "polynomial-division", level)
+    result = attempt(client, problem["id"], answer_of(url, problem["id"]))
+    assert result.status_code == 201, result.text
+    assert result.json()["attempt"]["result"] == "correct"
+    solution = client.post(f"/problems/{problem['id']}/reveal-solution")
+    assert solution.status_code == 200 and solution.json()["steps"]
+    assert (
+        client.get(f"/problems/{problem['id']}").json()["problem"]["topic"] == "polynomial-division"
+    )
+
+
 def test_attempts_are_checked_by_the_real_worker_and_persisted(
     client: TestClient, users: Users, url: str
 ) -> None:
