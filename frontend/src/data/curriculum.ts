@@ -38,6 +38,7 @@ export const algebraSections: CurriculumSection[] = [
   ] },
   { name: 'Complex numbers', types: [
     { name: 'Complex arithmetic and equations', description: 'Calculate with complex numbers and solve equations.', pdfExercises: [41, 42], subtypes: ['Arithmetic', 'Equations'] },
+    { name: 'Complex modulus', description: 'Calculate the modulus of a complex number.', pdfExercises: [] },
     { name: 'Complex-plane geometry', description: 'Interpret complex numbers and modulus conditions geometrically.', pdfExercises: [43, 44], subtypes: ['Points and triangles', 'Modulus loci'] },
     { name: 'Polar and exponential forms', description: 'Express complex numbers in trigonometric or exponential form.', pdfExercises: [45] },
     { name: 'De Moivre’s formula', description: 'Use polar form to calculate powers.', pdfExercises: [46] },
@@ -47,6 +48,7 @@ export const algebraSections: CurriculumSection[] = [
     { name: 'Complex polynomial equations', description: 'Solve equations and investigate conjugate roots.', pdfExercises: [51, 52, 53], subtypes: ['Equations', 'Conjugate roots', 'Proofs and counterexamples'] },
   ] },
   { name: 'Polynomials and partial fractions', types: [
+    { name: 'Sum of quadratic roots', description: 'Find the sum of the roots of a quadratic polynomial.', pdfExercises: [] },
     { name: 'Rational polynomial roots', description: 'List candidates and find rational roots.', pdfExercises: [54, 55], subtypes: ['Possible roots', 'Finding rational roots'] },
     { name: 'Real and complex roots', description: 'Find all roots, including when one root is known.', pdfExercises: [56, 57], subtypes: ['All roots', 'Using a known root'] },
     { name: 'Polynomial factorization', description: 'Factor a polynomial into irreducible real factors.', pdfExercises: [58] },

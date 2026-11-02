@@ -6,9 +6,11 @@ import { SkipLink } from './components/SkipLink';
 import { type ApiHealth, authStore, checkApiHealth } from './data/api';
 import { rememberSharedReturn, sharedReturn, takeSharedReturn } from './data/sharedReturn';
 import { CurriculumPage } from './pages/CurriculumPage';
+import { DashboardPage } from './pages/DashboardPage';
 import { HistoryPage } from './pages/HistoryPage';
 import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/LoginPage';
+import { PracticePage } from './pages/PracticePage';
 import { PrivacyPage } from './pages/PrivacyPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { SharedProblemPage } from './pages/SharedProblemPage';
@@ -20,6 +22,13 @@ const SITE = siteConfig(import.meta.env.VITE_SITE_URL, import.meta.env.VITE_SITE
 const APP_ROUTES = new Set(['/dashboard', '/practice', '/history', '/profile']);
 // Pages whose main column is .pl-wrap--narrow (760px) instead of the full 1120px.
 const NARROW_ROUTES = new Set(['/practice', '/profile']);
+const TOPIC_RETURN = 'practiceloop:topic-return';
+
+function topicReturn(value: string | null): string | null {
+  if (!value) return null;
+  const match = /^\/dashboard\?area=(algebra|mathematical-analysis)&topic=([a-z0-9]+(?:-[a-z0-9]+)*)$/.exec(value);
+  return match && match[2].length <= 64 ? value : null;
+}
 
 function NotFoundPage() {
   return (
@@ -65,10 +74,18 @@ export function App() {
   const needsAccount = APP_ROUTES.has(pathname) && pathname !== '/practice';
   useEffect(() => {
     if (auth.status === 'loading') return;
-    if (!account && (needsAccount || pathname === '/auth/callback')) navigate('/login', { replace: true });
+    if (!account && (needsAccount || pathname === '/auth/callback')) {
+      if (pathname === '/dashboard') {
+        const desired = topicReturn(`/dashboard?area=${params.get('area')}&topic=${params.get('topic')}`);
+        if (desired) sessionStorage.setItem(TOPIC_RETURN, desired);
+      }
+      navigate('/login', { replace: true });
+    }
     if (account && (pathname === '/login' || pathname === '/auth/callback')) {
       const remembered = takeSharedReturn();
-      navigate(nextShare ?? remembered ?? '/dashboard', { replace: true });
+      const topic = topicReturn(sessionStorage.getItem(TOPIC_RETURN));
+      sessionStorage.removeItem(TOPIC_RETURN);
+      navigate(nextShare ?? remembered ?? topic ?? '/dashboard', { replace: true });
     }
   }, [auth.status, account, needsAccount, pathname, nextShare]);
 
@@ -101,11 +118,11 @@ export function App() {
     if (coded) {
       let code = coded[1];
       try { code = decodeURIComponent(code); } catch { /* The page displays an invalid-code message. */ }
-      return <SharedProblemPage key={`${account?.id ?? auth.status}:code:${code}`} token={null} code={null} problemCode={code} signedIn={!!account} authLoading={auth.status === 'loading'} inactive />;
+      return <SharedProblemPage key={`${account?.id ?? auth.status}:code:${code}`} token={null} code={null} problemCode={code} signedIn={!!account} authLoading={auth.status === 'loading'} />;
     }
-    if (pathname === '/shared') return <SharedProblemPage key={`${account?.id ?? auth.status}:${params.get('code')}`} token={null} code={params.get('code')} signedIn={!!account} authLoading={auth.status === 'loading'} inactive />;
+    if (pathname === '/shared') return <SharedProblemPage key={`${account?.id ?? auth.status}:${params.get('code')}`} token={null} code={params.get('code')} signedIn={!!account} authLoading={auth.status === 'loading'} />;
     const shared = /^\/(?:s|shared)\/([^/]+)$/.exec(pathname);
-    if (shared) return <SharedProblemPage key={`${account?.id ?? auth.status}:${shared[1]}`} token={decodeURIComponent(shared[1])} code={null} signedIn={!!account} authLoading={auth.status === 'loading'} inactive />;
+    if (shared) return <SharedProblemPage key={`${account?.id ?? auth.status}:${shared[1]}`} token={decodeURIComponent(shared[1])} code={null} signedIn={!!account} authLoading={auth.status === 'loading'} />;
     if (pathname === '/privacy') return <PrivacyPage />;
     if (pathname === '/login') return <LoginPage onSignIn={handleSignIn} disabled={authDisabled} busy={auth.working} error={auth.error} />;
     if (pathname === '/auth/callback' || (needsAccount && auth.status === 'loading')) {
@@ -125,11 +142,11 @@ export function App() {
           <p className="pl-small pl-muted" role="status">Problems, attempts and reveals are saved to your account.</p>
           {auth.error && <p className="pl-result pl-result--invalid" role="alert">{auth.error}</p>}
         </section>
-        {pathname === '/dashboard' && <CurriculumPage />}
-        {pathname === '/practice' && (params.has('id')
-          ? <main id="main" tabIndex={-1} className="pl-wrap pl-app-main"><h1 className="pl-display-md">In develop</h1><p>Saved problems are currently inactive.</p><ButtonLink to="/history">View history</ButtonLink></main>
+        {pathname === '/dashboard' && (params.has('topic')
+          ? <DashboardPage key={params.get('topic')} initialArea={params.get('area') === 'algebra' ? 'algebra' : 'mathematical-analysis'} initialTopic={params.get('topic') ?? undefined} />
           : <CurriculumPage />)}
-        {pathname === '/history' && <HistoryPage inactive />}
+        {pathname === '/practice' && (params.has('id') ? <PracticePage key={params.get('id')} id={params.get('id')} /> : <CurriculumPage />)}
+        {pathname === '/history' && <HistoryPage />}
         {pathname === '/profile' && <ProfilePage account={account} onLogOut={handleLogOut} onDeleted={handleDeleted} busy={auth.working} />}
       </div>
     );

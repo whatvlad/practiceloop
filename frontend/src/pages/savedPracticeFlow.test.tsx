@@ -89,6 +89,12 @@ async function typeAnswer(value: string) {
   });
 }
 
+it('starts practice for the topic selected from the curriculum', async () => {
+  await act(async () => root.render(<DashboardPage initialArea="mathematical-analysis" initialTopic="substitution" />));
+  await act(async () => button('Generate problem').click());
+  expect(calls.find(call => call.path === '/api/problems')?.body).toMatchObject({ topic: 'substitution', difficulty: 1 });
+});
+
 it('runs selection → saved generation → invalid/correct check → explicit reveals → next through the real data boundary', async () => {
   await act(async () => root.render(<DashboardPage />));
   // Levels the topic lacks are hidden, not disabled: basic integrals has 1-2 here.

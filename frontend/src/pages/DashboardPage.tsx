@@ -11,15 +11,15 @@ import type { AreaSlug, Difficulty, PracticeTopic } from '../data/types';
 import { navigate } from '../router';
 import { useLoad } from '../useLoad';
 
-export function DashboardPage() {
+export function DashboardPage({ initialArea, initialTopic }: { initialArea?: AreaSlug; initialTopic?: PracticeTopic } = {}) {
   const [catalogueRevision, setCatalogueRevision] = useState(0);
   const catalogue = useLoad(getCatalogue, String(catalogueRevision));
   const [dataRevision, setDataRevision] = useState(0);
   const counts = useLoad(getProfileCounts, String(dataRevision));
   const recent = useLoad(async () => (await listProblemPage({ limit: 3 })).items, String(dataRevision));
   const last = useLoad(getLastSelection);
-  const [area, setArea] = useState<AreaSlug>('mathematical-analysis');
-  const [topic, setTopic] = useState<PracticeTopic>('basic-integrals');
+  const [area, setArea] = useState<AreaSlug>(initialArea ?? 'mathematical-analysis');
+  const [topic, setTopic] = useState<PracticeTopic>(initialTopic ?? 'basic-integrals');
   const [difficulty, setDifficulty] = useState<Difficulty>(1);
   const [busy, setBusy] = useState(false);
   const pending = useRef(false);
@@ -35,11 +35,11 @@ export function DashboardPage() {
   const available = levels.includes(difficulty);
 
   useEffect(() => {
-    if (last.status !== 'ready') return;
+    if (initialTopic || last.status !== 'ready') return;
     setArea(last.data.area);
     setTopic(last.data.topic);
     setDifficulty(last.data.difficulty);
-  }, [last]);
+  }, [last, initialTopic]);
 
   // An area the catalogue does not offer falls back to the first one it does.
   useEffect(() => {
