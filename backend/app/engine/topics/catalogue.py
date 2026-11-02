@@ -7,7 +7,11 @@ from functools import partial
 
 from app.engine.blocks.integral_forms.form import BOUNDS, METHODS
 from app.engine.generators.algebra import AlgebraParams, algebra_generators
-from app.engine.generators.algebra_expansion import PolynomialQuotient, RemainderTheorem
+from app.engine.generators.algebra_expansion import (
+    PolynomialQuotient,
+    QuadraticRemainder,
+    RemainderTheorem,
+)
 from app.engine.generators.algebra_expressions import RationalizeDenominator, SimplifyRadicals
 from app.engine.generators.analysis import AnalysisParams, analysis_generators
 from app.engine.generators.definite import DefiniteParams
@@ -176,7 +180,10 @@ def topics() -> dict[str, Topic]:
     declared["polynomial-division"] = Topic(
         "polynomial-division",
         "algebra",
-        {1: (Choice(RemainderTheorem.version),), 2: (Choice(PolynomialQuotient.version),)},
+        {
+            1: (Choice(RemainderTheorem.version),),
+            2: (Choice(PolynomialQuotient.version), Choice(QuadraticRemainder.version)),
+        },
         0,
         title="Polynomial division",
         space_cm=5,

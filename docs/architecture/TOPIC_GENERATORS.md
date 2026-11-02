@@ -245,11 +245,13 @@ exact results, while requiring like radicals to be combined with square factors
 extracted, and denominators to be rational, respectively. Other exercises in the
 topic remain in development.
 
-The polynomial division topic adds two independently versioned exercises:
+The polynomial division topic offers independently versioned exercises:
 the remainder on division by a linear factor at level 1 and the quotient at
-level 2. Both use bounded integer coefficients and exact polynomial identities;
-the quotient declares `x` as a real input variable. Previously issued codes
-continue to use their original generator versions.
+level 2. Level 2 also includes remainders of powers modulo two distinct linear
+factors, using evaluation at both roots and linear interpolation (algebra30
+63(b)). Generated roots range from -2 to 2 and exponents from 3 to 10. All use
+bounded integer parameters and exact identities; polynomial answers declare `x`
+as a real input variable. Previously issued codes retain their original versions.
 
 After #197, the six remaining analysis topics also use native engine pools:
 functions/sequences, limits/continuity, improper integrals, series,

@@ -1,9 +1,9 @@
 """Versioned algebra exercises added after the initial curriculum migration."""
 
-from typing import Any
+from typing import Any, Self
 
 import sympy as sp
-from pydantic import Field
+from pydantic import Field, model_validator
 
 from app.engine.answers.expression import ExpressionAnswer
 from app.engine.codes import encode
@@ -94,5 +94,63 @@ class PolynomialQuotient(RemainderTheorem):
         )
 
 
+class QuadraticRemainderParams(Drawn):
+    first: int = Field(ge=-2, le=2)
+    second: int = Field(ge=-2, le=2)
+    exponent: int = Field(ge=2, le=100)
+
+    @model_validator(mode="after")
+    def distinct_roots(self) -> Self:
+        if self.first == self.second:
+            raise ValueError("Divisor roots must be distinct")
+        return self
+
+
+class QuadraticRemainder:
+    version = "algebra-quadratic-remainder-v1"
+    prefix = "QRM"
+    family = "algebra-quadratic-remainder"
+    code_version = 1
+    params = QuadraticRemainderParams
+    answer = ExpressionAnswer
+    requires: tuple[str, ...] = ()
+    step_text = {
+        "substitute": "Evaluate the polynomial at each root of the divisor.",
+        "interpolate": "Find the linear remainder through these two values.",
+    }
+
+    def draw(self, seed: int) -> QuadraticRemainderParams:
+        rng = DeterministicRNG(seed)
+        first = rng.randbelow(5) - 2
+        second = rng.randbelow(4) - 2
+        if second >= first:
+            second += 1
+        return QuadraticRemainderParams(
+            seed=seed, first=first, second=second, exponent=3 + rng.randbelow(8)
+        )
+
+    def input_variables(self, params: QuadraticRemainderParams) -> dict[str, VariableDomain]:
+        return {"x": "real"}
+
+    def build(self, params: QuadraticRemainderParams) -> Task:
+        a, b, n = params.first, params.second, params.exponent
+        y1, y2 = sp.Integer(a) ** n, sp.Integer(b) ** n
+        remainder = sp.expand(y1 + (y2 - y1) * (X - a) / (b - a))
+        if remainder.subs(X, a) != y1 or remainder.subs(X, b) != y2:
+            raise ValueError("Quadratic remainder failed verification")
+        divisor = rf"({sp.latex(X - a)})({sp.latex(X - b)})"
+        return Task(
+            statement=rf"Find the remainder when \(x^{{{n}}}\) is divided by \({divisor}\).",
+            steps=(
+                Step("substitute", rf"R({a})={y1},\quad R({b})={y2}"),
+                Step("interpolate", rf"R(x)={sp.latex(remainder)}"),
+            ),
+            answer=ExpressionAnswer(remainder, {"x": "real"}),
+            metadata={"difficulty": 2, "template": "quadratic-remainder"},
+            code=encode(self.prefix, self.code_version, params.seed),
+            generator_version=self.version,
+        )
+
+
 def generators() -> tuple[TaskGenerator[Any], ...]:
-    return (RemainderTheorem(), PolynomialQuotient())
+    return (RemainderTheorem(), PolynomialQuotient(), QuadraticRemainder())
