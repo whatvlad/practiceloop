@@ -21,6 +21,27 @@ from app.services.math_worker import (
 linux_only = pytest.mark.skipif(not sys.platform.startswith("linux"), reason="Linux worker")
 
 
+def test_domain_check_avoids_repeating_sum_domains_and_preserves_holes(monkeypatch) -> None:
+    from app.engine.answers import _symbolic
+
+    original = _symbolic.continuous_domain
+    calls = []
+
+    def track(value, variable, domain):
+        if value.has(sp.log):
+            calls.append(value)
+        return original(value, variable, domain)
+
+    monkeypatch.setattr(_symbolic, "continuous_domain", track)
+    domain = sp.Union(
+        sp.Interval.open(-sp.oo, -1), sp.Interval.open(-1, 0), sp.Interval.open(0, sp.oo)
+    )
+    assert _symbolic.check_domain(parse_math_input("x^2/2-x+ln|x^2+x|+C"), domain) is None
+    assert len(calls) == 1
+    assert _symbolic.check_domain(parse_math_input("x+1/x"), sp.S.Reals) == "invalid"
+    assert _symbolic.check_domain(parse_math_input("0*(1/x)"), sp.S.Reals) == "invalid"
+
+
 def record(
     template: str, coefficient: int = 1, secondary: int = 1, power: int = 2
 ) -> dict[str, Any]:

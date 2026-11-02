@@ -128,6 +128,13 @@ def check_domain(tree: MathNode, domain: Any) -> Outcome | None:
         value = build_expression(item)
         if value.has(sp.zoo, sp.oo, -sp.oo, sp.nan):
             return "invalid"
+        # Sums and products introduce no holes beyond those of their operands;
+        # inspect those operands individually instead of solving their domains twice.
+        if item.kind in {"number", "symbol", "unary"} or (
+            item.kind == "binary" and item.value in {"+", "-", "*"}
+        ):
+            stack.extend(item.children)
+            continue
         try:
             defined = continuous_domain(value, X, sp.S.Reals)
             if defined == sp.S.EmptySet or (all_reals and defined != sp.S.Reals):
