@@ -23,7 +23,7 @@ export function formatWhen(iso: string, now: Date = new Date()): string {
 
 /** Definite statements start with bounds, `\int_{a}^{b}`; their answer is a number with no `+ C`. */
 export function isDefinite(problemLatex: string): boolean {
-  return problemLatex.startsWith('\\int_');
+  return problemLatex.replace(/^\\text\{Calculate \}/, '').startsWith('\\int_');
 }
 
 /** What kind of answer the problem asks for. */
@@ -57,6 +57,35 @@ export function leadText(kind: ProblemKind): string {
     numeric: 'Calculate the value.',
     expression: 'Solve the problem.',
   }[kind];
+}
+
+/** Separate the engine's text-and-math statements without changing saved records. */
+export function displayProblem(topic: TopicSlug, problemLatex: string): { instruction: string; formula: string } {
+  const division = problemLatex.match(/^\\text\{Find the (remainder|quotient) when \}(.+)\\text\{ is divided by \}(.+)\\text\{\.\}$/);
+  if (division) {
+    return {
+      instruction: `Find the ${division[1]} when the polynomial is divided by the divisor.`,
+      formula: `\\frac{${division[2].replace(/^P\(x\)=/, '')}}{${division[3]}}`,
+    };
+  }
+  const unwrapped = problemLatex.replace(/^\\text\{Calculate \}(.+)\\text\{\.\}$/, '$1');
+  if (topic === 'fundamental-theorem-algebra' && unwrapped.endsWith(': \\text{sum of the roots}')) {
+    return { instruction: 'Find the sum of the roots.', formula: unwrapped.replace(/: \\text\{sum of the roots\}$/, '') };
+  }
+  if (topic === 'limits-and-continuity' && unwrapped.endsWith('\\text{ for continuity}')) {
+    return { instruction: 'Find the value that makes the function continuous.', formula: unwrapped.replace(/\\text\{ for continuity\}$/, '') };
+  }
+  const generated = problemLatex.match(/^\\text\{(Calculate|Find|Differentiate|Simplify|Rationalize the denominator of|Decompose into partial fractions:) \}(.+)\\text\{\.\}$/);
+  if (generated) {
+    const formula = generated[2].replace(/\\text\{ for \}/, '\\quad ');
+    const kind = problemKind(topic, formula);
+    const instruction = topic === 'partial-fractions' ? 'Decompose into partial fractions.'
+      : generated[1] === 'Calculate' || generated[1] === 'Find'
+      ? leadText(kind)
+      : `${generated[1].replace(/:$/, '').replace(/ of$/, '')}.`;
+    return { instruction, formula };
+  }
+  return { instruction: topic === 'partial-fractions' ? 'Decompose into partial fractions.' : leadText(problemKind(topic, problemLatex)), formula: problemLatex };
 }
 
 /**

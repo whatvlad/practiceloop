@@ -1,5 +1,5 @@
 import type { CheckResult, Difficulty, FeedbackCode, SolutionStep, TopicSlug } from '../data/types';
-import { answerVariables, keypadVariables, leadText, problemKind, type ProblemKind } from '../format';
+import { answerVariables, keypadVariables, problemKind, type ProblemKind } from '../format';
 import { problemTag } from '../data/topics';
 import { AnswerInput } from './AnswerInput';
 import { Button } from './Button';
@@ -8,7 +8,7 @@ import { ResultBanner, RevealedAnswer } from './ResultBanner';
 import { SolutionSteps } from './SolutionSteps';
 import { SolutionVisual } from '../visual/SolutionVisual';
 import type { VisualSpec } from '../visual/spec';
-import { Tex } from './Tex';
+import { ProblemStatement } from './ProblemStatement';
 import text from '../../../backend/app/content/en.json';
 
 interface ProblemCardProps {
@@ -93,12 +93,7 @@ export function ProblemCard({
         </div>
         {headLabel && <span className="pl-label">{headLabel}</span>}
       </div>
-      <div className="pl-stack pl-gap-3">
-        <p className="pl-lead">{leadText(kind)}</p>
-        <div className="pl-expr">
-          <Tex latex={problemLatex} display />
-        </div>
-      </div>
+      <ProblemStatement topic={topic} problemLatex={problemLatex} />
       <AnswerInput
         id="answer"
         value={answer}
