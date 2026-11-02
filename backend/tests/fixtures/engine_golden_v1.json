@@ -2430,5 +2430,67 @@
         "template": "rationalize-denominator"
       }
     }
+  ],
+  "algebra-quadratic-remainder-v1": [
+    {
+      "code": "QRM-1-0000000000000000-10",
+      "statement": "Find the remainder when \\(x^{3}\\) is divided by \\((x)(x - 2)\\).",
+      "steps": [
+        [
+          "substitute",
+          "R(0)=0,\\quad R(2)=8"
+        ],
+        [
+          "interpolate",
+          "R(x)=4 x"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "4 x",
+      "metadata": {
+        "difficulty": 2,
+        "template": "quadratic-remainder"
+      }
+    },
+    {
+      "code": "QRM-1-0000000000000001-27",
+      "statement": "Find the remainder when \\(x^{4}\\) is divided by \\((x)(x + 2)\\).",
+      "steps": [
+        [
+          "substitute",
+          "R(0)=0,\\quad R(-2)=16"
+        ],
+        [
+          "interpolate",
+          "R(x)=- 8 x"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "- 8 x",
+      "metadata": {
+        "difficulty": 2,
+        "template": "quadratic-remainder"
+      }
+    },
+    {
+      "code": "QRM-1-0000000000000147-14",
+      "statement": "Find the remainder when \\(x^{3}\\) is divided by \\((x + 2)(x)\\).",
+      "steps": [
+        [
+          "substitute",
+          "R(-2)=-8,\\quad R(0)=0"
+        ],
+        [
+          "interpolate",
+          "R(x)=4 x"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "4 x",
+      "metadata": {
+        "difficulty": 2,
+        "template": "quadratic-remainder"
+      }
+    }
   ]
 }

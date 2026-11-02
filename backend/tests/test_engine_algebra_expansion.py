@@ -8,6 +8,8 @@ from pydantic import ValidationError
 
 from app.engine.generators.algebra_expansion import (
     PolynomialQuotient,
+    QuadraticRemainder,
+    QuadraticRemainderParams,
     RemainderParams,
     RemainderTheorem,
 )
@@ -16,6 +18,49 @@ from app.engine.practice import replay
 from app.engine.topics.catalogue import topics
 from app.math_input import parse_math_input
 from app.services.math_worker import check_answer
+
+
+def test_quadratic_remainder_matches_pdf_example_and_replays() -> None:
+    generator = QuadraticRemainder()
+    params = QuadraticRemainderParams(seed=0, first=1, second=2, exponent=100)
+    task = generator.build(params)
+    x = sp.Symbol("x", real=True)
+    expected = (2**100 - 1) * x + 2 - 2**100
+    assert sp.expand(task.answer.expected - expected) == 0
+    answer = "((2^10)^10-1)*x+2-(2^10)^10"
+    assert task.answer.check(parse_math_input(answer, {"x"})) == "correct"
+    assert task.answer.check(parse_math_input(f"({answer})+1", {"x"})) == "incorrect"
+    assert task == generator.build(
+        QuadraticRemainderParams.model_validate_json(params.model_dump_json())
+    )
+
+
+def test_quadratic_remainders_match_division_and_open_for_1000_seeds() -> None:
+    generator = QuadraticRemainder()
+    x = sp.Symbol("x", real=True)
+    for seed in range(1000):
+        params = generator.draw(seed)
+        task = generator.build(params)
+        divisor = (x - params.first) * (x - params.second)
+        assert task.answer.expected == sp.rem(x**params.exponent, divisor, x)
+        assert rebuild(task.code).difficulty == 2
+        assert task.answer.check(parse_math_input(str(task.answer.expected), {"x"})) == "correct"
+
+
+def test_quadratic_remainder_rejects_equal_roots() -> None:
+    with pytest.raises(ValidationError):
+        QuadraticRemainderParams(seed=0, first=1, second=1, exponent=3)
+
+
+def test_quadratic_remainder_is_offered_and_replays() -> None:
+    assert QuadraticRemainder.version in {
+        choice.generator for choice in topics()["polynomial-division"].levels[2]
+    }
+    generator = QuadraticRemainder()
+    task = generator.build(generator.draw(147))
+    opened = rebuild(task.code)
+    assert opened.topic == "polynomial-division"
+    assert replay(opened.problem.issued().record) == task
 
 
 def test_remainder_theorem_uses_exact_polynomial_evaluation_and_replays() -> None:
@@ -92,7 +137,9 @@ def test_polynomial_division_replays_and_checks_1000_draws() -> None:
 
 
 @pytest.mark.skipif(sys.platform != "linux", reason="Linux resource limits")
-@pytest.mark.parametrize("generator", [RemainderTheorem(), PolynomialQuotient()])
+@pytest.mark.parametrize(
+    "generator", [RemainderTheorem(), PolynomialQuotient(), QuadraticRemainder()]
+)
 def test_polynomial_answers_are_checked_in_the_limited_worker(generator) -> None:
     task = generator.build(generator.draw(147))
     record = {"generator_version": generator.version, "code": task.code}
