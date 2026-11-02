@@ -30,8 +30,14 @@ def test_remainder_theorem_uses_exact_polynomial_evaluation_and_replays() -> Non
 
 
 def test_remainder_theorem_is_offered_in_algebra_practice() -> None:
-    choices = topics()["fundamental-theorem-algebra"].levels[1]
+    choices = topics()["polynomial-division"].levels[1]
     assert RemainderTheorem.version in {choice.generator for choice in choices}
+    assert PolynomialQuotient.version in {
+        choice.generator for choice in topics()["polynomial-division"].levels[2]
+    }
+    assert RemainderTheorem.version not in {
+        choice.generator for choice in topics()["fundamental-theorem-algebra"].levels[1]
+    }
 
 
 def test_remainder_theorem_accepts_own_answer_for_many_seeds() -> None:
@@ -55,7 +61,7 @@ def test_remainder_code_opens_and_replays() -> None:
     generator = RemainderTheorem()
     task = generator.build(generator.draw(147))
     opened = rebuild(task.code)
-    assert opened.topic == "fundamental-theorem-algebra"
+    assert opened.topic == "polynomial-division"
     assert opened.difficulty == 1
     assert opened.problem.issued().record == {
         "generator_version": generator.version,

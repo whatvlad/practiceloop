@@ -25,6 +25,7 @@ it('shows both areas, descriptions, subtypes and an inactive placeholder', async
   const ready = element.querySelector('section[aria-labelledby="ready-to-practise"]')!;
   expect(ready.textContent).toContain('Ready to practise');
   expect(ready.querySelector('a[href="/dashboard?area=algebra&topic=matrices"]')).not.toBeNull();
+  expect(ready.querySelector('a[href="/dashboard?area=algebra&topic=polynomial-division"]')).not.toBeNull();
   expect(ready.textContent).not.toContain('Inverse matrices');
   expect(element.textContent).toContain('Inverse matrices');
   const typeSummary = [...element.querySelectorAll('summary')].find(summary => summary.textContent?.includes('Inverse matrices'))!;

@@ -550,6 +550,7 @@ def test_topics_lists_only_generated_cells(client: TestClient) -> None:
         ("complex-numbers", [1, 2, 3, 4, 5]),
         ("fundamental-theorem-algebra", [1, 2, 3, 4, 5]),
         ("partial-fractions", [1, 2, 3, 4, 5]),
+        ("polynomial-division", [1, 2]),
         ("combinations", [1]),
         ("basic-integrals", [1, 2, 3, 4, 5]),
         ("substitution", [1, 2, 3, 4, 5]),

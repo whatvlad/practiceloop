@@ -156,16 +156,6 @@ def topics() -> dict[str, Topic]:
             "algebra",
             {
                 level: (Choice(algebra_generator.version, partial(_algebra_level, level)),)
-                + (
-                    (Choice(RemainderTheorem.version),)
-                    if slug == "fundamental-theorem-algebra" and level == 1
-                    else ()
-                )
-                + (
-                    (Choice(PolynomialQuotient.version),)
-                    if slug == "fundamental-theorem-algebra" and level == 2
-                    else ()
-                )
                 for level in range(1, 6)
             },
             1,
@@ -173,6 +163,15 @@ def topics() -> dict[str, Topic]:
             space_cm=space,
             served=True,
         )
+    declared["polynomial-division"] = Topic(
+        "polynomial-division",
+        "algebra",
+        {1: (Choice(RemainderTheorem.version),), 2: (Choice(PolynomialQuotient.version),)},
+        0,
+        title="Polynomial division",
+        space_cm=5,
+        served=True,
+    )
     declared["combinations"] = Topic(
         "combinations",
         "algebra",
