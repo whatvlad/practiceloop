@@ -26,6 +26,10 @@ it('shows both areas, descriptions, subtypes and an inactive placeholder', async
   const typeSummary = [...element.querySelectorAll('summary')].find(summary => summary.textContent?.includes('Inverse matrices'))!;
   expect(typeSummary.textContent).toContain('In develop');
   expect(element.querySelector('button[aria-label="Start practice"]')).toBeNull();
+  const matrixLink = element.querySelector<HTMLAnchorElement>('a[href="/dashboard?area=algebra&topic=matrices"]');
+  expect(matrixLink?.textContent).toContain('Practice');
+  const polynomialLink = element.querySelector<HTMLAnchorElement>('a[href="/dashboard?area=algebra&topic=fundamental-theorem-algebra"]');
+  expect(polynomialLink).not.toBeNull();
   expect(element.textContent).toContain('Elementary row operations');
   expect(element.textContent).toContain('In develop');
   expect(element.querySelector('button')?.textContent).not.toContain('Generate');
@@ -33,6 +37,7 @@ it('shows both areas, descriptions, subtypes and an inactive placeholder', async
   await act(async () => analysis.click());
   expect(element.textContent).toContain('Partial derivatives');
   expect(element.textContent).toContain('Differential equations');
+  expect(element.querySelector('a[href="/dashboard?area=mathematical-analysis&topic=derivatives"]')).not.toBeNull();
   expect(element.textContent).not.toContain('Inverse matrices');
   expect(element.textContent).toContain('In develop');
   await act(async () => root.unmount());

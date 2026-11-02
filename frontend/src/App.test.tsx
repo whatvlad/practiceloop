@@ -23,6 +23,7 @@ vi.mock('./data/api', async importOriginal => ({
   ...await importOriginal<typeof import('./data/api')>(),
   authStore: harness.store,
   checkApiHealth: vi.fn(async () => 'ok'),
+  openProblem: vi.fn(async () => ({ problem: { id: 'old', topic: 'basic-integrals', difficulty: 1, problemLatex: 'x', createdAt: '', answerRevealed: false, solutionRevealed: false, lastResult: null, lastAnswer: null } })),
 }));
 
 import { App } from './App';
@@ -64,10 +65,16 @@ describe('client route protection and auth UI', () => {
     expect(element.textContent).not.toContain('Generate problem');
   });
 
-  it('keeps saved problems inactive when opened directly', async () => {
+  it('opens saved problems for practice again', async () => {
     await renderAt('/practice?id=old', signedIn);
-    expect(element.textContent).toContain('In develop');
-    expect(element.textContent).not.toContain('Check answer');
+    expect(element.textContent).toContain('Check answer');
+  });
+
+  it('returns a signed-out learner to their selected topic after sign-in', async () => {
+    await renderAt('/dashboard?area=algebra&topic=matrices');
+    expect(window.location.pathname).toBe('/login');
+    await act(async () => harness.set(signedIn));
+    expect(window.location.pathname + window.location.search).toBe('/dashboard?area=algebra&topic=matrices');
   });
   it.each([signedOut, signedIn])('opens shared problems without redirecting (#37)', async state => {
     await renderAt('/shared', state);
