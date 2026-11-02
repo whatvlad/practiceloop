@@ -19,6 +19,10 @@ def test_catalogue_lists_algebra_and_syllabus_topics() -> None:
         "fundamental-theorem-algebra",
         "algebraic-expressions",
         "polynomial-division",
+        "determinants",
+        "inverse-matrices",
+        "linear-systems",
+        "matrix-rank",
         "partial-fractions",
         "combinations",
         "basic-integrals",
@@ -54,8 +58,19 @@ def test_combined_mixed_pool_preserves_weights_and_legacy_boundaries(level: int)
     assert "definite-integrals" not in combined
     algebra, algebra_weights = practice.mixed_topics("algebra", level)
     legacy = {"matrices", "complex-numbers", "fundamental-theorem-algebra", "partial-fractions"}
+    # #221: the algebra30 linear-algebra topics join at the levels they offer.
+    offered = {
+        slug
+        for slug, levels in (
+            ("determinants", 4),
+            ("inverse-matrices", 3),
+            ("linear-systems", 5),
+            ("matrix-rank", 2),
+        )
+        if level <= levels
+    }
     # #191: combinations has level 1 only, so it joins Algebra mixed practice there.
-    assert set(algebra) == (legacy | {"combinations"} if level == 1 else legacy)
+    assert set(algebra) == (legacy | offered | ({"combinations"} if level == 1 else set()))
     assert algebra_weights == [1] * len(algebra)
     assert set(practice.mixed_topics("algebra", level, worksheet=True)[0]) == set(algebra)
 

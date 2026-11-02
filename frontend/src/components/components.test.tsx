@@ -32,6 +32,8 @@ describe('ProblemCard', () => {
     ['algebraic-expressions', '\\text{Rationalize the denominator of }\\frac{1}{2+\\sqrt{3}}\\text{.}', 'Rationalize the denominator', '\\frac{1}{2+\\sqrt{3}}'],
     ['polynomial-division', '\\text{Find the remainder when }P(x)=x^{2}+1\\text{ is divided by }x-1\\text{.}', 'Find the remainder', 'x^{2}+1'],
     ['fundamental-theorem-algebra', 'x^2+1x+1=0: \\text{sum of the roots}', 'sum of the roots', 'x^2+1x+1=0'],
+    ['linear-systems', '\\text{Use Cramer\'s rule to find y in the system: }\\begin{cases}x-3y=6\\\\x-2y=4\\end{cases}\\text{.}', 'Use Cramer', '\\begin{cases}x-3y=6'],
+    ['inverse-matrices', '\\text{Find the entry in the first row and second column of the inverse matrix: }A=\\begin{pmatrix}1&-1\\\\1&-2\\end{pmatrix},\\quad A^{-1}=?\\text{.}', 'first row and second column', 'A=\\begin{pmatrix}'],
     ['limits-and-continuity', '\\text{Calculate }f(x)=\\frac{x^2-1}{x-1},\\quad f(1)=?\\text{ for continuity}\\text{.}', 'continuous', 'f(x)=\\frac{x^2-1}{x-1}'],
   ] as const)('separates the instruction from the formula for %s', (topic, problemLatex, instruction, formula) => {
     const html = card({ topic, problemLatex });

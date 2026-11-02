@@ -41,7 +41,7 @@ export function problemKind(topic: TopicSlug, problemLatex: string): ProblemKind
   if (['basic-integrals', 'substitution', 'integration-by-parts', 'rational-functions', 'trigonometric-integrals', 'definite-integrals'].includes(topic)) {
     return isDefinite(problemLatex) ? 'definite' : 'indefinite';
   }
-  if (['matrices', 'complex-numbers', 'fundamental-theorem-algebra', 'combinations', 'functions-and-sequences', 'limits-and-continuity', 'series'].includes(topic)) return 'numeric';
+  if (['matrices', 'determinants', 'inverse-matrices', 'linear-systems', 'matrix-rank', 'complex-numbers', 'fundamental-theorem-algebra', 'combinations', 'functions-and-sequences', 'limits-and-continuity', 'series'].includes(topic)) return 'numeric';
   return 'expression';
 }
 
@@ -85,6 +85,9 @@ export function displayProblem(topic: TopicSlug, problemLatex: string): { instru
       : `${generated[1].replace(/:$/, '').replace(/ of$/, '')}.`;
     return { instruction, formula };
   }
+  // A worded exercise (#221) states its task before a colon and ends with one formula.
+  const worded = problemLatex.match(/^\\text\{([^{}]+): \}(.+)\\text\{\.\}$/);
+  if (worded) return { instruction: `${worded[1]}.`, formula: worded[2] };
   return { instruction: topic === 'partial-fractions' ? 'Decompose into partial fractions.' : leadText(problemKind(topic, problemLatex)), formula: problemLatex };
 }
 

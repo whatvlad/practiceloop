@@ -253,6 +253,35 @@ factors, using evaluation at both roots and linear interpolation (algebra30
 bounded integer parameters and exact identities; polynomial answers declare `x`
 as a real input variable. Previously issued codes retain their original versions.
 
+#221 adds four Algebra topics for algebra30 exercises 14-40, each level one
+structural template with its own generator version (in
+`app/engine/generators/linear_algebra.py`, blocks in `blocks/matrices.py`):
+
+| Topic | Level | Template (algebra30) | Prefix |
+|---|---|---|---|
+| determinants | 1 | 3 x 3 determinant by Laplace expansion (17) | DTR |
+| determinants | 2 | det(cA^m) / transposes (15); swapped, scaled and combined rows (14) | DTS, DRO |
+| determinants | 3 | parameter value making a 3 x 3 matrix singular (19) | DSG |
+| determinants | 4 | 4 x 4 determinant with a row holding two zeros (17) | DTF |
+| inverse-matrices | 1-2 | one entry of a 2 x 2 / 3 x 3 inverse by the adjugate (20, 21) | INV, INVT |
+| inverse-matrices | 3 | one entry of X in AX = C or XA = C (13, 22) | MEQ |
+| linear-systems | 1-2 | Cramer's rule for one unknown, 2 x 2 / 3 x 3 (30) | CRA, CRT |
+| linear-systems | 3-4 | Gaussian elimination, three / four unknowns (31) | GAU, GAF |
+| linear-systems | 5 | largest parameter giving a nonzero solution (37) | SNT |
+| matrix-rank | 1 | rank of a 3 x 4 matrix by row reduction (26) | RNK |
+| matrix-rank | 2 | free parameters of a consistent system (29) | SYP |
+
+Every answer is one exact scalar checked by `ExpressionAnswer`, so no new answer
+kind or editor is needed. Invertible matrices are a row-permuted L*U with
+bounded entries and a nonzero pivot diagonal; rank-r matrices are a unit lower
+3 x r factor times a unit upper r x 4 factor, so draws need no rejection except
+where noted. Each build re-proves its result independently (SymPy determinant,
+A*A^-1 = I, LU solve, SymPy rank, characteristic roots). Worded statements put
+the task before a colon and end with one formula, which the UI splits into the
+instruction and the displayed formula. The four topics join Algebra mixed
+practice with weight 1. Coverage of all 97 exercises is tracked in
+[algebra30-coverage.md](algebra30-coverage.md).
+
 After #197, the six remaining analysis topics also use native engine pools:
 functions/sequences, limits/continuity, improper integrals, series,
 multivariable functions and differential equations. All existing levels, mixed

@@ -82,6 +82,38 @@
     "space_cm": 4
   },
   {
+    "slug": "determinants",
+    "name": "Determinants",
+    "area": "algebra",
+    "levels": [1, 2, 3, 4],
+    "mixed_weight": 1,
+    "space_cm": 5
+  },
+  {
+    "slug": "inverse-matrices",
+    "name": "Inverse matrices",
+    "area": "algebra",
+    "levels": [1, 2, 3],
+    "mixed_weight": 1,
+    "space_cm": 6
+  },
+  {
+    "slug": "linear-systems",
+    "name": "Systems of linear equations",
+    "area": "algebra",
+    "levels": [1, 2, 3, 4, 5],
+    "mixed_weight": 1,
+    "space_cm": 6
+  },
+  {
+    "slug": "matrix-rank",
+    "name": "Matrix rank",
+    "area": "algebra",
+    "levels": [1, 2],
+    "mixed_weight": 1,
+    "space_cm": 5
+  },
+  {
     "slug": "basic-integrals",
     "name": "Basic integrals",
     "area": "mathematical-analysis",

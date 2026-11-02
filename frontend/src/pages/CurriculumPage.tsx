@@ -4,7 +4,16 @@ import { Link } from '../router';
 
 const PRACTICE: Record<string, { topic: string; scope: string }> = {
   'Algebraic expressions': { topic: 'algebraic-expressions', scope: 'Selected radical simplification and denominator rationalization' },
-  'Evaluating determinants': { topic: 'matrices', scope: 'Determinants of 2 × 2 matrices' },
+  'Determinant properties': { topic: 'determinants', scope: 'Determinants after scaling, powers and row operations' },
+  'Evaluating determinants': { topic: 'determinants', scope: '3 × 3 and 4 × 4 determinants by Laplace expansion' },
+  'Matrix invertibility': { topic: 'determinants', scope: 'The parameter value that makes a matrix singular' },
+  'Inverse matrices': { topic: 'inverse-matrices', scope: 'Entries of 2 × 2 and 3 × 3 inverse matrices' },
+  'Equations with inverses': { topic: 'inverse-matrices', scope: 'Matrix equations AX = C and XA = C' },
+  'Matrix rank': { topic: 'matrix-rank', scope: 'Rank by row reduction' },
+  'Consistency of systems': { topic: 'matrix-rank', scope: 'Free parameters of a consistent system' },
+  'Cramer’s rule': { topic: 'linear-systems', scope: 'One unknown of a 2 × 2 or 3 × 3 system' },
+  'Gaussian elimination': { topic: 'linear-systems', scope: 'Systems with three or four unknowns' },
+  'Systems with parameters': { topic: 'linear-systems', scope: 'Parameter values giving nonzero solutions' },
   'Complex modulus': { topic: 'complex-numbers', scope: 'Modulus of a complex number' },
   'Sum of quadratic roots': { topic: 'fundamental-theorem-algebra', scope: 'Quadratic root sums' },
   'Polynomial divisibility and remainders': { topic: 'polynomial-division', scope: 'Selected polynomial remainders and quotients' },

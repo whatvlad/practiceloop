@@ -81,7 +81,8 @@ do $$ begin
   assert (select count(*) from public.profiles) = 1, 'profile isolation';
   assert (select count(*) from public.problems) = 1, 'problem isolation';
   assert (select count(*) from public.attempts) = 1, 'attempt isolation';
-  assert (select count(*) from public.topics) = 23, 'topic list';
+  assert (select count(*) from public.topics) = 27, 'topic list';
+  assert (select count(*) from public.topics where slug in ('determinants', 'inverse-matrices', 'linear-systems', 'matrix-rank') and area = 'algebra') = 4, 'linear algebra topics';
   assert exists (select 1 from public.topics where slug = 'algebraic-expressions' and area = 'algebra'), 'algebraic expressions topic';
   assert exists (select 1 from public.topics where slug = 'polynomial-division' and area = 'algebra'), 'polynomial division topic';
   assert (select count(*) from public.topics where area = 'mathematical-analysis') = 16, 'topic areas';

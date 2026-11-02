@@ -24,6 +24,23 @@ from app.engine.generators.differentiation import (
 )
 from app.engine.generators.indefinite import IndefiniteParams
 from app.engine.generators.integrals import IntegralParams, integral_generators
+from app.engine.generators.linear_algebra import (
+    CramerRule,
+    CramerRule3,
+    Determinant3,
+    Determinant4,
+    DeterminantRowOperations,
+    DeterminantScaling,
+    FreeParameters,
+    GaussianElimination,
+    GaussianElimination4,
+    InverseEntry,
+    InverseEntry3,
+    MatrixEquation,
+    MatrixRank,
+    NontrivialSolutions,
+    SingularParameter,
+)
 from app.engine.generators.multiple import DoubleIntegrals, MultipleParams, TripleIntegrals
 from app.engine.models import Drawn, Task
 from app.engine.prng import DeterministicRNG
@@ -198,6 +215,52 @@ def topics() -> dict[str, Topic]:
         space_cm=4,
         served=True,
     )
+    # #221: algebra30 exercises 14-40, each level one structural template.
+    for slug, title, space, levels in (
+        (
+            "determinants",
+            "Determinants",
+            5,
+            {
+                1: (Determinant3.version,),
+                2: (DeterminantScaling.version, DeterminantRowOperations.version),
+                3: (SingularParameter.version,),
+                4: (Determinant4.version,),
+            },
+        ),
+        (
+            "inverse-matrices",
+            "Inverse matrices",
+            6,
+            {
+                1: (InverseEntry.version,),
+                2: (InverseEntry3.version,),
+                3: (MatrixEquation.version,),
+            },
+        ),
+        (
+            "linear-systems",
+            "Systems of linear equations",
+            6,
+            {
+                1: (CramerRule.version,),
+                2: (CramerRule3.version,),
+                3: (GaussianElimination.version,),
+                4: (GaussianElimination4.version,),
+                5: (NontrivialSolutions.version,),
+            },
+        ),
+        ("matrix-rank", "Matrix rank", 5, {1: (MatrixRank.version,), 2: (FreeParameters.version,)}),
+    ):
+        declared[slug] = Topic(
+            slug,
+            "algebra",
+            {level: tuple(Choice(v) for v in versions) for level, versions in levels.items()},
+            1,
+            title=title,
+            space_cm=space,
+            served=True,
+        )
     families = {
         "basic": ("basic-integrals", "Basic integrals", 1, 3),
         "substitution": ("substitution", "Substitution", 2, 4),

@@ -360,6 +360,29 @@ def test_algebraic_expressions_practice_saves_checks_and_reveals(
     )
 
 
+@pytest.mark.parametrize(
+    "topic, level",
+    [
+        *(("determinants", level) for level in (1, 2, 3, 4)),
+        *(("inverse-matrices", level) for level in (1, 2, 3)),
+        *(("linear-systems", level) for level in (1, 2, 3, 4, 5)),
+        *(("matrix-rank", level) for level in (1, 2)),
+    ],
+)
+def test_linear_algebra_practice_saves_checks_and_reveals(
+    client: TestClient, url: str, topic: str, level: int
+) -> None:
+    problem = generate(client, topic, level)
+    wrong = attempt(client, problem["id"], f"({answer_of(url, problem['id'])})+1")
+    assert wrong.json()["attempt"]["result"] == "incorrect"
+    result = attempt(client, problem["id"], answer_of(url, problem["id"]))
+    assert result.status_code == 201, result.text
+    assert result.json()["attempt"]["result"] == "correct"
+    solution = client.post(f"/problems/{problem['id']}/reveal-solution")
+    assert solution.status_code == 200 and solution.json()["steps"]
+    assert client.get(f"/problems/{problem['id']}").json()["problem"]["topic"] == topic
+
+
 @pytest.mark.parametrize("level", [1, 2])
 def test_polynomial_division_practice_saves_checks_and_reveals(
     client: TestClient, url: str, level: int
@@ -584,6 +607,10 @@ def test_topics_lists_only_generated_cells(client: TestClient) -> None:
         ("algebraic-expressions", [1, 2]),
         ("polynomial-division", [1, 2]),
         ("combinations", [1]),
+        ("determinants", [1, 2, 3, 4]),
+        ("inverse-matrices", [1, 2, 3]),
+        ("linear-systems", [1, 2, 3, 4, 5]),
+        ("matrix-rank", [1, 2]),
         ("basic-integrals", [1, 2, 3, 4, 5]),
         ("substitution", [1, 2, 3, 4, 5]),
         ("integration-by-parts", [1, 2, 3]),
@@ -681,6 +708,11 @@ def test_topics_publish_the_fixed_mixed_practice_weights(client: TestClient) -> 
                 "partial-fractions": 1,
                 # #191: published by its engine topic entry.
                 "combinations": 1,
+                # #221: algebra30 linear algebra.
+                "determinants": 1,
+                "inverse-matrices": 1,
+                "linear-systems": 1,
+                "matrix-rank": 1,
             },
         },
     }
