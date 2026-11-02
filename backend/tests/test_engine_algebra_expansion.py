@@ -1,5 +1,7 @@
 """Regression checks for new, versioned algebra practice."""
 
+import sys
+
 import pytest
 import sympy as sp
 from pydantic import ValidationError
@@ -13,6 +15,7 @@ from app.engine.opening import rebuild
 from app.engine.practice import replay
 from app.engine.topics.catalogue import topics
 from app.math_input import parse_math_input
+from app.services.math_worker import check_answer
 
 
 def test_remainder_theorem_uses_exact_polynomial_evaluation_and_replays() -> None:
@@ -80,3 +83,13 @@ def test_polynomial_division_replays_and_checks_1000_draws() -> None:
         assert task.answer.expected == sp.div(dividend, x - params.root, x)[0]
         assert task.answer.check(parse_math_input(str(task.answer.expected), {"x"})) == "correct"
         assert rebuild(task.code).difficulty == 2
+
+
+@pytest.mark.skipif(sys.platform != "linux", reason="Linux resource limits")
+@pytest.mark.parametrize("generator", [RemainderTheorem(), PolynomialQuotient()])
+def test_polynomial_answers_are_checked_in_the_limited_worker(generator) -> None:
+    task = generator.build(generator.draw(147))
+    record = {"generator_version": generator.version, "code": task.code}
+    answer = sp.sstr(task.answer.expected).replace("**", "^")
+    assert check_answer(answer, record).result == "correct"
+    assert check_answer(f"({answer})+1", record).result == "incorrect"
