@@ -238,6 +238,12 @@ scalar/expression curriculum is unchanged: determinant, modulus, sum of roots
 and rational decomposition. ADR-008 lists versions and independent proofs;
 legacy `symbolic-v1` records of these topics are read-only archives.
 
+The polynomial division topic adds two independently versioned exercises:
+the remainder on division by a linear factor at level 1 and the quotient at
+level 2. Both use bounded integer coefficients and exact polynomial identities;
+the quotient declares `x` as a real input variable. Previously issued codes
+continue to use their original generator versions.
+
 After #197, the six remaining analysis topics also use native engine pools:
 functions/sequences, limits/continuity, improper integrals, series,
 multivariable functions and differential equations. All existing levels, mixed

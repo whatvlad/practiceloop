@@ -2206,5 +2206,105 @@
         "template": "exponential-solution"
       }
     }
+  ],
+  "algebra-remainder-v1": [
+    {
+      "code": "BZT-1-0000000000000000-95",
+      "statement": "Find the remainder when \\(P(x)=3 x^{2} - 5 x - 5\\) is divided by \\(x - 2\\).",
+      "steps": [
+        [
+          "substitute",
+          "P(2)=-3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-3",
+      "metadata": {
+        "difficulty": 1,
+        "template": "remainder-theorem"
+      }
+    },
+    {
+      "code": "BZT-1-0000000000000001-15",
+      "statement": "Find the remainder when \\(P(x)=3 x^{2} - 4 x - 3\\) is divided by \\(x\\).",
+      "steps": [
+        [
+          "substitute",
+          "P(0)=-3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-3",
+      "metadata": {
+        "difficulty": 1,
+        "template": "remainder-theorem"
+      }
+    },
+    {
+      "code": "BZT-1-0000000000000002-32",
+      "statement": "Find the remainder when \\(P(x)=4 x^{2} + 2 x - 5\\) is divided by \\(x - 2\\).",
+      "steps": [
+        [
+          "substitute",
+          "P(2)=15"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "15",
+      "metadata": {
+        "difficulty": 1,
+        "template": "remainder-theorem"
+      }
+    }
+  ],
+  "algebra-polynomial-quotient-v1": [
+    {
+      "code": "PQT-1-0000000000000000-83",
+      "statement": "Find the quotient when \\(3 x^{2} - 5 x - 5\\) is divided by \\(x - 2\\).",
+      "steps": [
+        [
+          "divide",
+          "3 x^{2} - 5 x - 5=(x - 2)(3 x + 1)+(-3)"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3 x + 1",
+      "metadata": {
+        "difficulty": 2,
+        "template": "polynomial-quotient"
+      }
+    },
+    {
+      "code": "PQT-1-0000000000000001-03",
+      "statement": "Find the quotient when \\(3 x^{2} - 4 x - 3\\) is divided by \\(x\\).",
+      "steps": [
+        [
+          "divide",
+          "3 x^{2} - 4 x - 3=(x)(3 x - 4)+(-3)"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3 x - 4",
+      "metadata": {
+        "difficulty": 2,
+        "template": "polynomial-quotient"
+      }
+    },
+    {
+      "code": "PQT-1-0000000000000002-20",
+      "statement": "Find the quotient when \\(4 x^{2} + 2 x - 5\\) is divided by \\(x - 2\\).",
+      "steps": [
+        [
+          "divide",
+          "4 x^{2} + 2 x - 5=(x - 2)(4 x + 10)+(15)"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "4 x + 10",
+      "metadata": {
+        "difficulty": 2,
+        "template": "polynomial-quotient"
+      }
+    }
   ]
 }

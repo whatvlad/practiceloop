@@ -4,6 +4,17 @@ import type { AvailableTopic, Difficulty, TopicSlug } from './data/types';
 import { answerVariables, formatWhen, isDefinite, keypadVariables, leadText, problemKind } from './format';
 import text from '../../backend/app/content/en.json';
 
+it('offers x for polynomial quotient problems', () => {
+  const statement = '\\text{Find the quotient when }x^{2}+1\\text{ is divided by }x-1\\text{.}';
+  const kind = problemKind('polynomial-division', statement);
+  expect(kind).toBe('expression');
+  expect(keypadVariables(kind, statement, 'polynomial-division')).toEqual(['x']);
+});
+
+it('uses a numeric answer for a polynomial remainder', () => {
+  expect(problemKind('polynomial-division', '\\text{Find the remainder when }P(x)=x^2')).toBe('numeric');
+});
+
 const NOW = new Date(2026, 9, 16, 15, 0);
 
 describe('history timestamps', () => {

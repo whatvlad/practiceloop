@@ -56,6 +56,14 @@
     "space_cm": 5
   },
   {
+    "slug": "polynomial-division",
+    "name": "Polynomial division",
+    "area": "algebra",
+    "levels": [1, 2],
+    "mixed_weight": 0,
+    "space_cm": 5
+  },
+  {
     "slug": "combinations",
     "name": "Combinations",
     "area": "algebra",
