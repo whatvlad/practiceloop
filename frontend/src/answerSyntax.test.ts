@@ -108,6 +108,7 @@ const XY = ['x', 'y'] as const;
 const XYZ = ['x', 'y', 'z'] as const;
 const POLAR = ['r', 'theta'] as const;
 const CYLINDRICAL = ['r', 'theta', 'z'] as const;
+const COMPLEX = ['i'] as const;
 
 const VARIABLE_SUPPORTED: [string, readonly string[]][] = [
   ['2xy', XY], ['x y', XY], ['xy^2', XY], ['2r', POLAR], ['r theta', POLAR], ['rtheta', POLAR],
@@ -115,7 +116,7 @@ const VARIABLE_SUPPORTED: [string, readonly string[]][] = [
   ['xsin(y)', XY], ['ye^(xy)', XY], ['e^(xy)', XY], ['ex', XY], ['pixy', XY], ['exp(x)y', XY],
   ['xyz', XYZ], ['2x*y + y/z', XYZ], ['r^2 z', CYLINDRICAL], ['θ - theta', POLAR],
   ['sqrt(x^2 + y^2)', XY], ['ln|xy|', XY], ['atan(y/x)', XY], ['sec^2(xy)', XY], ['3pi/4', POLAR],
-  ['y²x³', XY],
+  ['y²x³', XY], ['3-4i', COMPLEX], ['2i-1', COMPLEX], ['sqrt(3)/2+i/2', COMPLEX], ['i^2', COMPLEX],
   // Exact limits, reached through the variables.
   ['xy'.repeat(24), XY], [Array(42).fill('theta').join('+'), POLAR], ['('.repeat(12) + 'theta' + ')'.repeat(12), POLAR],
   [Array(16).fill('sin(xy)').join('+'), XY], ['12345678y', XY], ['y^12', XY], ['r^(-12)', POLAR], ['theta^(1/12)', POLAR],
@@ -125,6 +126,7 @@ const VARIABLE_REJECTED: [string, readonly string[]][] = [
   ['x + y', POLAR], ['r', XY], ['theta', XY], ['z', XY], ['x + C', XY], ['a', XY], ['xa', XY], ['xq', XY],
   ['t', POLAR], ['x(y+1)', XY], ['x^y', XY], ['r^theta', POLAR], ['sin xy', XY], ['y(x)', XY],
   ['2 3x', XY], ['x**y', XY], ['1e3x', XY], ['α', POLAR], ['i*x', XY],
+  ['x+i', COMPLEX], ['3+4j', COMPLEX], ['3+4I', COMPLEX], ['2^i', COMPLEX],
   // Every parser limit, reached through the variables.
   ['xy'.repeat(65), XY], [Array(65).fill('r').join('+'), POLAR], [Array(49).fill('r').join('+'), POLAR],
   ['xy'.repeat(24) + 'x', XY], ['('.repeat(13) + 'theta' + ')'.repeat(13), POLAR], [Array(17).fill('sin(xy)').join('+'), XY],

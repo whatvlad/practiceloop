@@ -6,8 +6,8 @@ exercise type with exact checking and solution steps. **Partial** means only som
 subtypes are covered. **In develop** means the curriculum page still shows it as
 in development.
 
-Every served answer is one exact number or expression (ADR-008: matrix, vector,
-complex and set answer kinds have no editor yet). Exercises whose answer is a
+Every served answer is one exact number, expression or complex number a + bi
+(ADR-008: matrix, vector and set answer kinds have no editor yet). Exercises whose answer is a
 proof, a counterexample, a sketch of a region or a whole matrix are therefore
 asked through a scalar they determine, or stay in development.
 
@@ -37,7 +37,14 @@ asked through a scalar they determine, or stay in development.
 | 33–35 | Applications of linear systems | In develop | |
 | 36, 38–39 | Parameterized systems | In develop | |
 | 37 | Parameter with a nonzero solution | Covered | linear-systems 5 |
-| 41–53 | Complex numbers | Partial (modulus) | complex-numbers |
+| 41 | Complex arithmetic | Covered (products, quotients) | complex-arithmetic 1–2 |
+| 42 | Complex equations | Partial (linear, conjugate, z² = w) | complex-arithmetic 3–4 |
+| 43–44, 47–48 | Complex-plane geometry and loci | In develop (sketches) | |
+| 45 | Trigonometric form | Covered (principal argument; modulus) | complex-polar-form 1; complex-numbers |
+| 46 | De Moivre's formula | Covered | complex-polar-form 2 |
+| 49 | n-th roots | Covered (root with the smallest argument) | complex-polar-form 3 |
+| 50, 52–53 | Identities, conjugate roots, true or false | In develop (proofs) | |
+| 51 | Complex polynomial equations | Partial (quadratics) | complex-arithmetic 5 |
 | 54–58 | Polynomial roots and factorization | Partial (sum of roots) | fundamental-theorem-algebra |
 | 59–60 | Partial fractions | Partial | partial-fractions |
 | 61–63 | Remainders and divisibility | Partial (63a, 63b) | polynomial-division 1–2 |

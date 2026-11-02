@@ -271,7 +271,18 @@ structural template with its own generator version (in
 | matrix-rank | 1 | rank of a 3 x 4 matrix by row reduction (26) | RNK |
 | matrix-rank | 2 | free parameters of a consistent system (29) | SYP |
 
-Every answer is one exact scalar checked by `ExpressionAnswer`, so no new answer
+| complex-arithmetic | 1-2 | product; quotient via the conjugate (41) | CXM, CXQ |
+| complex-arithmetic | 3 | az = w, or z + q conj(z) = w by comparing parts (42) | CXE |
+| complex-arithmetic | 4-5 | z^2 = w; quadratic with complex coefficients (42c, 51) | CXS, CXR |
+| complex-polar-form | 1 | principal argument in (-pi, pi] (45) | CXG |
+| complex-polar-form | 2 | De Moivre power answered as a + bi (46) | CXD |
+| complex-polar-form | 3 | the n-th root with the smallest nonnegative argument (49) | CXN |
+
+The complex topics answer with `ComplexAnswer` in the form a + bi (the argument
+with a real expression); their generators declare the imaginary unit `i`, see
+MATH_INPUT.md. Values are Gaussian integers, or a modulus with an angle that is
+a multiple of pi/4 or pi/6. The matrix topics' answers are one exact scalar
+checked by `ExpressionAnswer`, so no new answer
 kind or editor is needed. Invertible matrices are a row-permuted L*U with
 bounded entries and a nonzero pivot diagonal; rank-r matrices are a unit lower
 3 x r factor times a unit upper r x 4 factor, so draws need no rejection except

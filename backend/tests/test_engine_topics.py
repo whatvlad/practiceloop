@@ -48,6 +48,8 @@ def test_five_topics_have_nonempty_levels_and_replay_for_many_seeds() -> None:
         "inverse-matrices",
         "linear-systems",
         "matrix-rank",
+        "complex-arithmetic",
+        "complex-polar-form",
         "functions-and-sequences",
         "limits-and-continuity",
         "improper-integrals",
@@ -76,7 +78,7 @@ def test_five_topics_have_nonempty_levels_and_replay_for_many_seeds() -> None:
                 if topic.slug in expected_kinds:
                     assert task.answer.kind == expected_kinds[topic.slug]
                 else:
-                    assert task.answer.kind in {"antiderivative", "expression"}
+                    assert task.answer.kind in {"antiderivative", "expression", "complex"}
                 assert task.statement and task.steps
                 code = parse_code(task.code, generators)
                 generator = generators.get_code(code.prefix, code.version)

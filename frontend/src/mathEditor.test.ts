@@ -50,6 +50,7 @@ describe('latexToAnswer', () => {
     ['-\\frac{1}{3}\\cos^{3}\\left(x\\right)+C', '-1/3*cos^3(x) + C'],
     ['x^{-\\frac12}', 'x^(-1/2)'],
     ['\\exponentialE^x', 'e^x'],
+    ['3-4\\imaginaryI', '3 - 4i'],
     ['x^2\\ln x', 'x^2*ln(x)'],
     ['\\frac{\\sin x}{2}', 'sin(x)/2'],
   ])('%j -> %j', (latex, text) => {

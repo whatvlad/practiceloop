@@ -33,6 +33,8 @@ def trusted_expression(value: Any) -> Any:
 
 
 def variable_symbol(name: str, domain: VariableDomain) -> Any:
+    if domain == "imaginary":
+        raise ValueError("The imaginary unit is a constant, not a variable")
     return sp.Symbol(name, positive=True) if domain == "positive" else sp.Symbol(name, real=True)
 
 

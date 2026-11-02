@@ -341,7 +341,7 @@ def answer_of(url: str, problem_id: str) -> str:
             str(answer.primitive).replace("**", "^").replace("Abs", "abs").replace("E", "e")
             + " + C"
         )
-    return str(answer.expected).replace("**", "^").replace("E", "e")
+    return str(answer.expected).replace("**", "^").replace("E", "e").replace("I", "i")
 
 
 @pytest.mark.parametrize("level", [1, 2])
@@ -367,6 +367,8 @@ def test_algebraic_expressions_practice_saves_checks_and_reveals(
         *(("inverse-matrices", level) for level in (1, 2, 3)),
         *(("linear-systems", level) for level in (1, 2, 3, 4, 5)),
         *(("matrix-rank", level) for level in (1, 2)),
+        *(("complex-arithmetic", level) for level in (1, 2, 3, 4, 5)),
+        *(("complex-polar-form", level) for level in (1, 2, 3)),
     ],
 )
 def test_linear_algebra_practice_saves_checks_and_reveals(
@@ -611,6 +613,8 @@ def test_topics_lists_only_generated_cells(client: TestClient) -> None:
         ("inverse-matrices", [1, 2, 3]),
         ("linear-systems", [1, 2, 3, 4, 5]),
         ("matrix-rank", [1, 2]),
+        ("complex-arithmetic", [1, 2, 3, 4, 5]),
+        ("complex-polar-form", [1, 2, 3]),
         ("basic-integrals", [1, 2, 3, 4, 5]),
         ("substitution", [1, 2, 3, 4, 5]),
         ("integration-by-parts", [1, 2, 3]),
@@ -713,6 +717,8 @@ def test_topics_publish_the_fixed_mixed_practice_weights(client: TestClient) -> 
                 "inverse-matrices": 1,
                 "linear-systems": 1,
                 "matrix-rank": 1,
+                "complex-arithmetic": 1,
+                "complex-polar-form": 1,
             },
         },
     }

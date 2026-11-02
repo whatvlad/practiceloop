@@ -51,6 +51,21 @@ else is `inconclusive`. The frontend mirror (`answerSyntax.ts`) takes the same
 `variables`, and `AnswerInput`'s `variables` prop puts one key per declared
 variable on the keypad and the phone keyboard, in place of `x` and `+C`.
 
+### The imaginary unit (#221)
+
+A complex-number template declares `{"i": "imaginary"}`. Only then is `i` a name:
+it is never a variable, `build_expression` turns it into `sympy.I`, and every
+other grammar still rejects `i`, `I`, `j` and `J`. Splitting follows the rule
+above, so `4i`, `2i-1` and `sqrt(3)/2+i/2` read as expected; `i` cannot be an
+exponent. `ComplexAnswer` (`app/engine/answers/complex.py`) compares the value
+exactly (a 50-digit numerical difference above 1e-30 is `incorrect`; otherwise
+a symbolic proof decides `correct`) and then requires the algebraic form a + bi:
+with `i` read as a real symbol, the expanded answer must be a polynomial of
+degree at most one in it. So `(1+i)^20` or `25/(3+4i)` is equal but `incorrect`
+until it is written out. The frontend mirror declares `i` for the `complex`
+problem kind, adds an `i` key to the keypad, and MathLive's `\imaginaryI`
+becomes `i`.
+
 `app.services.math_worker.validate_math_input(text)` validates syntax in the
 parent, then starts a fresh interpreter using fixed argv and bounded stdin.
 The child activates Linux resource ceilings before importing SymPy, reparses

@@ -11,6 +11,18 @@ it('offers x for polynomial quotient problems', () => {
   expect(keypadVariables(kind, statement, 'polynomial-division')).toEqual(['x']);
 });
 
+it('declares the imaginary unit for complex-number answers (#221)', () => {
+  const kind = problemKind('complex-arithmetic', '\\text{Calculate }(1+i)(2-i)\\text{.}');
+  expect(kind).toBe('complex');
+  expect(answerVariables(kind, '')).toEqual(['i']);
+  expect(keypadVariables(kind, '', 'complex-arithmetic')).toEqual(['i']);
+  expect(problemKind('complex-polar-form', '')).toBe('complex');
+});
+
+it('never reads the i of \\in as a partial-derivative variable', () => {
+  expect(answerVariables('partial', 'f(x,y)\\quad(x, y \\in \\mathbb{R})')).toEqual(['x', 'y']);
+});
+
 it('uses a numeric answer for a polynomial remainder', () => {
   expect(problemKind('polynomial-division', '\\text{Find the remainder when }P(x)=x^2')).toBe('numeric');
 });

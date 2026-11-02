@@ -167,7 +167,8 @@ is a retryable service error, never evidence of a mathematically wrong answer.
 Code reconstruction uses the same resource/admission boundaries.
 
 Current answer kinds are exact number (including non-SymPy combinations), real
-expression, antiderivative and derivative. Antiderivatives require one explicit
+expression, antiderivative and derivative, plus complex (a + bi, #221; the template
+declares the imaginary unit, see MATH_INPUT.md). Antiderivatives require one explicit
 arbitrary constant and a single numeric offset over all domain components.
 Derivatives, scalar definite/multiple integrals and initial-value solutions do
 not allow an arbitrary constant. Domain checks inspect unevaluated subexpressions

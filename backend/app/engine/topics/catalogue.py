@@ -14,6 +14,16 @@ from app.engine.generators.algebra_expansion import (
 )
 from app.engine.generators.algebra_expressions import RationalizeDenominator, SimplifyRadicals
 from app.engine.generators.analysis import AnalysisParams, analysis_generators
+from app.engine.generators.complex_numbers import (
+    ComplexArgument,
+    ComplexLinearEquation,
+    ComplexProduct,
+    ComplexQuadratic,
+    ComplexQuotient,
+    ComplexRoot,
+    ComplexSquareRoot,
+    DeMoivre,
+)
 from app.engine.generators.definite import DefiniteParams
 from app.engine.generators.derivative import DerivativeParams
 from app.engine.generators.differentiation import (
@@ -215,7 +225,7 @@ def topics() -> dict[str, Topic]:
         space_cm=4,
         served=True,
     )
-    # #221: algebra30 exercises 14-40, each level one structural template.
+    # #221: algebra30 exercises 14-51, each level one structural template.
     for slug, title, space, levels in (
         (
             "determinants",
@@ -251,6 +261,24 @@ def topics() -> dict[str, Topic]:
             },
         ),
         ("matrix-rank", "Matrix rank", 5, {1: (MatrixRank.version,), 2: (FreeParameters.version,)}),
+        (
+            "complex-arithmetic",
+            "Complex arithmetic and equations",
+            5,
+            {
+                1: (ComplexProduct.version,),
+                2: (ComplexQuotient.version,),
+                3: (ComplexLinearEquation.version,),
+                4: (ComplexSquareRoot.version,),
+                5: (ComplexQuadratic.version,),
+            },
+        ),
+        (
+            "complex-polar-form",
+            "Polar form and De Moivre's formula",
+            5,
+            {1: (ComplexArgument.version,), 2: (DeMoivre.version,), 3: (ComplexRoot.version,)},
+        ),
     ):
         declared[slug] = Topic(
             slug,

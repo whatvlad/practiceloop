@@ -39,6 +39,8 @@ def test_combinations_is_listed_from_its_engine_entry_and_joins_algebra_mixed() 
             "inverse-matrices",
             "linear-systems",
             "matrix-rank",
+            "complex-arithmetic",
+            "complex-polar-form",
         )
     )
     assert "combinations" in practice.mixed_topics("algebra", 1)[0]

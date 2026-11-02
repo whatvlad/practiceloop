@@ -3638,5 +3638,561 @@
         "template": "nontrivial-parameter"
       }
     }
+  ],
+  "complex-product-v1": [
+    {
+      "code": "CXM-1-0000000000000000-06",
+      "statement": "Calculate \\((- i)(-5 - 4 i)\\).",
+      "steps": [
+        [
+          "expand",
+          "0+(0)+(5 i)+(4)i^2"
+        ],
+        [
+          "square",
+          "-4 + 5 i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "-4 + 5 i",
+      "metadata": {
+        "difficulty": 1,
+        "template": "product"
+      }
+    },
+    {
+      "code": "CXM-1-0000000000000001-23",
+      "statement": "Calculate \\((-1 + i)(-3 + 2 i)\\).",
+      "steps": [
+        [
+          "expand",
+          "3+(- 2 i)+(- 3 i)+(2)i^2"
+        ],
+        [
+          "square",
+          "1 - 5 i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "1 - 5 i",
+      "metadata": {
+        "difficulty": 1,
+        "template": "product"
+      }
+    },
+    {
+      "code": "CXM-1-0000000000000147-10",
+      "statement": "Calculate \\((2 + 2 i)(- 3 i)\\).",
+      "steps": [
+        [
+          "expand",
+          "0+(- 6 i)+(0)+(-6)i^2"
+        ],
+        [
+          "square",
+          "6 - 6 i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "6 - 6 i",
+      "metadata": {
+        "difficulty": 1,
+        "template": "product"
+      }
+    }
+  ],
+  "complex-quotient-v1": [
+    {
+      "code": "CXQ-1-0000000000000000-92",
+      "statement": "Calculate \\(\\frac{-4 + 5 i}{-5 - 4 i}\\).",
+      "steps": [
+        [
+          "conjugate",
+          "\\frac{(-4 + 5 i)(-5 + 4 i)}{(-5 - 4 i)(-5 + 4 i)}=\\frac{- 41 i}{41}"
+        ],
+        [
+          "simplify",
+          "- i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "- i",
+      "metadata": {
+        "difficulty": 2,
+        "template": "quotient"
+      }
+    },
+    {
+      "code": "CXQ-1-0000000000000001-12",
+      "statement": "Calculate \\(\\frac{1 - 5 i}{-3 + 2 i}\\).",
+      "steps": [
+        [
+          "conjugate",
+          "\\frac{(1 - 5 i)(-3 - 2 i)}{(-3 + 2 i)(-3 - 2 i)}=\\frac{-13 + 13 i}{13}"
+        ],
+        [
+          "simplify",
+          "-1 + i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "-1 + i",
+      "metadata": {
+        "difficulty": 2,
+        "template": "quotient"
+      }
+    },
+    {
+      "code": "CXQ-1-0000000000000147-96",
+      "statement": "Calculate \\(\\frac{6 - 6 i}{- 3 i}\\).",
+      "steps": [
+        [
+          "conjugate",
+          "\\frac{(6 - 6 i)(3 i)}{(- 3 i)(3 i)}=\\frac{18 + 18 i}{9}"
+        ],
+        [
+          "simplify",
+          "2 + 2 i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "2 + 2 i",
+      "metadata": {
+        "difficulty": 2,
+        "template": "quotient"
+      }
+    }
+  ],
+  "complex-linear-equation-v1": [
+    {
+      "code": "CXE-1-0000000000000000-34",
+      "statement": "Solve for z: \\((2 + 3 i)z=-9 + 6 i\\).",
+      "steps": [
+        [
+          "divide",
+          "z=\\frac{-9 + 6 i}{2 + 3 i}"
+        ],
+        [
+          "solve",
+          "3 i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "3 i",
+      "metadata": {
+        "difficulty": 3,
+        "template": "linear-equation"
+      }
+    },
+    {
+      "code": "CXE-1-0000000000000001-51",
+      "statement": "Solve for z: \\(z-2\\overline{z}=4 - 9 i\\).",
+      "steps": [
+        [
+          "parts",
+          "-1x+(3 i y)=4 - 9 i"
+        ],
+        [
+          "solve",
+          "x=-4,\\quad y=-3"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "-4 - 3 i",
+      "metadata": {
+        "difficulty": 3,
+        "template": "linear-equation"
+      }
+    },
+    {
+      "code": "CXE-1-0000000000000147-38",
+      "statement": "Solve for z: \\((-2 - 3 i)z=-4 + 7 i\\).",
+      "steps": [
+        [
+          "divide",
+          "z=\\frac{-4 + 7 i}{-2 - 3 i}"
+        ],
+        [
+          "solve",
+          "-1 - 2 i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "-1 - 2 i",
+      "metadata": {
+        "difficulty": 3,
+        "template": "linear-equation"
+      }
+    }
+  ],
+  "complex-square-root-v1": [
+    {
+      "code": "CXS-1-0000000000000000-51",
+      "statement": "Find the solution with a positive real part: \\(z^{2}=8 - 6 i\\).",
+      "steps": [
+        [
+          "parts",
+          "x^{2}-y^{2}=8,\\quad 2xy=-6"
+        ],
+        [
+          "modulus",
+          "x^{2}+y^{2}=10"
+        ],
+        [
+          "solve",
+          "z=3 - i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "3 - i",
+      "metadata": {
+        "difficulty": 4,
+        "template": "square-root"
+      }
+    },
+    {
+      "code": "CXS-1-0000000000000001-68",
+      "statement": "Find the solution with a positive real part: \\(z^{2}=8 + 6 i\\).",
+      "steps": [
+        [
+          "parts",
+          "x^{2}-y^{2}=8,\\quad 2xy=6"
+        ],
+        [
+          "modulus",
+          "x^{2}+y^{2}=10"
+        ],
+        [
+          "solve",
+          "z=3 + i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "3 + i",
+      "metadata": {
+        "difficulty": 4,
+        "template": "square-root"
+      }
+    },
+    {
+      "code": "CXS-1-0000000000000147-55",
+      "statement": "Find the solution with a positive real part: \\(z^{2}=-3 + 4 i\\).",
+      "steps": [
+        [
+          "parts",
+          "x^{2}-y^{2}=-3,\\quad 2xy=4"
+        ],
+        [
+          "modulus",
+          "x^{2}+y^{2}=5"
+        ],
+        [
+          "solve",
+          "z=1 + 2 i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "1 + 2 i",
+      "metadata": {
+        "difficulty": 4,
+        "template": "square-root"
+      }
+    }
+  ],
+  "complex-quadratic-v1": [
+    {
+      "code": "CXR-1-0000000000000000-36",
+      "statement": "Find the solution with the larger real part: \\(z^{2}+(4 + i)z+(12 - 12 i)=0\\).",
+      "steps": [
+        [
+          "discriminant",
+          "\\Delta=-33 + 56 i"
+        ],
+        [
+          "root",
+          "\\sqrt{\\Delta}=\\pm(4 + 7 i)"
+        ],
+        [
+          "roots",
+          "z_1=3 i,\\quad z_2=-4 - 4 i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "3 i",
+      "metadata": {
+        "difficulty": 5,
+        "template": "quadratic"
+      }
+    },
+    {
+      "code": "CXR-1-0000000000000001-53",
+      "statement": "Find the solution with the larger real part: \\(z^{2}+(6 + i)z+(14 - 2 i)=0\\).",
+      "steps": [
+        [
+          "discriminant",
+          "\\Delta=-21 + 20 i"
+        ],
+        [
+          "root",
+          "\\sqrt{\\Delta}=\\pm(2 + 5 i)"
+        ],
+        [
+          "roots",
+          "z_1=-2 + 2 i,\\quad z_2=-4 - 3 i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "-2 + 2 i",
+      "metadata": {
+        "difficulty": 5,
+        "template": "quadratic"
+      }
+    },
+    {
+      "code": "CXR-1-0000000000000147-40",
+      "statement": "Find the solution with the larger real part: \\(z^{2}+(5 + 5 i)z+(-2 + 11 i)=0\\).",
+      "steps": [
+        [
+          "discriminant",
+          "\\Delta=8 + 6 i"
+        ],
+        [
+          "root",
+          "\\sqrt{\\Delta}=\\pm(3 + i)"
+        ],
+        [
+          "roots",
+          "z_1=-1 - 2 i,\\quad z_2=-4 - 3 i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "-1 - 2 i",
+      "metadata": {
+        "difficulty": 5,
+        "template": "quadratic"
+      }
+    }
+  ],
+  "complex-argument-v1": [
+    {
+      "code": "CXG-1-0000000000000000-04",
+      "statement": "Find the principal argument, between −π and π: \\(z=-4 - 4 i\\).",
+      "steps": [
+        [
+          "modulus",
+          "|z|=4 \\sqrt{2}"
+        ],
+        [
+          "trig",
+          "\\cos\\varphi=- \\frac{\\sqrt{2}}{2},\\quad\\sin\\varphi=- \\frac{\\sqrt{2}}{2}"
+        ],
+        [
+          "angle",
+          "\\varphi=- \\frac{3 \\pi}{4}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "- \\frac{3 \\pi}{4}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "argument"
+      }
+    },
+    {
+      "code": "CXG-1-0000000000000001-21",
+      "statement": "Find the principal argument, between −π and π: \\(z=- \\sqrt{3} - i\\).",
+      "steps": [
+        [
+          "modulus",
+          "|z|=2"
+        ],
+        [
+          "trig",
+          "\\cos\\varphi=- \\frac{\\sqrt{3}}{2},\\quad\\sin\\varphi=- \\frac{1}{2}"
+        ],
+        [
+          "angle",
+          "\\varphi=- \\frac{5 \\pi}{6}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "- \\frac{5 \\pi}{6}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "argument"
+      }
+    },
+    {
+      "code": "CXG-1-0000000000000147-08",
+      "statement": "Find the principal argument, between −π and π: \\(z=2 \\sqrt{3} + 2 i\\).",
+      "steps": [
+        [
+          "modulus",
+          "|z|=4"
+        ],
+        [
+          "trig",
+          "\\cos\\varphi=\\frac{\\sqrt{3}}{2},\\quad\\sin\\varphi=\\frac{1}{2}"
+        ],
+        [
+          "angle",
+          "\\varphi=\\frac{\\pi}{6}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{\\pi}{6}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "argument"
+      }
+    }
+  ],
+  "complex-de-moivre-v1": [
+    {
+      "code": "CXD-1-0000000000000000-06",
+      "statement": "Calculate in the form a + bi: \\((- \\sqrt{3} - i)^{8}\\).",
+      "steps": [
+        [
+          "polar",
+          "- \\sqrt{3} - i=2\\left(\\cos\\left(- \\frac{5 \\pi}{6}\\right)+i\\sin\\left(- \\frac{5 \\pi}{6}\\right)\\right)"
+        ],
+        [
+          "power",
+          "256\\left(\\cos\\left(- \\frac{2 \\pi}{3}\\right)+i\\sin\\left(- \\frac{2 \\pi}{3}\\right)\\right)"
+        ],
+        [
+          "result",
+          "-128 - 128 \\sqrt{3} i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "-128 - 128 \\sqrt{3} i",
+      "metadata": {
+        "difficulty": 2,
+        "template": "de-moivre"
+      }
+    },
+    {
+      "code": "CXD-1-0000000000000001-23",
+      "statement": "Calculate in the form a + bi: \\((- \\sqrt{3} + i)^{17}\\).",
+      "steps": [
+        [
+          "polar",
+          "- \\sqrt{3} + i=2\\left(\\cos\\left(\\frac{5 \\pi}{6}\\right)+i\\sin\\left(\\frac{5 \\pi}{6}\\right)\\right)"
+        ],
+        [
+          "power",
+          "131072\\left(\\cos\\left(\\frac{\\pi}{6}\\right)+i\\sin\\left(\\frac{\\pi}{6}\\right)\\right)"
+        ],
+        [
+          "result",
+          "65536 \\sqrt{3} + 65536 i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "65536 \\sqrt{3} + 65536 i",
+      "metadata": {
+        "difficulty": 2,
+        "template": "de-moivre"
+      }
+    },
+    {
+      "code": "CXD-1-0000000000000147-10",
+      "statement": "Calculate in the form a + bi: \\((1 + i)^{18}\\).",
+      "steps": [
+        [
+          "polar",
+          "1 + i=\\sqrt{2}\\left(\\cos\\left(\\frac{\\pi}{4}\\right)+i\\sin\\left(\\frac{\\pi}{4}\\right)\\right)"
+        ],
+        [
+          "power",
+          "512\\left(\\cos\\left(\\frac{\\pi}{2}\\right)+i\\sin\\left(\\frac{\\pi}{2}\\right)\\right)"
+        ],
+        [
+          "result",
+          "512 i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "512 i",
+      "metadata": {
+        "difficulty": 2,
+        "template": "de-moivre"
+      }
+    }
+  ],
+  "complex-root-v1": [
+    {
+      "code": "CXN-1-0000000000000000-12",
+      "statement": "Find the solution with the smallest nonnegative argument: \\(z^{6}=-1\\).",
+      "steps": [
+        [
+          "polar",
+          "-1=1\\left(\\cos\\left(\\pi\\right)+i\\sin\\left(\\pi\\right)\\right)"
+        ],
+        [
+          "formula",
+          "z_0=1\\left(\\cos\\left(\\frac{\\pi}{6}\\right)+i\\sin\\left(\\frac{\\pi}{6}\\right)\\right)"
+        ],
+        [
+          "result",
+          "z_0=\\frac{\\sqrt{3}}{2} + \\frac{i}{2}"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "\\frac{\\sqrt{3}}{2} + \\frac{i}{2}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "nth-root"
+      }
+    },
+    {
+      "code": "CXN-1-0000000000000001-29",
+      "statement": "Find the solution with the smallest nonnegative argument: \\(z^{4}=16\\).",
+      "steps": [
+        [
+          "polar",
+          "16=16\\left(\\cos\\left(0\\right)+i\\sin\\left(0\\right)\\right)"
+        ],
+        [
+          "formula",
+          "z_0=2\\left(\\cos\\left(0\\right)+i\\sin\\left(0\\right)\\right)"
+        ],
+        [
+          "result",
+          "z_0=2"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 3,
+        "template": "nth-root"
+      }
+    },
+    {
+      "code": "CXN-1-0000000000000147-16",
+      "statement": "Find the solution with the smallest nonnegative argument: \\(z^{2}=- \\frac{1}{2} - \\frac{\\sqrt{3} i}{2}\\).",
+      "steps": [
+        [
+          "polar",
+          "- \\frac{1}{2} - \\frac{\\sqrt{3} i}{2}=1\\left(\\cos\\left(\\frac{4 \\pi}{3}\\right)+i\\sin\\left(\\frac{4 \\pi}{3}\\right)\\right)"
+        ],
+        [
+          "formula",
+          "z_0=1\\left(\\cos\\left(\\frac{2 \\pi}{3}\\right)+i\\sin\\left(\\frac{2 \\pi}{3}\\right)\\right)"
+        ],
+        [
+          "result",
+          "z_0=- \\frac{1}{2} + \\frac{\\sqrt{3} i}{2}"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "- \\frac{1}{2} + \\frac{\\sqrt{3} i}{2}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "nth-root"
+      }
+    }
   ]
 }

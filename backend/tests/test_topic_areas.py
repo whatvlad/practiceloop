@@ -23,6 +23,8 @@ def test_catalogue_lists_algebra_and_syllabus_topics() -> None:
         "inverse-matrices",
         "linear-systems",
         "matrix-rank",
+        "complex-arithmetic",
+        "complex-polar-form",
         "partial-fractions",
         "combinations",
         "basic-integrals",
@@ -66,6 +68,8 @@ def test_combined_mixed_pool_preserves_weights_and_legacy_boundaries(level: int)
             ("inverse-matrices", 3),
             ("linear-systems", 5),
             ("matrix-rank", 2),
+            ("complex-arithmetic", 5),
+            ("complex-polar-form", 3),
         )
         if level <= levels
     }

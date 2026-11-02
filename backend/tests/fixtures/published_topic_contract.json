@@ -114,6 +114,22 @@
     "space_cm": 5
   },
   {
+    "slug": "complex-arithmetic",
+    "name": "Complex arithmetic and equations",
+    "area": "algebra",
+    "levels": [1, 2, 3, 4, 5],
+    "mixed_weight": 1,
+    "space_cm": 5
+  },
+  {
+    "slug": "complex-polar-form",
+    "name": "Polar form and De Moivre's formula",
+    "area": "algebra",
+    "levels": [1, 2, 3],
+    "mixed_weight": 1,
+    "space_cm": 5
+  },
+  {
     "slug": "basic-integrals",
     "name": "Basic integrals",
     "area": "mathematical-analysis",
