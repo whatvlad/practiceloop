@@ -38,6 +38,11 @@ def test_radical_examples_match_the_pdf() -> None:
     assert sp.simplify(simplified.answer.expected + sp.sqrt(3)) == 0
     assert simplified.answer.check(parse_math_input("-sqrt(3)")) == "correct"
     assert simplified.answer.check(parse_math_input("2sqrt(3)-sqrt(27)")) == "incorrect"
+    assert simplified.answer.check(parse_math_input("2sqrt(3)-3sqrt(3)")) == "incorrect"
+    assert simplified.answer.check(parse_math_input("2sqrt(3)-2sqrt(27/4)")) == "incorrect"
+    assert simplified.answer.check(parse_math_input("-2sqrt(3/4)")) == "incorrect"
+    assert simplified.answer.check(parse_math_input("2sqrt(3)-27^(3/2)/27")) == "incorrect"
+    assert simplified.answer.check(parse_math_input("-3^(1/2)")) == "correct"
     rationalized = RationalizeDenominator().build(
         RationalizeParams(seed=0, coefficient=2, radicand=3)
     )

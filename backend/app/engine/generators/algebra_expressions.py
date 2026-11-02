@@ -36,13 +36,14 @@ class RationalizeParams(RadicandParams):
 
 
 class SimplifiedRadicalAnswer(ExpressionAnswer):
-    """Reject an integer square root when a square factor is still inside it."""
+    """Require a single combined, square-free integer radical in equivalent answers."""
 
     def check(self, tree: MathNode) -> Outcome:
         result = super().check(tree)
         if result != "correct":
             return result
         stack = [tree]
+        radicals = 0
         while stack:
             node = stack.pop()
             root_arg = None
@@ -52,12 +53,18 @@ class SimplifiedRadicalAnswer(ExpressionAnswer):
                 exponent = build_expression(node.children[1], evaluate=True)
                 if exponent == sp.Rational(1, 2):
                     root_arg = node.children[0]
+                elif exponent.is_Rational and not exponent.is_Integer:
+                    return "incorrect"
             if root_arg is not None:
+                radicals += 1
+                if radicals > 1:
+                    return "incorrect"
                 number = build_expression(root_arg, evaluate=True)
-                if number.is_Integer and number >= 0:
-                    root = sp.sqrt(number)
-                    if root.is_Integer or root.as_coeff_Mul()[0] != 1:
-                        return "incorrect"
+                if not number.is_Integer or number < 0:
+                    return "incorrect"
+                root = sp.sqrt(number)
+                if root.is_Integer or root.as_coeff_Mul()[0] != 1:
+                    return "incorrect"
             stack.extend(node.children)
         return "correct"
 

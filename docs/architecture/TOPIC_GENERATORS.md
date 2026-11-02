@@ -241,8 +241,9 @@ legacy `symbolic-v1` records of these topics are read-only archives.
 The algebraic expressions topic offers two versioned numeric exercises based on
 algebra30: simplifying a radical with an extractable square factor, and
 rationalizing a binomial denominator using its conjugate. Both accept equivalent
-exact results, while requiring square factors to be extracted and denominators
-to be rational, respectively. Other exercises in the topic remain in development.
+exact results, while requiring like radicals to be combined with square factors
+extracted, and denominators to be rational, respectively. Other exercises in the
+topic remain in development.
 
 The polynomial division topic adds two independently versioned exercises:
 the remainder on division by a linear factor at level 1 and the quotient at
