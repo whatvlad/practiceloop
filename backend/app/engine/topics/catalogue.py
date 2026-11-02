@@ -7,6 +7,7 @@ from functools import partial
 
 from app.engine.blocks.integral_forms.form import BOUNDS, METHODS
 from app.engine.generators.algebra import AlgebraParams, algebra_generators
+from app.engine.generators.algebra_expansion import PolynomialQuotient, RemainderTheorem
 from app.engine.generators.analysis import AnalysisParams, analysis_generators
 from app.engine.generators.definite import DefiniteParams
 from app.engine.generators.derivative import DerivativeParams
@@ -155,6 +156,16 @@ def topics() -> dict[str, Topic]:
             "algebra",
             {
                 level: (Choice(algebra_generator.version, partial(_algebra_level, level)),)
+                + (
+                    (Choice(RemainderTheorem.version),)
+                    if slug == "fundamental-theorem-algebra" and level == 1
+                    else ()
+                )
+                + (
+                    (Choice(PolynomialQuotient.version),)
+                    if slug == "fundamental-theorem-algebra" and level == 2
+                    else ()
+                )
                 for level in range(1, 6)
             },
             1,

@@ -30,6 +30,7 @@ export function isDefinite(problemLatex: string): boolean {
 export type ProblemKind = 'indefinite' | 'definite' | 'double' | 'triple' | 'derivative' | 'partial' | 'numeric' | 'expression';
 
 export function problemKind(topic: TopicSlug, problemLatex: string): ProblemKind {
+  if (topic === 'fundamental-theorem-algebra' && problemLatex.startsWith('\\text{Find the quotient when }')) return 'expression';
   if (topic === 'partial-derivatives') return 'partial';
   if (topic === 'derivatives') return 'derivative';
   // A double integral's answer is also one exact number (#99).
