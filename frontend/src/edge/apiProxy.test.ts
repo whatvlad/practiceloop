@@ -34,4 +34,18 @@ describe('proxyToApi', () => {
     const down = vi.fn<typeof fetch>(async () => { throw new TypeError('fail'); });
     expect((await proxyToApi(new Request('https://x/api/health'), 'https://api.example', down)).status).toBe(502);
   });
+
+  it('retries when Cloudflare cannot resolve the origin, up to three attempts', async () => {
+    const flaky = vi.fn<typeof fetch>()
+      .mockResolvedValueOnce(new Response('error code: 1016', { status: 530 }))
+      .mockResolvedValueOnce(new Response('{"status":"ok"}', { status: 200 }));
+    const request = new Request('https://x/api/attempts', { method: 'POST', body: '{"a":1}' });
+    const response = await proxyToApi(request, 'https://api.example', flaky);
+    expect(response.status).toBe(200);
+    expect(new TextDecoder().decode(flaky.mock.calls[1][1]!.body as ArrayBuffer)).toBe('{"a":1}');
+
+    const dead = vi.fn<typeof fetch>(async () => new Response('error code: 1016', { status: 530 }));
+    expect((await proxyToApi(new Request('https://x/api/health'), 'https://api.example', dead)).status).toBe(530);
+    expect(dead).toHaveBeenCalledTimes(3);
+  });
 });
