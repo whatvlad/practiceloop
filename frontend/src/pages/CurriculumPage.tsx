@@ -6,7 +6,7 @@ const PRACTICE: Record<string, { topic: string; scope: string }> = {
   'Evaluating determinants': { topic: 'matrices', scope: 'Determinants of 2 × 2 matrices' },
   'Complex modulus': { topic: 'complex-numbers', scope: 'Modulus of a complex number' },
   'Sum of quadratic roots': { topic: 'fundamental-theorem-algebra', scope: 'Quadratic root sums and polynomial division' },
-  'Polynomial divisibility and remainders': { topic: 'fundamental-theorem-algebra', scope: 'Remainders and quotients for division by a linear factor' },
+  'Polynomial divisibility and remainders': { topic: 'fundamental-theorem-algebra', scope: 'This topic mixes quadratic root sums with remainders and quotients for division by a linear factor' },
   'Partial fractions': { topic: 'partial-fractions', scope: 'Selected real partial fractions' },
   Combinations: { topic: 'combinations', scope: 'Binomial coefficients' },
   'Basic integrals': { topic: 'basic-integrals', scope: 'Selected basic integrals' },

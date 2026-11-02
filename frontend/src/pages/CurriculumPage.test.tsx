@@ -30,6 +30,7 @@ it('shows both areas, descriptions, subtypes and an inactive placeholder', async
   expect(matrixLink?.textContent).toContain('Practice');
   const polynomialLink = element.querySelector<HTMLAnchorElement>('a[href="/dashboard?area=algebra&topic=fundamental-theorem-algebra"]');
   expect(polynomialLink).not.toBeNull();
+  expect(element.textContent).toContain('This topic mixes quadratic root sums with remainders and quotients');
   expect(element.textContent).toContain('Elementary row operations');
   expect(element.textContent).toContain('In develop');
   expect(element.querySelector('button')?.textContent).not.toContain('Generate');
