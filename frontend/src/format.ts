@@ -30,6 +30,7 @@ export function isDefinite(problemLatex: string): boolean {
 export type ProblemKind = 'indefinite' | 'definite' | 'double' | 'triple' | 'derivative' | 'partial' | 'numeric' | 'expression';
 
 export function problemKind(topic: TopicSlug, problemLatex: string): ProblemKind {
+  if (topic === 'algebraic-expressions') return 'numeric';
   if (topic === 'polynomial-division' && problemLatex.startsWith('\\text{Find the remainder when ')) return 'numeric';
   if (topic === 'partial-derivatives') return 'partial';
   if (topic === 'derivatives') return 'derivative';

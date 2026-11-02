@@ -3,6 +3,7 @@ import { algebraSections, analysisSections } from '../data/curriculum';
 import { Link } from '../router';
 
 const PRACTICE: Record<string, { topic: string; scope: string }> = {
+  'Algebraic expressions': { topic: 'algebraic-expressions', scope: 'Selected radical simplification and denominator rationalization' },
   'Evaluating determinants': { topic: 'matrices', scope: 'Determinants of 2 × 2 matrices' },
   'Complex modulus': { topic: 'complex-numbers', scope: 'Modulus of a complex number' },
   'Sum of quadratic roots': { topic: 'fundamental-theorem-algebra', scope: 'Quadratic root sums' },

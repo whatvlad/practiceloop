@@ -345,6 +345,22 @@ def answer_of(url: str, problem_id: str) -> str:
 
 
 @pytest.mark.parametrize("level", [1, 2])
+def test_algebraic_expressions_practice_saves_checks_and_reveals(
+    client: TestClient, url: str, level: int
+) -> None:
+    problem = generate(client, "algebraic-expressions", level)
+    result = attempt(client, problem["id"], answer_of(url, problem["id"]))
+    assert result.status_code == 201, result.text
+    assert result.json()["attempt"]["result"] == "correct"
+    solution = client.post(f"/problems/{problem['id']}/reveal-solution")
+    assert solution.status_code == 200 and solution.json()["steps"]
+    assert (
+        client.get(f"/problems/{problem['id']}").json()["problem"]["topic"]
+        == "algebraic-expressions"
+    )
+
+
+@pytest.mark.parametrize("level", [1, 2])
 def test_polynomial_division_practice_saves_checks_and_reveals(
     client: TestClient, url: str, level: int
 ) -> None:
@@ -565,6 +581,7 @@ def test_topics_lists_only_generated_cells(client: TestClient) -> None:
         ("complex-numbers", [1, 2, 3, 4, 5]),
         ("fundamental-theorem-algebra", [1, 2, 3, 4, 5]),
         ("partial-fractions", [1, 2, 3, 4, 5]),
+        ("algebraic-expressions", [1, 2]),
         ("polynomial-division", [1, 2]),
         ("combinations", [1]),
         ("basic-integrals", [1, 2, 3, 4, 5]),

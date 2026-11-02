@@ -73,7 +73,7 @@ def test_a_served_entry_replaces_an_old_topic_of_its_slug_in_place() -> None:
     listed = practice.listed_topics({"matrices": entry})
     assert list(listed) == ["matrices"]
     assert practice.listed_topics({}) == {}
-    assert list(practice.TOPICS)[5] == "combinations"  # it ends Algebra, as in the catalogue
+    assert list(practice.TOPICS)[6] == "combinations"  # it ends Algebra, as in the catalogue
     assert listed["matrices"].levels == (1,)
 
 

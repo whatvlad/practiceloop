@@ -56,6 +56,14 @@
     "space_cm": 5
   },
   {
+    "slug": "algebraic-expressions",
+    "name": "Algebraic expressions",
+    "area": "algebra",
+    "levels": [1, 2],
+    "mixed_weight": 0,
+    "space_cm": 4
+  },
+  {
     "slug": "polynomial-division",
     "name": "Polynomial division",
     "area": "algebra",
