@@ -33,8 +33,13 @@ remain separate existing topics for Analysis II (#146).
 ## Answers, domains and steps
 
 Exact scalar or real-expression answers use `ExpressionAnswer`, with declared x
-only for composition, inverse, asymptote and chain-rule tasks. No new input
-grammar, answer dispatcher, frontend answer bank or frozen protocol is added.
+only for composition, inverse, asymptote and chain-rule tasks. These four use the
+existing expression kind with `FullRealExpressionAnswer`: the established
+unevaluated-subexpression domain check runs before simplification, so added
+terms such as 0/(x-2) cannot hide a hole in an all-real answer. Scalar tasks also
+reject undeclared variables before cancellation, while accepting exact constants
+such as pi and e. No input grammar, answer dispatcher, frontend answer bank or
+frozen protocol is added.
 Classification prompts explicitly define their numeric choices (parity,
 convergence, boundedness and the sign of an infinite limit). Interval exercises
 ask for an endpoint while their worked solutions display the complete domain

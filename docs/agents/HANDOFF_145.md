@@ -50,6 +50,17 @@ solver has no supported closed form. Its monotonicity proof, rational sign
 certificates and error bound remain explicit; only the new bisection golden
 samples change. Focused final tests: 41 passed, 33 Linux-only skips, 1.86 seconds.
 
+Second hosted run: Database isolation and expanded HTTP E2E passed. An additional
+adversarial check found that generic expression simplification could hide domain
+holes in the four new all-real function answers. Added a local specialization of
+the existing expression kind, reusing check_domain before cancellation. Existing
+answer classes and frozen generator outputs are unchanged. Regression tests cover
+0/(x-2), 0*ln(x), and x/x-1 in all four templates, including limited-worker checks.
+Scalar templates likewise reject undeclared symbols before cancellation, retaining
+pi/e and exact arithmetic. Final focused tests: 46 passed, 33 Linux-only skips,
+2.02 seconds. Ruff check/format and mypy (105 sources) pass. Private rendered
+outputs and all existing golden entries remain unchanged by these policies.
+
 Checks pending: hosted ready CI including
 real Linux worker limits and disposable PostgreSQL/HTTP E2E; deployed checks.
 TeX CI remains disabled under #181. Graphify graph exists but the optional CLI is

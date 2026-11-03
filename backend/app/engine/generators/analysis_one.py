@@ -1,9 +1,10 @@
 """Analysis I templates with independent frozen versions and structural levels."""
 
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, ClassVar
 
 from app.engine.answers.expression import ExpressionAnswer
+from app.engine.answers.real_function import ConstantExpressionAnswer, FullRealExpressionAnswer
 from app.engine.blocks.analysis_one import AnalysisOneForm, evaluate
 from app.engine.codes import encode
 from app.engine.models import Drawn, Task, TaskGenerator
@@ -86,7 +87,7 @@ class AnalysisOne:
     prefix: str
     code_version = 1
     params = AnalysisOneParams
-    answer = ExpressionAnswer
+    answer: ClassVar[type[ExpressionAnswer]] = ConstantExpressionAnswer
     requires: tuple[str, ...] = ()
 
     @property
@@ -118,7 +119,7 @@ class AnalysisOne:
         return Task(
             data.statement,
             data.steps,
-            ExpressionAnswer(data.expected, data.variables),
+            self.answer(data.expected, data.variables),
             {"difficulty": self.difficulty, "template": self.template},
             encode(self.prefix, 1, params.seed),
             self.version,
@@ -126,6 +127,8 @@ class AnalysisOne:
 
 
 class SymbolicAnalysisOne(AnalysisOne):
+    answer = FullRealExpressionAnswer
+
     def input_variables(self, params: AnalysisOneParams) -> dict[str, VariableDomain]:
         # Plain metadata only: no SymPy construction on API paths.
         return {"x": "real"}

@@ -50,6 +50,26 @@ def test_matrix_covers_each_method_and_retains_existing_integral_and_derivative_
     assert topics()["derivatives"].levels[1][0].generator == "practice-derivative-v1"
 
 
+@pytest.mark.parametrize("kind", ["composition", "inverse", "asymptote", "chain"])
+def test_function_answers_preserve_their_full_real_domain_before_cancellation(kind) -> None:
+    g = next(g for g in generators() if g.template == kind)
+    task = g.build(g.draw(145))
+    answer = sp.sstr(task.answer.expected).replace("**", "^").replace("E", "e")
+    for extra in ("0/(x-2)", "0*ln(x)", "x/x-1"):
+        tree = parse_math_input(f"({answer})+({extra})", variables={"x": "real"})
+        assert task.answer.check(tree) == "invalid"
+
+
+def test_scalar_answers_reject_undeclared_symbols_before_cancellation() -> None:
+    for g in generators():
+        task = g.build(g.draw(145))
+        if task.answer.variables:
+            continue
+        answer = sp.sstr(task.answer.expected).replace("**", "^").replace("E", "e")
+        for extra in ("0/(x-2)", "0/(C-1)", "x-x"):
+            assert task.answer.check(parse_math_input(f"({answer})+({extra})")) == "invalid"
+
+
 @pytest.mark.parametrize("a", range(1, 6))
 def test_bisection_has_exact_sign_certificates_error_bound_and_unique_root(a) -> None:
     midpoint, intervals = bisect_exp(a)
@@ -89,3 +109,5 @@ def test_every_added_version_opens_and_checks_inside_the_limited_worker(g) -> No
     answer = sp.sstr(task.answer.expected).replace("E", "e").replace("**", "^")
     assert check_answer(answer, record).result == "correct"
     assert check_answer(f"({answer})+1", record).result == "incorrect"
+    if task.answer.variables or task.metadata["template"] == "parity":
+        assert check_answer(f"({answer})+0/(x-2)", record).result == "invalid"
