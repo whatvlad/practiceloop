@@ -1,6 +1,7 @@
 """Input instructions preserve public privacy and avoid request-time symbolic work."""
 
 import sys
+from contextlib import nullcontext
 from datetime import UTC, datetime
 from types import FrameType
 from uuid import uuid4
@@ -115,3 +116,59 @@ def test_attempt_request_cannot_select_its_answer_kind(monkeypatch):
 def test_archived_records_have_no_new_input_projection():
     assert engine.input_projection({"family": "legacy", "coefficient": 2}) == {}
     assert engine.input_projection(None) == {}
+
+
+@pytest.mark.parametrize(
+    "template,descriptor",
+    [
+        ("events-independence", {"kind": "boolean", "maxBytes": 256}),
+        ("finite-support", {"kind": "finite_set", "maxBytes": 256, "maxItems": 8}),
+        ("ci-lower", {"kind": "interval", "maxBytes": 256}),
+    ],
+)
+def test_first_generation_response_already_includes_safe_input_instructions(
+    template, descriptor, monkeypatch
+):
+    g = next(g for g in generators() if g.template == template)
+    opened = rebuild(g.build(g.draw(200)).code)
+    issued = opened.problem.issued()
+    saved = ProblemRecord(
+        uuid4(),
+        opened.topic,
+        opened.difficulty,
+        issued.statement,
+        datetime.now(UTC),
+        False,
+        False,
+        generator_data=issued.record,
+    )
+    monkeypatch.setattr(practice, "transaction", lambda _: nullcontext(object()))
+    monkeypatch.setattr(practice.records, "ensure_profile", lambda *_: None)
+    monkeypatch.setattr(practice.records, "recent_generator_data", lambda *_: [])
+    monkeypatch.setattr(practice.records, "insert_problem", lambda *_: saved)
+    monkeypatch.setattr(practice.idempotency, "claim", lambda *_: None)
+    monkeypatch.setattr(practice.idempotency, "store", lambda *_: None)
+    monkeypatch.setattr(engine, "issue", lambda *_args, **_kwargs: issued)
+    practice.generation_limit.reset()
+    app.dependency_overrides[current_user] = lambda: VerifiedUser(uuid4(), None)
+    try:
+        with TestClient(app) as client:
+            response = client.post(
+                "/problems",
+                json={"topic": opened.topic, "difficulty": opened.difficulty},
+                headers={"Idempotency-Key": str(uuid4())},
+            )
+        assert response.status_code == 201, response.text
+        assert response.json()["problem"] == {
+            "id": str(saved.id),
+            "topic": opened.topic,
+            "difficulty": opened.difficulty,
+            "problemLatex": issued.statement,
+            "answerInput": descriptor,
+            "createdAt": practice._timestamp(saved.created_at),
+            "answerRevealed": False,
+            "solutionRevealed": False,
+            "lastAttempt": None,
+        }
+    finally:
+        app.dependency_overrides.pop(current_user)

@@ -462,6 +462,7 @@ def generate(body: GenerateBody, user: User, key: IdempotencyKey = None) -> JSON
                     "topic": problem.topic,
                     "difficulty": problem.difficulty,
                     "problemLatex": problem.problem_latex,
+                    **engine.input_projection(problem.generator_data),
                     "createdAt": _timestamp(problem.created_at),
                     "answerRevealed": problem.answer_revealed,
                     "solutionRevealed": problem.solution_revealed,
