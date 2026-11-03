@@ -30,7 +30,7 @@ from app.engine.generators.polynomials import (
     generators,
 )
 from app.engine.opening import rebuild
-from app.engine.practice import replay
+from app.engine.practice import input_variables, replay
 from app.engine.topics.catalogue import topics
 from app.math_input import parse_math_input
 from app.services.math_worker import check_answer
@@ -81,6 +81,8 @@ def test_tasks_replay_open_and_accept_only_their_own_answer(generator) -> None:
     opened = rebuild(task.code)
     assert opened.topic == slug
     assert replay(opened.problem.issued().record) == task
+    # The worker reads the grammar from the code before parsing an answer.
+    input_variables(opened.problem.issued().record)
 
 
 def test_binomial_tasks_match_pdf_exercises_5_and_7() -> None:

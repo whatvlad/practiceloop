@@ -37,9 +37,6 @@ class _Generator:
     template: str
     polynomial_answer = False
 
-    def input_variables(self, params: Any) -> dict[str, VariableDomain] | None:
-        return {"x": "real"} if self.polynomial_answer else None
-
     def _task(self, params: Drawn, statement: str, steps: tuple[Step, ...], value: Any) -> Task:
         return Task(
             statement=statement,
@@ -377,6 +374,11 @@ class IrreducibleFactor(_Generator):
     difficulty = 3
     template = "irreducible-factor"
     polynomial_answer = True
+
+    def input_variables(self, params: Any) -> dict[str, VariableDomain]:
+        # Only polynomial answers declare x; numeric ones keep the default grammar.
+        return {"x": "real"}
+
     step_text = {
         "root": "Find an integer root among the divisors of the constant term.",
         "divide": "Divide by the corresponding linear factor.",
@@ -571,6 +573,11 @@ class CubicRemainder(_Generator):
     difficulty = 5
     template = "cubic-remainder"
     polynomial_answer = True
+
+    def input_variables(self, params: Any) -> dict[str, VariableDomain]:
+        # Only polynomial answers declare x; numeric ones keep the default grammar.
+        return {"x": "real"}
+
     step_text = {
         "roots": "x^3 - x has the roots -1, 0 and 1, so the remainder R has degree at most 2.",
         "values": "Evaluate the polynomial at the three roots.",
