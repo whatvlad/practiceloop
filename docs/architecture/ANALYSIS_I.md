@@ -16,7 +16,7 @@ the frozen code format. Every template has its own immutable version and prefix.
 | | 2 | sine and exponential standard limits |
 | | 3 | left and right limits of an absolute-value quotient; positive infinite limit |
 | | 4 | rational infinity/infinity; oblique asymptote; piecewise continuity |
-| | 5 | two applications of lHopital; certified bisection of exp(x)+x=a+1 |
+| | 5 | two applications of lHopital; certified bisection of exp(x)+x²=a+1 |
 | Differential calculus | 1 | derivative by difference quotient; tangent slope |
 | | 2 | numerical differential; exponential chain rule |
 | | 3 | Lagrange mean value theorem; full derivative sign chart |

@@ -48,7 +48,7 @@ def exp_bounds(x: Fraction) -> tuple[Fraction, Fraction]:
 
 
 def bisect_exp(a: int) -> tuple[Fraction, tuple[tuple[Fraction, Fraction], ...]]:
-    """Six certified bisections of exp(x)+x=a+1 on [0,a]."""
+    """Six certified bisections of exp(x)+x^2=a+1 on [0,a]."""
     if type(a) is not int or not 1 <= a <= 5:
         raise ValueError("Bisection parameter is outside [1,5]")
     lo, hi = Fraction(0), Fraction(a)
@@ -56,9 +56,9 @@ def bisect_exp(a: int) -> tuple[Fraction, tuple[tuple[Fraction, Fraction], ...]]
     for _ in range(6):
         mid = (lo + hi) / 2
         lower, upper = exp_bounds(mid)
-        if lower + mid > a + 1:
+        if lower + mid**2 > a + 1:
             hi = mid
-        elif upper + mid < a + 1:
+        elif upper + mid**2 < a + 1:
             lo = mid
         else:
             raise ValueError("Taylor bounds cannot certify the bisection sign")
@@ -215,11 +215,11 @@ def evaluate(kind: str, p: AnalysisOneForm) -> AnalysisOneData:
         expected = sp.Rational(mid.numerator, mid.denominator)
         proof = expected
         prompt = (
-            rf"Solve \(e^x+x={a + 1}\) approximately: start with \([0,{a}]\), "
+            rf"Solve \(e^x+x^2={a + 1}\) approximately: start with \([0,{a}]\), "
             "perform six bisections, and enter the midpoint of the remaining interval."
         )
         details = (
-            (rf"F(0)=-{a}<0,\ F({a})>0,\ F'(x)=e^x+1>0",)
+            (rf"F(0)=-{a}<0,\ F({a})>0,\ F'(x)=e^x+2x>0\ (x\geq0)",)
             + tuple(
                 rf"I_{{{i + 1}}}=[{sp.latex(sp.Rational(lo))},{sp.latex(sp.Rational(hi))}]"
                 for i, (lo, hi) in enumerate(intervals)

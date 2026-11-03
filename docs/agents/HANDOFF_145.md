@@ -36,8 +36,19 @@ passed 1,282 tests (33 Linux-only skips), in 102.79 seconds. The full Windows ru
 passed 3,559 tests, with 360 skips and 418 DB/TeX deselections, in 185.38 seconds.
 It reported 15 failures: 14 call Linux-only workers without platform markers;
 one compared against the local catalogue built before final step-text changes.
-The catalogue was rebuilt; its replay regression is rerun separately. Linux
+The catalogue was rebuilt; its full replay regression passed in 19.76 seconds. Linux
 worker behavior must be judged by hosted Linux CI, not by Windows failures.
+
+Hosted first ready run: migrations applied successfully; SQL isolation stopped
+on an old 35-topic count. Updated it to 36 (17 in Mathematical Analysis) and
+added an explicit assertion for the new topic's area. No production schema fix
+was needed. A fresh ready run must pass after this fixture correction.
+
+Final scope check changed the unshipped bisection equation from exp(x)+x=a+1
+(expressible through Lambert W) to exp(x)+x²=a+1, for which the bounded symbolic
+solver has no supported closed form. Its monotonicity proof, rational sign
+certificates and error bound remain explicit; only the new bisection golden
+samples change. Focused final tests: 41 passed, 33 Linux-only skips, 1.86 seconds.
 
 Checks pending: hosted ready CI including
 real Linux worker limits and disposable PostgreSQL/HTTP E2E; deployed checks.

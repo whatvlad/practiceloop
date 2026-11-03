@@ -55,12 +55,18 @@ def test_bisection_has_exact_sign_certificates_error_bound_and_unique_root(a) ->
     midpoint, intervals = bisect_exp(a)
     for i, (lo, hi) in enumerate(intervals):
         assert hi - lo == Fraction(a, 2 ** (i + 1))
-        assert exp_bounds(lo)[1] + lo < a + 1
-        assert exp_bounds(hi)[0] + hi > a + 1
+        assert exp_bounds(lo)[1] + lo**2 < a + 1
+        assert exp_bounds(hi)[0] + hi**2 > a + 1
     assert midpoint == sum(intervals[-1]) / 2
     # Independent high precision root confirms the certified enclosure.
-    root = sp.nsolve(sp.exp(sp.Symbol("x")) + sp.Symbol("x") - a - 1, 1, prec=60)
+    root = sp.nsolve(sp.exp(sp.Symbol("x")) + sp.Symbol("x") ** 2 - a - 1, 1, prec=60)
     assert abs(root - sp.Rational(midpoint)) <= sp.Rational(a, 128)
+
+
+def test_bisection_equation_has_no_supported_closed_form() -> None:
+    x = sp.Symbol("x")
+    with pytest.raises(NotImplementedError):
+        sp.solve(sp.exp(x) + x**2 - 2, x)
 
 
 def test_bounded_params_and_derivative_theorem_and_global_extremum() -> None:

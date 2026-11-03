@@ -7538,11 +7538,11 @@
   "analysis1-bisection-v1": [
     {
       "code": "AIAW-1-0000000000000000-69",
-      "statement": "Solve \\(e^x+x=4\\) approximately: start with \\([0,3]\\), perform six bisections, and enter the midpoint of the remaining interval.",
+      "statement": "Solve \\(e^x+x^2=4\\) approximately: start with \\([0,3]\\), perform six bisections, and enter the midpoint of the remaining interval.",
       "steps": [
         [
           "reason",
-          "F(0)=-3<0,\\ F(3)>0,\\ F'(x)=e^x+1>0"
+          "F(0)=-3<0,\\ F(3)>0,\\ F'(x)=e^x+2x>0\\ (x\\geq0)"
         ],
         [
           "reason",
@@ -7586,11 +7586,11 @@
     },
     {
       "code": "AIAW-1-0000000000000145-39",
-      "statement": "Solve \\(e^x+x=5\\) approximately: start with \\([0,4]\\), perform six bisections, and enter the midpoint of the remaining interval.",
+      "statement": "Solve \\(e^x+x^2=5\\) approximately: start with \\([0,4]\\), perform six bisections, and enter the midpoint of the remaining interval.",
       "steps": [
         [
           "reason",
-          "F(0)=-4<0,\\ F(4)>0,\\ F'(x)=e^x+1>0"
+          "F(0)=-4<0,\\ F(4)>0,\\ F'(x)=e^x+2x>0\\ (x\\geq0)"
         ],
         [
           "reason",
@@ -7606,27 +7606,27 @@
         ],
         [
           "reason",
-          "I_{4}=[\\frac{5}{4},\\frac{3}{2}]"
+          "I_{4}=[1,\\frac{5}{4}]"
         ],
         [
           "reason",
-          "I_{5}=[\\frac{5}{4},\\frac{11}{8}]"
+          "I_{5}=[\\frac{9}{8},\\frac{5}{4}]"
         ],
         [
           "reason",
-          "I_{6}=[\\frac{5}{4},\\frac{21}{16}]"
+          "I_{6}=[\\frac{19}{16},\\frac{5}{4}]"
         ],
         [
           "reason",
-          "|x_*-\\frac{41}{32}|\\leq \\frac{1}{32}"
+          "|x_*-\\frac{39}{32}|\\leq \\frac{1}{32}"
         ],
         [
           "result",
-          "\\frac{41}{32}"
+          "\\frac{39}{32}"
         ]
       ],
       "answer_kind": "expression",
-      "answer_latex": "\\frac{41}{32}",
+      "answer_latex": "\\frac{39}{32}",
       "metadata": {
         "difficulty": 5,
         "template": "bisection"
@@ -7634,11 +7634,11 @@
     },
     {
       "code": "AIAW-1-9999999999999999-79",
-      "statement": "Solve \\(e^x+x=4\\) approximately: start with \\([0,3]\\), perform six bisections, and enter the midpoint of the remaining interval.",
+      "statement": "Solve \\(e^x+x^2=4\\) approximately: start with \\([0,3]\\), perform six bisections, and enter the midpoint of the remaining interval.",
       "steps": [
         [
           "reason",
-          "F(0)=-3<0,\\ F(3)>0,\\ F'(x)=e^x+1>0"
+          "F(0)=-3<0,\\ F(3)>0,\\ F'(x)=e^x+2x>0\\ (x\\geq0)"
         ],
         [
           "reason",
