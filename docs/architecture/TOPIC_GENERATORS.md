@@ -259,6 +259,7 @@ structural template with its own generator version (in
 
 | Topic | Level | Template (algebra30) | Prefix |
 |---|---|---|---|
+| matrix-operations | 1-3 | one entry of pA^T + qC; of AB; of AB - BA (8, 9a) | MCB, MPR, MCM |
 | determinants | 1 | 3 x 3 determinant by Laplace expansion (17) | DTR |
 | determinants | 2 | det(cA^m) / transposes (15); swapped, scaled and combined rows (14) | DTS, DRO |
 | determinants | 3 | parameter value making a 3 x 3 matrix singular (19) | DSG |

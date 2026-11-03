@@ -18,7 +18,7 @@ asked through a scalar they determine, or stay in development.
 | 4 | Binomial expansions | In develop (whole expansions) | |
 | 5, 7 | Coefficients, constant terms, finding n | Covered | binomial-theorem 1–3 |
 | 6 | Numerical application | In develop | |
-| 8–9 | Matrix sums, products, transposes | In develop | |
+| 8–9 | Matrix sums, products, transposes | Covered (one entry; 9b in develop) | matrix-operations 1–3 |
 | 10–11 | Orthogonal/symmetric matrices, true or false | In develop (proofs) | |
 | 12–13 | Matrix equations | Covered (13, 22a style) | inverse-matrices 3 |
 | 14 | Determinant after row operations | Covered | determinants 2 |

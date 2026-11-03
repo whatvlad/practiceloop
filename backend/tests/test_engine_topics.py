@@ -55,6 +55,7 @@ def test_five_topics_have_nonempty_levels_and_replay_for_many_seeds() -> None:
         "eigenvalues",
         "vectors",
         "lines-and-planes",
+        "matrix-operations",
         "functions-and-sequences",
         "limits-and-continuity",
         "improper-integrals",

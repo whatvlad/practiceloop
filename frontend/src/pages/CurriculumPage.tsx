@@ -4,6 +4,7 @@ import { Link } from '../router';
 
 const PRACTICE: Record<string, { topic: string; scope: string }> = {
   'Algebraic expressions': { topic: 'algebraic-expressions', scope: 'Selected radical simplification and denominator rationalization' },
+  'Matrix arithmetic': { topic: 'matrix-operations', scope: 'Combinations with transposes, products and AB − BA' },
   'Determinant properties': { topic: 'determinants', scope: 'Determinants after scaling, powers and row operations' },
   'Evaluating determinants': { topic: 'determinants', scope: '3 × 3 and 4 × 4 determinants by Laplace expansion' },
   'Matrix invertibility': { topic: 'determinants', scope: 'The parameter value that makes a matrix singular' },
