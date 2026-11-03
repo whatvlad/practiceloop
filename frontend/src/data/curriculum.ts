@@ -90,24 +90,28 @@ export const analysisSections: CurriculumSection[] = [
     { name: 'Limits and continuity', description: 'Use limit laws, one-sided limits and asymptotes; remove discontinuities and approximate a root by certified bisection.', pdfExercises: [], subtypes: ['Finite and infinite limits', 'Standard limits and indeterminate forms', 'One-sided limits', 'Continuity', 'lHopital rule', 'Approximation by bisection'] },
     { name: 'Differential calculus', description: 'Use the derivative definition, tangent slopes and differentials; apply the mean value theorem and optimize functions.', pdfExercises: [], subtypes: ['Definition and interpretation', 'Chain rule and differentials', 'Lagrange mean value theorem', 'Monotonicity intervals', 'Local and global extrema', 'Rectangle and open-box optimization'] },
   ] },
-  { name: 'Integrals', types: [
+  { name: 'Analysis I: integral calculus', types: [
     { name: 'Basic integrals', description: 'Find elementary antiderivatives.', pdfExercises: [] },
     { name: 'Substitution', description: 'Apply a substitution to an integral.', pdfExercises: [] },
     { name: 'Integration by parts', description: 'Apply integration by parts.', pdfExercises: [] },
     { name: 'Rational functions', description: 'Integrate rational expressions.', pdfExercises: [] },
     { name: 'Trigonometric integrals', description: 'Integrate trigonometric expressions.', pdfExercises: [] },
     { name: 'Definite integrals', description: 'Evaluate integrals over an interval.', pdfExercises: [] },
-    { name: 'Improper integrals', description: 'Study or calculate improper integrals.', pdfExercises: [] },
-    { name: 'Double integrals', description: 'Evaluate integrals over planar regions.', pdfExercises: [] },
-    { name: 'Triple integrals', description: 'Evaluate integrals over spatial regions.', pdfExercises: [] },
   ] },
-  { name: 'Differentiation', types: [
+  { name: 'Analysis I: derivative rules', types: [
     { name: 'Derivatives', description: 'Differentiate functions of one variable.', pdfExercises: [] },
-    { name: 'Partial derivatives', description: 'Differentiate functions of several variables.', pdfExercises: [] },
   ] },
-  { name: 'Further analysis', types: [
-    { name: 'Series', description: 'Study and calculate series.', pdfExercises: [] },
-    { name: 'Multivariable functions', description: 'Study functions of several variables.', pdfExercises: [] },
-    { name: 'Differential equations', description: 'Solve differential equations.', pdfExercises: [] },
+  { name: 'Analysis II: improper integrals and series', types: [
+    { name: 'Improper integrals', description: 'Test first-kind convergence and calculate unbounded masses and volumes.', pdfExercises: [], subtypes: ['Power and logarithmic criteria', 'Limit comparison', 'Exact improper values', 'Decay and volume applications'] },
+    { name: 'Series', description: 'Test numerical series and find power-series convergence sets and expansions.', pdfExercises: [], subtypes: ['Term, comparison, root, ratio and integral tests', 'Absolute and conditional convergence', 'Leibniz criterion', 'Cauchy-Hadamard radius', 'Endpoint convergence', 'Taylor and Maclaurin series'] },
+  ] },
+  { name: 'Analysis II: multivariable calculus', types: [
+    { name: 'Multivariable functions', description: 'Study domains and functions in R²/R³, gradients, differentials and optimization.', pdfExercises: [], subtypes: ['Domains and values', 'Gradient and directional derivatives', 'Higher mixed partials', 'Total differentials', 'Local extrema and Hessians', 'Lagrange multipliers and optimization'] },
+    { name: 'Partial derivatives', description: 'Use the existing first and higher partials, coordinate changes and Jacobians.', pdfExercises: [] },
+    { name: 'Double integrals', description: 'Use Cartesian and polar regions, bounds, Jacobian factors and iterated integration.', pdfExercises: [] },
+    { name: 'Triple integrals', description: 'Use Cartesian and cylindrical regions with iterated bounds.', pdfExercises: [] },
+  ] },
+  { name: 'Analysis II: ordinary differential equations', types: [
+    { name: 'Differential equations', description: 'Solve real initial-value problems by the declared analytic method.', pdfExercises: [], subtypes: ['Separable equations', 'First-order linear equations', 'Second-order linear equations', 'Repeated roots and resonance', 'Laplace-transform methods'] },
   ] },
 ];

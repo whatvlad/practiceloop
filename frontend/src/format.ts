@@ -30,7 +30,7 @@ export function isDefinite(problemLatex: string): boolean {
 export type ProblemKind = 'indefinite' | 'definite' | 'double' | 'triple' | 'derivative' | 'partial' | 'numeric' | 'complex' | 'expression';
 
 export function problemKind(topic: TopicSlug, problemLatex: string): ProblemKind {
-  if (['functions-and-sequences', 'limits-and-continuity', 'differential-calculus'].includes(topic)) return 'expression';
+  if (['functions-and-sequences', 'limits-and-continuity', 'differential-calculus', 'series'].includes(topic)) return 'expression';
   if (topic === 'algebraic-expressions') return 'numeric';
   if (topic === 'complex-arithmetic' || topic === 'complex-polar-form') return 'complex';
   if (topic === 'polynomial-division' && problemLatex.startsWith('\\text{Find the remainder when ')) return 'numeric';
@@ -39,7 +39,7 @@ export function problemKind(topic: TopicSlug, problemLatex: string): ProblemKind
   // A double integral's answer is also one exact number (#99).
   if (topic === 'double-integrals') return 'double';
   if (topic === 'triple-integrals') return 'triple';
-  if (topic === 'improper-integrals') return 'definite';
+  if (topic === 'improper-integrals') return 'numeric';
   if (['basic-integrals', 'substitution', 'integration-by-parts', 'rational-functions', 'trigonometric-integrals', 'definite-integrals'].includes(topic)) {
     return isDefinite(problemLatex) ? 'definite' : 'indefinite';
   }

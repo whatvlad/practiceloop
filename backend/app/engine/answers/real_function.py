@@ -2,8 +2,9 @@
 
 import sympy as sp
 
-from app.engine.answers._symbolic import check_domain
+from app.engine.answers._symbolic import check_domain, classify_expression, evaluated_tree
 from app.engine.answers.expression import ExpressionAnswer
+from app.engine.blocks.real_constants import canonical_arctangents
 from app.engine.models import Outcome
 from app.math_input import MathNode
 
@@ -40,4 +41,9 @@ class ConstantExpressionAnswer(ExpressionAnswer):
             if node.kind == "symbol" and node.value not in {"pi", "e"}:
                 return "invalid"
             stack.extend(node.children)
-        return super().check(tree)
+        answer = evaluated_tree(tree)
+        if answer is None:
+            return "invalid"
+        return classify_expression(
+            canonical_arctangents(answer), canonical_arctangents(self.expected), {}
+        )

@@ -12,6 +12,7 @@ from pydantic import ValidationError
 from app.api import practice
 from app.engine import practice as engine
 from app.engine.blocks.analysis import AnalysisForm
+from app.engine.codes import encode
 from app.engine.generators.analysis import AnalysisParams, analysis_generators
 from app.math_input import parse_math_input
 from app.services import archive
@@ -82,11 +83,9 @@ def test_each_analysis_level_checks_and_preserves_mixed_worksheets_archive(
 
 def test_analysis_variable_metadata_does_no_symbolic_work_and_returns_fresh_mappings() -> None:
     records = [
-        engine.issue(slug, 5, seed=197).record
-        for slug in (
-            "multivariable-functions",
-            "differential-equations",
-        )
+        # The historical two-variable version retains its exact grammar after #146.
+        {"generator_version": "practice-multivariable-v1", "code": encode("MVF", 1, 197)},
+        engine.issue("differential-equations", 5, seed=197).record,
     ]
     calls: list[str] = []
 

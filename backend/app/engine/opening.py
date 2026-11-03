@@ -48,9 +48,21 @@ def _historical_views() -> tuple[Topic, ...]:
             },
         ),
     )
+    analysis_two_aliases = tuple(
+        (
+            slug,
+            {level: (Choice(version, partial(_analysis_level, level)),) for level in range(1, 6)},
+        )
+        for slug, version in (
+            ("improper-integrals", "practice-improper-v1"),
+            ("series", "practice-series-v1"),
+            ("multivariable-functions", "practice-multivariable-v1"),
+            ("differential-equations", "practice-ode-v1"),
+        )
+    )
     return tuple(
         replace(practice.ENGINE_TOPICS[slug], levels=levels, served=False)
-        for slug, levels in aliases
+        for slug, levels in (*aliases, *analysis_two_aliases)
     )
 
 

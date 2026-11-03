@@ -10,7 +10,8 @@ https://practiceloop.pages.dev (noindex). Signed-in learners can:
 
 - practise the current 36 Algebra and Mathematical Analysis topics, with their
   available levels and mixed practice supplied by the API, including the
-  [Analysis I curriculum](docs/architecture/ANALYSIS_I.md);
+  [Analysis I](docs/architecture/ANALYSIS_I.md) and
+  [Analysis II](docs/architecture/ANALYSIS_II.md) curricula;
 - type answers in a formula editor; typed engine answers check them symbolically
   (Correct, Incorrect or Invalid expression, with explicit missing-constant feedback);
 - open a permanent problem code at `/p/<code>` and sign in to solve that exact
@@ -222,7 +223,8 @@ Proprietary, all rights reserved. See [LICENSE](LICENSE).
 ## Product direction
 
 Current topics use the native engine in Algebra and Mathematical Analysis.
-Further syllabus expansion remains in #147, #145, #146 and #200. The curriculum expansion follows
+Analysis I (#145) and Analysis II (#146) extend the retained integral and partial
+derivative families; Probability and Statistics remains #200. Curriculum expansion follows
 the [ADR-005 amendment](docs/decisions/0005-multiple-integrals-and-derivatives.md#amendment-practice-areas-144-2026-10-26).
 
 The original [MVP specification](docs/PRACTICELOOP_MVP.md) remains the product
