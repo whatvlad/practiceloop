@@ -5,7 +5,8 @@ Accountable human: Vlad / whatvlad.
 Issue: #146. Branch: `codex/issue-146-analysis-ii`.
 Exact base: `bca9bee50150ad47f2a4d67cca43f8267d1cd54d`.
 Head commit: see the linked PR head and CI runs.
-Current status: implementation complete; verification in progress; not Done.
+Current status: implementation and local verification complete; hosted ready CI
+and deployments pending; not Done.
 
 Scope: every Analysis II acceptance criterion. See the complete structural matrix
 in [ANALYSIS_II.md](../architecture/ANALYSIS_II.md). 47 new frozen versions and 141
@@ -28,8 +29,20 @@ Observed verification before draft:
   retained polar Jacobians. Tests also reject undeclared symbols/domain holes.
 - Ruff check and mypy (114 sources) pass.
 - Golden export confirms all 118 baseline entries unchanged and adds exactly
-  three samples per new version. Catalogue and broad backend checks are running.
-- Frontend validation is running; hosted CI and deployed checks remain pending.
+  three samples per new version. Public topic metadata is unchanged.
+- Catalogue: 159 cells x64 codes verified; all 13,491 Analysis II/retained
+  formulae render in strict KaTeX.
+- Matrix/golden/frozen-curriculum/partial/multiple run: 1,616 passed, 97 Linux-only
+  skips, 117.28 seconds.
+- Available full Windows suite: 3,990 passed, 454 Linux-only skips, 499
+  DB/TeX/platform deselections, 205.61 seconds. Fourteen unmarked Linux-only
+  worker cases were explicitly excluded locally; hosted Linux CI runs them.
+- Frontend: 613 tests pass, plus lint/typecheck/production build and npm audit
+  (zero vulnerabilities). Python dependency audit reports no known vulnerabilities.
+- Offline hosted-verification scripts: 12 unittest cases pass in 1.035 seconds.
+- Ruff check/format: 174 Python files pass; mypy: 114 sources pass. Repository
+  policy, protected original MVP hash and content check (95 entries) pass.
+- Hosted ready CI and deployed checks remain pending.
 
 Exact arctangent reciprocity handles alternative tail-integral answers without
 using numerical equality or complex branches. All new symbolic answers are global
