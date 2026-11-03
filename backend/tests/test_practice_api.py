@@ -697,6 +697,15 @@ def test_topics_lists_only_generated_cells(client: TestClient) -> None:
         ("multivariable-functions", [1, 2, 3, 4, 5]),
         ("differential-equations", [1, 2, 3, 4, 5]),
         ("differential-calculus", [1, 2, 3, 4, 5]),
+        ("probability-events", [1, 2, 3, 4, 5]),
+        ("conditional-probability", [1, 2, 3, 4, 5]),
+        ("discrete-random-variables", [1, 2, 3, 4, 5]),
+        ("discrete-distributions", [1, 2, 3, 4, 5]),
+        ("continuous-distributions", [1, 2, 3, 4, 5]),
+        ("moments-joint-distributions", [1, 2, 3, 4, 5]),
+        ("descriptive-statistics", [1, 2, 3, 4, 5]),
+        ("confidence-intervals", [1, 2, 3, 4, 5]),
+        ("hypothesis-tests", [1, 2, 3, 4, 5]),
     ]
 
 
@@ -820,7 +829,25 @@ def test_topics_publish_the_fixed_mixed_practice_weights(client: TestClient) -> 
             },
         },
     }
-    assert len(areas) == 2
+    assert areas[2] == {
+        "slug": "probability-statistics",
+        "name": "Probability and Statistics",
+        "mixed": {
+            "availableDifficulties": [1, 2, 3, 4, 5],
+            "weights": {
+                "probability-events": 1,
+                "conditional-probability": 1,
+                "discrete-random-variables": 1,
+                "discrete-distributions": 1,
+                "continuous-distributions": 1,
+                "moments-joint-distributions": 1,
+                "descriptive-statistics": 1,
+                "confidence-intervals": 1,
+                "hypothesis-tests": 1,
+            },
+        },
+    }
+    assert len(areas) == 3
 
 
 def test_topics_are_grouped_by_area(client: TestClient) -> None:

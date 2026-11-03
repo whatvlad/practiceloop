@@ -324,6 +324,17 @@ def test_copy_preserves_exact_trusted_content_for_every_topic(
         headers={"Idempotency-Key": str(uuid4())},
     ).json()["problem"]
     created = share(client, source["id"])
+    instructions = source.get("answerInput")
+    if "answerInput" in source:
+        assert instructions in (
+            {"kind": "boolean", "maxBytes": 256},
+            {"kind": "finite_set", "maxBytes": 256, "maxItems": 8},
+            {"kind": "interval", "maxBytes": 256},
+        )
+    public = {field: source[field] for field in ("topic", "difficulty", "problemLatex")}
+    if instructions is not None:
+        public["answerInput"] = instructions
+    assert client.get(f"/shares/{created['token']}").json() == {"problem": public}
     users.current = users.bob
     response = start_copy(client, {"token": created["token"]})
     assert response.status_code == 201, response.text
@@ -332,7 +343,7 @@ def test_copy_preserves_exact_trusted_content_for_every_topic(
     assert copied["answerRevealed"] is copied["solutionRevealed"] is False
     assert copied["lastAttempt"] is None
     assert copied["attemptCount"] == 0
-    assert set(copied) == {
+    expected_fields = {
         "id",
         "topic",
         "difficulty",
@@ -344,6 +355,10 @@ def test_copy_preserves_exact_trusted_content_for_every_topic(
         "attemptCount",
         "worksheetId",
     }
+    if instructions is not None:
+        expected_fields.add("answerInput")
+        assert copied["answerInput"] == instructions
+    assert set(copied) == expected_fields
     for field in ("topic", "difficulty", "problemLatex"):
         assert copied[field] == source[field]
     with psycopg.connect(url) as conn:
