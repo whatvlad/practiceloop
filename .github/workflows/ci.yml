@@ -78,7 +78,8 @@ jobs:
     needs: changes
     if: github.event.pull_request.draft != true && needs.changes.outputs.backend == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # The expanded curriculum includes bounded worker checks for 165 versions.
+    timeout-minutes: 20
     defaults:
       run:
         working-directory: backend

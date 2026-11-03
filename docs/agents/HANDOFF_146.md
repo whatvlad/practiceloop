@@ -42,7 +42,12 @@ Observed verification before draft:
 - Offline hosted-verification scripts: 12 unittest cases pass in 1.035 seconds.
 - Ruff check/format: 174 Python files pass; mypy: 114 sources pass. Repository
   policy, protected original MVP hash and content check (95 entries) pass.
-- Hosted ready CI and deployed checks remain pending.
+- Ready CI 41634885112 passed Frontend, Security and Database isolation,
+  including all 74 HTTP E2E scenarios. Backend reached 93% without a test
+  failure before its 15-minute job timeout. The Backend CI job budget is now
+  20 minutes for the expanded 165-version regression suite; production worker
+  limits and test coverage are unchanged. The replacement ready run and
+  deployed checks remain pending.
 
 Exact arctangent reciprocity handles alternative tail-integral answers without
 using numerical equality or complex branches. All new symbolic answers are global
@@ -51,7 +56,8 @@ ODE has exact residual and initial-data checks; Laplace transforms have addition
 rational certificates. Parameters, finite direction tables and polynomial degrees
 are bounded. No general solver runs on learner input.
 
-Checks not run: real Linux worker/PostgreSQL/E2E until hosted ready CI; local
+Checks pending: completion of the Linux worker suite in replacement ready CI;
+PostgreSQL and all HTTP E2E scenarios passed in the first ready run. Local
 Docker unavailable. TeX remains disabled under #181. Graphify CLI absent; scoped
 fallback against source was recorded and no fabricated graph outputs are changed.
 Google OAuth itself is unchanged.
@@ -69,7 +75,7 @@ scripts/logs. No other agents or chats started.
 
 Review: request advisory mathematical review on the PR; no independent review
 claimed. Merge: pending full green ready CI and resolved blocking findings.
-Next action: complete local verification, fix failures, create draft and mark
-ready when done, inspect hosted CI/reviews, merge, immediately close/Done/clear
+Next action: mark the CI-budget fix ready, inspect hosted CI/reviews, merge,
+immediately close/Done/clear
 Order/renumber/read back, verify deployments and public codes, publish final
 English HANDOFF. Do not start #200.
