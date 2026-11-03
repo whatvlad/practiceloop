@@ -46,6 +46,7 @@ def test_combinations_is_listed_from_its_engine_entry_and_joins_algebra_mixed() 
             "eigenvalues",
             "vectors",
             "lines-and-planes",
+            "matrix-operations",
             "polynomial-division",
         )
     )

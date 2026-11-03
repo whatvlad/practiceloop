@@ -42,7 +42,7 @@ export function problemKind(topic: TopicSlug, problemLatex: string): ProblemKind
   if (['basic-integrals', 'substitution', 'integration-by-parts', 'rational-functions', 'trigonometric-integrals', 'definite-integrals'].includes(topic)) {
     return isDefinite(problemLatex) ? 'definite' : 'indefinite';
   }
-  if (['matrices', 'determinants', 'inverse-matrices', 'linear-systems', 'matrix-rank', 'binomial-theorem', 'eigenvalues', 'vectors', 'lines-and-planes', 'complex-numbers', 'fundamental-theorem-algebra', 'combinations', 'functions-and-sequences', 'limits-and-continuity', 'series'].includes(topic)) return 'numeric';
+  if (['matrices', 'determinants', 'inverse-matrices', 'linear-systems', 'matrix-rank', 'binomial-theorem', 'eigenvalues', 'vectors', 'lines-and-planes', 'matrix-operations', 'complex-numbers', 'fundamental-theorem-algebra', 'combinations', 'functions-and-sequences', 'limits-and-continuity', 'series'].includes(topic)) return 'numeric';
   return 'expression';
 }
 

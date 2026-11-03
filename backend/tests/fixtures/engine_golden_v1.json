@@ -5876,5 +5876,227 @@
         "template": "plane-reflection"
       }
     }
+  ],
+  "matrix-combination-v1": [
+    {
+      "code": "MCB-1-0000000000000000-41",
+      "statement": "Find the entry in the second row and first column of the combination: \\(3A^{T}-3C,\\quad A=\\begin{pmatrix}0&-5&-5\\\\3&1&-5\\end{pmatrix},\\ C=\\begin{pmatrix}0&5\\\\0&2\\\\-3&0\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "transpose",
+          "A^{T}=\\begin{pmatrix}0&3\\\\-5&1\\\\-5&-5\\end{pmatrix}"
+        ],
+        [
+          "combine",
+          "3A^{T}-3C=\\begin{pmatrix}0&-6\\\\-15&-3\\\\-6&-15\\end{pmatrix}"
+        ],
+        [
+          "entry",
+          "(3A^{T}-3C)_{21}=-15"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-15",
+      "metadata": {
+        "difficulty": 1,
+        "template": "combination"
+      }
+    },
+    {
+      "code": "MCB-1-0000000000000001-58",
+      "statement": "Find the entry in the second row and first column of the combination: \\(2A^{T}+3C,\\quad A=\\begin{pmatrix}-1&-4&-3\\\\-5&2&-5\\end{pmatrix},\\ C=\\begin{pmatrix}-4&5\\\\-1&-3\\\\-2&-4\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "transpose",
+          "A^{T}=\\begin{pmatrix}-1&-5\\\\-4&2\\\\-3&-5\\end{pmatrix}"
+        ],
+        [
+          "combine",
+          "2A^{T}+3C=\\begin{pmatrix}-14&5\\\\-11&-5\\\\-12&-22\\end{pmatrix}"
+        ],
+        [
+          "entry",
+          "(2A^{T}+3C)_{21}=-11"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-11",
+      "metadata": {
+        "difficulty": 1,
+        "template": "combination"
+      }
+    },
+    {
+      "code": "MCB-1-0000000000000147-45",
+      "statement": "Find the entry in the second row and second column of the combination: \\(-2A^{T}+2C,\\quad A=\\begin{pmatrix}2&-1&0\\\\-3&-2&-4\\end{pmatrix},\\ C=\\begin{pmatrix}3&0\\\\5&4\\\\-2&-2\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "transpose",
+          "A^{T}=\\begin{pmatrix}2&-3\\\\-1&-2\\\\0&-4\\end{pmatrix}"
+        ],
+        [
+          "combine",
+          "-2A^{T}+2C=\\begin{pmatrix}2&6\\\\12&12\\\\-4&4\\end{pmatrix}"
+        ],
+        [
+          "entry",
+          "(-2A^{T}+2C)_{22}=12"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "12",
+      "metadata": {
+        "difficulty": 1,
+        "template": "combination"
+      }
+    }
+  ],
+  "matrix-product-v1": [
+    {
+      "code": "MPR-1-0000000000000000-05",
+      "statement": "Find the entry in the second row and first column of AB: \\(A=\\begin{pmatrix}0&3&1\\\\4&3&-4\\end{pmatrix},\\ B=\\begin{pmatrix}-3&3\\\\3&-1\\\\-3&1\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "dimensions",
+          "(2\\times 3)(3\\times 2)=2\\times 2"
+        ],
+        [
+          "row_column",
+          "(AB)_{21}=(4)(-3)+(3)(3)+(-4)(-3)"
+        ],
+        [
+          "entry",
+          "(AB)_{21}=9"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "9",
+      "metadata": {
+        "difficulty": 2,
+        "template": "product"
+      }
+    },
+    {
+      "code": "MPR-1-0000000000000001-22",
+      "statement": "Find the entry in the first row and second column of AB: \\(A=\\begin{pmatrix}-4&-3&1\\\\-1&-2&2\\end{pmatrix},\\ B=\\begin{pmatrix}0&-3\\\\-2&1\\\\-4&-4\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "dimensions",
+          "(2\\times 3)(3\\times 2)=2\\times 2"
+        ],
+        [
+          "row_column",
+          "(AB)_{12}=(-4)(-3)+(-3)(1)+(1)(-4)"
+        ],
+        [
+          "entry",
+          "(AB)_{12}=5"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "5",
+      "metadata": {
+        "difficulty": 2,
+        "template": "product"
+      }
+    },
+    {
+      "code": "MPR-1-0000000000000147-09",
+      "statement": "Find the entry in the second row and first column of AB: \\(A=\\begin{pmatrix}-1&-2&-3\\\\-2&4&0\\end{pmatrix},\\ B=\\begin{pmatrix}-2&4\\\\0&-1\\\\-2&-3\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "dimensions",
+          "(2\\times 3)(3\\times 2)=2\\times 2"
+        ],
+        [
+          "row_column",
+          "(AB)_{21}=(-2)(-2)+(4)(0)+(0)(-2)"
+        ],
+        [
+          "entry",
+          "(AB)_{21}=4"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "4",
+      "metadata": {
+        "difficulty": 2,
+        "template": "product"
+      }
+    }
+  ],
+  "matrix-commutator-v1": [
+    {
+      "code": "MCM-1-0000000000000000-61",
+      "statement": "Find the entry in the second row and first column of AB - BA: \\(A=\\begin{pmatrix}0&-5\\\\-5&3\\end{pmatrix},\\ B=\\begin{pmatrix}1&-5\\\\0&5\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "products",
+          "AB=\\begin{pmatrix}0&-25\\\\-5&40\\end{pmatrix},\\quad BA=\\begin{pmatrix}25&-20\\\\-25&15\\end{pmatrix}"
+        ],
+        [
+          "difference",
+          "AB-BA=\\begin{pmatrix}-25&-5\\\\20&25\\end{pmatrix}"
+        ],
+        [
+          "entry",
+          "(AB-BA)_{21}=20"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "20",
+      "metadata": {
+        "difficulty": 3,
+        "template": "commutator"
+      }
+    },
+    {
+      "code": "MCM-1-0000000000000001-78",
+      "statement": "Find the entry in the second row and first column of AB - BA: \\(A=\\begin{pmatrix}-1&-4\\\\-3&-5\\end{pmatrix},\\ B=\\begin{pmatrix}2&-5\\\\-4&5\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "products",
+          "AB=\\begin{pmatrix}14&-15\\\\14&-10\\end{pmatrix},\\quad BA=\\begin{pmatrix}13&17\\\\-11&-9\\end{pmatrix}"
+        ],
+        [
+          "difference",
+          "AB-BA=\\begin{pmatrix}1&-32\\\\25&-1\\end{pmatrix}"
+        ],
+        [
+          "entry",
+          "(AB-BA)_{21}=25"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "25",
+      "metadata": {
+        "difficulty": 3,
+        "template": "commutator"
+      }
+    },
+    {
+      "code": "MCM-1-0000000000000147-65",
+      "statement": "Find the entry in the second row and first column of AB - BA: \\(A=\\begin{pmatrix}2&-1\\\\0&-3\\end{pmatrix},\\ B=\\begin{pmatrix}-2&-4\\\\3&0\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "products",
+          "AB=\\begin{pmatrix}-7&-8\\\\-9&0\\end{pmatrix},\\quad BA=\\begin{pmatrix}-4&14\\\\6&-3\\end{pmatrix}"
+        ],
+        [
+          "difference",
+          "AB-BA=\\begin{pmatrix}-3&-22\\\\-15&3\\end{pmatrix}"
+        ],
+        [
+          "entry",
+          "(AB-BA)_{21}=-15"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-15",
+      "metadata": {
+        "difficulty": 3,
+        "template": "commutator"
+      }
+    }
   ]
 }

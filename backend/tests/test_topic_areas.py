@@ -30,6 +30,7 @@ def test_catalogue_lists_algebra_and_syllabus_topics() -> None:
         "eigenvalues",
         "vectors",
         "lines-and-planes",
+        "matrix-operations",
         "partial-fractions",
         "combinations",
         "basic-integrals",
@@ -80,6 +81,7 @@ def test_combined_mixed_pool_preserves_weights_and_legacy_boundaries(level: int)
             ("eigenvalues", 5),
             ("vectors", 5),
             ("lines-and-planes", 5),
+            ("matrix-operations", 3),
             ("polynomial-division", 5),
         )
         if level <= levels

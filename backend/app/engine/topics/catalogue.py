@@ -68,6 +68,11 @@ from app.engine.generators.linear_algebra import (
     NontrivialSolutions,
     SingularParameter,
 )
+from app.engine.generators.matrix_operations import (
+    MatrixCombination,
+    MatrixCommutator,
+    MatrixProduct,
+)
 from app.engine.generators.multiple import DoubleIntegrals, MultipleParams, TripleIntegrals
 from app.engine.generators.polynomials import (
     BinomialCoefficient,
@@ -376,6 +381,16 @@ def topics() -> dict[str, Topic]:
                 3: (PlanesAngle.version,),
                 4: (LinePlaneIntersection.version,),
                 5: (PlaneReflection.version,),
+            },
+        ),
+        (
+            "matrix-operations",
+            "Matrix operations",
+            4,
+            {
+                1: (MatrixCombination.version,),
+                2: (MatrixProduct.version,),
+                3: (MatrixCommutator.version,),
             },
         ),
     ):

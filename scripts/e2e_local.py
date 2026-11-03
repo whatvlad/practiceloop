@@ -137,7 +137,9 @@ def correct_answer(url: str, problem_id: str) -> str:
         value, constant = answer.primitive, " + C"
     else:
         value, constant = answer.expected, ""  # type: ignore[attr-defined]
-    return sp.sstr(value).replace("**", "^").replace("Abs", "abs").replace("E", "e") + constant
+    text = sp.sstr(value).replace("**", "^").replace("Abs", "abs").replace("E", "e")
+    # #221: complex answers spell the imaginary unit as `i`.
+    return text.replace("I", "i") + constant
 
 
 def private_record(url: str, problem_id: str) -> dict[str, object]:
@@ -173,7 +175,7 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
         if area["mixed"]
         for d in area["mixed"]["availableDifficulties"][:1]
     ]
-    check(len(cells) == 36, "one cell for 34 topics plus two mixed levels", len(cells))
+    check(len(cells) == 37, "one cell for 35 topics plus two mixed levels", len(cells))
     created: list[str] = []
     for topic, level, extra in cells:
         reset_limits()

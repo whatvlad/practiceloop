@@ -170,6 +170,14 @@
     "space_cm": 6
   },
   {
+    "slug": "matrix-operations",
+    "name": "Matrix operations",
+    "area": "algebra",
+    "levels": [1, 2, 3],
+    "mixed_weight": 1,
+    "space_cm": 4
+  },
+  {
     "slug": "basic-integrals",
     "name": "Basic integrals",
     "area": "mathematical-analysis",
