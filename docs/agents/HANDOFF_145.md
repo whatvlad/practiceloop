@@ -61,6 +61,19 @@ pi/e and exact arithmetic. Final focused tests: 46 passed, 33 Linux-only skips,
 2.02 seconds. Ruff check/format and mypy (105 sources) pass. Private rendered
 outputs and all existing golden entries remain unchanged by these policies.
 
+Both first ready backend runs hit the same existing rational-antiderivative
+worker limit (RNI seed 39, combined log|x²+x|); second run otherwise passed
+3,385 backend tests, all Database isolation tests and all expanded HTTP E2E.
+The blocking case is resolved by a shared exact QQ-rational/log-absolute
+certificate used by replay's displayed-step proofs and answer checking. Domain
+coverage is still certified exactly; unsupported cases retain the general proof.
+After the derivative identity is proved, component constants are compared at
+exact interior points before simplifying. Limits remain 2 s CPU/256 MiB/3 s wall.
+Cold local runs with five hash seeds improved from 0.891–0.906 to 0.656–0.672 CPU
+seconds. Regression run: 1,149 passed, 90 Linux-only skips in 24.99 seconds,
+including answer policies and the frozen integral curriculum. Ruff and mypy
+(106 sources) pass. Final Linux ready CI is required for this actual fix.
+
 Checks pending: hosted ready CI including
 real Linux worker limits and disposable PostgreSQL/HTTP E2E; deployed checks.
 TeX CI remains disabled under #181. Graphify graph exists but the optional CLI is

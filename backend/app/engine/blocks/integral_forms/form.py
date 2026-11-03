@@ -12,6 +12,7 @@ from pydantic import Field, model_validator
 from app.engine.answers._symbolic import X, components
 from app.engine.blocks.integral_forms import basic, parts, rational, substitution, trigonometric
 from app.engine.blocks.integral_forms.models import MethodStep
+from app.engine.blocks.rational_proof import certifies_rational_primitive
 from app.engine.models import Parameters
 from app.engine.prng import DeterministicRNG
 
@@ -149,12 +150,14 @@ def _evaluate(form: IntegralForm, bounded: bool) -> IntegralData:
         }[form.family]
         integrand, primitive, steps = method.build(form.template, a)
     domain = METHODS[form.family].TEMPLATES[form.template].domain
-    # Exact component-wise proof, including every displayed method transformation.
-    for replacement, variable, _ in components(domain):
-        for expression, antiderivative in [
-            (primitive, True),
-            *((step.expression, not isinstance(step, basic.BasicStep)) for step in steps),
-        ]:
+    # Exact rational certificates or component-wise proof of every displayed step.
+    for expression, antiderivative in [
+        (primitive, True),
+        *((step.expression, not isinstance(step, basic.BasicStep)) for step in steps),
+    ]:
+        if antiderivative and certifies_rational_primitive(expression, integrand, X, domain):
+            continue
+        for replacement, variable, _ in components(domain):
             difference = expression.subs(X, replacement)
             if antiderivative:
                 difference = sp.diff(difference, variable) / sp.diff(replacement, variable)

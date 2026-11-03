@@ -11,6 +11,7 @@ from typing import Any, Literal
 import sympy as sp
 from sympy.calculus.util import continuous_domain
 
+from app.engine.blocks.rational_proof import certifies_rational_primitive
 from app.engine.models import Outcome
 from app.math_input import MathNode, VariableDomain, build_expression
 
@@ -87,6 +88,8 @@ def _defined_throughout(expression: Any, domain: Any) -> bool:
 
 
 def is_primitive(candidate: Any, integrand: Any, domain: Any) -> Verdict:
+    if certifies_rational_primitive(candidate, integrand, X, domain):
+        return "yes"
     undecided = False
     defined: bool | None = None
     for replacement, variable, samples in components(domain):
@@ -110,11 +113,16 @@ def is_primitive(candidate: Any, integrand: Any, domain: Any) -> Verdict:
 
 
 def same_number_everywhere(offset: Any, domain: Any) -> Verdict:
+    """Compare component constants after the caller has proved equal derivatives.
+
+    Every interval map sends positive t=1 to a safe exact interior point. Evaluate
+    that point before simplification: simplifying entire logarithmic differences
+    first is expensive and supplies no additional proof of constancy.
+    """
     values = []
     for replacement, variable, _samples in components(domain):
-        value = sp.simplify(offset.subs(X, replacement))
-        if not value.is_number and variable == _T:
-            value = sp.simplify(value.subs(_T, sp.Integer(1)))
+        point = replacement.subs(_T, sp.Integer(1)) if variable == _T else replacement
+        value = sp.simplify(offset.subs(X, point))
         if not value.is_number:
             return "unknown"
         values.append(value)

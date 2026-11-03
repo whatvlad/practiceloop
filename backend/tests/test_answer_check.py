@@ -42,6 +42,26 @@ def test_domain_check_avoids_repeating_sum_domains_and_preserves_holes(monkeypat
     assert _symbolic.check_domain(parse_math_input("0*(1/x)"), sp.S.Reals) == "invalid"
 
 
+def test_rational_log_primitive_has_an_exact_domain_checked_fast_proof(monkeypatch) -> None:
+    from app.engine.answers import _symbolic
+
+    x = _symbolic.X
+    domain = sp.S.Reals - sp.FiniteSet(-1, 0)
+    candidate = x**2 / 2 - x + sp.log(sp.Abs(x**2 + x))
+    integrand = (x**3 + x + 1) / (x * (x + 1))
+    certify = _symbolic.certifies_rational_primitive
+    assert certify(candidate, integrand, x, domain)
+    # The same polynomial has zeros on R: the proof cannot erase those holes.
+    assert not certify(candidate, integrand, x, sp.S.Reals)
+    assert not certify(candidate + x, integrand, x, domain)
+    assert not certify(candidate + sp.I, integrand, x, domain)
+    assert not certify(sp.sin(x), sp.cos(x), x, sp.S.Reals)
+    monkeypatch.setattr(_symbolic, "certifies_rational_primitive", lambda *_: False)
+    assert _symbolic.is_primitive(candidate, integrand, domain) == "yes"
+    monkeypatch.setattr(_symbolic, "certifies_rational_primitive", certify)
+    assert _symbolic.is_primitive(candidate, integrand, domain) == "yes"
+
+
 def record(
     template: str, coefficient: int = 1, secondary: int = 1, power: int = 2
 ) -> dict[str, Any]:

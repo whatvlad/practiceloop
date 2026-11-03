@@ -30,6 +30,14 @@ Their versions, statements, answers, public slugs and levels are unchanged.
 No integral generator is duplicated. Partial derivatives and multiple integrals
 remain separate existing topics for Analysis II (#146).
 
+The existing combined-log rational-integral worker regression exceeded its CPU
+cap during this expansion. A shared exact rational/log-absolute derivative
+certificate now avoids repeated substituted symbolic proofs during replay and
+checking, including every displayed rational transformation. Its domain check
+is exact. Component constants are evaluated at exact interior points only after
+equal derivatives are proved. All other proof paths and worker limits remain;
+the frozen integral output corpus is unchanged.
+
 ## Answers, domains and steps
 
 Exact scalar or real-expression answers use `ExpressionAnswer`, with declared x
