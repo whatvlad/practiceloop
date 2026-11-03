@@ -234,7 +234,7 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
             shared = api.post(f"/problems/{pid}/share")
             check(shared.status_code == 201, f"share {label}", shared.text)
             if shared.status_code == 201:
-                public = httpx.get(f"{api.base_url}/shares/{shared.json()['share']['token']}")
+                public = httpx.get(api.base_url.join(f"shares/{shared.json()['share']['token']}"))
                 check(
                     public.status_code == 200
                     and set(public.json()["problem"]) == {"topic", "difficulty", "problemLatex"},

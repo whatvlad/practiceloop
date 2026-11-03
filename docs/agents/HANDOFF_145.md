@@ -31,7 +31,15 @@ Verification observed before the first draft:
 - Repository policy/original MVP hash and content check (95 entries): pass.
 - API health tests: 11 pass on the real TestClient.
 
-Checks pending: broad mathematical/full backend result, hosted ready CI including
+Additional local results: the mathematical/golden/curriculum/topic selection run
+passed 1,282 tests (33 Linux-only skips), in 102.79 seconds. The full Windows run
+passed 3,559 tests, with 360 skips and 418 DB/TeX deselections, in 185.38 seconds.
+It reported 15 failures: 14 call Linux-only workers without platform markers;
+one compared against the local catalogue built before final step-text changes.
+The catalogue was rebuilt; its replay regression is rerun separately. Linux
+worker behavior must be judged by hosted Linux CI, not by Windows failures.
+
+Checks pending: hosted ready CI including
 real Linux worker limits and disposable PostgreSQL/HTTP E2E; deployed checks.
 TeX CI remains disabled under #181. Graphify graph exists but the optional CLI is
 unavailable in this worktree; no fabricated graph update or runtime dependency.
