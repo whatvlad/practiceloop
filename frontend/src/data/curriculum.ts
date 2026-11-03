@@ -85,6 +85,11 @@ export const algebraSections: CurriculumSection[] = [
 ];
 
 export const analysisSections: CurriculumSection[] = [
+  { name: 'Analysis I: functions, sequences and limits', types: [
+    { name: 'Functions and sequences', description: 'Study domains, parity, composition, inverses, sequence monotonicity, bounds, convergence and divergence.', pdfExercises: [], subtypes: ['Function properties and composition', 'Inverse functions', 'Monotonicity and boundedness', 'Rational, oscillating, exponential and radical sequences'] },
+    { name: 'Limits and continuity', description: 'Use limit laws, one-sided limits and asymptotes; remove discontinuities and approximate a root by certified bisection.', pdfExercises: [], subtypes: ['Finite and infinite limits', 'Standard limits and indeterminate forms', 'One-sided limits', 'Continuity', 'lHopital rule', 'Approximation by bisection'] },
+    { name: 'Differential calculus', description: 'Use the derivative definition, tangent slopes and differentials; apply the mean value theorem and optimize functions.', pdfExercises: [], subtypes: ['Definition and interpretation', 'Chain rule and differentials', 'Lagrange mean value theorem', 'Monotonicity intervals', 'Local and global extrema', 'Rectangle and open-box optimization'] },
+  ] },
   { name: 'Integrals', types: [
     { name: 'Basic integrals', description: 'Find elementary antiderivatives.', pdfExercises: [] },
     { name: 'Substitution', description: 'Apply a substitution to an integral.', pdfExercises: [] },
@@ -101,8 +106,6 @@ export const analysisSections: CurriculumSection[] = [
     { name: 'Partial derivatives', description: 'Differentiate functions of several variables.', pdfExercises: [] },
   ] },
   { name: 'Further analysis', types: [
-    { name: 'Functions and sequences', description: 'Study functions and sequences.', pdfExercises: [] },
-    { name: 'Limits and continuity', description: 'Evaluate limits and examine continuity.', pdfExercises: [] },
     { name: 'Series', description: 'Study and calculate series.', pdfExercises: [] },
     { name: 'Multivariable functions', description: 'Study functions of several variables.', pdfExercises: [] },
     { name: 'Differential equations', description: 'Solve differential equations.', pdfExercises: [] },

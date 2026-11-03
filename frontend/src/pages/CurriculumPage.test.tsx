@@ -43,6 +43,8 @@ it('shows both areas, descriptions, subtypes and an inactive placeholder', async
   const analysis = [...element.querySelectorAll('button')].find(button => button.textContent === 'Mathematical Analysis')!;
   await act(async () => analysis.click());
   expect(ready.querySelector('a[href="/dashboard?area=mathematical-analysis&topic=derivatives"]')).not.toBeNull();
+  expect(ready.querySelector('a[href="/dashboard?area=mathematical-analysis&topic=differential-calculus"]')).not.toBeNull();
+  expect(ready.textContent).toContain('certified bisection');
   expect(ready.textContent).not.toContain('Determinants of 2 × 2 matrices');
   expect(element.textContent).toContain('Partial derivatives');
   expect(element.textContent).toContain('Differential equations');

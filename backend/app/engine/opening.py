@@ -1,6 +1,7 @@
 """Private code replay and declarative topic views, including the shipped MVP slice."""
 
 from dataclasses import replace
+from functools import partial
 
 from pydantic import Field
 
@@ -8,7 +9,7 @@ from app.engine import practice
 from app.engine.catalogue import StoredModel, StoredProblem
 from app.engine.codes import format_code, parse_code
 from app.engine.models import Drawn
-from app.engine.topics.catalogue import Choice, Topic, _polynomial, _rational
+from app.engine.topics.catalogue import Choice, Topic, _analysis_level, _polynomial, _rational
 
 
 class OpenedCode(StoredModel):
@@ -32,6 +33,20 @@ def _historical_views() -> tuple[Topic, ...]:
         ("basic-integrals", {1: (Choice("indefinite-v1", _polynomial),)}),
         ("rational-functions", {3: (Choice("indefinite-v1", _rational),)}),
         ("definite-integrals", {1: (Choice("definite-v1"),)}),
+        (
+            "functions-and-sequences",
+            {
+                level: (Choice("practice-sequence-v1", partial(_analysis_level, level)),)
+                for level in range(1, 6)
+            },
+        ),
+        (
+            "limits-and-continuity",
+            {
+                level: (Choice("practice-limits-v1", partial(_analysis_level, level)),)
+                for level in range(1, 6)
+            },
+        ),
     )
     return tuple(
         replace(practice.ENGINE_TOPICS[slug], levels=levels, served=False)

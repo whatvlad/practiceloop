@@ -49,6 +49,7 @@ def test_catalogue_lists_algebra_and_syllabus_topics() -> None:
         "series",
         "multivariable-functions",
         "differential-equations",
+        "differential-calculus",
     }
 
 
@@ -105,6 +106,7 @@ def test_combined_mixed_pool_preserves_weights_and_legacy_boundaries(level: int)
         "series",
         "multivariable-functions",
         "differential-equations",
+        "differential-calculus",
     ),
 )
 def test_syllabus_topics_have_replayable_problems(topic: str) -> None:

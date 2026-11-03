@@ -175,7 +175,11 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
         if area["mixed"]
         for d in area["mixed"]["availableDifficulties"][:1]
     ]
-    check(len(cells) == 37, "one cell for 35 topics plus two mixed levels", len(cells))
+    analysis_one = {"functions-and-sequences", "limits-and-continuity", "differential-calculus"}
+    cells += [(slug, level, {}) for slug in sorted(analysis_one) for level in range(2, 6)]
+    check(
+        len(cells) == 50, "36 topics, two area mixes and twelve higher Analysis I cells", len(cells)
+    )
     created: list[str] = []
     for topic, level, extra in cells:
         reset_limits()
@@ -226,6 +230,17 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
             f"reopen {label} keeps attempts and reveals",
             reopened,
         )
+        if topic in analysis_one:
+            shared = api.post(f"/problems/{pid}/share")
+            check(shared.status_code == 201, f"share {label}", shared.text)
+            if shared.status_code == 201:
+                public = httpx.get(api.base_url.join(f"shares/{shared.json()['share']['token']}"))
+                check(
+                    public.status_code == 200
+                    and set(public.json()["problem"]) == {"topic", "difficulty", "problemLatex"},
+                    f"safe anonymous share {label}",
+                    public.text,
+                )
     # More cells than one 50-item page: follow the cursor.
     listed: set[str] = set()
     params: dict[str, object] = {"limit": 50}

@@ -398,5 +398,19 @@
     ],
     "mixed_weight": 1,
     "space_cm": 5
+  },
+  {
+    "slug": "differential-calculus",
+    "name": "Differential calculus",
+    "area": "mathematical-analysis",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mixed_weight": 1,
+    "space_cm": 5
   }
 ]

@@ -8,8 +8,9 @@ solution reveal, history and a profile. [Original specification](docs/PRACTICELO
 **Status: MVP complete (0.1.0, see [CHANGELOG](CHANGELOG.md)).** Live at
 https://practiceloop.pages.dev (noindex). Signed-in learners can:
 
-- practise the current 21 Algebra and Mathematical Analysis topics, with their
-  available levels and mixed practice supplied by the API;
+- practise the current 36 Algebra and Mathematical Analysis topics, with their
+  available levels and mixed practice supplied by the API, including the
+  [Analysis I curriculum](docs/architecture/ANALYSIS_I.md);
 - type answers in a formula editor; typed engine answers check them symbolically
   (Correct, Incorrect or Invalid expression, with explicit missing-constant feedback);
 - open a permanent problem code at `/p/<code>` and sign in to solve that exact
