@@ -377,6 +377,15 @@ def test_algebraic_expressions_practice_saves_checks_and_reveals(
         *(("matrix-operations", level) for level in (1, 2, 3)),
         *(("polynomial-division", level) for level in (3, 4, 5)),
         ("partial-fractions", 4),
+        *(
+            (slug, level)
+            for slug in (
+                "functions-and-sequences",
+                "limits-and-continuity",
+                "differential-calculus",
+            )
+            for level in range(1, 6)
+        ),
     ],
 )
 def test_linear_algebra_practice_saves_checks_and_reveals(
@@ -645,6 +654,7 @@ def test_topics_lists_only_generated_cells(client: TestClient) -> None:
         ("series", [1, 2, 3, 4, 5]),
         ("multivariable-functions", [1, 2, 3, 4, 5]),
         ("differential-equations", [1, 2, 3, 4, 5]),
+        ("differential-calculus", [1, 2, 3, 4, 5]),
     ]
 
 
@@ -764,6 +774,7 @@ def test_topics_publish_the_fixed_mixed_practice_weights(client: TestClient) -> 
                 "series": 1,
                 "multivariable-functions": 1,
                 "differential-equations": 1,
+                "differential-calculus": 1,
             },
         },
     }

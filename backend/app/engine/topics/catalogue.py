@@ -14,6 +14,7 @@ from app.engine.generators.algebra_expansion import (
 )
 from app.engine.generators.algebra_expressions import RationalizeDenominator, SimplifyRadicals
 from app.engine.generators.analysis import AnalysisParams, analysis_generators
+from app.engine.generators.analysis_one import MATRIX as ANALYSIS_ONE
 from app.engine.generators.complex_numbers import (
     ComplexArgument,
     ComplexLinearEquation,
@@ -516,6 +517,22 @@ def topics() -> dict[str, Topic]:
             1,
             title=title,
             space_cm=space,
+            served=True,
+        )
+    # #145: new versions replace issuing views; old codes retain historical views.
+    for slug, levels in ANALYSIS_ONE.items():
+        declared[slug] = Topic(
+            slug,
+            "mathematical-analysis",
+            {
+                level: tuple(Choice(f"analysis1-{kind}-v1") for kind in kinds)
+                for level, kinds in levels.items()
+            },
+            1,
+            title={"differential-calculus": "Differential calculus"}.get(
+                slug, declared[slug].title if slug in declared else slug
+            ),
+            space_cm=5 if slug == "differential-calculus" else 4,
             served=True,
         )
     return declared

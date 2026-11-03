@@ -6098,5 +6098,2303 @@
         "template": "commutator"
       }
     }
+  ],
+  "analysis1-parity-v1": [
+    {
+      "code": "AIAA-1-0000000000000000-24",
+      "statement": "Classify \\(f(x)=3 x^{3}\\) on the real line: enter 1 for even, -1 for odd.",
+      "steps": [
+        [
+          "reason",
+          "f(-x)=- 3 x^{3}"
+        ],
+        [
+          "reason",
+          "f(-x)=-1f(x)"
+        ],
+        [
+          "result",
+          "-1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-1",
+      "metadata": {
+        "difficulty": 1,
+        "template": "parity"
+      }
+    },
+    {
+      "code": "AIAA-1-0000000000000145-91",
+      "statement": "Classify \\(f(x)=4 x^{2}\\) on the real line: enter 1 for even, -1 for odd.",
+      "steps": [
+        [
+          "reason",
+          "f(-x)=4 x^{2}"
+        ],
+        [
+          "reason",
+          "f(-x)=1f(x)"
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 1,
+        "template": "parity"
+      }
+    },
+    {
+      "code": "AIAA-1-9999999999999999-34",
+      "statement": "Classify \\(f(x)=3 x^{3}\\) on the real line: enter 1 for even, -1 for odd.",
+      "steps": [
+        [
+          "reason",
+          "f(-x)=- 3 x^{3}"
+        ],
+        [
+          "reason",
+          "f(-x)=-1f(x)"
+        ],
+        [
+          "result",
+          "-1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-1",
+      "metadata": {
+        "difficulty": 1,
+        "template": "parity"
+      }
+    }
+  ],
+  "analysis1-domain-v1": [
+    {
+      "code": "AIAB-1-0000000000000000-08",
+      "statement": "Find the left endpoint of the real domain of \\(f(x)=\\sqrt{x-2}\\).",
+      "steps": [
+        [
+          "reason",
+          "x-2\\geq0"
+        ],
+        [
+          "reason",
+          "D=[2,\\infty)"
+        ],
+        [
+          "result",
+          "2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 1,
+        "template": "domain"
+      }
+    },
+    {
+      "code": "AIAB-1-0000000000000145-75",
+      "statement": "Find the left endpoint of the real domain of \\(f(x)=\\sqrt{x-3}\\).",
+      "steps": [
+        [
+          "reason",
+          "x-3\\geq0"
+        ],
+        [
+          "reason",
+          "D=[3,\\infty)"
+        ],
+        [
+          "result",
+          "3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3",
+      "metadata": {
+        "difficulty": 1,
+        "template": "domain"
+      }
+    },
+    {
+      "code": "AIAB-1-9999999999999999-18",
+      "statement": "Find the left endpoint of the real domain of \\(f(x)=\\sqrt{x-2}\\).",
+      "steps": [
+        [
+          "reason",
+          "x-2\\geq0"
+        ],
+        [
+          "reason",
+          "D=[2,\\infty)"
+        ],
+        [
+          "result",
+          "2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 1,
+        "template": "domain"
+      }
+    }
+  ],
+  "analysis1-composition-v1": [
+    {
+      "code": "AIAC-1-0000000000000000-77",
+      "statement": "Find \\(f(g(x))\\) for \\(f(x)=3x+2,\\ g(x)=x^2+3,\\ x\\in\\mathbb R\\).",
+      "steps": [
+        [
+          "reason",
+          "f(g(x))=3(x^2+3)+2"
+        ],
+        [
+          "result",
+          "3 x^{2} + 11"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3 x^{2} + 11",
+      "metadata": {
+        "difficulty": 2,
+        "template": "composition"
+      }
+    },
+    {
+      "code": "AIAC-1-0000000000000145-47",
+      "statement": "Find \\(f(g(x))\\) for \\(f(x)=4x+3,\\ g(x)=x^2+2,\\ x\\in\\mathbb R\\).",
+      "steps": [
+        [
+          "reason",
+          "f(g(x))=4(x^2+2)+3"
+        ],
+        [
+          "result",
+          "4 x^{2} + 11"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "4 x^{2} + 11",
+      "metadata": {
+        "difficulty": 2,
+        "template": "composition"
+      }
+    },
+    {
+      "code": "AIAC-1-9999999999999999-87",
+      "statement": "Find \\(f(g(x))\\) for \\(f(x)=3x+2,\\ g(x)=x^2+3,\\ x\\in\\mathbb R\\).",
+      "steps": [
+        [
+          "reason",
+          "f(g(x))=3(x^2+3)+2"
+        ],
+        [
+          "result",
+          "3 x^{2} + 11"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3 x^{2} + 11",
+      "metadata": {
+        "difficulty": 2,
+        "template": "composition"
+      }
+    }
+  ],
+  "analysis1-inverse-v1": [
+    {
+      "code": "AIAD-1-0000000000000000-66",
+      "statement": "Find \\(f^{-1}(x)\\) for the bijection \\(f(x)=3x+2\\) from R to R.",
+      "steps": [
+        [
+          "reason",
+          "y=3x+2\\iff x=\\frac{y-2}{3}"
+        ],
+        [
+          "result",
+          "\\frac{x}{3} - \\frac{2}{3}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{x}{3} - \\frac{2}{3}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "inverse"
+      }
+    },
+    {
+      "code": "AIAD-1-0000000000000145-36",
+      "statement": "Find \\(f^{-1}(x)\\) for the bijection \\(f(x)=4x+3\\) from R to R.",
+      "steps": [
+        [
+          "reason",
+          "y=4x+3\\iff x=\\frac{y-3}{4}"
+        ],
+        [
+          "result",
+          "\\frac{x}{4} - \\frac{3}{4}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{x}{4} - \\frac{3}{4}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "inverse"
+      }
+    },
+    {
+      "code": "AIAD-1-9999999999999999-76",
+      "statement": "Find \\(f^{-1}(x)\\) for the bijection \\(f(x)=3x+2\\) from R to R.",
+      "steps": [
+        [
+          "reason",
+          "y=3x+2\\iff x=\\frac{y-2}{3}"
+        ],
+        [
+          "result",
+          "\\frac{x}{3} - \\frac{2}{3}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{x}{3} - \\frac{2}{3}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "inverse"
+      }
+    }
+  ],
+  "analysis1-sequence-increment-v1": [
+    {
+      "code": "AIAE-1-0000000000000000-94",
+      "statement": "For \\(u_n=3-2/n,\\ n\\geq1\\), calculate \\(u_{4}-u_{3}\\). Use its sign to study monotonicity.",
+      "steps": [
+        [
+          "reason",
+          "u_{n+1}-u_n=\\frac{2}{n(n+1)}>0"
+        ],
+        [
+          "result",
+          "\\frac{1}{6}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{6}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "sequence-increment"
+      }
+    },
+    {
+      "code": "AIAE-1-0000000000000145-64",
+      "statement": "For \\(u_n=4-3/n,\\ n\\geq1\\), calculate \\(u_{3}-u_{2}\\). Use its sign to study monotonicity.",
+      "steps": [
+        [
+          "reason",
+          "u_{n+1}-u_n=\\frac{3}{n(n+1)}>0"
+        ],
+        [
+          "result",
+          "\\frac{1}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{2}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "sequence-increment"
+      }
+    },
+    {
+      "code": "AIAE-1-9999999999999999-07",
+      "statement": "For \\(u_n=3-2/n,\\ n\\geq1\\), calculate \\(u_{4}-u_{3}\\). Use its sign to study monotonicity.",
+      "steps": [
+        [
+          "reason",
+          "u_{n+1}-u_n=\\frac{2}{n(n+1)}>0"
+        ],
+        [
+          "result",
+          "\\frac{1}{6}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{6}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "sequence-increment"
+      }
+    }
+  ],
+  "analysis1-sequence-bound-v1": [
+    {
+      "code": "AIAF-1-0000000000000000-86",
+      "statement": "Find the least upper bound of \\(u_n=3n/(n+2),\\ n\\geq1\\).",
+      "steps": [
+        [
+          "reason",
+          "3-u_n=\\frac{6}{n+2}>0"
+        ],
+        [
+          "reason",
+          "u_n\\longrightarrow 3"
+        ],
+        [
+          "result",
+          "3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3",
+      "metadata": {
+        "difficulty": 3,
+        "template": "sequence-bound"
+      }
+    },
+    {
+      "code": "AIAF-1-0000000000000145-56",
+      "statement": "Find the least upper bound of \\(u_n=4n/(n+3),\\ n\\geq1\\).",
+      "steps": [
+        [
+          "reason",
+          "4-u_n=\\frac{12}{n+3}>0"
+        ],
+        [
+          "reason",
+          "u_n\\longrightarrow 4"
+        ],
+        [
+          "result",
+          "4"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "4",
+      "metadata": {
+        "difficulty": 3,
+        "template": "sequence-bound"
+      }
+    },
+    {
+      "code": "AIAF-1-9999999999999999-96",
+      "statement": "Find the least upper bound of \\(u_n=3n/(n+2),\\ n\\geq1\\).",
+      "steps": [
+        [
+          "reason",
+          "3-u_n=\\frac{6}{n+2}>0"
+        ],
+        [
+          "reason",
+          "u_n\\longrightarrow 3"
+        ],
+        [
+          "result",
+          "3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3",
+      "metadata": {
+        "difficulty": 3,
+        "template": "sequence-bound"
+      }
+    }
+  ],
+  "analysis1-sequence-rational-v1": [
+    {
+      "code": "AIAG-1-0000000000000000-47",
+      "statement": "Find \\(\\lim_{n\\to\\infty}\\frac{3n+2}{3n+1}\\).",
+      "steps": [
+        [
+          "reason",
+          "\\frac{3+2/n}{3+1/n}\\longrightarrow\\frac{3}{3}"
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 4,
+        "template": "sequence-rational"
+      }
+    },
+    {
+      "code": "AIAG-1-0000000000000145-17",
+      "statement": "Find \\(\\lim_{n\\to\\infty}\\frac{4n+3}{2n+1}\\).",
+      "steps": [
+        [
+          "reason",
+          "\\frac{4+3/n}{2+1/n}\\longrightarrow\\frac{4}{2}"
+        ],
+        [
+          "result",
+          "2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 4,
+        "template": "sequence-rational"
+      }
+    },
+    {
+      "code": "AIAG-1-9999999999999999-57",
+      "statement": "Find \\(\\lim_{n\\to\\infty}\\frac{3n+2}{3n+1}\\).",
+      "steps": [
+        [
+          "reason",
+          "\\frac{3+2/n}{3+1/n}\\longrightarrow\\frac{3}{3}"
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 4,
+        "template": "sequence-rational"
+      }
+    }
+  ],
+  "analysis1-sequence-oscillation-v1": [
+    {
+      "code": "AIAH-1-0000000000000000-56",
+      "statement": "Does \\(u_n=2+3(-1)^n\\) converge? Enter 1 for yes, 0 for no.",
+      "steps": [
+        [
+          "reason",
+          "u_{2n}=5,\\quad u_{2n+1}=-1"
+        ],
+        [
+          "reason",
+          "5\\ne -1\\implies\\text{divergence}"
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 4,
+        "template": "sequence-oscillation"
+      }
+    },
+    {
+      "code": "AIAH-1-0000000000000145-26",
+      "statement": "Does \\(u_n=3+4(-1)^n\\) converge? Enter 1 for yes, 0 for no.",
+      "steps": [
+        [
+          "reason",
+          "u_{2n}=7,\\quad u_{2n+1}=-1"
+        ],
+        [
+          "reason",
+          "7\\ne -1\\implies\\text{divergence}"
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 4,
+        "template": "sequence-oscillation"
+      }
+    },
+    {
+      "code": "AIAH-1-9999999999999999-66",
+      "statement": "Does \\(u_n=2+3(-1)^n\\) converge? Enter 1 for yes, 0 for no.",
+      "steps": [
+        [
+          "reason",
+          "u_{2n}=5,\\quad u_{2n+1}=-1"
+        ],
+        [
+          "reason",
+          "5\\ne -1\\implies\\text{divergence}"
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 4,
+        "template": "sequence-oscillation"
+      }
+    }
+  ],
+  "analysis1-sequence-unbounded-v1": [
+    {
+      "code": "AIAI-1-0000000000000000-95",
+      "statement": "Is \\(u_n=3n+2,\\ n\\geq1\\), bounded? Enter 1 for yes, 0 for no.",
+      "steps": [
+        [
+          "reason",
+          "u_n\\longrightarrow+\\infty"
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 4,
+        "template": "sequence-unbounded"
+      }
+    },
+    {
+      "code": "AIAI-1-0000000000000145-65",
+      "statement": "Is \\(u_n=4n+3,\\ n\\geq1\\), bounded? Enter 1 for yes, 0 for no.",
+      "steps": [
+        [
+          "reason",
+          "u_n\\longrightarrow+\\infty"
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 4,
+        "template": "sequence-unbounded"
+      }
+    },
+    {
+      "code": "AIAI-1-9999999999999999-08",
+      "statement": "Is \\(u_n=3n+2,\\ n\\geq1\\), bounded? Enter 1 for yes, 0 for no.",
+      "steps": [
+        [
+          "reason",
+          "u_n\\longrightarrow+\\infty"
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 4,
+        "template": "sequence-unbounded"
+      }
+    }
+  ],
+  "analysis1-sequence-exponential-v1": [
+    {
+      "code": "AIAJ-1-0000000000000000-53",
+      "statement": "Find \\(\\lim_{n\\to\\infty}(1+3/n)^n\\).",
+      "steps": [
+        [
+          "reason",
+          "\\log u_n=n\\log(1+3/n)\\longrightarrow 3"
+        ],
+        [
+          "result",
+          "e^{3}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "e^{3}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "sequence-exponential"
+      }
+    },
+    {
+      "code": "AIAJ-1-0000000000000145-23",
+      "statement": "Find \\(\\lim_{n\\to\\infty}(1+4/n)^n\\).",
+      "steps": [
+        [
+          "reason",
+          "\\log u_n=n\\log(1+4/n)\\longrightarrow 4"
+        ],
+        [
+          "result",
+          "e^{4}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "e^{4}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "sequence-exponential"
+      }
+    },
+    {
+      "code": "AIAJ-1-9999999999999999-63",
+      "statement": "Find \\(\\lim_{n\\to\\infty}(1+3/n)^n\\).",
+      "steps": [
+        [
+          "reason",
+          "\\log u_n=n\\log(1+3/n)\\longrightarrow 3"
+        ],
+        [
+          "result",
+          "e^{3}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "e^{3}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "sequence-exponential"
+      }
+    }
+  ],
+  "analysis1-sequence-radical-v1": [
+    {
+      "code": "AIAK-1-0000000000000000-40",
+      "statement": "Find \\(\\lim_{n\\to\\infty}(\\sqrt{n^2+3n}-n)\\).",
+      "steps": [
+        [
+          "reason",
+          "\\sqrt{n^2+3n}-n=\\frac{3}{\\sqrt{1+3/n}+1}"
+        ],
+        [
+          "result",
+          "\\frac{3}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{3}{2}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "sequence-radical"
+      }
+    },
+    {
+      "code": "AIAK-1-0000000000000145-10",
+      "statement": "Find \\(\\lim_{n\\to\\infty}(\\sqrt{n^2+4n}-n)\\).",
+      "steps": [
+        [
+          "reason",
+          "\\sqrt{n^2+4n}-n=\\frac{4}{\\sqrt{1+4/n}+1}"
+        ],
+        [
+          "result",
+          "2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 5,
+        "template": "sequence-radical"
+      }
+    },
+    {
+      "code": "AIAK-1-9999999999999999-50",
+      "statement": "Find \\(\\lim_{n\\to\\infty}(\\sqrt{n^2+3n}-n)\\).",
+      "steps": [
+        [
+          "reason",
+          "\\sqrt{n^2+3n}-n=\\frac{3}{\\sqrt{1+3/n}+1}"
+        ],
+        [
+          "result",
+          "\\frac{3}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{3}{2}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "sequence-radical"
+      }
+    }
+  ],
+  "analysis1-limit-polynomial-v1": [
+    {
+      "code": "AIAL-1-0000000000000000-85",
+      "statement": "Find \\(\\lim_{x\\to2}(3 x^{2} + 2 x + 3)\\).",
+      "steps": [
+        [
+          "reason",
+          "\\lim_{x\\to2}f(x)=f(2)"
+        ],
+        [
+          "result",
+          "19"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "19",
+      "metadata": {
+        "difficulty": 1,
+        "template": "limit-polynomial"
+      }
+    },
+    {
+      "code": "AIAL-1-0000000000000145-55",
+      "statement": "Find \\(\\lim_{x\\to3}(4 x^{2} + 3 x + 2)\\).",
+      "steps": [
+        [
+          "reason",
+          "\\lim_{x\\to3}f(x)=f(3)"
+        ],
+        [
+          "result",
+          "47"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "47",
+      "metadata": {
+        "difficulty": 1,
+        "template": "limit-polynomial"
+      }
+    },
+    {
+      "code": "AIAL-1-9999999999999999-95",
+      "statement": "Find \\(\\lim_{x\\to2}(3 x^{2} + 2 x + 3)\\).",
+      "steps": [
+        [
+          "reason",
+          "\\lim_{x\\to2}f(x)=f(2)"
+        ],
+        [
+          "result",
+          "19"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "19",
+      "metadata": {
+        "difficulty": 1,
+        "template": "limit-polynomial"
+      }
+    }
+  ],
+  "analysis1-limit-cancel-v1": [
+    {
+      "code": "AIAM-1-0000000000000000-91",
+      "statement": "Find \\(\\lim_{x\\to2}\\frac{x^2-4}{x-2}\\).",
+      "steps": [
+        [
+          "reason",
+          "x\\ne 2:\\quad\\frac{x^2-4}{x-2}=x+2"
+        ],
+        [
+          "result",
+          "4"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "4",
+      "metadata": {
+        "difficulty": 1,
+        "template": "limit-cancel"
+      }
+    },
+    {
+      "code": "AIAM-1-0000000000000145-61",
+      "statement": "Find \\(\\lim_{x\\to3}\\frac{x^2-9}{x-3}\\).",
+      "steps": [
+        [
+          "reason",
+          "x\\ne 3:\\quad\\frac{x^2-9}{x-3}=x+3"
+        ],
+        [
+          "result",
+          "6"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "6",
+      "metadata": {
+        "difficulty": 1,
+        "template": "limit-cancel"
+      }
+    },
+    {
+      "code": "AIAM-1-9999999999999999-04",
+      "statement": "Find \\(\\lim_{x\\to2}\\frac{x^2-4}{x-2}\\).",
+      "steps": [
+        [
+          "reason",
+          "x\\ne 2:\\quad\\frac{x^2-4}{x-2}=x+2"
+        ],
+        [
+          "result",
+          "4"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "4",
+      "metadata": {
+        "difficulty": 1,
+        "template": "limit-cancel"
+      }
+    }
+  ],
+  "analysis1-limit-sine-v1": [
+    {
+      "code": "AIAN-1-0000000000000000-22",
+      "statement": "Use a standard limit to find \\(\\lim_{x\\to0}\\frac{\\sin{\\left(3 x \\right)}}{x}\\).",
+      "steps": [
+        [
+          "reason",
+          "t=3x,\\quad \\frac{\\sin{\\left(3 x \\right)}}{x}=3\\cdot \\frac{\\sin t}{t}"
+        ],
+        [
+          "result",
+          "3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3",
+      "metadata": {
+        "difficulty": 2,
+        "template": "limit-sine"
+      }
+    },
+    {
+      "code": "AIAN-1-0000000000000145-89",
+      "statement": "Use a standard limit to find \\(\\lim_{x\\to0}\\frac{\\sin{\\left(4 x \\right)}}{x}\\).",
+      "steps": [
+        [
+          "reason",
+          "t=4x,\\quad \\frac{\\sin{\\left(4 x \\right)}}{x}=4\\cdot \\frac{\\sin t}{t}"
+        ],
+        [
+          "result",
+          "4"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "4",
+      "metadata": {
+        "difficulty": 2,
+        "template": "limit-sine"
+      }
+    },
+    {
+      "code": "AIAN-1-9999999999999999-32",
+      "statement": "Use a standard limit to find \\(\\lim_{x\\to0}\\frac{\\sin{\\left(3 x \\right)}}{x}\\).",
+      "steps": [
+        [
+          "reason",
+          "t=3x,\\quad \\frac{\\sin{\\left(3 x \\right)}}{x}=3\\cdot \\frac{\\sin t}{t}"
+        ],
+        [
+          "result",
+          "3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3",
+      "metadata": {
+        "difficulty": 2,
+        "template": "limit-sine"
+      }
+    }
+  ],
+  "analysis1-limit-exponential-v1": [
+    {
+      "code": "AIAO-1-0000000000000000-88",
+      "statement": "Use a standard limit to find \\(\\lim_{x\\to0}\\frac{e^{3 x} - 1}{x}\\).",
+      "steps": [
+        [
+          "reason",
+          "t=3x,\\quad \\frac{e^{3 x} - 1}{x}=3\\cdot \\frac{e^t-1}{t}"
+        ],
+        [
+          "result",
+          "3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3",
+      "metadata": {
+        "difficulty": 2,
+        "template": "limit-exponential"
+      }
+    },
+    {
+      "code": "AIAO-1-0000000000000145-58",
+      "statement": "Use a standard limit to find \\(\\lim_{x\\to0}\\frac{e^{4 x} - 1}{x}\\).",
+      "steps": [
+        [
+          "reason",
+          "t=4x,\\quad \\frac{e^{4 x} - 1}{x}=4\\cdot \\frac{e^t-1}{t}"
+        ],
+        [
+          "result",
+          "4"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "4",
+      "metadata": {
+        "difficulty": 2,
+        "template": "limit-exponential"
+      }
+    },
+    {
+      "code": "AIAO-1-9999999999999999-01",
+      "statement": "Use a standard limit to find \\(\\lim_{x\\to0}\\frac{e^{3 x} - 1}{x}\\).",
+      "steps": [
+        [
+          "reason",
+          "t=3x,\\quad \\frac{e^{3 x} - 1}{x}=3\\cdot \\frac{e^t-1}{t}"
+        ],
+        [
+          "result",
+          "3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3",
+      "metadata": {
+        "difficulty": 2,
+        "template": "limit-exponential"
+      }
+    }
+  ],
+  "analysis1-limit-left-v1": [
+    {
+      "code": "AIAP-1-0000000000000000-91",
+      "statement": "Find \\(\\lim_{x\\to 2^{-}}\\frac{|x-2|}{x-2}\\).",
+      "steps": [
+        [
+          "reason",
+          "x\\to 2^{-}:\\quad |x-2|=(-1)(x-2)"
+        ],
+        [
+          "result",
+          "-1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-1",
+      "metadata": {
+        "difficulty": 3,
+        "template": "limit-left"
+      }
+    },
+    {
+      "code": "AIAP-1-0000000000000145-61",
+      "statement": "Find \\(\\lim_{x\\to 3^{-}}\\frac{|x-3|}{x-3}\\).",
+      "steps": [
+        [
+          "reason",
+          "x\\to 3^{-}:\\quad |x-3|=(-1)(x-3)"
+        ],
+        [
+          "result",
+          "-1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-1",
+      "metadata": {
+        "difficulty": 3,
+        "template": "limit-left"
+      }
+    },
+    {
+      "code": "AIAP-1-9999999999999999-04",
+      "statement": "Find \\(\\lim_{x\\to 2^{-}}\\frac{|x-2|}{x-2}\\).",
+      "steps": [
+        [
+          "reason",
+          "x\\to 2^{-}:\\quad |x-2|=(-1)(x-2)"
+        ],
+        [
+          "result",
+          "-1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-1",
+      "metadata": {
+        "difficulty": 3,
+        "template": "limit-left"
+      }
+    }
+  ],
+  "analysis1-limit-right-v1": [
+    {
+      "code": "AIAQ-1-0000000000000000-07",
+      "statement": "Find \\(\\lim_{x\\to 2^{+}}\\frac{|x-2|}{x-2}\\).",
+      "steps": [
+        [
+          "reason",
+          "x\\to 2^{+}:\\quad |x-2|=(1)(x-2)"
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 3,
+        "template": "limit-right"
+      }
+    },
+    {
+      "code": "AIAQ-1-0000000000000145-74",
+      "statement": "Find \\(\\lim_{x\\to 3^{+}}\\frac{|x-3|}{x-3}\\).",
+      "steps": [
+        [
+          "reason",
+          "x\\to 3^{+}:\\quad |x-3|=(1)(x-3)"
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 3,
+        "template": "limit-right"
+      }
+    },
+    {
+      "code": "AIAQ-1-9999999999999999-17",
+      "statement": "Find \\(\\lim_{x\\to 2^{+}}\\frac{|x-2|}{x-2}\\).",
+      "steps": [
+        [
+          "reason",
+          "x\\to 2^{+}:\\quad |x-2|=(1)(x-2)"
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 3,
+        "template": "limit-right"
+      }
+    }
+  ],
+  "analysis1-limit-infinite-v1": [
+    {
+      "code": "AIAR-1-0000000000000000-68",
+      "statement": "Classify \\(\\lim_{x\\to 2}3/(x-2)^2\\): enter 1 for positive infinity, -1 for negative infinity, 0 for finite.",
+      "steps": [
+        [
+          "reason",
+          "(x-2)^2\\to0^+,\\quad\\frac{3}{(x-2)^2}\\to+\\infty"
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 3,
+        "template": "limit-infinite"
+      }
+    },
+    {
+      "code": "AIAR-1-0000000000000145-38",
+      "statement": "Classify \\(\\lim_{x\\to 3}4/(x-3)^2\\): enter 1 for positive infinity, -1 for negative infinity, 0 for finite.",
+      "steps": [
+        [
+          "reason",
+          "(x-3)^2\\to0^+,\\quad\\frac{4}{(x-3)^2}\\to+\\infty"
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 3,
+        "template": "limit-infinite"
+      }
+    },
+    {
+      "code": "AIAR-1-9999999999999999-78",
+      "statement": "Classify \\(\\lim_{x\\to 2}3/(x-2)^2\\): enter 1 for positive infinity, -1 for negative infinity, 0 for finite.",
+      "steps": [
+        [
+          "reason",
+          "(x-2)^2\\to0^+,\\quad\\frac{3}{(x-2)^2}\\to+\\infty"
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 3,
+        "template": "limit-infinite"
+      }
+    }
+  ],
+  "analysis1-limit-infinity-v1": [
+    {
+      "code": "AIAS-1-0000000000000000-12",
+      "statement": "Find \\(\\lim_{x\\to\\infty}\\frac{3x^2+2}{3x^2+1}\\).",
+      "steps": [
+        [
+          "reason",
+          "\\frac{3+2/x^2}{3+1/x^2}\\longrightarrow 1"
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 4,
+        "template": "limit-infinity"
+      }
+    },
+    {
+      "code": "AIAS-1-0000000000000145-79",
+      "statement": "Find \\(\\lim_{x\\to\\infty}\\frac{4x^2+3}{2x^2+1}\\).",
+      "steps": [
+        [
+          "reason",
+          "\\frac{4+3/x^2}{2+1/x^2}\\longrightarrow 2"
+        ],
+        [
+          "result",
+          "2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 4,
+        "template": "limit-infinity"
+      }
+    },
+    {
+      "code": "AIAS-1-9999999999999999-22",
+      "statement": "Find \\(\\lim_{x\\to\\infty}\\frac{3x^2+2}{3x^2+1}\\).",
+      "steps": [
+        [
+          "reason",
+          "\\frac{3+2/x^2}{3+1/x^2}\\longrightarrow 1"
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 4,
+        "template": "limit-infinity"
+      }
+    }
+  ],
+  "analysis1-asymptote-v1": [
+    {
+      "code": "AIAT-1-0000000000000000-15",
+      "statement": "Find the oblique asymptote \\(y(x)\\) at positive infinity of \\(f(x)=(3x^2+2x+3)/x,\\ x\\ne0\\).",
+      "steps": [
+        [
+          "reason",
+          "f(x)=3x+2+3/x"
+        ],
+        [
+          "reason",
+          "f(x)-(3x+2)\\to0"
+        ],
+        [
+          "result",
+          "3 x + 2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3 x + 2",
+      "metadata": {
+        "difficulty": 4,
+        "template": "asymptote"
+      }
+    },
+    {
+      "code": "AIAT-1-0000000000000145-82",
+      "statement": "Find the oblique asymptote \\(y(x)\\) at positive infinity of \\(f(x)=(4x^2+3x+2)/x,\\ x\\ne0\\).",
+      "steps": [
+        [
+          "reason",
+          "f(x)=4x+3+2/x"
+        ],
+        [
+          "reason",
+          "f(x)-(4x+3)\\to0"
+        ],
+        [
+          "result",
+          "4 x + 3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "4 x + 3",
+      "metadata": {
+        "difficulty": 4,
+        "template": "asymptote"
+      }
+    },
+    {
+      "code": "AIAT-1-9999999999999999-25",
+      "statement": "Find the oblique asymptote \\(y(x)\\) at positive infinity of \\(f(x)=(3x^2+2x+3)/x,\\ x\\ne0\\).",
+      "steps": [
+        [
+          "reason",
+          "f(x)=3x+2+3/x"
+        ],
+        [
+          "reason",
+          "f(x)-(3x+2)\\to0"
+        ],
+        [
+          "result",
+          "3 x + 2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3 x + 2",
+      "metadata": {
+        "difficulty": 4,
+        "template": "asymptote"
+      }
+    }
+  ],
+  "analysis1-continuity-v1": [
+    {
+      "code": "AIAU-1-0000000000000000-09",
+      "statement": "Choose \\(k\\) so \\(f(x)=\\begin{cases}3x+2&x<3\\\\k&x=3\\\\3x+2&x>3\\end{cases}\\) is continuous.",
+      "steps": [
+        [
+          "reason",
+          "\\lim_{x\\to3^-}f=\\lim_{x\\to3^+}f=11=k"
+        ],
+        [
+          "result",
+          "11"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "11",
+      "metadata": {
+        "difficulty": 4,
+        "template": "continuity"
+      }
+    },
+    {
+      "code": "AIAU-1-0000000000000145-76",
+      "statement": "Choose \\(k\\) so \\(f(x)=\\begin{cases}4x+3&x<2\\\\k&x=2\\\\4x+3&x>2\\end{cases}\\) is continuous.",
+      "steps": [
+        [
+          "reason",
+          "\\lim_{x\\to2^-}f=\\lim_{x\\to2^+}f=11=k"
+        ],
+        [
+          "result",
+          "11"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "11",
+      "metadata": {
+        "difficulty": 4,
+        "template": "continuity"
+      }
+    },
+    {
+      "code": "AIAU-1-9999999999999999-19",
+      "statement": "Choose \\(k\\) so \\(f(x)=\\begin{cases}3x+2&x<3\\\\k&x=3\\\\3x+2&x>3\\end{cases}\\) is continuous.",
+      "steps": [
+        [
+          "reason",
+          "\\lim_{x\\to3^-}f=\\lim_{x\\to3^+}f=11=k"
+        ],
+        [
+          "result",
+          "11"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "11",
+      "metadata": {
+        "difficulty": 4,
+        "template": "continuity"
+      }
+    }
+  ],
+  "analysis1-lhopital-v1": [
+    {
+      "code": "AIAV-1-0000000000000000-23",
+      "statement": "Apply lHopital's rule to \\(\\lim_{x\\to0}\\frac{e^{3x}-1-3x}{x^2}\\).",
+      "steps": [
+        [
+          "reason",
+          "\\frac{3e^{3x}-3}{2x}\\quad(0/0)"
+        ],
+        [
+          "reason",
+          "\\frac{9e^{3x}}{2}\\longrightarrow \\frac{9}{2}"
+        ],
+        [
+          "result",
+          "\\frac{9}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{9}{2}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "lhopital"
+      }
+    },
+    {
+      "code": "AIAV-1-0000000000000145-90",
+      "statement": "Apply lHopital's rule to \\(\\lim_{x\\to0}\\frac{e^{4x}-1-4x}{x^2}\\).",
+      "steps": [
+        [
+          "reason",
+          "\\frac{4e^{4x}-4}{2x}\\quad(0/0)"
+        ],
+        [
+          "reason",
+          "\\frac{16e^{4x}}{2}\\longrightarrow 8"
+        ],
+        [
+          "result",
+          "8"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "8",
+      "metadata": {
+        "difficulty": 5,
+        "template": "lhopital"
+      }
+    },
+    {
+      "code": "AIAV-1-9999999999999999-33",
+      "statement": "Apply lHopital's rule to \\(\\lim_{x\\to0}\\frac{e^{3x}-1-3x}{x^2}\\).",
+      "steps": [
+        [
+          "reason",
+          "\\frac{3e^{3x}-3}{2x}\\quad(0/0)"
+        ],
+        [
+          "reason",
+          "\\frac{9e^{3x}}{2}\\longrightarrow \\frac{9}{2}"
+        ],
+        [
+          "result",
+          "\\frac{9}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{9}{2}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "lhopital"
+      }
+    }
+  ],
+  "analysis1-bisection-v1": [
+    {
+      "code": "AIAW-1-0000000000000000-69",
+      "statement": "Solve \\(e^x+x=4\\) approximately: start with \\([0,3]\\), perform six bisections, and enter the midpoint of the remaining interval.",
+      "steps": [
+        [
+          "reason",
+          "F(0)=-3<0,\\ F(3)>0,\\ F'(x)=e^x+1>0"
+        ],
+        [
+          "reason",
+          "I_{1}=[0,\\frac{3}{2}]"
+        ],
+        [
+          "reason",
+          "I_{2}=[\\frac{3}{4},\\frac{3}{2}]"
+        ],
+        [
+          "reason",
+          "I_{3}=[\\frac{3}{4},\\frac{9}{8}]"
+        ],
+        [
+          "reason",
+          "I_{4}=[\\frac{15}{16},\\frac{9}{8}]"
+        ],
+        [
+          "reason",
+          "I_{5}=[\\frac{33}{32},\\frac{9}{8}]"
+        ],
+        [
+          "reason",
+          "I_{6}=[\\frac{33}{32},\\frac{69}{64}]"
+        ],
+        [
+          "reason",
+          "|x_*-\\frac{135}{128}|\\leq \\frac{3}{128}"
+        ],
+        [
+          "result",
+          "\\frac{135}{128}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{135}{128}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "bisection"
+      }
+    },
+    {
+      "code": "AIAW-1-0000000000000145-39",
+      "statement": "Solve \\(e^x+x=5\\) approximately: start with \\([0,4]\\), perform six bisections, and enter the midpoint of the remaining interval.",
+      "steps": [
+        [
+          "reason",
+          "F(0)=-4<0,\\ F(4)>0,\\ F'(x)=e^x+1>0"
+        ],
+        [
+          "reason",
+          "I_{1}=[0,2]"
+        ],
+        [
+          "reason",
+          "I_{2}=[1,2]"
+        ],
+        [
+          "reason",
+          "I_{3}=[1,\\frac{3}{2}]"
+        ],
+        [
+          "reason",
+          "I_{4}=[\\frac{5}{4},\\frac{3}{2}]"
+        ],
+        [
+          "reason",
+          "I_{5}=[\\frac{5}{4},\\frac{11}{8}]"
+        ],
+        [
+          "reason",
+          "I_{6}=[\\frac{5}{4},\\frac{21}{16}]"
+        ],
+        [
+          "reason",
+          "|x_*-\\frac{41}{32}|\\leq \\frac{1}{32}"
+        ],
+        [
+          "result",
+          "\\frac{41}{32}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{41}{32}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "bisection"
+      }
+    },
+    {
+      "code": "AIAW-1-9999999999999999-79",
+      "statement": "Solve \\(e^x+x=4\\) approximately: start with \\([0,3]\\), perform six bisections, and enter the midpoint of the remaining interval.",
+      "steps": [
+        [
+          "reason",
+          "F(0)=-3<0,\\ F(3)>0,\\ F'(x)=e^x+1>0"
+        ],
+        [
+          "reason",
+          "I_{1}=[0,\\frac{3}{2}]"
+        ],
+        [
+          "reason",
+          "I_{2}=[\\frac{3}{4},\\frac{3}{2}]"
+        ],
+        [
+          "reason",
+          "I_{3}=[\\frac{3}{4},\\frac{9}{8}]"
+        ],
+        [
+          "reason",
+          "I_{4}=[\\frac{15}{16},\\frac{9}{8}]"
+        ],
+        [
+          "reason",
+          "I_{5}=[\\frac{33}{32},\\frac{9}{8}]"
+        ],
+        [
+          "reason",
+          "I_{6}=[\\frac{33}{32},\\frac{69}{64}]"
+        ],
+        [
+          "reason",
+          "|x_*-\\frac{135}{128}|\\leq \\frac{3}{128}"
+        ],
+        [
+          "result",
+          "\\frac{135}{128}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{135}{128}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "bisection"
+      }
+    }
+  ],
+  "analysis1-derivative-definition-v1": [
+    {
+      "code": "AIAX-1-0000000000000000-15",
+      "statement": "Use the derivative definition to find \\(f'(3)\\) for \\(f(x)=3 x^{2} + 2,\\ x\\in\\mathbb R\\).",
+      "steps": [
+        [
+          "reason",
+          "\\frac{f(3+h)-f(3)}{h}=18+3h"
+        ],
+        [
+          "result",
+          "18"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "18",
+      "metadata": {
+        "difficulty": 1,
+        "template": "derivative-definition"
+      }
+    },
+    {
+      "code": "AIAX-1-0000000000000145-82",
+      "statement": "Use the derivative definition to find \\(f'(2)\\) for \\(f(x)=4 x^{2} + 3,\\ x\\in\\mathbb R\\).",
+      "steps": [
+        [
+          "reason",
+          "\\frac{f(2+h)-f(2)}{h}=16+4h"
+        ],
+        [
+          "result",
+          "16"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "16",
+      "metadata": {
+        "difficulty": 1,
+        "template": "derivative-definition"
+      }
+    },
+    {
+      "code": "AIAX-1-9999999999999999-25",
+      "statement": "Use the derivative definition to find \\(f'(3)\\) for \\(f(x)=3 x^{2} + 2,\\ x\\in\\mathbb R\\).",
+      "steps": [
+        [
+          "reason",
+          "\\frac{f(3+h)-f(3)}{h}=18+3h"
+        ],
+        [
+          "result",
+          "18"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "18",
+      "metadata": {
+        "difficulty": 1,
+        "template": "derivative-definition"
+      }
+    }
+  ],
+  "analysis1-tangent-v1": [
+    {
+      "code": "AIAY-1-0000000000000000-04",
+      "statement": "Find the tangent slope \\(f'(3)\\) for \\(f(x)=3 x^{2} + 2,\\ x\\in\\mathbb R\\).",
+      "steps": [
+        [
+          "reason",
+          "\\frac{f(3+h)-f(3)}{h}=18+3h"
+        ],
+        [
+          "result",
+          "18"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "18",
+      "metadata": {
+        "difficulty": 1,
+        "template": "tangent"
+      }
+    },
+    {
+      "code": "AIAY-1-0000000000000145-71",
+      "statement": "Find the tangent slope \\(f'(2)\\) for \\(f(x)=4 x^{2} + 3,\\ x\\in\\mathbb R\\).",
+      "steps": [
+        [
+          "reason",
+          "\\frac{f(2+h)-f(2)}{h}=16+4h"
+        ],
+        [
+          "result",
+          "16"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "16",
+      "metadata": {
+        "difficulty": 1,
+        "template": "tangent"
+      }
+    },
+    {
+      "code": "AIAY-1-9999999999999999-14",
+      "statement": "Find the tangent slope \\(f'(3)\\) for \\(f(x)=3 x^{2} + 2,\\ x\\in\\mathbb R\\).",
+      "steps": [
+        [
+          "reason",
+          "\\frac{f(3+h)-f(3)}{h}=18+3h"
+        ],
+        [
+          "result",
+          "18"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "18",
+      "metadata": {
+        "difficulty": 1,
+        "template": "tangent"
+      }
+    }
+  ],
+  "analysis1-differential-v1": [
+    {
+      "code": "AIAZ-1-0000000000000000-96",
+      "statement": "For \\(y=3x^3\\), find the differential \\(dy\\) at \\(x=2\\) with \\(dx=1/3\\).",
+      "steps": [
+        [
+          "reason",
+          "dy=9x^2\\,dx"
+        ],
+        [
+          "reason",
+          "dy=36\\cdot\\frac1{3}"
+        ],
+        [
+          "result",
+          "12"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "12",
+      "metadata": {
+        "difficulty": 2,
+        "template": "differential"
+      }
+    },
+    {
+      "code": "AIAZ-1-0000000000000145-66",
+      "statement": "For \\(y=4x^3\\), find the differential \\(dy\\) at \\(x=3\\) with \\(dx=1/2\\).",
+      "steps": [
+        [
+          "reason",
+          "dy=12x^2\\,dx"
+        ],
+        [
+          "reason",
+          "dy=108\\cdot\\frac1{2}"
+        ],
+        [
+          "result",
+          "54"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "54",
+      "metadata": {
+        "difficulty": 2,
+        "template": "differential"
+      }
+    },
+    {
+      "code": "AIAZ-1-9999999999999999-09",
+      "statement": "For \\(y=3x^3\\), find the differential \\(dy\\) at \\(x=2\\) with \\(dx=1/3\\).",
+      "steps": [
+        [
+          "reason",
+          "dy=9x^2\\,dx"
+        ],
+        [
+          "reason",
+          "dy=36\\cdot\\frac1{3}"
+        ],
+        [
+          "result",
+          "12"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "12",
+      "metadata": {
+        "difficulty": 2,
+        "template": "differential"
+      }
+    }
+  ],
+  "analysis1-chain-v1": [
+    {
+      "code": "AIBA-1-0000000000000000-83",
+      "statement": "Differentiate \\(f(x)=e^{3x^2+2},\\ x\\in\\mathbb R\\).",
+      "steps": [
+        [
+          "reason",
+          "u=3x^2+2,\\quad u'=6x"
+        ],
+        [
+          "result",
+          "6 x e^{3 x^{2} + 2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "6 x e^{3 x^{2} + 2}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "chain"
+      }
+    },
+    {
+      "code": "AIBA-1-0000000000000145-53",
+      "statement": "Differentiate \\(f(x)=e^{4x^2+3},\\ x\\in\\mathbb R\\).",
+      "steps": [
+        [
+          "reason",
+          "u=4x^2+3,\\quad u'=8x"
+        ],
+        [
+          "result",
+          "8 x e^{4 x^{2} + 3}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "8 x e^{4 x^{2} + 3}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "chain"
+      }
+    },
+    {
+      "code": "AIBA-1-9999999999999999-93",
+      "statement": "Differentiate \\(f(x)=e^{3x^2+2},\\ x\\in\\mathbb R\\).",
+      "steps": [
+        [
+          "reason",
+          "u=3x^2+2,\\quad u'=6x"
+        ],
+        [
+          "result",
+          "6 x e^{3 x^{2} + 2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "6 x e^{3 x^{2} + 2}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "chain"
+      }
+    }
+  ],
+  "analysis1-mean-value-v1": [
+    {
+      "code": "AIBB-1-0000000000000000-57",
+      "statement": "For \\(f(x)=3 x^{2} + 2 x\\) on \\([0,3]\\), find the point from Lagrange's mean value theorem.",
+      "steps": [
+        [
+          "reason",
+          "f\\in C[0,3]\\cap C^1(0,3)"
+        ],
+        [
+          "reason",
+          "f'(x)=6x+2=11\\iff x=\\frac{3}{2}"
+        ],
+        [
+          "result",
+          "\\frac{3}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{3}{2}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "mean-value"
+      }
+    },
+    {
+      "code": "AIBB-1-0000000000000145-27",
+      "statement": "For \\(f(x)=4 x^{2} + 3 x\\) on \\([0,2]\\), find the point from Lagrange's mean value theorem.",
+      "steps": [
+        [
+          "reason",
+          "f\\in C[0,2]\\cap C^1(0,2)"
+        ],
+        [
+          "reason",
+          "f'(x)=8x+3=11\\iff x=1"
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 3,
+        "template": "mean-value"
+      }
+    },
+    {
+      "code": "AIBB-1-9999999999999999-67",
+      "statement": "For \\(f(x)=3 x^{2} + 2 x\\) on \\([0,3]\\), find the point from Lagrange's mean value theorem.",
+      "steps": [
+        [
+          "reason",
+          "f\\in C[0,3]\\cap C^1(0,3)"
+        ],
+        [
+          "reason",
+          "f'(x)=6x+2=11\\iff x=\\frac{3}{2}"
+        ],
+        [
+          "result",
+          "\\frac{3}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{3}{2}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "mean-value"
+      }
+    }
+  ],
+  "analysis1-monotonicity-v1": [
+    {
+      "code": "AIBC-1-0000000000000000-36",
+      "statement": "For \\(f(x)=x^3-27x\\), find the left endpoint of the rightmost interval of strict increase.",
+      "steps": [
+        [
+          "reason",
+          "f'(x)=3(x-3)(x+3)"
+        ],
+        [
+          "reason",
+          "f'>0:\\ (-\\infty,-3)\\cup(3,\\infty);\\quad f'<0:\\ (-3,3)"
+        ],
+        [
+          "result",
+          "3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3",
+      "metadata": {
+        "difficulty": 3,
+        "template": "monotonicity"
+      }
+    },
+    {
+      "code": "AIBC-1-0000000000000145-06",
+      "statement": "For \\(f(x)=x^3-48x\\), find the left endpoint of the rightmost interval of strict increase.",
+      "steps": [
+        [
+          "reason",
+          "f'(x)=3(x-4)(x+4)"
+        ],
+        [
+          "reason",
+          "f'>0:\\ (-\\infty,-4)\\cup(4,\\infty);\\quad f'<0:\\ (-4,4)"
+        ],
+        [
+          "result",
+          "4"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "4",
+      "metadata": {
+        "difficulty": 3,
+        "template": "monotonicity"
+      }
+    },
+    {
+      "code": "AIBC-1-9999999999999999-46",
+      "statement": "For \\(f(x)=x^3-27x\\), find the left endpoint of the rightmost interval of strict increase.",
+      "steps": [
+        [
+          "reason",
+          "f'(x)=3(x-3)(x+3)"
+        ],
+        [
+          "reason",
+          "f'>0:\\ (-\\infty,-3)\\cup(3,\\infty);\\quad f'<0:\\ (-3,3)"
+        ],
+        [
+          "result",
+          "3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3",
+      "metadata": {
+        "difficulty": 3,
+        "template": "monotonicity"
+      }
+    }
+  ],
+  "analysis1-local-extremum-v1": [
+    {
+      "code": "AIBD-1-0000000000000000-92",
+      "statement": "Find the local maximum value of \\(f(x)=3 - 3 \\left(x - 2\\right)^{2},\\ x\\in\\mathbb R\\).",
+      "steps": [
+        [
+          "reason",
+          "f'(x)=-6(x-2)=0\\iff x=2"
+        ],
+        [
+          "reason",
+          "f''=-6<0,\\quad f(2)=3"
+        ],
+        [
+          "result",
+          "3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3",
+      "metadata": {
+        "difficulty": 4,
+        "template": "local-extremum"
+      }
+    },
+    {
+      "code": "AIBD-1-0000000000000145-62",
+      "statement": "Find the local maximum value of \\(f(x)=2 - 4 \\left(x - 3\\right)^{2},\\ x\\in\\mathbb R\\).",
+      "steps": [
+        [
+          "reason",
+          "f'(x)=-8(x-3)=0\\iff x=3"
+        ],
+        [
+          "reason",
+          "f''=-8<0,\\quad f(3)=2"
+        ],
+        [
+          "result",
+          "2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 4,
+        "template": "local-extremum"
+      }
+    },
+    {
+      "code": "AIBD-1-9999999999999999-05",
+      "statement": "Find the local maximum value of \\(f(x)=3 - 3 \\left(x - 2\\right)^{2},\\ x\\in\\mathbb R\\).",
+      "steps": [
+        [
+          "reason",
+          "f'(x)=-6(x-2)=0\\iff x=2"
+        ],
+        [
+          "reason",
+          "f''=-6<0,\\quad f(2)=3"
+        ],
+        [
+          "result",
+          "3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3",
+      "metadata": {
+        "difficulty": 4,
+        "template": "local-extremum"
+      }
+    }
+  ],
+  "analysis1-global-extremum-v1": [
+    {
+      "code": "AIBE-1-0000000000000000-82",
+      "statement": "Find the global minimum value of \\(f(x)=x^3-27x\\) on \\([0,6]\\).",
+      "steps": [
+        [
+          "reason",
+          "f'(x)=3(x-3)(x+3)"
+        ],
+        [
+          "reason",
+          "f(0)=0,\\ f(3)=-54,\\ f(6)=54"
+        ],
+        [
+          "result",
+          "-54"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-54",
+      "metadata": {
+        "difficulty": 4,
+        "template": "global-extremum"
+      }
+    },
+    {
+      "code": "AIBE-1-0000000000000145-52",
+      "statement": "Find the global minimum value of \\(f(x)=x^3-48x\\) on \\([0,8]\\).",
+      "steps": [
+        [
+          "reason",
+          "f'(x)=3(x-4)(x+4)"
+        ],
+        [
+          "reason",
+          "f(0)=0,\\ f(4)=-128,\\ f(8)=128"
+        ],
+        [
+          "result",
+          "-128"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-128",
+      "metadata": {
+        "difficulty": 4,
+        "template": "global-extremum"
+      }
+    },
+    {
+      "code": "AIBE-1-9999999999999999-92",
+      "statement": "Find the global minimum value of \\(f(x)=x^3-27x\\) on \\([0,6]\\).",
+      "steps": [
+        [
+          "reason",
+          "f'(x)=3(x-3)(x+3)"
+        ],
+        [
+          "reason",
+          "f(0)=0,\\ f(3)=-54,\\ f(6)=54"
+        ],
+        [
+          "result",
+          "-54"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-54",
+      "metadata": {
+        "difficulty": 4,
+        "template": "global-extremum"
+      }
+    }
+  ],
+  "analysis1-rectangle-v1": [
+    {
+      "code": "AIBF-1-0000000000000000-83",
+      "statement": "A rectangle has perimeter \\(6\\). Find its greatest possible area.",
+      "steps": [
+        [
+          "reason",
+          "A(w)=w(3-w),\\quad0<w<3"
+        ],
+        [
+          "reason",
+          "A'(w)=3-2w=0\\iff w=\\frac{3}{2};\\quad A''=-2<0"
+        ],
+        [
+          "result",
+          "\\frac{9}{4}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{9}{4}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "rectangle"
+      }
+    },
+    {
+      "code": "AIBF-1-0000000000000145-53",
+      "statement": "A rectangle has perimeter \\(8\\). Find its greatest possible area.",
+      "steps": [
+        [
+          "reason",
+          "A(w)=w(4-w),\\quad0<w<4"
+        ],
+        [
+          "reason",
+          "A'(w)=4-2w=0\\iff w=2;\\quad A''=-2<0"
+        ],
+        [
+          "result",
+          "4"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "4",
+      "metadata": {
+        "difficulty": 5,
+        "template": "rectangle"
+      }
+    },
+    {
+      "code": "AIBF-1-9999999999999999-93",
+      "statement": "A rectangle has perimeter \\(6\\). Find its greatest possible area.",
+      "steps": [
+        [
+          "reason",
+          "A(w)=w(3-w),\\quad0<w<3"
+        ],
+        [
+          "reason",
+          "A'(w)=3-2w=0\\iff w=\\frac{3}{2};\\quad A''=-2<0"
+        ],
+        [
+          "result",
+          "\\frac{9}{4}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{9}{4}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "rectangle"
+      }
+    }
+  ],
+  "analysis1-box-v1": [
+    {
+      "code": "AIBG-1-0000000000000000-57",
+      "statement": "Cut squares of side \\(x\\) from a square card of side \\(3\\), then fold an open box. Find its maximum volume for \\(0<x<\\frac{3}{2}\\).",
+      "steps": [
+        [
+          "reason",
+          "V=x(3-2x)^2"
+        ],
+        [
+          "reason",
+          "V'=(3-2x)(3-6x);\\quad x=\\frac{1}{2}"
+        ],
+        [
+          "reason",
+          "V(0)=V(\\frac{3}{2})=0;\\quad V(\\frac{1}{2})=2"
+        ],
+        [
+          "result",
+          "2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 5,
+        "template": "box"
+      }
+    },
+    {
+      "code": "AIBG-1-0000000000000145-27",
+      "statement": "Cut squares of side \\(x\\) from a square card of side \\(4\\), then fold an open box. Find its maximum volume for \\(0<x<2\\).",
+      "steps": [
+        [
+          "reason",
+          "V=x(4-2x)^2"
+        ],
+        [
+          "reason",
+          "V'=(4-2x)(4-6x);\\quad x=\\frac{2}{3}"
+        ],
+        [
+          "reason",
+          "V(0)=V(2)=0;\\quad V(\\frac{2}{3})=\\frac{128}{27}"
+        ],
+        [
+          "result",
+          "\\frac{128}{27}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{128}{27}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "box"
+      }
+    },
+    {
+      "code": "AIBG-1-9999999999999999-67",
+      "statement": "Cut squares of side \\(x\\) from a square card of side \\(3\\), then fold an open box. Find its maximum volume for \\(0<x<\\frac{3}{2}\\).",
+      "steps": [
+        [
+          "reason",
+          "V=x(3-2x)^2"
+        ],
+        [
+          "reason",
+          "V'=(3-2x)(3-6x);\\quad x=\\frac{1}{2}"
+        ],
+        [
+          "reason",
+          "V(0)=V(\\frac{3}{2})=0;\\quad V(\\frac{1}{2})=2"
+        ],
+        [
+          "result",
+          "2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 5,
+        "template": "box"
+      }
+    }
   ]
 }

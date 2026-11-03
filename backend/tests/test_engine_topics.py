@@ -62,6 +62,7 @@ def test_five_topics_have_nonempty_levels_and_replay_for_many_seeds() -> None:
         "series",
         "multivariable-functions",
         "differential-equations",
+        "differential-calculus",
     }
     generators = registry()
     expected_kinds = {
