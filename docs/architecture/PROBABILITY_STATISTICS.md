@@ -1,4 +1,4 @@
-# Probability and Statistics proposal (#200)
+# Probability and Statistics curriculum (#200)
 
 Status: **approved by Vlad; implementation in progress**. Vlad accepted the
 complete nine-topic/five-level matrix, design and exclusions linked at planning
@@ -15,7 +15,7 @@ with explicit PSAA through PSCV prefixes and 222 appended golden samples.
 All existing 36 topics,
 165 generator versions, historical codes and product metadata remain intact.
 
-| Public topic / proposed slug | Level 1 | Level 2 | Level 3 | Level 4 | Level 5 |
+| Public topic / slug | Level 1 | Level 2 | Level 3 | Level 4 | Level 5 |
 |---|---|---|---|---|---|
 | Events and counting / `probability-events` | Equally likely finite outcomes | Complements and at-least-one events | Union, intersection and inclusion-exclusion | Counting selections without replacement; finite event-set operations | Independence from a consistent event table |
 | Conditional probability and Bayes / `conditional-probability` | Conditional probability from a table | Two draws with/without replacement | Total probability over two groups | Bayes with two possible sources | Three-source Bayes and a two-stage probability tree |

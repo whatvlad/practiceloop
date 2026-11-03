@@ -4,7 +4,7 @@ import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { DashboardPage } from './DashboardPage';
 import { PracticePage } from './PracticePage';
-import { configurePracticeAuth, getProblem, resetPractice } from '../data/practice';
+import { configurePracticeAuth, generateProblem, getProblem, resetPractice } from '../data/practice';
 import type { PublicProblem } from '../data/types';
 import type { AnswerInputSpec } from '../data/types';
 
@@ -26,6 +26,18 @@ const INTEGRALS = [
 let catalogue: unknown;
 const response = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status });
 const button = (label: string) => Array.from(element.querySelectorAll('button')).find(b => b.textContent?.includes(label))!;
+
+it('restores a probability topic in its own area after generation before catalogue loading', async () => {
+  catalogue = { areas: [
+    { slug: 'mathematical-analysis', name: 'Mathematical Analysis', mixed: null },
+    { slug: 'probability-statistics', name: 'Probability and Statistics', mixed: null },
+  ], items: [...INTEGRALS, { slug: 'probability-events', name: 'Events and counting', area: 'probability-statistics', availableDifficulties: [1,2,3,4,5] }] };
+  await generateProblem('probability-events', 1, 'probability-statistics');
+  await act(async () => root.render(<DashboardPage />));
+  expect(button('Probability and Statistics').getAttribute('aria-pressed')).toBe('true');
+  expect(button('Events and counting').getAttribute('aria-pressed')).toBe('true');
+  expect(button('Generate problem').disabled).toBe(false);
+});
 
 beforeEach(() => {
   (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;

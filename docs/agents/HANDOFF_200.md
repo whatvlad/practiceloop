@@ -65,9 +65,18 @@ Observed verification:
   and original MVP hash pass. Python audit: no known vulnerabilities; all
   12 offline hosted-verification unit tests pass (2.051 s).
 
-Checks pending: final catalogue replay after the formula delimiter correction,
-browser input inspection, complete ready-for-review Linux worker/PostgreSQL/E2E
-CI and all deployments/live checks. No local Docker CLI; DB isolation runs hosted.
+- Fresh catalogue/golden/API replay after the formula correction: 998 passed,
+  1 Linux release-script skip, 204 seed-sweep deselections, 30.94 s.
+- Final focused frontend controls/history/curriculum checks: 20 passed, including
+  restored probability area after generation before catalogue loading. Lint,
+  typecheck and production build pass.
+
+Checks pending: complete ready-for-review Linux worker/PostgreSQL/E2E CI and
+all deployments/live checks. No local Docker CLI; DB isolation runs hosted.
+Browser inspection could not run: cua reports "Local browser use is disabled in
+Work settings". That setting was not changed or bypassed. No visual or physical
+mobile verification is claimed; actual React controls, fallback and API-decoder
+flows are covered by the frontend tests. The isolated preview server was stopped.
 TeX remains intentionally disabled under #181. Planning CI was green but is
 not claimed as implementation acceptance.
 
@@ -85,8 +94,8 @@ draft checkpoint next). Ignored .venv is Python 3.12.10 and imports this worktre
 frontend/node_modules is isolated. Private catalogue and .local logs/helpers
 remain ignored. No secrets are needed or transferred.
 
-Review status: advisory mathematical/database review will be requested on the
-published implementation; no independent review claimed. Merge status: pending
+Review status: advisory mathematical/database review requested from Feijhoaaaaa
+on #231; no independent review claimed. Merge status: pending
 full ready CI and resolved blocking findings.
 
 Next concrete action: finish verification/fix failures, keep PR draft while
