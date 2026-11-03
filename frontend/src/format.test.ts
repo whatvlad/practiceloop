@@ -87,7 +87,7 @@ describe('mixed practice shares', () => {
 describe('problem kinds', () => {
   it.each<TopicSlug>([
     'matrices', 'complex-numbers', 'fundamental-theorem-algebra', 'combinations',
-    'series',
+    'improper-integrals',
   ])('does not describe %s as an integral', topic => {
     expect(problemKind(topic, 'x')).toBe('numeric');
     expect(leadText('numeric')).toBe('Calculate the value.');
@@ -95,7 +95,7 @@ describe('problem kinds', () => {
     expect(answerVariables('numeric', 'x')).toBeUndefined();
   });
 
-  it.each<TopicSlug>(['partial-fractions', 'multivariable-functions', 'differential-equations', 'functions-and-sequences', 'limits-and-continuity', 'differential-calculus'])(
+  it.each<TopicSlug>(['partial-fractions', 'multivariable-functions', 'differential-equations', 'functions-and-sequences', 'limits-and-continuity', 'differential-calculus', 'series'])(
     'uses a general expression instruction for %s', topic => {
       expect(problemKind(topic, 'x')).toBe('expression');
       expect(leadText('expression')).toBe('Solve the problem.');

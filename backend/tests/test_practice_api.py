@@ -383,6 +383,10 @@ def test_algebraic_expressions_practice_saves_checks_and_reveals(
                 "functions-and-sequences",
                 "limits-and-continuity",
                 "differential-calculus",
+                "improper-integrals",
+                "series",
+                "multivariable-functions",
+                "differential-equations",
             )
             for level in range(1, 6)
         ),

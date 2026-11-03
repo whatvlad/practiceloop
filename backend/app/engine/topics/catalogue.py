@@ -90,6 +90,7 @@ from app.engine.generators.polynomials import (
 from app.engine.models import Drawn, Task
 from app.engine.prng import DeterministicRNG
 from app.engine.registry import Registry
+from app.engine.topics.analysis_two import MATRIX as ANALYSIS_TWO
 
 logger = logging.getLogger(__name__)
 
@@ -535,6 +536,23 @@ def topics() -> dict[str, Topic]:
             space_cm=5 if slug == "differential-calculus" else 4,
             served=True,
         )
+    # #146: retain product identity/weights and the three proven introductory forms.
+    retained = {
+        "improper-integrals": "practice-improper-v1",
+        "series": "practice-series-v1",
+        "differential-equations": "practice-ode-v1",
+    }
+    for slug, analysis_levels in ANALYSIS_TWO.items():
+        analysis_offered = {
+            level: tuple(Choice(f"analysis2-{kind}-v1") for kind in kinds)
+            for level, kinds in analysis_levels.items()
+        }
+        if slug in retained:
+            analysis_offered[1] = (
+                Choice(retained[slug], partial(_analysis_level, 1)),
+                *analysis_offered[1],
+            )
+        declared[slug] = replace(declared[slug], levels=analysis_offered)
     return declared
 
 

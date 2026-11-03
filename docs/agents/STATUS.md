@@ -13,7 +13,9 @@ problem codes open at `/p/<code>` (#198). #199 removes the obsolete runtime and
 records the final ADR-008; #162 is the parent completion audit. Future curriculum
 issues remain separate. #145 adds the full bounded Analysis I matrix, reusing
 existing derivatives and integrals (see [ANALYSIS_I.md](../architecture/ANALYSIS_I.md)).
-#146 and #200 remain separate curriculum stages. The GitHub Project is authoritative
+#146 adds the bounded Analysis II matrix and retains proven partial/multiple
+integrals (see [ANALYSIS_II.md](../architecture/ANALYSIS_II.md)). #200 remains a
+separate future curriculum stage. The GitHub Project is authoritative
 for their order and the final acceptance/merge state.
 
 | Area | Issues | Document |

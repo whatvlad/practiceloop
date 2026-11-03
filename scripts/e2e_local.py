@@ -177,8 +177,19 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
     ]
     analysis_one = {"functions-and-sequences", "limits-and-continuity", "differential-calculus"}
     cells += [(slug, level, {}) for slug in sorted(analysis_one) for level in range(2, 6)]
+    analysis_two = {
+        "improper-integrals",
+        "series",
+        "multivariable-functions",
+        "differential-equations",
+        "partial-derivatives",
+        "double-integrals",
+    }
+    cells += [(slug, level, {}) for slug in sorted(analysis_two) for level in range(2, 6)]
     check(
-        len(cells) == 50, "36 topics, two area mixes and twelve higher Analysis I cells", len(cells)
+        len(cells) == 74,
+        "36 topics, two mixes and all Analysis I/II plus retained cells",
+        len(cells),
     )
     created: list[str] = []
     for topic, level, extra in cells:
@@ -230,7 +241,7 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
             f"reopen {label} keeps attempts and reveals",
             reopened,
         )
-        if topic in analysis_one:
+        if topic in analysis_one | analysis_two:
             shared = api.post(f"/problems/{pid}/share")
             check(shared.status_code == 201, f"share {label}", shared.text)
             if shared.status_code == 201:

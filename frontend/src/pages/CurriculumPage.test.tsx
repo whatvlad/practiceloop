@@ -45,6 +45,9 @@ it('shows both areas, descriptions, subtypes and an inactive placeholder', async
   expect(ready.querySelector('a[href="/dashboard?area=mathematical-analysis&topic=derivatives"]')).not.toBeNull();
   expect(ready.querySelector('a[href="/dashboard?area=mathematical-analysis&topic=differential-calculus"]')).not.toBeNull();
   expect(ready.textContent).toContain('certified bisection');
+  expect(ready.querySelector('a[href="/dashboard?area=mathematical-analysis&topic=series"]')).not.toBeNull();
+  expect(ready.textContent).toContain('Laplace');
+  expect(element.textContent).toContain('Cauchy-Hadamard');
   expect(ready.textContent).not.toContain('Determinants of 2 × 2 matrices');
   expect(element.textContent).toContain('Partial derivatives');
   expect(element.textContent).toContain('Differential equations');
