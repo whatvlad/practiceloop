@@ -78,8 +78,8 @@ jobs:
     needs: changes
     if: github.event.pull_request.draft != true && needs.changes.outputs.backend == 'true'
     runs-on: ubuntu-latest
-    # The expanded curriculum includes bounded worker checks for 165 versions.
-    timeout-minutes: 20
+    # The expanded curriculum includes bounded worker checks for 239 versions.
+    timeout-minutes: 25
     defaults:
       run:
         working-directory: backend
@@ -154,7 +154,8 @@ jobs:
     needs: changes
     if: github.event.pull_request.draft != true && needs.changes.outputs.backend == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # #200 covers all 45 probability cells and 124 HTTP E2E scenarios.
+    timeout-minutes: 15
     services:
       postgres:
         image: postgres:17

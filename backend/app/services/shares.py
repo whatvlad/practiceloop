@@ -44,6 +44,7 @@ class SharedProblem:
     topic: str
     difficulty: int
     problem_latex: str
+    generator_data: Any = None
 
 
 class State(Enum):
@@ -140,6 +141,8 @@ def lookup(
     with conn.cursor(row_factory=dict_row) as cur:
         cur.execute(
             "select t.slug as topic, p.difficulty, p.problem_latex,"
+            " (select a.generator_data from private.problem_solutions a"
+            " where a.problem_id = p.id) as generator_data,"
             " s.revoked_at is not null as revoked, s.expires_at <= now() as expired"
             " from private.problem_shares s"
             " join public.problems p on p.id = s.problem_id and p.user_id = s.user_id"

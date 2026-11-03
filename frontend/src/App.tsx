@@ -26,7 +26,7 @@ const TOPIC_RETURN = 'practiceloop:topic-return';
 
 function topicReturn(value: string | null): string | null {
   if (!value) return null;
-  const match = /^\/dashboard\?area=(algebra|mathematical-analysis)&topic=([a-z0-9]+(?:-[a-z0-9]+)*)$/.exec(value);
+  const match = /^\/dashboard\?area=(algebra|mathematical-analysis|probability-statistics)&topic=([a-z0-9]+(?:-[a-z0-9]+)*)$/.exec(value);
   return match && match[2].length <= 64 ? value : null;
 }
 
@@ -143,7 +143,7 @@ export function App() {
           {auth.error && <p className="pl-result pl-result--invalid" role="alert">{auth.error}</p>}
         </section>
         {pathname === '/dashboard' && (params.has('topic')
-          ? <DashboardPage key={params.get('topic')} initialArea={params.get('area') === 'algebra' ? 'algebra' : 'mathematical-analysis'} initialTopic={params.get('topic') ?? undefined} />
+          ? <DashboardPage key={`${params.get('area')}:${params.get('topic')}`} initialArea={params.get('area') === 'algebra' ? 'algebra' : params.get('area') === 'probability-statistics' ? 'probability-statistics' : 'mathematical-analysis'} initialTopic={params.get('topic') ?? undefined} />
           : <CurriculumPage />)}
         {pathname === '/practice' && (params.has('id') ? <PracticePage key={params.get('id')} id={params.get('id')} /> : <CurriculumPage />)}
         {pathname === '/history' && <HistoryPage />}

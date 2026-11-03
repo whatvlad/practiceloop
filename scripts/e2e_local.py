@@ -117,7 +117,7 @@ def reset_limits() -> None:
 PARTIAL = "partial-derivatives"
 
 
-def correct_answer(url: str, problem_id: str) -> str:
+def correct_answer(url: str, problem_id: str, *, wrong: bool = False) -> str:
 
     with psycopg.connect(url) as conn:
         row = conn.execute(
@@ -131,8 +131,34 @@ def correct_answer(url: str, problem_id: str) -> str:
 
     from app.engine import practice as engine
     from app.engine.answers.antiderivative import AntiderivativeAnswer
+    from app.engine.answers.structured import BooleanAnswer, FiniteSetAnswer, IntervalAnswer
 
     answer = engine.replay(row[0]).answer
+
+    def scalar(value: Any) -> str:
+        return str(sp.sstr(value)).replace("**", "^").replace("E", "e")
+
+    if isinstance(answer, BooleanAnswer):
+        return "true" if answer.expected != wrong else "false"
+    if isinstance(answer, FiniteSetAnswer):
+        values = [*answer.expected, 11] if wrong else list(answer.expected)
+        return "{" + ",".join(map(scalar, values)) + "}"
+    if isinstance(answer, IntervalAnswer):
+        lower, upper = answer.lower, answer.upper
+        if wrong:
+            if upper == sp.oo:
+                lower += 1
+            else:
+                upper += 1
+        return (
+            ("(" if answer.left_open else "[")
+            + ("-inf" if lower == -sp.oo else scalar(lower))
+            + ","
+            + ("inf" if upper == sp.oo else scalar(upper))
+            + (")" if answer.right_open else "]")
+        )
+    if wrong:
+        return "999999"
     if isinstance(answer, AntiderivativeAnswer):
         value, constant = answer.primitive, " + C"
     else:
@@ -173,7 +199,11 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
         ("mixed", d, {"area": slug})
         for slug, area in areas.items()
         if area["mixed"]
-        for d in area["mixed"]["availableDifficulties"][:1]
+        for d in (
+            area["mixed"]["availableDifficulties"]
+            if slug == "probability-statistics"
+            else area["mixed"]["availableDifficulties"][:1]
+        )
     ]
     analysis_one = {"functions-and-sequences", "limits-and-continuity", "differential-calculus"}
     cells += [(slug, level, {}) for slug in sorted(analysis_one) for level in range(2, 6)]
@@ -186,9 +216,11 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
         "double-integrals",
     }
     cells += [(slug, level, {}) for slug in sorted(analysis_two) for level in range(2, 6)]
+    probability = {t["slug"] for t in topics["items"] if t["area"] == "probability-statistics"}
+    cells += [(slug, level, {}) for slug in sorted(probability) for level in range(2, 6)]
     check(
-        len(cells) == 74,
-        "36 topics, two mixes and all Analysis I/II plus retained cells",
+        len(cells) == 124 and len(probability) == 9,
+        "45 topics, area mixes and all Analysis I/II plus Probability and Statistics cells",
         len(cells),
     )
     created: list[str] = []
@@ -209,6 +241,8 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
         # A numeric wrong answer is valid input for both numeric and symbolic cells.
         # A partial answer keeps its declared variables and adds a nonzero offset.
         wrong_answer = f"({answer}) + 7" if problem["topic"] == PARTIAL else "999999"
+        if problem.get("answerInput"):
+            wrong_answer = correct_answer(url, pid, wrong=True)
         wrong = api.post(f"/problems/{pid}/attempts", json={"answer": wrong_answer}, headers=key())
         check(
             wrong.status_code == 201 and wrong.json()["attempt"]["result"] == "incorrect",
@@ -241,14 +275,17 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
             f"reopen {label} keeps attempts and reveals",
             reopened,
         )
-        if topic in analysis_one | analysis_two:
+        if topic in analysis_one | analysis_two | probability:
             shared = api.post(f"/problems/{pid}/share")
             check(shared.status_code == 201, f"share {label}", shared.text)
             if shared.status_code == 201:
                 public = httpx.get(api.base_url.join(f"shares/{shared.json()['share']['token']}"))
                 check(
                     public.status_code == 200
-                    and set(public.json()["problem"]) == {"topic", "difficulty", "problemLatex"},
+                    and set(public.json()["problem"])
+                    == {"topic", "difficulty", "problemLatex"}
+                    | ({"answerInput"} if problem.get("answerInput") else set())
+                    and public.json()["problem"].get("answerInput") == problem.get("answerInput"),
                     f"safe anonymous share {label}",
                     public.text,
                 )
@@ -627,6 +664,117 @@ def database_failure(api: httpx.Client, stop: str, start: str) -> None:
     check(response.status_code == 200, "API recovers once the database is back", response.text)
 
 
+def probability_input_flow(api: httpx.Client, other: httpx.Client, base: str, url: str) -> None:
+    """All new input kinds, anonymous instructions, recipient copies and worksheet pools."""
+    from app.engine.codes import encode
+    from app.engine.generators.probability import generators
+
+    by_name = {g.template: g for g in generators()}
+    for name in ("events-independence", "finite-support", "ci-lower", "ci-mean-z"):
+        reset_limits()
+        generator = by_name[name]
+        code = encode(generator.prefix, 1, 200)
+        public = httpx.get(f"{base}/codes", params={"code": code}, timeout=20)
+        check(public.status_code == 200, f"public structured code {name}", public.text)
+        if public.status_code != 200:
+            continue
+        projection = public.json()["problem"]
+        check(
+            set(projection) == {"topic", "difficulty", "problemLatex", "answerInput"}
+            and projection["answerInput"]["kind"] == generator.answer.kind,
+            f"structured code {name} exposes only input instructions",
+            projection,
+        )
+        created = api.post("/codes/practice", json={"code": code}, headers=key())
+        check(created.status_code == 201, f"start structured code {name}", created.text)
+        if created.status_code != 201:
+            continue
+        problem = created.json()["problem"]
+        pid = problem["id"]
+        check(problem.get("answerInput") == projection["answerInput"], f"saved {name} input kind")
+        bad = api.post(f"/problems/{pid}/attempts", json={"answer": "999999"}, headers=key())
+        incorrect = api.post(
+            f"/problems/{pid}/attempts",
+            json={"answer": correct_answer(url, pid, wrong=True)},
+            headers=key(),
+        )
+        correct = api.post(
+            f"/problems/{pid}/attempts", json={"answer": correct_answer(url, pid)}, headers=key()
+        )
+        check(
+            bad.status_code == incorrect.status_code == correct.status_code == 201
+            and bad.json()["attempt"]["result"] == "invalid"
+            and incorrect.json()["attempt"]["result"] == "incorrect"
+            and correct.json()["attempt"]["result"] == "correct",
+            f"all attempt outcomes {name}",
+        )
+        reopened = api.get(f"/problems/{pid}").json()["problem"]
+        check(
+            reopened.get("answerInput") == projection["answerInput"]
+            and reopened["attemptCount"] == 3
+            and reopened["lastAttempt"]["answer"] == correct_answer(url, pid),
+            f"history reopens structured {name}",
+        )
+        share = api.post(f"/problems/{pid}/share").json()["share"]
+        anonymous = httpx.get(f"{base}/shares/{share['token']}", timeout=20).json()["problem"]
+        check(anonymous == projection, f"anonymous share preserves safe instructions {name}")
+        copied = other.post("/shares/practice", json={"token": share["token"]}, headers=key())
+        check(copied.status_code == 201, f"recipient copies structured {name}", copied.text)
+        if copied.status_code == 201:
+            copy = copied.json()["problem"]
+            check(
+                copy.get("answerInput") == projection["answerInput"]
+                and copy["lastAttempt"] is None
+                and not copy["answerRevealed"]
+                and not copy["solutionRevealed"],
+                f"recipient starts fresh {name}",
+            )
+            result = other.post(
+                f"/problems/{copy['id']}/attempts",
+                json={"answer": correct_answer(url, copy["id"])},
+                headers=key(),
+            )
+            check(
+                result.status_code == 201 and result.json()["attempt"]["result"] == "correct",
+                f"recipient checks structured {name}",
+            )
+        check(
+            other.get(f"/problems/{pid}").status_code == 404, f"structured {name} owner isolation"
+        )
+        answer = api.post(f"/problems/{pid}/reveal-answer")
+        solution = api.post(f"/problems/{pid}/reveal-solution")
+        check(
+            answer.status_code == solution.status_code == 200 and solution.json()["steps"],
+            f"structured {name} authorized reveals",
+        )
+    reset_limits()
+    sheet = api.post(
+        "/worksheets",
+        json={
+            "source": "generate",
+            "groups": [
+                {"topic": "mixed:probability-statistics", "difficulty": level, "count": 1}
+                for level in range(1, 6)
+            ],
+            "solutions": True,
+        },
+        headers=key(),
+    )
+    check(sheet.status_code == 201, "probability mixed worksheet spans all five levels", sheet.text)
+    if sheet.status_code == 201:
+        ids = sheet.json()["worksheet"]["problemIds"]
+        check(
+            len(ids) == 5 and len({str(private_record(url, pid)) for pid in ids}) == 5,
+            "probability worksheet has five distinct records",
+        )
+        for pid in ids:
+            opened = api.get(f"/problems/{pid}").json()
+            check(
+                bool(opened.get("answer")) and bool(opened.get("solution")),
+                "probability worksheet keeps authorized answer/steps",
+            )
+
+
 def permanent_code_flow(api: httpx.Client, base: str, url: str) -> None:
     from app.engine.codes import encode
 
@@ -709,6 +857,7 @@ def main() -> int:
             partials(api_a, url)
             combinations(api_a, url)
             permanent_code_flow(api_a, base, url)
+            probability_input_flow(api_a, api_b, base, url)
             malicious(api_a, created[0])
             saturation(api_a, url, created[0])
         if args.stop_db and args.start_db:

@@ -44,6 +44,8 @@ def build_expression(node: MathNode, evaluate: bool = False) -> Any:
         return functions[cast(str, node.value)](
             build_expression(node.children[0], evaluate), evaluate=evaluate
         )
+    if node.kind != "binary":
+        raise ValueError("A structured answer is not a scalar expression")
     left = build_expression(node.children[0], evaluate)
     right = build_expression(node.children[1], evaluate)
     if node.value == "+":

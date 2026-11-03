@@ -8,14 +8,16 @@ worked in `Order`. Post-MVP work is the open queue (#30 roadmap and its stages).
 
 Where each part is documented:
 
-The current 36 public topics use the native engine, and permanent
+The current 45 public topics use the native engine, and permanent
 problem codes open at `/p/<code>` (#198). #199 removes the obsolete runtime and
 records the final ADR-008; #162 is the parent completion audit. Future curriculum
 issues remain separate. #145 adds the full bounded Analysis I matrix, reusing
 existing derivatives and integrals (see [ANALYSIS_I.md](../architecture/ANALYSIS_I.md)).
 #146 adds the bounded Analysis II matrix and retains proven partial/multiple
-integrals (see [ANALYSIS_II.md](../architecture/ANALYSIS_II.md)). #200 remains a
-separate future curriculum stage. The GitHub Project is authoritative
+integrals (see [ANALYSIS_II.md](../architecture/ANALYSIS_II.md)). #200 adds the
+approved Probability and Statistics matrix, Distribution and structured answers
+(see [PROBABILITY_STATISTICS.md](../architecture/PROBABILITY_STATISTICS.md)).
+The GitHub Project is authoritative
 for their order and the final acceptance/merge state.
 
 | Area | Issues | Document |

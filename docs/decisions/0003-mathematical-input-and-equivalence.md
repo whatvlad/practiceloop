@@ -134,3 +134,40 @@ warns that `parse_expr` uses `eval` and is unsafe for unsanitized input; Python
 documents [`setrlimit`](https://docs.python.org/3/library/resource.html#resource.setrlimit)
 for child resource ceilings and requires explicitly
 [killing and reaping a timed-out subprocess](https://docs.python.org/3/library/subprocess.html#subprocess.Popen.communicate).
+## Amendment: structured probability/statistics answers (#200)
+
+Vlad approved the nine-topic/five-level curriculum and its input design in
+issue comment 6604843016 (planning commit
+`ce4b1c4dd6c5f65e16bd178e82fe00b32c43f6cf`). Three additional answer kinds have
+real consumers: boolean independence/test decisions, finite event/support/mode
+sets, and support/confidence intervals. They keep `Answer.check(MathNode)` and
+the existing Outcome, Task, generator, PRNG, record and code protocols.
+
+`parse_answer_input` selects a bounded grammar from the trusted generator's
+answer class. Scalar cases delegate to `parse_math_input` unchanged. Boolean
+wire values are `true` or `false`; finite sets use braces and at most eight
+constant entries; intervals use one pair of open/closed endpoint delimiters,
+with `-inf`/`inf` only as correctly signed open endpoints. The entire answer
+shares the existing 256-byte, token, AST and function-call budgets. Finite
+components use the existing real constant grammar. No arbitrary distribution,
+Python/SymPy string parsing, interval union or user-selected checker is added.
+
+The parent validates the grammar before admission; the child uses the same
+trusted kind and parser inside unchanged 2 s CPU, 256 MiB and 3 s wall limits.
+Classes compare booleans, exact finite sets modulo ordering/duplicates, or exact
+interval endpoints and closure. Undefined/nonreal values are invalid before
+cancellation; undecided proofs remain inconclusive. Numeric samples do not
+establish equality. Scalar probability answers use the strict constant policy.
+
+Attempts still send an answer string and store that exact string. Optional
+public `answerInput` instructions for new structured tasks contain only the
+kind and fixed limits; they contain no expected values, parameters or solution.
+They are derived without building a task and survive code opening, shares,
+recipient copies, worksheets and owner-scoped history. The frontend uses actual
+radio/set/interval controls with formula fields, syntax preview and text
+fallback. Existing problem projections and frozen generator outputs stay intact.
+
+Normal/t tables are supplied with their rounded precision. Questions explicitly
+ask for calculation from those values; their checker compares that exact
+calculation. Approximate statistical procedures are labeled with assumptions.
+No approximate numeric equality replaces symbolic checking.

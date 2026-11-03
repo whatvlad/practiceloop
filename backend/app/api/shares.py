@@ -27,6 +27,7 @@ from app.api.practice import (
 )
 from app.core.database import transaction
 from app.core.errors import ApiError
+from app.engine import practice as engine
 from app.services import idempotency, shares
 from app.services import owned_records as records
 from app.services.idempotency import Scope, StoredResponse
@@ -124,6 +125,7 @@ def _shared(found: SharedProblem | State) -> dict[str, Any]:
             "topic": found.topic,
             "difficulty": found.difficulty,
             "problemLatex": found.problem_latex,
+            **engine.input_projection(found.generator_data),
         }
     }
 

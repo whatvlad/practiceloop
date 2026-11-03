@@ -5,6 +5,7 @@ import { normalizeProblemCode } from './problemCodes';
 import { parseVisual } from '../visual/spec';
 import { AREAS, areaOf, isTopicSlug, listedArea, rememberTopics } from './topics';
 import { FEEDBACK_CODES } from './types';
+import { parseAnswerInput } from './answerInput';
 import type { AreaSlug, AvailableArea, AvailableTopic, Catalogue, CheckOutcome, Difficulty, LearningStatistics, OmissionMetric, OpenedProblem, ProblemPage, ProblemShare, ProfileCounts, PublicProblem, ReportCategory, RevealedAnswer, RevealedSolution, PracticeTopic, TopicSlug, WorksheetCapacity } from './types';
 
 const base = (import.meta.env.VITE_API_BASE_URL ?? '/api').trim().replace(/\/+$/, '');
@@ -169,7 +170,8 @@ function publicProblem(value: unknown): PublicProblem {
     problemLatex: data.problemLatex, createdAt: data.createdAt, answerRevealed: data.answerRevealed,
     solutionRevealed: data.solutionRevealed, attemptCount: data.attemptCount as number,
     lastResult: last ? verdict(last).result : null, lastFeedback: last ? verdict(last).feedback : null,
-    lastAnswer: last ? last.answer as string : null, worksheetId: (data.worksheetId as string | null | undefined) ?? null };
+    lastAnswer: last ? last.answer as string : null, worksheetId: (data.worksheetId as string | null | undefined) ?? null,
+    ...(data.answerInput === undefined ? {} : { answerInput: parseAnswerInput(data.answerInput) }) };
 }
 
 function cache(problem: PublicProblem): PublicProblem {
@@ -451,7 +453,8 @@ export function generateProblem(topic: PracticeTopic, difficulty: Difficulty, ar
     // Explicit projection: even a malformed server response cannot cache private fields.
     const problem: PublicProblem = { saved, id: data.id, topic: data.topic as TopicSlug, difficulty,
       problemLatex: data.problemLatex, createdAt: data.createdAt, answerRevealed: false, solutionRevealed: false,
-      lastResult: null, lastAnswer: null, ...(mixed ? { mixed: true } : {}) };
+      lastResult: null, lastAnswer: null, ...(mixed ? { mixed: true } : {}),
+      ...(data.answerInput === undefined ? {} : { answerInput: parseAnswerInput(data.answerInput) }) };
     problems.unshift(problem);
     selection = { topic, difficulty, area: drawFrom };
     keys.delete(operation);

@@ -81,7 +81,13 @@ do $$ begin
   assert (select count(*) from public.profiles) = 1, 'profile isolation';
   assert (select count(*) from public.problems) = 1, 'problem isolation';
   assert (select count(*) from public.attempts) = 1, 'attempt isolation';
-  assert (select count(*) from public.topics) = 36, 'topic list';
+  assert (select count(*) from public.topics) = 45, 'topic list';
+  assert (select count(*) from public.topics where area = 'probability-statistics') = 9, 'probability topic area';
+  assert (select count(*) from public.topics where slug in (
+    'probability-events', 'conditional-probability', 'discrete-random-variables',
+    'discrete-distributions', 'continuous-distributions', 'moments-joint-distributions',
+    'descriptive-statistics', 'confidence-intervals', 'hypothesis-tests'
+  ) and area = 'probability-statistics') = 9, 'approved probability curriculum';
   assert exists (select 1 from public.topics where slug = 'differential-calculus' and area = 'mathematical-analysis'), 'differential calculus topic';
   assert exists (select 1 from public.topics where slug = 'matrix-operations' and area = 'algebra'), 'matrix operations topic';
   assert (select count(*) from public.topics where slug in ('eigenvalues', 'vectors', 'lines-and-planes') and area = 'algebra') = 3, 'eigenvalue and geometry topics';

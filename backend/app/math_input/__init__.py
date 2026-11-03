@@ -10,6 +10,7 @@ from app.math_input.parser import (
     declared_variables,
     parse_math_input,
 )
+from app.math_input.structured import parse_answer_input
 from app.math_input.symbolic import build_expression
 
 __all__ = [
@@ -21,5 +22,6 @@ __all__ = [
     "VariableDomain",
     "declared_variables",
     "parse_math_input",
+    "parse_answer_input",
     "build_expression",
 ]

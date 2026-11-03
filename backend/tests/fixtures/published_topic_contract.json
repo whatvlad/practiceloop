@@ -412,5 +412,131 @@
     ],
     "mixed_weight": 1,
     "space_cm": 5
+  },
+  {
+    "slug": "probability-events",
+    "name": "Events and counting",
+    "area": "probability-statistics",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mixed_weight": 1,
+    "space_cm": 4
+  },
+  {
+    "slug": "conditional-probability",
+    "name": "Conditional probability and Bayes",
+    "area": "probability-statistics",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mixed_weight": 1,
+    "space_cm": 5
+  },
+  {
+    "slug": "discrete-random-variables",
+    "name": "Discrete random variables",
+    "area": "probability-statistics",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mixed_weight": 1,
+    "space_cm": 5
+  },
+  {
+    "slug": "discrete-distributions",
+    "name": "Standard discrete distributions",
+    "area": "probability-statistics",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mixed_weight": 1,
+    "space_cm": 5
+  },
+  {
+    "slug": "continuous-distributions",
+    "name": "Continuous distributions",
+    "area": "probability-statistics",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mixed_weight": 1,
+    "space_cm": 5
+  },
+  {
+    "slug": "moments-joint-distributions",
+    "name": "Moments and joint distributions",
+    "area": "probability-statistics",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mixed_weight": 1,
+    "space_cm": 5
+  },
+  {
+    "slug": "descriptive-statistics",
+    "name": "Descriptive statistics",
+    "area": "probability-statistics",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mixed_weight": 1,
+    "space_cm": 5
+  },
+  {
+    "slug": "confidence-intervals",
+    "name": "Confidence intervals",
+    "area": "probability-statistics",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mixed_weight": 1,
+    "space_cm": 5
+  },
+  {
+    "slug": "hypothesis-tests",
+    "name": "Hypothesis tests",
+    "area": "probability-statistics",
+    "levels": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "mixed_weight": 1,
+    "space_cm": 5
   }
 ]

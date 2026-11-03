@@ -1,8 +1,17 @@
 import { useState } from 'react';
-import { algebraSections, analysisSections } from '../data/curriculum';
+import { algebraSections, analysisSections, probabilitySections } from '../data/curriculum';
 import { Link } from '../router';
 
 const PRACTICE: Record<string, { topic: string; scope: string }> = {
+  'Events and counting': { topic: 'probability-events', scope: 'Use equally likely outcomes, complements, event operations, counting and independence.' },
+  'Conditional probability and Bayes': { topic: 'conditional-probability', scope: 'Use conditional tables, replacement rules, total probability, Bayes and probability trees.' },
+  'Discrete random variables': { topic: 'discrete-random-variables', scope: 'Normalize finite laws, read CDFs, identify supports and transform variables.' },
+  'Standard discrete distributions': { topic: 'discrete-distributions', scope: 'Calculate Bernoulli, binomial, geometric, hypergeometric and Poisson probabilities.' },
+  'Continuous distributions': { topic: 'continuous-distributions', scope: 'Work with uniform, polynomial, exponential and normal distributions and supplied tables.' },
+  'Moments and joint distributions': { topic: 'moments-joint-distributions', scope: 'Find moments, marginals, conditionals, covariance, correlation and independence.' },
+  'Descriptive statistics': { topic: 'descriptive-statistics', scope: 'Summarize small datasets, frequencies, quartiles, spread, correlation and least squares.' },
+  'Confidence intervals': { topic: 'confidence-intervals', scope: 'Construct mean, proportion, paired and independent-mean confidence intervals.' },
+  'Hypothesis tests': { topic: 'hypothesis-tests', scope: 'Use z, t, proportion, paired and independent-mean tests with stated assumptions.' },
   'Algebraic expressions': { topic: 'algebraic-expressions', scope: 'Selected radical simplification and denominator rationalization' },
   'Matrix arithmetic': { topic: 'matrix-operations', scope: 'Combinations with transposes, products and AB − BA' },
   'Determinant properties': { topic: 'determinants', scope: 'Determinants after scaling, powers and row operations' },
@@ -59,8 +68,9 @@ const PRACTICE: Record<string, { topic: string; scope: string }> = {
 };
 
 export function CurriculumPage() {
-  const [area, setArea] = useState<'algebra' | 'analysis'>('algebra');
-  const sections = area === 'algebra' ? algebraSections : analysisSections;
+  const [area, setArea] = useState<'algebra' | 'analysis' | 'probability'>('algebra');
+  const sections = area === 'algebra' ? algebraSections : area === 'analysis' ? analysisSections : probabilitySections;
+  const practiceArea = area === 'algebra' ? 'algebra' : area === 'analysis' ? 'mathematical-analysis' : 'probability-statistics';
 
   return (
     <main id="main" tabIndex={-1} className="pl-wrap pl-app-main">
@@ -70,6 +80,7 @@ export function CurriculumPage() {
       <div className="pl-chips" role="group" aria-label="Area">
         <button type="button" className="pl-chip" aria-pressed={area === 'algebra'} onClick={() => setArea('algebra')}>Algebra</button>
         <button type="button" className="pl-chip" aria-pressed={area === 'analysis'} onClick={() => setArea('analysis')}>Mathematical Analysis</button>
+        <button type="button" className="pl-chip" aria-pressed={area === 'probability'} onClick={() => setArea('probability')}>Probability and Statistics</button>
       </div>
       <section className="pl-card pl-mt-4" aria-labelledby="ready-to-practise">
         <h2 id="ready-to-practise" className="pl-h-lg">Ready to practise</h2>
@@ -77,7 +88,7 @@ export function CurriculumPage() {
         <ul>
           {sections.flatMap(section => section.types).filter(type => PRACTICE[type.name]).map(type => (
             <li key={type.name}>
-              <Link to={`/dashboard?area=${area === 'algebra' ? 'algebra' : 'mathematical-analysis'}&topic=${PRACTICE[type.name].topic}`}>{PRACTICE[type.name].scope}</Link>
+              <Link to={`/dashboard?area=${practiceArea}&topic=${PRACTICE[type.name].topic}`}>{PRACTICE[type.name].scope}</Link>
             </li>
           ))}
         </ul>
@@ -92,7 +103,7 @@ export function CurriculumPage() {
                   <summary className="pl-h-md">{type.name} <span className="pl-small pl-muted">— {PRACTICE[type.name] ? 'Selected problems available · In develop' : 'In develop'}</span></summary>
                   <p className="pl-muted">{type.description}</p>
                   {type.subtypes && <ul>{type.subtypes.map(subtype => <li key={subtype}>{subtype}</li>)}</ul>}
-                  {PRACTICE[type.name] ? <div><p>{PRACTICE[type.name].scope}</p><Link className="pl-btn pl-btn--primary" to={`/dashboard?area=${area === 'algebra' ? 'algebra' : 'mathematical-analysis'}&topic=${PRACTICE[type.name].topic}`}>Practice</Link></div> : <p className="pl-display-md" role="status">In develop</p>}
+                  {PRACTICE[type.name] ? <div><p>{PRACTICE[type.name].scope}</p><Link className="pl-btn pl-btn--primary" to={`/dashboard?area=${practiceArea}&topic=${PRACTICE[type.name].topic}`}>Practice</Link></div> : <p className="pl-display-md" role="status">In develop</p>}
                 </details>
               ))}
             </div>

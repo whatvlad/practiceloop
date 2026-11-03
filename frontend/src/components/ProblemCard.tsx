@@ -1,7 +1,8 @@
-import type { CheckResult, Difficulty, FeedbackCode, SolutionStep, TopicSlug } from '../data/types';
+import type { AnswerInputSpec, CheckResult, Difficulty, FeedbackCode, SolutionStep, TopicSlug } from '../data/types';
 import { answerVariables, keypadVariables, problemKind, type ProblemKind } from '../format';
 import { problemTag } from '../data/topics';
 import { AnswerInput } from './AnswerInput';
+import { StructuredAnswerInput } from './StructuredAnswerInput';
 import { Button } from './Button';
 import { DifficultyDots } from './DifficultyScale';
 import { ResultBanner, RevealedAnswer } from './ResultBanner';
@@ -12,6 +13,7 @@ import { ProblemStatement } from './ProblemStatement';
 import text from '../../../backend/app/content/en.json';
 
 interface ProblemCardProps {
+  answerInput?: AnswerInputSpec;
   topic: TopicSlug;
   difficulty: Difficulty;
   problemLatex: string;
@@ -62,6 +64,7 @@ const PLACEHOLDERS: Record<ProblemKind, string> = {
 
 /** The one lifted surface: a problem, its answer field and every action on it. */
 export function ProblemCard({
+  answerInput,
   topic,
   difficulty,
   problemLatex,
@@ -83,7 +86,11 @@ export function ProblemCard({
 }: ProblemCardProps) {
   const solved = result === 'correct';
   const kind = problemKind(topic, problemLatex);
-  const message = result === 'incorrect' ? incorrectMessage(feedback, kind) : undefined;
+  const message = result === 'incorrect' ? answerInput ? {
+    boolean: 'Recheck the stated conditions and your decision, or reveal the solution.',
+    finite_set: 'Check every entry and include all required values, or reveal the solution.',
+    interval: 'Check both endpoints and their inclusion, or reveal the solution.',
+  }[answerInput.kind] : incorrectMessage(feedback, kind) : undefined;
   return (
     <section className="pl-problem" aria-label="Problem" aria-busy={busy}>
       <div className="pl-problem-head">
@@ -96,7 +103,8 @@ export function ProblemCard({
         {headLabel && <span className="pl-label">{headLabel}</span>}
       </div>
       <ProblemStatement topic={topic} problemLatex={problemLatex} />
-      <AnswerInput
+      {answerInput ? <StructuredAnswerInput id="answer" spec={answerInput} value={answer} onChange={onAnswerChange}
+        state={result} onEnter={solved || busy ? undefined : onCheck} describedBy={result ? 'answer-result' : undefined} /> : <AnswerInput
         id="answer"
         value={answer}
         onChange={onAnswerChange}
@@ -105,14 +113,14 @@ export function ProblemCard({
         describedBy={result ? 'answer-result' : undefined}
         onEnter={solved || busy ? undefined : onCheck}
         assist
-        variables={answerVariables(kind, problemLatex)}
+        variables={answerVariables(kind, problemLatex, topic)}
         keypadVariables={keypadVariables(kind, problemLatex, topic)}
         hint={
           <>
             Type <code>/</code> for a fraction, <code>^</code> for a power, <code>sqrt</code> for a root, or use the keys. Press Enter to check.
           </>
         }
-      />
+      />}
       <div className="pl-result-slot" role="status">{result && <ResultBanner id="answer-result" state={result} message={message} live={false} />}</div>
       {busy && <p role="status" className="pl-small pl-muted">Working…</p>}
       <Button size="lg" block onClick={onCheck} disabled={solved || busy}>

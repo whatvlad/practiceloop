@@ -12198,5 +12198,5481 @@
         "template": "ode-laplace-oscillator"
       }
     }
+  ],
+  "probability-events-equal-v1": [
+    {
+      "code": "PSAA-1-0000000000000200-87",
+      "statement": "An experiment has \\(10\\) equally likely outcomes, of which \\(5\\) belong to event A. Find \\(P(A)\\).",
+      "steps": [
+        [
+          "method",
+          "P(A)=\\frac{|A|}{|\\Omega|}"
+        ],
+        [
+          "substitution",
+          "P(A)=\\frac{5}{10}=\\frac{1}{2}"
+        ],
+        [
+          "result",
+          "\\frac{1}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{2}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "events-equal"
+      }
+    },
+    {
+      "code": "PSAA-1-0000000000000201-07",
+      "statement": "An experiment has \\(5\\) equally likely outcomes, of which \\(2\\) belong to event A. Find \\(P(A)\\).",
+      "steps": [
+        [
+          "method",
+          "P(A)=\\frac{|A|}{|\\Omega|}"
+        ],
+        [
+          "substitution",
+          "P(A)=\\frac{2}{5}=\\frac{2}{5}"
+        ],
+        [
+          "result",
+          "\\frac{2}{5}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{2}{5}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "events-equal"
+      }
+    },
+    {
+      "code": "PSAA-1-0000000000000202-24",
+      "statement": "An experiment has \\(5\\) equally likely outcomes, of which \\(2\\) belong to event A. Find \\(P(A)\\).",
+      "steps": [
+        [
+          "method",
+          "P(A)=\\frac{|A|}{|\\Omega|}"
+        ],
+        [
+          "substitution",
+          "P(A)=\\frac{2}{5}=\\frac{2}{5}"
+        ],
+        [
+          "result",
+          "\\frac{2}{5}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{2}{5}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "events-equal"
+      }
+    }
+  ],
+  "probability-events-complement-v1": [
+    {
+      "code": "PSAB-1-0000000000000200-13",
+      "statement": "Given \\(P(A)=\\frac{1}{2}\\), find \\(P(A^c)\\).",
+      "steps": [
+        [
+          "method",
+          "P(A^c)=1-P(A)"
+        ],
+        [
+          "substitution",
+          "1-\\frac{1}{2}=\\frac{1}{2}"
+        ],
+        [
+          "result",
+          "\\frac{1}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{2}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "events-complement"
+      }
+    },
+    {
+      "code": "PSAB-1-0000000000000201-30",
+      "statement": "Given \\(P(A)=\\frac{2}{5}\\), find \\(P(A^c)\\).",
+      "steps": [
+        [
+          "method",
+          "P(A^c)=1-P(A)"
+        ],
+        [
+          "substitution",
+          "1-\\frac{2}{5}=\\frac{3}{5}"
+        ],
+        [
+          "result",
+          "\\frac{3}{5}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{3}{5}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "events-complement"
+      }
+    },
+    {
+      "code": "PSAB-1-0000000000000202-47",
+      "statement": "Given \\(P(A)=\\frac{2}{5}\\), find \\(P(A^c)\\).",
+      "steps": [
+        [
+          "method",
+          "P(A^c)=1-P(A)"
+        ],
+        [
+          "substitution",
+          "1-\\frac{2}{5}=\\frac{3}{5}"
+        ],
+        [
+          "result",
+          "\\frac{3}{5}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{3}{5}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "events-complement"
+      }
+    }
+  ],
+  "probability-events-at-least-one-v1": [
+    {
+      "code": "PSAC-1-0000000000000200-01",
+      "statement": "There are \\(2\\) independent trials, each with success probability \\(\\frac{1}{2}\\). Find the probability of at least one success.",
+      "steps": [
+        [
+          "method",
+          "P(\\text{at least one})=1-P(\\text{none})"
+        ],
+        [
+          "substitution",
+          "1-(1-\\frac{1}{2})^{2}=\\frac{3}{4}"
+        ],
+        [
+          "result",
+          "\\frac{3}{4}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{3}{4}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "events-at-least-one"
+      }
+    },
+    {
+      "code": "PSAC-1-0000000000000201-18",
+      "statement": "There are \\(5\\) independent trials, each with success probability \\(\\frac{2}{5}\\). Find the probability of at least one success.",
+      "steps": [
+        [
+          "method",
+          "P(\\text{at least one})=1-P(\\text{none})"
+        ],
+        [
+          "substitution",
+          "1-(1-\\frac{2}{5})^{5}=\\frac{2882}{3125}"
+        ],
+        [
+          "result",
+          "\\frac{2882}{3125}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{2882}{3125}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "events-at-least-one"
+      }
+    },
+    {
+      "code": "PSAC-1-0000000000000202-35",
+      "statement": "There are \\(6\\) independent trials, each with success probability \\(\\frac{2}{5}\\). Find the probability of at least one success.",
+      "steps": [
+        [
+          "method",
+          "P(\\text{at least one})=1-P(\\text{none})"
+        ],
+        [
+          "substitution",
+          "1-(1-\\frac{2}{5})^{6}=\\frac{14896}{15625}"
+        ],
+        [
+          "result",
+          "\\frac{14896}{15625}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{14896}{15625}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "events-at-least-one"
+      }
+    }
+  ],
+  "probability-events-union-v1": [
+    {
+      "code": "PSAD-1-0000000000000200-76",
+      "statement": "Let \\(P(A)=\\frac{5}{6},\\ P(B)=\\frac{5}{6}\\). Also \\(P(A\\cap B)=\\frac{25}{36}\\). Find \\(P(A\\cup B)\\).",
+      "steps": [
+        [
+          "method",
+          "P(A\\cup B)=P(A)+P(B)-P(A\\cap B)"
+        ],
+        [
+          "substitution",
+          "\\frac{5}{6}+\\frac{5}{6}-\\frac{25}{36}=\\frac{35}{36}"
+        ],
+        [
+          "result",
+          "\\frac{35}{36}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{35}{36}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "events-union"
+      }
+    },
+    {
+      "code": "PSAD-1-0000000000000201-93",
+      "statement": "Let \\(P(A)=\\frac{15}{22},\\ P(B)=\\frac{5}{11}\\). Also \\(P(A\\cap B)=\\frac{7}{22}\\). Find \\(P(A\\cup B)\\).",
+      "steps": [
+        [
+          "method",
+          "P(A\\cup B)=P(A)+P(B)-P(A\\cap B)"
+        ],
+        [
+          "substitution",
+          "\\frac{15}{22}+\\frac{5}{11}-\\frac{7}{22}=\\frac{9}{11}"
+        ],
+        [
+          "result",
+          "\\frac{9}{11}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{9}{11}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "events-union"
+      }
+    },
+    {
+      "code": "PSAD-1-0000000000000202-13",
+      "statement": "Let \\(P(A)=\\frac{2}{3},\\ P(B)=\\frac{3}{8}\\). Also \\(P(A\\cap B)=\\frac{1}{4}\\). Find \\(P(A\\cup B)\\).",
+      "steps": [
+        [
+          "method",
+          "P(A\\cup B)=P(A)+P(B)-P(A\\cap B)"
+        ],
+        [
+          "substitution",
+          "\\frac{2}{3}+\\frac{3}{8}-\\frac{1}{4}=\\frac{19}{24}"
+        ],
+        [
+          "result",
+          "\\frac{19}{24}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{19}{24}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "events-union"
+      }
+    }
+  ],
+  "probability-events-intersection-v1": [
+    {
+      "code": "PSAE-1-0000000000000200-76",
+      "statement": "Let \\(P(A)=\\frac{5}{6},\\ P(B)=\\frac{5}{6}\\). Also \\(P(A\\cup B)=\\frac{35}{36}\\). Find \\(P(A\\cap B)\\).",
+      "steps": [
+        [
+          "method",
+          "P(A\\cap B)=P(A)+P(B)-P(A\\cup B)"
+        ],
+        [
+          "substitution",
+          "\\frac{5}{6}+\\frac{5}{6}-\\frac{35}{36}=\\frac{25}{36}"
+        ],
+        [
+          "result",
+          "\\frac{25}{36}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{25}{36}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "events-intersection"
+      }
+    },
+    {
+      "code": "PSAE-1-0000000000000201-93",
+      "statement": "Let \\(P(A)=\\frac{15}{22},\\ P(B)=\\frac{5}{11}\\). Also \\(P(A\\cup B)=\\frac{9}{11}\\). Find \\(P(A\\cap B)\\).",
+      "steps": [
+        [
+          "method",
+          "P(A\\cap B)=P(A)+P(B)-P(A\\cup B)"
+        ],
+        [
+          "substitution",
+          "\\frac{15}{22}+\\frac{5}{11}-\\frac{9}{11}=\\frac{7}{22}"
+        ],
+        [
+          "result",
+          "\\frac{7}{22}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{7}{22}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "events-intersection"
+      }
+    },
+    {
+      "code": "PSAE-1-0000000000000202-13",
+      "statement": "Let \\(P(A)=\\frac{2}{3},\\ P(B)=\\frac{3}{8}\\). Also \\(P(A\\cup B)=\\frac{19}{24}\\). Find \\(P(A\\cap B)\\).",
+      "steps": [
+        [
+          "method",
+          "P(A\\cap B)=P(A)+P(B)-P(A\\cup B)"
+        ],
+        [
+          "substitution",
+          "\\frac{2}{3}+\\frac{3}{8}-\\frac{19}{24}=\\frac{1}{4}"
+        ],
+        [
+          "result",
+          "\\frac{1}{4}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{4}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "events-intersection"
+      }
+    }
+  ],
+  "probability-events-selection-v1": [
+    {
+      "code": "PSAF-1-0000000000000200-14",
+      "statement": "A bag has \\(6\\) red and \\(6\\) blue balls. Two balls are selected uniformly without replacement. Find the probability that both are red.",
+      "steps": [
+        [
+          "method",
+          "P(\\text{two red})=\\frac{\\binom R2}{\\binom{R+B}2}"
+        ],
+        [
+          "substitution",
+          "\\frac{\\binom{6}2}{\\binom{12}2}=\\frac{5}{22}"
+        ],
+        [
+          "result",
+          "\\frac{5}{22}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{5}{22}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "events-selection"
+      }
+    },
+    {
+      "code": "PSAF-1-0000000000000201-31",
+      "statement": "A bag has \\(3\\) red and \\(4\\) blue balls. Two balls are selected uniformly without replacement. Find the probability that both are red.",
+      "steps": [
+        [
+          "method",
+          "P(\\text{two red})=\\frac{\\binom R2}{\\binom{R+B}2}"
+        ],
+        [
+          "substitution",
+          "\\frac{\\binom{3}2}{\\binom{7}2}=\\frac{1}{7}"
+        ],
+        [
+          "result",
+          "\\frac{1}{7}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{7}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "events-selection"
+      }
+    },
+    {
+      "code": "PSAF-1-0000000000000202-48",
+      "statement": "A bag has \\(3\\) red and \\(4\\) blue balls. Two balls are selected uniformly without replacement. Find the probability that both are red.",
+      "steps": [
+        [
+          "method",
+          "P(\\text{two red})=\\frac{\\binom R2}{\\binom{R+B}2}"
+        ],
+        [
+          "substitution",
+          "\\frac{\\binom{3}2}{\\binom{7}2}=\\frac{1}{7}"
+        ],
+        [
+          "result",
+          "\\frac{1}{7}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{7}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "events-selection"
+      }
+    }
+  ],
+  "probability-events-set-v1": [
+    {
+      "code": "PSAG-1-0000000000000200-52",
+      "statement": "In \\(\\Omega=\\{1,2,3,4,5,6\\}\\), let \\(A=\\left\\{1, 2, 3, 4, 5, 6\\right\\}\\) and \\(B=\\left\\{5, 6\\right\\}\\). Give the finite event set \\(A\\cup B\\).",
+      "steps": [
+        [
+          "method",
+          "A=\\left\\{1, 2, 3, 4, 5, 6\\right\\},\\quad B=\\left\\{5, 6\\right\\}"
+        ],
+        [
+          "substitution",
+          "A\\cup B=\\left\\{1, 2, 3, 4, 5, 6\\right\\}"
+        ],
+        [
+          "result",
+          "\\left\\{1, 2, 3, 4, 5, 6\\right\\}"
+        ]
+      ],
+      "answer_kind": "finite_set",
+      "answer_latex": "\\left\\{1, 2, 3, 4, 5, 6\\right\\}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "events-set"
+      }
+    },
+    {
+      "code": "PSAG-1-0000000000000201-69",
+      "statement": "In \\(\\Omega=\\{1,2,3,4,5,6\\}\\), let \\(A=\\left\\{1, 2, 3\\right\\}\\) and \\(B=\\left\\{3, 4, 5, 6\\right\\}\\). Give the finite event set \\(A\\cup B\\).",
+      "steps": [
+        [
+          "method",
+          "A=\\left\\{1, 2, 3\\right\\},\\quad B=\\left\\{3, 4, 5, 6\\right\\}"
+        ],
+        [
+          "substitution",
+          "A\\cup B=\\left\\{1, 2, 3, 4, 5, 6\\right\\}"
+        ],
+        [
+          "result",
+          "\\left\\{1, 2, 3, 4, 5, 6\\right\\}"
+        ]
+      ],
+      "answer_kind": "finite_set",
+      "answer_latex": "\\left\\{1, 2, 3, 4, 5, 6\\right\\}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "events-set"
+      }
+    },
+    {
+      "code": "PSAG-1-0000000000000202-86",
+      "statement": "In \\(\\Omega=\\{1,2,3,4,5,6\\}\\), let \\(A=\\left\\{1, 2, 3\\right\\}\\) and \\(B=\\left\\{3, 4, 5, 6\\right\\}\\). Give the finite event set \\(A\\cap B\\).",
+      "steps": [
+        [
+          "method",
+          "A=\\left\\{1, 2, 3\\right\\},\\quad B=\\left\\{3, 4, 5, 6\\right\\}"
+        ],
+        [
+          "substitution",
+          "A\\cap B=\\left\\{3\\right\\}"
+        ],
+        [
+          "result",
+          "\\left\\{3\\right\\}"
+        ]
+      ],
+      "answer_kind": "finite_set",
+      "answer_latex": "\\left\\{3\\right\\}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "events-set"
+      }
+    }
+  ],
+  "probability-events-independence-v1": [
+    {
+      "code": "PSAH-1-0000000000000200-90",
+      "statement": "Let \\(P(A)=\\frac{5}{6},\\ P(B)=\\frac{5}{6}\\). Also \\(P(A\\cap B)=\\frac{25}{36}\\). Are A and B independent? Answer Yes or No.",
+      "steps": [
+        [
+          "method",
+          "A\\perp B\\iff P(A\\cap B)=P(A)P(B)"
+        ],
+        [
+          "substitution",
+          "P(A)P(B)=\\frac{25}{36},\\quad P(A\\cap B)=\\frac{25}{36}"
+        ],
+        [
+          "result",
+          "\\text{Yes}"
+        ]
+      ],
+      "answer_kind": "boolean",
+      "answer_latex": "\\text{Yes}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "events-independence"
+      }
+    },
+    {
+      "code": "PSAH-1-0000000000000201-10",
+      "statement": "Let \\(P(A)=\\frac{15}{22},\\ P(B)=\\frac{5}{11}\\). Also \\(P(A\\cap B)=\\frac{7}{22}\\). Are A and B independent? Answer Yes or No.",
+      "steps": [
+        [
+          "method",
+          "A\\perp B\\iff P(A\\cap B)=P(A)P(B)"
+        ],
+        [
+          "substitution",
+          "P(A)P(B)=\\frac{75}{242},\\quad P(A\\cap B)=\\frac{7}{22}"
+        ],
+        [
+          "result",
+          "\\text{No}"
+        ]
+      ],
+      "answer_kind": "boolean",
+      "answer_latex": "\\text{No}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "events-independence"
+      }
+    },
+    {
+      "code": "PSAH-1-0000000000000202-27",
+      "statement": "Let \\(P(A)=\\frac{2}{3},\\ P(B)=\\frac{3}{8}\\). Also \\(P(A\\cap B)=\\frac{1}{4}\\). Are A and B independent? Answer Yes or No.",
+      "steps": [
+        [
+          "method",
+          "A\\perp B\\iff P(A\\cap B)=P(A)P(B)"
+        ],
+        [
+          "substitution",
+          "P(A)P(B)=\\frac{1}{4},\\quad P(A\\cap B)=\\frac{1}{4}"
+        ],
+        [
+          "result",
+          "\\text{Yes}"
+        ]
+      ],
+      "answer_kind": "boolean",
+      "answer_latex": "\\text{Yes}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "events-independence"
+      }
+    }
+  ],
+  "probability-conditional-table-v1": [
+    {
+      "code": "PSAI-1-0000000000000200-13",
+      "statement": "The joint distribution is \\(\\begin{array}{c|cc}X\\backslash Y&0&2\\\\\\hline0&\\frac{25}{36}&\\frac{5}{36}\\\\1&\\frac{5}{36}&\\frac{1}{36}\\end{array}\\). Find \\(P(X=0\\mid Y=0)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X=0\\mid Y=0)=\\frac{P(X=0,Y=0)}{P(Y=0)}"
+        ],
+        [
+          "substitution",
+          "\\frac{\\frac{25}{36}}{\\frac{5}{6}}=\\frac{5}{6}"
+        ],
+        [
+          "result",
+          "\\frac{5}{6}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{5}{6}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "conditional-table"
+      }
+    },
+    {
+      "code": "PSAI-1-0000000000000201-30",
+      "statement": "The joint distribution is \\(\\begin{array}{c|cc}X\\backslash Y&0&2\\\\\\hline0&\\frac{7}{22}&\\frac{4}{11}\\\\1&\\frac{3}{22}&\\frac{2}{11}\\end{array}\\). Find \\(P(X=0\\mid Y=0)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X=0\\mid Y=0)=\\frac{P(X=0,Y=0)}{P(Y=0)}"
+        ],
+        [
+          "substitution",
+          "\\frac{\\frac{7}{22}}{\\frac{5}{11}}=\\frac{7}{10}"
+        ],
+        [
+          "result",
+          "\\frac{7}{10}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{7}{10}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "conditional-table"
+      }
+    },
+    {
+      "code": "PSAI-1-0000000000000202-47",
+      "statement": "The joint distribution is \\(\\begin{array}{c|cc}X\\backslash Y&0&2\\\\\\hline0&\\frac{1}{4}&\\frac{5}{12}\\\\1&\\frac{1}{8}&\\frac{5}{24}\\end{array}\\). Find \\(P(X=0\\mid Y=0)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X=0\\mid Y=0)=\\frac{P(X=0,Y=0)}{P(Y=0)}"
+        ],
+        [
+          "substitution",
+          "\\frac{\\frac{1}{4}}{\\frac{3}{8}}=\\frac{2}{3}"
+        ],
+        [
+          "result",
+          "\\frac{2}{3}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{2}{3}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "conditional-table"
+      }
+    }
+  ],
+  "probability-conditional-replacement-v1": [
+    {
+      "code": "PSAJ-1-0000000000000200-20",
+      "statement": "A bag has \\(6\\) red and \\(6\\) blue balls. Two draws are made with replacement. Given that the first ball is red, find the probability that the second ball is red.",
+      "steps": [
+        [
+          "method",
+          "P(R_2\\mid R_1)=\\frac{\\text{remaining red}}{\\text{remaining total}}"
+        ],
+        [
+          "substitution",
+          "P(R_2\\mid R_1)=\\frac{1}{2}"
+        ],
+        [
+          "result",
+          "\\frac{1}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{2}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "conditional-replacement"
+      }
+    },
+    {
+      "code": "PSAJ-1-0000000000000201-37",
+      "statement": "A bag has \\(3\\) red and \\(4\\) blue balls. Two draws are made with replacement. Given that the first ball is red, find the probability that the second ball is red.",
+      "steps": [
+        [
+          "method",
+          "P(R_2\\mid R_1)=\\frac{\\text{remaining red}}{\\text{remaining total}}"
+        ],
+        [
+          "substitution",
+          "P(R_2\\mid R_1)=\\frac{3}{7}"
+        ],
+        [
+          "result",
+          "\\frac{3}{7}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{3}{7}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "conditional-replacement"
+      }
+    },
+    {
+      "code": "PSAJ-1-0000000000000202-54",
+      "statement": "A bag has \\(3\\) red and \\(4\\) blue balls. Two draws are made with replacement. Given that the first ball is red, find the probability that the second ball is red.",
+      "steps": [
+        [
+          "method",
+          "P(R_2\\mid R_1)=\\frac{\\text{remaining red}}{\\text{remaining total}}"
+        ],
+        [
+          "substitution",
+          "P(R_2\\mid R_1)=\\frac{3}{7}"
+        ],
+        [
+          "result",
+          "\\frac{3}{7}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{3}{7}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "conditional-replacement"
+      }
+    }
+  ],
+  "probability-conditional-without-v1": [
+    {
+      "code": "PSAK-1-0000000000000200-17",
+      "statement": "A bag has \\(6\\) red and \\(6\\) blue balls. Two draws are made without replacement. Given that the first ball is red, find the probability that the second ball is red.",
+      "steps": [
+        [
+          "method",
+          "P(R_2\\mid R_1)=\\frac{\\text{remaining red}}{\\text{remaining total}}"
+        ],
+        [
+          "substitution",
+          "P(R_2\\mid R_1)=\\frac{5}{11}"
+        ],
+        [
+          "result",
+          "\\frac{5}{11}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{5}{11}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "conditional-without"
+      }
+    },
+    {
+      "code": "PSAK-1-0000000000000201-34",
+      "statement": "A bag has \\(3\\) red and \\(4\\) blue balls. Two draws are made without replacement. Given that the first ball is red, find the probability that the second ball is red.",
+      "steps": [
+        [
+          "method",
+          "P(R_2\\mid R_1)=\\frac{\\text{remaining red}}{\\text{remaining total}}"
+        ],
+        [
+          "substitution",
+          "P(R_2\\mid R_1)=\\frac{1}{3}"
+        ],
+        [
+          "result",
+          "\\frac{1}{3}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{3}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "conditional-without"
+      }
+    },
+    {
+      "code": "PSAK-1-0000000000000202-51",
+      "statement": "A bag has \\(3\\) red and \\(4\\) blue balls. Two draws are made without replacement. Given that the first ball is red, find the probability that the second ball is red.",
+      "steps": [
+        [
+          "method",
+          "P(R_2\\mid R_1)=\\frac{\\text{remaining red}}{\\text{remaining total}}"
+        ],
+        [
+          "substitution",
+          "P(R_2\\mid R_1)=\\frac{1}{3}"
+        ],
+        [
+          "result",
+          "\\frac{1}{3}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{3}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "conditional-without"
+      }
+    }
+  ],
+  "probability-conditional-total-v1": [
+    {
+      "code": "PSAL-1-0000000000000200-14",
+      "statement": "Sources \\(S_1,S_2\\) partition all cases. Given \\(P(S_1)=\\frac{1}{2},\\ P(E\\mid S_1)=\\frac{5}{6},\\ P(E\\mid S_2)=\\frac{1}{6}\\), find \\(P(E)\\).",
+      "steps": [
+        [
+          "method",
+          "P(E)=P(S_1)P(E\\mid S_1)+P(S_2)P(E\\mid S_2)"
+        ],
+        [
+          "substitution",
+          "P(E)=\\frac{1}{2},\\quad P(E)=\\frac{1}{2}"
+        ],
+        [
+          "result",
+          "\\frac{1}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{2}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "conditional-total"
+      }
+    },
+    {
+      "code": "PSAL-1-0000000000000201-31",
+      "statement": "Sources \\(S_1,S_2\\) partition all cases. Given \\(P(S_1)=\\frac{2}{5},\\ P(E\\mid S_1)=\\frac{3}{7},\\ P(E\\mid S_2)=\\frac{2}{3}\\), find \\(P(E)\\).",
+      "steps": [
+        [
+          "method",
+          "P(E)=P(S_1)P(E\\mid S_1)+P(S_2)P(E\\mid S_2)"
+        ],
+        [
+          "substitution",
+          "P(E)=\\frac{4}{7},\\quad P(E)=\\frac{4}{7}"
+        ],
+        [
+          "result",
+          "\\frac{4}{7}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{4}{7}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "conditional-total"
+      }
+    },
+    {
+      "code": "PSAL-1-0000000000000202-48",
+      "statement": "Sources \\(S_1,S_2\\) partition all cases. Given \\(P(S_1)=\\frac{2}{5},\\ P(E\\mid S_1)=\\frac{3}{8},\\ P(E\\mid S_2)=\\frac{5}{7}\\), find \\(P(E)\\).",
+      "steps": [
+        [
+          "method",
+          "P(E)=P(S_1)P(E\\mid S_1)+P(S_2)P(E\\mid S_2)"
+        ],
+        [
+          "substitution",
+          "P(E)=\\frac{81}{140},\\quad P(E)=\\frac{81}{140}"
+        ],
+        [
+          "result",
+          "\\frac{81}{140}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{81}{140}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "conditional-total"
+      }
+    }
+  ],
+  "probability-conditional-bayes-two-v1": [
+    {
+      "code": "PSAM-1-0000000000000200-09",
+      "statement": "Sources \\(S_1,S_2\\) partition all cases. Given \\(P(S_1)=\\frac{1}{2},\\ P(E\\mid S_1)=\\frac{5}{6},\\ P(E\\mid S_2)=\\frac{1}{6}\\), find \\(P(S_1\\mid E)\\).",
+      "steps": [
+        [
+          "method",
+          "P(S_1\\mid E)=\\frac{P(S_1)P(E\\mid S_1)}{P(E)}"
+        ],
+        [
+          "substitution",
+          "P(E)=\\frac{1}{2},\\quad P(S_1\\mid E)=\\frac{5}{6}"
+        ],
+        [
+          "result",
+          "\\frac{5}{6}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{5}{6}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "conditional-bayes-two"
+      }
+    },
+    {
+      "code": "PSAM-1-0000000000000201-26",
+      "statement": "Sources \\(S_1,S_2\\) partition all cases. Given \\(P(S_1)=\\frac{2}{5},\\ P(E\\mid S_1)=\\frac{3}{7},\\ P(E\\mid S_2)=\\frac{2}{3}\\), find \\(P(S_1\\mid E)\\).",
+      "steps": [
+        [
+          "method",
+          "P(S_1\\mid E)=\\frac{P(S_1)P(E\\mid S_1)}{P(E)}"
+        ],
+        [
+          "substitution",
+          "P(E)=\\frac{4}{7},\\quad P(S_1\\mid E)=\\frac{3}{10}"
+        ],
+        [
+          "result",
+          "\\frac{3}{10}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{3}{10}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "conditional-bayes-two"
+      }
+    },
+    {
+      "code": "PSAM-1-0000000000000202-43",
+      "statement": "Sources \\(S_1,S_2\\) partition all cases. Given \\(P(S_1)=\\frac{2}{5},\\ P(E\\mid S_1)=\\frac{3}{8},\\ P(E\\mid S_2)=\\frac{5}{7}\\), find \\(P(S_1\\mid E)\\).",
+      "steps": [
+        [
+          "method",
+          "P(S_1\\mid E)=\\frac{P(S_1)P(E\\mid S_1)}{P(E)}"
+        ],
+        [
+          "substitution",
+          "P(E)=\\frac{81}{140},\\quad P(S_1\\mid E)=\\frac{7}{27}"
+        ],
+        [
+          "result",
+          "\\frac{7}{27}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{7}{27}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "conditional-bayes-two"
+      }
+    }
+  ],
+  "probability-conditional-bayes-three-v1": [
+    {
+      "code": "PSAN-1-0000000000000200-70",
+      "statement": "Three sources partition all cases, with \\(P(S_1)=\\frac{5}{11},\\ P(E\\mid S_1)=\\frac{1}{6},\\ P(S_2)=\\frac{5}{11},\\ P(E\\mid S_2)=\\frac{1}{6},\\ P(S_3)=\\frac{1}{11},\\ P(E\\mid S_3)=\\frac{1}{2}\\). Find \\(P(S_1\\mid E)\\).",
+      "steps": [
+        [
+          "method",
+          "P(S_1\\mid E)=\\frac{P(S_1)P(E\\mid S_1)}{\\sum_{i=1}^3P(S_i)P(E\\mid S_i)}"
+        ],
+        [
+          "substitution",
+          "P(E)=\\frac{13}{66},\\quad P(S_1\\mid E)=\\frac{5}{13}"
+        ],
+        [
+          "result",
+          "\\frac{5}{13}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{5}{13}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "conditional-bayes-three"
+      }
+    },
+    {
+      "code": "PSAN-1-0000000000000201-87",
+      "statement": "Three sources partition all cases, with \\(P(S_1)=\\frac{2}{9},\\ P(E\\mid S_1)=\\frac{1}{3},\\ P(S_2)=\\frac{1}{3},\\ P(E\\mid S_2)=\\frac{1}{4},\\ P(S_3)=\\frac{4}{9},\\ P(E\\mid S_3)=\\frac{1}{5}\\). Find \\(P(S_1\\mid E)\\).",
+      "steps": [
+        [
+          "method",
+          "P(S_1\\mid E)=\\frac{P(S_1)P(E\\mid S_1)}{\\sum_{i=1}^3P(S_i)P(E\\mid S_i)}"
+        ],
+        [
+          "substitution",
+          "P(E)=\\frac{133}{540},\\quad P(S_1\\mid E)=\\frac{40}{133}"
+        ],
+        [
+          "result",
+          "\\frac{40}{133}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{40}{133}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "conditional-bayes-three"
+      }
+    },
+    {
+      "code": "PSAN-1-0000000000000202-07",
+      "statement": "Three sources partition all cases, with \\(P(S_1)=\\frac{1}{5},\\ P(E\\mid S_1)=\\frac{1}{3},\\ P(S_2)=\\frac{3}{10},\\ P(E\\mid S_2)=\\frac{1}{4},\\ P(S_3)=\\frac{1}{2},\\ P(E\\mid S_3)=\\frac{1}{6}\\). Find \\(P(S_1\\mid E)\\).",
+      "steps": [
+        [
+          "method",
+          "P(S_1\\mid E)=\\frac{P(S_1)P(E\\mid S_1)}{\\sum_{i=1}^3P(S_i)P(E\\mid S_i)}"
+        ],
+        [
+          "substitution",
+          "P(E)=\\frac{9}{40},\\quad P(S_1\\mid E)=\\frac{8}{27}"
+        ],
+        [
+          "result",
+          "\\frac{8}{27}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{8}{27}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "conditional-bayes-three"
+      }
+    }
+  ],
+  "probability-conditional-tree-v1": [
+    {
+      "code": "PSAO-1-0000000000000200-17",
+      "statement": "A tree first chooses branch L with probability \\(\\frac{1}{2}\\), otherwise R. It ends in E with conditional probability \\(\\frac{5}{6}\\) from L and \\(\\frac{1}{6}\\) from R. Find the total probability of ending in E.",
+      "steps": [
+        [
+          "method",
+          "P(E)=P(L\\cap E)+P(R\\cap E)"
+        ],
+        [
+          "substitution",
+          "\\frac{1}{2}\\cdot\\frac{5}{6}+(1-\\frac{1}{2})\\cdot\\frac{1}{6}=\\frac{1}{2}"
+        ],
+        [
+          "result",
+          "\\frac{1}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{2}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "conditional-tree"
+      }
+    },
+    {
+      "code": "PSAO-1-0000000000000201-34",
+      "statement": "A tree first chooses branch L with probability \\(\\frac{2}{5}\\), otherwise R. It ends in E with conditional probability \\(\\frac{3}{7}\\) from L and \\(\\frac{2}{3}\\) from R. Find the total probability of ending in E.",
+      "steps": [
+        [
+          "method",
+          "P(E)=P(L\\cap E)+P(R\\cap E)"
+        ],
+        [
+          "substitution",
+          "\\frac{2}{5}\\cdot\\frac{3}{7}+(1-\\frac{2}{5})\\cdot\\frac{2}{3}=\\frac{4}{7}"
+        ],
+        [
+          "result",
+          "\\frac{4}{7}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{4}{7}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "conditional-tree"
+      }
+    },
+    {
+      "code": "PSAO-1-0000000000000202-51",
+      "statement": "A tree first chooses branch L with probability \\(\\frac{2}{5}\\), otherwise R. It ends in E with conditional probability \\(\\frac{3}{8}\\) from L and \\(\\frac{5}{7}\\) from R. Find the total probability of ending in E.",
+      "steps": [
+        [
+          "method",
+          "P(E)=P(L\\cap E)+P(R\\cap E)"
+        ],
+        [
+          "substitution",
+          "\\frac{2}{5}\\cdot\\frac{3}{8}+(1-\\frac{2}{5})\\cdot\\frac{5}{7}=\\frac{81}{140}"
+        ],
+        [
+          "result",
+          "\\frac{81}{140}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{81}{140}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "conditional-tree"
+      }
+    }
+  ],
+  "probability-finite-normalize-v1": [
+    {
+      "code": "PSAP-1-0000000000000200-01",
+      "statement": "The finite variable takes values \\(-5,0,5\\) with masses \\(5k,5k,1k\\), respectively. Find the normalizing constant k.",
+      "steps": [
+        [
+          "method",
+          "\\sum_xP(X=x)=1"
+        ],
+        [
+          "substitution",
+          "(5+5+1)k=1,\\quad k=\\frac{1}{11}"
+        ],
+        [
+          "result",
+          "\\frac{1}{11}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{11}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "finite-normalize"
+      }
+    },
+    {
+      "code": "PSAP-1-0000000000000201-18",
+      "statement": "The finite variable takes values \\(-2,0,3\\) with masses \\(2k,3k,4k\\), respectively. Find the normalizing constant k.",
+      "steps": [
+        [
+          "method",
+          "\\sum_xP(X=x)=1"
+        ],
+        [
+          "substitution",
+          "(2+3+4)k=1,\\quad k=\\frac{1}{9}"
+        ],
+        [
+          "result",
+          "\\frac{1}{9}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{9}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "finite-normalize"
+      }
+    },
+    {
+      "code": "PSAP-1-0000000000000202-35",
+      "statement": "The finite variable takes values \\(-2,0,3\\) with masses \\(2k,3k,5k\\), respectively. Find the normalizing constant k.",
+      "steps": [
+        [
+          "method",
+          "\\sum_xP(X=x)=1"
+        ],
+        [
+          "substitution",
+          "(2+3+5)k=1,\\quad k=\\frac{1}{10}"
+        ],
+        [
+          "result",
+          "\\frac{1}{10}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{10}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "finite-normalize"
+      }
+    }
+  ],
+  "probability-finite-point-v1": [
+    {
+      "code": "PSAQ-1-0000000000000200-25",
+      "statement": "Given \\(\\begin{array}{c|ccc}x&-5&0&5\\\\\\hline P(X=x)&\\frac{5}{11}&\\frac{5}{11}&\\frac{1}{11}\\end{array}\\), calculate \\(P(X=0)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X\\in A)=\\sum_{x\\in A}P(X=x)"
+        ],
+        [
+          "substitution",
+          "P(X=0)=\\frac{5}{11}"
+        ],
+        [
+          "result",
+          "\\frac{5}{11}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{5}{11}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "finite-point"
+      }
+    },
+    {
+      "code": "PSAQ-1-0000000000000201-42",
+      "statement": "Given \\(\\begin{array}{c|ccc}x&-2&0&3\\\\\\hline P(X=x)&\\frac{2}{9}&\\frac{1}{3}&\\frac{4}{9}\\end{array}\\), calculate \\(P(X=0)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X\\in A)=\\sum_{x\\in A}P(X=x)"
+        ],
+        [
+          "substitution",
+          "P(X=0)=\\frac{1}{3}"
+        ],
+        [
+          "result",
+          "\\frac{1}{3}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{3}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "finite-point"
+      }
+    },
+    {
+      "code": "PSAQ-1-0000000000000202-59",
+      "statement": "Given \\(\\begin{array}{c|ccc}x&-2&0&3\\\\\\hline P(X=x)&\\frac{1}{5}&\\frac{3}{10}&\\frac{1}{2}\\end{array}\\), calculate \\(P(X=0)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X\\in A)=\\sum_{x\\in A}P(X=x)"
+        ],
+        [
+          "substitution",
+          "P(X=0)=\\frac{3}{10}"
+        ],
+        [
+          "result",
+          "\\frac{3}{10}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{3}{10}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "finite-point"
+      }
+    }
+  ],
+  "probability-finite-cdf-v1": [
+    {
+      "code": "PSAR-1-0000000000000200-43",
+      "statement": "Given \\(\\begin{array}{c|ccc}x&-5&0&5\\\\\\hline P(X=x)&\\frac{5}{11}&\\frac{5}{11}&\\frac{1}{11}\\end{array}\\), calculate \\(F_X(0)=P(X\\le0)\\).",
+      "steps": [
+        [
+          "method",
+          "F_X(t)=\\sum_{x\\le t}P(X=x)"
+        ],
+        [
+          "substitution",
+          "F_X(0)=P(X\\le0)=\\frac{10}{11}"
+        ],
+        [
+          "result",
+          "\\frac{10}{11}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{10}{11}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "finite-cdf"
+      }
+    },
+    {
+      "code": "PSAR-1-0000000000000201-60",
+      "statement": "Given \\(\\begin{array}{c|ccc}x&-2&0&3\\\\\\hline P(X=x)&\\frac{2}{9}&\\frac{1}{3}&\\frac{4}{9}\\end{array}\\), calculate \\(F_X(0)=P(X\\le0)\\).",
+      "steps": [
+        [
+          "method",
+          "F_X(t)=\\sum_{x\\le t}P(X=x)"
+        ],
+        [
+          "substitution",
+          "F_X(0)=P(X\\le0)=\\frac{5}{9}"
+        ],
+        [
+          "result",
+          "\\frac{5}{9}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{5}{9}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "finite-cdf"
+      }
+    },
+    {
+      "code": "PSAR-1-0000000000000202-77",
+      "statement": "Given \\(\\begin{array}{c|ccc}x&-2&0&3\\\\\\hline P(X=x)&\\frac{1}{5}&\\frac{3}{10}&\\frac{1}{2}\\end{array}\\), calculate \\(F_X(0)=P(X\\le0)\\).",
+      "steps": [
+        [
+          "method",
+          "F_X(t)=\\sum_{x\\le t}P(X=x)"
+        ],
+        [
+          "substitution",
+          "F_X(0)=P(X\\le0)=\\frac{1}{2}"
+        ],
+        [
+          "result",
+          "\\frac{1}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{2}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "finite-cdf"
+      }
+    }
+  ],
+  "probability-finite-tail-v1": [
+    {
+      "code": "PSAS-1-0000000000000200-46",
+      "statement": "Given \\(\\begin{array}{c|ccc}x&-5&0&5\\\\\\hline P(X=x)&\\frac{5}{11}&\\frac{5}{11}&\\frac{1}{11}\\end{array}\\), calculate \\(P(X>0)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X\\in A)=\\sum_{x\\in A}P(X=x)"
+        ],
+        [
+          "substitution",
+          "P(X>0)=\\frac{1}{11}"
+        ],
+        [
+          "result",
+          "\\frac{1}{11}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{11}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "finite-tail"
+      }
+    },
+    {
+      "code": "PSAS-1-0000000000000201-63",
+      "statement": "Given \\(\\begin{array}{c|ccc}x&-2&0&3\\\\\\hline P(X=x)&\\frac{2}{9}&\\frac{1}{3}&\\frac{4}{9}\\end{array}\\), calculate \\(P(X>0)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X\\in A)=\\sum_{x\\in A}P(X=x)"
+        ],
+        [
+          "substitution",
+          "P(X>0)=\\frac{4}{9}"
+        ],
+        [
+          "result",
+          "\\frac{4}{9}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{4}{9}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "finite-tail"
+      }
+    },
+    {
+      "code": "PSAS-1-0000000000000202-80",
+      "statement": "Given \\(\\begin{array}{c|ccc}x&-2&0&3\\\\\\hline P(X=x)&\\frac{1}{5}&\\frac{3}{10}&\\frac{1}{2}\\end{array}\\), calculate \\(P(X>0)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X\\in A)=\\sum_{x\\in A}P(X=x)"
+        ],
+        [
+          "substitution",
+          "P(X>0)=\\frac{1}{2}"
+        ],
+        [
+          "result",
+          "\\frac{1}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{2}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "finite-tail"
+      }
+    }
+  ],
+  "probability-finite-support-v1": [
+    {
+      "code": "PSAT-1-0000000000000200-36",
+      "statement": "Given \\(\\begin{array}{c|ccc}x&-5&0&5\\\\\\hline P(X=x)&\\frac{5}{6}&0&\\frac{1}{6}\\end{array}\\), give the finite support of X as a set.",
+      "steps": [
+        [
+          "method",
+          "\\operatorname{supp}(X)=\\{x:P(X=x)>0\\}"
+        ],
+        [
+          "substitution",
+          "P(X=0)=0,\\quad\\operatorname{supp}(X)=\\left\\{-5, 5\\right\\}"
+        ],
+        [
+          "result",
+          "\\left\\{-5, 5\\right\\}"
+        ]
+      ],
+      "answer_kind": "finite_set",
+      "answer_latex": "\\left\\{-5, 5\\right\\}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "finite-support"
+      }
+    },
+    {
+      "code": "PSAT-1-0000000000000201-53",
+      "statement": "Given \\(\\begin{array}{c|ccc}x&-2&0&3\\\\\\hline P(X=x)&\\frac{1}{3}&0&\\frac{2}{3}\\end{array}\\), give the finite support of X as a set.",
+      "steps": [
+        [
+          "method",
+          "\\operatorname{supp}(X)=\\{x:P(X=x)>0\\}"
+        ],
+        [
+          "substitution",
+          "P(X=0)=0,\\quad\\operatorname{supp}(X)=\\left\\{-2, 3\\right\\}"
+        ],
+        [
+          "result",
+          "\\left\\{-2, 3\\right\\}"
+        ]
+      ],
+      "answer_kind": "finite_set",
+      "answer_latex": "\\left\\{-2, 3\\right\\}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "finite-support"
+      }
+    },
+    {
+      "code": "PSAT-1-0000000000000202-70",
+      "statement": "Given \\(\\begin{array}{c|ccc}x&-2&0&3\\\\\\hline P(X=x)&\\frac{2}{7}&0&\\frac{5}{7}\\end{array}\\), give the finite support of X as a set.",
+      "steps": [
+        [
+          "method",
+          "\\operatorname{supp}(X)=\\{x:P(X=x)>0\\}"
+        ],
+        [
+          "substitution",
+          "P(X=0)=0,\\quad\\operatorname{supp}(X)=\\left\\{-2, 3\\right\\}"
+        ],
+        [
+          "result",
+          "\\left\\{-2, 3\\right\\}"
+        ]
+      ],
+      "answer_kind": "finite_set",
+      "answer_latex": "\\left\\{-2, 3\\right\\}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "finite-support"
+      }
+    }
+  ],
+  "probability-finite-jump-v1": [
+    {
+      "code": "PSAU-1-0000000000000200-27",
+      "statement": "The CDF is \\(F_X(x)=\\begin{cases}0&x<-5\\\\\\frac{5}{11}&-5\\le x<0\\\\\\frac{10}{11}&0\\le x<5\\\\1&x\\ge 5\\end{cases}\\). Find \\(P(X=0)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X=0)=F_X(0)-F_X(0^-)"
+        ],
+        [
+          "substitution",
+          "\\frac{10}{11}-\\frac{5}{11}=\\frac{5}{11}"
+        ],
+        [
+          "result",
+          "\\frac{5}{11}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{5}{11}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "finite-jump"
+      }
+    },
+    {
+      "code": "PSAU-1-0000000000000201-44",
+      "statement": "The CDF is \\(F_X(x)=\\begin{cases}0&x<-2\\\\\\frac{2}{9}&-2\\le x<0\\\\\\frac{5}{9}&0\\le x<3\\\\1&x\\ge 3\\end{cases}\\). Find \\(P(X=0)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X=0)=F_X(0)-F_X(0^-)"
+        ],
+        [
+          "substitution",
+          "\\frac{5}{9}-\\frac{2}{9}=\\frac{1}{3}"
+        ],
+        [
+          "result",
+          "\\frac{1}{3}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{3}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "finite-jump"
+      }
+    },
+    {
+      "code": "PSAU-1-0000000000000202-61",
+      "statement": "The CDF is \\(F_X(x)=\\begin{cases}0&x<-2\\\\\\frac{1}{5}&-2\\le x<0\\\\\\frac{1}{2}&0\\le x<3\\\\1&x\\ge 3\\end{cases}\\). Find \\(P(X=0)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X=0)=F_X(0)-F_X(0^-)"
+        ],
+        [
+          "substitution",
+          "\\frac{1}{2}-\\frac{1}{5}=\\frac{3}{10}"
+        ],
+        [
+          "result",
+          "\\frac{3}{10}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{3}{10}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "finite-jump"
+      }
+    }
+  ],
+  "probability-finite-transform-v1": [
+    {
+      "code": "PSAV-1-0000000000000200-91",
+      "statement": "Given \\(\\begin{array}{c|ccc}x&-5&0&5\\\\\\hline P(X=x)&\\frac{5}{11}&\\frac{5}{11}&\\frac{1}{11}\\end{array}\\), let \\(Y=|X|\\). Find \\(P(Y=5)\\).",
+      "steps": [
+        [
+          "method",
+          "\\{|X|=5\\}=\\{X=-5\\}\\cup\\{X=5\\}"
+        ],
+        [
+          "substitution",
+          "P(Y=5)=\\frac{5}{11}+\\frac{1}{11}=\\frac{6}{11},\\quad \\begin{array}{c|cc}x&0&5\\\\\\hline P(X=x)&\\frac{5}{11}&\\frac{6}{11}\\end{array}"
+        ],
+        [
+          "result",
+          "\\frac{6}{11}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{6}{11}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "finite-transform"
+      }
+    },
+    {
+      "code": "PSAV-1-0000000000000201-11",
+      "statement": "Given \\(\\begin{array}{c|ccc}x&-2&0&2\\\\\\hline P(X=x)&\\frac{2}{9}&\\frac{1}{3}&\\frac{4}{9}\\end{array}\\), let \\(Y=|X|\\). Find \\(P(Y=2)\\).",
+      "steps": [
+        [
+          "method",
+          "\\{|X|=2\\}=\\{X=-2\\}\\cup\\{X=2\\}"
+        ],
+        [
+          "substitution",
+          "P(Y=2)=\\frac{2}{9}+\\frac{4}{9}=\\frac{2}{3},\\quad \\begin{array}{c|cc}x&0&2\\\\\\hline P(X=x)&\\frac{1}{3}&\\frac{2}{3}\\end{array}"
+        ],
+        [
+          "result",
+          "\\frac{2}{3}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{2}{3}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "finite-transform"
+      }
+    },
+    {
+      "code": "PSAV-1-0000000000000202-28",
+      "statement": "Given \\(\\begin{array}{c|ccc}x&-2&0&2\\\\\\hline P(X=x)&\\frac{1}{5}&\\frac{3}{10}&\\frac{1}{2}\\end{array}\\), let \\(Y=|X|\\). Find \\(P(Y=2)\\).",
+      "steps": [
+        [
+          "method",
+          "\\{|X|=2\\}=\\{X=-2\\}\\cup\\{X=2\\}"
+        ],
+        [
+          "substitution",
+          "P(Y=2)=\\frac{1}{5}+\\frac{1}{2}=\\frac{7}{10},\\quad \\begin{array}{c|cc}x&0&2\\\\\\hline P(X=x)&\\frac{3}{10}&\\frac{7}{10}\\end{array}"
+        ],
+        [
+          "result",
+          "\\frac{7}{10}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{7}{10}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "finite-transform"
+      }
+    }
+  ],
+  "probability-discrete-bernoulli-v1": [
+    {
+      "code": "PSAW-1-0000000000000200-09",
+      "statement": "X is Bernoulli with \\(p=\\frac{5}{6}\\). Find \\(P(X=1)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X=k)=p^k(1-p)^{1-k},\\quad k\\in\\{0,1\\}"
+        ],
+        [
+          "substitution",
+          "P(X=1)=\\frac{5}{6}"
+        ],
+        [
+          "result",
+          "\\frac{5}{6}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{5}{6}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "discrete-bernoulli"
+      }
+    },
+    {
+      "code": "PSAW-1-0000000000000201-26",
+      "statement": "X is Bernoulli with \\(p=\\frac{3}{7}\\). Find \\(P(X=0)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X=k)=p^k(1-p)^{1-k},\\quad k\\in\\{0,1\\}"
+        ],
+        [
+          "substitution",
+          "P(X=0)=\\frac{4}{7}"
+        ],
+        [
+          "result",
+          "\\frac{4}{7}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{4}{7}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "discrete-bernoulli"
+      }
+    },
+    {
+      "code": "PSAW-1-0000000000000202-43",
+      "statement": "X is Bernoulli with \\(p=\\frac{3}{8}\\). Find \\(P(X=1)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X=k)=p^k(1-p)^{1-k},\\quad k\\in\\{0,1\\}"
+        ],
+        [
+          "substitution",
+          "P(X=1)=\\frac{3}{8}"
+        ],
+        [
+          "result",
+          "\\frac{3}{8}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{3}{8}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "discrete-bernoulli"
+      }
+    }
+  ],
+  "probability-discrete-binomial-v1": [
+    {
+      "code": "PSAX-1-0000000000000200-80",
+      "statement": "X counts successes in \\(7\\) independent trials, each with success probability \\(\\frac{5}{6}\\). Find \\(P(X=5)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X=k)=\\binom nkp^k(1-p)^{n-k}"
+        ],
+        [
+          "substitution",
+          "P(X=5)=\\frac{21875}{93312}"
+        ],
+        [
+          "result",
+          "\\frac{21875}{93312}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{21875}{93312}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "discrete-binomial"
+      }
+    },
+    {
+      "code": "PSAX-1-0000000000000201-00",
+      "statement": "X counts successes in \\(4\\) independent trials, each with success probability \\(\\frac{3}{7}\\). Find \\(P(X=3)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X=k)=\\binom nkp^k(1-p)^{n-k}"
+        ],
+        [
+          "substitution",
+          "P(X=3)=\\frac{432}{2401}"
+        ],
+        [
+          "result",
+          "\\frac{432}{2401}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{432}{2401}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "discrete-binomial"
+      }
+    },
+    {
+      "code": "PSAX-1-0000000000000202-17",
+      "statement": "X counts successes in \\(4\\) independent trials, each with success probability \\(\\frac{3}{8}\\). Find \\(P(X=3)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X=k)=\\binom nkp^k(1-p)^{n-k}"
+        ],
+        [
+          "substitution",
+          "P(X=3)=\\frac{135}{1024}"
+        ],
+        [
+          "result",
+          "\\frac{135}{1024}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{135}{1024}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "discrete-binomial"
+      }
+    }
+  ],
+  "probability-discrete-geometric-v1": [
+    {
+      "code": "PSAY-1-0000000000000200-19",
+      "statement": "Independent trials succeed with probability \\(\\frac{5}{6}\\). X is the trial number of the first success, with support \\(\\{1,2,\\ldots\\}\\). Find \\(P(X=6)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X=k)=(1-p)^{k-1}p"
+        ],
+        [
+          "substitution",
+          "P(X=6)=\\frac{5}{46656}"
+        ],
+        [
+          "result",
+          "\\frac{5}{46656}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{5}{46656}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "discrete-geometric"
+      }
+    },
+    {
+      "code": "PSAY-1-0000000000000201-36",
+      "statement": "Independent trials succeed with probability \\(\\frac{3}{7}\\). X is the trial number of the first success, with support \\(\\{1,2,\\ldots\\}\\). Find \\(P(X=3)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X=k)=(1-p)^{k-1}p"
+        ],
+        [
+          "substitution",
+          "P(X=3)=\\frac{48}{343}"
+        ],
+        [
+          "result",
+          "\\frac{48}{343}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{48}{343}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "discrete-geometric"
+      }
+    },
+    {
+      "code": "PSAY-1-0000000000000202-53",
+      "statement": "Independent trials succeed with probability \\(\\frac{3}{8}\\). X is the trial number of the first success, with support \\(\\{1,2,\\ldots\\}\\). Find \\(P(X=3)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X=k)=(1-p)^{k-1}p"
+        ],
+        [
+          "substitution",
+          "P(X=3)=\\frac{75}{512}"
+        ],
+        [
+          "result",
+          "\\frac{75}{512}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{75}{512}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "discrete-geometric"
+      }
+    }
+  ],
+  "probability-discrete-hypergeometric-v1": [
+    {
+      "code": "PSAZ-1-0000000000000200-68",
+      "statement": "A population of \\(13\\) objects has \\(6\\) successes. A uniform sample of \\(6\\) is taken without replacement. X counts sampled successes. Find \\(P(X=6)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X=k)=\\frac{\\binom Kk\\binom{N-K}{n-k}}{\\binom Nn}"
+        ],
+        [
+          "substitution",
+          "P(X=6)=\\frac{1}{1716}"
+        ],
+        [
+          "result",
+          "\\frac{1}{1716}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{1716}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "discrete-hypergeometric"
+      }
+    },
+    {
+      "code": "PSAZ-1-0000000000000201-85",
+      "statement": "A population of \\(11\\) objects has \\(3\\) successes. A uniform sample of \\(4\\) is taken without replacement. X counts sampled successes. Find \\(P(X=3)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X=k)=\\frac{\\binom Kk\\binom{N-K}{n-k}}{\\binom Nn}"
+        ],
+        [
+          "substitution",
+          "P(X=3)=\\frac{4}{165}"
+        ],
+        [
+          "result",
+          "\\frac{4}{165}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{4}{165}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "discrete-hypergeometric"
+      }
+    },
+    {
+      "code": "PSAZ-1-0000000000000202-05",
+      "statement": "A population of \\(12\\) objects has \\(3\\) successes. A uniform sample of \\(4\\) is taken without replacement. X counts sampled successes. Find \\(P(X=3)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X=k)=\\frac{\\binom Kk\\binom{N-K}{n-k}}{\\binom Nn}"
+        ],
+        [
+          "substitution",
+          "P(X=3)=\\frac{1}{55}"
+        ],
+        [
+          "result",
+          "\\frac{1}{55}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{55}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "discrete-hypergeometric"
+      }
+    }
+  ],
+  "probability-discrete-poisson-v1": [
+    {
+      "code": "PSBA-1-0000000000000200-51",
+      "statement": "X has a Poisson distribution with rate \\(\\lambda=5\\). Find \\(P(X=5)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X=k)=e^{-\\lambda}\\frac{\\lambda^k}{k!}"
+        ],
+        [
+          "substitution",
+          "P(X=5)=\\frac{625}{24 e^{5}}"
+        ],
+        [
+          "result",
+          "\\frac{625}{24 e^{5}}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{625}{24 e^{5}}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "discrete-poisson"
+      }
+    },
+    {
+      "code": "PSBA-1-0000000000000201-68",
+      "statement": "X has a Poisson distribution with rate \\(\\lambda=2\\). Find \\(P(X=3)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X=k)=e^{-\\lambda}\\frac{\\lambda^k}{k!}"
+        ],
+        [
+          "substitution",
+          "P(X=3)=\\frac{4}{3 e^{2}}"
+        ],
+        [
+          "result",
+          "\\frac{4}{3 e^{2}}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{4}{3 e^{2}}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "discrete-poisson"
+      }
+    },
+    {
+      "code": "PSBA-1-0000000000000202-85",
+      "statement": "X has a Poisson distribution with rate \\(\\lambda=2\\). Find \\(P(X=3)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X=k)=e^{-\\lambda}\\frac{\\lambda^k}{k!}"
+        ],
+        [
+          "substitution",
+          "P(X=3)=\\frac{4}{3 e^{2}}"
+        ],
+        [
+          "result",
+          "\\frac{4}{3 e^{2}}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{4}{3 e^{2}}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "discrete-poisson"
+      }
+    }
+  ],
+  "probability-continuous-uniform-v1": [
+    {
+      "code": "PSBB-1-0000000000000200-92",
+      "statement": "X is uniform on \\([-5,5]\\). Find \\(P(0\\le X\\le \\frac{5}{2})\\).",
+      "steps": [
+        [
+          "method",
+          "P(u\\le X\\le v)=\\frac{v-u}{b-a}"
+        ],
+        [
+          "substitution",
+          "\\frac{\\frac{5}{2}-0}{5-(-5)}=\\frac{1}{4}"
+        ],
+        [
+          "result",
+          "\\frac{1}{4}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{4}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "continuous-uniform"
+      }
+    },
+    {
+      "code": "PSBB-1-0000000000000201-12",
+      "statement": "X is uniform on \\([-2,3]\\). Find \\(P(0\\le X\\le \\frac{3}{2})\\).",
+      "steps": [
+        [
+          "method",
+          "P(u\\le X\\le v)=\\frac{v-u}{b-a}"
+        ],
+        [
+          "substitution",
+          "\\frac{\\frac{3}{2}-0}{3-(-2)}=\\frac{3}{10}"
+        ],
+        [
+          "result",
+          "\\frac{3}{10}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{3}{10}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "continuous-uniform"
+      }
+    },
+    {
+      "code": "PSBB-1-0000000000000202-29",
+      "statement": "X is uniform on \\([-2,3]\\). Find \\(P(0\\le X\\le \\frac{3}{2})\\).",
+      "steps": [
+        [
+          "method",
+          "P(u\\le X\\le v)=\\frac{v-u}{b-a}"
+        ],
+        [
+          "substitution",
+          "\\frac{\\frac{3}{2}-0}{3-(-2)}=\\frac{3}{10}"
+        ],
+        [
+          "result",
+          "\\frac{3}{10}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{3}{10}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "continuous-uniform"
+      }
+    }
+  ],
+  "probability-continuous-normalize-v1": [
+    {
+      "code": "PSBC-1-0000000000000200-83",
+      "statement": "A density is \\(f(x)=k(5+5x+1x^2)\\) for \\(0\\le x\\le2\\), and zero elsewhere. Find k.",
+      "steps": [
+        [
+          "method",
+          "1=\\int_0^2f(x)\\,dx"
+        ],
+        [
+          "substitution",
+          "1=k\\left[5x+\\frac{5}2x^2+\\frac{1}3x^3\\right]_0^2=k\\cdot\\frac{68}{3}"
+        ],
+        [
+          "result",
+          "\\frac{3}{68}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{3}{68}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "continuous-normalize"
+      }
+    },
+    {
+      "code": "PSBC-1-0000000000000201-03",
+      "statement": "A density is \\(f(x)=k(2+3x+4x^2)\\) for \\(0\\le x\\le2\\), and zero elsewhere. Find k.",
+      "steps": [
+        [
+          "method",
+          "1=\\int_0^2f(x)\\,dx"
+        ],
+        [
+          "substitution",
+          "1=k\\left[2x+\\frac{3}2x^2+\\frac{4}3x^3\\right]_0^2=k\\cdot\\frac{62}{3}"
+        ],
+        [
+          "result",
+          "\\frac{3}{62}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{3}{62}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "continuous-normalize"
+      }
+    },
+    {
+      "code": "PSBC-1-0000000000000202-20",
+      "statement": "A density is \\(f(x)=k(2+3x+5x^2)\\) for \\(0\\le x\\le2\\), and zero elsewhere. Find k.",
+      "steps": [
+        [
+          "method",
+          "1=\\int_0^2f(x)\\,dx"
+        ],
+        [
+          "substitution",
+          "1=k\\left[2x+\\frac{3}2x^2+\\frac{5}3x^3\\right]_0^2=k\\cdot\\frac{70}{3}"
+        ],
+        [
+          "result",
+          "\\frac{3}{70}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{3}{70}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "continuous-normalize"
+      }
+    }
+  ],
+  "probability-continuous-support-v1": [
+    {
+      "code": "PSBD-1-0000000000000200-54",
+      "statement": "The density is \\(f(x)=\\frac{x+5}{50}\\) on \\([-5,5]\\), and zero elsewhere. Give its topological support as one interval, including boundary points.",
+      "steps": [
+        [
+          "method",
+          "f(x)>0\\quad\\text{for }-5<x<5"
+        ],
+        [
+          "substitution",
+          "\\operatorname{supp}(X)=\\overline{(-5,5)}=\\left[-5, 5\\right]"
+        ],
+        [
+          "result",
+          "\\left[-5, 5\\right]"
+        ]
+      ],
+      "answer_kind": "interval",
+      "answer_latex": "\\left[-5, 5\\right]",
+      "metadata": {
+        "difficulty": 2,
+        "template": "continuous-support"
+      }
+    },
+    {
+      "code": "PSBD-1-0000000000000201-71",
+      "statement": "The density is \\(f(x)=\\frac{x+2}{\\frac{25}{2}}\\) on \\([-2,3]\\), and zero elsewhere. Give its topological support as one interval, including boundary points.",
+      "steps": [
+        [
+          "method",
+          "f(x)>0\\quad\\text{for }-2<x<3"
+        ],
+        [
+          "substitution",
+          "\\operatorname{supp}(X)=\\overline{(-2,3)}=\\left[-2, 3\\right]"
+        ],
+        [
+          "result",
+          "\\left[-2, 3\\right]"
+        ]
+      ],
+      "answer_kind": "interval",
+      "answer_latex": "\\left[-2, 3\\right]",
+      "metadata": {
+        "difficulty": 2,
+        "template": "continuous-support"
+      }
+    },
+    {
+      "code": "PSBD-1-0000000000000202-88",
+      "statement": "The density is \\(f(x)=\\frac{x+2}{\\frac{25}{2}}\\) on \\([-2,3]\\), and zero elsewhere. Give its topological support as one interval, including boundary points.",
+      "steps": [
+        [
+          "method",
+          "f(x)>0\\quad\\text{for }-2<x<3"
+        ],
+        [
+          "substitution",
+          "\\operatorname{supp}(X)=\\overline{(-2,3)}=\\left[-2, 3\\right]"
+        ],
+        [
+          "result",
+          "\\left[-2, 3\\right]"
+        ]
+      ],
+      "answer_kind": "interval",
+      "answer_latex": "\\left[-2, 3\\right]",
+      "metadata": {
+        "difficulty": 2,
+        "template": "continuous-support"
+      }
+    }
+  ],
+  "probability-continuous-piecewise-cdf-v1": [
+    {
+      "code": "PSBE-1-0000000000000200-24",
+      "statement": "For the density \\(f(x)=\\frac1{55}\\begin{cases}1+(x+5)&-5\\le x<0\\\\5+x&0\\le x\\le 5\\\\0&\\text{otherwise}\\end{cases}\\), find \\(F_X(\\frac{5}{2})\\).",
+      "steps": [
+        [
+          "method",
+          "F_X(x)=\\begin{cases}0&x<-5\\\\\\frac{x^{2}}{110} + \\frac{6 x}{55} + \\frac{7}{22}&-5\\le x<0\\\\\\frac{x^{2}}{110} + \\frac{x}{11} + \\frac{7}{22}&0\\le x<5\\\\1&x\\ge 5\\end{cases}"
+        ],
+        [
+          "substitution",
+          "F_X(\\frac{5}{2})=\\frac{53}{88}"
+        ],
+        [
+          "result",
+          "\\frac{53}{88}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{53}{88}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "continuous-piecewise-cdf"
+      }
+    },
+    {
+      "code": "PSBE-1-0000000000000201-41",
+      "statement": "For the density \\(f(x)=\\frac1{\\frac{47}{2}}\\begin{cases}4+(x+2)&-2\\le x<0\\\\3+x&0\\le x\\le 3\\\\0&\\text{otherwise}\\end{cases}\\), find \\(F_X(\\frac{3}{2})\\).",
+      "steps": [
+        [
+          "method",
+          "F_X(x)=\\begin{cases}0&x<-2\\\\\\frac{x^{2}}{47} + \\frac{12 x}{47} + \\frac{20}{47}&-2\\le x<0\\\\\\frac{x^{2}}{47} + \\frac{6 x}{47} + \\frac{20}{47}&0\\le x<3\\\\1&x\\ge 3\\end{cases}"
+        ],
+        [
+          "substitution",
+          "F_X(\\frac{3}{2})=\\frac{125}{188}"
+        ],
+        [
+          "result",
+          "\\frac{125}{188}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{125}{188}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "continuous-piecewise-cdf"
+      }
+    },
+    {
+      "code": "PSBE-1-0000000000000202-58",
+      "statement": "For the density \\(f(x)=\\frac1{\\frac{51}{2}}\\begin{cases}5+(x+2)&-2\\le x<0\\\\3+x&0\\le x\\le 3\\\\0&\\text{otherwise}\\end{cases}\\), find \\(F_X(\\frac{3}{2})\\).",
+      "steps": [
+        [
+          "method",
+          "F_X(x)=\\begin{cases}0&x<-2\\\\\\frac{x^{2}}{51} + \\frac{14 x}{51} + \\frac{8}{17}&-2\\le x<0\\\\\\frac{x^{2}}{51} + \\frac{2 x}{17} + \\frac{8}{17}&0\\le x<3\\\\1&x\\ge 3\\end{cases}"
+        ],
+        [
+          "substitution",
+          "F_X(\\frac{3}{2})=\\frac{47}{68}"
+        ],
+        [
+          "result",
+          "\\frac{47}{68}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{47}{68}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "continuous-piecewise-cdf"
+      }
+    }
+  ],
+  "probability-continuous-interval-v1": [
+    {
+      "code": "PSBF-1-0000000000000200-77",
+      "statement": "For the density \\(f(x)=\\frac1{55}\\begin{cases}1+(x+5)&-5\\le x<0\\\\5+x&0\\le x\\le 5\\\\0&\\text{otherwise}\\end{cases}\\), find \\(P(- \\frac{5}{2}\\le X\\le\\frac{5}{2})\\).",
+      "steps": [
+        [
+          "method",
+          "P(u\\le X\\le v)=\\int_u^0f(x)\\,dx+\\int_0^vf(x)\\,dx"
+        ],
+        [
+          "substitution",
+          "P(- \\frac{5}{2}\\le X\\le\\frac{5}{2})=\\frac{1}{2},\\quad F_X(x)=\\begin{cases}0&x<-5\\\\\\frac{x^{2}}{110} + \\frac{6 x}{55} + \\frac{7}{22}&-5\\le x<0\\\\\\frac{x^{2}}{110} + \\frac{x}{11} + \\frac{7}{22}&0\\le x<5\\\\1&x\\ge 5\\end{cases}"
+        ],
+        [
+          "result",
+          "\\frac{1}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{2}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "continuous-interval"
+      }
+    },
+    {
+      "code": "PSBF-1-0000000000000201-94",
+      "statement": "For the density \\(f(x)=\\frac1{\\frac{47}{2}}\\begin{cases}4+(x+2)&-2\\le x<0\\\\3+x&0\\le x\\le 3\\\\0&\\text{otherwise}\\end{cases}\\), find \\(P(-1\\le X\\le\\frac{3}{2})\\).",
+      "steps": [
+        [
+          "method",
+          "P(u\\le X\\le v)=\\int_u^0f(x)\\,dx+\\int_0^vf(x)\\,dx"
+        ],
+        [
+          "substitution",
+          "P(-1\\le X\\le\\frac{3}{2})=\\frac{89}{188},\\quad F_X(x)=\\begin{cases}0&x<-2\\\\\\frac{x^{2}}{47} + \\frac{12 x}{47} + \\frac{20}{47}&-2\\le x<0\\\\\\frac{x^{2}}{47} + \\frac{6 x}{47} + \\frac{20}{47}&0\\le x<3\\\\1&x\\ge 3\\end{cases}"
+        ],
+        [
+          "result",
+          "\\frac{89}{188}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{89}{188}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "continuous-interval"
+      }
+    },
+    {
+      "code": "PSBF-1-0000000000000202-14",
+      "statement": "For the density \\(f(x)=\\frac1{\\frac{51}{2}}\\begin{cases}5+(x+2)&-2\\le x<0\\\\3+x&0\\le x\\le 3\\\\0&\\text{otherwise}\\end{cases}\\), find \\(P(-1\\le X\\le\\frac{3}{2})\\).",
+      "steps": [
+        [
+          "method",
+          "P(u\\le X\\le v)=\\int_u^0f(x)\\,dx+\\int_0^vf(x)\\,dx"
+        ],
+        [
+          "substitution",
+          "P(-1\\le X\\le\\frac{3}{2})=\\frac{97}{204},\\quad F_X(x)=\\begin{cases}0&x<-2\\\\\\frac{x^{2}}{51} + \\frac{14 x}{51} + \\frac{8}{17}&-2\\le x<0\\\\\\frac{x^{2}}{51} + \\frac{2 x}{17} + \\frac{8}{17}&0\\le x<3\\\\1&x\\ge 3\\end{cases}"
+        ],
+        [
+          "result",
+          "\\frac{97}{204}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{97}{204}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "continuous-interval"
+      }
+    }
+  ],
+  "probability-continuous-exponential-tail-v1": [
+    {
+      "code": "PSBG-1-0000000000000200-52",
+      "statement": "X is exponential with rate \\(\\lambda=\\frac{1}{2}\\), on \\([0,\\infty)\\). Find \\(P(X>1)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X>t)=e^{-\\lambda t}"
+        ],
+        [
+          "substitution",
+          "P(X>1)=e^{-(\\frac{1}{2})1}=e^{- \\frac{1}{2}}"
+        ],
+        [
+          "result",
+          "e^{- \\frac{1}{2}}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "e^{- \\frac{1}{2}}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "continuous-exponential-tail"
+      }
+    },
+    {
+      "code": "PSBG-1-0000000000000201-69",
+      "statement": "X is exponential with rate \\(\\lambda=\\frac{2}{5}\\), on \\([0,\\infty)\\). Find \\(P(X>4)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X>t)=e^{-\\lambda t}"
+        ],
+        [
+          "substitution",
+          "P(X>4)=e^{-(\\frac{2}{5})4}=e^{- \\frac{8}{5}}"
+        ],
+        [
+          "result",
+          "e^{- \\frac{8}{5}}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "e^{- \\frac{8}{5}}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "continuous-exponential-tail"
+      }
+    },
+    {
+      "code": "PSBG-1-0000000000000202-86",
+      "statement": "X is exponential with rate \\(\\lambda=\\frac{2}{5}\\), on \\([0,\\infty)\\). Find \\(P(X>5)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X>t)=e^{-\\lambda t}"
+        ],
+        [
+          "substitution",
+          "P(X>5)=e^{-(\\frac{2}{5})5}=e^{-2}"
+        ],
+        [
+          "result",
+          "e^{-2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "e^{-2}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "continuous-exponential-tail"
+      }
+    }
+  ],
+  "probability-continuous-memoryless-v1": [
+    {
+      "code": "PSBH-1-0000000000000200-16",
+      "statement": "X is exponential with rate \\(\\frac{1}{2}\\). Find \\(P(X>6\\mid X>5)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X>s+t\\mid X>s)=\\frac{e^{-\\lambda(s+t)}}{e^{-\\lambda s}}=e^{-\\lambda t}"
+        ],
+        [
+          "substitution",
+          "P(X>6\\mid X>5)=P(X>1)=e^{- \\frac{1}{2}}"
+        ],
+        [
+          "result",
+          "e^{- \\frac{1}{2}}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "e^{- \\frac{1}{2}}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "continuous-memoryless"
+      }
+    },
+    {
+      "code": "PSBH-1-0000000000000201-33",
+      "statement": "X is exponential with rate \\(\\frac{2}{5}\\). Find \\(P(X>7\\mid X>3)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X>s+t\\mid X>s)=\\frac{e^{-\\lambda(s+t)}}{e^{-\\lambda s}}=e^{-\\lambda t}"
+        ],
+        [
+          "substitution",
+          "P(X>7\\mid X>3)=P(X>4)=e^{- \\frac{8}{5}}"
+        ],
+        [
+          "result",
+          "e^{- \\frac{8}{5}}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "e^{- \\frac{8}{5}}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "continuous-memoryless"
+      }
+    },
+    {
+      "code": "PSBH-1-0000000000000202-50",
+      "statement": "X is exponential with rate \\(\\frac{2}{5}\\). Find \\(P(X>8\\mid X>3)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X>s+t\\mid X>s)=\\frac{e^{-\\lambda(s+t)}}{e^{-\\lambda s}}=e^{-\\lambda t}"
+        ],
+        [
+          "substitution",
+          "P(X>8\\mid X>3)=P(X>5)=e^{-2}"
+        ],
+        [
+          "result",
+          "e^{-2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "e^{-2}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "continuous-memoryless"
+      }
+    }
+  ],
+  "probability-continuous-exponential-quantile-v1": [
+    {
+      "code": "PSBI-1-0000000000000200-82",
+      "statement": "X is exponential with rate \\(\\frac{1}{2}\\). Find the quantile q such that \\(P(X\\le q)=\\frac{5}{6}\\).",
+      "steps": [
+        [
+          "method",
+          "1-e^{-\\lambda q}=p\\quad\\Longrightarrow\\quad q=-\\frac{\\ln(1-p)}\\lambda"
+        ],
+        [
+          "substitution",
+          "q=-\\frac{\\ln(1-\\frac{5}{6})}{\\frac{1}{2}}=2 \\log{\\left(6 \\right)}"
+        ],
+        [
+          "result",
+          "2 \\log{\\left(6 \\right)}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2 \\log{\\left(6 \\right)}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "continuous-exponential-quantile"
+      }
+    },
+    {
+      "code": "PSBI-1-0000000000000201-02",
+      "statement": "X is exponential with rate \\(\\frac{2}{5}\\). Find the quantile q such that \\(P(X\\le q)=\\frac{3}{7}\\).",
+      "steps": [
+        [
+          "method",
+          "1-e^{-\\lambda q}=p\\quad\\Longrightarrow\\quad q=-\\frac{\\ln(1-p)}\\lambda"
+        ],
+        [
+          "substitution",
+          "q=-\\frac{\\ln(1-\\frac{3}{7})}{\\frac{2}{5}}=- \\frac{5 \\log{\\left(\\frac{4}{7} \\right)}}{2}"
+        ],
+        [
+          "result",
+          "- \\frac{5 \\log{\\left(\\frac{4}{7} \\right)}}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "- \\frac{5 \\log{\\left(\\frac{4}{7} \\right)}}{2}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "continuous-exponential-quantile"
+      }
+    },
+    {
+      "code": "PSBI-1-0000000000000202-19",
+      "statement": "X is exponential with rate \\(\\frac{2}{5}\\). Find the quantile q such that \\(P(X\\le q)=\\frac{3}{8}\\).",
+      "steps": [
+        [
+          "method",
+          "1-e^{-\\lambda q}=p\\quad\\Longrightarrow\\quad q=-\\frac{\\ln(1-p)}\\lambda"
+        ],
+        [
+          "substitution",
+          "q=-\\frac{\\ln(1-\\frac{3}{8})}{\\frac{2}{5}}=- \\frac{5 \\log{\\left(\\frac{5}{8} \\right)}}{2}"
+        ],
+        [
+          "result",
+          "- \\frac{5 \\log{\\left(\\frac{5}{8} \\right)}}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "- \\frac{5 \\log{\\left(\\frac{5}{8} \\right)}}{2}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "continuous-exponential-quantile"
+      }
+    }
+  ],
+  "probability-continuous-normal-standardize-v1": [
+    {
+      "code": "PSBJ-1-0000000000000200-70",
+      "statement": "X is normal with mean \\(\\mu=2\\) and standard deviation \\(\\sigma=5\\). Find the standardized z score corresponding to \\(x=2\\).",
+      "steps": [
+        [
+          "method",
+          "z=\\frac{x-\\mu}{\\sigma}"
+        ],
+        [
+          "substitution",
+          "z=\\frac{2-(2)}{5}=0"
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 5,
+        "template": "continuous-normal-standardize"
+      }
+    },
+    {
+      "code": "PSBJ-1-0000000000000201-87",
+      "statement": "X is normal with mean \\(\\mu=-1\\) and standard deviation \\(\\sigma=3\\). Find the standardized z score corresponding to \\(x=\\frac{7}{2}\\).",
+      "steps": [
+        [
+          "method",
+          "z=\\frac{x-\\mu}{\\sigma}"
+        ],
+        [
+          "substitution",
+          "z=\\frac{\\frac{7}{2}-(-1)}{3}=\\frac{3}{2}"
+        ],
+        [
+          "result",
+          "\\frac{3}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{3}{2}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "continuous-normal-standardize"
+      }
+    },
+    {
+      "code": "PSBJ-1-0000000000000202-07",
+      "statement": "X is normal with mean \\(\\mu=-1\\) and standard deviation \\(\\sigma=3\\). Find the standardized z score corresponding to \\(x=5\\).",
+      "steps": [
+        [
+          "method",
+          "z=\\frac{x-\\mu}{\\sigma}"
+        ],
+        [
+          "substitution",
+          "z=\\frac{5-(-1)}{3}=2"
+        ],
+        [
+          "result",
+          "2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 5,
+        "template": "continuous-normal-standardize"
+      }
+    }
+  ],
+  "probability-continuous-normal-probability-v1": [
+    {
+      "code": "PSBK-1-0000000000000200-76",
+      "statement": "X is normal with mean \\(\\mu=2\\) and standard deviation \\(\\sigma=5\\). The supplied rounded table row is \\(z=0,\\ \\Phi(z)\\approx 0.50000\\). Using this table value, calculate the approximate probability \\(P(X\\le 2)\\). Enter the resulting decimal or an equivalent exact fraction.",
+      "steps": [
+        [
+          "method",
+          "P(X\\le x)=\\Phi((x-\\mu)/\\sigma),\\quad\\Phi(-z)=1-\\Phi(z)"
+        ],
+        [
+          "substitution",
+          "\\Phi(0)\\approx 0.50000=\\frac{1}{2}"
+        ],
+        [
+          "result",
+          "\\frac{1}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{2}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "continuous-normal-probability"
+      }
+    },
+    {
+      "code": "PSBK-1-0000000000000201-93",
+      "statement": "X is normal with mean \\(\\mu=-1\\) and standard deviation \\(\\sigma=3\\). The supplied rounded table row is \\(z=\\frac{3}{2},\\ \\Phi(z)\\approx 0.93319\\). Using this table value, calculate the approximate probability \\(P(X\\le - \\frac{11}{2})\\). Enter the resulting decimal or an equivalent exact fraction.",
+      "steps": [
+        [
+          "method",
+          "P(X\\le x)=\\Phi((x-\\mu)/\\sigma),\\quad\\Phi(-z)=1-\\Phi(z)"
+        ],
+        [
+          "substitution",
+          "\\Phi(- \\frac{3}{2})\\approx 0.06681=\\frac{6681}{100000}"
+        ],
+        [
+          "result",
+          "\\frac{6681}{100000}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{6681}{100000}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "continuous-normal-probability"
+      }
+    },
+    {
+      "code": "PSBK-1-0000000000000202-13",
+      "statement": "X is normal with mean \\(\\mu=-1\\) and standard deviation \\(\\sigma=3\\). The supplied rounded table row is \\(z=2,\\ \\Phi(z)\\approx 0.97725\\). Using this table value, calculate the approximate probability \\(P(X\\le -7)\\). Enter the resulting decimal or an equivalent exact fraction.",
+      "steps": [
+        [
+          "method",
+          "P(X\\le x)=\\Phi((x-\\mu)/\\sigma),\\quad\\Phi(-z)=1-\\Phi(z)"
+        ],
+        [
+          "substitution",
+          "\\Phi(-2)\\approx 0.02275=\\frac{91}{4000}"
+        ],
+        [
+          "result",
+          "\\frac{91}{4000}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{91}{4000}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "continuous-normal-probability"
+      }
+    }
+  ],
+  "probability-continuous-normal-quantile-v1": [
+    {
+      "code": "PSBL-1-0000000000000200-78",
+      "statement": "X is normal with mean \\(\\mu=2\\) and standard deviation \\(\\sigma=5\\). The supplied rounded table row is \\(z=0,\\ \\Phi(z)\\approx 0.50000\\). Use this row as the quantile approximation. Report the corresponding x value exactly from the supplied z.",
+      "steps": [
+        [
+          "method",
+          "x=\\mu+\\sigma z"
+        ],
+        [
+          "substitution",
+          "x=2+5\\cdot 0=2"
+        ],
+        [
+          "result",
+          "2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 5,
+        "template": "continuous-normal-quantile"
+      }
+    },
+    {
+      "code": "PSBL-1-0000000000000201-95",
+      "statement": "X is normal with mean \\(\\mu=-1\\) and standard deviation \\(\\sigma=3\\). The supplied rounded table row is \\(z=\\frac{3}{2},\\ \\Phi(z)\\approx 0.93319\\). Use this row as the quantile approximation. Report the corresponding x value exactly from the supplied z.",
+      "steps": [
+        [
+          "method",
+          "x=\\mu+\\sigma z"
+        ],
+        [
+          "substitution",
+          "x=-1+3\\cdot \\frac{3}{2}=\\frac{7}{2}"
+        ],
+        [
+          "result",
+          "\\frac{7}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{7}{2}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "continuous-normal-quantile"
+      }
+    },
+    {
+      "code": "PSBL-1-0000000000000202-15",
+      "statement": "X is normal with mean \\(\\mu=-1\\) and standard deviation \\(\\sigma=3\\). The supplied rounded table row is \\(z=2,\\ \\Phi(z)\\approx 0.97725\\). Use this row as the quantile approximation. Report the corresponding x value exactly from the supplied z.",
+      "steps": [
+        [
+          "method",
+          "x=\\mu+\\sigma z"
+        ],
+        [
+          "substitution",
+          "x=-1+3\\cdot 2=5"
+        ],
+        [
+          "result",
+          "5"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "5",
+      "metadata": {
+        "difficulty": 5,
+        "template": "continuous-normal-quantile"
+      }
+    }
+  ],
+  "probability-moments-mean-v1": [
+    {
+      "code": "PSBM-1-0000000000000200-86",
+      "statement": "Given \\(\\begin{array}{c|ccc}x&-5&0&5\\\\\\hline P(X=x)&\\frac{5}{11}&\\frac{5}{11}&\\frac{1}{11}\\end{array}\\), find \\(E[X]\\).",
+      "steps": [
+        [
+          "method",
+          "E[X]=\\sum_xxp(x)"
+        ],
+        [
+          "substitution",
+          "E[X]=- \\frac{20}{11}"
+        ],
+        [
+          "result",
+          "- \\frac{20}{11}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "- \\frac{20}{11}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "moments-mean"
+      }
+    },
+    {
+      "code": "PSBM-1-0000000000000201-06",
+      "statement": "Given \\(\\begin{array}{c|ccc}x&-2&0&3\\\\\\hline P(X=x)&\\frac{2}{9}&\\frac{1}{3}&\\frac{4}{9}\\end{array}\\), find \\(E[X]\\).",
+      "steps": [
+        [
+          "method",
+          "E[X]=\\sum_xxp(x)"
+        ],
+        [
+          "substitution",
+          "E[X]=\\frac{8}{9}"
+        ],
+        [
+          "result",
+          "\\frac{8}{9}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{8}{9}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "moments-mean"
+      }
+    },
+    {
+      "code": "PSBM-1-0000000000000202-23",
+      "statement": "Given \\(\\begin{array}{c|ccc}x&-2&0&3\\\\\\hline P(X=x)&\\frac{1}{5}&\\frac{3}{10}&\\frac{1}{2}\\end{array}\\), find \\(E[X]\\).",
+      "steps": [
+        [
+          "method",
+          "E[X]=\\sum_xxp(x)"
+        ],
+        [
+          "substitution",
+          "E[X]=\\frac{11}{10}"
+        ],
+        [
+          "result",
+          "\\frac{11}{10}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{11}{10}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "moments-mean"
+      }
+    }
+  ],
+  "probability-moments-variance-v1": [
+    {
+      "code": "PSBN-1-0000000000000200-87",
+      "statement": "Given \\(\\begin{array}{c|ccc}x&-5&0&5\\\\\\hline P(X=x)&\\frac{5}{11}&\\frac{5}{11}&\\frac{1}{11}\\end{array}\\), find the variance of X.",
+      "steps": [
+        [
+          "method",
+          "\\operatorname{Var}(X)=E[X^2]-E[X]^2,\\quad\\sigma_X=\\sqrt{\\operatorname{Var}(X)}"
+        ],
+        [
+          "substitution",
+          "E[X^2]=\\frac{150}{11},\\ E[X]=- \\frac{20}{11},\\ \\operatorname{Var}(X)=\\frac{1250}{121}"
+        ],
+        [
+          "result",
+          "\\frac{1250}{121}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1250}{121}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "moments-variance"
+      }
+    },
+    {
+      "code": "PSBN-1-0000000000000201-07",
+      "statement": "Given \\(\\begin{array}{c|ccc}x&-2&0&3\\\\\\hline P(X=x)&\\frac{2}{9}&\\frac{1}{3}&\\frac{4}{9}\\end{array}\\), find the variance of X.",
+      "steps": [
+        [
+          "method",
+          "\\operatorname{Var}(X)=E[X^2]-E[X]^2,\\quad\\sigma_X=\\sqrt{\\operatorname{Var}(X)}"
+        ],
+        [
+          "substitution",
+          "E[X^2]=\\frac{44}{9},\\ E[X]=\\frac{8}{9},\\ \\operatorname{Var}(X)=\\frac{332}{81}"
+        ],
+        [
+          "result",
+          "\\frac{332}{81}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{332}{81}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "moments-variance"
+      }
+    },
+    {
+      "code": "PSBN-1-0000000000000202-24",
+      "statement": "Given \\(\\begin{array}{c|ccc}x&-2&0&3\\\\\\hline P(X=x)&\\frac{1}{5}&\\frac{3}{10}&\\frac{1}{2}\\end{array}\\), find the variance of X.",
+      "steps": [
+        [
+          "method",
+          "\\operatorname{Var}(X)=E[X^2]-E[X]^2,\\quad\\sigma_X=\\sqrt{\\operatorname{Var}(X)}"
+        ],
+        [
+          "substitution",
+          "E[X^2]=\\frac{53}{10},\\ E[X]=\\frac{11}{10},\\ \\operatorname{Var}(X)=\\frac{409}{100}"
+        ],
+        [
+          "result",
+          "\\frac{409}{100}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{409}{100}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "moments-variance"
+      }
+    }
+  ],
+  "probability-moments-deviation-v1": [
+    {
+      "code": "PSBO-1-0000000000000200-08",
+      "statement": "Given \\(\\begin{array}{c|ccc}x&-5&0&5\\\\\\hline P(X=x)&\\frac{5}{11}&\\frac{5}{11}&\\frac{1}{11}\\end{array}\\), find the standard deviation of X.",
+      "steps": [
+        [
+          "method",
+          "\\operatorname{Var}(X)=E[X^2]-E[X]^2,\\quad\\sigma_X=\\sqrt{\\operatorname{Var}(X)}"
+        ],
+        [
+          "substitution",
+          "E[X^2]=\\frac{150}{11},\\ E[X]=- \\frac{20}{11},\\ \\operatorname{Var}(X)=\\frac{1250}{121}"
+        ],
+        [
+          "result",
+          "\\frac{25 \\sqrt{2}}{11}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{25 \\sqrt{2}}{11}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "moments-deviation"
+      }
+    },
+    {
+      "code": "PSBO-1-0000000000000201-25",
+      "statement": "Given \\(\\begin{array}{c|ccc}x&-2&0&3\\\\\\hline P(X=x)&\\frac{2}{9}&\\frac{1}{3}&\\frac{4}{9}\\end{array}\\), find the standard deviation of X.",
+      "steps": [
+        [
+          "method",
+          "\\operatorname{Var}(X)=E[X^2]-E[X]^2,\\quad\\sigma_X=\\sqrt{\\operatorname{Var}(X)}"
+        ],
+        [
+          "substitution",
+          "E[X^2]=\\frac{44}{9},\\ E[X]=\\frac{8}{9},\\ \\operatorname{Var}(X)=\\frac{332}{81}"
+        ],
+        [
+          "result",
+          "\\frac{2 \\sqrt{83}}{9}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{2 \\sqrt{83}}{9}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "moments-deviation"
+      }
+    },
+    {
+      "code": "PSBO-1-0000000000000202-42",
+      "statement": "Given \\(\\begin{array}{c|ccc}x&-2&0&3\\\\\\hline P(X=x)&\\frac{1}{5}&\\frac{3}{10}&\\frac{1}{2}\\end{array}\\), find the standard deviation of X.",
+      "steps": [
+        [
+          "method",
+          "\\operatorname{Var}(X)=E[X^2]-E[X]^2,\\quad\\sigma_X=\\sqrt{\\operatorname{Var}(X)}"
+        ],
+        [
+          "substitution",
+          "E[X^2]=\\frac{53}{10},\\ E[X]=\\frac{11}{10},\\ \\operatorname{Var}(X)=\\frac{409}{100}"
+        ],
+        [
+          "result",
+          "\\frac{\\sqrt{409}}{10}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{\\sqrt{409}}{10}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "moments-deviation"
+      }
+    }
+  ],
+  "probability-moments-affine-mean-v1": [
+    {
+      "code": "PSBP-1-0000000000000200-60",
+      "statement": "Given \\(\\begin{array}{c|ccc}x&-5&0&5\\\\\\hline P(X=x)&\\frac{5}{11}&\\frac{5}{11}&\\frac{1}{11}\\end{array}\\), let \\(Y=1X+5\\). Find \\(E[Y]\\).",
+      "steps": [
+        [
+          "method",
+          "E[rX+s]=rE[X]+s"
+        ],
+        [
+          "substitution",
+          "E[Y]=1\\cdot(- \\frac{20}{11})+5=\\frac{35}{11}"
+        ],
+        [
+          "result",
+          "\\frac{35}{11}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{35}{11}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "moments-affine-mean"
+      }
+    },
+    {
+      "code": "PSBP-1-0000000000000201-77",
+      "statement": "Given \\(\\begin{array}{c|ccc}x&-2&0&3\\\\\\hline P(X=x)&\\frac{2}{9}&\\frac{1}{3}&\\frac{4}{9}\\end{array}\\), let \\(Y=4X+2\\). Find \\(E[Y]\\).",
+      "steps": [
+        [
+          "method",
+          "E[rX+s]=rE[X]+s"
+        ],
+        [
+          "substitution",
+          "E[Y]=4\\cdot(\\frac{8}{9})+2=\\frac{50}{9}"
+        ],
+        [
+          "result",
+          "\\frac{50}{9}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{50}{9}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "moments-affine-mean"
+      }
+    },
+    {
+      "code": "PSBP-1-0000000000000202-94",
+      "statement": "Given \\(\\begin{array}{c|ccc}x&-2&0&3\\\\\\hline P(X=x)&\\frac{1}{5}&\\frac{3}{10}&\\frac{1}{2}\\end{array}\\), let \\(Y=5X+2\\). Find \\(E[Y]\\).",
+      "steps": [
+        [
+          "method",
+          "E[rX+s]=rE[X]+s"
+        ],
+        [
+          "substitution",
+          "E[Y]=5\\cdot(\\frac{11}{10})+2=\\frac{15}{2}"
+        ],
+        [
+          "result",
+          "\\frac{15}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{15}{2}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "moments-affine-mean"
+      }
+    }
+  ],
+  "probability-moments-affine-variance-v1": [
+    {
+      "code": "PSBQ-1-0000000000000200-00",
+      "statement": "Given \\(\\begin{array}{c|ccc}x&-5&0&5\\\\\\hline P(X=x)&\\frac{5}{11}&\\frac{5}{11}&\\frac{1}{11}\\end{array}\\), let \\(Y=1X+5\\). Find \\(\\operatorname{Var}(Y)\\).",
+      "steps": [
+        [
+          "method",
+          "\\operatorname{Var}(rX+s)=r^2\\operatorname{Var}(X)"
+        ],
+        [
+          "substitution",
+          "\\operatorname{Var}(Y)=1^2\\cdot \\frac{1250}{121}=\\frac{1250}{121}"
+        ],
+        [
+          "result",
+          "\\frac{1250}{121}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1250}{121}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "moments-affine-variance"
+      }
+    },
+    {
+      "code": "PSBQ-1-0000000000000201-17",
+      "statement": "Given \\(\\begin{array}{c|ccc}x&-2&0&3\\\\\\hline P(X=x)&\\frac{2}{9}&\\frac{1}{3}&\\frac{4}{9}\\end{array}\\), let \\(Y=4X+2\\). Find \\(\\operatorname{Var}(Y)\\).",
+      "steps": [
+        [
+          "method",
+          "\\operatorname{Var}(rX+s)=r^2\\operatorname{Var}(X)"
+        ],
+        [
+          "substitution",
+          "\\operatorname{Var}(Y)=4^2\\cdot \\frac{332}{81}=\\frac{5312}{81}"
+        ],
+        [
+          "result",
+          "\\frac{5312}{81}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{5312}{81}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "moments-affine-variance"
+      }
+    },
+    {
+      "code": "PSBQ-1-0000000000000202-34",
+      "statement": "Given \\(\\begin{array}{c|ccc}x&-2&0&3\\\\\\hline P(X=x)&\\frac{1}{5}&\\frac{3}{10}&\\frac{1}{2}\\end{array}\\), let \\(Y=5X+2\\). Find \\(\\operatorname{Var}(Y)\\).",
+      "steps": [
+        [
+          "method",
+          "\\operatorname{Var}(rX+s)=r^2\\operatorname{Var}(X)"
+        ],
+        [
+          "substitution",
+          "\\operatorname{Var}(Y)=5^2\\cdot \\frac{409}{100}=\\frac{409}{4}"
+        ],
+        [
+          "result",
+          "\\frac{409}{4}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{409}{4}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "moments-affine-variance"
+      }
+    }
+  ],
+  "probability-moments-marginal-v1": [
+    {
+      "code": "PSBR-1-0000000000000200-24",
+      "statement": "The joint law is \\(\\begin{array}{c|cc}X\\backslash Y&0&2\\\\\\hline0&\\frac{25}{36}&\\frac{5}{36}\\\\1&\\frac{5}{36}&\\frac{1}{36}\\end{array}\\). Find the marginal probability of X being zero.",
+      "steps": [
+        [
+          "method",
+          "P(X=x)=\\sum_yP(X=x,Y=y)"
+        ],
+        [
+          "substitution",
+          "\\begin{array}{c|cc}x&0&1\\\\\\hline P(X=x)&\\frac{5}{6}&\\frac{1}{6}\\end{array}"
+        ],
+        [
+          "result",
+          "\\frac{5}{6}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{5}{6}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "moments-marginal"
+      }
+    },
+    {
+      "code": "PSBR-1-0000000000000201-41",
+      "statement": "The joint law is \\(\\begin{array}{c|cc}X\\backslash Y&0&2\\\\\\hline0&\\frac{7}{22}&\\frac{4}{11}\\\\1&\\frac{3}{22}&\\frac{2}{11}\\end{array}\\). Find the marginal probability of X being zero.",
+      "steps": [
+        [
+          "method",
+          "P(X=x)=\\sum_yP(X=x,Y=y)"
+        ],
+        [
+          "substitution",
+          "\\begin{array}{c|cc}x&0&1\\\\\\hline P(X=x)&\\frac{15}{22}&\\frac{7}{22}\\end{array}"
+        ],
+        [
+          "result",
+          "\\frac{15}{22}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{15}{22}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "moments-marginal"
+      }
+    },
+    {
+      "code": "PSBR-1-0000000000000202-58",
+      "statement": "The joint law is \\(\\begin{array}{c|cc}X\\backslash Y&0&2\\\\\\hline0&\\frac{1}{4}&\\frac{5}{12}\\\\1&\\frac{1}{8}&\\frac{5}{24}\\end{array}\\). Find the marginal probability of X being zero.",
+      "steps": [
+        [
+          "method",
+          "P(X=x)=\\sum_yP(X=x,Y=y)"
+        ],
+        [
+          "substitution",
+          "\\begin{array}{c|cc}x&0&1\\\\\\hline P(X=x)&\\frac{2}{3}&\\frac{1}{3}\\end{array}"
+        ],
+        [
+          "result",
+          "\\frac{2}{3}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{2}{3}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "moments-marginal"
+      }
+    }
+  ],
+  "probability-moments-conditional-v1": [
+    {
+      "code": "PSBS-1-0000000000000200-44",
+      "statement": "The joint law is \\(\\begin{array}{c|cc}X\\backslash Y&0&2\\\\\\hline0&\\frac{25}{36}&\\frac{5}{36}\\\\1&\\frac{5}{36}&\\frac{1}{36}\\end{array}\\). Find \\(P(X=1\\mid Y=2)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X=1\\mid Y=2)=\\frac{P(X=1,Y=2)}{P(Y=2)}"
+        ],
+        [
+          "substitution",
+          "\\frac{\\frac{1}{36}}{\\frac{1}{6}}=\\frac{1}{6}"
+        ],
+        [
+          "result",
+          "\\frac{1}{6}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{6}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "moments-conditional"
+      }
+    },
+    {
+      "code": "PSBS-1-0000000000000201-61",
+      "statement": "The joint law is \\(\\begin{array}{c|cc}X\\backslash Y&0&2\\\\\\hline0&\\frac{7}{22}&\\frac{4}{11}\\\\1&\\frac{3}{22}&\\frac{2}{11}\\end{array}\\). Find \\(P(X=1\\mid Y=2)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X=1\\mid Y=2)=\\frac{P(X=1,Y=2)}{P(Y=2)}"
+        ],
+        [
+          "substitution",
+          "\\frac{\\frac{2}{11}}{\\frac{6}{11}}=\\frac{1}{3}"
+        ],
+        [
+          "result",
+          "\\frac{1}{3}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{3}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "moments-conditional"
+      }
+    },
+    {
+      "code": "PSBS-1-0000000000000202-78",
+      "statement": "The joint law is \\(\\begin{array}{c|cc}X\\backslash Y&0&2\\\\\\hline0&\\frac{1}{4}&\\frac{5}{12}\\\\1&\\frac{1}{8}&\\frac{5}{24}\\end{array}\\). Find \\(P(X=1\\mid Y=2)\\).",
+      "steps": [
+        [
+          "method",
+          "P(X=1\\mid Y=2)=\\frac{P(X=1,Y=2)}{P(Y=2)}"
+        ],
+        [
+          "substitution",
+          "\\frac{\\frac{5}{24}}{\\frac{5}{8}}=\\frac{1}{3}"
+        ],
+        [
+          "result",
+          "\\frac{1}{3}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{3}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "moments-conditional"
+      }
+    }
+  ],
+  "probability-moments-covariance-v1": [
+    {
+      "code": "PSBT-1-0000000000000200-47",
+      "statement": "The joint law is \\(\\begin{array}{c|cc}X\\backslash Y&0&2\\\\\\hline0&\\frac{25}{36}&\\frac{5}{36}\\\\1&\\frac{5}{36}&\\frac{1}{36}\\end{array}\\). Find \\(\\operatorname{Cov}(X,Y)\\).",
+      "steps": [
+        [
+          "method",
+          "\\operatorname{Cov}(X,Y)=E[XY]-E[X]E[Y]"
+        ],
+        [
+          "substitution",
+          "E[X]=\\frac{1}{6},\\quad E[Y]=\\frac{1}{3},\\quad\\operatorname{Cov}(X,Y)=0"
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 5,
+        "template": "moments-covariance"
+      }
+    },
+    {
+      "code": "PSBT-1-0000000000000201-64",
+      "statement": "The joint law is \\(\\begin{array}{c|cc}X\\backslash Y&0&2\\\\\\hline0&\\frac{7}{22}&\\frac{4}{11}\\\\1&\\frac{3}{22}&\\frac{2}{11}\\end{array}\\). Find \\(\\operatorname{Cov}(X,Y)\\).",
+      "steps": [
+        [
+          "method",
+          "\\operatorname{Cov}(X,Y)=E[XY]-E[X]E[Y]"
+        ],
+        [
+          "substitution",
+          "E[X]=\\frac{7}{22},\\quad E[Y]=\\frac{12}{11},\\quad\\operatorname{Cov}(X,Y)=\\frac{2}{121}"
+        ],
+        [
+          "result",
+          "\\frac{2}{121}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{2}{121}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "moments-covariance"
+      }
+    },
+    {
+      "code": "PSBT-1-0000000000000202-81",
+      "statement": "The joint law is \\(\\begin{array}{c|cc}X\\backslash Y&0&2\\\\\\hline0&\\frac{1}{4}&\\frac{5}{12}\\\\1&\\frac{1}{8}&\\frac{5}{24}\\end{array}\\). Find \\(\\operatorname{Cov}(X,Y)\\).",
+      "steps": [
+        [
+          "method",
+          "\\operatorname{Cov}(X,Y)=E[XY]-E[X]E[Y]"
+        ],
+        [
+          "substitution",
+          "E[X]=\\frac{1}{3},\\quad E[Y]=\\frac{5}{4},\\quad\\operatorname{Cov}(X,Y)=0"
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 5,
+        "template": "moments-covariance"
+      }
+    }
+  ],
+  "probability-moments-correlation-v1": [
+    {
+      "code": "PSBU-1-0000000000000200-01",
+      "statement": "The joint law is \\(\\begin{array}{c|cc}X\\backslash Y&0&2\\\\\\hline0&\\frac{25}{36}&\\frac{5}{36}\\\\1&\\frac{5}{36}&\\frac{1}{36}\\end{array}\\). Find the correlation coefficient.",
+      "steps": [
+        [
+          "method",
+          "\\rho=\\frac{\\operatorname{Cov}(X,Y)}{\\sqrt{\\operatorname{Var}(X)\\operatorname{Var}(Y)}}"
+        ],
+        [
+          "substitution",
+          "\\rho=\\frac{0}{\\sqrt{(\\frac{5}{36})(\\frac{5}{9})}}=0"
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 5,
+        "template": "moments-correlation"
+      }
+    },
+    {
+      "code": "PSBU-1-0000000000000201-18",
+      "statement": "The joint law is \\(\\begin{array}{c|cc}X\\backslash Y&0&2\\\\\\hline0&\\frac{7}{22}&\\frac{4}{11}\\\\1&\\frac{3}{22}&\\frac{2}{11}\\end{array}\\). Find the correlation coefficient.",
+      "steps": [
+        [
+          "method",
+          "\\rho=\\frac{\\operatorname{Cov}(X,Y)}{\\sqrt{\\operatorname{Var}(X)\\operatorname{Var}(Y)}}"
+        ],
+        [
+          "substitution",
+          "\\rho=\\frac{\\frac{2}{121}}{\\sqrt{(\\frac{105}{484})(\\frac{120}{121})}}=\\frac{\\sqrt{14}}{105}"
+        ],
+        [
+          "result",
+          "\\frac{\\sqrt{14}}{105}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{\\sqrt{14}}{105}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "moments-correlation"
+      }
+    },
+    {
+      "code": "PSBU-1-0000000000000202-35",
+      "statement": "The joint law is \\(\\begin{array}{c|cc}X\\backslash Y&0&2\\\\\\hline0&\\frac{1}{4}&\\frac{5}{12}\\\\1&\\frac{1}{8}&\\frac{5}{24}\\end{array}\\). Find the correlation coefficient.",
+      "steps": [
+        [
+          "method",
+          "\\rho=\\frac{\\operatorname{Cov}(X,Y)}{\\sqrt{\\operatorname{Var}(X)\\operatorname{Var}(Y)}}"
+        ],
+        [
+          "substitution",
+          "\\rho=\\frac{0}{\\sqrt{(\\frac{2}{9})(\\frac{15}{16})}}=0"
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 5,
+        "template": "moments-correlation"
+      }
+    }
+  ],
+  "probability-moments-independence-v1": [
+    {
+      "code": "PSBV-1-0000000000000200-25",
+      "statement": "The joint law is \\(\\begin{array}{c|cc}X\\backslash Y&0&2\\\\\\hline0&\\frac{25}{36}&\\frac{5}{36}\\\\1&\\frac{5}{36}&\\frac{1}{36}\\end{array}\\). Are X and Y independent? Answer Yes or No.",
+      "steps": [
+        [
+          "method",
+          "X\\perp Y\\iff p_{ij}=p_{i+}p_{+j}\\text{ for every }i,j"
+        ],
+        [
+          "substitution",
+          "(p_{i+}p_{+j})_{ij}=\\left[\\begin{matrix}\\frac{25}{36} & \\frac{5}{36}\\\\\\frac{5}{36} & \\frac{1}{36}\\end{matrix}\\right],\\quad (p_{ij})_{ij}=\\left[\\begin{matrix}\\frac{25}{36} & \\frac{5}{36}\\\\\\frac{5}{36} & \\frac{1}{36}\\end{matrix}\\right]"
+        ],
+        [
+          "result",
+          "\\text{Yes}"
+        ]
+      ],
+      "answer_kind": "boolean",
+      "answer_latex": "\\text{Yes}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "moments-independence"
+      }
+    },
+    {
+      "code": "PSBV-1-0000000000000201-42",
+      "statement": "The joint law is \\(\\begin{array}{c|cc}X\\backslash Y&0&2\\\\\\hline0&\\frac{7}{22}&\\frac{4}{11}\\\\1&\\frac{3}{22}&\\frac{2}{11}\\end{array}\\). Are X and Y independent? Answer Yes or No.",
+      "steps": [
+        [
+          "method",
+          "X\\perp Y\\iff p_{ij}=p_{i+}p_{+j}\\text{ for every }i,j"
+        ],
+        [
+          "substitution",
+          "(p_{i+}p_{+j})_{ij}=\\left[\\begin{matrix}\\frac{75}{242} & \\frac{45}{121}\\\\\\frac{35}{242} & \\frac{21}{121}\\end{matrix}\\right],\\quad (p_{ij})_{ij}=\\left[\\begin{matrix}\\frac{7}{22} & \\frac{4}{11}\\\\\\frac{3}{22} & \\frac{2}{11}\\end{matrix}\\right]"
+        ],
+        [
+          "result",
+          "\\text{No}"
+        ]
+      ],
+      "answer_kind": "boolean",
+      "answer_latex": "\\text{No}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "moments-independence"
+      }
+    },
+    {
+      "code": "PSBV-1-0000000000000202-59",
+      "statement": "The joint law is \\(\\begin{array}{c|cc}X\\backslash Y&0&2\\\\\\hline0&\\frac{1}{4}&\\frac{5}{12}\\\\1&\\frac{1}{8}&\\frac{5}{24}\\end{array}\\). Are X and Y independent? Answer Yes or No.",
+      "steps": [
+        [
+          "method",
+          "X\\perp Y\\iff p_{ij}=p_{i+}p_{+j}\\text{ for every }i,j"
+        ],
+        [
+          "substitution",
+          "(p_{i+}p_{+j})_{ij}=\\left[\\begin{matrix}\\frac{1}{4} & \\frac{5}{12}\\\\\\frac{1}{8} & \\frac{5}{24}\\end{matrix}\\right],\\quad (p_{ij})_{ij}=\\left[\\begin{matrix}\\frac{1}{4} & \\frac{5}{12}\\\\\\frac{1}{8} & \\frac{5}{24}\\end{matrix}\\right]"
+        ],
+        [
+          "result",
+          "\\text{Yes}"
+        ]
+      ],
+      "answer_kind": "boolean",
+      "answer_latex": "\\text{Yes}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "moments-independence"
+      }
+    }
+  ],
+  "probability-sample-mean-v1": [
+    {
+      "code": "PSBW-1-0000000000000200-36",
+      "statement": "For the observations \\(\\left( 2, \\  2, \\  -2, \\  2, \\  2, \\  -1, \\  3\\right)\\), find their arithmetic mean.",
+      "steps": [
+        [
+          "method",
+          "\\bar x=\\frac1n\\sum_ix_i"
+        ],
+        [
+          "substitution",
+          "\\bar x=\\frac{8}{7}=\\frac{8}{7}"
+        ],
+        [
+          "result",
+          "\\frac{8}{7}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{8}{7}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "sample-mean"
+      }
+    },
+    {
+      "code": "PSBW-1-0000000000000201-53",
+      "statement": "For the observations \\(\\left( -1, \\  0, \\  1, \\  -1, \\  0, \\  2\\right)\\), find their arithmetic mean.",
+      "steps": [
+        [
+          "method",
+          "\\bar x=\\frac1n\\sum_ix_i"
+        ],
+        [
+          "substitution",
+          "\\bar x=\\frac{1}{6}=\\frac{1}{6}"
+        ],
+        [
+          "result",
+          "\\frac{1}{6}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{6}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "sample-mean"
+      }
+    },
+    {
+      "code": "PSBW-1-0000000000000202-70",
+      "statement": "For the observations \\(\\left( -1, \\  0, \\  2, \\  -1, \\  0, \\  3, \\  0\\right)\\), find their arithmetic mean.",
+      "steps": [
+        [
+          "method",
+          "\\bar x=\\frac1n\\sum_ix_i"
+        ],
+        [
+          "substitution",
+          "\\bar x=\\frac{3}{7}=\\frac{3}{7}"
+        ],
+        [
+          "result",
+          "\\frac{3}{7}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{3}{7}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "sample-mean"
+      }
+    }
+  ],
+  "probability-sample-weighted-v1": [
+    {
+      "code": "PSBX-1-0000000000000200-02",
+      "statement": "Values \\(-2,0,3\\) have frequencies \\(5,5,1\\), respectively. Find their weighted mean.",
+      "steps": [
+        [
+          "method",
+          "\\bar x_w=\\frac{\\sum_jf_jx_j}{\\sum_jf_j}"
+        ],
+        [
+          "substitution",
+          "\\bar x_w=\\frac{-2\\cdot 5+0\\cdot 5+3\\cdot 1}{11}=- \\frac{7}{11}"
+        ],
+        [
+          "result",
+          "- \\frac{7}{11}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "- \\frac{7}{11}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "sample-weighted"
+      }
+    },
+    {
+      "code": "PSBX-1-0000000000000201-19",
+      "statement": "Values \\(-2,0,3\\) have frequencies \\(2,3,4\\), respectively. Find their weighted mean.",
+      "steps": [
+        [
+          "method",
+          "\\bar x_w=\\frac{\\sum_jf_jx_j}{\\sum_jf_j}"
+        ],
+        [
+          "substitution",
+          "\\bar x_w=\\frac{-2\\cdot 2+0\\cdot 3+3\\cdot 4}{9}=\\frac{8}{9}"
+        ],
+        [
+          "result",
+          "\\frac{8}{9}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{8}{9}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "sample-weighted"
+      }
+    },
+    {
+      "code": "PSBX-1-0000000000000202-36",
+      "statement": "Values \\(-2,0,3\\) have frequencies \\(2,3,5\\), respectively. Find their weighted mean.",
+      "steps": [
+        [
+          "method",
+          "\\bar x_w=\\frac{\\sum_jf_jx_j}{\\sum_jf_j}"
+        ],
+        [
+          "substitution",
+          "\\bar x_w=\\frac{-2\\cdot 2+0\\cdot 3+3\\cdot 5}{10}=\\frac{11}{10}"
+        ],
+        [
+          "result",
+          "\\frac{11}{10}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{11}{10}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "sample-weighted"
+      }
+    }
+  ],
+  "probability-sample-median-v1": [
+    {
+      "code": "PSBY-1-0000000000000200-03",
+      "statement": "For the observations \\(\\left( 2, \\  2, \\  -2, \\  2, \\  2, \\  -1, \\  3\\right)\\), find the median.",
+      "steps": [
+        [
+          "method",
+          "x_{(1)}\\le\\cdots\\le x_{(n)}:\\quad \\left( -2, \\  -1, \\  2, \\  2, \\  2, \\  2, \\  3\\right)"
+        ],
+        [
+          "substitution",
+          "n=7,\\quad\\operatorname{median}=2"
+        ],
+        [
+          "result",
+          "2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 2,
+        "template": "sample-median"
+      }
+    },
+    {
+      "code": "PSBY-1-0000000000000201-20",
+      "statement": "For the observations \\(\\left( -1, \\  0, \\  1, \\  -1, \\  0, \\  2\\right)\\), find the median.",
+      "steps": [
+        [
+          "method",
+          "x_{(1)}\\le\\cdots\\le x_{(n)}:\\quad \\left( -1, \\  -1, \\  0, \\  0, \\  1, \\  2\\right)"
+        ],
+        [
+          "substitution",
+          "n=6,\\quad\\operatorname{median}=0"
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 2,
+        "template": "sample-median"
+      }
+    },
+    {
+      "code": "PSBY-1-0000000000000202-37",
+      "statement": "For the observations \\(\\left( -1, \\  0, \\  2, \\  -1, \\  0, \\  3, \\  0\\right)\\), find the median.",
+      "steps": [
+        [
+          "method",
+          "x_{(1)}\\le\\cdots\\le x_{(n)}:\\quad \\left( -1, \\  -1, \\  0, \\  0, \\  0, \\  2, \\  3\\right)"
+        ],
+        [
+          "substitution",
+          "n=7,\\quad\\operatorname{median}=0"
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 2,
+        "template": "sample-median"
+      }
+    }
+  ],
+  "probability-sample-modes-v1": [
+    {
+      "code": "PSBZ-1-0000000000000200-42",
+      "statement": "For the observations \\(\\left( 2, \\  2, \\  -2, \\  2, \\  2, \\  -1, \\  3\\right)\\), give all values tied for the largest observed frequency as a finite set.",
+      "steps": [
+        [
+          "method",
+          "\\operatorname{modes}=\\{x:f(x)=\\max_tf(t)\\}"
+        ],
+        [
+          "substitution",
+          "\\left( -2, \\  -1, \\  2, \\  2, \\  2, \\  2, \\  3\\right),\\quad\\operatorname{modes}=\\left\\{2\\right\\}"
+        ],
+        [
+          "result",
+          "\\left\\{2\\right\\}"
+        ]
+      ],
+      "answer_kind": "finite_set",
+      "answer_latex": "\\left\\{2\\right\\}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "sample-modes"
+      }
+    },
+    {
+      "code": "PSBZ-1-0000000000000201-59",
+      "statement": "For the observations \\(\\left( -1, \\  0, \\  1, \\  -1, \\  0, \\  2\\right)\\), give all values tied for the largest observed frequency as a finite set.",
+      "steps": [
+        [
+          "method",
+          "\\operatorname{modes}=\\{x:f(x)=\\max_tf(t)\\}"
+        ],
+        [
+          "substitution",
+          "\\left( -1, \\  -1, \\  0, \\  0, \\  1, \\  2\\right),\\quad\\operatorname{modes}=\\left\\{-1, 0\\right\\}"
+        ],
+        [
+          "result",
+          "\\left\\{-1, 0\\right\\}"
+        ]
+      ],
+      "answer_kind": "finite_set",
+      "answer_latex": "\\left\\{-1, 0\\right\\}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "sample-modes"
+      }
+    },
+    {
+      "code": "PSBZ-1-0000000000000202-76",
+      "statement": "For the observations \\(\\left( -1, \\  0, \\  2, \\  -1, \\  0, \\  3, \\  0\\right)\\), give all values tied for the largest observed frequency as a finite set.",
+      "steps": [
+        [
+          "method",
+          "\\operatorname{modes}=\\{x:f(x)=\\max_tf(t)\\}"
+        ],
+        [
+          "substitution",
+          "\\left( -1, \\  -1, \\  0, \\  0, \\  0, \\  2, \\  3\\right),\\quad\\operatorname{modes}=\\left\\{0\\right\\}"
+        ],
+        [
+          "result",
+          "\\left\\{0\\right\\}"
+        ]
+      ],
+      "answer_kind": "finite_set",
+      "answer_latex": "\\left\\{0\\right\\}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "sample-modes"
+      }
+    }
+  ],
+  "probability-sample-quartile-v1": [
+    {
+      "code": "PSCA-1-0000000000000200-49",
+      "statement": "For the observations \\(\\left( 2, \\  2, \\  -2, \\  2, \\  2, \\  -1, \\  3\\right)\\), find the lower quartile Q1. Use medians of the lower and upper halves, excluding the overall median when n is odd.",
+      "steps": [
+        [
+          "method",
+          "Q_1=\\operatorname{median}(\\text{lower half}),\\quad Q_3=\\operatorname{median}(\\text{upper half})"
+        ],
+        [
+          "substitution",
+          "Q_1=-1,\\quad Q_3=2,\\quad Q_3-Q_1=3"
+        ],
+        [
+          "result",
+          "-1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-1",
+      "metadata": {
+        "difficulty": 3,
+        "template": "sample-quartile"
+      }
+    },
+    {
+      "code": "PSCA-1-0000000000000201-66",
+      "statement": "For the observations \\(\\left( -1, \\  0, \\  1, \\  -1, \\  0, \\  2\\right)\\), find the lower quartile Q1. Use medians of the lower and upper halves, excluding the overall median when n is odd.",
+      "steps": [
+        [
+          "method",
+          "Q_1=\\operatorname{median}(\\text{lower half}),\\quad Q_3=\\operatorname{median}(\\text{upper half})"
+        ],
+        [
+          "substitution",
+          "Q_1=-1,\\quad Q_3=1,\\quad Q_3-Q_1=2"
+        ],
+        [
+          "result",
+          "-1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-1",
+      "metadata": {
+        "difficulty": 3,
+        "template": "sample-quartile"
+      }
+    },
+    {
+      "code": "PSCA-1-0000000000000202-83",
+      "statement": "For the observations \\(\\left( -1, \\  0, \\  2, \\  -1, \\  0, \\  3, \\  0\\right)\\), find the lower quartile Q1. Use medians of the lower and upper halves, excluding the overall median when n is odd.",
+      "steps": [
+        [
+          "method",
+          "Q_1=\\operatorname{median}(\\text{lower half}),\\quad Q_3=\\operatorname{median}(\\text{upper half})"
+        ],
+        [
+          "substitution",
+          "Q_1=-1,\\quad Q_3=2,\\quad Q_3-Q_1=3"
+        ],
+        [
+          "result",
+          "-1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-1",
+      "metadata": {
+        "difficulty": 3,
+        "template": "sample-quartile"
+      }
+    }
+  ],
+  "probability-sample-iqr-v1": [
+    {
+      "code": "PSCB-1-0000000000000200-76",
+      "statement": "For the observations \\(\\left( 2, \\  2, \\  -2, \\  2, \\  2, \\  -1, \\  3\\right)\\), find the interquartile range. Use medians of the lower and upper halves, excluding the overall median when n is odd.",
+      "steps": [
+        [
+          "method",
+          "Q_1=\\operatorname{median}(\\text{lower half}),\\quad Q_3=\\operatorname{median}(\\text{upper half})"
+        ],
+        [
+          "substitution",
+          "Q_1=-1,\\quad Q_3=2,\\quad Q_3-Q_1=3"
+        ],
+        [
+          "result",
+          "3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3",
+      "metadata": {
+        "difficulty": 3,
+        "template": "sample-iqr"
+      }
+    },
+    {
+      "code": "PSCB-1-0000000000000201-93",
+      "statement": "For the observations \\(\\left( -1, \\  0, \\  1, \\  -1, \\  0, \\  2\\right)\\), find the interquartile range. Use medians of the lower and upper halves, excluding the overall median when n is odd.",
+      "steps": [
+        [
+          "method",
+          "Q_1=\\operatorname{median}(\\text{lower half}),\\quad Q_3=\\operatorname{median}(\\text{upper half})"
+        ],
+        [
+          "substitution",
+          "Q_1=-1,\\quad Q_3=1,\\quad Q_3-Q_1=2"
+        ],
+        [
+          "result",
+          "2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 3,
+        "template": "sample-iqr"
+      }
+    },
+    {
+      "code": "PSCB-1-0000000000000202-13",
+      "statement": "For the observations \\(\\left( -1, \\  0, \\  2, \\  -1, \\  0, \\  3, \\  0\\right)\\), find the interquartile range. Use medians of the lower and upper halves, excluding the overall median when n is odd.",
+      "steps": [
+        [
+          "method",
+          "Q_1=\\operatorname{median}(\\text{lower half}),\\quad Q_3=\\operatorname{median}(\\text{upper half})"
+        ],
+        [
+          "substitution",
+          "Q_1=-1,\\quad Q_3=2,\\quad Q_3-Q_1=3"
+        ],
+        [
+          "result",
+          "3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3",
+      "metadata": {
+        "difficulty": 3,
+        "template": "sample-iqr"
+      }
+    }
+  ],
+  "probability-sample-population-variance-v1": [
+    {
+      "code": "PSCC-1-0000000000000200-63",
+      "statement": "For the observations \\(\\left( 2, \\  2, \\  -2, \\  2, \\  2, \\  -1, \\  3\\right)\\), find the population variance (divide by n).",
+      "steps": [
+        [
+          "method",
+          "v=\\frac{\\sum_i(x_i-\\bar x)^2}{7}"
+        ],
+        [
+          "substitution",
+          "\\bar x=\\frac{8}{7},\\quad v=\\frac{146}{49},\\quad\\sqrt v=\\frac{\\sqrt{146}}{7}"
+        ],
+        [
+          "result",
+          "\\frac{146}{49}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{146}{49}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "sample-population-variance"
+      }
+    },
+    {
+      "code": "PSCC-1-0000000000000201-80",
+      "statement": "For the observations \\(\\left( -1, \\  0, \\  1, \\  -1, \\  0, \\  2\\right)\\), find the population variance (divide by n).",
+      "steps": [
+        [
+          "method",
+          "v=\\frac{\\sum_i(x_i-\\bar x)^2}{6}"
+        ],
+        [
+          "substitution",
+          "\\bar x=\\frac{1}{6},\\quad v=\\frac{41}{36},\\quad\\sqrt v=\\frac{\\sqrt{41}}{6}"
+        ],
+        [
+          "result",
+          "\\frac{41}{36}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{41}{36}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "sample-population-variance"
+      }
+    },
+    {
+      "code": "PSCC-1-0000000000000202-00",
+      "statement": "For the observations \\(\\left( -1, \\  0, \\  2, \\  -1, \\  0, \\  3, \\  0\\right)\\), find the population variance (divide by n).",
+      "steps": [
+        [
+          "method",
+          "v=\\frac{\\sum_i(x_i-\\bar x)^2}{7}"
+        ],
+        [
+          "substitution",
+          "\\bar x=\\frac{3}{7},\\quad v=\\frac{96}{49},\\quad\\sqrt v=\\frac{4 \\sqrt{6}}{7}"
+        ],
+        [
+          "result",
+          "\\frac{96}{49}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{96}{49}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "sample-population-variance"
+      }
+    }
+  ],
+  "probability-sample-sample-variance-v1": [
+    {
+      "code": "PSCD-1-0000000000000200-88",
+      "statement": "For the observations \\(\\left( 2, \\  2, \\  -2, \\  2, \\  2, \\  -1, \\  3\\right)\\), find the unbiased sample variance (divide by n-1).",
+      "steps": [
+        [
+          "method",
+          "v=\\frac{\\sum_i(x_i-\\bar x)^2}{6}"
+        ],
+        [
+          "substitution",
+          "\\bar x=\\frac{8}{7},\\quad v=\\frac{73}{21},\\quad\\sqrt v=\\frac{\\sqrt{1533}}{21}"
+        ],
+        [
+          "result",
+          "\\frac{73}{21}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{73}{21}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "sample-sample-variance"
+      }
+    },
+    {
+      "code": "PSCD-1-0000000000000201-08",
+      "statement": "For the observations \\(\\left( -1, \\  0, \\  1, \\  -1, \\  0, \\  2\\right)\\), find the unbiased sample variance (divide by n-1).",
+      "steps": [
+        [
+          "method",
+          "v=\\frac{\\sum_i(x_i-\\bar x)^2}{5}"
+        ],
+        [
+          "substitution",
+          "\\bar x=\\frac{1}{6},\\quad v=\\frac{41}{30},\\quad\\sqrt v=\\frac{\\sqrt{1230}}{30}"
+        ],
+        [
+          "result",
+          "\\frac{41}{30}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{41}{30}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "sample-sample-variance"
+      }
+    },
+    {
+      "code": "PSCD-1-0000000000000202-25",
+      "statement": "For the observations \\(\\left( -1, \\  0, \\  2, \\  -1, \\  0, \\  3, \\  0\\right)\\), find the unbiased sample variance (divide by n-1).",
+      "steps": [
+        [
+          "method",
+          "v=\\frac{\\sum_i(x_i-\\bar x)^2}{6}"
+        ],
+        [
+          "substitution",
+          "\\bar x=\\frac{3}{7},\\quad v=\\frac{16}{7},\\quad\\sqrt v=\\frac{4 \\sqrt{7}}{7}"
+        ],
+        [
+          "result",
+          "\\frac{16}{7}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{16}{7}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "sample-sample-variance"
+      }
+    }
+  ],
+  "probability-sample-deviation-v1": [
+    {
+      "code": "PSCE-1-0000000000000200-88",
+      "statement": "For the observations \\(\\left( 2, \\  2, \\  -2, \\  2, \\  2, \\  -1, \\  3\\right)\\), find the sample standard deviation, using the unbiased sample variance.",
+      "steps": [
+        [
+          "method",
+          "v=\\frac{\\sum_i(x_i-\\bar x)^2}{6}"
+        ],
+        [
+          "substitution",
+          "\\bar x=\\frac{8}{7},\\quad v=\\frac{73}{21},\\quad\\sqrt v=\\frac{\\sqrt{1533}}{21}"
+        ],
+        [
+          "result",
+          "\\frac{\\sqrt{1533}}{21}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{\\sqrt{1533}}{21}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "sample-deviation"
+      }
+    },
+    {
+      "code": "PSCE-1-0000000000000201-08",
+      "statement": "For the observations \\(\\left( -1, \\  0, \\  1, \\  -1, \\  0, \\  2\\right)\\), find the sample standard deviation, using the unbiased sample variance.",
+      "steps": [
+        [
+          "method",
+          "v=\\frac{\\sum_i(x_i-\\bar x)^2}{5}"
+        ],
+        [
+          "substitution",
+          "\\bar x=\\frac{1}{6},\\quad v=\\frac{41}{30},\\quad\\sqrt v=\\frac{\\sqrt{1230}}{30}"
+        ],
+        [
+          "result",
+          "\\frac{\\sqrt{1230}}{30}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{\\sqrt{1230}}{30}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "sample-deviation"
+      }
+    },
+    {
+      "code": "PSCE-1-0000000000000202-25",
+      "statement": "For the observations \\(\\left( -1, \\  0, \\  2, \\  -1, \\  0, \\  3, \\  0\\right)\\), find the sample standard deviation, using the unbiased sample variance.",
+      "steps": [
+        [
+          "method",
+          "v=\\frac{\\sum_i(x_i-\\bar x)^2}{6}"
+        ],
+        [
+          "substitution",
+          "\\bar x=\\frac{3}{7},\\quad v=\\frac{16}{7},\\quad\\sqrt v=\\frac{4 \\sqrt{7}}{7}"
+        ],
+        [
+          "result",
+          "\\frac{4 \\sqrt{7}}{7}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{4 \\sqrt{7}}{7}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "sample-deviation"
+      }
+    }
+  ],
+  "probability-sample-correlation-v1": [
+    {
+      "code": "PSCF-1-0000000000000200-30",
+      "statement": "For the paired observations \\(\\left( \\left( 0, \\  1\\right), \\  \\left( 1, \\  3\\right), \\  \\left( 2, \\  1\\right), \\  \\left( 3, \\  4\\right), \\  \\left( 4, \\  2\\right), \\  \\left( 5, \\  5\\right)\\right)\\), find the Pearson correlation coefficient for regressing y on x.",
+      "steps": [
+        [
+          "method",
+          "S_{xy}=\\sum_i(x_i-\\bar x)(y_i-\\bar y),\\ S_{xx}=\\sum_i(x_i-\\bar x)^2,\\ S_{yy}=\\sum_i(y_i-\\bar y)^2"
+        ],
+        [
+          "substitution",
+          "r=\\frac{S_{xy}}{\\sqrt{S_{xx}S_{yy}}}=\\frac{\\sqrt{21}}{7}"
+        ],
+        [
+          "result",
+          "\\frac{\\sqrt{21}}{7}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{\\sqrt{21}}{7}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "sample-correlation"
+      }
+    },
+    {
+      "code": "PSCF-1-0000000000000201-47",
+      "statement": "For the paired observations \\(\\left( \\left( -3, \\  -1\\right), \\  \\left( -2, \\  1\\right), \\  \\left( -1, \\  -1\\right), \\  \\left( 0, \\  2\\right), \\  \\left( 1, \\  0\\right), \\  \\left( 2, \\  3\\right)\\right)\\), find the Pearson correlation coefficient for regressing y on x.",
+      "steps": [
+        [
+          "method",
+          "S_{xy}=\\sum_i(x_i-\\bar x)(y_i-\\bar y),\\ S_{xx}=\\sum_i(x_i-\\bar x)^2,\\ S_{yy}=\\sum_i(y_i-\\bar y)^2"
+        ],
+        [
+          "substitution",
+          "r=\\frac{S_{xy}}{\\sqrt{S_{xx}S_{yy}}}=\\frac{\\sqrt{21}}{7}"
+        ],
+        [
+          "result",
+          "\\frac{\\sqrt{21}}{7}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{\\sqrt{21}}{7}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "sample-correlation"
+      }
+    },
+    {
+      "code": "PSCF-1-0000000000000202-64",
+      "statement": "For the paired observations \\(\\left( \\left( -3, \\  -1\\right), \\  \\left( -2, \\  1\\right), \\  \\left( -1, \\  -1\\right), \\  \\left( 0, \\  2\\right), \\  \\left( 1, \\  0\\right), \\  \\left( 2, \\  3\\right)\\right)\\), find the Pearson correlation coefficient for regressing y on x.",
+      "steps": [
+        [
+          "method",
+          "S_{xy}=\\sum_i(x_i-\\bar x)(y_i-\\bar y),\\ S_{xx}=\\sum_i(x_i-\\bar x)^2,\\ S_{yy}=\\sum_i(y_i-\\bar y)^2"
+        ],
+        [
+          "substitution",
+          "r=\\frac{S_{xy}}{\\sqrt{S_{xx}S_{yy}}}=\\frac{\\sqrt{21}}{7}"
+        ],
+        [
+          "result",
+          "\\frac{\\sqrt{21}}{7}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{\\sqrt{21}}{7}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "sample-correlation"
+      }
+    }
+  ],
+  "probability-sample-slope-v1": [
+    {
+      "code": "PSCG-1-0000000000000200-23",
+      "statement": "For the paired observations \\(\\left( \\left( 0, \\  1\\right), \\  \\left( 1, \\  3\\right), \\  \\left( 2, \\  1\\right), \\  \\left( 3, \\  4\\right), \\  \\left( 4, \\  2\\right), \\  \\left( 5, \\  5\\right)\\right)\\), find the least-squares slope for regressing y on x.",
+      "steps": [
+        [
+          "method",
+          "S_{xy}=\\sum_i(x_i-\\bar x)(y_i-\\bar y),\\ S_{xx}=\\sum_i(x_i-\\bar x)^2,\\ S_{yy}=\\sum_i(y_i-\\bar y)^2"
+        ],
+        [
+          "substitution",
+          "b_1=\\frac{S_{xy}}{S_{xx}}=\\frac{4}{7},\\quad b_0=\\bar y-b_1\\bar x=\\frac{26}{21},\\quad \\widehat y=\\frac{26}{21}+(\\frac{4}{7})x"
+        ],
+        [
+          "result",
+          "\\frac{4}{7}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{4}{7}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "sample-slope"
+      }
+    },
+    {
+      "code": "PSCG-1-0000000000000201-40",
+      "statement": "For the paired observations \\(\\left( \\left( -3, \\  -1\\right), \\  \\left( -2, \\  1\\right), \\  \\left( -1, \\  -1\\right), \\  \\left( 0, \\  2\\right), \\  \\left( 1, \\  0\\right), \\  \\left( 2, \\  3\\right)\\right)\\), find the least-squares slope for regressing y on x.",
+      "steps": [
+        [
+          "method",
+          "S_{xy}=\\sum_i(x_i-\\bar x)(y_i-\\bar y),\\ S_{xx}=\\sum_i(x_i-\\bar x)^2,\\ S_{yy}=\\sum_i(y_i-\\bar y)^2"
+        ],
+        [
+          "substitution",
+          "b_1=\\frac{S_{xy}}{S_{xx}}=\\frac{4}{7},\\quad b_0=\\bar y-b_1\\bar x=\\frac{20}{21},\\quad \\widehat y=\\frac{20}{21}+(\\frac{4}{7})x"
+        ],
+        [
+          "result",
+          "\\frac{4}{7}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{4}{7}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "sample-slope"
+      }
+    },
+    {
+      "code": "PSCG-1-0000000000000202-57",
+      "statement": "For the paired observations \\(\\left( \\left( -3, \\  -1\\right), \\  \\left( -2, \\  1\\right), \\  \\left( -1, \\  -1\\right), \\  \\left( 0, \\  2\\right), \\  \\left( 1, \\  0\\right), \\  \\left( 2, \\  3\\right)\\right)\\), find the least-squares slope for regressing y on x.",
+      "steps": [
+        [
+          "method",
+          "S_{xy}=\\sum_i(x_i-\\bar x)(y_i-\\bar y),\\ S_{xx}=\\sum_i(x_i-\\bar x)^2,\\ S_{yy}=\\sum_i(y_i-\\bar y)^2"
+        ],
+        [
+          "substitution",
+          "b_1=\\frac{S_{xy}}{S_{xx}}=\\frac{4}{7},\\quad b_0=\\bar y-b_1\\bar x=\\frac{20}{21},\\quad \\widehat y=\\frac{20}{21}+(\\frac{4}{7})x"
+        ],
+        [
+          "result",
+          "\\frac{4}{7}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{4}{7}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "sample-slope"
+      }
+    }
+  ],
+  "probability-sample-intercept-v1": [
+    {
+      "code": "PSCH-1-0000000000000200-66",
+      "statement": "For the paired observations \\(\\left( \\left( 0, \\  1\\right), \\  \\left( 1, \\  3\\right), \\  \\left( 2, \\  1\\right), \\  \\left( 3, \\  4\\right), \\  \\left( 4, \\  2\\right), \\  \\left( 5, \\  5\\right)\\right)\\), find the least-squares intercept for regressing y on x.",
+      "steps": [
+        [
+          "method",
+          "S_{xy}=\\sum_i(x_i-\\bar x)(y_i-\\bar y),\\ S_{xx}=\\sum_i(x_i-\\bar x)^2,\\ S_{yy}=\\sum_i(y_i-\\bar y)^2"
+        ],
+        [
+          "substitution",
+          "b_1=\\frac{S_{xy}}{S_{xx}}=\\frac{4}{7},\\quad b_0=\\bar y-b_1\\bar x=\\frac{26}{21},\\quad \\widehat y=\\frac{26}{21}+(\\frac{4}{7})x"
+        ],
+        [
+          "result",
+          "\\frac{26}{21}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{26}{21}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "sample-intercept"
+      }
+    },
+    {
+      "code": "PSCH-1-0000000000000201-83",
+      "statement": "For the paired observations \\(\\left( \\left( -3, \\  -1\\right), \\  \\left( -2, \\  1\\right), \\  \\left( -1, \\  -1\\right), \\  \\left( 0, \\  2\\right), \\  \\left( 1, \\  0\\right), \\  \\left( 2, \\  3\\right)\\right)\\), find the least-squares intercept for regressing y on x.",
+      "steps": [
+        [
+          "method",
+          "S_{xy}=\\sum_i(x_i-\\bar x)(y_i-\\bar y),\\ S_{xx}=\\sum_i(x_i-\\bar x)^2,\\ S_{yy}=\\sum_i(y_i-\\bar y)^2"
+        ],
+        [
+          "substitution",
+          "b_1=\\frac{S_{xy}}{S_{xx}}=\\frac{4}{7},\\quad b_0=\\bar y-b_1\\bar x=\\frac{20}{21},\\quad \\widehat y=\\frac{20}{21}+(\\frac{4}{7})x"
+        ],
+        [
+          "result",
+          "\\frac{20}{21}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{20}{21}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "sample-intercept"
+      }
+    },
+    {
+      "code": "PSCH-1-0000000000000202-03",
+      "statement": "For the paired observations \\(\\left( \\left( -3, \\  -1\\right), \\  \\left( -2, \\  1\\right), \\  \\left( -1, \\  -1\\right), \\  \\left( 0, \\  2\\right), \\  \\left( 1, \\  0\\right), \\  \\left( 2, \\  3\\right)\\right)\\), find the least-squares intercept for regressing y on x.",
+      "steps": [
+        [
+          "method",
+          "S_{xy}=\\sum_i(x_i-\\bar x)(y_i-\\bar y),\\ S_{xx}=\\sum_i(x_i-\\bar x)^2,\\ S_{yy}=\\sum_i(y_i-\\bar y)^2"
+        ],
+        [
+          "substitution",
+          "b_1=\\frac{S_{xy}}{S_{xx}}=\\frac{4}{7},\\quad b_0=\\bar y-b_1\\bar x=\\frac{20}{21},\\quad \\widehat y=\\frac{20}{21}+(\\frac{4}{7})x"
+        ],
+        [
+          "result",
+          "\\frac{20}{21}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{20}{21}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "sample-intercept"
+      }
+    }
+  ],
+  "probability-ci-mean-z-v1": [
+    {
+      "code": "PSCI-1-0000000000000200-58",
+      "statement": "An independent random sample comes from a normal population with known population standard deviation. The sample mean is \\(0\\), population \\(\\sigma=1\\), and \\(n=36\\). Use the supplied rounded normal critical value \\(z=1.960\\). Give the two-sided 95-percent confidence interval. Calculate endpoints exactly from the supplied critical value.",
+      "steps": [
+        [
+          "method",
+          "[\\bar x-q\\sigma/\\sqrt n,\\bar x+q\\sigma/\\sqrt n]"
+        ],
+        [
+          "substitution",
+          "\\bar x=0,\\quad\\mathrm{SE}=\\frac{1}{\\sqrt{36}},\\quad q\\cdot\\mathrm{SE}=\\frac{49}{150}"
+        ],
+        [
+          "result",
+          "\\left[- \\frac{49}{150}, \\frac{49}{150}\\right]"
+        ]
+      ],
+      "answer_kind": "interval",
+      "answer_latex": "\\left[- \\frac{49}{150}, \\frac{49}{150}\\right]",
+      "metadata": {
+        "difficulty": 1,
+        "template": "ci-mean-z"
+      }
+    },
+    {
+      "code": "PSCI-1-0000000000000201-75",
+      "statement": "An independent random sample comes from a normal population with known population standard deviation. The sample mean is \\(-1\\), population \\(\\sigma=4\\), and \\(n=9\\). Use the supplied rounded normal critical value \\(z=2.576\\). Give the two-sided 99-percent confidence interval. Calculate endpoints exactly from the supplied critical value.",
+      "steps": [
+        [
+          "method",
+          "[\\bar x-q\\sigma/\\sqrt n,\\bar x+q\\sigma/\\sqrt n]"
+        ],
+        [
+          "substitution",
+          "\\bar x=-1,\\quad\\mathrm{SE}=\\frac{4}{\\sqrt{9}},\\quad q\\cdot\\mathrm{SE}=\\frac{1288}{375}"
+        ],
+        [
+          "result",
+          "\\left[- \\frac{1663}{375}, \\frac{913}{375}\\right]"
+        ]
+      ],
+      "answer_kind": "interval",
+      "answer_latex": "\\left[- \\frac{1663}{375}, \\frac{913}{375}\\right]",
+      "metadata": {
+        "difficulty": 1,
+        "template": "ci-mean-z"
+      }
+    },
+    {
+      "code": "PSCI-1-0000000000000202-92",
+      "statement": "An independent random sample comes from a normal population with known population standard deviation. The sample mean is \\(-1\\), population \\(\\sigma=5\\), and \\(n=9\\). Use the supplied rounded normal critical value \\(z=2.576\\). Give the two-sided 99-percent confidence interval. Calculate endpoints exactly from the supplied critical value.",
+      "steps": [
+        [
+          "method",
+          "[\\bar x-q\\sigma/\\sqrt n,\\bar x+q\\sigma/\\sqrt n]"
+        ],
+        [
+          "substitution",
+          "\\bar x=-1,\\quad\\mathrm{SE}=\\frac{5}{\\sqrt{9}},\\quad q\\cdot\\mathrm{SE}=\\frac{322}{75}"
+        ],
+        [
+          "result",
+          "\\left[- \\frac{397}{75}, \\frac{247}{75}\\right]"
+        ]
+      ],
+      "answer_kind": "interval",
+      "answer_latex": "\\left[- \\frac{397}{75}, \\frac{247}{75}\\right]",
+      "metadata": {
+        "difficulty": 1,
+        "template": "ci-mean-z"
+      }
+    }
+  ],
+  "probability-ci-mean-t-v1": [
+    {
+      "code": "PSCJ-1-0000000000000200-12",
+      "statement": "An independent random sample comes from a normal population with unknown variance. The sample mean is \\(0\\), sample standard deviation is \\(s=1\\), and \\(n=8\\). Use the supplied rounded critical value \\(t_{0.975,7}=2.365\\). Give the two-sided 95-percent confidence interval. Calculate endpoints exactly from the supplied critical value.",
+      "steps": [
+        [
+          "method",
+          "[\\bar x-q\\cdot\\mathrm{SE},\\bar x+q\\cdot\\mathrm{SE}],\\quad\\mathrm{SE}=s/\\sqrt n"
+        ],
+        [
+          "substitution",
+          "\\bar x=0,\\quad\\mathrm{SE}=\\frac{1}{\\sqrt{8}},\\quad q\\cdot\\mathrm{SE}=\\frac{473 \\sqrt{2}}{800}"
+        ],
+        [
+          "result",
+          "\\left[- \\frac{473 \\sqrt{2}}{800}, \\frac{473 \\sqrt{2}}{800}\\right]"
+        ]
+      ],
+      "answer_kind": "interval",
+      "answer_latex": "\\left[- \\frac{473 \\sqrt{2}}{800}, \\frac{473 \\sqrt{2}}{800}\\right]",
+      "metadata": {
+        "difficulty": 2,
+        "template": "ci-mean-t"
+      }
+    },
+    {
+      "code": "PSCJ-1-0000000000000201-29",
+      "statement": "An independent random sample comes from a normal population with unknown variance. The sample mean is \\(-1\\), sample standard deviation is \\(s=4\\), and \\(n=5\\). Use the supplied rounded critical value \\(t_{0.975,4}=2.776\\). Give the two-sided 95-percent confidence interval. Calculate endpoints exactly from the supplied critical value.",
+      "steps": [
+        [
+          "method",
+          "[\\bar x-q\\cdot\\mathrm{SE},\\bar x+q\\cdot\\mathrm{SE}],\\quad\\mathrm{SE}=s/\\sqrt n"
+        ],
+        [
+          "substitution",
+          "\\bar x=-1,\\quad\\mathrm{SE}=\\frac{4}{\\sqrt{5}},\\quad q\\cdot\\mathrm{SE}=\\frac{1388 \\sqrt{5}}{625}"
+        ],
+        [
+          "result",
+          "\\left[- \\frac{1388 \\sqrt{5}}{625} - 1, -1 + \\frac{1388 \\sqrt{5}}{625}\\right]"
+        ]
+      ],
+      "answer_kind": "interval",
+      "answer_latex": "\\left[- \\frac{1388 \\sqrt{5}}{625} - 1, -1 + \\frac{1388 \\sqrt{5}}{625}\\right]",
+      "metadata": {
+        "difficulty": 2,
+        "template": "ci-mean-t"
+      }
+    },
+    {
+      "code": "PSCJ-1-0000000000000202-46",
+      "statement": "An independent random sample comes from a normal population with unknown variance. The sample mean is \\(-1\\), sample standard deviation is \\(s=5\\), and \\(n=5\\). Use the supplied rounded critical value \\(t_{0.975,4}=2.776\\). Give the two-sided 95-percent confidence interval. Calculate endpoints exactly from the supplied critical value.",
+      "steps": [
+        [
+          "method",
+          "[\\bar x-q\\cdot\\mathrm{SE},\\bar x+q\\cdot\\mathrm{SE}],\\quad\\mathrm{SE}=s/\\sqrt n"
+        ],
+        [
+          "substitution",
+          "\\bar x=-1,\\quad\\mathrm{SE}=\\frac{5}{\\sqrt{5}},\\quad q\\cdot\\mathrm{SE}=\\frac{347 \\sqrt{5}}{125}"
+        ],
+        [
+          "result",
+          "\\left[- \\frac{347 \\sqrt{5}}{125} - 1, -1 + \\frac{347 \\sqrt{5}}{125}\\right]"
+        ]
+      ],
+      "answer_kind": "interval",
+      "answer_latex": "\\left[- \\frac{347 \\sqrt{5}}{125} - 1, -1 + \\frac{347 \\sqrt{5}}{125}\\right]",
+      "metadata": {
+        "difficulty": 2,
+        "template": "ci-mean-t"
+      }
+    }
+  ],
+  "probability-ci-lower-v1": [
+    {
+      "code": "PSCK-1-0000000000000200-31",
+      "statement": "An independent random sample comes from a normal population with known population standard deviation. The sample mean is \\(0\\), population \\(\\sigma=1\\), and \\(n=36\\). Use the supplied rounded normal critical value \\(z=1.645\\). Give the one-sided 95-percent lower confidence interval. Calculate endpoints exactly from the supplied critical value.",
+      "steps": [
+        [
+          "method",
+          "[\\bar x-z\\sigma/\\sqrt n,\\infty)"
+        ],
+        [
+          "substitution",
+          "\\bar x=0,\\quad\\mathrm{SE}=\\frac{1}{\\sqrt{36}},\\quad q\\cdot\\mathrm{SE}=\\frac{329}{1200}"
+        ],
+        [
+          "result",
+          "\\left[- \\frac{329}{1200}, \\infty\\right)"
+        ]
+      ],
+      "answer_kind": "interval",
+      "answer_latex": "\\left[- \\frac{329}{1200}, \\infty\\right)",
+      "metadata": {
+        "difficulty": 3,
+        "template": "ci-lower"
+      }
+    },
+    {
+      "code": "PSCK-1-0000000000000201-48",
+      "statement": "An independent random sample comes from a normal population with known population standard deviation. The sample mean is \\(-1\\), population \\(\\sigma=4\\), and \\(n=9\\). Use the supplied rounded normal critical value \\(z=1.645\\). Give the one-sided 95-percent lower confidence interval. Calculate endpoints exactly from the supplied critical value.",
+      "steps": [
+        [
+          "method",
+          "[\\bar x-z\\sigma/\\sqrt n,\\infty)"
+        ],
+        [
+          "substitution",
+          "\\bar x=-1,\\quad\\mathrm{SE}=\\frac{4}{\\sqrt{9}},\\quad q\\cdot\\mathrm{SE}=\\frac{329}{150}"
+        ],
+        [
+          "result",
+          "\\left[- \\frac{479}{150}, \\infty\\right)"
+        ]
+      ],
+      "answer_kind": "interval",
+      "answer_latex": "\\left[- \\frac{479}{150}, \\infty\\right)",
+      "metadata": {
+        "difficulty": 3,
+        "template": "ci-lower"
+      }
+    },
+    {
+      "code": "PSCK-1-0000000000000202-65",
+      "statement": "An independent random sample comes from a normal population with known population standard deviation. The sample mean is \\(-1\\), population \\(\\sigma=5\\), and \\(n=9\\). Use the supplied rounded normal critical value \\(z=1.645\\). Give the one-sided 95-percent lower confidence interval. Calculate endpoints exactly from the supplied critical value.",
+      "steps": [
+        [
+          "method",
+          "[\\bar x-z\\sigma/\\sqrt n,\\infty)"
+        ],
+        [
+          "substitution",
+          "\\bar x=-1,\\quad\\mathrm{SE}=\\frac{5}{\\sqrt{9}},\\quad q\\cdot\\mathrm{SE}=\\frac{329}{120}"
+        ],
+        [
+          "result",
+          "\\left[- \\frac{449}{120}, \\infty\\right)"
+        ]
+      ],
+      "answer_kind": "interval",
+      "answer_latex": "\\left[- \\frac{449}{120}, \\infty\\right)",
+      "metadata": {
+        "difficulty": 3,
+        "template": "ci-lower"
+      }
+    }
+  ],
+  "probability-ci-upper-v1": [
+    {
+      "code": "PSCL-1-0000000000000200-90",
+      "statement": "An independent random sample comes from a normal population with known population standard deviation. The sample mean is \\(0\\), population \\(\\sigma=1\\), and \\(n=36\\). Use the supplied rounded normal critical value \\(z=1.645\\). Give the one-sided 95-percent upper confidence interval. Calculate endpoints exactly from the supplied critical value.",
+      "steps": [
+        [
+          "method",
+          "(-\\infty,\\bar x+z\\sigma/\\sqrt n]"
+        ],
+        [
+          "substitution",
+          "\\bar x=0,\\quad\\mathrm{SE}=\\frac{1}{\\sqrt{36}},\\quad q\\cdot\\mathrm{SE}=\\frac{329}{1200}"
+        ],
+        [
+          "result",
+          "\\left(-\\infty, \\frac{329}{1200}\\right]"
+        ]
+      ],
+      "answer_kind": "interval",
+      "answer_latex": "\\left(-\\infty, \\frac{329}{1200}\\right]",
+      "metadata": {
+        "difficulty": 3,
+        "template": "ci-upper"
+      }
+    },
+    {
+      "code": "PSCL-1-0000000000000201-10",
+      "statement": "An independent random sample comes from a normal population with known population standard deviation. The sample mean is \\(-1\\), population \\(\\sigma=4\\), and \\(n=9\\). Use the supplied rounded normal critical value \\(z=1.645\\). Give the one-sided 95-percent upper confidence interval. Calculate endpoints exactly from the supplied critical value.",
+      "steps": [
+        [
+          "method",
+          "(-\\infty,\\bar x+z\\sigma/\\sqrt n]"
+        ],
+        [
+          "substitution",
+          "\\bar x=-1,\\quad\\mathrm{SE}=\\frac{4}{\\sqrt{9}},\\quad q\\cdot\\mathrm{SE}=\\frac{329}{150}"
+        ],
+        [
+          "result",
+          "\\left(-\\infty, \\frac{179}{150}\\right]"
+        ]
+      ],
+      "answer_kind": "interval",
+      "answer_latex": "\\left(-\\infty, \\frac{179}{150}\\right]",
+      "metadata": {
+        "difficulty": 3,
+        "template": "ci-upper"
+      }
+    },
+    {
+      "code": "PSCL-1-0000000000000202-27",
+      "statement": "An independent random sample comes from a normal population with known population standard deviation. The sample mean is \\(-1\\), population \\(\\sigma=5\\), and \\(n=9\\). Use the supplied rounded normal critical value \\(z=1.645\\). Give the one-sided 95-percent upper confidence interval. Calculate endpoints exactly from the supplied critical value.",
+      "steps": [
+        [
+          "method",
+          "(-\\infty,\\bar x+z\\sigma/\\sqrt n]"
+        ],
+        [
+          "substitution",
+          "\\bar x=-1,\\quad\\mathrm{SE}=\\frac{5}{\\sqrt{9}},\\quad q\\cdot\\mathrm{SE}=\\frac{329}{120}"
+        ],
+        [
+          "result",
+          "\\left(-\\infty, \\frac{209}{120}\\right]"
+        ]
+      ],
+      "answer_kind": "interval",
+      "answer_latex": "\\left(-\\infty, \\frac{209}{120}\\right]",
+      "metadata": {
+        "difficulty": 3,
+        "template": "ci-upper"
+      }
+    }
+  ],
+  "probability-ci-proportion-v1": [
+    {
+      "code": "PSCM-1-0000000000000200-39",
+      "statement": "An independent Bernoulli sample has \\(60\\) successes out of \\(100\\) trials. Use the large-sample Wald approximation (both observed counts are at least 10). Give the approximate two-sided 95-percent confidence interval using the supplied rounded critical value 1.960. Calculate endpoints exactly from that value.",
+      "steps": [
+        [
+          "method",
+          "\\widehat p\\pm1.960\\sqrt{\\widehat p(1-\\widehat p)/n}"
+        ],
+        [
+          "substitution",
+          "\\widehat p=\\frac{3}{5},\\quad\\mathrm{SE}=\\sqrt{\\frac{(\\frac{3}{5})(1-\\frac{3}{5})}{100}}"
+        ],
+        [
+          "result",
+          "\\left[\\frac{3}{5} - \\frac{49 \\sqrt{6}}{1250}, \\frac{49 \\sqrt{6}}{1250} + \\frac{3}{5}\\right]"
+        ]
+      ],
+      "answer_kind": "interval",
+      "answer_latex": "\\left[\\frac{3}{5} - \\frac{49 \\sqrt{6}}{1250}, \\frac{49 \\sqrt{6}}{1250} + \\frac{3}{5}\\right]",
+      "metadata": {
+        "difficulty": 4,
+        "template": "ci-proportion"
+      }
+    },
+    {
+      "code": "PSCM-1-0000000000000201-56",
+      "statement": "An independent Bernoulli sample has \\(75\\) successes out of \\(160\\) trials. Use the large-sample Wald approximation (both observed counts are at least 10). Give the approximate two-sided 95-percent confidence interval using the supplied rounded critical value 1.960. Calculate endpoints exactly from that value.",
+      "steps": [
+        [
+          "method",
+          "\\widehat p\\pm1.960\\sqrt{\\widehat p(1-\\widehat p)/n}"
+        ],
+        [
+          "substitution",
+          "\\widehat p=\\frac{15}{32},\\quad\\mathrm{SE}=\\sqrt{\\frac{(\\frac{15}{32})(1-\\frac{15}{32})}{160}}"
+        ],
+        [
+          "result",
+          "\\left[\\frac{15}{32} - \\frac{49 \\sqrt{102}}{6400}, \\frac{49 \\sqrt{102}}{6400} + \\frac{15}{32}\\right]"
+        ]
+      ],
+      "answer_kind": "interval",
+      "answer_latex": "\\left[\\frac{15}{32} - \\frac{49 \\sqrt{102}}{6400}, \\frac{49 \\sqrt{102}}{6400} + \\frac{15}{32}\\right]",
+      "metadata": {
+        "difficulty": 4,
+        "template": "ci-proportion"
+      }
+    },
+    {
+      "code": "PSCM-1-0000000000000202-73",
+      "statement": "An independent Bernoulli sample has \\(85\\) successes out of \\(180\\) trials. Use the large-sample Wald approximation (both observed counts are at least 10). Give the approximate two-sided 95-percent confidence interval using the supplied rounded critical value 1.960. Calculate endpoints exactly from that value.",
+      "steps": [
+        [
+          "method",
+          "\\widehat p\\pm1.960\\sqrt{\\widehat p(1-\\widehat p)/n}"
+        ],
+        [
+          "substitution",
+          "\\widehat p=\\frac{17}{36},\\quad\\mathrm{SE}=\\sqrt{\\frac{(\\frac{17}{36})(1-\\frac{17}{36})}{180}}"
+        ],
+        [
+          "result",
+          "\\left[\\frac{17}{36} - \\frac{49 \\sqrt{1615}}{27000}, \\frac{49 \\sqrt{1615}}{27000} + \\frac{17}{36}\\right]"
+        ]
+      ],
+      "answer_kind": "interval",
+      "answer_latex": "\\left[\\frac{17}{36} - \\frac{49 \\sqrt{1615}}{27000}, \\frac{49 \\sqrt{1615}}{27000} + \\frac{17}{36}\\right]",
+      "metadata": {
+        "difficulty": 4,
+        "template": "ci-proportion"
+      }
+    }
+  ],
+  "probability-ci-paired-v1": [
+    {
+      "code": "PSCN-1-0000000000000200-95",
+      "statement": "The paired observations \\((x_i,y_i)\\) are \\(\\left( \\left( 0, \\  1\\right), \\  \\left( 1, \\  3\\right), \\  \\left( 2, \\  1\\right), \\  \\left( 3, \\  4\\right), \\  \\left( 4, \\  2\\right), \\  \\left( 5, \\  5\\right)\\right)\\). Pairs are independent, and \\(D_i=Y_i-X_i\\) are normal with unknown variance. Use the supplied rounded two-sided 95-percent critical value \\(t_{0.975,5}=2.571\\). Give the two-sided 95-percent confidence interval for the population mean difference Y-X. Calculate endpoints exactly from the supplied critical value.",
+      "steps": [
+        [
+          "method",
+          "\\bar d\\pm t_{0.975,n-1}s_D/\\sqrt n"
+        ],
+        [
+          "substitution",
+          "D=\\left( 1, \\  2, \\  -1, \\  1, \\  -2, \\  0\\right),\\quad\\bar d=\\frac{1}{6},\\quad s_D^2=\\frac{13}{6}"
+        ],
+        [
+          "result",
+          "\\left[\\frac{1}{6} - \\frac{857 \\sqrt{13}}{2000}, \\frac{1}{6} + \\frac{857 \\sqrt{13}}{2000}\\right]"
+        ]
+      ],
+      "answer_kind": "interval",
+      "answer_latex": "\\left[\\frac{1}{6} - \\frac{857 \\sqrt{13}}{2000}, \\frac{1}{6} + \\frac{857 \\sqrt{13}}{2000}\\right]",
+      "metadata": {
+        "difficulty": 5,
+        "template": "ci-paired"
+      }
+    },
+    {
+      "code": "PSCN-1-0000000000000201-15",
+      "statement": "The paired observations \\((x_i,y_i)\\) are \\(\\left( \\left( -3, \\  -1\\right), \\  \\left( -2, \\  1\\right), \\  \\left( -1, \\  -1\\right), \\  \\left( 0, \\  2\\right), \\  \\left( 1, \\  0\\right), \\  \\left( 2, \\  3\\right)\\right)\\). Pairs are independent, and \\(D_i=Y_i-X_i\\) are normal with unknown variance. Use the supplied rounded two-sided 95-percent critical value \\(t_{0.975,5}=2.571\\). Give the two-sided 95-percent confidence interval for the population mean difference Y-X. Calculate endpoints exactly from the supplied critical value.",
+      "steps": [
+        [
+          "method",
+          "\\bar d\\pm t_{0.975,n-1}s_D/\\sqrt n"
+        ],
+        [
+          "substitution",
+          "D=\\left( 2, \\  3, \\  0, \\  2, \\  -1, \\  1\\right),\\quad\\bar d=\\frac{7}{6},\\quad s_D^2=\\frac{13}{6}"
+        ],
+        [
+          "result",
+          "\\left[\\frac{7}{6} - \\frac{857 \\sqrt{13}}{2000}, \\frac{7}{6} + \\frac{857 \\sqrt{13}}{2000}\\right]"
+        ]
+      ],
+      "answer_kind": "interval",
+      "answer_latex": "\\left[\\frac{7}{6} - \\frac{857 \\sqrt{13}}{2000}, \\frac{7}{6} + \\frac{857 \\sqrt{13}}{2000}\\right]",
+      "metadata": {
+        "difficulty": 5,
+        "template": "ci-paired"
+      }
+    },
+    {
+      "code": "PSCN-1-0000000000000202-32",
+      "statement": "The paired observations \\((x_i,y_i)\\) are \\(\\left( \\left( -3, \\  -1\\right), \\  \\left( -2, \\  1\\right), \\  \\left( -1, \\  -1\\right), \\  \\left( 0, \\  2\\right), \\  \\left( 1, \\  0\\right), \\  \\left( 2, \\  3\\right)\\right)\\). Pairs are independent, and \\(D_i=Y_i-X_i\\) are normal with unknown variance. Use the supplied rounded two-sided 95-percent critical value \\(t_{0.975,5}=2.571\\). Give the two-sided 95-percent confidence interval for the population mean difference Y-X. Calculate endpoints exactly from the supplied critical value.",
+      "steps": [
+        [
+          "method",
+          "\\bar d\\pm t_{0.975,n-1}s_D/\\sqrt n"
+        ],
+        [
+          "substitution",
+          "D=\\left( 2, \\  3, \\  0, \\  2, \\  -1, \\  1\\right),\\quad\\bar d=\\frac{7}{6},\\quad s_D^2=\\frac{13}{6}"
+        ],
+        [
+          "result",
+          "\\left[\\frac{7}{6} - \\frac{857 \\sqrt{13}}{2000}, \\frac{7}{6} + \\frac{857 \\sqrt{13}}{2000}\\right]"
+        ]
+      ],
+      "answer_kind": "interval",
+      "answer_latex": "\\left[\\frac{7}{6} - \\frac{857 \\sqrt{13}}{2000}, \\frac{7}{6} + \\frac{857 \\sqrt{13}}{2000}\\right]",
+      "metadata": {
+        "difficulty": 5,
+        "template": "ci-paired"
+      }
+    }
+  ],
+  "probability-ci-difference-v1": [
+    {
+      "code": "PSCO-1-0000000000000200-92",
+      "statement": "Independent random samples from two normal populations have \\(n_1=16,n_2=25\\), sample means \\(\\bar x_1=2,\\bar x_2=2\\), and known population standard deviations \\(\\sigma_1=5,\\sigma_2=1\\). Use the supplied rounded two-sided 95-percent critical value 1.960. Give the two-sided 95-percent confidence interval for the difference of population means (first minus second). Calculate endpoints exactly from the supplied critical value.",
+      "steps": [
+        [
+          "method",
+          "(\\bar x_1-\\bar x_2)\\pm1.960\\sqrt{\\sigma_1^2/n_1+\\sigma_2^2/n_2}"
+        ],
+        [
+          "substitution",
+          "\\bar x_1-\\bar x_2=0,\\quad\\mathrm{SE}=\\sqrt{\\frac{5^2}{16}+\\frac{1^2}{25}}=\\frac{\\sqrt{641}}{20}"
+        ],
+        [
+          "result",
+          "\\left[- \\frac{49 \\sqrt{641}}{500}, \\frac{49 \\sqrt{641}}{500}\\right]"
+        ]
+      ],
+      "answer_kind": "interval",
+      "answer_latex": "\\left[- \\frac{49 \\sqrt{641}}{500}, \\frac{49 \\sqrt{641}}{500}\\right]",
+      "metadata": {
+        "difficulty": 5,
+        "template": "ci-difference"
+      }
+    },
+    {
+      "code": "PSCO-1-0000000000000201-12",
+      "statement": "Independent random samples from two normal populations have \\(n_1=16,n_2=25\\), sample means \\(\\bar x_1=-1,\\bar x_2=0\\), and known population standard deviations \\(\\sigma_1=3,\\sigma_2=4\\). Use the supplied rounded two-sided 95-percent critical value 1.960. Give the two-sided 95-percent confidence interval for the difference of population means (first minus second). Calculate endpoints exactly from the supplied critical value.",
+      "steps": [
+        [
+          "method",
+          "(\\bar x_1-\\bar x_2)\\pm1.960\\sqrt{\\sigma_1^2/n_1+\\sigma_2^2/n_2}"
+        ],
+        [
+          "substitution",
+          "\\bar x_1-\\bar x_2=-1,\\quad\\mathrm{SE}=\\sqrt{\\frac{3^2}{16}+\\frac{4^2}{25}}=\\frac{\\sqrt{481}}{20}"
+        ],
+        [
+          "result",
+          "\\left[- \\frac{49 \\sqrt{481}}{500} - 1, -1 + \\frac{49 \\sqrt{481}}{500}\\right]"
+        ]
+      ],
+      "answer_kind": "interval",
+      "answer_latex": "\\left[- \\frac{49 \\sqrt{481}}{500} - 1, -1 + \\frac{49 \\sqrt{481}}{500}\\right]",
+      "metadata": {
+        "difficulty": 5,
+        "template": "ci-difference"
+      }
+    },
+    {
+      "code": "PSCO-1-0000000000000202-29",
+      "statement": "Independent random samples from two normal populations have \\(n_1=16,n_2=25\\), sample means \\(\\bar x_1=-1,\\bar x_2=0\\), and known population standard deviations \\(\\sigma_1=3,\\sigma_2=5\\). Use the supplied rounded two-sided 95-percent critical value 1.960. Give the two-sided 95-percent confidence interval for the difference of population means (first minus second). Calculate endpoints exactly from the supplied critical value.",
+      "steps": [
+        [
+          "method",
+          "(\\bar x_1-\\bar x_2)\\pm1.960\\sqrt{\\sigma_1^2/n_1+\\sigma_2^2/n_2}"
+        ],
+        [
+          "substitution",
+          "\\bar x_1-\\bar x_2=-1,\\quad\\mathrm{SE}=\\sqrt{\\frac{3^2}{16}+\\frac{5^2}{25}}=\\frac{5}{4}"
+        ],
+        [
+          "result",
+          "\\left[- \\frac{69}{20}, \\frac{29}{20}\\right]"
+        ]
+      ],
+      "answer_kind": "interval",
+      "answer_latex": "\\left[- \\frac{69}{20}, \\frac{29}{20}\\right]",
+      "metadata": {
+        "difficulty": 5,
+        "template": "ci-difference"
+      }
+    }
+  ],
+  "probability-test-z-statistic-v1": [
+    {
+      "code": "PSCP-1-0000000000000200-48",
+      "statement": "An independent random sample from a normal population has \\(n=25\\), sample mean \\(2\\), and known population standard deviation sigma \\(5\\). For the null population mean \\(\\mu_0=0\\), calculate the z test statistic.",
+      "steps": [
+        [
+          "method",
+          "z=\\frac{\\bar x-\\mu_0}{\\sigma/\\sqrt n}"
+        ],
+        [
+          "substitution",
+          "z=\\frac{2-0}{5/\\sqrt{25}}=2"
+        ],
+        [
+          "result",
+          "2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 1,
+        "template": "test-z-statistic"
+      }
+    },
+    {
+      "code": "PSCP-1-0000000000000201-65",
+      "statement": "An independent random sample from a normal population has \\(n=25\\), sample mean \\(-1\\), and known population standard deviation sigma \\(3\\). For the null population mean \\(\\mu_0=0\\), calculate the z test statistic.",
+      "steps": [
+        [
+          "method",
+          "z=\\frac{\\bar x-\\mu_0}{\\sigma/\\sqrt n}"
+        ],
+        [
+          "substitution",
+          "z=\\frac{-1-0}{3/\\sqrt{25}}=- \\frac{5}{3}"
+        ],
+        [
+          "result",
+          "- \\frac{5}{3}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "- \\frac{5}{3}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "test-z-statistic"
+      }
+    },
+    {
+      "code": "PSCP-1-0000000000000202-82",
+      "statement": "An independent random sample from a normal population has \\(n=25\\), sample mean \\(-1\\), and known population standard deviation sigma \\(3\\). For the null population mean \\(\\mu_0=0\\), calculate the z test statistic.",
+      "steps": [
+        [
+          "method",
+          "z=\\frac{\\bar x-\\mu_0}{\\sigma/\\sqrt n}"
+        ],
+        [
+          "substitution",
+          "z=\\frac{-1-0}{3/\\sqrt{25}}=- \\frac{5}{3}"
+        ],
+        [
+          "result",
+          "- \\frac{5}{3}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "- \\frac{5}{3}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "test-z-statistic"
+      }
+    }
+  ],
+  "probability-test-z-decision-v1": [
+    {
+      "code": "PSCQ-1-0000000000000200-93",
+      "statement": "An independent random sample from a normal population has \\(n=25\\), sample mean \\(2\\), and known population standard deviation sigma \\(5\\). Use the supplied rounded normal critical value \\(1.960\\). Test \\(H_0:\\mu=0\\) against \\(H_a:\\mu\\ne0\\) at \\(\\alpha=0.05\\). Should H0 be rejected? Answer Yes or No.",
+      "steps": [
+        [
+          "method",
+          "\\text{Reject }H_0\\text{ if }|z|>1.960"
+        ],
+        [
+          "substitution",
+          "z=2"
+        ],
+        [
+          "result",
+          "\\text{Yes}"
+        ]
+      ],
+      "answer_kind": "boolean",
+      "answer_latex": "\\text{Yes}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "test-z-decision"
+      }
+    },
+    {
+      "code": "PSCQ-1-0000000000000201-13",
+      "statement": "An independent random sample from a normal population has \\(n=25\\), sample mean \\(-1\\), and known population standard deviation sigma \\(3\\). Use the supplied rounded normal critical value \\(1.960\\). Test \\(H_0:\\mu=0\\) against \\(H_a:\\mu\\ne0\\) at \\(\\alpha=0.05\\). Should H0 be rejected? Answer Yes or No.",
+      "steps": [
+        [
+          "method",
+          "\\text{Reject }H_0\\text{ if }|z|>1.960"
+        ],
+        [
+          "substitution",
+          "z=- \\frac{5}{3}"
+        ],
+        [
+          "result",
+          "\\text{No}"
+        ]
+      ],
+      "answer_kind": "boolean",
+      "answer_latex": "\\text{No}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "test-z-decision"
+      }
+    },
+    {
+      "code": "PSCQ-1-0000000000000202-30",
+      "statement": "An independent random sample from a normal population has \\(n=25\\), sample mean \\(-1\\), and known population standard deviation sigma \\(3\\). Use the supplied rounded normal critical value \\(1.645\\). Test \\(H_0:\\mu=0\\) against \\(H_a:\\mu>0\\) at \\(\\alpha=0.05\\). Should H0 be rejected? Answer Yes or No.",
+      "steps": [
+        [
+          "method",
+          "\\text{Reject }H_0\\text{ if }z>1.645"
+        ],
+        [
+          "substitution",
+          "z=- \\frac{5}{3}"
+        ],
+        [
+          "result",
+          "\\text{No}"
+        ]
+      ],
+      "answer_kind": "boolean",
+      "answer_latex": "\\text{No}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "test-z-decision"
+      }
+    }
+  ],
+  "probability-test-t-statistic-v1": [
+    {
+      "code": "PSCR-1-0000000000000200-51",
+      "statement": "An independent random sample from a normal population has \\(n=8\\), sample mean \\(2\\), and sample standard deviation s \\(1\\). For the null population mean \\(\\mu_0=0\\), calculate the t test statistic.",
+      "steps": [
+        [
+          "method",
+          "t=\\frac{\\bar x-\\mu_0}{s/\\sqrt n}"
+        ],
+        [
+          "substitution",
+          "t=\\frac{2-0}{1/\\sqrt{8}}=4 \\sqrt{2}"
+        ],
+        [
+          "result",
+          "4 \\sqrt{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "4 \\sqrt{2}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "test-t-statistic"
+      }
+    },
+    {
+      "code": "PSCR-1-0000000000000201-68",
+      "statement": "An independent random sample from a normal population has \\(n=5\\), sample mean \\(0\\), and sample standard deviation s \\(4\\). For the null population mean \\(\\mu_0=0\\), calculate the t test statistic.",
+      "steps": [
+        [
+          "method",
+          "t=\\frac{\\bar x-\\mu_0}{s/\\sqrt n}"
+        ],
+        [
+          "substitution",
+          "t=\\frac{0-0}{4/\\sqrt{5}}=0"
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 3,
+        "template": "test-t-statistic"
+      }
+    },
+    {
+      "code": "PSCR-1-0000000000000202-85",
+      "statement": "An independent random sample from a normal population has \\(n=5\\), sample mean \\(0\\), and sample standard deviation s \\(5\\). For the null population mean \\(\\mu_0=0\\), calculate the t test statistic.",
+      "steps": [
+        [
+          "method",
+          "t=\\frac{\\bar x-\\mu_0}{s/\\sqrt n}"
+        ],
+        [
+          "substitution",
+          "t=\\frac{0-0}{5/\\sqrt{5}}=0"
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 3,
+        "template": "test-t-statistic"
+      }
+    }
+  ],
+  "probability-test-t-decision-v1": [
+    {
+      "code": "PSCS-1-0000000000000200-95",
+      "statement": "An independent random sample from a normal population has \\(n=8\\), sample mean \\(2\\), and sample standard deviation s \\(1\\). Use supplied rounded \\(t_{0.975,7}=2.365\\). Test \\(H_0:\\mu=0\\) against \\(H_a:\\mu\\ne0\\) at \\(\\alpha=0.05\\). Should H0 be rejected? Answer Yes or No.",
+      "steps": [
+        [
+          "method",
+          "\\text{Reject }H_0\\text{ if }|t|>2.365"
+        ],
+        [
+          "substitution",
+          "t=4 \\sqrt{2}"
+        ],
+        [
+          "result",
+          "\\text{Yes}"
+        ]
+      ],
+      "answer_kind": "boolean",
+      "answer_latex": "\\text{Yes}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "test-t-decision"
+      }
+    },
+    {
+      "code": "PSCS-1-0000000000000201-15",
+      "statement": "An independent random sample from a normal population has \\(n=5\\), sample mean \\(0\\), and sample standard deviation s \\(4\\). Use supplied rounded \\(t_{0.975,4}=2.776\\). Test \\(H_0:\\mu=0\\) against \\(H_a:\\mu\\ne0\\) at \\(\\alpha=0.05\\). Should H0 be rejected? Answer Yes or No.",
+      "steps": [
+        [
+          "method",
+          "\\text{Reject }H_0\\text{ if }|t|>2.776"
+        ],
+        [
+          "substitution",
+          "t=0"
+        ],
+        [
+          "result",
+          "\\text{No}"
+        ]
+      ],
+      "answer_kind": "boolean",
+      "answer_latex": "\\text{No}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "test-t-decision"
+      }
+    },
+    {
+      "code": "PSCS-1-0000000000000202-32",
+      "statement": "An independent random sample from a normal population has \\(n=5\\), sample mean \\(0\\), and sample standard deviation s \\(5\\). Use supplied rounded \\(t_{0.975,4}=2.776\\). Test \\(H_0:\\mu=0\\) against \\(H_a:\\mu\\ne0\\) at \\(\\alpha=0.05\\). Should H0 be rejected? Answer Yes or No.",
+      "steps": [
+        [
+          "method",
+          "\\text{Reject }H_0\\text{ if }|t|>2.776"
+        ],
+        [
+          "substitution",
+          "t=0"
+        ],
+        [
+          "result",
+          "\\text{No}"
+        ]
+      ],
+      "answer_kind": "boolean",
+      "answer_latex": "\\text{No}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "test-t-decision"
+      }
+    }
+  ],
+  "probability-test-proportion-v1": [
+    {
+      "code": "PSCT-1-0000000000000200-60",
+      "statement": "An independent Bernoulli sample has \\(60\\) successes out of \\(100\\) trials. Test \\(H_0:p=\\frac{5}{6}\\) against \\(H_a:p\\ne\\frac{5}{6}\\) at \\(\\alpha=0.05\\). Both expected null counts are at least 10. Use the normal approximation and supplied rounded critical value 1.960. Should H0 be rejected? Answer Yes or No.",
+      "steps": [
+        [
+          "method",
+          "z=\\frac{\\widehat p-p_0}{\\sqrt{p_0(1-p_0)/n}},\\quad\\text{reject if }|z|>1.960"
+        ],
+        [
+          "substitution",
+          "\\widehat p=\\frac{3}{5},\\quad z=- \\frac{14 \\sqrt{5}}{5}"
+        ],
+        [
+          "result",
+          "\\text{Yes}"
+        ]
+      ],
+      "answer_kind": "boolean",
+      "answer_latex": "\\text{Yes}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "test-proportion"
+      }
+    },
+    {
+      "code": "PSCT-1-0000000000000201-77",
+      "statement": "An independent Bernoulli sample has \\(75\\) successes out of \\(160\\) trials. Test \\(H_0:p=\\frac{3}{7}\\) against \\(H_a:p\\ne\\frac{3}{7}\\) at \\(\\alpha=0.05\\). Both expected null counts are at least 10. Use the normal approximation and supplied rounded critical value 1.960. Should H0 be rejected? Answer Yes or No.",
+      "steps": [
+        [
+          "method",
+          "z=\\frac{\\widehat p-p_0}{\\sqrt{p_0(1-p_0)/n}},\\quad\\text{reject if }|z|>1.960"
+        ],
+        [
+          "substitution",
+          "\\widehat p=\\frac{15}{32},\\quad z=\\frac{3 \\sqrt{30}}{16}"
+        ],
+        [
+          "result",
+          "\\text{No}"
+        ]
+      ],
+      "answer_kind": "boolean",
+      "answer_latex": "\\text{No}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "test-proportion"
+      }
+    },
+    {
+      "code": "PSCT-1-0000000000000202-94",
+      "statement": "An independent Bernoulli sample has \\(85\\) successes out of \\(180\\) trials. Test \\(H_0:p=\\frac{3}{8}\\) against \\(H_a:p\\ne\\frac{3}{8}\\) at \\(\\alpha=0.05\\). Both expected null counts are at least 10. Use the normal approximation and supplied rounded critical value 1.960. Should H0 be rejected? Answer Yes or No.",
+      "steps": [
+        [
+          "method",
+          "z=\\frac{\\widehat p-p_0}{\\sqrt{p_0(1-p_0)/n}},\\quad\\text{reject if }|z|>1.960"
+        ],
+        [
+          "substitution",
+          "\\widehat p=\\frac{17}{36},\\quad z=\\frac{14 \\sqrt{3}}{9}"
+        ],
+        [
+          "result",
+          "\\text{Yes}"
+        ]
+      ],
+      "answer_kind": "boolean",
+      "answer_latex": "\\text{Yes}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "test-proportion"
+      }
+    }
+  ],
+  "probability-test-paired-v1": [
+    {
+      "code": "PSCU-1-0000000000000200-32",
+      "statement": "The paired observations \\((x_i,y_i)\\) are \\(\\left( \\left( 0, \\  1\\right), \\  \\left( 1, \\  3\\right), \\  \\left( 2, \\  1\\right), \\  \\left( 3, \\  4\\right), \\  \\left( 4, \\  2\\right), \\  \\left( 5, \\  5\\right)\\right)\\). Pairs are independent, and \\(D_i=Y_i-X_i\\) are normal with unknown variance. Use the supplied rounded two-sided 95-percent critical value \\(t_{0.975,5}=2.571\\). Test H0 that the population mean difference is zero against a two-sided alternative at alpha 0.05. Should H0 be rejected? Answer Yes or No.",
+      "steps": [
+        [
+          "method",
+          "t=\\frac{\\bar d}{s_D/\\sqrt n},\\quad\\text{reject if }|t|>2.571"
+        ],
+        [
+          "substitution",
+          "D=\\left( 1, \\  2, \\  -1, \\  1, \\  -2, \\  0\\right),\\quad\\bar d=\\frac{1}{6},\\quad s_D^2=\\frac{13}{6},\\quad t=\\frac{\\sqrt{13}}{13}"
+        ],
+        [
+          "result",
+          "\\text{No}"
+        ]
+      ],
+      "answer_kind": "boolean",
+      "answer_latex": "\\text{No}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "test-paired"
+      }
+    },
+    {
+      "code": "PSCU-1-0000000000000201-49",
+      "statement": "The paired observations \\((x_i,y_i)\\) are \\(\\left( \\left( -3, \\  -1\\right), \\  \\left( -2, \\  1\\right), \\  \\left( -1, \\  -1\\right), \\  \\left( 0, \\  2\\right), \\  \\left( 1, \\  0\\right), \\  \\left( 2, \\  3\\right)\\right)\\). Pairs are independent, and \\(D_i=Y_i-X_i\\) are normal with unknown variance. Use the supplied rounded two-sided 95-percent critical value \\(t_{0.975,5}=2.571\\). Test H0 that the population mean difference is zero against a two-sided alternative at alpha 0.05. Should H0 be rejected? Answer Yes or No.",
+      "steps": [
+        [
+          "method",
+          "t=\\frac{\\bar d}{s_D/\\sqrt n},\\quad\\text{reject if }|t|>2.571"
+        ],
+        [
+          "substitution",
+          "D=\\left( 2, \\  3, \\  0, \\  2, \\  -1, \\  1\\right),\\quad\\bar d=\\frac{7}{6},\\quad s_D^2=\\frac{13}{6},\\quad t=\\frac{7 \\sqrt{13}}{13}"
+        ],
+        [
+          "result",
+          "\\text{No}"
+        ]
+      ],
+      "answer_kind": "boolean",
+      "answer_latex": "\\text{No}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "test-paired"
+      }
+    },
+    {
+      "code": "PSCU-1-0000000000000202-66",
+      "statement": "The paired observations \\((x_i,y_i)\\) are \\(\\left( \\left( -3, \\  -1\\right), \\  \\left( -2, \\  1\\right), \\  \\left( -1, \\  -1\\right), \\  \\left( 0, \\  2\\right), \\  \\left( 1, \\  0\\right), \\  \\left( 2, \\  3\\right)\\right)\\). Pairs are independent, and \\(D_i=Y_i-X_i\\) are normal with unknown variance. Use the supplied rounded two-sided 95-percent critical value \\(t_{0.975,5}=2.571\\). Test H0 that the population mean difference is zero against a two-sided alternative at alpha 0.05. Should H0 be rejected? Answer Yes or No.",
+      "steps": [
+        [
+          "method",
+          "t=\\frac{\\bar d}{s_D/\\sqrt n},\\quad\\text{reject if }|t|>2.571"
+        ],
+        [
+          "substitution",
+          "D=\\left( 2, \\  3, \\  0, \\  2, \\  -1, \\  1\\right),\\quad\\bar d=\\frac{7}{6},\\quad s_D^2=\\frac{13}{6},\\quad t=\\frac{7 \\sqrt{13}}{13}"
+        ],
+        [
+          "result",
+          "\\text{No}"
+        ]
+      ],
+      "answer_kind": "boolean",
+      "answer_latex": "\\text{No}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "test-paired"
+      }
+    }
+  ],
+  "probability-test-difference-v1": [
+    {
+      "code": "PSCV-1-0000000000000200-22",
+      "statement": "Independent random samples from two normal populations have \\(n_1=16,n_2=25\\), sample means \\(\\bar x_1=2,\\bar x_2=2\\), and known population standard deviations \\(\\sigma_1=5,\\sigma_2=1\\). Use the supplied rounded two-sided 95-percent critical value 1.960. Test equality of the two population means against a two-sided alternative at alpha 0.05. Should H0 be rejected? Answer Yes or No.",
+      "steps": [
+        [
+          "method",
+          "z=\\frac{\\bar x_1-\\bar x_2}{\\sqrt{\\sigma_1^2/n_1+\\sigma_2^2/n_2}},\\quad\\text{reject if }|z|>1.960"
+        ],
+        [
+          "substitution",
+          "\\bar x_1-\\bar x_2=0,\\quad\\mathrm{SE}=\\sqrt{\\frac{5^2}{16}+\\frac{1^2}{25}}=\\frac{\\sqrt{641}}{20},\\quad z=0"
+        ],
+        [
+          "result",
+          "\\text{No}"
+        ]
+      ],
+      "answer_kind": "boolean",
+      "answer_latex": "\\text{No}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "test-difference"
+      }
+    },
+    {
+      "code": "PSCV-1-0000000000000201-39",
+      "statement": "Independent random samples from two normal populations have \\(n_1=16,n_2=25\\), sample means \\(\\bar x_1=-1,\\bar x_2=0\\), and known population standard deviations \\(\\sigma_1=3,\\sigma_2=4\\). Use the supplied rounded two-sided 95-percent critical value 1.960. Test equality of the two population means against a two-sided alternative at alpha 0.05. Should H0 be rejected? Answer Yes or No.",
+      "steps": [
+        [
+          "method",
+          "z=\\frac{\\bar x_1-\\bar x_2}{\\sqrt{\\sigma_1^2/n_1+\\sigma_2^2/n_2}},\\quad\\text{reject if }|z|>1.960"
+        ],
+        [
+          "substitution",
+          "\\bar x_1-\\bar x_2=-1,\\quad\\mathrm{SE}=\\sqrt{\\frac{3^2}{16}+\\frac{4^2}{25}}=\\frac{\\sqrt{481}}{20},\\quad z=- \\frac{20 \\sqrt{481}}{481}"
+        ],
+        [
+          "result",
+          "\\text{No}"
+        ]
+      ],
+      "answer_kind": "boolean",
+      "answer_latex": "\\text{No}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "test-difference"
+      }
+    },
+    {
+      "code": "PSCV-1-0000000000000202-56",
+      "statement": "Independent random samples from two normal populations have \\(n_1=16,n_2=25\\), sample means \\(\\bar x_1=-1,\\bar x_2=0\\), and known population standard deviations \\(\\sigma_1=3,\\sigma_2=5\\). Use the supplied rounded two-sided 95-percent critical value 1.960. Test equality of the two population means against a two-sided alternative at alpha 0.05. Should H0 be rejected? Answer Yes or No.",
+      "steps": [
+        [
+          "method",
+          "z=\\frac{\\bar x_1-\\bar x_2}{\\sqrt{\\sigma_1^2/n_1+\\sigma_2^2/n_2}},\\quad\\text{reject if }|z|>1.960"
+        ],
+        [
+          "substitution",
+          "\\bar x_1-\\bar x_2=-1,\\quad\\mathrm{SE}=\\sqrt{\\frac{3^2}{16}+\\frac{5^2}{25}}=\\frac{5}{4},\\quad z=- \\frac{4}{5}"
+        ],
+        [
+          "result",
+          "\\text{No}"
+        ]
+      ],
+      "answer_kind": "boolean",
+      "answer_latex": "\\text{No}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "test-difference"
+      }
+    }
   ]
 }

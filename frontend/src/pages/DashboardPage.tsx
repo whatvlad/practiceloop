@@ -35,11 +35,14 @@ export function DashboardPage({ initialArea, initialTopic }: { initialArea?: Are
   const available = levels.includes(difficulty);
 
   useEffect(() => {
-    if (initialTopic || last.status !== 'ready') return;
-    setArea(last.data.area);
+    if (initialTopic || last.status !== 'ready' || catalogue.status !== 'ready') return;
+    // A code/share can be opened before the topic catalogue was ever loaded.
+    // Restore its authoritative area rather than the client's temporary fallback.
+    const restoredTopic = catalogue.data.topics.find(entry => entry.slug === last.data.topic);
+    setArea(restoredTopic?.area ?? last.data.area);
     setTopic(last.data.topic);
     setDifficulty(last.data.difficulty);
-  }, [last, initialTopic]);
+  }, [last, initialTopic, catalogue]);
 
   // An area the catalogue does not offer falls back to the first one it does.
   useEffect(() => {

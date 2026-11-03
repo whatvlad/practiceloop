@@ -178,3 +178,9 @@ body{--keyboard-background:var(--surface);--keyboard-border:var(--line);--keyboa
 .pl-sep{border:0;border-top:1px solid var(--line);margin:0}
 .pl-g-icon{width:18px;height:18px}
 .pl-history-answer { max-inline-size: 32ch; overflow-wrap: anywhere; }
+.pl-structured-answer {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-inline-size: 0;
+}

@@ -17,6 +17,7 @@ from app.math_input import (
     MathInputTooLong,
     VariableDomain,
     build_expression,
+    parse_answer_input,
     parse_math_input,
 )
 
@@ -80,7 +81,9 @@ def _check_child() -> int:
         except (KeyError, TypeError, ValueError):
             outcome = "bad_record"
         else:
-            tree = parse_math_input(request["answer"], variables)
+            tree = parse_answer_input(
+                request["answer"], engine.input_kind(request["record"]), variables
+            )
             outcome = task.answer.check(tree)
         sys.stdout.buffer.write(outcome.encode("ascii"))
         sys.stdout.buffer.flush()
@@ -186,8 +189,11 @@ def check_answer(answer: str, record: Mapping[str, object]) -> AnswerCheck:
     ValueError means the stored record itself is unusable: a server fault.
     """
     variables = record_variables(record)
+    from app.engine import practice as engine
+
+    kind = engine.input_kind(dict(record))
     try:
-        parse_math_input(answer, variables)
+        parse_answer_input(answer, kind, variables)
     except MathInputTooLong:
         raise
     except MathInputError:

@@ -115,3 +115,21 @@ export const analysisSections: CurriculumSection[] = [
     { name: 'Differential equations', description: 'Solve real initial-value problems by the declared analytic method.', pdfExercises: [], subtypes: ['Separable equations', 'First-order linear equations', 'Second-order linear equations', 'Repeated roots and resonance', 'Laplace-transform methods'] },
   ] },
 ];
+
+export const probabilitySections: CurriculumSection[] = [
+  { name: 'Probability foundations', types: [
+    { name: 'Events and counting', description: 'Use equally likely outcomes, complements, event operations, counting and independence.', pdfExercises: [] },
+    { name: 'Conditional probability and Bayes', description: 'Use conditional tables, replacement rules, total probability, Bayes and probability trees.', pdfExercises: [] },
+  ] },
+  { name: 'Random variables and distributions', types: [
+    { name: 'Discrete random variables', description: 'Normalize finite laws, read CDFs, identify supports and transform variables.', pdfExercises: [] },
+    { name: 'Standard discrete distributions', description: 'Calculate Bernoulli, binomial, geometric, hypergeometric and Poisson probabilities.', pdfExercises: [] },
+    { name: 'Continuous distributions', description: 'Work with uniform, polynomial, exponential and normal distributions and supplied tables.', pdfExercises: [] },
+    { name: 'Moments and joint distributions', description: 'Find moments, marginals, conditionals, covariance, correlation and independence.', pdfExercises: [] },
+  ] },
+  { name: 'Statistics and inference', types: [
+    { name: 'Descriptive statistics', description: 'Summarize small datasets, frequencies, quartiles, spread, correlation and least squares.', pdfExercises: [] },
+    { name: 'Confidence intervals', description: 'Construct mean, proportion, paired and independent-mean confidence intervals.', pdfExercises: [] },
+    { name: 'Hypothesis tests', description: 'Use z, t, proportion, paired and independent-mean tests with stated assumptions.', pdfExercises: [] },
+  ] },
+];

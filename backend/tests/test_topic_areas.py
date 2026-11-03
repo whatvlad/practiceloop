@@ -11,8 +11,16 @@ from app.engine import practice as engine
 
 def test_catalogue_lists_algebra_and_syllabus_topics() -> None:
     body = practice.topics(VerifiedUser(uuid4(), None))
-    assert [area["slug"] for area in body["areas"]] == ["algebra", "mathematical-analysis"]
-    assert {item["area"] for item in body["items"]} == {"algebra", "mathematical-analysis"}
+    assert [area["slug"] for area in body["areas"]] == [
+        "algebra",
+        "mathematical-analysis",
+        "probability-statistics",
+    ]
+    assert {item["area"] for item in body["items"]} == {
+        "algebra",
+        "mathematical-analysis",
+        "probability-statistics",
+    }
     assert {item["slug"] for item in body["items"]} == {
         "matrices",
         "complex-numbers",
@@ -50,6 +58,15 @@ def test_catalogue_lists_algebra_and_syllabus_topics() -> None:
         "multivariable-functions",
         "differential-equations",
         "differential-calculus",
+        "probability-events",
+        "conditional-probability",
+        "discrete-random-variables",
+        "discrete-distributions",
+        "continuous-distributions",
+        "moments-joint-distributions",
+        "descriptive-statistics",
+        "confidence-intervals",
+        "hypothesis-tests",
     }
 
 

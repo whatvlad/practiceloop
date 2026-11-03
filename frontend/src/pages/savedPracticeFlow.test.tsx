@@ -4,8 +4,9 @@ import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { DashboardPage } from './DashboardPage';
 import { PracticePage } from './PracticePage';
-import { configurePracticeAuth, getProblem, resetPractice } from '../data/practice';
+import { configurePracticeAuth, generateProblem, getProblem, resetPractice } from '../data/practice';
 import type { PublicProblem } from '../data/types';
+import type { AnswerInputSpec } from '../data/types';
 
 // Keep the real answer input, syntax preview and keyboard handlers; only skip
 // the dynamically loaded native math editor, which needs an actual browser.
@@ -25,6 +26,18 @@ const INTEGRALS = [
 let catalogue: unknown;
 const response = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status });
 const button = (label: string) => Array.from(element.querySelectorAll('button')).find(b => b.textContent?.includes(label))!;
+
+it('restores a probability topic in its own area after generation before catalogue loading', async () => {
+  catalogue = { areas: [
+    { slug: 'mathematical-analysis', name: 'Mathematical Analysis', mixed: null },
+    { slug: 'probability-statistics', name: 'Probability and Statistics', mixed: null },
+  ], items: [...INTEGRALS, { slug: 'probability-events', name: 'Events and counting', area: 'probability-statistics', availableDifficulties: [1,2,3,4,5] }] };
+  await generateProblem('probability-events', 1, 'probability-statistics');
+  await act(async () => root.render(<DashboardPage />));
+  expect(button('Probability and Statistics').getAttribute('aria-pressed')).toBe('true');
+  expect(button('Events and counting').getAttribute('aria-pressed')).toBe('true');
+  expect(button('Generate problem').disabled).toBe(false);
+});
 
 beforeEach(() => {
   (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
@@ -172,6 +185,27 @@ it('restores an old problem after clearing browser practice state without making
   expect(element.textContent).toContain('mathematically equivalent');
   expect(calls).toHaveLength(1);
   expect(calls[0]).toEqual({ path: '/api/problems/old', body: null });
+});
+
+it.each([
+  { kind: 'boolean', topic: 'hypothesis-tests', answer: 'false', selector: 'input[value=false]' },
+  { kind: 'finite_set', topic: 'discrete-random-variables', answer: '{-1,2}', selector: '#answer-0' },
+  { kind: 'interval', topic: 'confidence-intervals', answer: '(-inf,3/2]', selector: '#answer-1' },
+] as const)('reopens a saved $kind answer through the real API decoder', async ({ kind, topic, answer, selector }) => {
+  const spec: AnswerInputSpec = { kind, maxBytes: 256, ...(kind === 'finite_set' ? { maxItems: 8 } : {}) };
+  saved.set('structured', { id: 'structured', topic, difficulty: 3, problemLatex: '\\text{Find the stated quantity.}',
+    createdAt: '2026-11-03T00:00:00Z', lastAnswer: answer, lastResult: 'incorrect', attemptCount: 1,
+    answerRevealed: false, solutionRevealed: false, answerInput: spec });
+  resetPractice();
+  await act(async () => root.render(<PracticePage id="structured" />));
+  const field = element.querySelector<HTMLInputElement>(selector)!;
+  expect(field).not.toBeNull();
+  if (kind === 'boolean') expect(field.checked).toBe(true);
+  else expect(field.value).toBe(kind === 'finite_set' ? '-1' : '3/2');
+  expect((await getProblem('structured')).answerInput).toEqual(spec);
+  await act(async () => button('Check answer').click());
+  expect(calls.find(call => call.path.endsWith('/attempts'))?.body?.answer).toBe(answer);
+  expect(calls.some(call => call.path.includes('reveal-'))).toBe(false);
 });
 
 it('shares a saved problem by link and code and stops sharing it (#37)', async () => {

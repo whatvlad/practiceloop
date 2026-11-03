@@ -61,7 +61,17 @@ class MathInputTooLong(MathInputError):
     """Request-size rejection (422/no attempt), unlike invalid mathematical syntax."""
 
 
-type NodeKind = Literal["number", "symbol", "unary", "binary", "function"]
+type NodeKind = Literal[
+    "number",
+    "symbol",
+    "unary",
+    "binary",
+    "function",
+    "boolean",
+    "finite_set",
+    "interval",
+    "endpoint",
+]
 type NodeValue = str | tuple[int, int]
 
 
