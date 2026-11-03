@@ -39,13 +39,15 @@ _FUNCTIONS = frozenset(
 _NAME_STARTS = frozenset("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 # ADR-005: the variables a template may declare, and the real domain each may have.
-type VariableDomain = Literal["real", "positive"]
+# #221: a complex-number answer declares `i`, the imaginary unit, never a variable.
+type VariableDomain = Literal["real", "positive", "imaginary"]
 ANSWER_VARIABLES: Mapping[str, frozenset[VariableDomain]] = {
     "x": frozenset({"real", "positive"}),
     "y": frozenset({"real", "positive"}),
     "z": frozenset({"real", "positive"}),
     "r": frozenset({"positive"}),
     "theta": frozenset({"real"}),
+    "i": frozenset({"imaginary"}),
 }
 # Names a letter run can be split into when a template declares variables, longest first.
 _SPLIT_NAMES = tuple(sorted({*_FUNCTIONS, *ANSWER_VARIABLES, "pi", "e"}, key=len, reverse=True))

@@ -253,6 +253,59 @@ factors, using evaluation at both roots and linear interpolation (algebra30
 bounded integer parameters and exact identities; polynomial answers declare `x`
 as a real input variable. Previously issued codes retain their original versions.
 
+#221 adds four Algebra topics for algebra30 exercises 14-40, each level one
+structural template with its own generator version (in
+`app/engine/generators/linear_algebra.py`, blocks in `blocks/matrices.py`):
+
+| Topic | Level | Template (algebra30) | Prefix |
+|---|---|---|---|
+| determinants | 1 | 3 x 3 determinant by Laplace expansion (17) | DTR |
+| determinants | 2 | det(cA^m) / transposes (15); swapped, scaled and combined rows (14) | DTS, DRO |
+| determinants | 3 | parameter value making a 3 x 3 matrix singular (19) | DSG |
+| determinants | 4 | 4 x 4 determinant with a row holding two zeros (17) | DTF |
+| inverse-matrices | 1-2 | one entry of a 2 x 2 / 3 x 3 inverse by the adjugate (20, 21) | INV, INVT |
+| inverse-matrices | 3 | one entry of X in AX = C or XA = C (13, 22) | MEQ |
+| linear-systems | 1-2 | Cramer's rule for one unknown, 2 x 2 / 3 x 3 (30) | CRA, CRT |
+| linear-systems | 3-4 | Gaussian elimination, three / four unknowns (31) | GAU, GAF |
+| linear-systems | 5 | largest parameter giving a nonzero solution (37) | SNT |
+| matrix-rank | 1 | rank of a 3 x 4 matrix by row reduction (26) | RNK |
+| matrix-rank | 2 | free parameters of a consistent system (29) | SYP |
+
+| complex-arithmetic | 1-2 | product; quotient via the conjugate (41) | CXM, CXQ |
+| complex-arithmetic | 3 | az = w, or z + q conj(z) = w by comparing parts (42) | CXE |
+| complex-arithmetic | 4-5 | z^2 = w; quadratic with complex coefficients (42c, 51) | CXS, CXR |
+| complex-polar-form | 1 | principal argument in (-pi, pi] (45) | CXG |
+| complex-polar-form | 2 | De Moivre power answered as a + bi (46) | CXD |
+| complex-polar-form | 3 | the n-th root with the smallest nonnegative argument (49) | CXN |
+| binomial-theorem | 1-3 | coefficient of x^k in (ax+b)^n; constant term of (ax^p+b/x^q)^n; n from the x^2 coefficient (5, 7) | BNC, BNT, BNE |
+| polynomial-roots | 1 | largest rational root of a quartic with an irreducible quadratic factor (55) | PRR |
+| polynomial-roots | 2-3 | real root of a cubic with a known complex root; its monic irreducible quadratic factor (57, 58) | PKR, PIF |
+| polynomial-division | 3-5 | third remainder from two remainder conditions; a or b from divisibility; remainder modulo x^3 - x (61, 62, 63c) | PRC, PDB, PCR |
+| partial-fractions | 4 | one constant with a repeated linear or irreducible quadratic factor (60), beside the existing level-4 pool | PFC |
+| eigenvalues | 1-2 | largest eigenvalue from the characteristic equation; eigenvalue of a given eigenvector (64, 65, 69) | EGL, EGV |
+| eigenvalues | 3-5 | entry of A^n by diagonalization; largest eigenvalue of a triangular power; entry of A from eigenpairs (66, 67, 69) | EGP, EGT, EGM |
+| vectors | 1-5 | scalar triple product; cosine of a triangle angle; triangle area; tetrahedron volume; tetrahedron height (72, 73, 78, 79) | VTP, VTA, VTR, VTV, VTH |
+| lines-and-planes | 1-5 | point-plane distance; distance of parallel planes; cosine between planes; line-plane intersection coordinate; reflection in a plane (82, 86, 89, 96) | GPP, GPL, GPA, GLP, GPR |
+
+Eigen tasks use A = P D P^-1 with a unimodular integer P, so A, A^n and the
+eigenvectors stay integer. Geometry tasks use bounded integer points and
+normals; non-collinear and non-coplanar points are drawn with `draw_valid`.
+
+The complex topics answer with `ComplexAnswer` in the form a + bi (the argument
+with a real expression); their generators declare the imaginary unit `i`, see
+MATH_INPUT.md. Values are Gaussian integers, or a modulus with an angle that is
+a multiple of pi/4 or pi/6. The matrix topics' answers are one exact scalar
+checked by `ExpressionAnswer`, so no new answer
+kind or editor is needed. Invertible matrices are a row-permuted L*U with
+bounded entries and a nonzero pivot diagonal; rank-r matrices are a unit lower
+3 x r factor times a unit upper r x 4 factor, so draws need no rejection except
+where noted. Each build re-proves its result independently (SymPy determinant,
+A*A^-1 = I, LU solve, SymPy rank, characteristic roots). Worded statements put
+the task before a colon and end with one formula, which the UI splits into the
+instruction and the displayed formula. The four topics join Algebra mixed
+practice with weight 1. Coverage of all 97 exercises is tracked in
+[algebra30-coverage.md](algebra30-coverage.md).
+
 After #197, the six remaining analysis topics also use native engine pools:
 functions/sequences, limits/continuity, improper integrals, series,
 multivariable functions and differential equations. All existing levels, mixed

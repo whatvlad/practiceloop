@@ -31,6 +31,7 @@ XY = {"x", "y"}
 XYZ = {"x", "y", "z"}
 POLAR = {"r", "theta"}
 CYLINDRICAL = {"r", "theta", "z"}
+COMPLEX = {"i"}  # #221: the imaginary unit
 
 
 def tree(source: str, variables: set[str]) -> Any:
@@ -68,6 +69,10 @@ def tree(source: str, variables: set[str]) -> Any:
         ("sec^2(xy)", XY, sp.sec(X * Y) ** 2),
         ("3pi/4", POLAR, 3 * sp.pi / 4),
         ("y²x³", XY, Y**2 * X**3),
+        ("3-4i", COMPLEX, 3 - 4 * sp.I),
+        ("2i-1", COMPLEX, 2 * sp.I - 1),
+        ("sqrt(3)/2+i/2", COMPLEX, sp.sqrt(3) / 2 + sp.I / 2),
+        ("i^2", COMPLEX, sp.Integer(-1)),
     ],
 )
 def test_declared_variables_are_read(source: str, variables: set[str], expected: Any) -> None:
@@ -98,6 +103,10 @@ def test_declared_variables_are_read(source: str, variables: set[str], expected:
         ("1e3x", XY),
         ("α", POLAR),
         ("i*x", XY),
+        ("x+i", COMPLEX),
+        ("3+4j", COMPLEX),
+        ("3+4I", COMPLEX),
+        ("2^i", COMPLEX),
     ],
 )
 def test_other_symbols_are_invalid(source: str, variables: set[str]) -> None:

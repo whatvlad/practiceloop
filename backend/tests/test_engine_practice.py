@@ -35,6 +35,18 @@ def test_combinations_is_listed_from_its_engine_entry_and_joins_algebra_mixed() 
             "fundamental-theorem-algebra",
             "partial-fractions",
             "combinations",
+            "determinants",
+            "inverse-matrices",
+            "linear-systems",
+            "matrix-rank",
+            "complex-arithmetic",
+            "complex-polar-form",
+            "binomial-theorem",
+            "polynomial-roots",
+            "eigenvalues",
+            "vectors",
+            "lines-and-planes",
+            "polynomial-division",
         )
     )
     assert "combinations" in practice.mixed_topics("algebra", 1)[0]

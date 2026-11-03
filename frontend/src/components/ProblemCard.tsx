@@ -44,7 +44,8 @@ export function incorrectMessage(feedback: FeedbackCode | null, kind: ProblemKin
   if (feedback) return text[`feedback_${feedback}`];
   return { indefinite: text.general_hint, definite: text.general_hint_definite, double: text.general_hint_multiple,
     triple: text.general_hint_multiple, derivative: text.general_hint_derivative, partial: text.general_hint_derivative,
-    numeric: 'Check your calculation, or reveal the solution.', expression: 'Check your work, or reveal the solution.' }[kind];
+    numeric: 'Check your calculation, or reveal the solution.',
+    complex: 'Check your calculation and write the answer as a + bi, or reveal the solution.', expression: 'Check your work, or reveal the solution.' }[kind];
 }
 
 const PLACEHOLDERS: Record<ProblemKind, string> = {
@@ -55,6 +56,7 @@ const PLACEHOLDERS: Record<ProblemKind, string> = {
   derivative: 'e.g. 2x cos(x^2)',
   partial: 'e.g. 2xy or r^2 cos(2θ)',
   numeric: 'e.g. 3/2',
+  complex: 'e.g. 3 - 4i',
   expression: 'e.g. 2x + 1',
 };
 

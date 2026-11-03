@@ -16,8 +16,8 @@ export const FUNCTIONS = [
   'sin', 'cos', 'tan', 'sec', 'csc', 'cot', 'asin', 'acos', 'atan', 'exp', 'ln', 'log', 'sqrt', 'abs',
 ] as const;
 const FUNCTION_SET: ReadonlySet<string> = new Set(FUNCTIONS);
-/** ADR-005: the variables a template may declare for its answers. */
-export const ANSWER_VARIABLES = ['x', 'y', 'z', 'r', 'theta'] as const;
+/** ADR-005: the variables a template may declare for its answers; `i` is the imaginary unit (#221). */
+export const ANSWER_VARIABLES = ['x', 'y', 'z', 'r', 'theta', 'i'] as const;
 export type AnswerVariable = (typeof ANSWER_VARIABLES)[number];
 // Names a letter run splits into when a template declares variables, longest first.
 const SPLIT_NAMES = [...new Set([...FUNCTIONS, ...ANSWER_VARIABLES, 'pi', 'e'])].sort((a, b) => b.length - a.length);

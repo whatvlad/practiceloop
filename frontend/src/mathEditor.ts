@@ -261,6 +261,7 @@ class Reader {
     if (name === 'pi') return term('pi', true);
     if (name === 'theta' || name === 'vartheta') return term('theta', true);
     if (name === 'exponentialE') return term('e', true);
+    if (name === 'imaginaryI') return term('i', true);
     if (name === 'operatorname' || name === 'mathrm' || name === 'text' || name === 'mathit') {
       const word = this.word();
       const fn = COMMAND_FUNCTIONS[word];

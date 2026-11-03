@@ -17,6 +17,9 @@ def build_expression(node: MathNode, evaluate: bool = False) -> Any:
             return sp.pi
         if node.value == "e":
             return sp.E
+        if node.value == "i":
+            # Only a template declaring the imaginary unit lets the parser accept `i`.
+            return sp.I
         return sp.Symbol(node.value, real=True)
     if node.kind == "unary":
         child = build_expression(node.children[0], evaluate)

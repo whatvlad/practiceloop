@@ -2492,5 +2492,3389 @@
         "template": "quadratic-remainder"
       }
     }
+  ],
+  "algebra-determinant-3x3-v1": [
+    {
+      "code": "DTR-1-0000000000000000-55",
+      "statement": "Calculate \\(\\det\\begin{pmatrix}0&3&1\\\\4&3&-4\\\\-3&3&3\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "laplace",
+          "\\det A=-3\\cdot \\det\\begin{pmatrix}4&-4\\\\-3&3\\end{pmatrix}+1\\cdot \\det\\begin{pmatrix}4&3\\\\-3&3\\end{pmatrix}"
+        ],
+        [
+          "minors",
+          "\\det A=-3\\cdot (0)+1\\cdot (21)"
+        ],
+        [
+          "result",
+          "\\det A=21"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "21",
+      "metadata": {
+        "difficulty": 1,
+        "template": "determinant-3x3"
+      }
+    },
+    {
+      "code": "DTR-1-0000000000000001-72",
+      "statement": "Calculate \\(\\det\\begin{pmatrix}-4&-3&1\\\\-1&-2&2\\\\0&-3&-2\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "laplace",
+          "\\det A=3\\cdot \\det\\begin{pmatrix}-4&1\\\\-1&2\\end{pmatrix}-2\\cdot \\det\\begin{pmatrix}-4&-3\\\\-1&-2\\end{pmatrix}"
+        ],
+        [
+          "minors",
+          "\\det A=3\\cdot (-7)-2\\cdot (5)"
+        ],
+        [
+          "result",
+          "\\det A=-31"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-31",
+      "metadata": {
+        "difficulty": 1,
+        "template": "determinant-3x3"
+      }
+    },
+    {
+      "code": "DTR-1-0000000000000147-59",
+      "statement": "Calculate \\(\\det\\begin{pmatrix}-1&-2&-3\\\\-2&4&0\\\\-2&4&0\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "laplace",
+          "\\det A=2\\cdot \\det\\begin{pmatrix}-2&-3\\\\4&0\\end{pmatrix}+4\\cdot \\det\\begin{pmatrix}-1&-3\\\\-2&0\\end{pmatrix}"
+        ],
+        [
+          "minors",
+          "\\det A=2\\cdot (12)+4\\cdot (-6)"
+        ],
+        [
+          "result",
+          "\\det A=0"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 1,
+        "template": "determinant-3x3"
+      }
+    }
+  ],
+  "algebra-determinant-4x4-v1": [
+    {
+      "code": "DTF-1-0000000000000000-13",
+      "statement": "Calculate \\(\\det\\begin{pmatrix}3&-1&0&2\\\\-1&-2&0&2\\\\3&0&0&-3\\\\-3&0&-2&1\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "laplace",
+          "\\det A=3\\cdot \\det\\begin{pmatrix}-1&0&2\\\\-2&0&2\\\\0&-2&1\\end{pmatrix}+3\\cdot \\det\\begin{pmatrix}3&-1&0\\\\-1&-2&0\\\\-3&0&-2\\end{pmatrix}"
+        ],
+        [
+          "minors",
+          "\\det A=3\\cdot (4)+3\\cdot (14)"
+        ],
+        [
+          "result",
+          "\\det A=54"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "54",
+      "metadata": {
+        "difficulty": 4,
+        "template": "determinant-4x4"
+      }
+    },
+    {
+      "code": "DTF-1-0000000000000001-30",
+      "statement": "Calculate \\(\\det\\begin{pmatrix}1&-1&0&0\\\\-3&0&3&2\\\\0&-2&2&0\\\\-2&1&-1&2\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "laplace",
+          "\\det A=1\\cdot \\det\\begin{pmatrix}0&3&2\\\\-2&2&0\\\\1&-1&2\\end{pmatrix}+1\\cdot \\det\\begin{pmatrix}-3&3&2\\\\0&2&0\\\\-2&-1&2\\end{pmatrix}"
+        ],
+        [
+          "minors",
+          "\\det A=1\\cdot (12)+1\\cdot (-4)"
+        ],
+        [
+          "result",
+          "\\det A=8"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "8",
+      "metadata": {
+        "difficulty": 4,
+        "template": "determinant-4x4"
+      }
+    },
+    {
+      "code": "DTF-1-0000000000000147-17",
+      "statement": "Calculate \\(\\det\\begin{pmatrix}-3&3&2&-2\\\\1&2&-1&0\\\\2&2&3&-3\\\\0&1&2&0\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "laplace",
+          "\\det A=1\\cdot \\det\\begin{pmatrix}-3&2&-2\\\\1&-1&0\\\\2&3&-3\\end{pmatrix}-2\\cdot \\det\\begin{pmatrix}-3&3&-2\\\\1&2&0\\\\2&2&-3\\end{pmatrix}"
+        ],
+        [
+          "minors",
+          "\\det A=1\\cdot (-13)-2\\cdot (31)"
+        ],
+        [
+          "result",
+          "\\det A=-75"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-75",
+      "metadata": {
+        "difficulty": 4,
+        "template": "determinant-4x4"
+      }
+    }
+  ],
+  "algebra-determinant-scaling-v1": [
+    {
+      "code": "DTS-1-0000000000000000-72",
+      "statement": "Use the properties of determinants to find the value: \\(A\\in\\mathbb{R}^{4\\times 4},\\ \\det A=-2,\\quad \\det(-2(A^{T})^{2})=?\\).",
+      "steps": [
+        [
+          "scale",
+          "\\det(-2(A^{T})^{2})=(-2)^{4}\\det((A^{T})^{2})"
+        ],
+        [
+          "power",
+          "\\det((A^{T})^{2})=(\\det A)^{2}"
+        ],
+        [
+          "result",
+          "(-2)^{4}\\cdot(-2)^{2}=64"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "64",
+      "metadata": {
+        "difficulty": 2,
+        "template": "determinant-scaling"
+      }
+    },
+    {
+      "code": "DTS-1-0000000000000001-89",
+      "statement": "Use the properties of determinants to find the value: \\(A\\in\\mathbb{R}^{7\\times 7},\\ \\det A=1,\\quad \\det(-3(A^{T})^{3})=?\\).",
+      "steps": [
+        [
+          "scale",
+          "\\det(-3(A^{T})^{3})=(-3)^{7}\\det((A^{T})^{3})"
+        ],
+        [
+          "power",
+          "\\det((A^{T})^{3})=(\\det A)^{3}"
+        ],
+        [
+          "result",
+          "(-3)^{7}\\cdot(1)^{3}=-2187"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-2187",
+      "metadata": {
+        "difficulty": 2,
+        "template": "determinant-scaling"
+      }
+    },
+    {
+      "code": "DTS-1-0000000000000147-76",
+      "statement": "Use the properties of determinants to find the value: \\(A\\in\\mathbb{R}^{6\\times 6},\\ \\det A=-1,\\quad \\det(-3A^{3})=?\\).",
+      "steps": [
+        [
+          "scale",
+          "\\det(-3A^{3})=(-3)^{6}\\det(A^{3})"
+        ],
+        [
+          "power",
+          "\\det(A^{3})=(\\det A)^{3}"
+        ],
+        [
+          "result",
+          "(-3)^{6}\\cdot(-1)^{3}=-729"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-729",
+      "metadata": {
+        "difficulty": 2,
+        "template": "determinant-scaling"
+      }
+    }
+  ],
+  "algebra-determinant-rows-v1": [
+    {
+      "code": "DRO-1-0000000000000000-08",
+      "statement": "Use the properties of determinants to find the second determinant: \\(\\det\\begin{pmatrix}a&b&c\\\\d&e&f\\\\g&h&i\\end{pmatrix}=8,\\quad \\det\\begin{pmatrix}- 3 d&- 3 e&- 3 f\\\\3 a + 3 d&3 b + 3 e&3 c + 3 f\\\\- g&- h&- i\\end{pmatrix}=?\\).",
+      "steps": [
+        [
+          "combine",
+          "\\det\\begin{pmatrix}- 3 d&- 3 e&- 3 f\\\\3 a + 3 d&3 b + 3 e&3 c + 3 f\\\\- g&- h&- i\\end{pmatrix}=\\det\\begin{pmatrix}- 3 d&- 3 e&- 3 f\\\\3 a&3 b&3 c\\\\- g&- h&- i\\end{pmatrix}"
+        ],
+        [
+          "scale",
+          "=(-3)\\cdot (3)\\cdot (-1)\\cdot\\det\\begin{pmatrix}d&e&f\\\\a&b&c\\\\g&h&i\\end{pmatrix}"
+        ],
+        [
+          "swap",
+          "\\det\\begin{pmatrix}d&e&f\\\\a&b&c\\\\g&h&i\\end{pmatrix}=-8"
+        ],
+        [
+          "result",
+          "(-3)\\cdot (3)\\cdot (-1)\\cdot(-8)=-72"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-72",
+      "metadata": {
+        "difficulty": 2,
+        "template": "determinant-rows"
+      }
+    },
+    {
+      "code": "DRO-1-0000000000000001-25",
+      "statement": "Use the properties of determinants to find the second determinant: \\(\\det\\begin{pmatrix}a&b&c\\\\d&e&f\\\\g&h&i\\end{pmatrix}=-2,\\quad \\det\\begin{pmatrix}- 3 d - 3 g&- 3 e - 3 h&- 3 f - 3 i\\\\3 g&3 h&3 i\\\\- 2 a&- 2 b&- 2 c\\end{pmatrix}=?\\).",
+      "steps": [
+        [
+          "combine",
+          "\\det\\begin{pmatrix}- 3 d - 3 g&- 3 e - 3 h&- 3 f - 3 i\\\\3 g&3 h&3 i\\\\- 2 a&- 2 b&- 2 c\\end{pmatrix}=\\det\\begin{pmatrix}- 3 d&- 3 e&- 3 f\\\\3 g&3 h&3 i\\\\- 2 a&- 2 b&- 2 c\\end{pmatrix}"
+        ],
+        [
+          "scale",
+          "=(-3)\\cdot (3)\\cdot (-2)\\cdot\\det\\begin{pmatrix}d&e&f\\\\g&h&i\\\\a&b&c\\end{pmatrix}"
+        ],
+        [
+          "swap",
+          "\\det\\begin{pmatrix}d&e&f\\\\g&h&i\\\\a&b&c\\end{pmatrix}=-2"
+        ],
+        [
+          "result",
+          "(-3)\\cdot (3)\\cdot (-2)\\cdot(-2)=-36"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-36",
+      "metadata": {
+        "difficulty": 2,
+        "template": "determinant-rows"
+      }
+    },
+    {
+      "code": "DRO-1-0000000000000147-12",
+      "statement": "Use the properties of determinants to find the second determinant: \\(\\det\\begin{pmatrix}a&b&c\\\\d&e&f\\\\g&h&i\\end{pmatrix}=3,\\quad \\det\\begin{pmatrix}2 a + g&2 b + h&2 c + i\\\\- 3 d&- 3 e&- 3 f\\\\4 a&4 b&4 c\\end{pmatrix}=?\\).",
+      "steps": [
+        [
+          "combine",
+          "\\det\\begin{pmatrix}2 a + g&2 b + h&2 c + i\\\\- 3 d&- 3 e&- 3 f\\\\4 a&4 b&4 c\\end{pmatrix}=\\det\\begin{pmatrix}g&h&i\\\\- 3 d&- 3 e&- 3 f\\\\4 a&4 b&4 c\\end{pmatrix}"
+        ],
+        [
+          "scale",
+          "=(1)\\cdot (-3)\\cdot (4)\\cdot\\det\\begin{pmatrix}g&h&i\\\\d&e&f\\\\a&b&c\\end{pmatrix}"
+        ],
+        [
+          "swap",
+          "\\det\\begin{pmatrix}g&h&i\\\\d&e&f\\\\a&b&c\\end{pmatrix}=-3"
+        ],
+        [
+          "result",
+          "(1)\\cdot (-3)\\cdot (4)\\cdot(-3)=36"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "36",
+      "metadata": {
+        "difficulty": 2,
+        "template": "determinant-rows"
+      }
+    }
+  ],
+  "algebra-singular-parameter-v1": [
+    {
+      "code": "DSG-1-0000000000000000-07",
+      "statement": "Find the value of p for which the matrix is not invertible: \\(\\begin{pmatrix}1&4&3\\\\-4&p&3\\\\3&-1&-3\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "condition",
+          "\\det\\begin{pmatrix}1&4&3\\\\-4&p&3\\\\3&-1&-3\\end{pmatrix}=0"
+        ],
+        [
+          "laplace",
+          "3 - 12 p=0"
+        ],
+        [
+          "solve",
+          "p=\\frac{1}{4}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{4}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "singular-parameter"
+      }
+    },
+    {
+      "code": "DSG-1-0000000000000001-24",
+      "statement": "Find the value of p for which the matrix is not invertible: \\(\\begin{pmatrix}1&p&-2\\\\2&0&-3\\\\-2&1&-4\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "condition",
+          "\\det\\begin{pmatrix}1&p&-2\\\\2&0&-3\\\\-2&1&-4\\end{pmatrix}=0"
+        ],
+        [
+          "laplace",
+          "14 p - 1=0"
+        ],
+        [
+          "solve",
+          "p=\\frac{1}{14}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{14}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "singular-parameter"
+      }
+    },
+    {
+      "code": "DSG-1-0000000000000147-11",
+      "statement": "Find the value of p for which the matrix is not invertible: \\(\\begin{pmatrix}-3&3&p\\\\-3&-3&1\\\\2&4&-2\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "condition",
+          "\\det\\begin{pmatrix}-3&3&p\\\\-3&-3&1\\\\2&4&-2\\end{pmatrix}=0"
+        ],
+        [
+          "laplace",
+          "- 6 p - 18=0"
+        ],
+        [
+          "solve",
+          "p=-3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-3",
+      "metadata": {
+        "difficulty": 3,
+        "template": "singular-parameter"
+      }
+    }
+  ],
+  "algebra-inverse-2x2-v1": [
+    {
+      "code": "INV-1-0000000000000000-91",
+      "statement": "Find the entry in the second row and first column of the inverse matrix: \\(A=\\begin{pmatrix}2&-1\\\\0&-1\\end{pmatrix},\\quad A^{-1}=?\\).",
+      "steps": [
+        [
+          "determinant",
+          "\\det A=-2"
+        ],
+        [
+          "adjugate",
+          "A^{-1}=\\frac{1}{-2}\\begin{pmatrix}-1&1\\\\0&2\\end{pmatrix}"
+        ],
+        [
+          "inverse",
+          "A^{-1}=\\begin{pmatrix}\\frac{1}{2}&- \\frac{1}{2}\\\\0&-1\\end{pmatrix}"
+        ],
+        [
+          "entry",
+          "(A^{-1})_{21}=0"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 1,
+        "template": "inverse-2x2"
+      }
+    },
+    {
+      "code": "INV-1-0000000000000001-11",
+      "statement": "Find the entry in the second row and second column of the inverse matrix: \\(A=\\begin{pmatrix}2&-2\\\\2&-4\\end{pmatrix},\\quad A^{-1}=?\\).",
+      "steps": [
+        [
+          "determinant",
+          "\\det A=-4"
+        ],
+        [
+          "adjugate",
+          "A^{-1}=\\frac{1}{-4}\\begin{pmatrix}-4&2\\\\-2&2\\end{pmatrix}"
+        ],
+        [
+          "inverse",
+          "A^{-1}=\\begin{pmatrix}1&- \\frac{1}{2}\\\\\\frac{1}{2}&- \\frac{1}{2}\\end{pmatrix}"
+        ],
+        [
+          "entry",
+          "(A^{-1})_{22}=- \\frac{1}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "- \\frac{1}{2}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "inverse-2x2"
+      }
+    },
+    {
+      "code": "INV-1-0000000000000147-95",
+      "statement": "Find the entry in the first row and second column of the inverse matrix: \\(A=\\begin{pmatrix}1&-1\\\\1&-2\\end{pmatrix},\\quad A^{-1}=?\\).",
+      "steps": [
+        [
+          "determinant",
+          "\\det A=-1"
+        ],
+        [
+          "adjugate",
+          "A^{-1}=\\frac{1}{-1}\\begin{pmatrix}-2&1\\\\-1&1\\end{pmatrix}"
+        ],
+        [
+          "inverse",
+          "A^{-1}=\\begin{pmatrix}2&-1\\\\1&-1\\end{pmatrix}"
+        ],
+        [
+          "entry",
+          "(A^{-1})_{12}=-1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-1",
+      "metadata": {
+        "difficulty": 1,
+        "template": "inverse-2x2"
+      }
+    }
+  ],
+  "algebra-inverse-3x3-v1": [
+    {
+      "code": "INVT-1-0000000000000000-35",
+      "statement": "Find the entry in the second row and third column of the inverse matrix: \\(A=\\begin{pmatrix}-2&-1&0\\\\2&-1&2\\\\4&6&-3\\end{pmatrix},\\quad A^{-1}=?\\).",
+      "steps": [
+        [
+          "determinant",
+          "\\det A=4"
+        ],
+        [
+          "adjugate",
+          "A^{-1}=\\frac{1}{4}\\begin{pmatrix}-9&-3&-2\\\\14&6&4\\\\16&8&4\\end{pmatrix}"
+        ],
+        [
+          "inverse",
+          "A^{-1}=\\begin{pmatrix}- \\frac{9}{4}&- \\frac{3}{4}&- \\frac{1}{2}\\\\\\frac{7}{2}&\\frac{3}{2}&1\\\\4&2&1\\end{pmatrix}"
+        ],
+        [
+          "entry",
+          "(A^{-1})_{23}=1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 2,
+        "template": "inverse-3x3"
+      }
+    },
+    {
+      "code": "INVT-1-0000000000000001-52",
+      "statement": "Find the entry in the first row and first column of the inverse matrix: \\(A=\\begin{pmatrix}-4&5&0\\\\2&-2&1\\\\-4&5&-1\\end{pmatrix},\\quad A^{-1}=?\\).",
+      "steps": [
+        [
+          "determinant",
+          "\\det A=2"
+        ],
+        [
+          "adjugate",
+          "A^{-1}=\\frac{1}{2}\\begin{pmatrix}-3&5&5\\\\-2&4&4\\\\2&0&-2\\end{pmatrix}"
+        ],
+        [
+          "inverse",
+          "A^{-1}=\\begin{pmatrix}- \\frac{3}{2}&\\frac{5}{2}&\\frac{5}{2}\\\\-1&2&2\\\\1&0&-1\\end{pmatrix}"
+        ],
+        [
+          "entry",
+          "(A^{-1})_{11}=- \\frac{3}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "- \\frac{3}{2}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "inverse-3x3"
+      }
+    },
+    {
+      "code": "INVT-1-0000000000000147-39",
+      "statement": "Find the entry in the third row and second column of the inverse matrix: \\(A=\\begin{pmatrix}1&-1&2\\\\-2&1&-5\\\\0&0&1\\end{pmatrix},\\quad A^{-1}=?\\).",
+      "steps": [
+        [
+          "determinant",
+          "\\det A=-1"
+        ],
+        [
+          "adjugate",
+          "A^{-1}=\\frac{1}{-1}\\begin{pmatrix}1&1&3\\\\2&1&1\\\\0&0&-1\\end{pmatrix}"
+        ],
+        [
+          "inverse",
+          "A^{-1}=\\begin{pmatrix}-1&-1&-3\\\\-2&-1&-1\\\\0&0&1\\end{pmatrix}"
+        ],
+        [
+          "entry",
+          "(A^{-1})_{32}=0"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 2,
+        "template": "inverse-3x3"
+      }
+    }
+  ],
+  "algebra-matrix-equation-v1": [
+    {
+      "code": "MEQ-1-0000000000000000-39",
+      "statement": "Find the entry in the first row and second column of the unknown matrix X: \\(X\\begin{pmatrix}-2&-1\\\\0&-2\\end{pmatrix}=\\begin{pmatrix}4&2\\\\-4&-8\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "isolate",
+          "X=CA^{-1}"
+        ],
+        [
+          "inverse",
+          "A^{-1}=\\begin{pmatrix}- \\frac{1}{2}&\\frac{1}{4}\\\\0&- \\frac{1}{2}\\end{pmatrix}"
+        ],
+        [
+          "multiply",
+          "X=\\begin{pmatrix}-2&0\\\\2&3\\end{pmatrix}"
+        ],
+        [
+          "entry",
+          "x_{12}=0"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 3,
+        "template": "matrix-equation"
+      }
+    },
+    {
+      "code": "MEQ-1-0000000000000001-56",
+      "statement": "Find the entry in the first row and second column of the unknown matrix X: \\(X\\begin{pmatrix}2&-2\\\\2&-1\\end{pmatrix}=\\begin{pmatrix}6&-3\\\\-2&-1\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "isolate",
+          "X=CA^{-1}"
+        ],
+        [
+          "inverse",
+          "A^{-1}=\\begin{pmatrix}- \\frac{1}{2}&1\\\\-1&1\\end{pmatrix}"
+        ],
+        [
+          "multiply",
+          "X=\\begin{pmatrix}0&3\\\\2&-3\\end{pmatrix}"
+        ],
+        [
+          "entry",
+          "x_{12}=3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3",
+      "metadata": {
+        "difficulty": 3,
+        "template": "matrix-equation"
+      }
+    },
+    {
+      "code": "MEQ-1-0000000000000147-43",
+      "statement": "Find the entry in the first row and first column of the unknown matrix X: \\(X\\begin{pmatrix}1&-3\\\\1&-2\\end{pmatrix}=\\begin{pmatrix}1&-4\\\\2&-4\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "isolate",
+          "X=CA^{-1}"
+        ],
+        [
+          "inverse",
+          "A^{-1}=\\begin{pmatrix}-2&3\\\\-1&1\\end{pmatrix}"
+        ],
+        [
+          "multiply",
+          "X=\\begin{pmatrix}2&-1\\\\0&2\\end{pmatrix}"
+        ],
+        [
+          "entry",
+          "x_{11}=2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 3,
+        "template": "matrix-equation"
+      }
+    }
+  ],
+  "algebra-cramer-2x2-v1": [
+    {
+      "code": "CRA-1-0000000000000000-02",
+      "statement": "Use Cramer's rule to find y in the system: \\(\\begin{cases}-2x-y=11\\\\-2y=6\\end{cases}\\).",
+      "steps": [
+        [
+          "main",
+          "W=\\det\\begin{pmatrix}-2&-1\\\\0&-2\\end{pmatrix}=4"
+        ],
+        [
+          "replaced",
+          "W_{y}=\\det\\begin{pmatrix}-2&11\\\\0&6\\end{pmatrix}=-12"
+        ],
+        [
+          "ratio",
+          "y=\\frac{W_{y}}{W}=\\frac{-12}{4}=-3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-3",
+      "metadata": {
+        "difficulty": 1,
+        "template": "cramer-2x2"
+      }
+    },
+    {
+      "code": "CRA-1-0000000000000001-19",
+      "statement": "Use Cramer's rule to find x in the system: \\(\\begin{cases}2x-2y=4\\\\2x-y=4\\end{cases}\\).",
+      "steps": [
+        [
+          "main",
+          "W=\\det\\begin{pmatrix}2&-2\\\\2&-1\\end{pmatrix}=2"
+        ],
+        [
+          "replaced",
+          "W_{x}=\\det\\begin{pmatrix}4&-2\\\\4&-1\\end{pmatrix}=4"
+        ],
+        [
+          "ratio",
+          "x=\\frac{W_{x}}{W}=\\frac{4}{2}=2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 1,
+        "template": "cramer-2x2"
+      }
+    },
+    {
+      "code": "CRA-1-0000000000000147-06",
+      "statement": "Use Cramer's rule to find y in the system: \\(\\begin{cases}x-3y=6\\\\x-2y=4\\end{cases}\\).",
+      "steps": [
+        [
+          "main",
+          "W=\\det\\begin{pmatrix}1&-3\\\\1&-2\\end{pmatrix}=1"
+        ],
+        [
+          "replaced",
+          "W_{y}=\\det\\begin{pmatrix}1&6\\\\1&4\\end{pmatrix}=-2"
+        ],
+        [
+          "ratio",
+          "y=\\frac{W_{y}}{W}=\\frac{-2}{1}=-2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-2",
+      "metadata": {
+        "difficulty": 1,
+        "template": "cramer-2x2"
+      }
+    }
+  ],
+  "algebra-cramer-3x3-v1": [
+    {
+      "code": "CRT-1-0000000000000000-04",
+      "statement": "Use Cramer's rule to find x in the system: \\(\\begin{cases}-2x-y=5\\\\2x-y+2z=-11\\\\4x+6y-3z=0\\end{cases}\\).",
+      "steps": [
+        [
+          "main",
+          "W=\\det\\begin{pmatrix}-2&-1&0\\\\2&-1&2\\\\4&6&-3\\end{pmatrix}=4"
+        ],
+        [
+          "replaced",
+          "W_{x}=\\det\\begin{pmatrix}5&-1&0\\\\-11&-1&2\\\\0&6&-3\\end{pmatrix}=-12"
+        ],
+        [
+          "ratio",
+          "x=\\frac{W_{x}}{W}=\\frac{-12}{4}=-3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-3",
+      "metadata": {
+        "difficulty": 2,
+        "template": "cramer-3x3"
+      }
+    },
+    {
+      "code": "CRT-1-0000000000000001-21",
+      "statement": "Use Cramer's rule to find z in the system: \\(\\begin{cases}-4x+5y=-4\\\\2x-2y+z=3\\\\-4x+5y-z=-7\\end{cases}\\).",
+      "steps": [
+        [
+          "main",
+          "W=\\det\\begin{pmatrix}-4&5&0\\\\2&-2&1\\\\-4&5&-1\\end{pmatrix}=2"
+        ],
+        [
+          "replaced",
+          "W_{z}=\\det\\begin{pmatrix}-4&5&-4\\\\2&-2&3\\\\-4&5&-7\\end{pmatrix}=6"
+        ],
+        [
+          "ratio",
+          "z=\\frac{W_{z}}{W}=\\frac{6}{2}=3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3",
+      "metadata": {
+        "difficulty": 2,
+        "template": "cramer-3x3"
+      }
+    },
+    {
+      "code": "CRT-1-0000000000000147-08",
+      "statement": "Use Cramer's rule to find y in the system: \\(\\begin{cases}x-y+2z=7\\\\-2x+y-5z=-14\\\\z=3\\end{cases}\\).",
+      "steps": [
+        [
+          "main",
+          "W=\\det\\begin{pmatrix}1&-1&2\\\\-2&1&-5\\\\0&0&1\\end{pmatrix}=-1"
+        ],
+        [
+          "replaced",
+          "W_{y}=\\det\\begin{pmatrix}1&7&2\\\\-2&-14&-5\\\\0&3&1\\end{pmatrix}=3"
+        ],
+        [
+          "ratio",
+          "y=\\frac{W_{y}}{W}=\\frac{3}{-1}=-3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-3",
+      "metadata": {
+        "difficulty": 2,
+        "template": "cramer-3x3"
+      }
+    }
+  ],
+  "algebra-gauss-3x3-v1": [
+    {
+      "code": "GAU-1-0000000000000000-09",
+      "statement": "Use Gaussian elimination to find x in the system: \\(\\begin{cases}-2x-y=5\\\\2x-y+2z=-11\\\\4x+6y-3z=0\\end{cases}\\).",
+      "steps": [
+        [
+          "augmented",
+          "\\left(\\begin{array}{ccc|c}-2&-1&0&5\\\\2&-1&2&-11\\\\4&6&-3&0\\end{array}\\right)"
+        ],
+        [
+          "echelon",
+          "\\left(\\begin{array}{ccc|c}-2&-1&0&5\\\\0&-2&2&-6\\\\0&0&1&-2\\end{array}\\right)"
+        ],
+        [
+          "back",
+          "x=-3,\\ y=1,\\ z=-2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-3",
+      "metadata": {
+        "difficulty": 3,
+        "template": "gauss-3x3"
+      }
+    },
+    {
+      "code": "GAU-1-0000000000000001-26",
+      "statement": "Use Gaussian elimination to find z in the system: \\(\\begin{cases}-4x+5y=-4\\\\2x-2y+z=3\\\\-4x+5y-z=-7\\end{cases}\\).",
+      "steps": [
+        [
+          "augmented",
+          "\\left(\\begin{array}{ccc|c}-4&5&0&-4\\\\2&-2&1&3\\\\-4&5&-1&-7\\end{array}\\right)"
+        ],
+        [
+          "echelon",
+          "\\left(\\begin{array}{ccc|c}-4&5&0&-4\\\\0&\\frac{1}{2}&1&1\\\\0&0&-1&-3\\end{array}\\right)"
+        ],
+        [
+          "back",
+          "x=-4,\\ y=-4,\\ z=3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3",
+      "metadata": {
+        "difficulty": 3,
+        "template": "gauss-3x3"
+      }
+    },
+    {
+      "code": "GAU-1-0000000000000147-13",
+      "statement": "Use Gaussian elimination to find y in the system: \\(\\begin{cases}x-y+2z=7\\\\-2x+y-5z=-14\\\\z=3\\end{cases}\\).",
+      "steps": [
+        [
+          "augmented",
+          "\\left(\\begin{array}{ccc|c}1&-1&2&7\\\\-2&1&-5&-14\\\\0&0&1&3\\end{array}\\right)"
+        ],
+        [
+          "echelon",
+          "\\left(\\begin{array}{ccc|c}1&-1&2&7\\\\0&-1&-1&0\\\\0&0&1&3\\end{array}\\right)"
+        ],
+        [
+          "back",
+          "x=-2,\\ y=-3,\\ z=3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-3",
+      "metadata": {
+        "difficulty": 3,
+        "template": "gauss-3x3"
+      }
+    }
+  ],
+  "algebra-gauss-4x4-v1": [
+    {
+      "code": "GAF-1-0000000000000000-36",
+      "statement": "Use Gaussian elimination to find x3 in the system: \\(\\begin{cases}-2x_2+2x_3+x_4=-5\\\\2x_1-3x_2+5x_3-2x_4=1\\\\-x_1+2x_2-2x_3+x_4=-2\\\\2x_1-5x_2+4x_3-2x_4=5\\end{cases}\\).",
+      "steps": [
+        [
+          "augmented",
+          "\\left(\\begin{array}{cccc|c}0&-2&2&1&-5\\\\2&-3&5&-2&1\\\\-1&2&-2&1&-2\\\\2&-5&4&-2&5\\end{array}\\right)"
+        ],
+        [
+          "echelon",
+          "\\left(\\begin{array}{cccc|c}2&-3&5&-2&1\\\\0&-2&2&1&-5\\\\0&0&1&\\frac{1}{4}&- \\frac{11}{4}\\\\0&0&0&- \\frac{1}{4}&\\frac{3}{4}\\end{array}\\right)"
+        ],
+        [
+          "back",
+          "x_1=1,\\ x_2=-1,\\ x_3=-2,\\ x_4=-3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-2",
+      "metadata": {
+        "difficulty": 4,
+        "template": "gauss-4x4"
+      }
+    },
+    {
+      "code": "GAF-1-0000000000000001-53",
+      "statement": "Use Gaussian elimination to find x2 in the system: \\(\\begin{cases}-2x_1+x_2+2x_3+5x_4=13\\\\x_1+2x_2+6x_3+x_4=11\\\\x_1-2x_4=-4\\\\x_1-2x_2-5x_3-5x_4=-17\\end{cases}\\).",
+      "steps": [
+        [
+          "augmented",
+          "\\left(\\begin{array}{cccc|c}-2&1&2&5&13\\\\1&2&6&1&11\\\\1&0&0&-2&-4\\\\1&-2&-5&-5&-17\\end{array}\\right)"
+        ],
+        [
+          "echelon",
+          "\\left(\\begin{array}{cccc|c}-2&1&2&5&13\\\\0&\\frac{5}{2}&7&\\frac{7}{2}&\\frac{35}{2}\\\\0&0&- \\frac{2}{5}&- \\frac{1}{5}&-1\\\\0&0&0&- \\frac{1}{2}&- \\frac{1}{2}\\end{array}\\right)"
+        ],
+        [
+          "back",
+          "x_1=-2,\\ x_2=0,\\ x_3=2,\\ x_4=1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 4,
+        "template": "gauss-4x4"
+      }
+    },
+    {
+      "code": "GAF-1-0000000000000147-40",
+      "statement": "Use Gaussian elimination to find x2 in the system: \\(\\begin{cases}-x_2=-1\\\\2x_1-x_2+x_4=-3\\\\x_2+x_3-x_4=-2\\\\x_1-x_2-x_3+2x_4=2\\end{cases}\\).",
+      "steps": [
+        [
+          "augmented",
+          "\\left(\\begin{array}{cccc|c}0&-1&0&0&-1\\\\2&-1&0&1&-3\\\\0&1&1&-1&-2\\\\1&-1&-1&2&2\\end{array}\\right)"
+        ],
+        [
+          "echelon",
+          "\\left(\\begin{array}{cccc|c}2&-1&0&1&-3\\\\0&-1&0&0&-1\\\\0&0&1&-1&-3\\\\0&0&0&\\frac{1}{2}&1\\end{array}\\right)"
+        ],
+        [
+          "back",
+          "x_1=-2,\\ x_2=1,\\ x_3=-1,\\ x_4=2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 4,
+        "template": "gauss-4x4"
+      }
+    }
+  ],
+  "algebra-rank-v1": [
+    {
+      "code": "RNK-1-0000000000000000-29",
+      "statement": "Find the rank of the matrix: \\(\\begin{pmatrix}1&-2&-2&-1\\\\-2&5&4&4\\\\1&-3&-2&-3\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "echelon",
+          "\\begin{pmatrix}1&-2&-2&-1\\\\0&1&0&2\\\\0&0&0&0\\end{pmatrix}"
+        ],
+        [
+          "count",
+          "\\operatorname{rank}A=2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 1,
+        "template": "rank"
+      }
+    },
+    {
+      "code": "RNK-1-0000000000000001-46",
+      "statement": "Find the rank of the matrix: \\(\\begin{pmatrix}1&-2&-2&1\\\\-1&2&2&-1\\\\1&-2&-2&1\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "echelon",
+          "\\begin{pmatrix}1&-2&-2&1\\\\0&0&0&0\\\\0&0&0&0\\end{pmatrix}"
+        ],
+        [
+          "count",
+          "\\operatorname{rank}A=1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 1,
+        "template": "rank"
+      }
+    },
+    {
+      "code": "RNK-1-0000000000000147-33",
+      "statement": "Find the rank of the matrix: \\(\\begin{pmatrix}1&-1&2&0\\\\-1&2&-2&-1\\\\2&-3&5&-1\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "echelon",
+          "\\begin{pmatrix}1&-1&2&0\\\\0&1&0&-1\\\\0&0&1&-2\\end{pmatrix}"
+        ],
+        [
+          "count",
+          "\\operatorname{rank}A=3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3",
+      "metadata": {
+        "difficulty": 1,
+        "template": "rank"
+      }
+    }
+  ],
+  "algebra-free-parameters-v1": [
+    {
+      "code": "SYP-1-0000000000000000-51",
+      "statement": "Without solving, find the number of free parameters in the general solution for the unknowns x1, x2, x3, x4: \\(\\begin{cases}x_1-2x_2-2x_3-x_4=4\\\\-2x_1+5x_2+4x_3+4x_4=-10\\\\x_1-3x_2-2x_3-3x_4=6\\end{cases}\\).",
+      "steps": [
+        [
+          "echelon",
+          "\\left(\\begin{array}{cccc|c}1&-2&-2&-1&4\\\\0&1&0&2&-2\\\\0&0&0&0&0\\end{array}\\right)"
+        ],
+        [
+          "ranks",
+          "\\operatorname{rank}A=\\operatorname{rank}[A|b]=2"
+        ],
+        [
+          "count",
+          "4-2=2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 2,
+        "template": "free-parameters"
+      }
+    },
+    {
+      "code": "SYP-1-0000000000000001-68",
+      "statement": "Without solving, find the number of free parameters in the general solution for the unknowns x1, x2, x3, x4: \\(\\begin{cases}x_1-2x_2-2x_3+x_4=1\\\\-x_1+2x_2+2x_3-x_4=-1\\\\x_1-2x_2-2x_3+x_4=1\\end{cases}\\).",
+      "steps": [
+        [
+          "echelon",
+          "\\left(\\begin{array}{cccc|c}1&-2&-2&1&1\\\\0&0&0&0&0\\\\0&0&0&0&0\\end{array}\\right)"
+        ],
+        [
+          "ranks",
+          "\\operatorname{rank}A=\\operatorname{rank}[A|b]=1"
+        ],
+        [
+          "count",
+          "4-1=3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3",
+      "metadata": {
+        "difficulty": 2,
+        "template": "free-parameters"
+      }
+    },
+    {
+      "code": "SYP-1-0000000000000147-55",
+      "statement": "Without solving, find the number of free parameters in the general solution for the unknowns x1, x2, x3, x4: \\(\\begin{cases}x_1-x_2+2x_3=-1\\\\-x_1+2x_2-2x_3-x_4=1\\\\2x_1-3x_2+5x_3-x_4=-6\\end{cases}\\).",
+      "steps": [
+        [
+          "echelon",
+          "\\left(\\begin{array}{cccc|c}1&-1&2&0&-1\\\\0&1&0&-1&0\\\\0&0&1&-2&-4\\end{array}\\right)"
+        ],
+        [
+          "ranks",
+          "\\operatorname{rank}A=\\operatorname{rank}[A|b]=3"
+        ],
+        [
+          "count",
+          "4-3=1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 2,
+        "template": "free-parameters"
+      }
+    }
+  ],
+  "algebra-nontrivial-parameter-v1": [
+    {
+      "code": "SNT-1-0000000000000000-87",
+      "statement": "Find the largest value of the parameter for which the system has a solution other than x = y = 0: \\(\\begin{cases}- 4 x + 5 y=\\lambda x\\\\y=\\lambda y\\end{cases}\\).",
+      "steps": [
+        [
+          "homogeneous",
+          "\\det\\begin{pmatrix}- \\lambda - 4&5\\\\0&1 - \\lambda\\end{pmatrix}=\\lambda^{2} + 3 \\lambda - 4=0"
+        ],
+        [
+          "solve",
+          "\\lambda_1=-4,\\quad \\lambda_2=1"
+        ],
+        [
+          "largest",
+          "\\lambda=1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 5,
+        "template": "nontrivial-parameter"
+      }
+    },
+    {
+      "code": "SNT-1-0000000000000001-07",
+      "statement": "Find the largest value of the parameter for which the system has a solution other than x = y = 0: \\(\\begin{cases}2 y=\\lambda x\\\\- x + 3 y=\\lambda y\\end{cases}\\).",
+      "steps": [
+        [
+          "homogeneous",
+          "\\det\\begin{pmatrix}- \\lambda&2\\\\-1&3 - \\lambda\\end{pmatrix}=\\lambda^{2} - 3 \\lambda + 2=0"
+        ],
+        [
+          "solve",
+          "\\lambda_1=1,\\quad \\lambda_2=2"
+        ],
+        [
+          "largest",
+          "\\lambda=2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 5,
+        "template": "nontrivial-parameter"
+      }
+    },
+    {
+      "code": "SNT-1-0000000000000147-91",
+      "statement": "Find the largest value of the parameter for which the system has a solution other than x = y = 0: \\(\\begin{cases}12 x - 12 y=\\lambda x\\\\8 x - 8 y=\\lambda y\\end{cases}\\).",
+      "steps": [
+        [
+          "homogeneous",
+          "\\det\\begin{pmatrix}12 - \\lambda&-12\\\\8&- \\lambda - 8\\end{pmatrix}=\\lambda^{2} - 4 \\lambda=0"
+        ],
+        [
+          "solve",
+          "\\lambda_1=0,\\quad \\lambda_2=4"
+        ],
+        [
+          "largest",
+          "\\lambda=4"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "4",
+      "metadata": {
+        "difficulty": 5,
+        "template": "nontrivial-parameter"
+      }
+    }
+  ],
+  "complex-product-v1": [
+    {
+      "code": "CXM-1-0000000000000000-06",
+      "statement": "Calculate \\((- i)(-5 - 4 i)\\).",
+      "steps": [
+        [
+          "expand",
+          "0+(0)+(5 i)+(4)i^2"
+        ],
+        [
+          "square",
+          "-4 + 5 i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "-4 + 5 i",
+      "metadata": {
+        "difficulty": 1,
+        "template": "product"
+      }
+    },
+    {
+      "code": "CXM-1-0000000000000001-23",
+      "statement": "Calculate \\((-1 + i)(-3 + 2 i)\\).",
+      "steps": [
+        [
+          "expand",
+          "3+(- 2 i)+(- 3 i)+(2)i^2"
+        ],
+        [
+          "square",
+          "1 - 5 i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "1 - 5 i",
+      "metadata": {
+        "difficulty": 1,
+        "template": "product"
+      }
+    },
+    {
+      "code": "CXM-1-0000000000000147-10",
+      "statement": "Calculate \\((2 + 2 i)(- 3 i)\\).",
+      "steps": [
+        [
+          "expand",
+          "0+(- 6 i)+(0)+(-6)i^2"
+        ],
+        [
+          "square",
+          "6 - 6 i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "6 - 6 i",
+      "metadata": {
+        "difficulty": 1,
+        "template": "product"
+      }
+    }
+  ],
+  "complex-quotient-v1": [
+    {
+      "code": "CXQ-1-0000000000000000-92",
+      "statement": "Calculate \\(\\frac{-4 + 5 i}{-5 - 4 i}\\).",
+      "steps": [
+        [
+          "conjugate",
+          "\\frac{(-4 + 5 i)(-5 + 4 i)}{(-5 - 4 i)(-5 + 4 i)}=\\frac{- 41 i}{41}"
+        ],
+        [
+          "simplify",
+          "- i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "- i",
+      "metadata": {
+        "difficulty": 2,
+        "template": "quotient"
+      }
+    },
+    {
+      "code": "CXQ-1-0000000000000001-12",
+      "statement": "Calculate \\(\\frac{1 - 5 i}{-3 + 2 i}\\).",
+      "steps": [
+        [
+          "conjugate",
+          "\\frac{(1 - 5 i)(-3 - 2 i)}{(-3 + 2 i)(-3 - 2 i)}=\\frac{-13 + 13 i}{13}"
+        ],
+        [
+          "simplify",
+          "-1 + i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "-1 + i",
+      "metadata": {
+        "difficulty": 2,
+        "template": "quotient"
+      }
+    },
+    {
+      "code": "CXQ-1-0000000000000147-96",
+      "statement": "Calculate \\(\\frac{6 - 6 i}{- 3 i}\\).",
+      "steps": [
+        [
+          "conjugate",
+          "\\frac{(6 - 6 i)(3 i)}{(- 3 i)(3 i)}=\\frac{18 + 18 i}{9}"
+        ],
+        [
+          "simplify",
+          "2 + 2 i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "2 + 2 i",
+      "metadata": {
+        "difficulty": 2,
+        "template": "quotient"
+      }
+    }
+  ],
+  "complex-linear-equation-v1": [
+    {
+      "code": "CXE-1-0000000000000000-34",
+      "statement": "Solve for z: \\((2 + 3 i)z=-9 + 6 i\\).",
+      "steps": [
+        [
+          "divide",
+          "z=\\frac{-9 + 6 i}{2 + 3 i}"
+        ],
+        [
+          "solve",
+          "3 i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "3 i",
+      "metadata": {
+        "difficulty": 3,
+        "template": "linear-equation"
+      }
+    },
+    {
+      "code": "CXE-1-0000000000000001-51",
+      "statement": "Solve for z: \\(z-2\\overline{z}=4 - 9 i\\).",
+      "steps": [
+        [
+          "parts",
+          "-1x+(3 i y)=4 - 9 i"
+        ],
+        [
+          "solve",
+          "x=-4,\\quad y=-3"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "-4 - 3 i",
+      "metadata": {
+        "difficulty": 3,
+        "template": "linear-equation"
+      }
+    },
+    {
+      "code": "CXE-1-0000000000000147-38",
+      "statement": "Solve for z: \\((-2 - 3 i)z=-4 + 7 i\\).",
+      "steps": [
+        [
+          "divide",
+          "z=\\frac{-4 + 7 i}{-2 - 3 i}"
+        ],
+        [
+          "solve",
+          "-1 - 2 i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "-1 - 2 i",
+      "metadata": {
+        "difficulty": 3,
+        "template": "linear-equation"
+      }
+    }
+  ],
+  "complex-square-root-v1": [
+    {
+      "code": "CXS-1-0000000000000000-51",
+      "statement": "Find the solution with a positive real part: \\(z^{2}=8 - 6 i\\).",
+      "steps": [
+        [
+          "parts",
+          "x^{2}-y^{2}=8,\\quad 2xy=-6"
+        ],
+        [
+          "modulus",
+          "x^{2}+y^{2}=10"
+        ],
+        [
+          "solve",
+          "z=3 - i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "3 - i",
+      "metadata": {
+        "difficulty": 4,
+        "template": "square-root"
+      }
+    },
+    {
+      "code": "CXS-1-0000000000000001-68",
+      "statement": "Find the solution with a positive real part: \\(z^{2}=8 + 6 i\\).",
+      "steps": [
+        [
+          "parts",
+          "x^{2}-y^{2}=8,\\quad 2xy=6"
+        ],
+        [
+          "modulus",
+          "x^{2}+y^{2}=10"
+        ],
+        [
+          "solve",
+          "z=3 + i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "3 + i",
+      "metadata": {
+        "difficulty": 4,
+        "template": "square-root"
+      }
+    },
+    {
+      "code": "CXS-1-0000000000000147-55",
+      "statement": "Find the solution with a positive real part: \\(z^{2}=-3 + 4 i\\).",
+      "steps": [
+        [
+          "parts",
+          "x^{2}-y^{2}=-3,\\quad 2xy=4"
+        ],
+        [
+          "modulus",
+          "x^{2}+y^{2}=5"
+        ],
+        [
+          "solve",
+          "z=1 + 2 i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "1 + 2 i",
+      "metadata": {
+        "difficulty": 4,
+        "template": "square-root"
+      }
+    }
+  ],
+  "complex-quadratic-v1": [
+    {
+      "code": "CXR-1-0000000000000000-36",
+      "statement": "Find the solution with the larger real part: \\(z^{2}+(4 + i)z+(12 - 12 i)=0\\).",
+      "steps": [
+        [
+          "discriminant",
+          "\\Delta=-33 + 56 i"
+        ],
+        [
+          "root",
+          "\\sqrt{\\Delta}=\\pm(4 + 7 i)"
+        ],
+        [
+          "roots",
+          "z_1=3 i,\\quad z_2=-4 - 4 i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "3 i",
+      "metadata": {
+        "difficulty": 5,
+        "template": "quadratic"
+      }
+    },
+    {
+      "code": "CXR-1-0000000000000001-53",
+      "statement": "Find the solution with the larger real part: \\(z^{2}+(6 + i)z+(14 - 2 i)=0\\).",
+      "steps": [
+        [
+          "discriminant",
+          "\\Delta=-21 + 20 i"
+        ],
+        [
+          "root",
+          "\\sqrt{\\Delta}=\\pm(2 + 5 i)"
+        ],
+        [
+          "roots",
+          "z_1=-2 + 2 i,\\quad z_2=-4 - 3 i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "-2 + 2 i",
+      "metadata": {
+        "difficulty": 5,
+        "template": "quadratic"
+      }
+    },
+    {
+      "code": "CXR-1-0000000000000147-40",
+      "statement": "Find the solution with the larger real part: \\(z^{2}+(5 + 5 i)z+(-2 + 11 i)=0\\).",
+      "steps": [
+        [
+          "discriminant",
+          "\\Delta=8 + 6 i"
+        ],
+        [
+          "root",
+          "\\sqrt{\\Delta}=\\pm(3 + i)"
+        ],
+        [
+          "roots",
+          "z_1=-1 - 2 i,\\quad z_2=-4 - 3 i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "-1 - 2 i",
+      "metadata": {
+        "difficulty": 5,
+        "template": "quadratic"
+      }
+    }
+  ],
+  "complex-argument-v1": [
+    {
+      "code": "CXG-1-0000000000000000-04",
+      "statement": "Find the principal argument, between −π and π: \\(z=-4 - 4 i\\).",
+      "steps": [
+        [
+          "modulus",
+          "|z|=4 \\sqrt{2}"
+        ],
+        [
+          "trig",
+          "\\cos\\varphi=- \\frac{\\sqrt{2}}{2},\\quad\\sin\\varphi=- \\frac{\\sqrt{2}}{2}"
+        ],
+        [
+          "angle",
+          "\\varphi=- \\frac{3 \\pi}{4}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "- \\frac{3 \\pi}{4}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "argument"
+      }
+    },
+    {
+      "code": "CXG-1-0000000000000001-21",
+      "statement": "Find the principal argument, between −π and π: \\(z=- \\sqrt{3} - i\\).",
+      "steps": [
+        [
+          "modulus",
+          "|z|=2"
+        ],
+        [
+          "trig",
+          "\\cos\\varphi=- \\frac{\\sqrt{3}}{2},\\quad\\sin\\varphi=- \\frac{1}{2}"
+        ],
+        [
+          "angle",
+          "\\varphi=- \\frac{5 \\pi}{6}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "- \\frac{5 \\pi}{6}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "argument"
+      }
+    },
+    {
+      "code": "CXG-1-0000000000000147-08",
+      "statement": "Find the principal argument, between −π and π: \\(z=2 \\sqrt{3} + 2 i\\).",
+      "steps": [
+        [
+          "modulus",
+          "|z|=4"
+        ],
+        [
+          "trig",
+          "\\cos\\varphi=\\frac{\\sqrt{3}}{2},\\quad\\sin\\varphi=\\frac{1}{2}"
+        ],
+        [
+          "angle",
+          "\\varphi=\\frac{\\pi}{6}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{\\pi}{6}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "argument"
+      }
+    }
+  ],
+  "complex-de-moivre-v1": [
+    {
+      "code": "CXD-1-0000000000000000-06",
+      "statement": "Calculate in the form a + bi: \\((- \\sqrt{3} - i)^{8}\\).",
+      "steps": [
+        [
+          "polar",
+          "- \\sqrt{3} - i=2\\left(\\cos\\left(- \\frac{5 \\pi}{6}\\right)+i\\sin\\left(- \\frac{5 \\pi}{6}\\right)\\right)"
+        ],
+        [
+          "power",
+          "256\\left(\\cos\\left(- \\frac{2 \\pi}{3}\\right)+i\\sin\\left(- \\frac{2 \\pi}{3}\\right)\\right)"
+        ],
+        [
+          "result",
+          "-128 - 128 \\sqrt{3} i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "-128 - 128 \\sqrt{3} i",
+      "metadata": {
+        "difficulty": 2,
+        "template": "de-moivre"
+      }
+    },
+    {
+      "code": "CXD-1-0000000000000001-23",
+      "statement": "Calculate in the form a + bi: \\((- \\sqrt{3} + i)^{17}\\).",
+      "steps": [
+        [
+          "polar",
+          "- \\sqrt{3} + i=2\\left(\\cos\\left(\\frac{5 \\pi}{6}\\right)+i\\sin\\left(\\frac{5 \\pi}{6}\\right)\\right)"
+        ],
+        [
+          "power",
+          "131072\\left(\\cos\\left(\\frac{\\pi}{6}\\right)+i\\sin\\left(\\frac{\\pi}{6}\\right)\\right)"
+        ],
+        [
+          "result",
+          "65536 \\sqrt{3} + 65536 i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "65536 \\sqrt{3} + 65536 i",
+      "metadata": {
+        "difficulty": 2,
+        "template": "de-moivre"
+      }
+    },
+    {
+      "code": "CXD-1-0000000000000147-10",
+      "statement": "Calculate in the form a + bi: \\((1 + i)^{18}\\).",
+      "steps": [
+        [
+          "polar",
+          "1 + i=\\sqrt{2}\\left(\\cos\\left(\\frac{\\pi}{4}\\right)+i\\sin\\left(\\frac{\\pi}{4}\\right)\\right)"
+        ],
+        [
+          "power",
+          "512\\left(\\cos\\left(\\frac{\\pi}{2}\\right)+i\\sin\\left(\\frac{\\pi}{2}\\right)\\right)"
+        ],
+        [
+          "result",
+          "512 i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "512 i",
+      "metadata": {
+        "difficulty": 2,
+        "template": "de-moivre"
+      }
+    }
+  ],
+  "complex-root-v1": [
+    {
+      "code": "CXN-1-0000000000000000-12",
+      "statement": "Find the solution with the smallest nonnegative argument: \\(z^{6}=-1\\).",
+      "steps": [
+        [
+          "polar",
+          "-1=1\\left(\\cos\\left(\\pi\\right)+i\\sin\\left(\\pi\\right)\\right)"
+        ],
+        [
+          "formula",
+          "z_0=1\\left(\\cos\\left(\\frac{\\pi}{6}\\right)+i\\sin\\left(\\frac{\\pi}{6}\\right)\\right)"
+        ],
+        [
+          "result",
+          "z_0=\\frac{\\sqrt{3}}{2} + \\frac{i}{2}"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "\\frac{\\sqrt{3}}{2} + \\frac{i}{2}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "nth-root"
+      }
+    },
+    {
+      "code": "CXN-1-0000000000000001-29",
+      "statement": "Find the solution with the smallest nonnegative argument: \\(z^{4}=16\\).",
+      "steps": [
+        [
+          "polar",
+          "16=16\\left(\\cos\\left(0\\right)+i\\sin\\left(0\\right)\\right)"
+        ],
+        [
+          "formula",
+          "z_0=2\\left(\\cos\\left(0\\right)+i\\sin\\left(0\\right)\\right)"
+        ],
+        [
+          "result",
+          "z_0=2"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 3,
+        "template": "nth-root"
+      }
+    },
+    {
+      "code": "CXN-1-0000000000000147-16",
+      "statement": "Find the solution with the smallest nonnegative argument: \\(z^{2}=- \\frac{1}{2} - \\frac{\\sqrt{3} i}{2}\\).",
+      "steps": [
+        [
+          "polar",
+          "- \\frac{1}{2} - \\frac{\\sqrt{3} i}{2}=1\\left(\\cos\\left(\\frac{4 \\pi}{3}\\right)+i\\sin\\left(\\frac{4 \\pi}{3}\\right)\\right)"
+        ],
+        [
+          "formula",
+          "z_0=1\\left(\\cos\\left(\\frac{2 \\pi}{3}\\right)+i\\sin\\left(\\frac{2 \\pi}{3}\\right)\\right)"
+        ],
+        [
+          "result",
+          "z_0=- \\frac{1}{2} + \\frac{\\sqrt{3} i}{2}"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "- \\frac{1}{2} + \\frac{\\sqrt{3} i}{2}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "nth-root"
+      }
+    }
+  ],
+  "binomial-coefficient-v1": [
+    {
+      "code": "BNC-1-0000000000000000-01",
+      "statement": "Find the coefficient of x to the power 3 in the expansion: \\((- 2 x - 4)^{4}\\).",
+      "steps": [
+        [
+          "term",
+          "\\binom{4}{3}(-2x)^{3}(-4)^{1}"
+        ],
+        [
+          "evaluate",
+          "4\\cdot(-2)^{3}\\cdot(-4)^{1}=128"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "128",
+      "metadata": {
+        "difficulty": 1,
+        "template": "coefficient"
+      }
+    },
+    {
+      "code": "BNC-1-0000000000000001-18",
+      "statement": "Find the coefficient of x to the power 2 in the expansion: \\((2 x - 3)^{3}\\).",
+      "steps": [
+        [
+          "term",
+          "\\binom{3}{2}(2x)^{2}(-3)^{1}"
+        ],
+        [
+          "evaluate",
+          "3\\cdot(2)^{2}\\cdot(-3)^{1}=-36"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-36",
+      "metadata": {
+        "difficulty": 1,
+        "template": "coefficient"
+      }
+    },
+    {
+      "code": "BNC-1-0000000000000147-05",
+      "statement": "Find the coefficient of x to the power 2 in the expansion: \\((3 x - 4)^{3}\\).",
+      "steps": [
+        [
+          "term",
+          "\\binom{3}{2}(3x)^{2}(-4)^{1}"
+        ],
+        [
+          "evaluate",
+          "3\\cdot(3)^{2}\\cdot(-4)^{1}=-108"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-108",
+      "metadata": {
+        "difficulty": 1,
+        "template": "coefficient"
+      }
+    }
+  ],
+  "binomial-constant-term-v1": [
+    {
+      "code": "BNT-1-0000000000000000-55",
+      "statement": "Find the term independent of x in the expansion: \\((-x^{2}+\\frac{2}{x^{2}})^{2}\\).",
+      "steps": [
+        [
+          "power",
+          "2(2-k)-2k=0\\ \\Rightarrow\\ k=1"
+        ],
+        [
+          "evaluate",
+          "\\binom{2}{1}(-1)^{1}(2)^{1}=-4"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-4",
+      "metadata": {
+        "difficulty": 2,
+        "template": "constant-term"
+      }
+    },
+    {
+      "code": "BNT-1-0000000000000001-72",
+      "statement": "Find the term independent of x in the expansion: \\((x-\\frac{1}{x^{2}})^{3}\\).",
+      "steps": [
+        [
+          "power",
+          "1(3-k)-2k=0\\ \\Rightarrow\\ k=1"
+        ],
+        [
+          "evaluate",
+          "\\binom{3}{1}(1)^{2}(-1)^{1}=-3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-3",
+      "metadata": {
+        "difficulty": 2,
+        "template": "constant-term"
+      }
+    },
+    {
+      "code": "BNT-1-0000000000000147-59",
+      "statement": "Find the term independent of x in the expansion: \\((3x^{3}+\\frac{3}{x^{3}})^{8}\\).",
+      "steps": [
+        [
+          "power",
+          "3(8-k)-3k=0\\ \\Rightarrow\\ k=4"
+        ],
+        [
+          "evaluate",
+          "\\binom{8}{4}(3)^{4}(3)^{4}=459270"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "459270",
+      "metadata": {
+        "difficulty": 2,
+        "template": "constant-term"
+      }
+    }
+  ],
+  "binomial-exponent-v1": [
+    {
+      "code": "BNE-1-0000000000000000-45",
+      "statement": "The coefficient of x squared in the expansion is 54. Find n: \\((1 - 3 x)^{n}\\).",
+      "steps": [
+        [
+          "coefficient",
+          "\\binom{n}{2}\\cdot 9=54"
+        ],
+        [
+          "solve",
+          "n(n-1)=12\\ \\Rightarrow\\ n=4"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "4",
+      "metadata": {
+        "difficulty": 3,
+        "template": "exponent"
+      }
+    },
+    {
+      "code": "BNE-1-0000000000000001-62",
+      "statement": "The coefficient of x squared in the expansion is 880. Find n: \\((1 - 4 x)^{n}\\).",
+      "steps": [
+        [
+          "coefficient",
+          "\\binom{n}{2}\\cdot 16=880"
+        ],
+        [
+          "solve",
+          "n(n-1)=110\\ \\Rightarrow\\ n=11"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "11",
+      "metadata": {
+        "difficulty": 3,
+        "template": "exponent"
+      }
+    },
+    {
+      "code": "BNE-1-0000000000000147-49",
+      "statement": "The coefficient of x squared in the expansion is 448. Find n: \\((1 - 4 x)^{n}\\).",
+      "steps": [
+        [
+          "coefficient",
+          "\\binom{n}{2}\\cdot 16=448"
+        ],
+        [
+          "solve",
+          "n(n-1)=56\\ \\Rightarrow\\ n=8"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "8",
+      "metadata": {
+        "difficulty": 3,
+        "template": "exponent"
+      }
+    }
+  ],
+  "polynomial-rational-root-v1": [
+    {
+      "code": "PRR-1-0000000000000000-42",
+      "statement": "Find the largest rational root: \\(6 x^{4} + 17 x^{3} + 9 x^{2} - 40 x - 48\\).",
+      "steps": [
+        [
+          "candidates",
+          "\\pm\\frac{p}{q},\\ p\\mid 48,\\ q\\mid 6"
+        ],
+        [
+          "test",
+          "x_1=- \\frac{4}{3},\\quad x_2=\\frac{3}{2}"
+        ],
+        [
+          "rest",
+          "x^{2} + 3 x + 4,\\quad \\Delta=-7<0"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{3}{2}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "rational-root"
+      }
+    },
+    {
+      "code": "PRR-1-0000000000000001-59",
+      "statement": "Find the largest rational root: \\(3 x^{4} + 17 x^{3} + 17 x^{2} + 15 x - 100\\).",
+      "steps": [
+        [
+          "candidates",
+          "\\pm\\frac{p}{q},\\ p\\mid 100,\\ q\\mid 3"
+        ],
+        [
+          "test",
+          "x_1=-5,\\quad x_2=\\frac{4}{3}"
+        ],
+        [
+          "rest",
+          "x^{2} + 2 x + 5,\\quad \\Delta=-16<0"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{4}{3}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "rational-root"
+      }
+    },
+    {
+      "code": "PRR-1-0000000000000147-46",
+      "statement": "Find the largest rational root: \\(2 x^{4} + 21 x^{3} + 77 x^{2} + 125 x + 75\\).",
+      "steps": [
+        [
+          "candidates",
+          "\\pm\\frac{p}{q},\\ p\\mid 75,\\ q\\mid 2"
+        ],
+        [
+          "test",
+          "x_1=-5,\\quad x_2=- \\frac{3}{2}"
+        ],
+        [
+          "rest",
+          "x^{2} + 4 x + 5,\\quad \\Delta=-4<0"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "- \\frac{3}{2}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "rational-root"
+      }
+    }
+  ],
+  "polynomial-known-root-v1": [
+    {
+      "code": "PKR-1-0000000000000000-65",
+      "statement": "Given that 3+i is a root, find the real root: \\(x^{3} - 6 x^{2} + 10 x\\).",
+      "steps": [
+        [
+          "conjugate",
+          "\\overline{x_1}=3 - i"
+        ],
+        [
+          "factor",
+          "(x-(3 + i))(x-(3 - i))=x^{2} - 6 x + 10"
+        ],
+        [
+          "divide",
+          "x^{3} - 6 x^{2} + 10 x=(x^{2} - 6 x + 10)(x)"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 2,
+        "template": "known-root"
+      }
+    },
+    {
+      "code": "PKR-1-0000000000000001-82",
+      "statement": "Given that -3-2i is a root, find the real root: \\(x^{3} + 7 x^{2} + 19 x + 13\\).",
+      "steps": [
+        [
+          "conjugate",
+          "\\overline{x_1}=-3 + 2 i"
+        ],
+        [
+          "factor",
+          "(x-(-3 - 2 i))(x-(-3 + 2 i))=x^{2} + 6 x + 13"
+        ],
+        [
+          "divide",
+          "x^{3} + 7 x^{2} + 19 x + 13=(x^{2} + 6 x + 13)(x + 1)"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-1",
+      "metadata": {
+        "difficulty": 2,
+        "template": "known-root"
+      }
+    },
+    {
+      "code": "PKR-1-0000000000000147-69",
+      "statement": "Given that -2-i is a root, find the real root: \\(x^{3} + 2 x^{2} - 3 x - 10\\).",
+      "steps": [
+        [
+          "conjugate",
+          "\\overline{x_1}=-2 + i"
+        ],
+        [
+          "factor",
+          "(x-(-2 - i))(x-(-2 + i))=x^{2} + 4 x + 5"
+        ],
+        [
+          "divide",
+          "x^{3} + 2 x^{2} - 3 x - 10=(x^{2} + 4 x + 5)(x - 2)"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 2,
+        "template": "known-root"
+      }
+    }
+  ],
+  "polynomial-irreducible-factor-v1": [
+    {
+      "code": "PIF-1-0000000000000000-85",
+      "statement": "Factor into irreducible real factors and give the monic quadratic factor: \\(x^{3} - x^{2} + 8 x - 8\\).",
+      "steps": [
+        [
+          "root",
+          "W(1)=0"
+        ],
+        [
+          "divide",
+          "x^{3} - x^{2} + 8 x - 8=(x-(1))(x^{2} + 8)"
+        ],
+        [
+          "irreducible",
+          "\\Delta=-32<0\\ \\Rightarrow\\ x^{2} + 8"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "x^{2} + 8",
+      "metadata": {
+        "difficulty": 3,
+        "template": "irreducible-factor"
+      }
+    },
+    {
+      "code": "PIF-1-0000000000000001-05",
+      "statement": "Factor into irreducible real factors and give the monic quadratic factor: \\(x^{3} - 3 x^{2} + 2 x + 6\\).",
+      "steps": [
+        [
+          "root",
+          "W(-1)=0"
+        ],
+        [
+          "divide",
+          "x^{3} - 3 x^{2} + 2 x + 6=(x-(-1))(x^{2} - 4 x + 6)"
+        ],
+        [
+          "irreducible",
+          "\\Delta=-8<0\\ \\Rightarrow\\ x^{2} - 4 x + 6"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "x^{2} - 4 x + 6",
+      "metadata": {
+        "difficulty": 3,
+        "template": "irreducible-factor"
+      }
+    },
+    {
+      "code": "PIF-1-0000000000000147-89",
+      "statement": "Factor into irreducible real factors and give the monic quadratic factor: \\(2 x^{3} + 4 x^{2} + 18\\).",
+      "steps": [
+        [
+          "root",
+          "W(-3)=0"
+        ],
+        [
+          "divide",
+          "2 x^{3} + 4 x^{2} + 18=(x-(-3))(2 x^{2} - 2 x + 6)"
+        ],
+        [
+          "irreducible",
+          "\\Delta=-11<0\\ \\Rightarrow\\ x^{2} - x + 3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "x^{2} - x + 3",
+      "metadata": {
+        "difficulty": 3,
+        "template": "irreducible-factor"
+      }
+    }
+  ],
+  "polynomial-remainder-conditions-v1": [
+    {
+      "code": "PRC-1-0000000000000000-78",
+      "statement": "Dividing by x + 2 leaves remainder 0 and by x + 1 leaves remainder 6. Find the remainder on division by x - 2: \\(W(x)=2x^{3}+ax^{2}+bx+2\\).",
+      "steps": [
+        [
+          "theorem",
+          "W(-2)=0,\\quad W(-1)=6"
+        ],
+        [
+          "solve",
+          "a=1,\\quad b=-5"
+        ],
+        [
+          "evaluate",
+          "W(2)=12"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "12",
+      "metadata": {
+        "difficulty": 3,
+        "template": "remainder-conditions"
+      }
+    },
+    {
+      "code": "PRC-1-0000000000000001-95",
+      "statement": "Dividing by x + 3 leaves remainder -75 and by x - 2 leaves remainder -5. Find the remainder on division by x: \\(W(x)=1x^{3}+ax^{2}+bx+3\\).",
+      "steps": [
+        [
+          "theorem",
+          "W(-3)=-75,\\quad W(2)=-5"
+        ],
+        [
+          "solve",
+          "a=-5,\\quad b=2"
+        ],
+        [
+          "evaluate",
+          "W(0)=3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3",
+      "metadata": {
+        "difficulty": 3,
+        "template": "remainder-conditions"
+      }
+    },
+    {
+      "code": "PRC-1-0000000000000147-82",
+      "statement": "Dividing by x + 3 leaves remainder -76 and by x - 3 leaves remainder 20. Find the remainder on division by x - 2: \\(W(x)=2x^{3}+ax^{2}+bx-1\\).",
+      "steps": [
+        [
+          "theorem",
+          "W(-3)=-76,\\quad W(3)=20"
+        ],
+        [
+          "solve",
+          "a=-3,\\quad b=-2"
+        ],
+        [
+          "evaluate",
+          "W(2)=-1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-1",
+      "metadata": {
+        "difficulty": 3,
+        "template": "remainder-conditions"
+      }
+    }
+  ],
+  "polynomial-divisibility-v1": [
+    {
+      "code": "PDB-1-0000000000000000-04",
+      "statement": "Find b for which W is divisible by P: \\(W(x)=ax^{3}+bx^{2}-17x-6,\\quad P(x)=x^{2} + 3 x + 2\\).",
+      "steps": [
+        [
+          "roots",
+          "W(-2)=0,\\quad W(-1)=0"
+        ],
+        [
+          "solve",
+          "a=-4,\\quad b=-15"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-15",
+      "metadata": {
+        "difficulty": 4,
+        "template": "divisibility"
+      }
+    },
+    {
+      "code": "PDB-1-0000000000000001-21",
+      "statement": "Find a for which W is divisible by P: \\(W(x)=ax^{3}+bx^{2}+24x-36,\\quad P(x)=x^{2} + x - 6\\).",
+      "steps": [
+        [
+          "roots",
+          "W(-3)=0,\\quad W(2)=0"
+        ],
+        [
+          "solve",
+          "a=-3,\\quad b=3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-3",
+      "metadata": {
+        "difficulty": 4,
+        "template": "divisibility"
+      }
+    },
+    {
+      "code": "PDB-1-0000000000000147-08",
+      "statement": "Find b for which W is divisible by P: \\(W(x)=ax^{3}+bx^{2}+36x+27,\\quad P(x)=x^{2} - 9\\).",
+      "steps": [
+        [
+          "roots",
+          "W(-3)=0,\\quad W(3)=0"
+        ],
+        [
+          "solve",
+          "a=-4,\\quad b=-3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-3",
+      "metadata": {
+        "difficulty": 4,
+        "template": "divisibility"
+      }
+    }
+  ],
+  "polynomial-cubic-remainder-v1": [
+    {
+      "code": "PCR-1-0000000000000000-53",
+      "statement": "Without dividing, find the remainder on division by x cubed minus x: \\(- x^{85} + x^{82} + 2 x^{53}\\).",
+      "steps": [
+        [
+          "roots",
+          "x^3-x=(x+1)x(x-1)"
+        ],
+        [
+          "values",
+          "W(-1)=0,\\quad W(0)=0,\\quad W(1)=2"
+        ],
+        [
+          "interpolate",
+          "R(x)=x^{2} + x"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "x^{2} + x",
+      "metadata": {
+        "difficulty": 5,
+        "template": "cubic-remainder"
+      }
+    },
+    {
+      "code": "PCR-1-0000000000000001-70",
+      "statement": "Without dividing, find the remainder on division by x cubed minus x: \\(x^{90} - x^{74} + x^{19}\\).",
+      "steps": [
+        [
+          "roots",
+          "x^3-x=(x+1)x(x-1)"
+        ],
+        [
+          "values",
+          "W(-1)=-1,\\quad W(0)=0,\\quad W(1)=1"
+        ],
+        [
+          "interpolate",
+          "R(x)=x"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "x",
+      "metadata": {
+        "difficulty": 5,
+        "template": "cubic-remainder"
+      }
+    },
+    {
+      "code": "PCR-1-0000000000000147-57",
+      "statement": "Without dividing, find the remainder on division by x cubed minus x: \\(3 x^{86} + 3 x^{85} + 2 x^{42}\\).",
+      "steps": [
+        [
+          "roots",
+          "x^3-x=(x+1)x(x-1)"
+        ],
+        [
+          "values",
+          "W(-1)=2,\\quad W(0)=0,\\quad W(1)=8"
+        ],
+        [
+          "interpolate",
+          "R(x)=5 x^{2} + 3 x"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "5 x^{2} + 3 x",
+      "metadata": {
+        "difficulty": 5,
+        "template": "cubic-remainder"
+      }
+    }
+  ],
+  "partial-fraction-coefficient-v1": [
+    {
+      "code": "PFC-1-0000000000000000-45",
+      "statement": "Find the constant B in the decomposition: \\(\\frac{- x^{2} + x - 30}{x^{3} + 10 x}=\\frac{A}{x}+\\frac{Bx+C}{x^{2} + 10}\\).",
+      "steps": [
+        [
+          "form",
+          "\\frac{A}{x}+\\frac{Bx+C}{x^{2} + 10}"
+        ],
+        [
+          "solve",
+          "A=-3,\\quad B=2,\\quad C=1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 4,
+        "template": "partial-fraction-coefficient"
+      }
+    },
+    {
+      "code": "PFC-1-0000000000000001-62",
+      "statement": "Find the constant B in the decomposition: \\(\\frac{- x^{2} + 6 x - 12}{x^{3} + 4 x^{2} + 10 x + 40}=\\frac{A}{x + 4}+\\frac{Bx+C}{x^{2} + 10}\\).",
+      "steps": [
+        [
+          "form",
+          "\\frac{A}{x + 4}+\\frac{Bx+C}{x^{2} + 10}"
+        ],
+        [
+          "solve",
+          "A=-2,\\quad B=1,\\quad C=2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 4,
+        "template": "partial-fraction-coefficient"
+      }
+    },
+    {
+      "code": "PFC-1-0000000000000147-49",
+      "statement": "Find the constant C in the decomposition: \\(\\frac{2 x^{2} + 9 x + 8}{x^{3} + 4 x^{2} + 5 x + 2}=\\frac{A}{x + 1}+\\frac{B}{(x + 1)^{2}}+\\frac{C}{x + 2}\\).",
+      "steps": [
+        [
+          "form",
+          "\\frac{A}{x + 1}+\\frac{B}{(x + 1)^{2}}+\\frac{C}{x + 2}"
+        ],
+        [
+          "solve",
+          "A=4,\\quad B=1,\\quad C=-2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-2",
+      "metadata": {
+        "difficulty": 4,
+        "template": "partial-fraction-coefficient"
+      }
+    }
+  ],
+  "eigen-largest-v1": [
+    {
+      "code": "EGL-1-0000000000000000-22",
+      "statement": "Find the largest eigenvalue of the matrix: \\(A=\\begin{pmatrix}-4&1\\\\0&-3\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "characteristic",
+          "\\lambda^{2} + 7 \\lambda + 12=0"
+        ],
+        [
+          "roots",
+          "\\lambda=-4,\\ \\lambda=-3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-3",
+      "metadata": {
+        "difficulty": 1,
+        "template": "largest-eigenvalue"
+      }
+    },
+    {
+      "code": "EGL-1-0000000000000001-39",
+      "statement": "Find the largest eigenvalue of the matrix: \\(A=\\begin{pmatrix}-2&4\\\\-2&4\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "characteristic",
+          "\\lambda^{2} - 2 \\lambda=0"
+        ],
+        [
+          "roots",
+          "\\lambda=0,\\ \\lambda=2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 1,
+        "template": "largest-eigenvalue"
+      }
+    },
+    {
+      "code": "EGL-1-0000000000000147-26",
+      "statement": "Find the largest eigenvalue of the matrix: \\(A=\\begin{pmatrix}-6&6\\\\-4&4\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "characteristic",
+          "\\lambda^{2} + 2 \\lambda=0"
+        ],
+        [
+          "roots",
+          "\\lambda=-2,\\ \\lambda=0"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 1,
+        "template": "largest-eigenvalue"
+      }
+    }
+  ],
+  "eigen-vector-value-v1": [
+    {
+      "code": "EGV-1-0000000000000000-76",
+      "statement": "The vector v is an eigenvector of A. Find its eigenvalue: \\(A=\\begin{pmatrix}3&0&0\\\\10&-2&-2\\\\-8&4&4\\end{pmatrix},\\quad v=(-1,-2,0)\\).",
+      "steps": [
+        [
+          "multiply",
+          "Av=(-3,-6,0)"
+        ],
+        [
+          "compare",
+          "Av=3v"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3",
+      "metadata": {
+        "difficulty": 2,
+        "template": "eigenvector-value"
+      }
+    },
+    {
+      "code": "EGV-1-0000000000000001-93",
+      "statement": "The vector v is an eigenvector of A. Find its eigenvalue: \\(A=\\begin{pmatrix}-4&0&0\\\\7&-4&-7\\\\-7&0&3\\end{pmatrix},\\quad v=(0,1,-1)\\).",
+      "steps": [
+        [
+          "multiply",
+          "Av=(0,3,-3)"
+        ],
+        [
+          "compare",
+          "Av=3v"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3",
+      "metadata": {
+        "difficulty": 2,
+        "template": "eigenvector-value"
+      }
+    },
+    {
+      "code": "EGV-1-0000000000000147-80",
+      "statement": "The vector v is an eigenvector of A. Find its eigenvalue: \\(A=\\begin{pmatrix}3&0&0\\\\-9&6&-6\\\\-9&3&-3\\end{pmatrix},\\quad v=(1,1,-1)\\).",
+      "steps": [
+        [
+          "multiply",
+          "Av=(3,3,-3)"
+        ],
+        [
+          "compare",
+          "Av=3v"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3",
+      "metadata": {
+        "difficulty": 2,
+        "template": "eigenvector-value"
+      }
+    }
+  ],
+  "eigen-power-v1": [
+    {
+      "code": "EGP-1-0000000000000000-34",
+      "statement": "Using diagonalization, find the entry in the second row and first column of A to the power 6: \\(A=\\begin{pmatrix}-2&-1\\\\0&-3\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "diagonalize",
+          "P=\\begin{pmatrix}-1&-1\\\\0&-1\\end{pmatrix},\\quad D=\\begin{pmatrix}-2&0\\\\0&-3\\end{pmatrix}"
+        ],
+        [
+          "power",
+          "A^{6}=\\begin{pmatrix}64&665\\\\0&729\\end{pmatrix}"
+        ],
+        [
+          "entry",
+          "(A^{6})_{21}=0"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 3,
+        "template": "matrix-power"
+      }
+    },
+    {
+      "code": "EGP-1-0000000000000001-51",
+      "statement": "Using diagonalization, find the entry in the second row and first column of A to the power 3: \\(A=\\begin{pmatrix}-2&4\\\\-2&4\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "diagonalize",
+          "P=\\begin{pmatrix}1&-2\\\\1&-1\\end{pmatrix},\\quad D=\\begin{pmatrix}2&0\\\\0&0\\end{pmatrix}"
+        ],
+        [
+          "power",
+          "A^{3}=\\begin{pmatrix}-8&16\\\\-8&16\\end{pmatrix}"
+        ],
+        [
+          "entry",
+          "(A^{3})_{21}=-8"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-8",
+      "metadata": {
+        "difficulty": 3,
+        "template": "matrix-power"
+      }
+    },
+    {
+      "code": "EGP-1-0000000000000147-38",
+      "statement": "Using diagonalization, find the entry in the second row and first column of A to the power 4: \\(A=\\begin{pmatrix}-6&6\\\\-4&4\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "diagonalize",
+          "P=\\begin{pmatrix}1&-3\\\\1&-2\\end{pmatrix},\\quad D=\\begin{pmatrix}0&0\\\\0&-2\\end{pmatrix}"
+        ],
+        [
+          "power",
+          "A^{4}=\\begin{pmatrix}48&-48\\\\32&-32\\end{pmatrix}"
+        ],
+        [
+          "entry",
+          "(A^{4})_{21}=32"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "32",
+      "metadata": {
+        "difficulty": 3,
+        "template": "matrix-power"
+      }
+    }
+  ],
+  "eigen-triangular-power-v1": [
+    {
+      "code": "EGT-1-0000000000000000-66",
+      "statement": "Find the largest eigenvalue of A to the power 8: \\(A=\\begin{pmatrix}3&-1&0&2\\\\0&-2&0&2\\\\0&0&-1&-3\\\\0&0&0&1\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "diagonal",
+          "3,\\ -2,\\ -1,\\ 1"
+        ],
+        [
+          "power",
+          "(3)^{8}=6561,\\ (-2)^{8}=256,\\ (-1)^{8}=1,\\ (1)^{8}=1"
+        ],
+        [
+          "largest",
+          "\\lambda_{\\max}=6561"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "6561",
+      "metadata": {
+        "difficulty": 4,
+        "template": "triangular-power"
+      }
+    },
+    {
+      "code": "EGT-1-0000000000000001-83",
+      "statement": "Find the largest eigenvalue of A to the power 5: \\(A=\\begin{pmatrix}1&-1&0&0\\\\0&0&3&2\\\\0&0&2&1\\\\0&0&0&2\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "diagonal",
+          "1,\\ 0,\\ 2,\\ 2"
+        ],
+        [
+          "power",
+          "(1)^{5}=1,\\ (0)^{5}=0,\\ (2)^{5}=32,\\ (2)^{5}=32"
+        ],
+        [
+          "largest",
+          "\\lambda_{\\max}=32"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "32",
+      "metadata": {
+        "difficulty": 4,
+        "template": "triangular-power"
+      }
+    },
+    {
+      "code": "EGT-1-0000000000000147-70",
+      "statement": "Find the largest eigenvalue of A to the power 8: \\(A=\\begin{pmatrix}-3&3&2&-2\\\\0&2&-1&0\\\\0&0&3&-3\\\\0&0&0&3\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "diagonal",
+          "-3,\\ 2,\\ 3,\\ 3"
+        ],
+        [
+          "power",
+          "(-3)^{8}=6561,\\ (2)^{8}=256,\\ (3)^{8}=6561,\\ (3)^{8}=6561"
+        ],
+        [
+          "largest",
+          "\\lambda_{\\max}=6561"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "6561",
+      "metadata": {
+        "difficulty": 4,
+        "template": "triangular-power"
+      }
+    }
+  ],
+  "eigen-from-pairs-v1": [
+    {
+      "code": "EGM-1-0000000000000000-82",
+      "statement": "A 2 x 2 matrix A has the eigenvalue -2 with eigenvector v1 and the eigenvalue -3 with eigenvector v2. Find the entry in the second row and first column of A: \\(v_1=(-1,0),\\quad v_2=(-1,-1)\\).",
+      "steps": [
+        [
+          "columns",
+          "P=\\begin{pmatrix}-1&-1\\\\0&-1\\end{pmatrix},\\quad D=\\begin{pmatrix}-2&0\\\\0&-3\\end{pmatrix}"
+        ],
+        [
+          "product",
+          "A=\\begin{pmatrix}-2&-1\\\\0&-3\\end{pmatrix}"
+        ],
+        [
+          "entry",
+          "a_{21}=0"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 5,
+        "template": "matrix-from-eigenpairs"
+      }
+    },
+    {
+      "code": "EGM-1-0000000000000001-02",
+      "statement": "A 2 x 2 matrix A has the eigenvalue 2 with eigenvector v1 and the eigenvalue 0 with eigenvector v2. Find the entry in the second row and first column of A: \\(v_1=(1,1),\\quad v_2=(-2,-1)\\).",
+      "steps": [
+        [
+          "columns",
+          "P=\\begin{pmatrix}1&-2\\\\1&-1\\end{pmatrix},\\quad D=\\begin{pmatrix}2&0\\\\0&0\\end{pmatrix}"
+        ],
+        [
+          "product",
+          "A=\\begin{pmatrix}-2&4\\\\-2&4\\end{pmatrix}"
+        ],
+        [
+          "entry",
+          "a_{21}=-2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-2",
+      "metadata": {
+        "difficulty": 5,
+        "template": "matrix-from-eigenpairs"
+      }
+    },
+    {
+      "code": "EGM-1-0000000000000147-86",
+      "statement": "A 2 x 2 matrix A has the eigenvalue 0 with eigenvector v1 and the eigenvalue -2 with eigenvector v2. Find the entry in the second row and first column of A: \\(v_1=(1,1),\\quad v_2=(-3,-2)\\).",
+      "steps": [
+        [
+          "columns",
+          "P=\\begin{pmatrix}1&-3\\\\1&-2\\end{pmatrix},\\quad D=\\begin{pmatrix}0&0\\\\0&-2\\end{pmatrix}"
+        ],
+        [
+          "product",
+          "A=\\begin{pmatrix}-6&6\\\\-4&4\\end{pmatrix}"
+        ],
+        [
+          "entry",
+          "a_{21}=-4"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-4",
+      "metadata": {
+        "difficulty": 5,
+        "template": "matrix-from-eigenpairs"
+      }
+    }
+  ],
+  "vector-triple-product-v1": [
+    {
+      "code": "VTP-1-0000000000000000-26",
+      "statement": "Calculate the scalar triple product of u, v and w: \\(u=(3,1,-5),\\ v=(0,5,0),\\ w=(2,-3,0),\\quad (u\\times v)\\cdot w=?\\).",
+      "steps": [
+        [
+          "cross",
+          "u\\times v=(25,0,15)"
+        ],
+        [
+          "dot",
+          "(u\\times v)\\cdot w=50"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "50",
+      "metadata": {
+        "difficulty": 1,
+        "template": "triple-product"
+      }
+    },
+    {
+      "code": "VTP-1-0000000000000001-43",
+      "statement": "Calculate the scalar triple product of u, v and w: \\(u=(-5,2,-5),\\ v=(-4,5,-1),\\ w=(-3,-2,-4),\\quad (u\\times v)\\cdot w=?\\).",
+      "steps": [
+        [
+          "cross",
+          "u\\times v=(23,15,-17)"
+        ],
+        [
+          "dot",
+          "(u\\times v)\\cdot w=-31"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-31",
+      "metadata": {
+        "difficulty": 1,
+        "template": "triple-product"
+      }
+    },
+    {
+      "code": "VTP-1-0000000000000147-30",
+      "statement": "Calculate the scalar triple product of u, v and w: \\(u=(-3,-2,-4),\\ v=(3,0,5),\\ w=(4,-2,-2),\\quad (u\\times v)\\cdot w=?\\).",
+      "steps": [
+        [
+          "cross",
+          "u\\times v=(-10,3,6)"
+        ],
+        [
+          "dot",
+          "(u\\times v)\\cdot w=-58"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-58",
+      "metadata": {
+        "difficulty": 1,
+        "template": "triple-product"
+      }
+    }
+  ],
+  "vector-triangle-angle-v1": [
+    {
+      "code": "VTA-1-0000000000000000-21",
+      "statement": "Find the cosine of the triangle's angle at the vertex B: \\(A=(0,-5,-5),\\ B=(3,1,-5),\\ C=(0,5,0)\\).",
+      "steps": [
+        [
+          "edges",
+          "\\vec{BA}=(-3,-6,0),\\quad \\vec{BC}=(-3,4,5)"
+        ],
+        [
+          "cosine",
+          "\\cos\\angle B=\\frac{-15}{15 \\sqrt{10}}=- \\frac{\\sqrt{10}}{10}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "- \\frac{\\sqrt{10}}{10}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "triangle-angle"
+      }
+    },
+    {
+      "code": "VTA-1-0000000000000001-38",
+      "statement": "Find the cosine of the triangle's angle at the vertex B: \\(A=(-1,-4,-3),\\ B=(-5,2,-5),\\ C=(-4,5,-1)\\).",
+      "steps": [
+        [
+          "edges",
+          "\\vec{BA}=(4,-6,2),\\quad \\vec{BC}=(1,3,4)"
+        ],
+        [
+          "cosine",
+          "\\cos\\angle B=\\frac{-6}{4 \\sqrt{91}}=- \\frac{3 \\sqrt{91}}{182}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "- \\frac{3 \\sqrt{91}}{182}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "triangle-angle"
+      }
+    },
+    {
+      "code": "VTA-1-0000000000000147-25",
+      "statement": "Find the cosine of the triangle's angle at the vertex B: \\(A=(2,-1,0),\\ B=(-3,-2,-4),\\ C=(3,0,5)\\).",
+      "steps": [
+        [
+          "edges",
+          "\\vec{BA}=(5,1,4),\\quad \\vec{BC}=(6,2,9)"
+        ],
+        [
+          "cosine",
+          "\\cos\\angle B=\\frac{68}{11 \\sqrt{42}}=\\frac{34 \\sqrt{42}}{231}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{34 \\sqrt{42}}{231}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "triangle-angle"
+      }
+    }
+  ],
+  "vector-triangle-area-v1": [
+    {
+      "code": "VTR-1-0000000000000000-14",
+      "statement": "Find the area of the triangle ABC: \\(A=(0,-5,-5),\\ B=(3,1,-5),\\ C=(0,5,0)\\).",
+      "steps": [
+        [
+          "cross",
+          "\\vec{AB}\\times\\vec{AC}=(30,-15,30)"
+        ],
+        [
+          "area",
+          "P=\\frac{1}{2}|\\vec{AB}\\times\\vec{AC}|=\\frac{45}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{45}{2}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "triangle-area"
+      }
+    },
+    {
+      "code": "VTR-1-0000000000000001-31",
+      "statement": "Find the area of the triangle ABC: \\(A=(-1,-4,-3),\\ B=(-5,2,-5),\\ C=(-4,5,-1)\\).",
+      "steps": [
+        [
+          "cross",
+          "\\vec{AB}\\times\\vec{AC}=(30,14,-18)"
+        ],
+        [
+          "area",
+          "P=\\frac{1}{2}|\\vec{AB}\\times\\vec{AC}|=\\sqrt{355}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\sqrt{355}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "triangle-area"
+      }
+    },
+    {
+      "code": "VTR-1-0000000000000147-18",
+      "statement": "Find the area of the triangle ABC: \\(A=(2,-1,0),\\ B=(-3,-2,-4),\\ C=(3,0,5)\\).",
+      "steps": [
+        [
+          "cross",
+          "\\vec{AB}\\times\\vec{AC}=(-1,21,-4)"
+        ],
+        [
+          "area",
+          "P=\\frac{1}{2}|\\vec{AB}\\times\\vec{AC}|=\\frac{\\sqrt{458}}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{\\sqrt{458}}{2}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "triangle-area"
+      }
+    }
+  ],
+  "vector-tetrahedron-volume-v1": [
+    {
+      "code": "VTV-1-0000000000000000-89",
+      "statement": "Find the volume of the tetrahedron ABCD: \\(A=(0,-5,-5),\\ B=(3,1,-5),\\ C=(0,5,0),\\ D=(2,-3,0)\\).",
+      "steps": [
+        [
+          "edges",
+          "\\vec{AB}=(3,6,0),\\ \\vec{AC}=(0,10,5),\\ \\vec{AD}=(2,2,5)"
+        ],
+        [
+          "volume",
+          "V=\\frac{1}{6}|180|=30"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "30",
+      "metadata": {
+        "difficulty": 4,
+        "template": "tetrahedron-volume"
+      }
+    },
+    {
+      "code": "VTV-1-0000000000000001-09",
+      "statement": "Find the volume of the tetrahedron ABCD: \\(A=(-1,-4,-3),\\ B=(-5,2,-5),\\ C=(-4,5,-1),\\ D=(-3,-2,-4)\\).",
+      "steps": [
+        [
+          "edges",
+          "\\vec{AB}=(-4,6,-2),\\ \\vec{AC}=(-3,9,2),\\ \\vec{AD}=(-2,2,-1)"
+        ],
+        [
+          "volume",
+          "V=\\frac{1}{6}|-14|=\\frac{7}{3}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{7}{3}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "tetrahedron-volume"
+      }
+    },
+    {
+      "code": "VTV-1-0000000000000147-93",
+      "statement": "Find the volume of the tetrahedron ABCD: \\(A=(2,-1,0),\\ B=(-3,-2,-4),\\ C=(3,0,5),\\ D=(4,-2,-2)\\).",
+      "steps": [
+        [
+          "edges",
+          "\\vec{AB}=(-5,-1,-4),\\ \\vec{AC}=(1,1,5),\\ \\vec{AD}=(2,-1,-2)"
+        ],
+        [
+          "volume",
+          "V=\\frac{1}{6}|-15|=\\frac{5}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{5}{2}",
+      "metadata": {
+        "difficulty": 4,
+        "template": "tetrahedron-volume"
+      }
+    }
+  ],
+  "vector-tetrahedron-height-v1": [
+    {
+      "code": "VTH-1-0000000000000000-07",
+      "statement": "Find the height of the tetrahedron ABCD dropped from D: \\(A=(0,-5,-5),\\ B=(3,1,-5),\\ C=(0,5,0),\\ D=(2,-3,0)\\).",
+      "steps": [
+        [
+          "volume",
+          "V=30"
+        ],
+        [
+          "base",
+          "P_{ABC}=\\frac{45}{2}"
+        ],
+        [
+          "height",
+          "h=\\frac{3V}{P_{ABC}}=4"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "4",
+      "metadata": {
+        "difficulty": 5,
+        "template": "tetrahedron-height"
+      }
+    },
+    {
+      "code": "VTH-1-0000000000000001-24",
+      "statement": "Find the height of the tetrahedron ABCD dropped from D: \\(A=(-1,-4,-3),\\ B=(-5,2,-5),\\ C=(-4,5,-1),\\ D=(-3,-2,-4)\\).",
+      "steps": [
+        [
+          "volume",
+          "V=\\frac{7}{3}"
+        ],
+        [
+          "base",
+          "P_{ABC}=\\sqrt{355}"
+        ],
+        [
+          "height",
+          "h=\\frac{3V}{P_{ABC}}=\\frac{7 \\sqrt{355}}{355}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{7 \\sqrt{355}}{355}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "tetrahedron-height"
+      }
+    },
+    {
+      "code": "VTH-1-0000000000000147-11",
+      "statement": "Find the height of the tetrahedron ABCD dropped from D: \\(A=(2,-1,0),\\ B=(-3,-2,-4),\\ C=(3,0,5),\\ D=(4,-2,-2)\\).",
+      "steps": [
+        [
+          "volume",
+          "V=\\frac{5}{2}"
+        ],
+        [
+          "base",
+          "P_{ABC}=\\frac{\\sqrt{458}}{2}"
+        ],
+        [
+          "height",
+          "h=\\frac{3V}{P_{ABC}}=\\frac{15 \\sqrt{458}}{458}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{15 \\sqrt{458}}{458}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "tetrahedron-height"
+      }
+    }
+  ],
+  "geometry-point-plane-distance-v1": [
+    {
+      "code": "GPP-1-0000000000000000-07",
+      "statement": "Find the distance from the point D to the plane through A, B and C: \\(A=(0,-5,-5),\\ B=(3,1,-5),\\ C=(0,5,0),\\ D=(2,-3,0)\\).",
+      "steps": [
+        [
+          "normal",
+          "n=(2,-1,2)"
+        ],
+        [
+          "plane",
+          "2 x - y + 2 z + 5=0"
+        ],
+        [
+          "distance",
+          "d=\\frac{12}{3}=4"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "4",
+      "metadata": {
+        "difficulty": 1,
+        "template": "point-plane-distance"
+      }
+    },
+    {
+      "code": "GPP-1-0000000000000001-24",
+      "statement": "Find the distance from the point D to the plane through A, B and C: \\(A=(-1,-4,-3),\\ B=(-5,2,-5),\\ C=(-4,5,-1),\\ D=(-3,-2,-4)\\).",
+      "steps": [
+        [
+          "normal",
+          "n=(15,7,-9)"
+        ],
+        [
+          "plane",
+          "15 x + 7 y - 9 z + 16=0"
+        ],
+        [
+          "distance",
+          "d=\\frac{7}{\\sqrt{355}}=\\frac{7 \\sqrt{355}}{355}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{7 \\sqrt{355}}{355}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "point-plane-distance"
+      }
+    },
+    {
+      "code": "GPP-1-0000000000000147-11",
+      "statement": "Find the distance from the point D to the plane through A, B and C: \\(A=(2,-1,0),\\ B=(-3,-2,-4),\\ C=(3,0,5),\\ D=(4,-2,-2)\\).",
+      "steps": [
+        [
+          "normal",
+          "n=(-1,21,-4)"
+        ],
+        [
+          "plane",
+          "- x + 21 y - 4 z + 23=0"
+        ],
+        [
+          "distance",
+          "d=\\frac{15}{\\sqrt{458}}=\\frac{15 \\sqrt{458}}{458}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{15 \\sqrt{458}}{458}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "point-plane-distance"
+      }
+    }
+  ],
+  "geometry-parallel-planes-v1": [
+    {
+      "code": "GPL-1-0000000000000000-09",
+      "statement": "Find the distance between the parallel planes: \\(\\pi_1:\\ 3 y + z - 9=0,\\quad \\pi_2:\\ 6 y + 2 z + 10=0\\).",
+      "steps": [
+        [
+          "scale",
+          "\\pi_2:\\ 3 y + z + 5=0"
+        ],
+        [
+          "distance",
+          "d=\\frac{|-9-(5)|}{\\sqrt{10}}=\\frac{7 \\sqrt{10}}{5}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{7 \\sqrt{10}}{5}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "parallel-planes"
+      }
+    },
+    {
+      "code": "GPL-1-0000000000000001-26",
+      "statement": "Find the distance between the parallel planes: \\(\\pi_1:\\ - 4 x - 3 y + z - 16=0,\\quad \\pi_2:\\ - 12 x - 9 y + 3 z - 36=0\\).",
+      "steps": [
+        [
+          "scale",
+          "\\pi_2:\\ - 4 x - 3 y + z - 12=0"
+        ],
+        [
+          "distance",
+          "d=\\frac{|-16-(-12)|}{\\sqrt{26}}=\\frac{2 \\sqrt{26}}{13}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{2 \\sqrt{26}}{13}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "parallel-planes"
+      }
+    },
+    {
+      "code": "GPL-1-0000000000000147-13",
+      "statement": "Find the distance between the parallel planes: \\(\\pi_1:\\ - x - 2 y - 3 z - 17=0,\\quad \\pi_2:\\ - 2 x - 4 y - 6 z + 36=0\\).",
+      "steps": [
+        [
+          "scale",
+          "\\pi_2:\\ - x - 2 y - 3 z + 18=0"
+        ],
+        [
+          "distance",
+          "d=\\frac{|-17-(18)|}{\\sqrt{14}}=\\frac{5 \\sqrt{14}}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{5 \\sqrt{14}}{2}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "parallel-planes"
+      }
+    }
+  ],
+  "geometry-planes-angle-v1": [
+    {
+      "code": "GPA-1-0000000000000000-24",
+      "statement": "Find the cosine of the angle between the planes: \\(\\pi_1:\\ 3 y + z - 11=0,\\quad \\pi_2:\\ 4 x + 3 y - 4 z + 9=0\\).",
+      "steps": [
+        [
+          "normals",
+          "n_1=(0,3,1),\\quad n_2=(4,3,-4)"
+        ],
+        [
+          "cosine",
+          "\\cos\\varphi=\\frac{5}{\\sqrt{410}}=\\frac{\\sqrt{410}}{82}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{\\sqrt{410}}{82}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "planes-angle"
+      }
+    },
+    {
+      "code": "GPA-1-0000000000000001-41",
+      "statement": "Find the cosine of the angle between the planes: \\(\\pi_1:\\ - 4 x - 3 y + z + 17=0,\\quad \\pi_2:\\ - x - 2 y + 2 z - 6=0\\).",
+      "steps": [
+        [
+          "normals",
+          "n_1=(-4,-3,1),\\quad n_2=(-1,-2,2)"
+        ],
+        [
+          "cosine",
+          "\\cos\\varphi=\\frac{12}{3 \\sqrt{26}}=\\frac{2 \\sqrt{26}}{13}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{2 \\sqrt{26}}{13}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "planes-angle"
+      }
+    },
+    {
+      "code": "GPA-1-0000000000000147-28",
+      "statement": "Find the cosine of the angle between the planes: \\(\\pi_1:\\ - x - 2 y - 3 z - 8=0,\\quad \\pi_2:\\ - 2 x + 4 y - 10=0\\).",
+      "steps": [
+        [
+          "normals",
+          "n_1=(-1,-2,-3),\\quad n_2=(-2,4,0)"
+        ],
+        [
+          "cosine",
+          "\\cos\\varphi=\\frac{6}{2 \\sqrt{70}}=\\frac{3 \\sqrt{70}}{70}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{3 \\sqrt{70}}{70}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "planes-angle"
+      }
+    }
+  ],
+  "geometry-line-plane-v1": [
+    {
+      "code": "GLP-1-0000000000000000-69",
+      "statement": "Find the y-coordinate of the intersection point of the line and the plane: \\(\\begin{cases}x=2 t + 3\\\\y=- t - 1\\\\z=- 2 t\\end{cases},\\quad 2 y + 3 z + 2=0\\).",
+      "steps": [
+        [
+          "substitute",
+          "- 8 t=0"
+        ],
+        [
+          "parameter",
+          "t=0"
+        ],
+        [
+          "point",
+          "P=(3,-1,0)"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-1",
+      "metadata": {
+        "difficulty": 4,
+        "template": "line-plane-intersection"
+      }
+    },
+    {
+      "code": "GLP-1-0000000000000001-86",
+      "statement": "Find the x-coordinate of the intersection point of the line and the plane: \\(\\begin{cases}x=1\\\\y=- 3 t - 1\\\\z=0\\end{cases},\\quad 3 x + 2 y - 3 z - 13=0\\).",
+      "steps": [
+        [
+          "substitute",
+          "- 6 t - 12=0"
+        ],
+        [
+          "parameter",
+          "t=-2"
+        ],
+        [
+          "point",
+          "P=(1,5,0)"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 4,
+        "template": "line-plane-intersection"
+      }
+    },
+    {
+      "code": "GLP-1-0000000000000147-73",
+      "statement": "Find the z-coordinate of the intersection point of the line and the plane: \\(\\begin{cases}x=- 2 t - 3\\\\y=t + 3\\\\z=2 t + 2\\end{cases},\\quad - x + 2 z - 19=0\\).",
+      "steps": [
+        [
+          "substitute",
+          "6 t - 12=0"
+        ],
+        [
+          "parameter",
+          "t=2"
+        ],
+        [
+          "point",
+          "P=(-7,5,6)"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "6",
+      "metadata": {
+        "difficulty": 4,
+        "template": "line-plane-intersection"
+      }
+    }
+  ],
+  "geometry-plane-reflection-v1": [
+    {
+      "code": "GPR-1-0000000000000000-32",
+      "statement": "Find the y-coordinate of the reflection of P in the plane: \\(P=(1,-5,0),\\quad 3 x - y + 14=0\\).",
+      "steps": [
+        [
+          "foot",
+          "P_0=(- \\frac{28}{5},- \\frac{14}{5},0)"
+        ],
+        [
+          "reflect",
+          "P'=2P_0-P=(- \\frac{61}{5},- \\frac{3}{5},0)"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "- \\frac{3}{5}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "plane-reflection"
+      }
+    },
+    {
+      "code": "GPR-1-0000000000000001-49",
+      "statement": "Find the y-coordinate of the reflection of P in the plane: \\(P=(2,-5,-4),\\quad x - y - 20=0\\).",
+      "steps": [
+        [
+          "foot",
+          "P_0=(\\frac{17}{2},- \\frac{23}{2},-4)"
+        ],
+        [
+          "reflect",
+          "P'=2P_0-P=(15,-18,-4)"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-18",
+      "metadata": {
+        "difficulty": 5,
+        "template": "plane-reflection"
+      }
+    },
+    {
+      "code": "GPR-1-0000000000000147-36",
+      "statement": "Find the z-coordinate of the reflection of P in the plane: \\(P=(-2,-4,3),\\quad - 3 x + 3 y + 2 z - 16=0\\).",
+      "steps": [
+        [
+          "foot",
+          "P_0=(- \\frac{46}{11},- \\frac{20}{11},\\frac{49}{11})"
+        ],
+        [
+          "reflect",
+          "P'=2P_0-P=(- \\frac{70}{11},\\frac{4}{11},\\frac{65}{11})"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{65}{11}",
+      "metadata": {
+        "difficulty": 5,
+        "template": "plane-reflection"
+      }
+    }
   ]
 }

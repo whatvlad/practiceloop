@@ -341,7 +341,7 @@ def answer_of(url: str, problem_id: str) -> str:
             str(answer.primitive).replace("**", "^").replace("Abs", "abs").replace("E", "e")
             + " + C"
         )
-    return str(answer.expected).replace("**", "^").replace("E", "e")
+    return str(answer.expected).replace("**", "^").replace("E", "e").replace("I", "i")
 
 
 @pytest.mark.parametrize("level", [1, 2])
@@ -358,6 +358,38 @@ def test_algebraic_expressions_practice_saves_checks_and_reveals(
         client.get(f"/problems/{problem['id']}").json()["problem"]["topic"]
         == "algebraic-expressions"
     )
+
+
+@pytest.mark.parametrize(
+    "topic, level",
+    [
+        *(("determinants", level) for level in (1, 2, 3, 4)),
+        *(("inverse-matrices", level) for level in (1, 2, 3)),
+        *(("linear-systems", level) for level in (1, 2, 3, 4, 5)),
+        *(("matrix-rank", level) for level in (1, 2)),
+        *(("complex-arithmetic", level) for level in (1, 2, 3, 4, 5)),
+        *(("complex-polar-form", level) for level in (1, 2, 3)),
+        *(("binomial-theorem", level) for level in (1, 2, 3)),
+        *(("polynomial-roots", level) for level in (1, 2, 3)),
+        *(("eigenvalues", level) for level in (1, 2, 3, 4, 5)),
+        *(("vectors", level) for level in (1, 2, 3, 4, 5)),
+        *(("lines-and-planes", level) for level in (1, 2, 3, 4, 5)),
+        *(("polynomial-division", level) for level in (3, 4, 5)),
+        ("partial-fractions", 4),
+    ],
+)
+def test_linear_algebra_practice_saves_checks_and_reveals(
+    client: TestClient, url: str, topic: str, level: int
+) -> None:
+    problem = generate(client, topic, level)
+    wrong = attempt(client, problem["id"], f"({answer_of(url, problem['id'])})+1")
+    assert wrong.json()["attempt"]["result"] == "incorrect"
+    result = attempt(client, problem["id"], answer_of(url, problem["id"]))
+    assert result.status_code == 201, result.text
+    assert result.json()["attempt"]["result"] == "correct"
+    solution = client.post(f"/problems/{problem['id']}/reveal-solution")
+    assert solution.status_code == 200 and solution.json()["steps"]
+    assert client.get(f"/problems/{problem['id']}").json()["problem"]["topic"] == topic
 
 
 @pytest.mark.parametrize("level", [1, 2])
@@ -582,8 +614,19 @@ def test_topics_lists_only_generated_cells(client: TestClient) -> None:
         ("fundamental-theorem-algebra", [1, 2, 3, 4, 5]),
         ("partial-fractions", [1, 2, 3, 4, 5]),
         ("algebraic-expressions", [1, 2]),
-        ("polynomial-division", [1, 2]),
+        ("polynomial-division", [1, 2, 3, 4, 5]),
         ("combinations", [1]),
+        ("determinants", [1, 2, 3, 4]),
+        ("inverse-matrices", [1, 2, 3]),
+        ("linear-systems", [1, 2, 3, 4, 5]),
+        ("matrix-rank", [1, 2]),
+        ("complex-arithmetic", [1, 2, 3, 4, 5]),
+        ("complex-polar-form", [1, 2, 3]),
+        ("binomial-theorem", [1, 2, 3]),
+        ("polynomial-roots", [1, 2, 3]),
+        ("eigenvalues", [1, 2, 3, 4, 5]),
+        ("vectors", [1, 2, 3, 4, 5]),
+        ("lines-and-planes", [1, 2, 3, 4, 5]),
         ("basic-integrals", [1, 2, 3, 4, 5]),
         ("substitution", [1, 2, 3, 4, 5]),
         ("integration-by-parts", [1, 2, 3]),
@@ -681,6 +724,19 @@ def test_topics_publish_the_fixed_mixed_practice_weights(client: TestClient) -> 
                 "partial-fractions": 1,
                 # #191: published by its engine topic entry.
                 "combinations": 1,
+                # #221: algebra30 linear algebra.
+                "determinants": 1,
+                "inverse-matrices": 1,
+                "linear-systems": 1,
+                "matrix-rank": 1,
+                "complex-arithmetic": 1,
+                "complex-polar-form": 1,
+                "binomial-theorem": 1,
+                "polynomial-roots": 1,
+                "eigenvalues": 1,
+                "vectors": 1,
+                "lines-and-planes": 1,
+                "polynomial-division": 1,
             },
         },
     }

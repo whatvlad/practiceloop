@@ -27,10 +27,11 @@ export function isDefinite(problemLatex: string): boolean {
 }
 
 /** What kind of answer the problem asks for. */
-export type ProblemKind = 'indefinite' | 'definite' | 'double' | 'triple' | 'derivative' | 'partial' | 'numeric' | 'expression';
+export type ProblemKind = 'indefinite' | 'definite' | 'double' | 'triple' | 'derivative' | 'partial' | 'numeric' | 'complex' | 'expression';
 
 export function problemKind(topic: TopicSlug, problemLatex: string): ProblemKind {
   if (topic === 'algebraic-expressions') return 'numeric';
+  if (topic === 'complex-arithmetic' || topic === 'complex-polar-form') return 'complex';
   if (topic === 'polynomial-division' && problemLatex.startsWith('\\text{Find the remainder when ')) return 'numeric';
   if (topic === 'partial-derivatives') return 'partial';
   if (topic === 'derivatives') return 'derivative';
@@ -41,7 +42,7 @@ export function problemKind(topic: TopicSlug, problemLatex: string): ProblemKind
   if (['basic-integrals', 'substitution', 'integration-by-parts', 'rational-functions', 'trigonometric-integrals', 'definite-integrals'].includes(topic)) {
     return isDefinite(problemLatex) ? 'definite' : 'indefinite';
   }
-  if (['matrices', 'complex-numbers', 'fundamental-theorem-algebra', 'combinations', 'functions-and-sequences', 'limits-and-continuity', 'series'].includes(topic)) return 'numeric';
+  if (['matrices', 'determinants', 'inverse-matrices', 'linear-systems', 'matrix-rank', 'binomial-theorem', 'eigenvalues', 'vectors', 'lines-and-planes', 'complex-numbers', 'fundamental-theorem-algebra', 'combinations', 'functions-and-sequences', 'limits-and-continuity', 'series'].includes(topic)) return 'numeric';
   return 'expression';
 }
 
@@ -55,6 +56,7 @@ export function leadText(kind: ProblemKind): string {
     derivative: text.calculate_derivative,
     partial: text.calculate_partial,
     numeric: 'Calculate the value.',
+    complex: 'Give the answer in the form a + bi.',
     expression: 'Solve the problem.',
   }[kind];
 }
@@ -85,6 +87,9 @@ export function displayProblem(topic: TopicSlug, problemLatex: string): { instru
       : `${generated[1].replace(/:$/, '').replace(/ of$/, '')}.`;
     return { instruction, formula };
   }
+  // A worded exercise (#221) states its task before a colon and ends with one formula.
+  const worded = problemLatex.match(/^\\text\{([^{}]+): \}(.+)\\text\{\.\}$/);
+  if (worded) return { instruction: `${worded[1]}.`, formula: worded[2] };
   return { instruction: topic === 'partial-fractions' ? 'Decompose into partial fractions.' : leadText(problemKind(topic, problemLatex)), formula: problemLatex };
 }
 
@@ -95,12 +100,14 @@ export function displayProblem(topic: TopicSlug, problemLatex: string): { instru
  * Other kinds keep the integration grammar (undefined).
  */
 export function answerVariables(kind: ProblemKind, problemLatex: string): AnswerVariable[] | undefined {
+  if (kind === 'complex') return ['i'];
   if (kind !== 'partial') return undefined;
   const start = problemLatex.lastIndexOf('\\quad(');
   if (start < 0) return undefined;
   const domain = problemLatex.slice(start + '\\quad('.length).replace(/\\mathbb\{R\}/g, '');
   const names = new Set(Array.from(domain.matchAll(/\\theta|[a-z]/g), match => match[0].replace('\\', '')));
-  const found = ANSWER_VARIABLES.filter(name => names.has(name));
+  // The imaginary unit is never a partial-derivative variable; `\in` also contains an i.
+  const found = ANSWER_VARIABLES.filter(name => name !== 'i' && names.has(name));
   return found.length ? found : undefined;
 }
 
@@ -108,6 +115,7 @@ export function answerVariables(kind: ProblemKind, problemLatex: string): Answer
 export function keypadVariables(kind: ProblemKind, problemLatex: string, topic: TopicSlug): AnswerVariable[] | undefined {
   if (kind === 'numeric' || kind === 'definite' || kind === 'double' || kind === 'triple') return [];
   if (kind === 'derivative') return ['x'];
+  if (kind === 'complex') return ['i'];
   if (kind === 'expression') return topic === 'multivariable-functions' ? ['x', 'y'] : ['x'];
   return answerVariables(kind, problemLatex);
 }

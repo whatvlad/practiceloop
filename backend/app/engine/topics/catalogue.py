@@ -2,7 +2,7 @@
 
 import logging
 from collections.abc import Callable, Mapping
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from functools import partial
 
 from app.engine.blocks.integral_forms.form import BOUNDS, METHODS
@@ -14,6 +14,16 @@ from app.engine.generators.algebra_expansion import (
 )
 from app.engine.generators.algebra_expressions import RationalizeDenominator, SimplifyRadicals
 from app.engine.generators.analysis import AnalysisParams, analysis_generators
+from app.engine.generators.complex_numbers import (
+    ComplexArgument,
+    ComplexLinearEquation,
+    ComplexProduct,
+    ComplexQuadratic,
+    ComplexQuotient,
+    ComplexRoot,
+    ComplexSquareRoot,
+    DeMoivre,
+)
 from app.engine.generators.definite import DefiniteParams
 from app.engine.generators.derivative import DerivativeParams
 from app.engine.generators.differentiation import (
@@ -22,9 +32,55 @@ from app.engine.generators.differentiation import (
     SingleDerivativeParams,
     SingleDerivatives,
 )
+from app.engine.generators.eigen_geometry import (
+    DiagonalPower,
+    EigenvectorValue,
+    LargestEigenvalue,
+    LinePlaneIntersection,
+    MatrixFromEigenvectors,
+    ParallelPlanesDistance,
+    PlaneReflection,
+    PlanesAngle,
+    PointPlaneDistance,
+    TetrahedronHeight,
+    TetrahedronVolume,
+    TriangleAngle,
+    TriangleArea,
+    TriangularPowerEigenvalue,
+    TripleProduct,
+)
 from app.engine.generators.indefinite import IndefiniteParams
 from app.engine.generators.integrals import IntegralParams, integral_generators
+from app.engine.generators.linear_algebra import (
+    CramerRule,
+    CramerRule3,
+    Determinant3,
+    Determinant4,
+    DeterminantRowOperations,
+    DeterminantScaling,
+    FreeParameters,
+    GaussianElimination,
+    GaussianElimination4,
+    InverseEntry,
+    InverseEntry3,
+    MatrixEquation,
+    MatrixRank,
+    NontrivialSolutions,
+    SingularParameter,
+)
 from app.engine.generators.multiple import DoubleIntegrals, MultipleParams, TripleIntegrals
+from app.engine.generators.polynomials import (
+    BinomialCoefficient,
+    BinomialConstantTerm,
+    BinomialExponent,
+    CubicRemainder,
+    Divisibility,
+    IrreducibleFactor,
+    KnownComplexRoot,
+    PartialFractionCoefficient,
+    RationalRoots,
+    RemainderConditions,
+)
 from app.engine.models import Drawn, Task
 from app.engine.prng import DeterministicRNG
 from app.engine.registry import Registry
@@ -168,6 +224,15 @@ def topics() -> dict[str, Topic]:
             space_cm=space,
             served=True,
         )
+    # #221: algebra30 60 adds a repeated or quadratic factor's constant at level 4.
+    fractions = declared["partial-fractions"]
+    declared["partial-fractions"] = replace(
+        fractions,
+        levels={
+            **fractions.levels,
+            4: (*fractions.levels[4], Choice(PartialFractionCoefficient.version)),
+        },
+    )
     declared["algebraic-expressions"] = Topic(
         "algebraic-expressions",
         "algebra",
@@ -183,8 +248,13 @@ def topics() -> dict[str, Topic]:
         {
             1: (Choice(RemainderTheorem.version),),
             2: (Choice(PolynomialQuotient.version), Choice(QuadraticRemainder.version)),
+            # #221: algebra30 61-63.
+            3: (Choice(RemainderConditions.version),),
+            4: (Choice(Divisibility.version),),
+            5: (Choice(CubicRemainder.version),),
         },
-        0,
+        # #221 adds it to mixed practice once every level has a structural template.
+        1,
         title="Polynomial division",
         space_cm=5,
         served=True,
@@ -198,6 +268,126 @@ def topics() -> dict[str, Topic]:
         space_cm=4,
         served=True,
     )
+    # #221: algebra30 exercises 5-96, each level one structural template.
+    for slug, title, space, levels in (
+        (
+            "determinants",
+            "Determinants",
+            5,
+            {
+                1: (Determinant3.version,),
+                2: (DeterminantScaling.version, DeterminantRowOperations.version),
+                3: (SingularParameter.version,),
+                4: (Determinant4.version,),
+            },
+        ),
+        (
+            "inverse-matrices",
+            "Inverse matrices",
+            6,
+            {
+                1: (InverseEntry.version,),
+                2: (InverseEntry3.version,),
+                3: (MatrixEquation.version,),
+            },
+        ),
+        (
+            "linear-systems",
+            "Systems of linear equations",
+            6,
+            {
+                1: (CramerRule.version,),
+                2: (CramerRule3.version,),
+                3: (GaussianElimination.version,),
+                4: (GaussianElimination4.version,),
+                5: (NontrivialSolutions.version,),
+            },
+        ),
+        ("matrix-rank", "Matrix rank", 5, {1: (MatrixRank.version,), 2: (FreeParameters.version,)}),
+        (
+            "complex-arithmetic",
+            "Complex arithmetic and equations",
+            5,
+            {
+                1: (ComplexProduct.version,),
+                2: (ComplexQuotient.version,),
+                3: (ComplexLinearEquation.version,),
+                4: (ComplexSquareRoot.version,),
+                5: (ComplexQuadratic.version,),
+            },
+        ),
+        (
+            "complex-polar-form",
+            "Polar form and De Moivre's formula",
+            5,
+            {1: (ComplexArgument.version,), 2: (DeMoivre.version,), 3: (ComplexRoot.version,)},
+        ),
+        (
+            "binomial-theorem",
+            "Binomial theorem",
+            4,
+            {
+                1: (BinomialCoefficient.version,),
+                2: (BinomialConstantTerm.version,),
+                3: (BinomialExponent.version,),
+            },
+        ),
+        (
+            "polynomial-roots",
+            "Polynomial roots and factors",
+            5,
+            {
+                1: (RationalRoots.version,),
+                2: (KnownComplexRoot.version,),
+                3: (IrreducibleFactor.version,),
+            },
+        ),
+        (
+            "eigenvalues",
+            "Eigenvalues and eigenvectors",
+            5,
+            {
+                1: (LargestEigenvalue.version,),
+                2: (EigenvectorValue.version,),
+                3: (DiagonalPower.version,),
+                4: (TriangularPowerEigenvalue.version,),
+                5: (MatrixFromEigenvectors.version,),
+            },
+        ),
+        (
+            "vectors",
+            "Vectors, areas and volumes",
+            5,
+            {
+                1: (TripleProduct.version,),
+                2: (TriangleAngle.version,),
+                3: (TriangleArea.version,),
+                4: (TetrahedronVolume.version,),
+                5: (TetrahedronHeight.version,),
+            },
+        ),
+        (
+            "lines-and-planes",
+            "Lines and planes",
+            6,
+            {
+                1: (PointPlaneDistance.version,),
+                2: (ParallelPlanesDistance.version,),
+                3: (PlanesAngle.version,),
+                4: (LinePlaneIntersection.version,),
+                5: (PlaneReflection.version,),
+            },
+        ),
+    ):
+        declared[slug] = Topic(
+            slug,
+            "algebra",
+            {level: tuple(Choice(v) for v in versions) for level, versions in levels.items()},
+            1,
+            title=title,
+            space_cm=space,
+            served=True,
+        )
     families = {
         "basic": ("basic-integrals", "Basic integrals", 1, 3),
         "substitution": ("substitution", "Substitution", 2, 4),
