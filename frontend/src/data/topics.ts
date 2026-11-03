@@ -4,6 +4,7 @@ import type { Area, AreaSlug, AvailableTopic, Difficulty, MixedPractice, Topic, 
 export const AREAS: readonly Area[] = [
   { slug: 'algebra', name: 'Algebra' },
   { slug: 'mathematical-analysis', name: 'Mathematical Analysis' },
+  { slug: 'probability-statistics', name: 'Probability and Statistics' },
 ];
 
 // #191: topics come from GET /topics. This build keeps only the latest list it was sent,

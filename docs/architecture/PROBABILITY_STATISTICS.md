@@ -1,17 +1,18 @@
 # Probability and Statistics proposal (#200)
 
-Status: **proposed; Vlad's topic/level approval is pending**. This document is
-the first design stage required by #200, not a shipped curriculum. Base:
-`b8130b8bf499e9d56a8c9a2e676fffa56eef562b`. No runtime implementation is authorized
-by approval of a topic name alone; the complete matrix below is the proposal.
+Status: **approved by Vlad; implementation in progress**. Vlad accepted the
+complete nine-topic/five-level matrix, design and exclusions linked at planning
+commit `ce4b1c4dd6c5f65e16bd178e82fe00b32c43f6cf`; the decision is recorded in
+issue comment 6604843016. Base: `b8130b8bf499e9d56a8c9a2e676fffa56eef562b`.
 
-## Proposed release
+## Approved release
 
 Add the public area `probability-statistics`, titled **Probability and
 Statistics**, with nine topics and five structural levels per topic (45 cells).
 Every named structure in a cell receives a versioned template; levels describe
-methods, not wider random coefficient ranges. The number of frozen versions is
-finalized from the approved matrix before implementation. All existing 36 topics,
+methods, not wider random coefficient ranges. There are 74 new frozen versions
+with explicit PSAA through PSCV prefixes and 222 appended golden samples.
+All existing 36 topics,
 165 generator versions, historical codes and product metadata remain intact.
 
 | Public topic / proposed slug | Level 1 | Level 2 | Level 3 | Level 4 | Level 5 |
@@ -34,14 +35,14 @@ integer binomial coefficients rather than change `combinations-v1`.
 This is an introductory probability and statistics release. It does not include
 ANOVA, chi-square/F tests, multiple regression, nonparametric methods, stochastic
 processes, proofs of limit theorems, simulation, uploaded datasets or arbitrary
-learner-entered distributions. These exclusions are part of the approval request.
+learner-entered distributions. These exclusions were included in the accepted request.
 
 ## Mathematical conventions and bounded records
 
 - Finite samples/supports have at most eight distinct values; joint tables have
   at most 4 x 4 entries. Exact rational masses are nonnegative and sum to one.
   A conditional event always has strictly positive probability.
-- Distribution primitives use strict integer/rational parameters. Proposed
+- Distribution primitives use strict integer/rational parameters. Declared
   bounds: support/data values -12..12; binomial n <= 12; geometric query <= 12;
   hypergeometric population <= 20; Poisson rate 1..5. Structured records reject
   bool-as-int, invalid supports and invalid parameter combinations.

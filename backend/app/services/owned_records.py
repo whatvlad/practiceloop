@@ -8,7 +8,7 @@ turns into the same 404. Functions never commit; the caller owns the transaction
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any
 from uuid import UUID
@@ -31,6 +31,8 @@ class ProblemRecord:
     solution_revealed: bool
     # Set only on problems a generated worksheet created (ADR-007).
     worksheet_id: UUID | None = None
+    # Private read metadata, explicitly projected to input instructions at the API.
+    generator_data: Any = field(default=None, repr=False, compare=False)
 
 
 @dataclass(frozen=True)
@@ -56,7 +58,9 @@ class PrivateSolution:
 
 _PROBLEM_COLUMNS = """
     p.id, t.slug as topic, p.difficulty, p.problem_latex, p.created_at,
-    p.answer_revealed, p.solution_revealed, p.worksheet_id
+    p.answer_revealed, p.solution_revealed, p.worksheet_id,
+    (select s.generator_data from private.problem_solutions s
+     where s.problem_id = p.id) as generator_data
 """
 
 
@@ -100,7 +104,7 @@ def insert_problem(
             Jsonb(solution.solution_steps),
         ),
     )
-    return ProblemRecord(topic=topic, **row)
+    return ProblemRecord(topic=topic, generator_data=solution.generator_data, **row)
 
 
 def recent_generator_data(

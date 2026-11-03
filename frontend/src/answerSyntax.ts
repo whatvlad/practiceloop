@@ -602,3 +602,60 @@ function unfinishedMessage(source: string): string {
   if (/[A-Za-z]$/.test(source.trim())) return 'Keep typing the name, then add brackets.';
   return 'Keep going: the answer is not finished yet.';
 }
+
+/** Top-level commas only; scalar component syntax is checked by the existing parser. */
+export function splitStructuredParts(source: string): string[] {
+  const parts: string[] = [];
+  let depth = 0; let start = 0;
+  for (let i = 0; i < source.length; i += 1) {
+    if (source[i] === '(') depth += 1;
+    else if (source[i] === ')') depth -= 1;
+    else if (source[i] === ',' && depth === 0) { parts.push(source.slice(start, i)); start = i + 1; }
+    if (depth < 0) throw new SyntaxProblem('Unbalanced component');
+  }
+  if (depth !== 0) throw new SyntaxProblem('Unbalanced component', true);
+  parts.push(source.slice(start));
+  return parts;
+}
+
+/** Mirror of math_input/structured.py. Syntax preview only, never correctness. */
+export function analyseStructuredAnswer(source: string, kind: 'boolean' | 'finite_set' | 'interval'): AnswerAnalysis {
+  if (!source.trim()) return { status: 'empty' };
+  try {
+    const text = normalise(source.replaceAll('∞', 'inf')).trim();
+    if (kind === 'boolean') {
+      if (text !== 'true' && text !== 'false') throw new SyntaxProblem('Choose Yes or No.');
+      return { status: 'ok', latex: text === 'true' ? '\\text{Yes}' : '\\text{No}' };
+    }
+    if (kind === 'finite_set' ? !(text.startsWith('{') && text.endsWith('}'))
+      : !(text.length >= 5 && '[('.includes(text[0]) && '])'.includes(text.at(-1)!))) throw new SyntaxProblem('Complete the answer brackets.', true);
+    const parts = kind === 'finite_set' && !text.slice(1, -1).trim() ? [] : splitStructuredParts(text.slice(1, -1));
+    if (kind === 'finite_set' ? parts.length > 8 : parts.length !== 2) throw new SyntaxProblem('Check the number of entries.');
+    const latex: string[] = []; const stack: Node[] = [];
+    let tokens = 2 + parts.length;
+    for (let i = 0; i < parts.length; i += 1) {
+      const part = parts[i].trim();
+      if (!part) throw new SyntaxProblem('Fill in every entry.', true);
+      if (kind === 'interval' && ['-inf', 'inf', '+inf'].includes(part)) {
+        if ((i === 0) !== (part === '-inf') || text[i === 0 ? 0 : text.length - 1] !== (i === 0 ? '(' : ')')) throw new SyntaxProblem('Infinite endpoints must be open and correctly signed.');
+        latex.push(i === 0 ? '-\\infty' : '\\infty'); tokens += 1;
+      } else {
+        const analysis = analyseAnswer(part, []);
+        if (analysis.status !== 'ok') return analysis;
+        const tree = parseOnly(part, []); stack.push(tree); tokens += tokenise(normalise(part), true).length;
+        latex.push(toLatex(tree));
+      }
+    }
+    let nodes = 1 + parts.filter(p => ['inf', '+inf', '-inf'].includes(p.trim())).length; let functions = 0;
+    while (stack.length) {
+      const node = stack.pop()!; nodes += 1;
+      if (node.kind === 'binary') stack.push(node.left, node.right);
+      else if (node.kind === 'unary' || node.kind === 'function') { stack.push(node.arg); if (node.kind === 'function') functions += 1; }
+    }
+    if (nodes > MAX_NODES || tokens > MAX_TOKENS || functions > MAX_FUNCTION_CALLS) throw new SyntaxProblem('Structured answer exceeds the shared complexity budget.');
+    return { status: 'ok', latex: kind === 'finite_set' ? (parts.length ? `\\left\\{${latex.join(',')}\\right\\}` : '\\emptyset') : `\\left${text[0]}${latex.join(',')}\\right${text.at(-1)}` };
+  } catch (error) {
+    if (!(error instanceof SyntaxProblem)) throw error;
+    return { status: error.unfinished && !(error instanceof TooLong) ? 'unfinished' : 'error', message: error.message };
+  }
+}

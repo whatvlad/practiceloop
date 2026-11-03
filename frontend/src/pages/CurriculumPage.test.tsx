@@ -3,7 +3,7 @@ import { act } from 'react';
 import { createRoot } from 'react-dom/client';
 import { expect, it } from 'vitest';
 import { CurriculumPage } from './CurriculumPage';
-import { algebraSections } from '../data/curriculum';
+import { algebraSections, probabilitySections } from '../data/curriculum';
 
 it('includes every numbered PDF exercise exactly once and keeps inverse methods together', () => {
   const types = algebraSections.flatMap(section => section.types);
@@ -54,6 +54,14 @@ it('shows both areas, descriptions, subtypes and an inactive placeholder', async
   expect(element.querySelector('a[href="/dashboard?area=mathematical-analysis&topic=derivatives"]')).not.toBeNull();
   expect(element.textContent).not.toContain('Inverse matrices');
   expect(element.textContent).toContain('In develop');
+  const probability = [...element.querySelectorAll('button')].find(button => button.textContent === 'Probability and Statistics')!;
+  await act(async () => probability.click());
+  expect(probabilitySections.flatMap(section => section.types)).toHaveLength(9);
+  expect(ready.querySelectorAll('a')).toHaveLength(9);
+  for (const topic of ['probability-events', 'conditional-probability', 'discrete-random-variables', 'discrete-distributions',
+    'continuous-distributions', 'moments-joint-distributions', 'descriptive-statistics', 'confidence-intervals', 'hypothesis-tests']) {
+    expect(ready.querySelector(`a[href="/dashboard?area=probability-statistics&topic=${topic}"]`)).not.toBeNull();
+  }
   await act(async () => root.unmount());
   element.remove();
 });

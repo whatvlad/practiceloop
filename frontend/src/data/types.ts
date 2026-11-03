@@ -3,7 +3,13 @@
 import type { VisualSpec } from '../visual/spec';
 
 /** ADR-005: practice has two areas, and every topic belongs to exactly one. */
-export type AreaSlug = 'algebra' | 'mathematical-analysis';
+export type AreaSlug = 'algebra' | 'mathematical-analysis' | 'probability-statistics';
+
+export interface AnswerInputSpec {
+  kind: 'boolean' | 'finite_set' | 'interval';
+  maxBytes: 256;
+  maxItems?: 8;
+}
 
 /** A topic's slug. The list of topics comes from GET /topics (#191), not from this build. */
 export type TopicSlug = string;
@@ -71,6 +77,7 @@ export interface CheckOutcome {
 export type AttemptResult = CheckResult | null;
 
 export interface PublicProblem {
+  answerInput?: AnswerInputSpec;
   attemptCount?: number;
   saved?: boolean;
   id: string;
@@ -122,6 +129,7 @@ export interface ProblemShare {
 
 /** All a shared link or code reveals: never answers, results, solutions or the owner. */
 export interface SharedProblem {
+  answerInput?: AnswerInputSpec;
   topic: TopicSlug;
   difficulty: Difficulty;
   problemLatex: string;

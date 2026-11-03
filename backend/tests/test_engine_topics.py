@@ -63,6 +63,15 @@ def test_five_topics_have_nonempty_levels_and_replay_for_many_seeds() -> None:
         "multivariable-functions",
         "differential-equations",
         "differential-calculus",
+        "probability-events",
+        "conditional-probability",
+        "discrete-random-variables",
+        "discrete-distributions",
+        "continuous-distributions",
+        "moments-joint-distributions",
+        "descriptive-statistics",
+        "confidence-intervals",
+        "hypothesis-tests",
     }
     generators = registry()
     expected_kinds = {
@@ -85,7 +94,14 @@ def test_five_topics_have_nonempty_levels_and_replay_for_many_seeds() -> None:
                 if topic.slug in expected_kinds:
                     assert task.answer.kind == expected_kinds[topic.slug]
                 else:
-                    assert task.answer.kind in {"antiderivative", "expression", "complex"}
+                    assert task.answer.kind in {
+                        "antiderivative",
+                        "expression",
+                        "complex",
+                        "boolean",
+                        "finite_set",
+                        "interval",
+                    }
                 assert task.statement and task.steps
                 code = parse_code(task.code, generators)
                 generator = generators.get_code(code.prefix, code.version)

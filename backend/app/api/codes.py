@@ -75,6 +75,7 @@ def lookup(code: Annotated[str, Query(max_length=128)]) -> dict[str, Any]:
             "topic": opened.topic,
             "difficulty": opened.difficulty,
             "problemLatex": opened.problem.statement,
+            **engine.input_projection(opened.problem.issued().record),
         }
     }
 

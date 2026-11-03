@@ -56,7 +56,11 @@ class Topic(NamedTuple):
 
 
 # #144: Algebra and Mathematical Analysis are the top-level practice areas.
-AREAS = {"algebra": "Algebra", "mathematical-analysis": "Mathematical Analysis"}
+AREAS = {
+    "algebra": "Algebra",
+    "mathematical-analysis": "Mathematical Analysis",
+    "probability-statistics": "Probability and Statistics",
+}
 
 
 def listed_topics(served: Mapping[str, EngineTopic]) -> dict[str, Topic]:
@@ -268,6 +272,7 @@ def _public_problem(
         "topic": problem.topic,
         "difficulty": problem.difficulty,
         "problemLatex": problem.problem_latex,
+        **engine.input_projection(problem.generator_data),
         "createdAt": _timestamp(problem.created_at),
         "answerRevealed": problem.answer_revealed,
         "solutionRevealed": problem.solution_revealed,

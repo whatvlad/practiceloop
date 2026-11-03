@@ -6,6 +6,7 @@ import { DashboardPage } from './DashboardPage';
 import { PracticePage } from './PracticePage';
 import { configurePracticeAuth, getProblem, resetPractice } from '../data/practice';
 import type { PublicProblem } from '../data/types';
+import type { AnswerInputSpec } from '../data/types';
 
 // Keep the real answer input, syntax preview and keyboard handlers; only skip
 // the dynamically loaded native math editor, which needs an actual browser.
@@ -172,6 +173,27 @@ it('restores an old problem after clearing browser practice state without making
   expect(element.textContent).toContain('mathematically equivalent');
   expect(calls).toHaveLength(1);
   expect(calls[0]).toEqual({ path: '/api/problems/old', body: null });
+});
+
+it.each([
+  { kind: 'boolean', topic: 'hypothesis-tests', answer: 'false', selector: 'input[value=false]' },
+  { kind: 'finite_set', topic: 'discrete-random-variables', answer: '{-1,2}', selector: '#answer-0' },
+  { kind: 'interval', topic: 'confidence-intervals', answer: '(-inf,3/2]', selector: '#answer-1' },
+] as const)('reopens a saved $kind answer through the real API decoder', async ({ kind, topic, answer, selector }) => {
+  const spec: AnswerInputSpec = { kind, maxBytes: 256, ...(kind === 'finite_set' ? { maxItems: 8 } : {}) };
+  saved.set('structured', { id: 'structured', topic, difficulty: 3, problemLatex: '\\text{Find the stated quantity.}',
+    createdAt: '2026-11-03T00:00:00Z', lastAnswer: answer, lastResult: 'incorrect', attemptCount: 1,
+    answerRevealed: false, solutionRevealed: false, answerInput: spec });
+  resetPractice();
+  await act(async () => root.render(<PracticePage id="structured" />));
+  const field = element.querySelector<HTMLInputElement>(selector)!;
+  expect(field).not.toBeNull();
+  if (kind === 'boolean') expect(field.checked).toBe(true);
+  else expect(field.value).toBe(kind === 'finite_set' ? '-1' : '3/2');
+  expect((await getProblem('structured')).answerInput).toEqual(spec);
+  await act(async () => button('Check answer').click());
+  expect(calls.find(call => call.path.endsWith('/attempts'))?.body?.answer).toBe(answer);
+  expect(calls.some(call => call.path.includes('reveal-'))).toBe(false);
 });
 
 it('shares a saved problem by link and code and stops sharing it (#37)', async () => {

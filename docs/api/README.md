@@ -510,3 +510,20 @@ but issue engine codes. Old saved records follow the existing archive contract.
 Answers remain exact scalar values without C; native wrong answers use general
 feedback. Solution payloads retain region2d/solid3d visuals, and worksheets use
 the release pools at their published capacities.
+## Structured answer instructions (#200)
+
+New probability/statistics problems may include optional `answerInput` in their
+public problem projection, including anonymous code/share responses. The only
+fields are `kind` (`boolean`, `finite_set` or `interval`), `maxBytes: 256`, and
+`maxItems: 8` for finite sets. Expected values and generator data stay private.
+Other problems retain their existing projections. History and recipient-owned
+copies retain these input instructions. The server derives the kind from its
+trusted generator record; attempts cannot supply or override it.
+
+The attempt `answer` field stays a string: `true`/`false`, `{1,2/3}` or `{}`, and
+`[1/3,2]` / `(-inf,2]` / `[0,inf)`, respectively. Components use the existing
+bounded constant expression language. One whole structured answer shares the
+same input/complexity budgets and worker limits. Valid wrong answers remain
+incorrect; malformed/undefined values are invalid; inconclusive checking is
+still retryable without recording an incorrect attempt. Authorized reveals
+return normal answer LaTeX and solution steps.

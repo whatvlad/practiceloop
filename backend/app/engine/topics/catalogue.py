@@ -91,11 +91,12 @@ from app.engine.models import Drawn, Task
 from app.engine.prng import DeterministicRNG
 from app.engine.registry import Registry
 from app.engine.topics.analysis_two import MATRIX as ANALYSIS_TWO
+from app.engine.topics.probability import TOPIC_SPECS as PROBABILITY_TOPICS
 
 logger = logging.getLogger(__name__)
 
 # The public areas of the practice API; engine topics use no others.
-AREAS = frozenset({"algebra", "mathematical-analysis"})
+AREAS = frozenset({"algebra", "mathematical-analysis", "probability-statistics"})
 MAX_DRAWS = 64
 
 
@@ -553,6 +554,19 @@ def topics() -> dict[str, Topic]:
                 *analysis_offered[1],
             )
         declared[slug] = replace(declared[slug], levels=analysis_offered)
+    for slug, title, space, levels in PROBABILITY_TOPICS:
+        declared[slug] = Topic(
+            slug,
+            "probability-statistics",
+            {
+                level: tuple(Choice(f"probability-{kind}-v1") for kind in kinds)
+                for level, kinds in levels.items()
+            },
+            1,
+            title=title,
+            space_cm=space,
+            served=True,
+        )
     return declared
 
 

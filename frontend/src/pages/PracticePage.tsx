@@ -67,6 +67,7 @@ function PracticeSession({ opened }: { opened: OpenedProblem }) {
     <>
     {error && <p role="alert">{error}</p>}
     <ProblemCard
+      answerInput={problem.answerInput}
       topic={problem.topic}
       difficulty={problem.difficulty}
       problemLatex={problem.problemLatex}

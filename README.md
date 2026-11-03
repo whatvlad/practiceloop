@@ -8,10 +8,11 @@ solution reveal, history and a profile. [Original specification](docs/PRACTICELO
 **Status: MVP complete (0.1.0, see [CHANGELOG](CHANGELOG.md)).** Live at
 https://practiceloop.pages.dev (noindex). Signed-in learners can:
 
-- practise the current 36 Algebra and Mathematical Analysis topics, with their
+- practise the current 45 Algebra, Mathematical Analysis, and Probability and Statistics topics, with their
   available levels and mixed practice supplied by the API, including the
   [Analysis I](docs/architecture/ANALYSIS_I.md) and
-  [Analysis II](docs/architecture/ANALYSIS_II.md) curricula;
+  [Analysis II](docs/architecture/ANALYSIS_II.md) and
+  [Probability and Statistics](docs/architecture/PROBABILITY_STATISTICS.md) curricula;
 - type answers in a formula editor; typed engine answers check them symbolically
   (Correct, Incorrect or Invalid expression, with explicit missing-constant feedback);
 - open a permanent problem code at `/p/<code>` and sign in to solve that exact
@@ -57,7 +58,7 @@ the order of the [Implementation Queue](https://github.com/users/whatvlad/projec
   only sign-in provider.
 - **Content is fixed.** Problems come from a verified catalogue (no repeats
   within half a cell's catalogue per learner), not open-ended generation. Only
-  the current Algebra and Mathematical Analysis syllabus is covered. Mistake
+  the current Algebra, Mathematical Analysis and Probability and Statistics syllabus is covered. Mistake
   native wrong answers get general feedback; historical named feedback remains readable.
 - **Answer language is bounded** (ADR-003): real domain only, a 256-byte limit,
   and an allowlisted grammar. The formula editor's phone keyboard was checked
@@ -224,7 +225,8 @@ Proprietary, all rights reserved. See [LICENSE](LICENSE).
 
 Current topics use the native engine in Algebra and Mathematical Analysis.
 Analysis I (#145) and Analysis II (#146) extend the retained integral and partial
-derivative families; Probability and Statistics remains #200. Curriculum expansion follows
+derivative families; #200 adds the approved Probability and Statistics matrix.
+Curriculum expansion follows
 the [ADR-005 amendment](docs/decisions/0005-multiple-integrals-and-derivatives.md#amendment-practice-areas-144-2026-10-26).
 
 The original [MVP specification](docs/PRACTICELOOP_MVP.md) remains the product

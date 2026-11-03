@@ -117,3 +117,29 @@ def input_variables(record: dict[str, object]) -> dict[str, VariableDomain] | No
 
 def check(record: dict[str, object], tree: MathNode) -> Outcome:
     return replay(record).answer.check(tree)
+
+
+def input_kind(record: dict[str, object]) -> str:
+    """Trusted answer metadata, read without symbolic construction."""
+    if set(record) != {"generator_version", "code"} or not isinstance(record["code"], str):
+        raise ValueError("Invalid new-engine record")
+    code = parse_code(record["code"], _registry())
+    generator = _registry().get_code(code.prefix, code.version)
+    if generator.version != record["generator_version"]:
+        raise ValueError("Record version differs from its code")
+    return str(getattr(generator.answer, "kind", "expression"))
+
+
+def input_projection(record: object) -> dict[str, object]:
+    """Only optional input instructions; never private parameters or answers."""
+    from app.math_input.structured import STRUCTURED_KINDS
+
+    if not is_engine_record(record):
+        return {}
+    kind = input_kind(record)  # type: ignore[arg-type]
+    if kind not in STRUCTURED_KINDS:
+        return {}
+    descriptor: dict[str, object] = {"kind": kind, "maxBytes": 256}
+    if kind == "finite_set":
+        descriptor["maxItems"] = 8
+    return {"answerInput": descriptor}

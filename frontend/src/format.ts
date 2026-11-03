@@ -30,6 +30,8 @@ export function isDefinite(problemLatex: string): boolean {
 export type ProblemKind = 'indefinite' | 'definite' | 'double' | 'triple' | 'derivative' | 'partial' | 'numeric' | 'complex' | 'expression';
 
 export function problemKind(topic: TopicSlug, problemLatex: string): ProblemKind {
+  if (['probability-events', 'conditional-probability', 'discrete-random-variables', 'discrete-distributions',
+    'continuous-distributions', 'moments-joint-distributions', 'descriptive-statistics', 'confidence-intervals', 'hypothesis-tests'].includes(topic)) return 'numeric';
   if (['functions-and-sequences', 'limits-and-continuity', 'differential-calculus', 'series'].includes(topic)) return 'expression';
   if (topic === 'algebraic-expressions') return 'numeric';
   if (topic === 'complex-arithmetic' || topic === 'complex-polar-form') return 'complex';
@@ -100,7 +102,10 @@ export function displayProblem(topic: TopicSlug, problemLatex: string): { instru
  * `\quad(r > 0,\ \theta \in \mathbb{R})`, so the names are read from there.
  * Other kinds keep the integration grammar (undefined).
  */
-export function answerVariables(kind: ProblemKind, problemLatex: string): AnswerVariable[] | undefined {
+export function answerVariables(kind: ProblemKind, problemLatex: string, topic?: TopicSlug): AnswerVariable[] | undefined {
+  if (kind === 'numeric' && topic && ['probability-events', 'conditional-probability', 'discrete-random-variables',
+    'discrete-distributions', 'continuous-distributions', 'moments-joint-distributions', 'descriptive-statistics',
+    'confidence-intervals', 'hypothesis-tests'].includes(topic)) return [];
   if (kind === 'complex') return ['i'];
   if (kind !== 'partial') return undefined;
   const start = problemLatex.lastIndexOf('\\quad(');

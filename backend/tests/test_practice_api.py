@@ -325,7 +325,7 @@ def primitive_of(url: str, problem_id: str) -> str:
     return str(value).replace("**", "^").replace("Abs", "abs").replace("E", "e")
 
 
-def answer_of(url: str, problem_id: str) -> str:
+def answer_of(url: str, problem_id: str, *, wrong: bool = False) -> str:
     """A correct learner answer: the exact value, or the antiderivative plus C."""
 
     (data,) = rows(
@@ -333,15 +333,44 @@ def answer_of(url: str, problem_id: str) -> str:
         "select generator_data from private.problem_solutions where problem_id = %s",
         problem_id,
     )[0]
+    import sympy as sp
+
     from app.engine.answers.antiderivative import AntiderivativeAnswer
+    from app.engine.answers.structured import BooleanAnswer, FiniteSetAnswer, IntervalAnswer
 
     answer = engine.replay(data).answer
+
+    def scalar(value: Any) -> str:
+        return str(value).replace("**", "^").replace("E", "e")
+
+    if isinstance(answer, BooleanAnswer):
+        return "true" if answer.expected != wrong else "false"
+    if isinstance(answer, FiniteSetAnswer):
+        values = [*answer.expected, 11] if wrong else list(answer.expected)
+        return "{" + ",".join(map(scalar, values)) + "}"
+    if isinstance(answer, IntervalAnswer):
+        lower, upper = answer.lower, answer.upper
+        if wrong:
+            if upper == sp.oo:
+                lower += 1
+            else:
+                upper += 1
+        return (
+            ("(" if answer.left_open else "[")
+            + ("-inf" if lower == -sp.oo else scalar(lower))
+            + ","
+            + ("inf" if upper == sp.oo else scalar(upper))
+            + (")" if answer.right_open else "]")
+        )
     if isinstance(answer, AntiderivativeAnswer):
+        if wrong:
+            return "999999"
         return (
             str(answer.primitive).replace("**", "^").replace("Abs", "abs").replace("E", "e")
             + " + C"
         )
-    return str(answer.expected).replace("**", "^").replace("E", "e").replace("I", "i")
+    text = str(answer.expected).replace("**", "^").replace("E", "e").replace("I", "i")
+    return f"({text})+1" if wrong else text
 
 
 @pytest.mark.parametrize("level", [1, 2])
@@ -387,6 +416,15 @@ def test_algebraic_expressions_practice_saves_checks_and_reveals(
                 "series",
                 "multivariable-functions",
                 "differential-equations",
+                "probability-events",
+                "conditional-probability",
+                "discrete-random-variables",
+                "discrete-distributions",
+                "continuous-distributions",
+                "moments-joint-distributions",
+                "descriptive-statistics",
+                "confidence-intervals",
+                "hypothesis-tests",
             )
             for level in range(1, 6)
         ),
@@ -396,7 +434,7 @@ def test_linear_algebra_practice_saves_checks_and_reveals(
     client: TestClient, url: str, topic: str, level: int
 ) -> None:
     problem = generate(client, topic, level)
-    wrong = attempt(client, problem["id"], f"({answer_of(url, problem['id'])})+1")
+    wrong = attempt(client, problem["id"], answer_of(url, problem["id"], wrong=True))
     assert wrong.json()["attempt"]["result"] == "incorrect"
     result = attempt(client, problem["id"], answer_of(url, problem["id"]))
     assert result.status_code == 201, result.text
