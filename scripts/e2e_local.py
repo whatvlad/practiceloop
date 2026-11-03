@@ -137,7 +137,9 @@ def correct_answer(url: str, problem_id: str) -> str:
         value, constant = answer.primitive, " + C"
     else:
         value, constant = answer.expected, ""  # type: ignore[attr-defined]
-    return sp.sstr(value).replace("**", "^").replace("Abs", "abs").replace("E", "e") + constant
+    text = sp.sstr(value).replace("**", "^").replace("Abs", "abs").replace("E", "e")
+    # #221: complex answers spell the imaginary unit as `i`.
+    return text.replace("I", "i") + constant
 
 
 def private_record(url: str, problem_id: str) -> dict[str, object]:
