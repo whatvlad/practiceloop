@@ -2,6 +2,15 @@
   "schema_version": 1,
   "status": "intake-draft-not-a-coverage-certificate",
   "base": "30743c36ae624177acdc71ffb3638948f9556e7a",
+  "owner_decision": {
+    "date": "2026-11-03",
+    "first_stage": "computational-generators",
+    "computational_parent": 232,
+    "deferred_learner_proof_sketch_issue": 244,
+    "reference_solution": "required-for-each-generated-variant-from-identical-parameters",
+    "parameter_derived_diagrams_and_visualizations": "included-in-computational-stage-where-relevant",
+    "component_reconciliation": "pending-source-audit"
+  },
   "sources": [
     {
       "id": "AM1",

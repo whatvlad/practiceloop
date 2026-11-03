@@ -16,6 +16,14 @@ Do not create a duplicate course solely because a PDF has a different title.
 Existing 239 immutable versions, permanent codes, private records and history
 remain stable. Additional structures receive new versions and explicit prefixes.
 
+Owner decisions (2026-11-03): release computational generators first. Defer
+learner proof and sketch tasks to #244, after computational parent #232.
+Each generated variant must already have its own correct reference answer and
+worked solution, tied to exactly the same parameters. Include an appropriate
+parameter-derived diagram or visualization where the mathematical type calls
+for one. This visual requirement is part of the computational release; it is
+not deferred together with learner drawing tasks.
+
 ## Sources and inventory status
 
 Both sheets credit Marian Gewert and Zbigniew Skoczylas.
@@ -56,7 +64,7 @@ represented as visually verified.
 | Issue | Scope | Source references |
 |---|---|---|
 | #233 | Reconcile source inventory and checking contracts | All source/exam references |
-| #234 | Reusable exact structured answers and visual/self-review task mode | Shared prerequisites |
+| #234 | Exact structured computational answers and solution visual contracts | Shared prerequisites |
 | #235 | Logic, elementary functions, domains, equations, inequalities, trigonometry | AM1 1–23 |
 | #236 | Sequences, limits, asymptotes, continuity, root certificates | AM1 24–39 |
 | #237 | Derivatives, complete function analysis, optimization, Taylor/error bounds | AM1 40–49, 51, 69–73 |
@@ -65,7 +73,8 @@ represented as visually verified.
 | #240 | Multivariable functions, regions/surfaces, derivatives and extrema | AM2A 5–9 |
 | #241 | Double integrals, region geometry, surface patches, centroids/inertia | AM2A 10–12 |
 | #242 | ODE models/general solutions/IVPs and direct/inverse Laplace transforms | AM2A 13–14 |
-| #232 | Final source coverage and deployment audit | All children, including exam-only/starred families |
+| #232 | Computational source coverage and deployment audit | Computational children, including exam-only/starred computations |
+| #244 | Subsequent learner proof, sketch and graph-matching tasks | Explicitly deferred items/components, after #232 |
 
 Each mathematical block also owns its matching exam families. No exam-only
 family is excluded: examples include polynomial reconstruction, functional-limit
@@ -100,12 +109,13 @@ may cite an existing version after checking its actual form, domain, answer and
 solution against the source family. Frozen outputs must not be edited to make
 this new mapping fit.
 
-## Answer and interaction proposal
+## Accepted staging and computational contracts
 
-The owner has been asked to choose self-review versus structured step checking
-for proof/sketch tasks, or to stage those after computations. The self-review
-contract below is the recommended proposal, not recorded owner acceptance.
-Do not start dependent task-mode implementation before that answer arrives.
+The owner chose computations first; the earlier self-review-versus-step-checking
+proposal is superseded. No further approval of this phase choice is pending.
+Every mixed source task must distinguish its computational result from its
+deferred learner proof/sketch component. Do not claim that checking a computed
+answer also grades a learner's proof or drawing.
 
 1. Numerical and symbolic computations retain exact server checking, strict
    domain handling and resource limits. No LLM-generated mathematics or sampled
@@ -121,25 +131,38 @@ Do not start dependent task-mode implementation before that answer arrives.
 4. General ODE solutions retain arbitrary constants, equilibrium/singular
    branches and their stated intervals. Do not silently change every general
    solution question into an IVP just to use an existing checker.
-5. **Proof and sketch tasks remain proof and sketch tasks.** Generate a new
-   mathematically certified statement/figure and a parameter-specific reference
-   proof/sketch, hidden until the learner requests it. Present these clearly as
-   self-review tasks, with no fabricated Correct/Incorrect score for free-form
-   reasoning/drawing. They must not inflate checked/correct counters. Where a
-   faithful intermediate calculation or graph-matching question is generated,
-   label that narrower interaction explicitly rather than claiming unrestricted
-   proof/drawing assessment. The worksheet can include the generated prompt and
-   optionally the reference proof/diagram under existing reveal semantics.
+5. **Learner proof and sketch tasks are deferred to #244.** Do not introduce a
+   self-review/proof/drawing grading mode in #234. The source index must retain
+   these references/components, with an explicit deferral rather than a false
+   coverage mark. Exact checking of computations stays in the first release.
 6. Generated task diagrams are built from the sampled mathematical model, never
    cropped from the PDF. Separate task-visible data from solution-only graphs
    and private expected values. A graph used in the question must not leak the
    answer through metadata or accessibility text.
 
-The proposed self-review choice preserves the source's mathematical request while
-avoiding unreliable free-form proof/drawing grading. It does not exclude those
-families from this expansion. #234 must implement an explicit public task mode,
-UI behavior, API response for unsupported auto-check attempts, history/statistics
-behavior and privacy/worker tests before these templates are issued.
+## Reference solutions and visuals are part of generation
+
+A publishable generated variant consists of its statement, exact answer,
+parameter-specific worked derivation and, when relevant, a deterministic visual
+model. All are derived from the same frozen generator/version/code and sampled
+parameters. There is no second unrelated generation when Show Solution is
+pressed, no shared stock solution with mismatching coefficients and no copied
+PDF figure. Private solution content remains hidden until authorized reveal.
+
+Reference derivations must already exist and be verified when a variant enters
+the private catalogue. A renderer may draw a stored/replayable visual model
+when the solution is opened; that is rendering, not inventing another solution.
+Historical reopens, recipient copies and worksheet output retain the same math.
+
+Each template declares a visual policy: a parameter-derived plot, explanatory
+diagram, or a justified not-applicable case. Examples are tangent/sign charts,
+bounded integration regions and solids, multivariable level sets/gradient
+arrows, and suitable sequence/series or ODE solution plots. Use visuals to
+explain the actual computation, not as decorative replacements for derivations.
+State correct axes, domains, boundaries, orientation and units. New task-visible
+diagrams must be separated from private solution-only features. Reuse existing
+trusted visual builders where they fit; add focused contracts in #234 where
+needed, then mathematical builders in their delivery issue.
 
 ## Source mathematics and errata
 
@@ -162,12 +185,14 @@ examples, parameter bounds and excluded degeneracies. Follow existing golden
 replay, seed sweeps, private catalogue verification and Linux worker caps.
 
 For computations, exercise correct/equivalent/wrong/invalid inputs and ownership,
-history, codes/shares/copies, mixed practice and generated worksheets. For
-self-review, verify no false grading, no unintended counter updates and hidden
-reference solutions before authorized reveal. Inspect rendered question/solution
-graphs. New private catalogue/proofs/source text never enter browser assets.
+history, codes/shares/copies, mixed practice and generated worksheets. Verify
+that reference answers/steps/visuals match the same sampled parameters and are
+hidden before authorized reveal. Inspect rendered question/solution graphs.
+New private catalogue/proofs/source text never enter browser assets. Learner
+proof/drawing interaction tests belong to the later #244 stage.
 
 Do not close #232 because the intake document exists, a topic appears in the UI,
-or a few scalar representatives work. It closes only after source-family
-reconciliation, all mathematical deliveries, hosted CI, deployment and actual
-live checks, with explicit remaining gaps or owner-accepted exclusions.
+or a few scalar representatives work. It closes only after computational
+source-family reconciliation, all first-stage mathematical deliveries, hosted
+CI, deployment and actual live checks. Every deferred proof/sketch component
+must explicitly link to the owner-accepted later stage #244.
