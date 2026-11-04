@@ -1660,7 +1660,7 @@
     "semantic_hash": ""
   },
   "scripts/e2e_local.py": {
-    "ast_hash": "e78ad00fc296cfd5368b4a7f6d9699f2",
+    "ast_hash": "57d0ba2610043a3d4d2bcd05e6808479",
     "semantic_hash": ""
   },
   "scripts/test-db.py": {
@@ -1872,7 +1872,7 @@
     "semantic_hash": ""
   },
   "backend/app/engine/answers/domain_formula.py": {
-    "ast_hash": "c3b2eb7a89108616d1bb04eb9fa6592c",
+    "ast_hash": "01379bdcb4a9c9b9dd0520ef28f81304",
     "semantic_hash": ""
   },
   "backend/app/engine/answers/fourier.py": {
@@ -1920,7 +1920,7 @@
     "semantic_hash": ""
   },
   "backend/tests/test_engine_elementary.py": {
-    "ast_hash": "36e7efe0d4cafa7e6e48551b57af9292",
+    "ast_hash": "dc2641393d8f6b6c88f437b16cfdf3d3",
     "semantic_hash": ""
   },
   "backend/tests/test_engine_elementary_logic.py": {
@@ -1944,7 +1944,7 @@
     "semantic_hash": ""
   },
   "backend/tests/test_engine_elementary_api.py": {
-    "ast_hash": "c6377eb56ce85f6670e21bc8e2dd5e13",
+    "ast_hash": "758932a7ba8c20efc6a251209e9665db",
     "semantic_hash": ""
   },
   "backend/tests/test_engine_elementary_coverage.py": {
@@ -1960,11 +1960,11 @@
     "semantic_hash": ""
   },
   "docs/agents/HANDOFF_235.md": {
-    "ast_hash": "8ddfba4fc2d18bf1e23fee7661166a2e",
+    "ast_hash": "6220710ec4057235e2c6b306eddd2221",
     "semantic_hash": ""
   },
   "docs/architecture/ELEMENTARY_FUNCTIONS.md": {
-    "ast_hash": "5d40ee8a401bc203d44e9ba301ffcac9",
+    "ast_hash": "e01485947591e79bf400f4b909c6bc31",
     "semantic_hash": ""
   },
   "backend/tests/test_engine_elementary_visuals.py": {
