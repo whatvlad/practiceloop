@@ -108,7 +108,7 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "ast_hash": "405cb1ffbdd89860b4ddf30709fd5b98",
+    "ast_hash": "8d07f3aee9139066a475ef0fa3cfdb48",
     "semantic_hash": ""
   },
   "SECURITY.md": {
@@ -132,7 +132,7 @@
     "semantic_hash": ""
   },
   "docs/agents/STATUS.md": {
-    "ast_hash": "03d459995365f72ba993d864690ed550",
+    "ast_hash": "533cefbccc79edda79c692ef7ddedb74",
     "semantic_hash": ""
   },
   "docs/agents/TASK_PROTOCOL.md": {
@@ -212,7 +212,7 @@
     "semantic_hash": ""
   },
   "frontend/src/components/ProblemCard.tsx": {
-    "ast_hash": "3dca4ad0b2991cc2cb4f5165977724df",
+    "ast_hash": "f523af403235db20dfdb939976f4c934",
     "semantic_hash": ""
   },
   "frontend/src/components/ResultBanner.tsx": {
@@ -252,7 +252,7 @@
     "semantic_hash": ""
   },
   "frontend/src/data/types.ts": {
-    "ast_hash": "f47e1ff34109301d6d69f39fc93cce5c",
+    "ast_hash": "8a1265d2df20fddb6fb0aef13aea0fb3",
     "semantic_hash": ""
   },
   "frontend/src/format.test.ts": {
@@ -572,7 +572,7 @@
     "semantic_hash": ""
   },
   "frontend/src/answerSyntax.ts": {
-    "ast_hash": "a2f31dbbe4d38cd7029e34c2e9f53e3e",
+    "ast_hash": "8499f50409cca8585910d2b2091e1df1",
     "semantic_hash": ""
   },
   "frontend/src/components/AnswerInput.test.tsx": {
@@ -796,7 +796,7 @@
     "semantic_hash": ""
   },
   "backend/app/engine/answers/computational.py": {
-    "ast_hash": "f621a814a438282d13f56c6478b41015",
+    "ast_hash": "22e83dff39fe00c80020b3fcf326416c",
     "semantic_hash": ""
   },
   "backend/app/engine/answers/derivative.py": {
@@ -1108,7 +1108,7 @@
     "semantic_hash": ""
   },
   "backend/app/engine/topics/catalogue.py": {
-    "ast_hash": "e225529443d41f1b8d034c2f802b4c8a",
+    "ast_hash": "01383abb6741c3783b5e461f2f43345f",
     "semantic_hash": ""
   },
   "backend/app/engine/topics/probability.py": {
@@ -1120,15 +1120,15 @@
     "semantic_hash": ""
   },
   "backend/app/math_input/computational.py": {
-    "ast_hash": "1eba81f7bf58ba388d6eab6596b16b4e",
+    "ast_hash": "3604a8e46663543b8b06e437d02b09d7",
     "semantic_hash": ""
   },
   "backend/app/math_input/contracts.py": {
-    "ast_hash": "7bcbedae46bb7b192ac843be89bc71a1",
+    "ast_hash": "e5f159ddeffa624b3c76d891b7141eff",
     "semantic_hash": ""
   },
   "backend/app/math_input/parser.py": {
-    "ast_hash": "7d0e62240c26f4f0a2690fdc4369e410",
+    "ast_hash": "a4059263a1dedfdefe6484cd46e985c2",
     "semantic_hash": ""
   },
   "backend/app/math_input/structured.py": {
@@ -1212,7 +1212,7 @@
     "semantic_hash": ""
   },
   "backend/tests/fixtures/engine_golden_v1.json": {
-    "ast_hash": "3cf327a87a8bb28c5bbafdf591799bc2",
+    "ast_hash": "f0711a1d0aad6136e7154593286b7fc0",
     "semantic_hash": ""
   },
   "backend/tests/fixtures/legacy_saved_problems.json": {
@@ -1248,11 +1248,11 @@
     "semantic_hash": ""
   },
   "backend/tests/test_engine_analysis.py": {
-    "ast_hash": "5eed376c85097032d3ca2f4bce138f60",
+    "ast_hash": "1a955aac0cfb32edebb42ecc5d3330f8",
     "semantic_hash": ""
   },
   "backend/tests/test_engine_analysis_one.py": {
-    "ast_hash": "f9ba65c0004005702c9e061d2de77fa4",
+    "ast_hash": "5aa36e633647167eca4eff8cb215b0ef",
     "semantic_hash": ""
   },
   "backend/tests/test_engine_analysis_two.py": {
@@ -1296,7 +1296,7 @@
     "semantic_hash": ""
   },
   "backend/tests/test_engine_curriculum.py": {
-    "ast_hash": "3e965187edc21a4cfd1c12145e7caaaf",
+    "ast_hash": "124502c16c05bcd9e725286ce415d0ba",
     "semantic_hash": ""
   },
   "backend/tests/test_engine_differentiation.py": {
@@ -1360,7 +1360,7 @@
     "semantic_hash": ""
   },
   "backend/tests/test_engine_topics.py": {
-    "ast_hash": "620a737b5884d899b00b926b27751e2b",
+    "ast_hash": "a59a8a204c3c20293add823933397bf6",
     "semantic_hash": ""
   },
   "backend/tests/test_region2d.py": {
@@ -1384,11 +1384,11 @@
     "semantic_hash": ""
   },
   "backend/tests/test_topic_areas.py": {
-    "ast_hash": "df23ef53b61eae19445e6872e5608451",
+    "ast_hash": "fc9e49e8fa7f0eab8436503b5fe10dc1",
     "semantic_hash": ""
   },
   "backend/tests/test_visuals.py": {
-    "ast_hash": "c921789dd99dd78e6d998f39a97f5a4b",
+    "ast_hash": "72ecbf67c0f09f19eef2c1a4b355352b",
     "semantic_hash": ""
   },
   "backend/tests/test_worksheet_graphs.py": {
@@ -1412,7 +1412,7 @@
     "semantic_hash": ""
   },
   "docs/architecture/analysis_pdf_source_index.json": {
-    "ast_hash": "5f60d60f0104137ea12673d5cd92a31a",
+    "ast_hash": "2d673b17931c49a8f08efe0a3de24ad9",
     "semantic_hash": ""
   },
   "frontend/src/analytics.test.ts": {
@@ -1424,11 +1424,11 @@
     "semantic_hash": ""
   },
   "frontend/src/components/ComputationalAnswerInput.test.tsx": {
-    "ast_hash": "d145f2a5be3e04538c78fb08e238cbb6",
+    "ast_hash": "03ef343f88351dc6caa51369d77099d3",
     "semantic_hash": ""
   },
   "frontend/src/components/ComputationalAnswerInput.tsx": {
-    "ast_hash": "9334570589d365f98324ce2610a8f272",
+    "ast_hash": "5680253a7d5ad53cc5fcd899e4a8eea1",
     "semantic_hash": ""
   },
   "frontend/src/components/ErrorBoundary.tsx": {
@@ -1480,7 +1480,7 @@
     "semantic_hash": ""
   },
   "frontend/src/data/answerInput.ts": {
-    "ast_hash": "0bfbd5f6c482910f0f9952f1812b45f0",
+    "ast_hash": "c6d86be9b4969ff2e8c92ccb8e77be7f",
     "semantic_hash": ""
   },
   "frontend/src/data/curriculum.ts": {
@@ -1564,11 +1564,11 @@
     "semantic_hash": ""
   },
   "frontend/src/visual/Plot2dView.test.tsx": {
-    "ast_hash": "1a2afbd2220196d24536608557ccf74a",
+    "ast_hash": "97a5dca523caa56b70ce7ca31147347b",
     "semantic_hash": ""
   },
   "frontend/src/visual/Plot2dView.tsx": {
-    "ast_hash": "e306e86ebd7397885e151e0f0484d1c4",
+    "ast_hash": "78880001d8bc18cc20edbdf3b5aed7a8",
     "semantic_hash": ""
   },
   "frontend/src/visual/RangeSlider.tsx": {
@@ -1660,7 +1660,7 @@
     "semantic_hash": ""
   },
   "scripts/e2e_local.py": {
-    "ast_hash": "e60118d9aac6db9771bdb17db79473c7",
+    "ast_hash": "0c3dc9ae25576f104268100d05d86af6",
     "semantic_hash": ""
   },
   "scripts/test-db.py": {
@@ -1772,7 +1772,7 @@
     "semantic_hash": ""
   },
   "supabase/tests/isolation.sql": {
-    "ast_hash": "e4319d31b93548f9b635c78f44ab0dcb",
+    "ast_hash": "f2916250e46d35d270f954b36fa76cbd",
     "semantic_hash": ""
   },
   "docs/agents/GRAPHIFY.md": {
@@ -1808,7 +1808,7 @@
     "semantic_hash": ""
   },
   "docs/architecture/ANALYSIS_PDF_COVERAGE.md": {
-    "ast_hash": "a138f363e8ecf1b15419650cfd7bf23b",
+    "ast_hash": "ca83096c550c625f99d51022ecdbb013",
     "semantic_hash": ""
   },
   "docs/architecture/PROBABILITY_STATISTICS.md": {
@@ -1864,11 +1864,111 @@
     "semantic_hash": ""
   },
   "docs/architecture/COMPUTATIONAL_ANSWERS.md": {
-    "ast_hash": "acf0fb7b1f054221778b8203f37bd595",
+    "ast_hash": "6ff57fca0c6fd1b5ebd946bd47805b28",
     "semantic_hash": ""
   },
   "docs/agents/HANDOFF_234.md": {
     "ast_hash": "d6afdade0e84f7d3e4d52923f5c32935",
+    "semantic_hash": ""
+  },
+  "backend/app/engine/answers/domain_formula.py": {
+    "ast_hash": "c3b2eb7a89108616d1bb04eb9fa6592c",
+    "semantic_hash": ""
+  },
+  "backend/app/engine/answers/fourier.py": {
+    "ast_hash": "5843f1a9e2fb25b074517ffdf13a9163",
+    "semantic_hash": ""
+  },
+  "backend/app/engine/answers/logic.py": {
+    "ast_hash": "31f5531b24fc2d4a31e015ab6d1dd6e7",
+    "semantic_hash": ""
+  },
+  "backend/app/engine/generators/_elementary_common.py": {
+    "ast_hash": "2a62a84b5f37995ac83fa63488971b7f",
+    "semantic_hash": ""
+  },
+  "backend/app/engine/generators/_elementary_equations.py": {
+    "ast_hash": "88f001758090d154244994c20f8af8dd",
+    "semantic_hash": ""
+  },
+  "backend/app/engine/generators/_elementary_functions.py": {
+    "ast_hash": "0c3290c4a61c5a415fed62f1a5a0444b",
+    "semantic_hash": ""
+  },
+  "backend/app/engine/generators/_elementary_logic.py": {
+    "ast_hash": "8167a414b2aff3eeb50b2291660487ef",
+    "semantic_hash": ""
+  },
+  "backend/app/engine/generators/_elementary_trigonometry.py": {
+    "ast_hash": "df71600f37d20577364b8e7474513948",
+    "semantic_hash": ""
+  },
+  "backend/app/engine/generators/elementary.py": {
+    "ast_hash": "0f23bd7417b27f743ff8dd7a13455f6c",
+    "semantic_hash": ""
+  },
+  "backend/app/engine/topics/elementary.py": {
+    "ast_hash": "2d9e4be4956c3b5ea19deca6d6f50709",
+    "semantic_hash": ""
+  },
+  "backend/app/math_input/logic.py": {
+    "ast_hash": "6bccf1e89232bc8b7819b1de9573448e",
+    "semantic_hash": ""
+  },
+  "backend/tests/fixtures/logic_answer_syntax.json": {
+    "ast_hash": "050918854e4437757b5de4f5022a1086",
+    "semantic_hash": ""
+  },
+  "backend/tests/test_engine_elementary.py": {
+    "ast_hash": "36e7efe0d4cafa7e6e48551b57af9292",
+    "semantic_hash": ""
+  },
+  "backend/tests/test_engine_elementary_logic.py": {
+    "ast_hash": "e9a628bbeb314d6ffdf507853b4903f1",
+    "semantic_hash": ""
+  },
+  "backend/tests/test_engine_elementary_mathematics.py": {
+    "ast_hash": "7de9b44f8ec5521f8901e29dd9a6b665",
+    "semantic_hash": ""
+  },
+  "frontend/src/logicAnswer.test.ts": {
+    "ast_hash": "ed6edb78ed6206307de53f762c83505b",
+    "semantic_hash": ""
+  },
+  "backend/app/engine/generators/_elementary_visuals.py": {
+    "ast_hash": "900f2fa453482b08e458af73b90484c1",
+    "semantic_hash": ""
+  },
+  "backend/tests/fixtures/elementary_worked_examples.json": {
+    "ast_hash": "c205bab2a6c73598252a585b08f24db4",
+    "semantic_hash": ""
+  },
+  "backend/tests/test_engine_elementary_api.py": {
+    "ast_hash": "c6377eb56ce85f6670e21bc8e2dd5e13",
+    "semantic_hash": ""
+  },
+  "backend/tests/test_engine_elementary_coverage.py": {
+    "ast_hash": "75d9f0b91811127b6d78a4012ed5aa8b",
+    "semantic_hash": ""
+  },
+  "frontend/src/elementaryContent.test.ts": {
+    "ast_hash": "350dcf0e71a42cdd78ccbc41a435f701",
+    "semantic_hash": ""
+  },
+  "supabase/migrations/20261104150000_elementary_topics.sql": {
+    "ast_hash": "90c32db3df9ea27e69a805656dc95c9b",
+    "semantic_hash": ""
+  },
+  "docs/agents/HANDOFF_235.md": {
+    "ast_hash": "ea81419888fc9e1389095e6d79f6bbd4",
+    "semantic_hash": ""
+  },
+  "docs/architecture/ELEMENTARY_FUNCTIONS.md": {
+    "ast_hash": "5d40ee8a401bc203d44e9ba301ffcac9",
+    "semantic_hash": ""
+  },
+  "backend/tests/test_engine_elementary_visuals.py": {
+    "ast_hash": "111f0f39948159e4330d2139917a55e2",
     "semantic_hash": ""
   }
 }
