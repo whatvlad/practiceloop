@@ -35,9 +35,12 @@ def literals(picture: str) -> list[str]:
     return re.findall(r"\\pdfliteral\{([^}]*)\}", picture)
 
 
-def test_every_visual_kind_has_a_drawer() -> None:
+def test_every_served_visual_kind_has_a_drawer() -> None:
     kinds = {build_visual(record)["kind"] for record in first_records()}  # type: ignore[index]
-    assert kinds == set(DRAWERS) == {"definite", "indefinite", "region2d", "solid3d"}
+    assert kinds == {"definite", "indefinite", "region2d", "solid3d"}
+    # A reusable visual can precede its curriculum consumer (#234). Its own
+    # renderer/print tests live with the computational extension provider.
+    assert kinds <= set(DRAWERS)
 
 
 @pytest.mark.parametrize("record", first_records(), ids=lambda r: str(r["generator_version"]))
