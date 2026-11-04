@@ -5,11 +5,23 @@ import type { VisualSpec } from '../visual/spec';
 /** ADR-005: practice has two areas, and every topic belongs to exactly one. */
 export type AreaSlug = 'algebra' | 'mathematical-analysis' | 'probability-statistics';
 
-export interface AnswerInputSpec {
+export interface LegacyAnswerInputSpec {
   kind: 'boolean' | 'finite_set' | 'interval';
   maxBytes: 256;
   maxItems?: 8;
 }
+
+export interface ComputationalInputSpec {
+  kind: 'real_set' | 'tuple' | 'category' | 'formula' | 'limit_result';
+  maxBytes: 256;
+  maxItems?: 8;
+  symbols?: Record<string, 'real' | 'positive' | 'integer'>;
+  components?: ComputationalInputSpec[];
+  labels?: string[];
+  choices?: string[];
+}
+
+export type AnswerInputSpec = LegacyAnswerInputSpec | ComputationalInputSpec;
 
 /** A topic's slug. The list of topics comes from GET /topics (#191), not from this build. */
 export type TopicSlug = string;

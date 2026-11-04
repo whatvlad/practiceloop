@@ -2,6 +2,7 @@
 // how the backend will read an answer and explains syntax mistakes; it never decides
 // correctness, and the submitted text is never rewritten behind the learner's back.
 // Keep the rules and limits in step with the backend parser.
+import type { ComputationalInputSpec } from './data/types';
 
 export const MAX_INPUT_BYTES = 256;
 const MAX_TOKENS = 128;
@@ -654,6 +655,97 @@ export function analyseStructuredAnswer(source: string, kind: 'boolean' | 'finit
     }
     if (nodes > MAX_NODES || tokens > MAX_TOKENS || functions > MAX_FUNCTION_CALLS) throw new SyntaxProblem('Structured answer exceeds the shared complexity budget.');
     return { status: 'ok', latex: kind === 'finite_set' ? (parts.length ? `\\left\\{${latex.join(',')}\\right\\}` : '\\emptyset') : `\\left${text[0]}${latex.join(',')}\\right${text.at(-1)}` };
+  } catch (error) {
+    if (!(error instanceof SyntaxProblem)) throw error;
+    return { status: error.unfinished && !(error instanceof TooLong) ? 'unfinished' : 'error', message: error.message };
+  }
+}
+
+/** New computational containers; interval endpoint brackets need not match. */
+export function splitComputationalParts(source: string, separator: string): string[] {
+  let depth = 0; let start = 0;
+  const parts: string[] = [];
+  for (let i = 0; i < source.length; i += 1) {
+    if ('([{'.includes(source[i])) { depth += 1; if (depth > MAX_NESTING) throw new SyntaxProblem('Answer nesting exceeds the shared budget'); }
+    else if (')]}'.includes(source[i])) { depth -= 1; if (depth < 0) throw new SyntaxProblem('Unbalanced answer container'); }
+    else if (source[i] === separator && depth === 0) { parts.push(source.slice(start, i).trim()); start = i + 1; }
+  }
+  if (depth) throw new SyntaxProblem('Unbalanced answer container', true);
+  parts.push(source.slice(start).trim());
+  return parts;
+}
+
+/** Mirror of computational.py; equality is exclusively checked by the server. */
+export function analyseComputationalAnswer(source: string, spec: ComputationalInputSpec): AnswerAnalysis {
+  if (!source.trim()) return { status: 'empty' };
+  try {
+    const text = normalise(source.replaceAll('∞', 'inf').replaceAll('∪', ' U ')).trim();
+    const roots: { node: Node; depth: number }[] = [];
+    let containers = 0;
+    const scalar = (value: string, symbols: readonly string[], depth: number) => {
+      const node = new Parser(tokenise(value), new Set(symbols)).parse();
+      roots.push({ node, depth });
+      return toLatex(node);
+    };
+    const set = (value: string, depth: number): string => {
+      containers += 1;
+      if (value === 'R') return '\\mathbb{R}';
+      if (value.startsWith('R\\')) {
+        const points = value.slice(2).trim();
+        if (!points.startsWith('{') || !points.endsWith('}')) throw new SyntaxProblem('Use a finite exclusion set.');
+        return `\\mathbb{R}\\setminus ${set(points, depth + 1)}`;
+      }
+      const pieces = splitComputationalParts(value, 'U');
+      if (pieces.length > 8) throw new SyntaxProblem('Too many set pieces.');
+      return pieces.map(piece => {
+        containers += 1;
+        const finite = piece.startsWith('{') && piece.endsWith('}');
+        const interval = piece.length >= 5 && '[('.includes(piece[0]) && '])'.includes(piece.at(-1)!);
+        if (!finite && !interval) throw new SyntaxProblem('Use intervals, finite sets, R or R\\{excluded points}.', true);
+        const parts = finite && !piece.slice(1, -1).trim() ? [] : splitComputationalParts(piece.slice(1, -1), ',');
+        if (finite ? parts.length > 8 : parts.length !== 2) throw new SyntaxProblem('Check the number of set entries.');
+        const latex = parts.map((part, index) => {
+          if (!finite && ['inf', '+inf', '-inf'].includes(part)) {
+            if ((index === 0) !== (part === '-inf') || piece[index === 0 ? 0 : piece.length - 1] !== (index === 0 ? '(' : ')')) throw new SyntaxProblem('Infinite endpoints must be open and correctly signed.');
+            containers += 1;
+            return index === 0 ? '-\\infty' : '\\infty';
+          }
+          return scalar(part, [], depth + 2);
+        });
+        return finite ? (parts.length ? `\\left\\{${latex.join(',')}\\right\\}` : '\\emptyset') : `\\left${piece[0]}${latex.join(',')}\\right${piece.at(-1)}`;
+      }).join('\\cup ');
+    };
+    const visit = (value: string, contract: ComputationalInputSpec, depth: number): string => {
+      if (contract.kind === 'limit_result') {
+        if (['inf', '+inf', '-inf', 'does_not_exist'].includes(value)) {
+          containers += 1;
+          return value === 'does_not_exist' ? '\\text{does not exist}' : (value === '-inf' ? '-\\infty' : '\\infty');
+        }
+        return scalar(value, [], depth);
+      }
+      if (contract.kind === 'formula') return scalar(value, Object.keys(contract.symbols ?? {}), depth);
+      if (contract.kind === 'real_set') return set(value, depth);
+      containers += 1;
+      if (contract.kind === 'category') {
+        if (!contract.choices!.includes(value)) throw new SyntaxProblem('Choose one of the declared results.');
+        return `\\text{${value.replaceAll('_', ' ')}}`;
+      }
+      if (!(value.startsWith('(') && value.endsWith(')'))) throw new SyntaxProblem('Use parentheses and semicolons for ordered components.', true);
+      const parts = splitComputationalParts(value.slice(1, -1), ';');
+      if (parts.length !== contract.components!.length) throw new SyntaxProblem('Wrong number of ordered components.');
+      return `\\left(${parts.map((part, index) => visit(part, contract.components![index], depth + 1)).join(',\\;')}\\right)`;
+    };
+    const latex = visit(text, spec, 0);
+    let nodes = containers; let functions = 0;
+    while (roots.length) {
+      const { node, depth } = roots.pop()!; nodes += 1;
+      if (depth > MAX_NESTING) throw new SyntaxProblem('Answer nesting exceeds the shared budget.');
+      if (node.kind === 'binary') roots.push({ node: node.left, depth: depth + 1 }, { node: node.right, depth: depth + 1 });
+      else if (node.kind === 'unary' || node.kind === 'function') { roots.push({ node: node.arg, depth: depth + 1 }); if (node.kind === 'function') functions += 1; }
+    }
+    const tokens = text.match(/[A-Za-z]+|[0-9.]+|[^\s]/g)?.length ?? 0;
+    if (nodes > MAX_NODES || tokens > MAX_TOKENS || functions > MAX_FUNCTION_CALLS) throw new SyntaxProblem('Answer exceeds the shared complexity budget.');
+    return { status: 'ok', latex };
   } catch (error) {
     if (!(error instanceof SyntaxProblem)) throw error;
     return { status: error.unfinished && !(error instanceof TooLong) ? 'unfinished' : 'error', message: error.message };

@@ -2,6 +2,7 @@
 
 from collections.abc import Collection
 
+from app.math_input.contracts import COMPUTATIONAL_KINDS, InputContract
 from app.math_input.parser import (
     MAX_FUNCTION_CALLS,
     MAX_NODES,
@@ -36,8 +37,18 @@ def _split(source: str) -> list[str]:
 
 
 def parse_answer_input(
-    source: str, kind: str, variables: Collection[str] | None = None
+    source: str,
+    kind: str,
+    variables: Collection[str] | None = None,
+    *,
+    contract: InputContract | None = None,
 ) -> MathNode:
+    if kind in COMPUTATIONAL_KINDS:
+        from app.math_input.computational import parse_computational
+
+        if contract is None or contract.kind != kind:
+            raise ValueError("Computational answers require a trusted matching contract")
+        return parse_computational(source, contract)
     if kind not in STRUCTURED_KINDS:
         return parse_math_input(source, variables)
     if not isinstance(source, str):

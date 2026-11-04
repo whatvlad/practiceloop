@@ -14,16 +14,29 @@ else
   git -C "$source_dir" checkout --detach "$graphify_ref"
 fi
 
-# Pick a working Python: "python" may be missing or, on Windows, the Store stub.
+# Use the project's supported Python range. A newer Store/launcher default can
+# import sys while still lacking wheels for Graphify's pinned tree-sitter ABI.
+# An explicit executable path also works when Windows paths contain spaces.
 python_cmd=()
-for candidate in python3 python "py -3"; do
-  if $candidate -c 'import sys' >/dev/null 2>&1; then
+supported_python='import sys; raise SystemExit(not ((3, 12) <= sys.version_info[:2] < (3, 15)))'
+if [[ -n "${GRAPHIFY_PYTHON:-}" ]]; then
+  python_cmd=("$GRAPHIFY_PYTHON")
+  if ! "${python_cmd[@]}" -c "$supported_python" >/dev/null 2>&1; then
+    echo "GRAPHIFY_PYTHON must name a Python 3.12-3.14 executable." >&2
+    exit 1
+  fi
+fi
+for candidate in python3.12 python3.13 python3.14 "py -3.12" "py -3.13" "py -3.14" python3 python; do
+  if [[ ${#python_cmd[@]} -gt 0 ]]; then
+    break
+  fi
+  if $candidate -c "$supported_python" >/dev/null 2>&1; then
     read -r -a python_cmd <<<"$candidate"
     break
   fi
 done
 if [[ ${#python_cmd[@]} -eq 0 ]]; then
-  echo "Python 3 was not found. Install it from https://www.python.org/ and retry." >&2
+  echo "Python 3.12-3.14 was not found. Install it or set GRAPHIFY_PYTHON to its executable and retry." >&2
   exit 1
 fi
 
@@ -33,7 +46,17 @@ if [[ ! -x "$venv_dir/bin/python" && ! -x "$venv_dir/Scripts/python.exe" ]]; the
 fi
 
 if [[ -x "$venv_dir/Scripts/python.exe" ]]; then
-  "$venv_dir/Scripts/python.exe" -m pip install --upgrade "$source_dir"
+  venv_python="$venv_dir/Scripts/python.exe"
+else
+  venv_python="$venv_dir/bin/python"
+fi
+if ! "$venv_python" -c "$supported_python" >/dev/null 2>&1; then
+  echo "The existing .local/graphify-venv uses unsupported Python. Move it aside and rerun this script with Python 3.12-3.14." >&2
+  exit 1
+fi
+
+if [[ -x "$venv_dir/Scripts/python.exe" ]]; then
+  "$venv_dir/Scripts/python.exe" -m pip install --upgrade "$source_dir[sql]"
   # Shims so the documented .local/graphify-venv/bin/graphify path (AGENTS.md,
   # .codex/hooks.json) works from Git Bash, PowerShell and cmd.
   mkdir -p "$venv_dir/bin"
@@ -42,7 +65,7 @@ if [[ -x "$venv_dir/Scripts/python.exe" ]]; then
   chmod +x "$venv_dir/bin/graphify"
   printf '@"%%~dp0..\\Scripts\\graphify.exe" %%*\r\n' >"$venv_dir/bin/graphify.cmd"
 else
-  "$venv_dir/bin/python" -m pip install --upgrade "$source_dir"
+  "$venv_dir/bin/python" -m pip install --upgrade "$source_dir[sql]"
 fi
 
 "$venv_dir/bin/graphify" update "$repo_root"

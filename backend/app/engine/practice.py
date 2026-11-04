@@ -20,6 +20,7 @@ from app.engine.rendering import Issued, render
 from app.engine.rendering import statement_latex as statement_latex
 from app.engine.topics.catalogue import Topic, topics
 from app.math_input import MathNode, VariableDomain, declared_variables
+from app.math_input.contracts import COMPUTATIONAL_KINDS, InputContract
 
 # Public topic slug -> its served engine entry (#191), derived from the topic catalogue;
 # never edit it by hand. Other public topics stay on the old engine.
@@ -137,9 +138,30 @@ def input_projection(record: object) -> dict[str, object]:
     if not is_engine_record(record):
         return {}
     kind = input_kind(record)  # type: ignore[arg-type]
+    if kind in COMPUTATIONAL_KINDS:
+        contract = input_contract(record)  # type: ignore[arg-type]
+        if contract is None:
+            raise ValueError("Missing computational input contract")
+        return {"answerInput": contract.public()}
     if kind not in STRUCTURED_KINDS:
         return {}
     descriptor: dict[str, object] = {"kind": kind, "maxBytes": 256}
     if kind == "finite_set":
         descriptor["maxItems"] = 8
     return {"answerInput": descriptor}
+
+
+def input_contract(record: dict[str, object]) -> InputContract | None:
+    """Optional plain contract from the same frozen draw, never an expected answer."""
+    kind = input_kind(record)  # validates record/version/code before any helper call
+    if kind not in COMPUTATIONAL_KINDS:
+        return None
+    code = parse_code(record["code"], _registry())  # type: ignore[arg-type]
+    generator = _registry().get_code(code.prefix, code.version)
+    describe = getattr(generator, "input_contract", None)
+    if not callable(describe):
+        raise ValueError("Generator must declare its computational grammar")
+    contract = describe(generator.draw(code.seed))
+    if not isinstance(contract, InputContract) or contract.kind != kind:
+        raise ValueError("Generator contract differs from answer kind")
+    return contract

@@ -4,6 +4,7 @@ Archived records use stored solution fields without replay or regenerated graphs
 """
 
 import json
+from copy import deepcopy
 from functools import lru_cache
 from typing import Any
 
@@ -21,7 +22,7 @@ MAX_BYTES = 8 * 1024
 
 def build_visual(record: dict[str, object]) -> dict[str, Any] | None:
     """The `visual` of a stored record, or None when its version declares none."""
-    return _build(json.dumps(record, sort_keys=True, separators=(",", ":")))
+    return deepcopy(_build(json.dumps(record, sort_keys=True, separators=(",", ":"))))
 
 
 @lru_cache(maxsize=1024)
@@ -29,12 +30,24 @@ def _build(canonical: str) -> dict[str, Any] | None:
     record = json.loads(canonical)
     version = record.get("generator_version")
     if engine.is_engine_record(record):
-        visual = engine.visual(str(version))
-        if visual is None:
-            return None
         generators = engine._registry()
         code = parse_code(record["code"], generators)
         generator = generators.get_code(code.prefix, code.version)
+        if generator.version != version:
+            raise ValueError("Visual record version differs from its code")
+        if callable(getattr(generator, "solution_visual", None)):
+            try:
+                issued = engine.pooled(record)
+            except ValueError:
+                # Arbitrary permanent codes rebuild under the existing worker
+                # limits; the returned private model is from the SAME code.
+                from app.api.codes import _opened
+
+                issued = _opened(record["code"]).problem.issued()
+            return issued.visual
+        visual = engine.visual(str(version))
+        if visual is None:
+            return None
         if visual == "single-integral" and isinstance(generator, IntegralGenerator):
             data = generator.data(generator.draw(code.seed))
             built = definite_data(data) if data.lower is not None else indefinite(data)
