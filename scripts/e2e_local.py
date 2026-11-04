@@ -839,6 +839,10 @@ def computational_code_flow(
         )
         visual_builder = getattr(generator, "solution_visual", None)
         expected_visual = visual_builder(generator.draw(200)) if callable(visual_builder) else None
+        if expected_visual is not None:
+            from app.visuals.plot2d import validate_plot
+
+            expected_visual = validate_plot(expected_visual)
         check(
             solution.json().get("visual") == expected_visual,
             f"structured {name} frozen parameter-derived visual",
