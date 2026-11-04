@@ -92,7 +92,7 @@
     "semantic_hash": ""
   },
   ".github/workflows/ci.yml": {
-    "ast_hash": "07aaf750be40809544116a5972fe0742",
+    "ast_hash": "7cd64e30a978490c1907d0c6a724a717",
     "semantic_hash": ""
   },
   "AGENTS.md": {
@@ -540,7 +540,7 @@
     "semantic_hash": ""
   },
   "backend/tests/test_practice_api.py": {
-    "ast_hash": "de2990da849e43f37fdcf801a1af13de",
+    "ast_hash": "2f6f5a9ab7398f22ed5255759c85aa41",
     "semantic_hash": ""
   },
   "backend/tests/test_preview.py": {
@@ -1108,7 +1108,7 @@
     "semantic_hash": ""
   },
   "backend/app/engine/topics/catalogue.py": {
-    "ast_hash": "01383abb6741c3783b5e461f2f43345f",
+    "ast_hash": "15b9cd58b84035055b584e579241bdad",
     "semantic_hash": ""
   },
   "backend/app/engine/topics/probability.py": {
@@ -1376,7 +1376,7 @@
     "semantic_hash": ""
   },
   "backend/tests/test_shares_api.py": {
-    "ast_hash": "f09487020dfdb617f9170135144cf8ca",
+    "ast_hash": "ae73cf5db54519f56863620b6e5deeba",
     "semantic_hash": ""
   },
   "backend/tests/test_solid3d.py": {
@@ -1960,7 +1960,7 @@
     "semantic_hash": ""
   },
   "docs/agents/HANDOFF_235.md": {
-    "ast_hash": "ea81419888fc9e1389095e6d79f6bbd4",
+    "ast_hash": "e37032c70d08246ad77fc4fba5d719eb",
     "semantic_hash": ""
   },
   "docs/architecture/ELEMENTARY_FUNCTIONS.md": {

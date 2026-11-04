@@ -1,17 +1,17 @@
 # Graph Report - PracticeLoop  (2026-11-04)
 
 ## Corpus Check
-- 467 files · ~412,452 words
+- 467 files · ~412,644 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 22 file(s) not represented in the graph (top: (none) 10, .css 6, .toml 3)
 
 ## Summary
-- 4714 nodes · 14920 edges · 231 communities (156 shown, 75 thin omitted)
+- 4714 nodes · 14925 edges · 231 communities (156 shown, 75 thin omitted)
 - Extraction: 91% EXTRACTED · 9% INFERRED · 0% AMBIGUOUS · INFERRED: 1292 edges (avg confidence: 0.92)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `58e25f84`
+- Built from commit: `d76c7c6a`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -829,7 +829,7 @@ Nodes (3): API_BASE_URL, ApiHealth, checkApiHealth()
 
 ### Community 187 - "Elementary functions and logic delivery (#235)"
 Cohesion: 0.33
-Nodes (5): Coordination and scope, Elementary functions and logic delivery (#235), Implementation, Release gate, Verification observed before publication
+Nodes (5): Coordination and scope, Elementary functions and logic delivery (#235), Implementation, Release gates, Verification
 
 ### Community 188 - "private.problem_reports"
 Cohesion: 0.47
