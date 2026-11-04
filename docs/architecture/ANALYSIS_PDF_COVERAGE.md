@@ -39,13 +39,25 @@ text and rendered reference images remain ignored local inspection artifacts.
 The repository index contains source references and paraphrased family names,
 not the original problems or answers.
 
-**This is a draft intake, not a coverage certificate.** The index currently
-enumerates 830 positional references (536 AM1, including 84 exam questions;
-294 AM2A). Source numbering, graph labels and extraction ambiguities require
-visual reconciliation before #233 closes. Every row initially has empty
-`verified_versions`; implementation must populate evidence rather than treating
-an existing topic name as full coverage. Exam rows initially route to an issue;
-their precise family deduplication is still pending.
+**Source intake reconciled on 2026-11-04; generator delivery remains pending.**
+The version-2 index enumerates 830 positional references (536 AM1, including
+84 exam questions; 294 AM2A), with 146 shared family contracts. All 27 pages
+were visually checked against their extracted text. Every reference names its
+family contracts, page, method, result interaction and delivery components.
+30 references are wholly deferred to #244 and 146 combine computational and
+deferred components. Other references remain computational delivery work.
+`verified_versions` stays empty: this audit is not a generator coverage
+certificate. `candidate_versions` identifies inspected, related implementations;
+`existing_coverage: partial` never certifies the complete source family.
+
+Exam rows reuse method-family contracts while preserving all 84 source IDs.
+Combined questions retain multiple contracts instead of dropping a requested
+result. Eight exam-only contracts cover primitive initial values, differentiability
+parameters, simultaneous monotonicity/convexity, substitution followed by parts,
+decimal existence, general functional-limit classification, exact polynomial
+sign reconstruction and torus volume. The two purely theoretical distinction
+questions are deferred; the polynomial and torus computations remain first-stage.
+The theory component of the torus question is separately deferred.
 
 AM1 13 and 68 have duplicate labels, visually confirmed on pages 3 and 12; positional
 suffixes keep references unique rather than silently losing a part. AM1 59's
@@ -53,11 +65,13 @@ nonconsecutive labels are retained. AM2A 14.1 includes three graph-defined
 functions as well as the six written formulas. The three level-set panels in
 AM2A 5.2 form a matching exercise, not three unrelated scalar questions.
 
-Text from all 27 pages has been extracted. AM1 pages 1, 3, 12 and AM2A pages 3, 9
-were visually inspected in this checkpoint. AM2A 14.1's unlettered plots are
+Text from all 27 pages has been extracted and visually reconciled. AM2A 14.1's
+unlettered plots are
 identified as graph-f, graph-g and graph-h by the functions actually labelled in
-the source, rather than inventing subpart letters. Remaining ambiguous pages are not
-represented as visually verified.
+the source, rather than inventing subpart letters. AM2A 13.1(c)'s three Roman-
+numbered requested outputs have explicit component references. Source mistakes
+remain independently documented below; visual verification does not make a
+printed mathematical statement correct.
 
 ## Serial delivery
 
@@ -90,9 +104,19 @@ each generator issue and does not authorize the broader #181 redesign.
 
 ## Existing capability versus source coverage
 
-Source checked against `generators/analysis_one.py`'s MATRIX,
-`generators/analysis_two.py`'s SPECS, the current answer classes and structured
-parser; details are also in ANALYSIS_I.md and ANALYSIS_II.md.
+Source checked against `backend/app/engine/generators/analysis_one.py`'s MATRIX,
+`backend/app/engine/generators/analysis_two.py`'s SPECS, their mathematical blocks,
+the retained native integral/differentiation/multiple-integral providers, current
+answer classes and structured parser. The old graph was built at
+`a5737c3f9d5fb44b8904e5d5d78a90195fe3b8d4`, predates these curricula and cannot
+certify current coverage. Graphify CLI and its optional NetworkX dependency
+were unavailable; a read-only adjacency traversal found old answer-related
+nodes, and the audit used current source directly. Details are also in
+ANALYSIS_I.md and ANALYSIS_II.md.
+
+The per-family gap matrix and the contracts selected for #234 are recorded in
+[ANALYSIS_PDF_CONTRACTS.md](ANALYSIS_PDF_CONTRACTS.md). The index links every
+subpart to that matrix; no exam reference retains a pending-deduplication marker.
 
 | Existing capability | Why the source still needs family-level audit |
 |---|---|
@@ -176,6 +200,20 @@ Extraction corrupts several Polish characters, comparison glyphs, subscripts and
 formula ordering. A suspicious extracted formula is not itself evidence of a
 source error. Inspect its rendered page before defining a generator or adding
 an erratum. Correct mathematical domains and assumptions are authoritative.
+
+Additional source observations confirmed from the rendered pages:
+
+- AM2A 7.5(a), p.5, prints `f(x,y)=x^2=y^2`. This does not specify the intended
+  scalar function. Do not guess a missing plus/minus sign. #240 must generate
+  an independently specified directional-derivative family and verify its result.
+- AM2A 13.3(b), p.9, omits `dt` in the first differential term. The corresponding
+  family must explicitly state its ODE and handle the boundary initial value
+  without dividing away singular or nonunique branches.
+- AM2A 13.5(d), p.9, has malformed initial-value notation. Fresh variants state
+  the initial condition with a function argument and an admissible interval.
+
+These are provenance observations, not authorization to copy corrected source
+tasks. Independent generators and reference derivations remain the deliverable.
 
 ## Evidence required before delivery
 
