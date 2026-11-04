@@ -1660,7 +1660,7 @@
     "semantic_hash": ""
   },
   "scripts/e2e_local.py": {
-    "ast_hash": "0c3dc9ae25576f104268100d05d86af6",
+    "ast_hash": "e78ad00fc296cfd5368b4a7f6d9699f2",
     "semantic_hash": ""
   },
   "scripts/test-db.py": {

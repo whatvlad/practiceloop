@@ -1,17 +1,17 @@
 # Graph Report - PracticeLoop  (2026-11-04)
 
 ## Corpus Check
-- 467 files · ~412,440 words
+- 467 files · ~412,452 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 22 file(s) not represented in the graph (top: (none) 10, .css 6, .toml 3)
 
 ## Summary
-- 4714 nodes · 14919 edges · 231 communities (156 shown, 75 thin omitted)
-- Extraction: 91% EXTRACTED · 9% INFERRED · 0% AMBIGUOUS · INFERRED: 1291 edges (avg confidence: 0.92)
+- 4714 nodes · 14920 edges · 231 communities (156 shown, 75 thin omitted)
+- Extraction: 91% EXTRACTED · 9% INFERRED · 0% AMBIGUOUS · INFERRED: 1292 edges (avg confidence: 0.92)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `5700d92f`
+- Built from commit: `58e25f84`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
