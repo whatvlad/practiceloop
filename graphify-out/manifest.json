@@ -1392,7 +1392,7 @@
     "semantic_hash": ""
   },
   "backend/tests/test_worksheet_graphs.py": {
-    "ast_hash": "7805b05300f76321179c6c044fc400b8",
+    "ast_hash": "fe71bb1ee6be57f994e09e7a0b61dc48",
     "semantic_hash": ""
   },
   "backend/tests/test_worksheet_tex.py": {
@@ -1865,6 +1865,10 @@
   },
   "docs/architecture/COMPUTATIONAL_ANSWERS.md": {
     "ast_hash": "acf0fb7b1f054221778b8203f37bd595",
+    "semantic_hash": ""
+  },
+  "docs/agents/HANDOFF_234.md": {
+    "ast_hash": "d6afdade0e84f7d3e4d52923f5c32935",
     "semantic_hash": ""
   }
 }
