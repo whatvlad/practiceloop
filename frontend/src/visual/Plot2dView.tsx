@@ -22,7 +22,7 @@ export function Plot2dView({ spec }: { spec: Plot2dSpec }) {
         {spec.paths.map((path, index) => hidden.has(index) ? null : <path key={index} fill="none" stroke="currentColor" strokeWidth={index === 0 ? 2 : 1.5}
           strokeDasharray={index % 2 ? '5 3' : undefined} markerEnd={path.arrow ? `url(#${id}-arrow)` : undefined}
           d={path.points.map(([x, y], i) => `${i ? 'L' : 'M'}${sx(x)},${sy(y)}`).join(' ') + (path.closed ? ' Z' : '')}><title>{path.label}</title></path>)}
-        {spec.points.map((point, index) => <g key={index}><circle cx={sx(point.x)} cy={sy(point.y)} r="4" stroke="currentColor" fill={point.included ? 'currentColor' : 'var(--pl-surface, white)'}>
+        {spec.points.map((point, index) => <g key={index}><circle cx={sx(point.x)} cy={sy(point.y)} r="4" stroke="currentColor" fill={point.included ? 'currentColor' : 'var(--surface)'}>
           <title>{point.label}: ({point.x}, {point.y}), {point.included ? 'included' : 'excluded'}</title></circle>
           {showLabels && <text x={sx(point.x) + 7} y={sy(point.y) - 7} fontSize="12" fill="currentColor">{point.label}</text>}</g>)}
       </g>

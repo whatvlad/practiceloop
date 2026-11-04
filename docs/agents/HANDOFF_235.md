@@ -75,8 +75,10 @@ bank was committed. MVP hash, dependency/lock files and worker limits are intact
   claimed by this test.
 - Frontend: 39 files / 778 tests, lint, typecheck and production build passed;
   npm audit found zero vulnerabilities. Existing canvas/chunk-size notices remain.
-- Edge: six real variants at 1100/390 px, unchanged serialization, gated private
-  reveal, valid KaTeX, SVG/toggles, no page errors or page overflow: passed.
+- Edge: six real variants at 1100/390 px in ink/graphite/paper themes, unchanged
+  serialization, gated reveal, valid KaTeX, SVG/toggles, no page errors or page
+  overflow: passed. Open endpoints use the plot background in every theme;
+  browser-computed fill/stroke checks distinguish excluded from included points.
 - Ruff check/format, mypy (142 sources), repository policy and original MVP hash
   passed. No production worker budget was raised.
 - Earlier ready hosted Backend passed 6,151 tests in 23m09s; Frontend/Security
