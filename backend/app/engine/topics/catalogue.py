@@ -581,7 +581,10 @@ def topics() -> dict[str, Topic]:
             declared[slug] = Topic(
                 slug,
                 area,
-                {level: tuple(Choice(v) for v in versions) for level, versions in levels.items()},
+                {
+                    level: tuple(Choice(v) for v in versions)
+                    for level, versions in sorted(levels.items())
+                },
                 1,
                 title=title,
                 space_cm=6,

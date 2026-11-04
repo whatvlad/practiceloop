@@ -1,86 +1,96 @@
 # Elementary functions and logic delivery (#235)
 
 Agent: Codex. Accountable human: Vlad / whatvlad.
-Branch: `codex/issue-235-elementary-functions`.
+Branch: `codex/issue-235-elementary-functions`; PR #247.
 Exact base: `24f14ec37c4dd5e30d1b40faf7e21bf192cfe3c2`.
 Isolated worktree: `C:/PracticeLoop/.worktrees/issue-235`.
-Status at this checkpoint: implementation complete; final full Linux tests and
-hosted ready CI/merge/deploy/Project maintenance still pending. GitHub is the
-source of final acceptance state. Self-review is not independent review.
+Status: implementation and local verification complete; final ready hosted CI,
+merge, deployment/live checks and Project maintenance remain release gates.
+GitHub records final acceptance state. Self-review is not independent review.
 
 ## Coordination and scope
 
 The owner authorized the next queue issue. #235 was Order 1, unclaimed, with
-#234 closed and no open PRs. The Issue comment records ownership/base and
-shared-file overlap. Project Status is In Progress. No other agent/chat was
-started or messaged for this issue. The original checkout was left untouched.
+#234 closed and no open PRs. The Issue records ownership/base and shared-file
+scope. Project is In Progress. No other agent/chat was started or messaged for
+this issue; the original checkout was left untouched. Optional mathematical
+and database-seed review was requested from Feijhoaaaaa on PR #247.
 
-81 new immutable elementary versions preserve all 239 prior versions and golden
-entries. 320 versions now serve 49 topics in existing areas. Four topic seed rows
-are necessary for saved-problem foreign keys; the Issue records this revised
-integration scope. The migration changes no schema, grants, RLS or old IDs.
+81 immutable elementary versions preserve all 239 previous versions and golden
+entries. 320 versions serve 49 topics in existing areas. New topic levels are
+ordered numerically while all historical topic fields/order/weights remain
+verified. Four topic seed rows enable saved-problem foreign keys; the Issue
+records this necessary integration. No schema, grants, RLS or old IDs change.
 
 See `docs/architecture/ELEMENTARY_FUNCTIONS.md` for bounded parameters, methods,
-answer conventions, limitations and visuals. The source index links exactly 102
-computational references/components across 20 contracts to concrete versions,
-retains all 830 IDs/source identities and every unrelated/deferred component.
-Two extra domain/quantifier variants extend a family without claiming another
-PDF row. Proof/sketch interaction stays #244 and worksheet redesign/TeX #181.
-No original PDF, extracted text, figure or source-answer bank was committed.
-The original MVP hash, dependency/lock files and worker limits are unchanged.
+answer policies, limitations and private visuals. The source index links exactly
+102 computational references/components across 20 contracts to concrete
+versions. All 830 IDs/source identities and 883 unrelated/deferred components
+are preserved. Two extra bounded variants extend a family without claiming
+another PDF row. Proof/sketch interaction stays #244; worksheet redesign and
+TeX restoration stay #181. No source PDF, extracted text, figure or source-answer
+bank was committed. MVP hash, dependency/lock files and worker limits are intact.
 
 ## Implementation
 
-- Bounded propositional grammar and complete truth-table equivalence, with
-  declared atoms and shared aggregate parser budgets.
-- Complete real solution sets, full ordered compositions/domains, inverse
-  formula/domain/range on explicit branches, and exact principal inverse trig.
-- Restricted formulas verify the whole domain and intermediate denominators,
-  roots and logarithms before cancellation. Fourier answers require the stated
+- Bounded propositional grammar and full truth-table equivalence, with declared
+  atoms and shared aggregate parser budgets.
+- Complete real sets, all four ordered compositions/domains, inverse formula/
+  domain/range on explicit branches, and exact principal inverse-trig results.
+- Restricted formulas check the whole domain and intermediate denominators,
+  roots and logs before cancellation. Fourier answers require the requested
   linear cosine representation. Unknown symbolic results stay inconclusive.
-- Positive literal numeric bases opt into computational formula parsing only;
-  computed power-tower bases are never evaluated to qualify for the grammar.
-- Periodic answers use canonical cells and explicit periods. The mixed cosine
-  equation has two complete root lattices with independent integer indices.
+- Positive literal bases opt into computational formulas only; computed power
+  towers are never evaluated to qualify. Historical scalar grammar is unchanged.
+- Periodic answers use explicit canonical cells/periods. Mixed-frequency cosine
+  roots use two complete lattices with independent integer indices.
 - Private frozen number lines and reflected inverse curves accompany relevant
-  reference solutions. Point labels are optional to prevent dense overlap;
-  long formulas/answer previews scroll inside their containers on phones.
-- Existing saved/history/reopen/share/copy/mixed/worksheet paths retain exact
-  version/code and privacy gates. No request-time public symbolic regeneration.
+  reference solutions. Point labels are optional; long formulas/previews scroll
+  inside their containers on phones rather than widening the page.
+- Existing practice/history/reopen/share/copy/mixed/worksheet paths retain the
+  exact version/code and privacy gates. Public requests do no symbolic rebuild.
 
-## Verification observed before publication
+## Verification
 
-- Independent exact mathematics: complete solvers/sign charts, domains/ranges,
-  branch identities, quantifier witnesses, principal values and trig identities;
-  1,000 seeds per new provider. All new math tests passed the initial full run.
-- Initial full Linux run: 6,691 passed; 15 legacy test assumptions failed. Those
-  assumptions were corrected while preserving original topic fields, order,
-  levels, weights and historical snapshots. Corrected focused run: 732 passed,
-  30 Linux-only skips on Windows. Final complete Linux run is pending below.
-- Golden verification: 1,517 checks passed; a new source-coverage assertion was
-  corrected to distinguish the two extra variants and passed independently.
-- Six inverse-geometry tests each checked 1,000 seeds, exact coordinate reflection,
-  branch/window/endpoint consistency and display-coordinate accuracy: passed.
-- HTTP target serializer: 486 correct/incorrect submissions across all 81 new
-  providers and three seeds independently checked against their contracts.
-- Frontend: 39 files / 778 tests; lint, typecheck, production build passed.
-  npm audit: zero vulnerabilities. Existing jsdom canvas/chunk-size notices remain.
-- Edge browser smoke: six real variants at 1100/390 px, serialization, private
-  reveal gating, SVG/toggles, valid KaTeX, no page errors or page overflow: passed.
-- Ruff check/format passed; mypy passed 142 sources; repository policy and
-  original specification hash passed.
-- The real disposable-Postgres HTTP script now covers 49 topics / 128 cells and
-  ten additional elementary contracts through attempts, history, safe public
-  shares, independent recipient copies, owner 404s and frozen solution visuals.
-  Hosted Database isolation must pass before merge; in-memory HTTP fixtures
-  alone are not described as SQL/RLS proof. Local Docker/Postgres is unavailable.
+- Full non-DB/non-TeX Linux suite: 6,707 passed, 711 deselected, one existing
+  Starlette notice, 14m16s. Six additional inverse-geometry tests each swept
+  1,000 seeds and passed separately. After final topic-level ordering, the
+  focused catalogue/curriculum/topic suite passed all 627 tests in Linux.
+- Independent exact solver, full sign-chart/domain/range/branch certificates,
+  quantifier witnesses, principal values and trig identities; 1,000 seeds per
+  provider. Numerical samples never establish mathematical answer equality.
+- 239 historical golden entries preserved; 81 versions append three goldens
+  each. Sixteen independently worked fresh examples and 486 correct/incorrect
+  HTTP target serializations passed. Source-index reconciliation passed.
+- Disposable local Postgres: all migrations and SQL isolation passed; all 648
+  DB-marked API tests passed. A focused repeat of the former topic/copy failures
+  passed 50 tests with explicit pytest exit 0. The runtime was extracted under
+  the isolated ignored Linux scratch directory, without installing a service.
+- Actual HTTP E2E over the real API/math workers/Postgres passed: 49 topics /
+  128 cells plus ten elementary permanent-code contracts, all attempt outcomes,
+  history, safe anonymous shares, recipient-owned copies, original-owner 404s,
+  authorized exact solution diagrams, worksheets, malicious input and saturation.
+  Optional database-stop/start disruption was skipped; DB retry tests passed in
+  the API suite. Local signing keys replace JWKS only; production OAuth is not
+  claimed by this test.
+- Frontend: 39 files / 778 tests, lint, typecheck and production build passed;
+  npm audit found zero vulnerabilities. Existing canvas/chunk-size notices remain.
+- Edge: six real variants at 1100/390 px, unchanged serialization, gated private
+  reveal, valid KaTeX, SVG/toggles, no page errors or page overflow: passed.
+- Ruff check/format, mypy (142 sources), repository policy and original MVP hash
+  passed. No production worker budget was raised.
+- Earlier ready hosted Backend passed 6,151 tests in 23m09s; Frontend/Security
+  passed. Hosted SQL isolation passed but legacy DB API expectations exposed
+  scalar/topic-list assumptions, now fixed and verified locally. Final commits
+  still require a fresh ready CI run. Backend CI timeout is 30 rather than 25
+  minutes to allow setup/catalogue time alongside that observed 23m09s test run.
 
-## Release gate
+## Release gates
 
 Refresh/review portable Graphify outputs with source-commit provenance; commit
-no caches, timestamps or interpreter paths. Open draft PR with Closes #235 and
-request optional mathematical/database review. Mark ready after final fixes;
-merge only after ready hosted CI is green. Immediately confirm Issue closure,
-set Project Done/clear Order, renumber the remaining open queue and read it back.
-Then verify backend/frontend/Supabase deployments and live public projections.
-Do not claim full production OAuth solving without an authenticated live session.
+no caches, timestamps or interpreter paths. PR stays draft while pushing fixes;
+mark ready after local verification, merge only after ready CI is green.
+Immediately confirm Issue closure, set Project Done/clear Order, renumber the
+remaining open queue and read it back. Then verify backend/frontend/Supabase
+deployment and live public projections/graph. Do not claim authenticated live
+production solving without an actual user session.
