@@ -78,9 +78,9 @@ jobs:
     needs: changes
     if: github.event.pull_request.draft != true && needs.changes.outputs.backend == 'true'
     runs-on: ubuntu-latest
-    # 320 versions plus independent seed/worker checks took 23m09s for tests
-    # alone in #235; leave room for dependency setup and catalogue construction.
-    timeout-minutes: 30
+    # The 320-version suite reached 89% without assertion failures before a
+    # 30-minute hosted timeout (#235); retain all seed/worker/golden checks.
+    timeout-minutes: 40
     defaults:
       run:
         working-directory: backend

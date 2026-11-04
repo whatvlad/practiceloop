@@ -94,8 +94,10 @@ bank was committed. MVP hash, dependency/lock files and worker limits are intact
 - Earlier ready hosted Backend passed 6,151 tests in 23m09s; Frontend/Security
   passed. Hosted SQL isolation passed but legacy DB API expectations exposed
   scalar/topic-list assumptions, now fixed and verified locally. Final commits
-  still require a fresh ready CI run. Backend CI timeout is 30 rather than 25
-  minutes to allow setup/catalogue time alongside that observed 23m09s test run.
+  still require a fresh ready CI run. A later final-head hosted run reached
+  89% without assertion failures before the 30-minute job timeout (run
+  41922674361). Backend CI now allows 40 minutes while retaining every test
+  and the unchanged 2-second/256-MiB production worker bounds.
 
 ## Release gates
 
