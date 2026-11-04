@@ -8,7 +8,7 @@ worked in `Order`. Post-MVP work is the open queue (#30 roadmap and its stages).
 
 Where each part is documented:
 
-The current 45 public topics use the native engine, and permanent
+The current 49 public topics use the native engine, and permanent
 problem codes open at `/p/<code>` (#198). #199 removes the obsolete runtime and
 records the final ADR-008; #162 is the parent completion audit. Future curriculum
 issues remain separate. #145 adds the full bounded Analysis I matrix, reusing
@@ -19,6 +19,10 @@ approved Probability and Statistics matrix, Distribution and structured answers
 (see [PROBABILITY_STATISTICS.md](../architecture/PROBABILITY_STATISTICS.md)).
 The GitHub Project is authoritative
 for their order and the final acceptance/merge state.
+
+#235 adds 81 bounded elementary computational versions, preserving the prior
+239 versions. Exact scope, per-reference coverage and retained deferrals are in
+[ELEMENTARY_FUNCTIONS.md](../architecture/ELEMENTARY_FUNCTIONS.md).
 
 | Area | Issues | Document |
 |---|---|---|

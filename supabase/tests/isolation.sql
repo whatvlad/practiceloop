@@ -81,7 +81,11 @@ do $$ begin
   assert (select count(*) from public.profiles) = 1, 'profile isolation';
   assert (select count(*) from public.problems) = 1, 'problem isolation';
   assert (select count(*) from public.attempts) = 1, 'attempt isolation';
-  assert (select count(*) from public.topics) = 45, 'topic list';
+  assert (select count(*) from public.topics) = 49, 'topic list';
+  assert exists (select 1 from public.topics where slug = 'real-inequalities' and area = 'algebra'), 'real inequality topic';
+  assert (select count(*) from public.topics where slug in (
+    'logic-and-propositions', 'exponential-and-logarithmic', 'trigonometric-functions'
+  ) and area = 'mathematical-analysis') = 3, 'elementary analysis topics';
   assert (select count(*) from public.topics where area = 'probability-statistics') = 9, 'probability topic area';
   assert (select count(*) from public.topics where slug in (
     'probability-events', 'conditional-probability', 'discrete-random-variables',
@@ -96,7 +100,7 @@ do $$ begin
   assert (select count(*) from public.topics where slug in ('determinants', 'inverse-matrices', 'linear-systems', 'matrix-rank') and area = 'algebra') = 4, 'linear algebra topics';
   assert exists (select 1 from public.topics where slug = 'algebraic-expressions' and area = 'algebra'), 'algebraic expressions topic';
   assert exists (select 1 from public.topics where slug = 'polynomial-division' and area = 'algebra'), 'polynomial division topic';
-  assert (select count(*) from public.topics where area = 'mathematical-analysis') = 17, 'topic areas';
+  assert (select count(*) from public.topics where area = 'mathematical-analysis') = 20, 'topic areas';
   assert not exists (select 1 from public.problems where user_id <> auth.uid()), 'owner filter';
   assert (select count(*) from public.worksheets) = 1, 'worksheet isolation';
   assert (select count(*) from public.worksheet_items) = 1, 'worksheet item isolation';

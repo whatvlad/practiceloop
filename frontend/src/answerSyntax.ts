@@ -199,6 +199,7 @@ class Parser {
   constructor(
     private readonly tokens: Token[],
     private readonly variables: ReadonlySet<string> | null = null,
+    private readonly positiveBasePowers = false,
   ) {}
 
   private get current(): Token {
@@ -263,7 +264,7 @@ class Parser {
       if (operator === '/' && constantFraction(right)?.n === 0n) {
         throw new SyntaxProblem('Division by zero is not allowed');
       }
-      if (operator === '^') validateExponent(left, right);
+      if (operator === '^') validateExponent(left, right, this.positiveBasePowers);
       left = this.count({ kind: 'binary', op: operator, left, right, implicit });
     }
     return left;
@@ -310,7 +311,7 @@ class Parser {
       }
       let result: Node = this.callFunction(word, argument);
       if (power !== null) {
-        validateExponent(result, power);
+        validateExponent(result, power, this.positiveBasePowers);
         result = this.count({ kind: 'binary', op: '^', left: result, right: power });
       }
       return result;
@@ -384,10 +385,16 @@ function startsAtom(kind: string): boolean {
   return kind === 'NUMBER' || kind === 'NAME' || kind === 'ROOT' || kind === '(' || kind === '|';
 }
 
-function validateExponent(base: Node, exponent: Node): void {
+function validateExponent(base: Node, exponent: Node, positiveBasePowers = false): void {
   const value = constantFraction(exponent);
   if (value === null) {
     if (base.kind === 'symbol' && base.name === 'e') return;
+    const literalBase = base.kind === 'number' || (base.kind === 'binary' && base.op === '/'
+      && base.left.kind === 'number' && base.right.kind === 'number');
+    if (positiveBasePowers && literalBase) {
+      const constantBase = constantFraction(base);
+      if (constantBase !== null && constantBase.n > 0n) return;
+    }
     throw new SyntaxProblem('Variable exponents are only supported for e');
   }
   if (absBig(value.n) > BigInt(MAX_EXPONENT_PART) || value.d > BigInt(MAX_EXPONENT_PART)) {
@@ -682,8 +689,8 @@ export function analyseComputationalAnswer(source: string, spec: ComputationalIn
     const text = normalise(source.replaceAll('∞', 'inf').replaceAll('∪', ' U ')).trim();
     const roots: { node: Node; depth: number }[] = [];
     let containers = 0;
-    const scalar = (value: string, symbols: readonly string[], depth: number) => {
-      const node = new Parser(tokenise(value), new Set(symbols)).parse();
+    const scalar = (value: string, symbols: readonly string[], depth: number, positiveBasePowers = false) => {
+      const node = new Parser(tokenise(value), new Set(symbols), positiveBasePowers).parse();
       roots.push({ node, depth });
       return toLatex(node);
     };
@@ -716,6 +723,39 @@ export function analyseComputationalAnswer(source: string, spec: ComputationalIn
       }).join('\\cup ');
     };
     const visit = (value: string, contract: ComputationalInputSpec, depth: number): string => {
+      if (contract.kind === 'logic') {
+        const tokens = value.match(/<->|->|[!&|^()pqr01]|\S/g) ?? [];
+        const precedence: Record<string, number> = { '<->': 1, '->': 2, '|': 3, '^': 3, '&': 4 };
+        const operators: Record<string, string> = { '<->': '\\Leftrightarrow', '->': '\\Rightarrow', '|': '\\lor', '^': '\\oplus', '&': '\\land' };
+        let index = 0;
+        const node = (latex: string, height: number) => {
+          containers += 1;
+          if (height + depth > MAX_NESTING) throw new SyntaxProblem('Answer nesting exceeds the shared budget.');
+          return { latex, height };
+        };
+        const expression = (minimum: number, nesting: number): {latex: string; height: number} => {
+          if (nesting > MAX_NESTING || index >= tokens.length) throw new SyntaxProblem('Incomplete or excessively nested logical expression.');
+          const token = tokens[index++];
+          let left: {latex: string; height: number};
+          if (token === '!') {
+            const child = expression(5, nesting + 1);
+            left = node(`\\neg ${child.latex}`, child.height + 1);
+          } else if (token === '(') {
+            left = expression(1, nesting + 1);
+            if (tokens[index++] !== ')') throw new SyntaxProblem('Unbalanced logical parentheses.');
+          } else if (contract.choices!.includes(token) || ['0', '1'].includes(token)) left = node(token, 0);
+          else throw new SyntaxProblem('Use declared atoms, 0, 1 and ! & | ^ -> <->.');
+          while (index < tokens.length && (precedence[tokens[index]] ?? 0) >= minimum) {
+            const op = tokens[index++];
+            const right = expression(precedence[op] + (op === '->' ? 0 : 1), nesting + 1);
+            left = node(`\\left(${left.latex} ${operators[op]} ${right.latex}\\right)`, Math.max(left.height, right.height) + 1);
+          }
+          return left;
+        };
+        const result = expression(1, 0);
+        if (index !== tokens.length) throw new SyntaxProblem('Unexpected logical token.');
+        return result.latex;
+      }
       if (contract.kind === 'limit_result') {
         if (['inf', '+inf', '-inf', 'does_not_exist'].includes(value)) {
           containers += 1;
@@ -723,7 +763,7 @@ export function analyseComputationalAnswer(source: string, spec: ComputationalIn
         }
         return scalar(value, [], depth);
       }
-      if (contract.kind === 'formula') return scalar(value, Object.keys(contract.symbols ?? {}), depth);
+      if (contract.kind === 'formula') return scalar(value, Object.keys(contract.symbols ?? {}), depth, true);
       if (contract.kind === 'real_set') return set(value, depth);
       containers += 1;
       if (contract.kind === 'category') {

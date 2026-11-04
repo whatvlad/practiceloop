@@ -23,6 +23,10 @@ it('renders accessible parameter geometry with explicit endpoint closure and vis
     expect(element.querySelector('svg')!.getAttribute('aria-label')).toBe(spec.description);
     expect(element.querySelector('circle')!.getAttribute('fill')).not.toBe('currentColor');
     expect(element.querySelector('path[marker-end]')).not.toBeNull();
+    expect(element.querySelector('circle title')!.textContent).toContain('Contact: (1, 2), excluded');
+    expect([...element.querySelectorAll('text')].some(node => node.textContent === 'Contact')).toBe(false);
+    act(() => element.querySelectorAll<HTMLInputElement>('input[type=checkbox]')[1].click());
+    expect([...element.querySelectorAll('text')].some(node => node.textContent === 'Contact')).toBe(true);
     act(() => element.querySelector<HTMLInputElement>('input[type=checkbox]')!.click());
     expect(element.querySelector('path[marker-end]')).toBeNull();
     expect(element.textContent).toContain('height');

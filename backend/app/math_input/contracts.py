@@ -11,7 +11,9 @@ from dataclasses import dataclass
 from typing import Literal
 
 Domain = Literal["real", "positive", "integer"]
-COMPUTATIONAL_KINDS = frozenset({"real_set", "tuple", "category", "formula", "limit_result"})
+COMPUTATIONAL_KINDS = frozenset(
+    {"real_set", "tuple", "category", "formula", "limit_result", "logic"}
+)
 PARAMETER_NAMES = frozenset({"a", "b", "c", "C", "D", "k", "n", "t", "s"})
 COORDINATE_NAMES = frozenset({"x", "y", "z", "r", "theta"})
 
@@ -50,6 +52,11 @@ class InputContract:
                 raise ValueError("Category needs distinct choices")
             if any(not re.fullmatch(r"[a-z][a-z_]{0,31}", x) for x in self.choices):
                 raise ValueError("Invalid category choice")
+        elif self.kind == "logic":
+            if not 1 <= len(self.choices) <= 3 or len(set(self.choices)) != len(self.choices):
+                raise ValueError("Logic needs one to three distinct atoms")
+            if any(atom not in {"p", "q", "r"} for atom in self.choices):
+                raise ValueError("Unsupported propositional atom")
         elif self.choices:
             raise ValueError("Unexpected category choices")
         stack = [(self, 0)]

@@ -74,6 +74,7 @@ type NodeKind = Literal[
     "real_set",
     "tuple",
     "category",
+    "logic",
 ]
 type NodeValue = str | tuple[int, int]
 
@@ -186,10 +187,17 @@ def _tokenise(source: str, split_names: bool = False) -> tuple[_Token, ...]:
 
 
 class _Parser:
-    def __init__(self, tokens: tuple[_Token, ...], variables: frozenset[str] | None) -> None:
+    def __init__(
+        self,
+        tokens: tuple[_Token, ...],
+        variables: frozenset[str] | None,
+        *,
+        positive_base_powers: bool = False,
+    ) -> None:
         self.tokens = tokens
         # None is the ADR-003 integration grammar: x, plus one letter for the constant.
         self.variables = variables
+        self.positive_base_powers = positive_base_powers
         self.position = 0
         self.node_count = 0
         self.function_count = 0
@@ -361,12 +369,20 @@ class _Parser:
     def _starts_atom(kind: str) -> bool:
         return kind in {"NUMBER", "NAME", "ROOT", "(", "|"}
 
-    @staticmethod
-    def _validate_exponent(base: MathNode, exponent: MathNode) -> None:
+    def _validate_exponent(self, base: MathNode, exponent: MathNode) -> None:
         value = _constant_fraction(exponent)
         if value is None:
             if base.kind == "symbol" and base.value == "e":
                 return
+            literal_base = base.kind == "number" or (
+                base.kind == "binary"
+                and base.value == "/"
+                and all(child.kind == "number" for child in base.children)
+            )
+            if self.positive_base_powers and literal_base:
+                constant_base = _constant_fraction(base)
+                if constant_base is not None and constant_base > 0:
+                    return
             raise MathInputError("Variable exponents are only supported for e")
         if abs(value.numerator) > MAX_EXPONENT_PART or value.denominator > MAX_EXPONENT_PART:
             raise MathInputError("Exponent is outside the supported range")

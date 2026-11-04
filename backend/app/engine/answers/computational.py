@@ -125,7 +125,10 @@ class PeriodicSetAnswer:
 
     def latex(self) -> str:
         return (
-            str(sp.latex(self.base)) + r"+" + str(sp.latex(self.period)) + r"k,\quad k\in\mathbb{Z}"
+            str(sp.latex(self.base))
+            + r"+"
+            + str(sp.latex(self.period))
+            + r"\,k,\quad k\in\mathbb{Z}"
         )
 
     def check(self, tree: MathNode) -> Outcome:
