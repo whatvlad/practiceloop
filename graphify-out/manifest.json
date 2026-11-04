@@ -1564,11 +1564,11 @@
     "semantic_hash": ""
   },
   "frontend/src/visual/Plot2dView.test.tsx": {
-    "ast_hash": "97a5dca523caa56b70ce7ca31147347b",
+    "ast_hash": "f2ab7f83ecda0b04568a4ee910462bc0",
     "semantic_hash": ""
   },
   "frontend/src/visual/Plot2dView.tsx": {
-    "ast_hash": "78880001d8bc18cc20edbdf3b5aed7a8",
+    "ast_hash": "57230ccf7e3c5d9c9c52efe7e25115ef",
     "semantic_hash": ""
   },
   "frontend/src/visual/RangeSlider.tsx": {
@@ -1960,7 +1960,7 @@
     "semantic_hash": ""
   },
   "docs/agents/HANDOFF_235.md": {
-    "ast_hash": "e37032c70d08246ad77fc4fba5d719eb",
+    "ast_hash": "8ddfba4fc2d18bf1e23fee7661166a2e",
     "semantic_hash": ""
   },
   "docs/architecture/ELEMENTARY_FUNCTIONS.md": {
