@@ -1,7 +1,7 @@
 # Graph Report - PracticeLoop  (2026-11-04)
 
 ## Corpus Check
-- 467 files · ~413,044 words
+- 467 files · ~413,056 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 22 file(s) not represented in the graph (top: (none) 10, .css 6, .toml 3)
 
@@ -11,7 +11,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `f10a19c6`
+- Built from commit: `d8c0fb2b`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -839,8 +839,8 @@ _Questions this graph is uniquely positioned to answer:_
   _36 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `README.md` be split into smaller, more focused modules?**
   _Cohesion score 0.10114942528735632 - nodes in this community are weakly interconnected._
-- **Why does `katex` connect `main.tsx` to `package.json`, `math.ts`?**
-  _High betweenness centrality (0.038) - this node is a cross-community bridge._
+- **Why does `react` connect `react` to `FormulaField.tsx`, `package.json`, `HistoryPage.tsx`, `DefiniteView.tsx`, `ReportProblem.tsx`, `WorksheetBuilder.test.tsx`, `types.ts`, `App.tsx`, `AnswerInput`, `practice.ts`, `WorksheetBuilder.tsx`, `main.tsx`, `ProblemCard.tsx`, `geometry.ts`, `Solid3dVisual.tsx`, `shares.ts`, `region2d.test.tsx`?**
+  _High betweenness centrality (0.039) - this node is a cross-community bridge._
 - **Are the 84 inferred relationships involving `Step` (e.g. with `AlgebraData` and `_evaluate()`) actually correct?**
   _`Step` has 84 INFERRED edges - model-reasoned connections that need verification._
 - **Should `package.json` be split into smaller, more focused modules?**

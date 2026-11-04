@@ -92,7 +92,7 @@
     "semantic_hash": ""
   },
   ".github/workflows/ci.yml": {
-    "ast_hash": "7cd64e30a978490c1907d0c6a724a717",
+    "ast_hash": "f328781cf68e0d81e925195e8fd90994",
     "semantic_hash": ""
   },
   "AGENTS.md": {
@@ -1960,7 +1960,7 @@
     "semantic_hash": ""
   },
   "docs/agents/HANDOFF_235.md": {
-    "ast_hash": "6220710ec4057235e2c6b306eddd2221",
+    "ast_hash": "cdfd75f0ea8ba6cf910fadab9f91474c",
     "semantic_hash": ""
   },
   "docs/architecture/ELEMENTARY_FUNCTIONS.md": {
