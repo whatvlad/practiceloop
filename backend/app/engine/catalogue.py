@@ -7,11 +7,12 @@ rendered data; they never build a missing pool or fall back to a generator.
 from __future__ import annotations
 
 import logging
+from copy import deepcopy
 from functools import cache
 from pathlib import Path
-from typing import Literal
+from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from app.engine.codes import format_code, parse_code
 from app.engine.generators.catalogue import registry
@@ -40,6 +41,16 @@ class StoredProblem(StoredModel):
     statement: str = Field(min_length=1)
     answer_latex: str = Field(min_length=1)
     steps: tuple[StoredStep, ...] = Field(min_length=1)
+    visual: dict[str, Any] | None = None
+
+    @field_validator("visual")
+    @classmethod
+    def valid_visual(cls, value: dict[str, Any] | None) -> dict[str, Any] | None:
+        if value is None:
+            return None
+        from app.visuals.plot2d import validate_plot
+
+        return validate_plot(value)
 
     @classmethod
     def from_issued(cls, issued: Issued) -> StoredProblem:
@@ -49,6 +60,7 @@ class StoredProblem(StoredModel):
             statement=issued.statement,
             answer_latex=issued.answer_latex,
             steps=tuple(StoredStep(**step) for step in issued.steps),
+            visual=issued.visual,
         )
 
     def issued(self) -> Issued:
@@ -58,6 +70,7 @@ class StoredProblem(StoredModel):
             {"generator_version": self.generator_version, "code": self.code},
             self.answer_latex,
             tuple({"say": step.say, "latex": step.latex} for step in self.steps),
+            deepcopy(self.visual),
         )
 
 
@@ -136,7 +149,7 @@ def write(path: Path = CATALOGUE_PATH) -> Catalogue:
     """Publish only a complete file; a failed build leaves the previous file alone."""
     result = build()
     temporary = path.with_suffix(".json.tmp")
-    temporary.write_text(result.model_dump_json(), encoding="utf-8")
+    temporary.write_text(result.model_dump_json(exclude_none=True), encoding="utf-8")
     temporary.replace(path)
     load.cache_clear()
     return result

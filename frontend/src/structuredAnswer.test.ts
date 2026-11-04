@@ -3,11 +3,11 @@ import corpus from '../../backend/tests/fixtures/structured_answer_syntax.json';
 import { analyseStructuredAnswer } from './answerSyntax';
 import { renderMath } from './math';
 import { parseAnswerInput } from './data/answerInput';
-import type { AnswerInputSpec } from './data/types';
+import type { LegacyAnswerInputSpec } from './data/types';
 
 describe('structured grammar shared with the backend', () => {
   it.each(corpus)('$kind: $text', ({ kind, text, valid }) => {
-    const result = analyseStructuredAnswer(text, kind as AnswerInputSpec['kind']);
+    const result = analyseStructuredAnswer(text, kind as LegacyAnswerInputSpec['kind']);
     expect(result.status === 'ok').toBe(valid);
     if (result.status === 'ok') expect(() => renderMath(result.latex)).not.toThrow();
   });

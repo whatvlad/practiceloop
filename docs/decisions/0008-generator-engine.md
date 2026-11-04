@@ -1,5 +1,18 @@
 # ADR-008: composable generator engine
 
+## Compatible computational extensions (#234, 2026-11-04)
+
+New answer versions may expose optional plain `input_contract(drawn_params)`
+metadata. The API projects safe grammar instructions; catalogue publication and
+worker replay require it to match the typed answer. New versions may also
+expose private `solution_visual(drawn_params)`, built/validated with the same
+frozen code before catalogue publication. The private stored rendered problem
+may carry that model; ordinary reveals read it without a second mathematical
+generation. No required frozen generator method or Task/Step/Answer/Topic/code
+field changes. Historical kinds and outputs remain unchanged. See
+[COMPUTATIONAL_ANSWERS.md](../architecture/COMPUTATIONAL_ANSWERS.md) for bounded
+schemas, periodic/parameter conventions, unsupported cases and privacy/replay.
+
 Date: 2026-11-01. Status: **final implementation record** (#199, completing #162).
 Owner: Vlad (whatvlad). The four-layer design and frozen interfaces were accepted
 in the GrillMe review #172; its decisions are recorded in

@@ -389,11 +389,38 @@ def _finite(point: Sequence[float]) -> bool:
     return all(math.isfinite(v) for v in point)
 
 
+def plot2d(spec: dict[str, Any]) -> str:
+    from app.visuals.plot2d import validate_plot
+
+    spec = validate_plot(spec)
+    canvas = Canvas(spec["x"], spec["y"])
+    canvas.axes(str(spec["xLabel"]), str(spec["yLabel"]))
+    for path in spec["paths"]:
+        canvas.stroke(path["points"], width=0.9)
+        if path["closed"]:
+            canvas.stroke((path["points"][-1], path["points"][0]), width=0.9)
+        if path["arrow"]:
+            a, b = path["points"][-2:]
+            dx, dy = b[0] - a[0], b[1] - a[1]
+            canvas.stroke(
+                (b, (b[0] - 0.15 * dx + 0.08 * dy, b[1] - 0.15 * dy - 0.08 * dx)), width=0.9
+            )
+            canvas.stroke(
+                (b, (b[0] - 0.15 * dx - 0.08 * dy, b[1] - 0.15 * dy + 0.08 * dx)), width=0.9
+            )
+    # Explicitly mark open and closed endpoints in both online and print views.
+    for point in spec["points"]:
+        at = (point["x"], point["y"])
+        canvas.label(at[0], at[1], r"\bullet" if point["included"] else r"\circ", "")
+    return canvas.tex() + _caption(spec["description"])
+
+
 DRAWERS: dict[str, Callable[[dict[str, Any]], str]] = {
     "definite": definite,
     "indefinite": indefinite,
     "region2d": region2d,
     "solid3d": solid3d,
+    "plot2d": plot2d,
 }
 
 

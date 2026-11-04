@@ -61,7 +61,15 @@ export interface Solid3dSpec {
   solid: string;
 }
 
-export type VisualSpec = DefiniteSpec | IndefiniteSpec | Region2dSpec | Solid3dSpec;
+export interface Plot2dSpec {
+  kind: 'plot2d'; version: 1;
+  title: string; description: string;
+  x: Interval; y: Interval; xLabel: string; yLabel: string;
+  paths: { label: string; points: (readonly [number, number])[]; closed: boolean; arrow: boolean }[];
+  points: { label: string; x: number; y: number; included: boolean }[];
+}
+
+export type VisualSpec = DefiniteSpec | IndefiniteSpec | Region2dSpec | Solid3dSpec | Plot2dSpec;
 
 const REGION_VARIABLES = { cartesian: ['x', 'y'], polar: ['r', 'theta'] } as const;
 const SOLID_VARIABLES = { cartesian: ['x', 'y'], cylindrical: ['r', 'theta'] } as const;
@@ -99,6 +107,38 @@ const POINT_KINDS: readonly PointKind[] = ['zero', 'extremum', 'inflection', 'po
 
 /** One validator per kind; a later Issue adds its kind here and in SolutionVisual. */
 const VALIDATORS: Record<string, (data: Record<string, unknown>) => VisualSpec> = {
+  plot2d(data) {
+    if (new TextEncoder().encode(JSON.stringify(data)).length > 8192) throw new Error('Oversized diagram');
+    const coordinate = (value: unknown) => {
+      const number = finite(value);
+      if (Math.abs(number) > 1e8) throw new Error('Coordinate outside supported range');
+      return number;
+    };
+    const x = interval(data.x); const y = interval(data.y);
+    [...x, ...y].forEach(coordinate);
+    const label = (value: unknown) => {
+      if (typeof value !== 'string' || value.length > 120 || !/^[A-Za-z0-9 .,():/+=-]+$/.test(value)) throw new Error('Bad diagram label');
+      return value;
+    };
+    if (!Array.isArray(data.paths) || data.paths.length > 8 || !Array.isArray(data.points) || data.points.length > 32) throw new Error('Bad geometry');
+    const paths = data.paths.map(value => {
+      const path = record(value);
+      if (!Array.isArray(path.points) || path.points.length < 2 || path.points.length > 96 || typeof path.closed !== 'boolean' || typeof path.arrow !== 'boolean') throw new Error('Bad path');
+      const points = path.points.map((value: unknown) => {
+        if (!Array.isArray(value) || value.length !== 2) throw new Error('Bad coordinate');
+        return [coordinate(value[0]), coordinate(value[1])] as const;
+      });
+      return { label: label(path.label), points, closed: path.closed, arrow: path.arrow };
+    });
+    if (paths.reduce((sum, path) => sum + path.points.length, 0) > 192 || (!paths.length && !data.points.length)) throw new Error('Unbounded geometry');
+    const points = data.points.map(value => {
+      const point = record(value); const px = coordinate(point.x); const py = coordinate(point.y);
+      if (px < x[0] || px > x[1] || py < y[0] || py > y[1] || typeof point.included !== 'boolean') throw new Error('Bad marked point');
+      return { label: label(point.label), x: px, y: py, included: point.included };
+    });
+    return { kind: 'plot2d', version: 1, title: label(data.title), description: label(data.description), x, y,
+      xLabel: label(data.xLabel), yLabel: label(data.yLabel), paths, points };
+  },
   definite(data) {
     const range = interval(data.range);
     const a = finite(data.a);

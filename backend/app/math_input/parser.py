@@ -71,6 +71,9 @@ type NodeKind = Literal[
     "finite_set",
     "interval",
     "endpoint",
+    "real_set",
+    "tuple",
+    "category",
 ]
 type NodeValue = str | tuple[int, int]
 

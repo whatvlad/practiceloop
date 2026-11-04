@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { analyseStructuredAnswer } from '../answerSyntax';
-import type { AnswerInputSpec, CheckResult } from '../data/types';
+import type { AnswerInputSpec, CheckResult, ComputationalInputSpec, LegacyAnswerInputSpec } from '../data/types';
+import { COMPUTATIONAL_KINDS } from '../data/answerInput';
+import { ComputationalAnswerInput } from './ComputationalAnswerInput';
 import { AnswerInput } from './AnswerInput';
 import { Tex } from './Tex';
 
@@ -29,6 +31,12 @@ function entries(value: string, kind: AnswerInputSpec['kind']): string[] {
 
 /** The server supplies only an input kind. Correctness remains server-side. */
 export function StructuredAnswerInput({ id, spec, value, onChange, state, onEnter, describedBy }: Props) {
+  if ((COMPUTATIONAL_KINDS as readonly string[]).includes(spec.kind)) return <ComputationalAnswerInput
+    id={id} spec={spec as ComputationalInputSpec} value={value} onChange={onChange} state={state} onEnter={onEnter} describedBy={describedBy} />;
+  return <LegacyStructuredAnswerInput id={id} spec={spec as LegacyAnswerInputSpec} value={value} onChange={onChange} state={state} onEnter={onEnter} describedBy={describedBy} />;
+}
+
+function LegacyStructuredAnswerInput({ id, spec, value, onChange, state, onEnter, describedBy }: Props & { spec: LegacyAnswerInputSpec }) {
   const [plain, setPlain] = useState(false);
   const analysis = analyseStructuredAnswer(value, spec.kind);
   const parts = entries(value, spec.kind);

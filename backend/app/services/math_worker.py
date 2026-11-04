@@ -82,8 +82,14 @@ def _check_child() -> int:
             outcome = "bad_record"
         else:
             tree = parse_answer_input(
-                request["answer"], engine.input_kind(request["record"]), variables
+                request["answer"],
+                engine.input_kind(request["record"]),
+                variables,
+                contract=engine.input_contract(request["record"]),
             )
+            contract = engine.input_contract(request["record"])
+            if contract is not None and getattr(task.answer, "contract", None) != contract:
+                raise ValueError("Replayed answer and declared input contract differ")
             outcome = task.answer.check(tree)
         sys.stdout.buffer.write(outcome.encode("ascii"))
         sys.stdout.buffer.flush()
@@ -193,7 +199,7 @@ def check_answer(answer: str, record: Mapping[str, object]) -> AnswerCheck:
 
     kind = engine.input_kind(dict(record))
     try:
-        parse_answer_input(answer, kind, variables)
+        parse_answer_input(answer, kind, variables, contract=engine.input_contract(dict(record)))
     except MathInputTooLong:
         raise
     except MathInputError:

@@ -2,12 +2,12 @@
 import { act, useState } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
-import type { AnswerInputSpec } from '../data/types';
+import type { LegacyAnswerInputSpec } from '../data/types';
 import { StructuredAnswerInput } from './StructuredAnswerInput';
 
 vi.mock('mathlive', () => ({}));
 let root: Root; let element: HTMLDivElement;
-function Harness({ kind, initial = '' }: { kind: AnswerInputSpec['kind']; initial?: string }) {
+function Harness({ kind, initial = '' }: { kind: LegacyAnswerInputSpec['kind']; initial?: string }) {
   const [value, setValue] = useState(initial);
   return <><StructuredAnswerInput id="answer" spec={{ kind, maxBytes: 256, ...(kind === 'finite_set' ? { maxItems: 8 } : {}) }} value={value} onChange={setValue} /><output>{value}</output></>;
 }

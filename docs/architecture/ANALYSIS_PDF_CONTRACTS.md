@@ -1,5 +1,10 @@
 # Analysis source-family contracts (#233)
 
+The implemented shared dispatcher, bounded grammar and visual infrastructure
+are documented in [COMPUTATIONAL_ANSWERS.md](COMPUTATIONAL_ANSWERS.md) (#234).
+That document explicitly separates reusable representations from family-specific
+mathematical completeness verifiers still owned by #235-#242.
+
 This is the implementation contract selected by the source audit at
 `30743c36ae624177acdc71ffb3638948f9556e7a`, not a claim of newly shipped answer
 kinds. The [source index](analysis_pdf_source_index.json) schema version 2 is

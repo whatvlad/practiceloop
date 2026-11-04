@@ -90,6 +90,11 @@ export function ProblemCard({
     boolean: 'Recheck the stated conditions and your decision, or reveal the solution.',
     finite_set: 'Check every entry and include all required values, or reveal the solution.',
     interval: 'Check both endpoints and their inclusion, or reveal the solution.',
+    real_set: 'Check all intervals, isolated points and exclusions, or reveal the solution.',
+    tuple: 'Check every component and its order, or reveal the solution.',
+    category: 'Recheck the stated conditions and your classification, or reveal the solution.',
+    formula: 'Check the complete expression and its domain, or reveal the solution.',
+    limit_result: 'Check the finite value, direction of infinity or existence, or reveal the solution.',
   }[answerInput.kind] : incorrectMessage(feedback, kind) : undefined;
   return (
     <section className="pl-problem" aria-label="Problem" aria-busy={busy}>
