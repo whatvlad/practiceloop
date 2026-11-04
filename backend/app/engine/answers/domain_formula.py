@@ -48,7 +48,24 @@ class DomainFormulaAnswer:
                         if gap != sp.S.EmptySet:
                             return "inconclusive"
                 stack.extend(node.children)
-            difference = sp.simplify(build_expression(tree, evaluate=True) - self.expected)
+            candidate = build_expression(tree, evaluate=True)
+            if not candidate.free_symbols and self.domain.interior.is_empty is False:
+                # Identity with a constant would force the target's derivative
+                # to vanish throughout the domain's interior. Certify a point
+                # where that trusted derivative exists and is nonzero instead
+                # of solving e.g. log(x)/log(4)+1 = 999999 (a huge integer root).
+                # Finite/empty domains and undecided derivative sets fall through.
+                try:
+                    derivative = sp.diff(self.expected, x)
+                    defined = continuous_domain(derivative, x, self.domain.interior)
+                    zeros = sp.solveset(derivative, x, domain=defined)
+                    if (defined - zeros).is_empty is False:
+                        return "incorrect"
+                except (NotImplementedError, TypeError, ValueError):
+                    pass
+            # Even simplification can combine logarithms into a huge exponential
+            # constant, so the trusted derivative certificate must precede it.
+            difference = sp.simplify(candidate - self.expected)
             if difference == 0:
                 return "correct"
             # A complete exact zero set may prove identity on a restricted branch.

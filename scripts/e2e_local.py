@@ -797,6 +797,7 @@ def computational_code_flow(
             and incorrect.json()["attempt"]["result"] == "incorrect"
             and correct.json()["attempt"]["result"] == "correct",
             f"all attempt outcomes {name}",
+            [(response.status_code, response.text) for response in (bad, incorrect, correct)],
         )
         reopened = api.get(f"/problems/{pid}").json()["problem"]
         check(
@@ -804,6 +805,7 @@ def computational_code_flow(
             and reopened["attemptCount"] == 3
             and reopened["lastAttempt"]["answer"] == correct_answer(url, pid),
             f"history reopens structured {name}",
+            reopened,
         )
         share = api.post(f"/problems/{pid}/share").json()["share"]
         anonymous = httpx.get(f"{base}/shares/{share['token']}", timeout=20).json()["problem"]

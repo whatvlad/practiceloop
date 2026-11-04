@@ -304,3 +304,16 @@ def test_actual_elementary_targets_and_wrong_results_fit_original_worker_limits(
     assert math_worker.check_answer(source(task.answer), record).result == "correct"
     assert math_worker.check_answer(wrong(task.answer), record).result == "incorrect"
     assert math_worker.CPU_SECONDS == 2 and math_worker.ADDRESS_SPACE_BYTES == 256 * 1024 * 1024
+
+
+@pytest.mark.skipif(not sys.platform.startswith("linux"), reason="Actual Linux limited child")
+@pytest.mark.parametrize("hash_seed", range(8))
+def test_large_wrong_constant_never_constructs_an_exponential_root_in_the_worker(
+    hash_seed, monkeypatch
+):
+    monkeypatch.setenv("PYTHONHASHSEED", str(hash_seed))
+    generator = next(g for g in generators() if g.template == "inverse-exponential")
+    task = generator.build(generator.draw(200))
+    record = {"generator_version": generator.version, "code": task.code}
+    answer = "(999999;" + ";".join(source(part) for part in task.answer.components[1:]) + ")"
+    assert math_worker.check_answer(answer, record).result == "incorrect"

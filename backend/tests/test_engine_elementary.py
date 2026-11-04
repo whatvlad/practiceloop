@@ -107,6 +107,35 @@ def test_original_denominator_holes_remain_rejected_on_restricted_domains():
     assert verdict("-sqrt(x^2)") == "incorrect"
 
 
+@pytest.mark.parametrize(
+    "expected,domain,text,outcome",
+    [
+        (
+            sp.log(sp.Symbol("x", real=True)) / sp.log(4) + 1,
+            sp.Interval.open(0, sp.oo),
+            "999999",
+            "incorrect",
+        ),
+        (sp.Symbol("x", real=True), sp.FiniteSet(0), "0", "correct"),
+        (sp.Symbol("x", real=True), sp.S.EmptySet, "123", "correct"),
+        (
+            sp.Abs(sp.Symbol("x", real=True)) - sp.Symbol("x", real=True),
+            sp.Interval(1, 2),
+            "0",
+            "correct",
+        ),
+        (sp.Integer(7), sp.Interval(1, 2), "7", "correct"),
+        (sp.Integer(7), sp.Interval(1, 2), "6", "incorrect"),
+        (sp.Symbol("x", real=True), sp.Interval(0, 2), "0/(x-1)", "invalid"),
+    ],
+)
+def test_constant_identity_certificates_respect_finite_empty_and_flat_branch_domains(
+    expected, domain, text, outcome
+):
+    answer = DomainFormulaAnswer(expected, domain)
+    assert answer.check(parse_answer_input(text, "formula", contract=answer.contract)) == outcome
+
+
 @cache
 def certify_canonical(answer):
     text = source(answer)

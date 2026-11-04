@@ -76,6 +76,10 @@ solutions; zeros, poles and strict/nonstrict endpoints have separate roles.
   private domain and checks every intermediate expression there. A hole outside
   that domain is harmless; an additional hole inside it is invalid. Unknown
   symbolic equivalence remains inconclusive rather than sampled acceptance.
+  For a constant candidate, an exact nonzero derivative certificate inside the
+  trusted target's domain proves nonidentity without constructing an enormous
+  inverse root. Empty/finite domains and flat restricted branches retain the
+  complete domain equality policy; an undecided certificate falls through.
 - `FourierAnswer` additionally requires a linear cosine representation with
   the declared harmonics. Re-entering the original trigonometric power does
   not satisfy a linearization question merely because it is equivalent.

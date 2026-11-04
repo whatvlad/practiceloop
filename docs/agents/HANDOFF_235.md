@@ -42,6 +42,10 @@ bank was committed. MVP hash, dependency/lock files and worker limits are intact
   linear cosine representation. Unknown symbolic results stay inconclusive.
 - Positive literal bases opt into computational formulas only; computed power
   towers are never evaluated to qualify. Historical scalar grammar is unchanged.
+- Constant candidates are rejected by an exact trusted-derivative certificate
+  when appropriate, before simplification can construct a huge logarithmic
+  inverse root. Empty/finite domains, flat branches and undecided certificates
+  retain complete domain equality. No numerical sampling proves equivalence.
 - Periodic answers use explicit canonical cells/periods. Mixed-frequency cosine
   roots use two complete lattices with independent integer indices.
 - Private frozen number lines and reflected inverse curves accompany relevant
@@ -56,6 +60,12 @@ bank was committed. MVP hash, dependency/lock files and worker limits are intact
   Starlette notice, 14m16s. Six additional inverse-geometry tests each swept
   1,000 seeds and passed separately. After final topic-level ordering, the
   focused catalogue/curriculum/topic suite passed all 627 tests in Linux.
+- After the final constant-checker fix, the entire new elementary mathematics,
+  1,000-seed sweeps, API/privacy/visual and actual Linux worker suite passed
+  551 tests. Eight hash seeds include three that previously reproduced a CPU
+  limit failure for the wrong constant 999999. Fifteen new constant/domain/
+  resource regressions passed again with explicit exit 0. All 648 DB tests and
+  the complete HTTP E2E passed again with the original 999999 input retained.
 - Independent exact solver, full sign-chart/domain/range/branch certificates,
   quantifier witnesses, principal values and trig identities; 1,000 seeds per
   provider. Numerical samples never establish mathematical answer equality.
