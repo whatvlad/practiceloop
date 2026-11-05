@@ -1,7 +1,7 @@
 import text from '../../../backend/app/content/en.json';
 import type { AnswerInputSpec, ComputationalInputSpec } from './types';
 
-export const COMPUTATIONAL_KINDS = ['real_set', 'tuple', 'category', 'formula', 'limit_result'] as const;
+export const COMPUTATIONAL_KINDS = ['real_set', 'tuple', 'category', 'formula', 'limit_result', 'logic'] as const;
 const SYMBOL_NAMES = ['x', 'y', 'z', 'r', 'theta', 'a', 'b', 'c', 'C', 'D', 'k', 'n', 't', 's'];
 
 function computational(value: unknown, depth = 0, count = { value: 0 }): ComputationalInputSpec {
@@ -30,6 +30,11 @@ function computational(value: unknown, depth = 0, count = { value: 0 }): Computa
         || data.labels.length !== data.components.length || data.labels.some(x => typeof x !== 'string' || !/^[A-Za-z][A-Za-z -]{0,39}$/.test(x))) throw new Error(text.service_error);
     result.components = data.components.map(x => computational(x, depth + 1, count));
     result.labels = [...data.labels];
+  }
+  if (data.kind === 'logic') {
+    if (!Array.isArray(data.choices) || data.choices.length < 1 || data.choices.length > 3 || new Set(data.choices).size !== data.choices.length
+        || data.choices.some(x => !['p', 'q', 'r'].includes(x))) throw new Error(text.service_error);
+    result.choices = [...data.choices];
   }
   return result;
 }

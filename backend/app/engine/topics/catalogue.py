@@ -91,6 +91,8 @@ from app.engine.models import Drawn, Task
 from app.engine.prng import DeterministicRNG
 from app.engine.registry import Registry
 from app.engine.topics.analysis_two import MATRIX as ANALYSIS_TWO
+from app.engine.topics.elementary import ADDITIONS as ELEMENTARY_ADDITIONS
+from app.engine.topics.elementary import NEW_TOPICS
 from app.engine.topics.probability import TOPIC_SPECS as PROBABILITY_TOPICS
 
 logger = logging.getLogger(__name__)
@@ -567,6 +569,27 @@ def topics() -> dict[str, Topic]:
             space_cm=space,
             served=True,
         )
+    for slug, levels in ELEMENTARY_ADDITIONS.items():
+        if slug in declared:
+            topic = declared[slug]
+            combined = dict(topic.levels)
+            for level, versions in levels.items():
+                combined[level] = (*combined.get(level, ()), *(Choice(v) for v in versions))
+            declared[slug] = replace(topic, levels=combined)
+        else:
+            title, area = NEW_TOPICS[slug]
+            declared[slug] = Topic(
+                slug,
+                area,
+                {
+                    level: tuple(Choice(v) for v in versions)
+                    for level, versions in sorted(levels.items())
+                },
+                1,
+                title=title,
+                space_cm=6,
+                served=True,
+            )
     return declared
 
 

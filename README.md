@@ -8,11 +8,13 @@ solution reveal, history and a profile. [Original specification](docs/PRACTICELO
 **Status: MVP complete (0.1.0, see [CHANGELOG](CHANGELOG.md)).** Live at
 https://practiceloop.pages.dev (noindex). Signed-in learners can:
 
-- practise the current 45 Algebra, Mathematical Analysis, and Probability and Statistics topics, with their
+- practise the current 49 Algebra, Mathematical Analysis, and Probability and Statistics topics, with their
   available levels and mixed practice supplied by the API, including the
   [Analysis I](docs/architecture/ANALYSIS_I.md) and
   [Analysis II](docs/architecture/ANALYSIS_II.md) and
   [Probability and Statistics](docs/architecture/PROBABILITY_STATISTICS.md) curricula;
+- solve [elementary functions and logic](docs/architecture/ELEMENTARY_FUNCTIONS.md),
+  including complete real sets, branch-aware inverses and periodic solutions;
 - type answers in a formula editor; typed engine answers check them symbolically
   (Correct, Incorrect or Invalid expression, with explicit missing-constant feedback);
 - open a permanent problem code at `/p/<code>` and sign in to solve that exact

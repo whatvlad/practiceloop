@@ -67,6 +67,10 @@ def test_catalogue_lists_algebra_and_syllabus_topics() -> None:
         "descriptive-statistics",
         "confidence-intervals",
         "hypothesis-tests",
+        "logic-and-propositions",
+        "real-inequalities",
+        "exponential-and-logarithmic",
+        "trigonometric-functions",
     }
 
 
@@ -95,7 +99,7 @@ def test_combined_mixed_pool_preserves_weights_and_legacy_boundaries(level: int)
             ("complex-arithmetic", 5),
             ("complex-polar-form", 3),
             ("binomial-theorem", 3),
-            ("polynomial-roots", 3),
+            ("polynomial-roots", 4),
             ("eigenvalues", 5),
             ("vectors", 5),
             ("lines-and-planes", 5),
@@ -104,6 +108,8 @@ def test_combined_mixed_pool_preserves_weights_and_legacy_boundaries(level: int)
         )
         if level <= levels
     }
+    if level in practice.TOPICS["real-inequalities"].levels:
+        offered.add("real-inequalities")
     # #191: combinations has level 1 only, so it joins Algebra mixed practice there.
     assert set(algebra) == (legacy | offered | ({"combinations"} if level == 1 else set()))
     assert algebra_weights == [1] * len(algebra)

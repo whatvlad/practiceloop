@@ -8,13 +8,14 @@ import pytest
 import sympy as sp
 from engine_fixtures import PUBLISHED_TOPICS
 from pydantic import ValidationError
+from test_engine_elementary import source
 
 from app.api import practice
 from app.engine import practice as engine
 from app.engine.blocks.analysis import AnalysisForm
 from app.engine.codes import encode
 from app.engine.generators.analysis import AnalysisParams, analysis_generators
-from app.math_input import parse_math_input
+from app.math_input import parse_answer_input, parse_math_input
 from app.services import archive
 from app.services.math_worker import check_answer, record_variables
 
@@ -30,7 +31,10 @@ CASES = [(slug, level) for slug in TEMPLATES for level in range(1, 6)]
 
 
 def answer_text(record: dict[str, object]) -> str:
-    return sp.sstr(engine.replay(record).answer.expected).replace("**", "^")
+    answer = engine.replay(record).answer
+    if answer.kind == "expression":
+        return sp.sstr(answer.expected).replace("**", "^")
+    return source(answer)
 
 
 @pytest.mark.parametrize("a", range(1, 6))
@@ -73,8 +77,18 @@ def test_each_analysis_level_checks_and_preserves_mixed_worksheets_archive(
     assert set(record) == {"generator_version", "code"}
     variables = record_variables(record)
     text = answer_text(record)
-    assert engine.check(record, parse_math_input(text, variables)) == "correct"
-    assert engine.check(record, parse_math_input(f"({text})+1", variables)) == "incorrect"
+
+    def parse(value: str):
+        return parse_answer_input(
+            value, engine.input_kind(record), variables, contract=engine.input_contract(record)
+        )
+
+    assert engine.check(record, parse(text)) == "correct"
+    if engine.input_kind(record) == "expression":
+        assert engine.check(record, parse(f"({text})+1")) == "incorrect"
+    else:
+        # A fixed scalar cannot equal the new complete set or ordered answer.
+        assert engine.check(record, parse_math_input("0", variables)) != "correct"
     assert archive.is_archived(slug, {"generator_version": "symbolic-v1"})
     assert not archive.is_archived(slug, record)
     assert practice.capacity(slug, level) == 64

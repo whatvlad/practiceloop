@@ -95,6 +95,7 @@ export function ProblemCard({
     category: 'Recheck the stated conditions and your classification, or reveal the solution.',
     formula: 'Check the complete expression and its domain, or reveal the solution.',
     limit_result: 'Check the finite value, direction of infinity or existence, or reveal the solution.',
+    logic: 'Check every truth-table row, or reveal the solution.',
   }[answerInput.kind] : incorrectMessage(feedback, kind) : undefined;
   return (
     <section className="pl-problem" aria-label="Problem" aria-busy={busy}>

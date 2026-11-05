@@ -48,3 +48,16 @@ it('offers server-declared named categories without preselecting an answer', () 
   act(() => radios[1].click());
   expect(element.querySelector('output')!.textContent).toBe('conditional');
 });
+
+it('edits a declared propositional formula and sends its complete notation', () => {
+  act(() => root.render(<Harness spec={{kind:'logic',maxBytes:256,choices:['p','q','r']}} />));
+  const input = element.querySelector<HTMLInputElement>('#answer')!;
+  change(input,'!p | (q & r)');
+  expect(element.querySelector('output')!.textContent).toBe('!p | (q & r)');
+  expect(element.textContent).toContain('Reads as');
+  expect(element.textContent).toContain('exclusive or');
+  act(() => input.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true})));
+  expect(enter).toHaveBeenCalledOnce();
+  change(input,'z');
+  expect(input.getAttribute('aria-invalid')).toBe('true');
+});

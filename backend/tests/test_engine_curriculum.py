@@ -13,16 +13,18 @@ from app.engine.blocks.integral_forms.form import IntegralForm
 from app.engine.blocks.multiple import double, triple
 from app.engine.blocks.multiple.form import MultipleForm
 from app.engine.blocks.multiple.setup import Setup, integrate_setup
+from app.engine.topics.elementary import NEW_TOPICS
 
 
 def test_published_topic_order_levels_weights_and_worksheet_space_are_unchanged() -> None:
-    assert list(practice.TOPICS) == list(PUBLISHED_TOPICS)
+    assert [slug for slug in practice.TOPICS if slug not in NEW_TOPICS] == list(PUBLISHED_TOPICS)
+    assert set(practice.TOPICS) - set(PUBLISHED_TOPICS) == set(NEW_TOPICS)
     for slug, expected in PUBLISHED_TOPICS.items():
         actual = practice.TOPICS[slug]
         assert tuple(actual) == (
             expected.name,
             expected.area,
-            expected.levels,
+            (*expected.levels, 4) if slug == "polynomial-roots" else expected.levels,
             expected.mixed_weight,
             expected.space_cm,
         )
