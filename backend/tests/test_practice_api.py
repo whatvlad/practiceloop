@@ -373,8 +373,6 @@ def answer_of(url: str, problem_id: str, *, wrong: bool = False) -> str:
     from app.engine.generators.matrix_full import MatrixAnswer
 
     answer = engine.replay(data).answer
-    if answer.kind in {"real_set", "tuple", "category", "formula", "logic"}:
-        return computational_wrong(answer) if wrong else source(answer)
 
     def scalar(value: Any) -> str:
         return str(value).replace("**", "^").replace("E", "e")
@@ -384,6 +382,8 @@ def answer_of(url: str, problem_id: str, *, wrong: bool = False) -> str:
         if wrong:
             values[0][0] += 1
         return "(" + ";".join("(" + ";".join(map(scalar, row)) + ")" for row in values) + ")"
+    if answer.kind in {"real_set", "tuple", "category", "formula", "logic"}:
+        return computational_wrong(answer) if wrong else source(answer)
     if isinstance(answer, BooleanAnswer):
         return "true" if answer.expected != wrong else "false"
     if isinstance(answer, FiniteSetAnswer):
