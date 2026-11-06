@@ -1,0 +1,18 @@
+[
+  {"template":"logic-negation-not","parameters":[2,3,1,3],"answer":"!p","derivation":"Negating not-not-p produces a third negation, equivalent to not-p."},
+  {"template":"logic-negation-equivalence","parameters":[2,3,1,3],"answer":"(!p & (q | r)) | (p & !q & !r)","derivation":"Negating P iff Q gives (P and not Q) or (not P and Q), with P=not-p and Q=not-q and not-r."},
+  {"template":"domain-arcsin-square","parameters":[2,3,1,3],"answer":"[-sqrt(3),-1] U [1,sqrt(3)]","derivation":"The inverse sine argument must lie in [-1,1], so 1 <= x squared <= 3."},
+  {"template":"composition-root-power","parameters":[2,3,1,3],"answer":"(sqrt(2*sqrt(2*x));[0,inf);sqrt(6)*x^2;R;12*x^2;[0,inf);243*(x^4)^4;R)","derivation":"Substitute f=sqrt(2x) and g=3x to the fourth power in all orders. FF and GF retain x>=0; FG and GG are defined on all reals."},
+  {"template":"inverse-semicircle-branch","parameters":[3,4,1,3],"answer":"(-sqrt(9-(4-x)^2);[1,4];[-3,0])","derivation":"On the left branch x<=0, solving y=4-sqrt(9-x squared) requires the negative square root. Endpoint images are 4 and 1."},
+  {"template":"equation-rational-cancel","parameters":[2,3,1,3],"answer":"{0}","derivation":"Original cubic denominators exclude -2 and 2. Cross multiplication gives 8x squared times (2-x)=0. The candidate 2 is excluded."},
+  {"template":"inequality-squared-factors","parameters":[2,3,1,3],"answer":"{-1} U [-1/2,5/2]","derivation":"The first squared factor vanishes at -1. Otherwise ((2x-2) squared-9)<=0 gives exactly [-1/2,5/2]."},
+  {"template":"inequality-odd-polynomial","parameters":[2,3,1,3],"answer":"[-sqrt(2),0] U [sqrt(2),inf)","derivation":"Factor as x(x squared-2)(x squared+3). The positive last factor leaves three real zeros and their full sign chart."},
+  {"template":"exponential-substitution","parameters":[2,3,1,3],"answer":"{0,log(3/2)/log(2)}","derivation":"With t=2 to the x, 4t squared-10t+6=(2t-2)(2t-3). Both positive roots 1 and 3/2 must be inverted."},
+  {"template":"log-equation-quadratic","parameters":[2,3,1,3],"answer":"{4+sqrt(6)}","derivation":"Domains require x>2 and x squared>6. The quadratic x squared-8x+10=0 has roots 4 plus or minus sqrt(6); only the plus branch survives."},
+  {"template":"log-inequality-opposite-bases","parameters":[1,4,1,0],"answer":"(2,3)","derivation":"Both arguments require x>2. Then (x-1)/(2x-4)>1 is equivalent to x<3, giving the full intersection."},
+  {"template":"inverse-trig-cot-branch","parameters":[2,2,3,4],"answer":"5*pi/2-7","derivation":"7-2pi lies in the principal arctangent interval. Thus arccot(tan 7)=pi/2-(7-2pi), strictly between 0 and pi."},
+  {"template":"trig-linearization-square","parameters":[2,3,1,3],"answer":"2+cos(6*x)","derivation":"2 cos squared(3x)+1 equals (1+cos(6x))+1."},
+  {"template":"trig-linearization-fourth","parameters":[2,3,1,3],"answer":"7/4+cos(6*x)+cos(12*x)/4","derivation":"Use cos to the fourth power of u=(3+4cos(2u)+cos(4u))/8, multiply by 2 and add 1."},
+  {"template":"trig-equation-cos-mixed","parameters":[3,1,1,0],"answer":"((4*pi/9;{pi/18});(4*pi/7;{pi/2}))","derivation":"For u=x+pi/2, solve u=pi/9+4pi k/9 or u=-pi/7+4pi k/7. Subtract pi/2 and reduce each base point in its own period cell."},
+  {"template":"quantifier-product","parameters":[2,3,1,3],"answer":"true","derivation":"The constant witness y=3 makes (x-2)(y-3)=0 for every real x."}
+]

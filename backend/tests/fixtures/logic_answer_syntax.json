@@ -1,0 +1,17 @@
+[
+  {"text":"!(p & q)","valid":true},
+  {"text":"!p | !q","valid":true},
+  {"text":"p -> q -> p","valid":true},
+  {"text":"p <-> (q ^ 1)","valid":true},
+  {"text":"0","valid":true},
+  {"text":"p or q","valid":false},
+  {"text":"p && q","valid":false},
+  {"text":"r","valid":false},
+  {"text":"p(q)","valid":false},
+  {"text":"!","valid":false},
+  {"text":"(p|q","valid":false},
+  {"text":"p | q)","valid":false},
+  {"text":"p + q","valid":false},
+  {"text":"__import__(p)","valid":false},
+  {"text":"!!!!!!!!!!!!!!p","valid":false}
+]

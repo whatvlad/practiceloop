@@ -10,7 +10,7 @@ from engine_fixtures import catalogue, native_data, native_record
 
 from app.api.practice import TOPICS
 from app.engine.answers._symbolic import X
-from app.engine.practice import ENGINE_TOPICS
+from app.engine.practice import ENGINE_TOPICS, pooled
 from app.engine.practice import issue as engine_issue
 from app.visuals.expression import HEADS, UnsupportedExpression, evaluate, to_tree
 from app.visuals.spec import (
@@ -56,13 +56,15 @@ def assert_means(tree: object, expr: object, xs: list[float]) -> None:
 
 @pytest.mark.parametrize("slug", sorted(ENGINE_TOPICS))
 def test_a_served_engine_topic_takes_the_visual_of_its_entry(slug: str) -> None:
-    # #191: no NO_VISUAL edit; the topic entry decides, and no engine builder exists yet.
+    # The topic decides legacy figures; #234 also permits private per-generator plots.
     for level in TOPICS[slug].levels:
         record = engine_issue(slug, level, seed=0).record
         expected = ENGINE_TOPICS[slug].visual
         spec = build_visual(record)
         if expected is None:
-            assert spec is None
+            assert spec == pooled(record).visual
+            if spec is not None:
+                assert spec["version"] == 1 and spec["kind"] == "plot2d"
         else:
             assert spec and spec["kind"] in {"indefinite", "definite", "region2d", "solid3d"}
 

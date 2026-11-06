@@ -326,11 +326,21 @@ def test_copy_preserves_exact_trusted_content_for_every_topic(
     created = share(client, source["id"])
     instructions = source.get("answerInput")
     if "answerInput" in source:
-        assert instructions in (
-            {"kind": "boolean", "maxBytes": 256},
-            {"kind": "finite_set", "maxBytes": 256, "maxItems": 8},
-            {"kind": "interval", "maxBytes": 256},
-        )
+        with psycopg.connect(url) as conn:
+            record = conn.execute(
+                "select generator_data from private.problem_solutions where problem_id = %s",
+                (source["id"],),
+            ).fetchone()[0]
+        contract = engine.input_contract(record)
+        if contract is not None:
+            assert instructions == contract.public()
+        else:
+            # Historical structured versions predate computational contracts.
+            assert instructions in (
+                {"kind": "boolean", "maxBytes": 256},
+                {"kind": "finite_set", "maxBytes": 256, "maxItems": 8},
+                {"kind": "interval", "maxBytes": 256},
+            )
     public = {field: source[field] for field in ("topic", "difficulty", "problemLatex")}
     if instructions is not None:
         public["answerInput"] = instructions

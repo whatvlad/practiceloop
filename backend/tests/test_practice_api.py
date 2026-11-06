@@ -365,12 +365,16 @@ def answer_of(url: str, problem_id: str, *, wrong: bool = False) -> str:
         problem_id,
     )[0]
     import sympy as sp
+    from test_engine_elementary import source
+    from test_engine_elementary_api import wrong as computational_wrong
 
     from app.engine.answers.antiderivative import AntiderivativeAnswer
     from app.engine.answers.structured import BooleanAnswer, FiniteSetAnswer, IntervalAnswer
     from app.engine.generators.matrix_full import MatrixAnswer
 
     answer = engine.replay(data).answer
+    if answer.kind in {"real_set", "tuple", "category", "formula", "logic"}:
+        return computational_wrong(answer) if wrong else source(answer)
 
     def scalar(value: Any) -> str:
         return str(value).replace("**", "^").replace("E", "e")
@@ -712,11 +716,12 @@ def test_topics_lists_only_generated_cells(client: TestClient) -> None:
         ("complex-arithmetic", [1, 2, 3, 4, 5]),
         ("complex-polar-form", [1, 2, 3]),
         ("binomial-theorem", [1, 2, 3]),
-        ("polynomial-roots", [1, 2, 3]),
+        ("polynomial-roots", [1, 2, 3, 4]),
         ("eigenvalues", [1, 2, 3, 4, 5]),
         ("vectors", [1, 2, 3, 4, 5]),
         ("lines-and-planes", [1, 2, 3, 4, 5]),
         ("matrix-operations", [1, 2, 3]),
+        ("real-inequalities", [3, 4]),
         ("basic-integrals", [1, 2, 3, 4, 5]),
         ("substitution", [1, 2, 3, 4, 5]),
         ("integration-by-parts", [1, 2, 3]),
@@ -734,6 +739,9 @@ def test_topics_lists_only_generated_cells(client: TestClient) -> None:
         ("multivariable-functions", [1, 2, 3, 4, 5]),
         ("differential-equations", [1, 2, 3, 4, 5]),
         ("differential-calculus", [1, 2, 3, 4, 5]),
+        ("logic-and-propositions", [1, 2, 3, 4]),
+        ("exponential-and-logarithmic", [1, 2, 3, 4]),
+        ("trigonometric-functions", [1, 2, 3, 4, 5]),
         ("probability-events", [1, 2, 3, 4, 5]),
         ("conditional-probability", [1, 2, 3, 4, 5]),
         ("discrete-random-variables", [1, 2, 3, 4, 5]),
@@ -838,6 +846,7 @@ def test_topics_publish_the_fixed_mixed_practice_weights(client: TestClient) -> 
                 "lines-and-planes": 1,
                 "matrix-operations": 1,
                 "polynomial-division": 1,
+                "real-inequalities": 1,
             },
         },
     }
@@ -863,6 +872,9 @@ def test_topics_publish_the_fixed_mixed_practice_weights(client: TestClient) -> 
                 "multivariable-functions": 1,
                 "differential-equations": 1,
                 "differential-calculus": 1,
+                "logic-and-propositions": 1,
+                "exponential-and-logarithmic": 1,
+                "trigonometric-functions": 1,
             },
         },
     }

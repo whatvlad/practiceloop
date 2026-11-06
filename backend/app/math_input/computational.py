@@ -61,13 +61,19 @@ def parse_computational(source: str, contract: InputContract) -> MathNode:
 
 
 def _parse(text: str, spec: InputContract) -> MathNode:
+    if spec.kind == "logic":
+        from app.math_input.logic import parse_logic
+
+        return parse_logic(text, spec.choices)
     if spec.kind == "limit_result":
         if text in {"inf", "+inf", "-inf", "does_not_exist"}:
             return MathNode("category", "inf" if text == "+inf" else text)
         return _Parser(_tokenise(text), frozenset()).parse()
     if spec.kind == "formula":
         # Local symbols require explicit multiplication between letter names.
-        return _Parser(_tokenise(text), frozenset(dict(spec.symbols))).parse()
+        return _Parser(
+            _tokenise(text), frozenset(dict(spec.symbols)), positive_base_powers=True
+        ).parse()
     if spec.kind == "category":
         if text not in spec.choices:
             raise MathInputError("Choose one of the declared results")

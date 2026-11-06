@@ -72,6 +72,10 @@ def test_five_topics_have_nonempty_levels_and_replay_for_many_seeds() -> None:
         "descriptive-statistics",
         "confidence-intervals",
         "hypothesis-tests",
+        "logic-and-propositions",
+        "real-inequalities",
+        "exponential-and-logarithmic",
+        "trigonometric-functions",
     }
     generators = registry()
     expected_kinds = {
@@ -102,6 +106,11 @@ def test_five_topics_have_nonempty_levels_and_replay_for_many_seeds() -> None:
                         "boolean",
                         "finite_set",
                         "interval",
+                        "formula",
+                        "real_set",
+                        "tuple",
+                        "category",
+                        "logic",
                     }
                 assert task.statement and task.steps
                 code = parse_code(task.code, generators)

@@ -12,7 +12,7 @@ export interface LegacyAnswerInputSpec {
 }
 
 export interface ComputationalInputSpec {
-  kind: 'real_set' | 'tuple' | 'category' | 'formula' | 'limit_result';
+  kind: 'real_set' | 'tuple' | 'category' | 'formula' | 'limit_result' | 'logic';
   maxBytes: 256;
   maxItems?: 8;
   symbols?: Record<string, 'real' | 'positive' | 'integer'>;

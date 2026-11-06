@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "status": "source-intake-reconciled-generator-delivery-pending",
+  "status": "source-reconciled-computational-generator-delivery-in-progress",
   "base": "30743c36ae624177acdc71ffb3638948f9556e7a",
   "owner_decision": {
     "date": "2026-11-03",
@@ -66,18 +66,25 @@
       "family": "propositions",
       "interaction": "category",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-proposition-v1"
+      ],
       "family_contracts": [
         "AM1/1"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "category",
-          "result": "proposition status and truth value"
+          "result": "proposition status and truth value",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-proposition-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "propositions-variant-a",
@@ -93,18 +100,25 @@
       "family": "propositions",
       "interaction": "category",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-proposition-v1"
+      ],
       "family_contracts": [
         "AM1/1"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "category",
-          "result": "proposition status and truth value"
+          "result": "proposition status and truth value",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-proposition-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "propositions-variant-b",
@@ -120,18 +134,25 @@
       "family": "propositions",
       "interaction": "category",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-proposition-v1"
+      ],
       "family_contracts": [
         "AM1/1"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "category",
-          "result": "proposition status and truth value"
+          "result": "proposition status and truth value",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-proposition-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "propositions-variant-c",
@@ -147,18 +168,25 @@
       "family": "propositions",
       "interaction": "category",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-proposition-triangle-v1"
+      ],
       "family_contracts": [
         "AM1/1"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "category",
-          "result": "proposition status and truth value"
+          "result": "proposition status and truth value",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-proposition-triangle-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "propositions-variant-d",
@@ -174,18 +202,25 @@
       "family": "propositions",
       "interaction": "category",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-proposition-v1"
+      ],
       "family_contracts": [
         "AM1/1"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "category",
-          "result": "proposition status and truth value"
+          "result": "proposition status and truth value",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-proposition-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "propositions-variant-e",
@@ -201,18 +236,25 @@
       "family": "propositions",
       "interaction": "category",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-proposition-v1"
+      ],
       "family_contracts": [
         "AM1/1"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "category",
-          "result": "proposition status and truth value"
+          "result": "proposition status and truth value",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-proposition-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "propositions-variant-f",
@@ -228,18 +270,25 @@
       "family": "logical-negation",
       "interaction": "logic",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-logic-negation-and-v1"
+      ],
       "family_contracts": [
         "AM1/2"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "logic",
-          "result": "negation with conjunction/disjunction/implication/equivalence/exclusive-or"
+          "result": "negation with conjunction/disjunction/implication/equivalence/exclusive-or",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-logic-negation-and-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "logical-negation-variant-a",
@@ -255,18 +304,25 @@
       "family": "logical-negation",
       "interaction": "logic",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-logic-negation-not-v1"
+      ],
       "family_contracts": [
         "AM1/2"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "logic",
-          "result": "negation with conjunction/disjunction/implication/equivalence/exclusive-or"
+          "result": "negation with conjunction/disjunction/implication/equivalence/exclusive-or",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-logic-negation-not-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "logical-negation-variant-b",
@@ -282,18 +338,25 @@
       "family": "logical-negation",
       "interaction": "logic",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-logic-negation-or-v1"
+      ],
       "family_contracts": [
         "AM1/2"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "logic",
-          "result": "negation with conjunction/disjunction/implication/equivalence/exclusive-or"
+          "result": "negation with conjunction/disjunction/implication/equivalence/exclusive-or",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-logic-negation-or-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "logical-negation-variant-c",
@@ -309,18 +372,25 @@
       "family": "logical-negation",
       "interaction": "logic",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-logic-negation-implication-v1"
+      ],
       "family_contracts": [
         "AM1/2"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "logic",
-          "result": "negation with conjunction/disjunction/implication/equivalence/exclusive-or"
+          "result": "negation with conjunction/disjunction/implication/equivalence/exclusive-or",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-logic-negation-implication-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "logical-negation-variant-d",
@@ -336,18 +406,25 @@
       "family": "logical-negation",
       "interaction": "logic",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-logic-negation-equivalence-v1"
+      ],
       "family_contracts": [
         "AM1/2"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "logic",
-          "result": "negation with conjunction/disjunction/implication/equivalence/exclusive-or"
+          "result": "negation with conjunction/disjunction/implication/equivalence/exclusive-or",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-logic-negation-equivalence-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "logical-negation-variant-e",
@@ -363,18 +440,25 @@
       "family": "logical-negation",
       "interaction": "logic",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-logic-negation-xor-v1"
+      ],
       "family_contracts": [
         "AM1/2"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "logic",
-          "result": "negation with conjunction/disjunction/implication/equivalence/exclusive-or"
+          "result": "negation with conjunction/disjunction/implication/equivalence/exclusive-or",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-logic-negation-xor-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "logical-negation-variant-f",
@@ -390,18 +474,25 @@
       "family": "propositional-truth",
       "interaction": "category",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-compound-truth-v1"
+      ],
       "family_contracts": [
         "AM1/3"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "category",
-          "result": "truth of compound proposition"
+          "result": "truth of compound proposition",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-compound-truth-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "propositional-truth-variant-a",
@@ -417,18 +508,25 @@
       "family": "propositional-truth",
       "interaction": "category",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-compound-truth-v1"
+      ],
       "family_contracts": [
         "AM1/3"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "category",
-          "result": "truth of compound proposition"
+          "result": "truth of compound proposition",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-compound-truth-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "propositional-truth-variant-b",
@@ -444,18 +542,25 @@
       "family": "propositional-truth",
       "interaction": "category",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-compound-truth-v1"
+      ],
       "family_contracts": [
         "AM1/3"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "category",
-          "result": "truth of compound proposition"
+          "result": "truth of compound proposition",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-compound-truth-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "propositional-truth-variant-c",
@@ -471,18 +576,25 @@
       "family": "propositional-truth",
       "interaction": "category",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-compound-truth-v1"
+      ],
       "family_contracts": [
         "AM1/3"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "category",
-          "result": "truth of compound proposition"
+          "result": "truth of compound proposition",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-compound-truth-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "propositional-truth-variant-d",
@@ -498,18 +610,25 @@
       "family": "propositional-truth",
       "interaction": "category",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-compound-truth-v1"
+      ],
       "family_contracts": [
         "AM1/3"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "category",
-          "result": "truth of compound proposition"
+          "result": "truth of compound proposition",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-compound-truth-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "propositional-truth-variant-e",
@@ -525,18 +644,25 @@
       "family": "quantified-truth",
       "interaction": "category",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-quantifier-power-v1"
+      ],
       "family_contracts": [
         "AM1/4"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "category",
-          "result": "truth with quantified domains and quantifier order"
+          "result": "truth with quantified domains and quantifier order",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-quantifier-power-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "quantified-truth-variant-a",
@@ -552,18 +678,25 @@
       "family": "quantified-truth",
       "interaction": "category",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-quantifier-polynomial-v1"
+      ],
       "family_contracts": [
         "AM1/4"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "category",
-          "result": "truth with quantified domains and quantifier order"
+          "result": "truth with quantified domains and quantifier order",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-quantifier-polynomial-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "quantified-truth-variant-b",
@@ -579,18 +712,25 @@
       "family": "quantified-truth",
       "interaction": "category",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-quantifier-cubic-witness-v1"
+      ],
       "family_contracts": [
         "AM1/4"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "category",
-          "result": "truth with quantified domains and quantifier order"
+          "result": "truth with quantified domains and quantifier order",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-quantifier-cubic-witness-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "quantified-truth-variant-c",
@@ -606,18 +746,25 @@
       "family": "quantified-truth",
       "interaction": "category",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-quantifier-product-v1"
+      ],
       "family_contracts": [
         "AM1/4"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "category",
-          "result": "truth with quantified domains and quantifier order"
+          "result": "truth with quantified domains and quantifier order",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-quantifier-product-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "quantified-truth-variant-d",
@@ -633,18 +780,25 @@
       "family": "quantified-truth",
       "interaction": "category",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-quantifier-total-order-v1"
+      ],
       "family_contracts": [
         "AM1/4"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "category",
-          "result": "truth with quantified domains and quantifier order"
+          "result": "truth with quantified domains and quantifier order",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-quantifier-total-order-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "quantified-truth-variant-e",
@@ -660,18 +814,25 @@
       "family": "quantified-truth",
       "interaction": "category",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-quantifier-trigonometric-v1"
+      ],
       "family_contracts": [
         "AM1/4"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "category",
-          "result": "truth with quantified domains and quantifier order"
+          "result": "truth with quantified domains and quantifier order",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-quantifier-trigonometric-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "quantified-truth-variant-f",
@@ -687,18 +848,25 @@
       "family": "real-domains",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-domain-rational-v1"
+      ],
       "family_contracts": [
         "AM1/5"
       ],
-      "coverage": "partial",
+      "coverage": "computational-verified-proof-sketch-deferred",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "complete natural real domain"
+          "result": "complete natural real domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-domain-rational-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         },
         {
           "id": "learner-sketch",
@@ -720,18 +888,25 @@
       "family": "real-domains",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-domain-root-rational-v1"
+      ],
       "family_contracts": [
         "AM1/5"
       ],
-      "coverage": "partial",
+      "coverage": "computational-verified-proof-sketch-deferred",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "complete natural real domain"
+          "result": "complete natural real domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-domain-root-rational-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         },
         {
           "id": "learner-sketch",
@@ -753,18 +928,25 @@
       "family": "real-domains",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-domain-quartic-root-v1"
+      ],
       "family_contracts": [
         "AM1/5"
       ],
-      "coverage": "partial",
+      "coverage": "computational-verified-proof-sketch-deferred",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "complete natural real domain"
+          "result": "complete natural real domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-domain-quartic-root-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         },
         {
           "id": "learner-sketch",
@@ -786,18 +968,25 @@
       "family": "real-domains",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-domain-root-quotient-v1"
+      ],
       "family_contracts": [
         "AM1/5"
       ],
-      "coverage": "partial",
+      "coverage": "computational-verified-proof-sketch-deferred",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "complete natural real domain"
+          "result": "complete natural real domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-domain-root-quotient-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         },
         {
           "id": "learner-sketch",
@@ -819,18 +1008,25 @@
       "family": "parity",
       "interaction": "category",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-parity-v1"
+      ],
       "family_contracts": [
         "AM1/6"
       ],
-      "coverage": "partial",
+      "coverage": "computational-verified-proof-sketch-deferred",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "category",
-          "result": "even/odd/neither with symmetric-domain check"
+          "result": "even/odd/neither with symmetric-domain check",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-parity-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         },
         {
           "id": "learner-proof",
@@ -852,18 +1048,25 @@
       "family": "parity",
       "interaction": "category",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-parity-v1"
+      ],
       "family_contracts": [
         "AM1/6"
       ],
-      "coverage": "partial",
+      "coverage": "computational-verified-proof-sketch-deferred",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "category",
-          "result": "even/odd/neither with symmetric-domain check"
+          "result": "even/odd/neither with symmetric-domain check",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-parity-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         },
         {
           "id": "learner-proof",
@@ -885,18 +1088,25 @@
       "family": "parity",
       "interaction": "category",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-parity-v1"
+      ],
       "family_contracts": [
         "AM1/6"
       ],
-      "coverage": "partial",
+      "coverage": "computational-verified-proof-sketch-deferred",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "category",
-          "result": "even/odd/neither with symmetric-domain check"
+          "result": "even/odd/neither with symmetric-domain check",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-parity-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         },
         {
           "id": "learner-proof",
@@ -918,18 +1128,25 @@
       "family": "parity",
       "interaction": "category",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-parity-v1"
+      ],
       "family_contracts": [
         "AM1/6"
       ],
-      "coverage": "partial",
+      "coverage": "computational-verified-proof-sketch-deferred",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "category",
-          "result": "even/odd/neither with symmetric-domain check"
+          "result": "even/odd/neither with symmetric-domain check",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-parity-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         },
         {
           "id": "learner-proof",
@@ -1005,18 +1222,25 @@
       "family": "composition-domains",
       "interaction": "ordered",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-composition-affine-v1"
+      ],
       "family_contracts": [
         "AM1/8"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "ordered",
-          "result": "four compositions, each expression paired with its natural domain"
+          "result": "four compositions, each expression paired with its natural domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-composition-affine-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "affine-affine",
@@ -1032,18 +1256,25 @@
       "family": "composition-domains",
       "interaction": "ordered",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-composition-reciprocal-square-v1"
+      ],
       "family_contracts": [
         "AM1/8"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "ordered",
-          "result": "four compositions, each expression paired with its natural domain"
+          "result": "four compositions, each expression paired with its natural domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-composition-reciprocal-square-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "reciprocal-square",
@@ -1059,18 +1290,25 @@
       "family": "composition-domains",
       "interaction": "ordered",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-composition-root-power-v1"
+      ],
       "family_contracts": [
         "AM1/8"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "ordered",
-          "result": "four compositions, each expression paired with its natural domain"
+          "result": "four compositions, each expression paired with its natural domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-composition-root-power-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "radical-fourth-power",
@@ -1086,18 +1324,25 @@
       "family": "composition-domains",
       "interaction": "ordered",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-composition-abs-root-v1"
+      ],
       "family_contracts": [
         "AM1/8"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "ordered",
-          "result": "four compositions, each expression paired with its natural domain"
+          "result": "four compositions, each expression paired with its natural domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-composition-abs-root-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "absolute-radical",
@@ -1329,18 +1574,25 @@
       "family": "polynomial-rational-equations",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-equation-repeated-polynomial-v1"
+      ],
       "family_contracts": [
         "AM1/10"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "all real roots with original denominator exclusions"
+          "result": "all real roots with original denominator exclusions",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-equation-repeated-polynomial-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "polynomial-rational-equations-variant-a",
@@ -1356,18 +1608,25 @@
       "family": "polynomial-rational-equations",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-equation-biquadratic-v1"
+      ],
       "family_contracts": [
         "AM1/10"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "all real roots with original denominator exclusions"
+          "result": "all real roots with original denominator exclusions",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-equation-biquadratic-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "polynomial-rational-equations-variant-b",
@@ -1383,18 +1642,25 @@
       "family": "polynomial-rational-equations",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-equation-rational-linear-v1"
+      ],
       "family_contracts": [
         "AM1/10"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "all real roots with original denominator exclusions"
+          "result": "all real roots with original denominator exclusions",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-equation-rational-linear-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "polynomial-rational-equations-variant-c",
@@ -1410,18 +1676,25 @@
       "family": "polynomial-rational-equations",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-equation-rational-cancel-v1"
+      ],
       "family_contracts": [
         "AM1/10"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "all real roots with original denominator exclusions"
+          "result": "all real roots with original denominator exclusions",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-equation-rational-cancel-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "polynomial-rational-equations-variant-d",
@@ -1437,18 +1710,25 @@
       "family": "polynomial-rational-inequalities",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-inequality-squared-factors-v1"
+      ],
       "family_contracts": [
         "AM1/11"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "all solution intervals with pole and endpoint handling"
+          "result": "all solution intervals with pole and endpoint handling",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-inequality-squared-factors-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "polynomial-rational-inequalities-variant-a",
@@ -1464,18 +1744,25 @@
       "family": "polynomial-rational-inequalities",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-inequality-odd-polynomial-v1"
+      ],
       "family_contracts": [
         "AM1/11"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "all solution intervals with pole and endpoint handling"
+          "result": "all solution intervals with pole and endpoint handling",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-inequality-odd-polynomial-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "polynomial-rational-inequalities-variant-b",
@@ -1491,18 +1778,25 @@
       "family": "polynomial-rational-inequalities",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-inequality-rational-sign-v1"
+      ],
       "family_contracts": [
         "AM1/11"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "all solution intervals with pole and endpoint handling"
+          "result": "all solution intervals with pole and endpoint handling",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-inequality-rational-sign-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "polynomial-rational-inequalities-variant-c",
@@ -1518,18 +1812,25 @@
       "family": "polynomial-rational-inequalities",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-inequality-rational-subtract-v1"
+      ],
       "family_contracts": [
         "AM1/11"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "all solution intervals with pole and endpoint handling"
+          "result": "all solution intervals with pole and endpoint handling",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-inequality-rational-subtract-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "polynomial-rational-inequalities-variant-d",
@@ -1599,18 +1900,25 @@
       "family": "inverse-branches",
       "interaction": "ordered",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-inverse-mobius-v1"
+      ],
       "family_contracts": [
         "AM1/13"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "ordered",
-          "result": "inverse formula, domain and range with specified branch"
+          "result": "inverse formula, domain and range with specified branch",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-inverse-mobius-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "mobius",
@@ -1626,18 +1934,25 @@
       "family": "inverse-branches",
       "interaction": "ordered",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-inverse-semicircle-branch-v1"
+      ],
       "family_contracts": [
         "AM1/13"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "ordered",
-          "result": "inverse formula, domain and range with specified branch"
+          "result": "inverse formula, domain and range with specified branch",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-inverse-semicircle-branch-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "restricted-semicircle",
@@ -1653,18 +1968,25 @@
       "family": "inverse-branches",
       "interaction": "ordered",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-inverse-exponential-v1"
+      ],
       "family_contracts": [
         "AM1/13"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "ordered",
-          "result": "inverse formula, domain and range with specified branch"
+          "result": "inverse formula, domain and range with specified branch",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-inverse-exponential-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "exponential",
@@ -1680,18 +2002,25 @@
       "family": "inverse-branches",
       "interaction": "ordered",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-inverse-logarithm-v1"
+      ],
       "family_contracts": [
         "AM1/13"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "ordered",
-          "result": "inverse formula, domain and range with specified branch"
+          "result": "inverse formula, domain and range with specified branch",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-inverse-logarithm-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "logarithmic",
@@ -1707,18 +2036,25 @@
       "family": "inverse-branches",
       "interaction": "ordered",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-inverse-negative-fourth-v1"
+      ],
       "family_contracts": [
         "AM1/13"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "ordered",
-          "result": "inverse formula, domain and range with specified branch"
+          "result": "inverse formula, domain and range with specified branch",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-inverse-negative-fourth-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "negative-fourth-power",
@@ -1734,18 +2070,25 @@
       "family": "inverse-branches",
       "interaction": "ordered",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-inverse-quadratic-branch-v1"
+      ],
       "family_contracts": [
         "AM1/13"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "ordered",
-          "result": "inverse formula, domain and range with specified branch"
+          "result": "inverse formula, domain and range with specified branch",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-inverse-quadratic-branch-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "restricted-quadratic",
@@ -1761,18 +2104,25 @@
       "family": "exponential-equations-inequalities",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-exponential-linear-v1"
+      ],
       "family_contracts": [
         "AM1/14"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "exponential equation/inequality solution set"
+          "result": "exponential equation/inequality solution set",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-exponential-linear-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "equal-base",
@@ -1788,18 +2138,25 @@
       "family": "exponential-equations-inequalities",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-exponential-substitution-v1"
+      ],
       "family_contracts": [
         "AM1/14"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "exponential equation/inequality solution set"
+          "result": "exponential equation/inequality solution set",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-exponential-substitution-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "quadratic-exponential",
@@ -1815,18 +2172,25 @@
       "family": "exponential-equations-inequalities",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-trig-equation-exponential-v1"
+      ],
       "family_contracts": [
         "AM1/14"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "exponential equation/inequality solution set"
+          "result": "exponential equation/inequality solution set",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-trig-equation-exponential-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "trig-exponents",
@@ -1842,18 +2206,25 @@
       "family": "exponential-equations-inequalities",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-exponential-reciprocal-exponent-v1"
+      ],
       "family_contracts": [
         "AM1/14"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "exponential equation/inequality solution set"
+          "result": "exponential equation/inequality solution set",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-exponential-reciprocal-exponent-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "rational-exponent",
@@ -1869,18 +2240,25 @@
       "family": "exponential-equations-inequalities",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-exponential-product-inequality-v1"
+      ],
       "family_contracts": [
         "AM1/14"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "exponential equation/inequality solution set"
+          "result": "exponential equation/inequality solution set",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-exponential-product-inequality-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "different-base-product",
@@ -1896,18 +2274,25 @@
       "family": "exponential-equations-inequalities",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-exponential-rational-inequality-v1"
+      ],
       "family_contracts": [
         "AM1/14"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "exponential equation/inequality solution set"
+          "result": "exponential equation/inequality solution set",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-exponential-rational-inequality-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "rational-exponential",
@@ -1923,18 +2308,25 @@
       "family": "logarithmic-values",
       "interaction": "scalar",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-log-value-product-v1"
+      ],
       "family_contracts": [
         "AM1/15"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "scalar",
-          "result": "exact logarithmic value"
+          "result": "exact logarithmic value",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-log-value-product-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "logarithmic-values-variant-a",
@@ -1950,18 +2342,25 @@
       "family": "logarithmic-values",
       "interaction": "scalar",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-log-value-product-v1"
+      ],
       "family_contracts": [
         "AM1/15"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "scalar",
-          "result": "exact logarithmic value"
+          "result": "exact logarithmic value",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-log-value-product-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "logarithmic-values-variant-b",
@@ -1977,18 +2376,25 @@
       "family": "logarithmic-values",
       "interaction": "scalar",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-log-value-root-v1"
+      ],
       "family_contracts": [
         "AM1/15"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "scalar",
-          "result": "exact logarithmic value"
+          "result": "exact logarithmic value",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-log-value-root-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "logarithmic-values-variant-c",
@@ -2004,18 +2410,25 @@
       "family": "logarithmic-values",
       "interaction": "scalar",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-log-value-change-base-v1"
+      ],
       "family_contracts": [
         "AM1/15"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "scalar",
-          "result": "exact logarithmic value"
+          "result": "exact logarithmic value",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-log-value-change-base-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "logarithmic-values-variant-d",
@@ -2031,18 +2444,27 @@
       "family": "logarithmic-values",
       "interaction": "scalar",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-log-value-product-v1",
+        "elementary-log-value-root-v1"
+      ],
       "family_contracts": [
         "AM1/15"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "scalar",
-          "result": "exact logarithmic value"
+          "result": "exact logarithmic value",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-log-value-product-v1",
+            "elementary-log-value-root-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "logarithmic-values-variant-e",
@@ -2058,18 +2480,25 @@
       "family": "logarithmic-values",
       "interaction": "scalar",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-log-value-ratio-v1"
+      ],
       "family_contracts": [
         "AM1/15"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "scalar",
-          "result": "exact logarithmic value"
+          "result": "exact logarithmic value",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-log-value-ratio-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "logarithmic-values-variant-f",
@@ -2085,18 +2514,25 @@
       "family": "logarithmic-equations-inequalities",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-log-equation-power-v1"
+      ],
       "family_contracts": [
         "AM1/16"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "logarithmic solution set intersected with all argument domains"
+          "result": "logarithmic solution set intersected with all argument domains",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-log-equation-power-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "logarithmic-equations-inequalities-variant-a",
@@ -2112,18 +2548,25 @@
       "family": "logarithmic-equations-inequalities",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-log-equation-difference-v1"
+      ],
       "family_contracts": [
         "AM1/16"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "logarithmic solution set intersected with all argument domains"
+          "result": "logarithmic solution set intersected with all argument domains",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-log-equation-difference-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "logarithmic-equations-inequalities-variant-b",
@@ -2139,18 +2582,25 @@
       "family": "logarithmic-equations-inequalities",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-log-equation-quadratic-v1"
+      ],
       "family_contracts": [
         "AM1/16"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "logarithmic solution set intersected with all argument domains"
+          "result": "logarithmic solution set intersected with all argument domains",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-log-equation-quadratic-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "logarithmic-equations-inequalities-variant-c",
@@ -2166,18 +2616,25 @@
       "family": "logarithmic-equations-inequalities",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-log-inequality-linear-v1"
+      ],
       "family_contracts": [
         "AM1/16"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "logarithmic solution set intersected with all argument domains"
+          "result": "logarithmic solution set intersected with all argument domains",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-log-inequality-linear-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "logarithmic-equations-inequalities-variant-d",
@@ -2193,18 +2650,25 @@
       "family": "logarithmic-equations-inequalities",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-log-inequality-difference-v1"
+      ],
       "family_contracts": [
         "AM1/16"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "logarithmic solution set intersected with all argument domains"
+          "result": "logarithmic solution set intersected with all argument domains",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-log-inequality-difference-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "logarithmic-equations-inequalities-variant-e",
@@ -2220,18 +2684,25 @@
       "family": "logarithmic-equations-inequalities",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-log-inequality-opposite-bases-v1"
+      ],
       "family_contracts": [
         "AM1/16"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "logarithmic solution set intersected with all argument domains"
+          "result": "logarithmic solution set intersected with all argument domains",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-log-inequality-opposite-bases-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "logarithmic-equations-inequalities-variant-f",
@@ -2247,18 +2718,25 @@
       "family": "exponential-equations-inequalities",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-exponential-mixed-bases-v1"
+      ],
       "family_contracts": [
         "AM1/17"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "exponential solution set including substitutions and domain checks"
+          "result": "exponential solution set including substitutions and domain checks",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-exponential-mixed-bases-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "exponential-equations-inequalities-variant-a",
@@ -2274,18 +2752,25 @@
       "family": "exponential-equations-inequalities",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-exponential-product-inequality-v1"
+      ],
       "family_contracts": [
         "AM1/17"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "exponential solution set including substitutions and domain checks"
+          "result": "exponential solution set including substitutions and domain checks",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-exponential-product-inequality-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "exponential-equations-inequalities-variant-b",
@@ -2301,18 +2786,25 @@
       "family": "exponential-equations-inequalities",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-exponential-reciprocal-substitution-v1"
+      ],
       "family_contracts": [
         "AM1/17"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "exponential solution set including substitutions and domain checks"
+          "result": "exponential solution set including substitutions and domain checks",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-exponential-reciprocal-substitution-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "exponential-equations-inequalities-variant-c",
@@ -2328,18 +2820,25 @@
       "family": "trigonometric-identities-domains",
       "interaction": "periodic_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-trig-domain-tan-ratio-v1"
+      ],
       "family_contracts": [
         "AM1/18"
       ],
-      "coverage": "missing",
+      "coverage": "computational-verified-proof-sketch-deferred",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "periodic_set",
-          "result": "angles on which each trigonometric identity is defined and valid"
+          "result": "angles on which each trigonometric identity is defined and valid",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-trig-domain-tan-ratio-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         },
         {
           "id": "learner-proof",
@@ -2361,18 +2860,25 @@
       "family": "trigonometric-identities-domains",
       "interaction": "periodic_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-trig-domain-double-angle-v1"
+      ],
       "family_contracts": [
         "AM1/18"
       ],
-      "coverage": "missing",
+      "coverage": "computational-verified-proof-sketch-deferred",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "periodic_set",
-          "result": "angles on which each trigonometric identity is defined and valid"
+          "result": "angles on which each trigonometric identity is defined and valid",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-trig-domain-double-angle-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         },
         {
           "id": "learner-proof",
@@ -2394,18 +2900,25 @@
       "family": "trigonometric-identities-domains",
       "interaction": "periodic_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-trig-domain-tan-sum-v1"
+      ],
       "family_contracts": [
         "AM1/18"
       ],
-      "coverage": "missing",
+      "coverage": "computational-verified-proof-sketch-deferred",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "periodic_set",
-          "result": "angles on which each trigonometric identity is defined and valid"
+          "result": "angles on which each trigonometric identity is defined and valid",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-trig-domain-tan-sum-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         },
         {
           "id": "learner-proof",
@@ -2427,18 +2940,25 @@
       "family": "trigonometric-identities-domains",
       "interaction": "periodic_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-trig-domain-half-angle-v1"
+      ],
       "family_contracts": [
         "AM1/18"
       ],
-      "coverage": "missing",
+      "coverage": "computational-verified-proof-sketch-deferred",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "periodic_set",
-          "result": "angles on which each trigonometric identity is defined and valid"
+          "result": "angles on which each trigonometric identity is defined and valid",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-trig-domain-half-angle-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         },
         {
           "id": "learner-proof",
@@ -2460,18 +2980,25 @@
       "family": "trigonometric-identities-domains",
       "interaction": "periodic_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-trig-domain-half-angle-v1"
+      ],
       "family_contracts": [
         "AM1/18"
       ],
-      "coverage": "missing",
+      "coverage": "computational-verified-proof-sketch-deferred",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "periodic_set",
-          "result": "angles on which each trigonometric identity is defined and valid"
+          "result": "angles on which each trigonometric identity is defined and valid",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-trig-domain-half-angle-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         },
         {
           "id": "learner-proof",
@@ -2493,18 +3020,25 @@
       "family": "trigonometric-identities-domains",
       "interaction": "periodic_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-trig-domain-double-angle-v1"
+      ],
       "family_contracts": [
         "AM1/18"
       ],
-      "coverage": "missing",
+      "coverage": "computational-verified-proof-sketch-deferred",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "periodic_set",
-          "result": "angles on which each trigonometric identity is defined and valid"
+          "result": "angles on which each trigonometric identity is defined and valid",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-trig-domain-double-angle-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         },
         {
           "id": "learner-proof",
@@ -2526,18 +3060,25 @@
       "family": "multiple-angle-identities",
       "interaction": "expression",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-trig-linearization-square-v1"
+      ],
       "family_contracts": [
         "AM1/19"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "expression",
-          "result": "multiple-angle linearization of even trigonometric powers"
+          "result": "multiple-angle linearization of even trigonometric powers",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-trig-linearization-square-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "multiple-angle-identities-variant-a",
@@ -2553,18 +3094,25 @@
       "family": "multiple-angle-identities",
       "interaction": "expression",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-trig-linearization-square-v1"
+      ],
       "family_contracts": [
         "AM1/19"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "expression",
-          "result": "multiple-angle linearization of even trigonometric powers"
+          "result": "multiple-angle linearization of even trigonometric powers",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-trig-linearization-square-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "multiple-angle-identities-variant-b",
@@ -2580,18 +3128,25 @@
       "family": "multiple-angle-identities",
       "interaction": "expression",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-trig-linearization-fourth-v1"
+      ],
       "family_contracts": [
         "AM1/19"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "expression",
-          "result": "multiple-angle linearization of even trigonometric powers"
+          "result": "multiple-angle linearization of even trigonometric powers",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-trig-linearization-fourth-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "multiple-angle-identities-variant-c",
@@ -2607,18 +3162,25 @@
       "family": "multiple-angle-identities",
       "interaction": "expression",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-trig-linearization-fourth-v1"
+      ],
       "family_contracts": [
         "AM1/19"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "expression",
-          "result": "multiple-angle linearization of even trigonometric powers"
+          "result": "multiple-angle linearization of even trigonometric powers",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-trig-linearization-fourth-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "multiple-angle-identities-variant-d",
@@ -2634,18 +3196,25 @@
       "family": "inverse-trig-values",
       "interaction": "scalar",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-inverse-trig-values-v1"
+      ],
       "family_contracts": [
         "AM1/20"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "scalar",
-          "result": "principal inverse-trigonometric values"
+          "result": "principal inverse-trigonometric values",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-inverse-trig-values-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "inverse-trig-values-variant-a",
@@ -2661,18 +3230,25 @@
       "family": "inverse-trig-values",
       "interaction": "scalar",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-inverse-trig-atan-cot-v1"
+      ],
       "family_contracts": [
         "AM1/20"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "scalar",
-          "result": "principal inverse-trigonometric values"
+          "result": "principal inverse-trigonometric values",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-inverse-trig-atan-cot-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "inverse-trig-values-variant-b",
@@ -2688,18 +3264,25 @@
       "family": "inverse-trig-values",
       "interaction": "scalar",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-inverse-trig-values-v1"
+      ],
       "family_contracts": [
         "AM1/20"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "scalar",
-          "result": "principal inverse-trigonometric values"
+          "result": "principal inverse-trigonometric values",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-inverse-trig-values-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "inverse-trig-values-variant-c",
@@ -2715,18 +3298,25 @@
       "family": "inverse-trig-values",
       "interaction": "scalar",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-inverse-trig-atan-cot-v1"
+      ],
       "family_contracts": [
         "AM1/20"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "scalar",
-          "result": "principal inverse-trigonometric values"
+          "result": "principal inverse-trigonometric values",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-inverse-trig-atan-cot-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "inverse-trig-values-variant-d",
@@ -2742,18 +3332,25 @@
       "family": "inverse-trig-compositions",
       "interaction": "scalar",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-inverse-trig-nested-v1"
+      ],
       "family_contracts": [
         "AM1/21"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "scalar",
-          "result": "nested trigonometric and principal inverse-trigonometric values"
+          "result": "nested trigonometric and principal inverse-trigonometric values",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-inverse-trig-nested-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "inverse-trig-compositions-variant-a",
@@ -2769,18 +3366,25 @@
       "family": "inverse-trig-compositions",
       "interaction": "scalar",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-inverse-trig-cot-branch-v1"
+      ],
       "family_contracts": [
         "AM1/21"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "scalar",
-          "result": "nested trigonometric and principal inverse-trigonometric values"
+          "result": "nested trigonometric and principal inverse-trigonometric values",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-inverse-trig-cot-branch-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "inverse-trig-compositions-variant-b",
@@ -2796,18 +3400,25 @@
       "family": "inverse-trig-compositions",
       "interaction": "scalar",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-inverse-trig-nested-v1"
+      ],
       "family_contracts": [
         "AM1/21"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "scalar",
-          "result": "nested trigonometric and principal inverse-trigonometric values"
+          "result": "nested trigonometric and principal inverse-trigonometric values",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-inverse-trig-nested-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "inverse-trig-compositions-variant-c",
@@ -2823,18 +3434,25 @@
       "family": "inverse-trig-compositions",
       "interaction": "scalar",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-inverse-trig-nested-v1"
+      ],
       "family_contracts": [
         "AM1/21"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "scalar",
-          "result": "nested trigonometric and principal inverse-trigonometric values"
+          "result": "nested trigonometric and principal inverse-trigonometric values",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-inverse-trig-nested-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "inverse-trig-compositions-variant-d",
@@ -2850,18 +3468,25 @@
       "family": "inverse-trig-domains",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-domain-arcsin-affine-v1"
+      ],
       "family_contracts": [
         "AM1/22"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "natural inverse-trigonometric function domain"
+          "result": "natural inverse-trigonometric function domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-domain-arcsin-affine-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "inverse-trig-domains-variant-a",
@@ -2877,18 +3502,25 @@
       "family": "inverse-trig-domains",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-domain-arccos-square-v1"
+      ],
       "family_contracts": [
         "AM1/22"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "natural inverse-trigonometric function domain"
+          "result": "natural inverse-trigonometric function domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-domain-arccos-square-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "inverse-trig-domains-variant-b",
@@ -2904,18 +3536,25 @@
       "family": "inverse-trig-domains",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-domain-arctan-rational-v1"
+      ],
       "family_contracts": [
         "AM1/22"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "natural inverse-trigonometric function domain"
+          "result": "natural inverse-trigonometric function domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-domain-arctan-rational-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "inverse-trig-domains-variant-c",
@@ -2931,18 +3570,25 @@
       "family": "inverse-trig-domains",
       "interaction": "real_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-domain-arccot-affine-v1"
+      ],
       "family_contracts": [
         "AM1/22"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "real_set",
-          "result": "natural inverse-trigonometric function domain"
+          "result": "natural inverse-trigonometric function domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-domain-arccot-affine-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "inverse-trig-domains-variant-d",
@@ -2958,18 +3604,25 @@
       "family": "periodic-trig-solutions",
       "interaction": "periodic_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-trig-equation-sine-sum-v1"
+      ],
       "family_contracts": [
         "AM1/23"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "periodic_set",
-          "result": "all equation or inequality solutions with integer parameter"
+          "result": "all equation or inequality solutions with integer parameter",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-trig-equation-sine-sum-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "periodic-trig-solutions-variant-a",
@@ -2985,18 +3638,25 @@
       "family": "periodic-trig-solutions",
       "interaction": "periodic_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-trig-equation-cos-mixed-v1"
+      ],
       "family_contracts": [
         "AM1/23"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "periodic_set",
-          "result": "all equation or inequality solutions with integer parameter"
+          "result": "all equation or inequality solutions with integer parameter",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-trig-equation-cos-mixed-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "periodic-trig-solutions-variant-b",
@@ -3012,18 +3672,25 @@
       "family": "periodic-trig-solutions",
       "interaction": "periodic_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-trig-equation-tangent-sum-v1"
+      ],
       "family_contracts": [
         "AM1/23"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "periodic_set",
-          "result": "all equation or inequality solutions with integer parameter"
+          "result": "all equation or inequality solutions with integer parameter",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-trig-equation-tangent-sum-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "periodic-trig-solutions-variant-c",
@@ -3039,18 +3706,25 @@
       "family": "periodic-trig-solutions",
       "interaction": "periodic_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-trig-inequality-sine-v1"
+      ],
       "family_contracts": [
         "AM1/23"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "periodic_set",
-          "result": "all equation or inequality solutions with integer parameter"
+          "result": "all equation or inequality solutions with integer parameter",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-trig-inequality-sine-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "periodic-trig-solutions-variant-d",
@@ -3066,18 +3740,25 @@
       "family": "periodic-trig-solutions",
       "interaction": "periodic_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-trig-inequality-sine-cosine-v1"
+      ],
       "family_contracts": [
         "AM1/23"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "periodic_set",
-          "result": "all equation or inequality solutions with integer parameter"
+          "result": "all equation or inequality solutions with integer parameter",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-trig-inequality-sine-cosine-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "periodic-trig-solutions-variant-e",
@@ -3093,18 +3774,25 @@
       "family": "periodic-trig-solutions",
       "interaction": "periodic_set",
       "issue": 235,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "elementary-trig-inequality-cotangent-v1"
+      ],
       "family_contracts": [
         "AM1/23"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 235,
           "contract": "periodic_set",
-          "result": "all equation or inequality solutions with integer parameter"
+          "result": "all equation or inequality solutions with integer parameter",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-trig-inequality-cotangent-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         }
       ],
       "method": "periodic-trig-solutions-variant-f",
@@ -21153,8 +21841,10 @@
       "family": "real-domains + derivative-rules-domains",
       "interaction": "real_set + ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-component-verified-other-components-pending",
+      "verified_versions": [
+        "elementary-domain-exponential-root-v1"
+      ],
       "family_contracts": [
         "AM1/5",
         "AM1/41"
@@ -21165,7 +21855,12 @@
           "id": "result-1",
           "issue": 235,
           "contract": "real_set",
-          "result": "complete natural real domain"
+          "result": "complete natural real domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-domain-exponential-root-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         },
         {
           "id": "result-2",
@@ -21356,8 +22051,10 @@
       "family": "inverse-trig-domains + derivative-rules-domains",
       "interaction": "real_set + ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-component-verified-other-components-pending",
+      "verified_versions": [
+        "elementary-domain-arcsin-square-v1"
+      ],
       "family_contracts": [
         "AM1/22",
         "AM1/41"
@@ -21368,7 +22065,12 @@
           "id": "result-1",
           "issue": 235,
           "contract": "real_set",
-          "result": "natural inverse-trigonometric function domain"
+          "result": "natural inverse-trigonometric function domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-domain-arcsin-square-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         },
         {
           "id": "result-2",
@@ -22672,8 +23374,10 @@
       "family": "real-domains + all-asymptotes",
       "interaction": "real_set + ordered",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-component-verified-other-components-pending",
+      "verified_versions": [
+        "elementary-domain-quadratic-rational-v1"
+      ],
       "family_contracts": [
         "AM1/5",
         "AM1/36"
@@ -22684,7 +23388,12 @@
           "id": "result-1",
           "issue": 235,
           "contract": "real_set",
-          "result": "complete natural real domain"
+          "result": "complete natural real domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-domain-quadratic-rational-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         },
         {
           "id": "result-2",
@@ -23011,8 +23720,10 @@
       "family": "real-domains + all-asymptotes",
       "interaction": "real_set + ordered",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-component-verified-other-components-pending",
+      "verified_versions": [
+        "elementary-domain-quadratic-rational-v1"
+      ],
       "family_contracts": [
         "AM1/5",
         "AM1/36"
@@ -23023,7 +23734,12 @@
           "id": "result-1",
           "issue": 235,
           "contract": "real_set",
-          "result": "complete natural real domain"
+          "result": "complete natural real domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "elementary-domain-quadratic-rational-v1"
+          ],
+          "verification": "backend/tests/test_engine_elementary_mathematics.py"
         },
         {
           "id": "result-2",
@@ -23543,7 +24259,19 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "elementary-proposition-v1",
+        "elementary-proposition-triangle-v1"
+      ],
+      "delivery": {
+        "issue": 235,
+        "status": "implemented-mathematically-verified-within-declared-bounds",
+        "scope": "computational results only; learner proof/sketch components remain #244",
+        "bounds_and_policies": "docs/architecture/ELEMENTARY_FUNCTIONS.md",
+        "independent_checks": "backend/tests/test_engine_elementary_mathematics.py",
+        "worked_examples": "backend/tests/fixtures/elementary_worked_examples.json"
+      }
     },
     "AM1/2": {
       "family": "logical-negation",
@@ -23556,7 +24284,23 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "elementary-logic-negation-and-v1",
+        "elementary-logic-negation-not-v1",
+        "elementary-logic-negation-or-v1",
+        "elementary-logic-negation-implication-v1",
+        "elementary-logic-negation-equivalence-v1",
+        "elementary-logic-negation-xor-v1"
+      ],
+      "delivery": {
+        "issue": 235,
+        "status": "implemented-mathematically-verified-within-declared-bounds",
+        "scope": "computational results only; learner proof/sketch components remain #244",
+        "bounds_and_policies": "docs/architecture/ELEMENTARY_FUNCTIONS.md",
+        "independent_checks": "backend/tests/test_engine_elementary_mathematics.py",
+        "worked_examples": "backend/tests/fixtures/elementary_worked_examples.json"
+      }
     },
     "AM1/3": {
       "family": "propositional-truth",
@@ -23569,7 +24313,18 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "elementary-compound-truth-v1"
+      ],
+      "delivery": {
+        "issue": 235,
+        "status": "implemented-mathematically-verified-within-declared-bounds",
+        "scope": "computational results only; learner proof/sketch components remain #244",
+        "bounds_and_policies": "docs/architecture/ELEMENTARY_FUNCTIONS.md",
+        "independent_checks": "backend/tests/test_engine_elementary_mathematics.py",
+        "worked_examples": "backend/tests/fixtures/elementary_worked_examples.json"
+      }
     },
     "AM1/4": {
       "family": "quantified-truth",
@@ -23582,7 +24337,24 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "elementary-quantifier-power-v1",
+        "elementary-quantifier-polynomial-v1",
+        "elementary-quantifier-cubic-witness-v1",
+        "elementary-quantifier-product-v1",
+        "elementary-quantifier-total-order-v1",
+        "elementary-quantifier-trigonometric-v1",
+        "elementary-quantifier-order-v1"
+      ],
+      "delivery": {
+        "issue": 235,
+        "status": "implemented-mathematically-verified-within-declared-bounds",
+        "scope": "computational results only; learner proof/sketch components remain #244",
+        "bounds_and_policies": "docs/architecture/ELEMENTARY_FUNCTIONS.md",
+        "independent_checks": "backend/tests/test_engine_elementary_mathematics.py",
+        "worked_examples": "backend/tests/fixtures/elementary_worked_examples.json"
+      }
     },
     "AM1/5": {
       "family": "real-domains",
@@ -23597,7 +24369,24 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "elementary-domain-rational-v1",
+        "elementary-domain-quartic-root-v1",
+        "elementary-domain-root-quotient-v1",
+        "elementary-domain-root-rational-v1",
+        "elementary-domain-log-ratio-v1",
+        "elementary-domain-exponential-root-v1",
+        "elementary-domain-quadratic-rational-v1"
+      ],
+      "delivery": {
+        "issue": 235,
+        "status": "implemented-mathematically-verified-within-declared-bounds",
+        "scope": "computational results only; learner proof/sketch components remain #244",
+        "bounds_and_policies": "docs/architecture/ELEMENTARY_FUNCTIONS.md",
+        "independent_checks": "backend/tests/test_engine_elementary_mathematics.py",
+        "worked_examples": "backend/tests/fixtures/elementary_worked_examples.json"
+      }
     },
     "AM1/6": {
       "family": "parity",
@@ -23612,7 +24401,18 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "elementary-parity-v1"
+      ],
+      "delivery": {
+        "issue": 235,
+        "status": "implemented-mathematically-verified-within-declared-bounds",
+        "scope": "computational results only; learner proof/sketch components remain #244",
+        "bounds_and_policies": "docs/architecture/ELEMENTARY_FUNCTIONS.md",
+        "independent_checks": "backend/tests/test_engine_elementary_mathematics.py",
+        "worked_examples": "backend/tests/fixtures/elementary_worked_examples.json"
+      }
     },
     "AM1/7": {
       "family": "monotonicity-definition",
@@ -23640,7 +24440,21 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "elementary-composition-affine-v1",
+        "elementary-composition-reciprocal-square-v1",
+        "elementary-composition-root-power-v1",
+        "elementary-composition-abs-root-v1"
+      ],
+      "delivery": {
+        "issue": 235,
+        "status": "implemented-mathematically-verified-within-declared-bounds",
+        "scope": "computational results only; learner proof/sketch components remain #244",
+        "bounds_and_policies": "docs/architecture/ELEMENTARY_FUNCTIONS.md",
+        "independent_checks": "backend/tests/test_engine_elementary_mathematics.py",
+        "worked_examples": "backend/tests/fixtures/elementary_worked_examples.json"
+      }
     },
     "AM1/9": {
       "family": "graph-transformations",
@@ -23666,7 +24480,21 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "elementary-equation-repeated-polynomial-v1",
+        "elementary-equation-biquadratic-v1",
+        "elementary-equation-rational-linear-v1",
+        "elementary-equation-rational-cancel-v1"
+      ],
+      "delivery": {
+        "issue": 235,
+        "status": "implemented-mathematically-verified-within-declared-bounds",
+        "scope": "computational results only; learner proof/sketch components remain #244",
+        "bounds_and_policies": "docs/architecture/ELEMENTARY_FUNCTIONS.md",
+        "independent_checks": "backend/tests/test_engine_elementary_mathematics.py",
+        "worked_examples": "backend/tests/fixtures/elementary_worked_examples.json"
+      }
     },
     "AM1/11": {
       "family": "polynomial-rational-inequalities",
@@ -23679,7 +24507,21 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "elementary-inequality-squared-factors-v1",
+        "elementary-inequality-odd-polynomial-v1",
+        "elementary-inequality-rational-sign-v1",
+        "elementary-inequality-rational-subtract-v1"
+      ],
+      "delivery": {
+        "issue": 235,
+        "status": "implemented-mathematically-verified-within-declared-bounds",
+        "scope": "computational results only; learner proof/sketch components remain #244",
+        "bounds_and_policies": "docs/architecture/ELEMENTARY_FUNCTIONS.md",
+        "independent_checks": "backend/tests/test_engine_elementary_mathematics.py",
+        "worked_examples": "backend/tests/fixtures/elementary_worked_examples.json"
+      }
     },
     "AM1/12": {
       "family": "injectivity",
@@ -23707,7 +24549,23 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "elementary-inverse-mobius-v1",
+        "elementary-inverse-semicircle-branch-v1",
+        "elementary-inverse-exponential-v1",
+        "elementary-inverse-logarithm-v1",
+        "elementary-inverse-negative-fourth-v1",
+        "elementary-inverse-quadratic-branch-v1"
+      ],
+      "delivery": {
+        "issue": 235,
+        "status": "implemented-mathematically-verified-within-declared-bounds",
+        "scope": "computational results only; learner proof/sketch components remain #244",
+        "bounds_and_policies": "docs/architecture/ELEMENTARY_FUNCTIONS.md",
+        "independent_checks": "backend/tests/test_engine_elementary_mathematics.py",
+        "worked_examples": "backend/tests/fixtures/elementary_worked_examples.json"
+      }
     },
     "AM1/14": {
       "family": "exponential-equations-inequalities",
@@ -23720,7 +24578,23 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "elementary-exponential-linear-v1",
+        "elementary-exponential-substitution-v1",
+        "elementary-trig-equation-exponential-v1",
+        "elementary-exponential-reciprocal-exponent-v1",
+        "elementary-exponential-product-inequality-v1",
+        "elementary-exponential-rational-inequality-v1"
+      ],
+      "delivery": {
+        "issue": 235,
+        "status": "implemented-mathematically-verified-within-declared-bounds",
+        "scope": "computational results only; learner proof/sketch components remain #244",
+        "bounds_and_policies": "docs/architecture/ELEMENTARY_FUNCTIONS.md",
+        "independent_checks": "backend/tests/test_engine_elementary_mathematics.py",
+        "worked_examples": "backend/tests/fixtures/elementary_worked_examples.json"
+      }
     },
     "AM1/15": {
       "family": "logarithmic-values",
@@ -23733,7 +24607,21 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "elementary-log-value-product-v1",
+        "elementary-log-value-root-v1",
+        "elementary-log-value-change-base-v1",
+        "elementary-log-value-ratio-v1"
+      ],
+      "delivery": {
+        "issue": 235,
+        "status": "implemented-mathematically-verified-within-declared-bounds",
+        "scope": "computational results only; learner proof/sketch components remain #244",
+        "bounds_and_policies": "docs/architecture/ELEMENTARY_FUNCTIONS.md",
+        "independent_checks": "backend/tests/test_engine_elementary_mathematics.py",
+        "worked_examples": "backend/tests/fixtures/elementary_worked_examples.json"
+      }
     },
     "AM1/16": {
       "family": "logarithmic-equations-inequalities",
@@ -23746,7 +24634,23 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "elementary-log-equation-power-v1",
+        "elementary-log-equation-difference-v1",
+        "elementary-log-equation-quadratic-v1",
+        "elementary-log-inequality-linear-v1",
+        "elementary-log-inequality-difference-v1",
+        "elementary-log-inequality-opposite-bases-v1"
+      ],
+      "delivery": {
+        "issue": 235,
+        "status": "implemented-mathematically-verified-within-declared-bounds",
+        "scope": "computational results only; learner proof/sketch components remain #244",
+        "bounds_and_policies": "docs/architecture/ELEMENTARY_FUNCTIONS.md",
+        "independent_checks": "backend/tests/test_engine_elementary_mathematics.py",
+        "worked_examples": "backend/tests/fixtures/elementary_worked_examples.json"
+      }
     },
     "AM1/17": {
       "family": "exponential-equations-inequalities",
@@ -23759,7 +24663,20 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "elementary-exponential-mixed-bases-v1",
+        "elementary-exponential-product-inequality-v1",
+        "elementary-exponential-reciprocal-substitution-v1"
+      ],
+      "delivery": {
+        "issue": 235,
+        "status": "implemented-mathematically-verified-within-declared-bounds",
+        "scope": "computational results only; learner proof/sketch components remain #244",
+        "bounds_and_policies": "docs/architecture/ELEMENTARY_FUNCTIONS.md",
+        "independent_checks": "backend/tests/test_engine_elementary_mathematics.py",
+        "worked_examples": "backend/tests/fixtures/elementary_worked_examples.json"
+      }
     },
     "AM1/18": {
       "family": "trigonometric-identities-domains",
@@ -23772,7 +24689,21 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "elementary-trig-domain-tan-ratio-v1",
+        "elementary-trig-domain-double-angle-v1",
+        "elementary-trig-domain-tan-sum-v1",
+        "elementary-trig-domain-half-angle-v1"
+      ],
+      "delivery": {
+        "issue": 235,
+        "status": "implemented-mathematically-verified-within-declared-bounds",
+        "scope": "computational results only; learner proof/sketch components remain #244",
+        "bounds_and_policies": "docs/architecture/ELEMENTARY_FUNCTIONS.md",
+        "independent_checks": "backend/tests/test_engine_elementary_mathematics.py",
+        "worked_examples": "backend/tests/fixtures/elementary_worked_examples.json"
+      }
     },
     "AM1/19": {
       "family": "multiple-angle-identities",
@@ -23785,7 +24716,19 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "elementary-trig-linearization-square-v1",
+        "elementary-trig-linearization-fourth-v1"
+      ],
+      "delivery": {
+        "issue": 235,
+        "status": "implemented-mathematically-verified-within-declared-bounds",
+        "scope": "computational results only; learner proof/sketch components remain #244",
+        "bounds_and_policies": "docs/architecture/ELEMENTARY_FUNCTIONS.md",
+        "independent_checks": "backend/tests/test_engine_elementary_mathematics.py",
+        "worked_examples": "backend/tests/fixtures/elementary_worked_examples.json"
+      }
     },
     "AM1/20": {
       "family": "inverse-trig-values",
@@ -23798,7 +24741,19 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "elementary-inverse-trig-values-v1",
+        "elementary-inverse-trig-atan-cot-v1"
+      ],
+      "delivery": {
+        "issue": 235,
+        "status": "implemented-mathematically-verified-within-declared-bounds",
+        "scope": "computational results only; learner proof/sketch components remain #244",
+        "bounds_and_policies": "docs/architecture/ELEMENTARY_FUNCTIONS.md",
+        "independent_checks": "backend/tests/test_engine_elementary_mathematics.py",
+        "worked_examples": "backend/tests/fixtures/elementary_worked_examples.json"
+      }
     },
     "AM1/21": {
       "family": "inverse-trig-compositions",
@@ -23811,7 +24766,19 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "elementary-inverse-trig-nested-v1",
+        "elementary-inverse-trig-cot-branch-v1"
+      ],
+      "delivery": {
+        "issue": 235,
+        "status": "implemented-mathematically-verified-within-declared-bounds",
+        "scope": "computational results only; learner proof/sketch components remain #244",
+        "bounds_and_policies": "docs/architecture/ELEMENTARY_FUNCTIONS.md",
+        "independent_checks": "backend/tests/test_engine_elementary_mathematics.py",
+        "worked_examples": "backend/tests/fixtures/elementary_worked_examples.json"
+      }
     },
     "AM1/22": {
       "family": "inverse-trig-domains",
@@ -23824,7 +24791,22 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "elementary-domain-arcsin-affine-v1",
+        "elementary-domain-arccos-square-v1",
+        "elementary-domain-arctan-rational-v1",
+        "elementary-domain-arccot-affine-v1",
+        "elementary-domain-arcsin-square-v1"
+      ],
+      "delivery": {
+        "issue": 235,
+        "status": "implemented-mathematically-verified-within-declared-bounds",
+        "scope": "computational results only; learner proof/sketch components remain #244",
+        "bounds_and_policies": "docs/architecture/ELEMENTARY_FUNCTIONS.md",
+        "independent_checks": "backend/tests/test_engine_elementary_mathematics.py",
+        "worked_examples": "backend/tests/fixtures/elementary_worked_examples.json"
+      }
     },
     "AM1/23": {
       "family": "periodic-trig-solutions",
@@ -23837,7 +24819,23 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "elementary-trig-equation-sine-sum-v1",
+        "elementary-trig-equation-cos-mixed-v1",
+        "elementary-trig-equation-tangent-sum-v1",
+        "elementary-trig-inequality-sine-v1",
+        "elementary-trig-inequality-sine-cosine-v1",
+        "elementary-trig-inequality-cotangent-v1"
+      ],
+      "delivery": {
+        "issue": 235,
+        "status": "implemented-mathematically-verified-within-declared-bounds",
+        "scope": "computational results only; learner proof/sketch components remain #244",
+        "bounds_and_policies": "docs/architecture/ELEMENTARY_FUNCTIONS.md",
+        "independent_checks": "backend/tests/test_engine_elementary_mathematics.py",
+        "worked_examples": "backend/tests/fixtures/elementary_worked_examples.json"
+      }
     },
     "AM1/24": {
       "family": "sequence-bounds",
@@ -25612,6 +26610,104 @@
     "family_contracts": 146,
     "deferred_only_references": 30,
     "mixed_references": 146,
-    "verified_generator_deliveries": 0
+    "verified_generator_deliveries": 81,
+    "verified_computational_components": 102
+  },
+  "deliveries": {
+    "235": {
+      "base": "24f14ec37c4dd5e30d1b40faf7e21bf192cfe3c2",
+      "generator_versions": [
+        "elementary-composition-abs-root-v1",
+        "elementary-composition-affine-v1",
+        "elementary-composition-reciprocal-square-v1",
+        "elementary-composition-root-power-v1",
+        "elementary-compound-truth-v1",
+        "elementary-domain-arccos-square-v1",
+        "elementary-domain-arccot-affine-v1",
+        "elementary-domain-arcsin-affine-v1",
+        "elementary-domain-arcsin-square-v1",
+        "elementary-domain-arctan-rational-v1",
+        "elementary-domain-exponential-root-v1",
+        "elementary-domain-log-ratio-v1",
+        "elementary-domain-quadratic-rational-v1",
+        "elementary-domain-quartic-root-v1",
+        "elementary-domain-rational-v1",
+        "elementary-domain-root-quotient-v1",
+        "elementary-domain-root-rational-v1",
+        "elementary-equation-biquadratic-v1",
+        "elementary-equation-rational-cancel-v1",
+        "elementary-equation-rational-linear-v1",
+        "elementary-equation-repeated-polynomial-v1",
+        "elementary-exponential-linear-v1",
+        "elementary-exponential-mixed-bases-v1",
+        "elementary-exponential-product-inequality-v1",
+        "elementary-exponential-rational-inequality-v1",
+        "elementary-exponential-reciprocal-exponent-v1",
+        "elementary-exponential-reciprocal-substitution-v1",
+        "elementary-exponential-substitution-v1",
+        "elementary-inequality-odd-polynomial-v1",
+        "elementary-inequality-rational-sign-v1",
+        "elementary-inequality-rational-subtract-v1",
+        "elementary-inequality-squared-factors-v1",
+        "elementary-inverse-exponential-v1",
+        "elementary-inverse-logarithm-v1",
+        "elementary-inverse-mobius-v1",
+        "elementary-inverse-negative-fourth-v1",
+        "elementary-inverse-quadratic-branch-v1",
+        "elementary-inverse-semicircle-branch-v1",
+        "elementary-inverse-trig-atan-cot-v1",
+        "elementary-inverse-trig-cot-branch-v1",
+        "elementary-inverse-trig-nested-v1",
+        "elementary-inverse-trig-values-v1",
+        "elementary-log-equation-difference-v1",
+        "elementary-log-equation-power-v1",
+        "elementary-log-equation-quadratic-v1",
+        "elementary-log-inequality-difference-v1",
+        "elementary-log-inequality-linear-v1",
+        "elementary-log-inequality-opposite-bases-v1",
+        "elementary-log-value-change-base-v1",
+        "elementary-log-value-product-v1",
+        "elementary-log-value-ratio-v1",
+        "elementary-log-value-root-v1",
+        "elementary-logic-negation-and-v1",
+        "elementary-logic-negation-equivalence-v1",
+        "elementary-logic-negation-implication-v1",
+        "elementary-logic-negation-not-v1",
+        "elementary-logic-negation-or-v1",
+        "elementary-logic-negation-xor-v1",
+        "elementary-parity-v1",
+        "elementary-proposition-triangle-v1",
+        "elementary-proposition-v1",
+        "elementary-quantifier-cubic-witness-v1",
+        "elementary-quantifier-order-v1",
+        "elementary-quantifier-polynomial-v1",
+        "elementary-quantifier-power-v1",
+        "elementary-quantifier-product-v1",
+        "elementary-quantifier-total-order-v1",
+        "elementary-quantifier-trigonometric-v1",
+        "elementary-trig-domain-double-angle-v1",
+        "elementary-trig-domain-half-angle-v1",
+        "elementary-trig-domain-tan-ratio-v1",
+        "elementary-trig-domain-tan-sum-v1",
+        "elementary-trig-equation-cos-mixed-v1",
+        "elementary-trig-equation-exponential-v1",
+        "elementary-trig-equation-sine-sum-v1",
+        "elementary-trig-equation-tangent-sum-v1",
+        "elementary-trig-inequality-cotangent-v1",
+        "elementary-trig-inequality-sine-cosine-v1",
+        "elementary-trig-inequality-sine-v1",
+        "elementary-trig-linearization-fourth-v1",
+        "elementary-trig-linearization-square-v1"
+      ],
+      "family_contracts": 20,
+      "source_references": 102,
+      "computational_components": 102,
+      "verification_scope": "bounded generated mathematical families; hosted CI/deploy and Issue Done state are authoritative in GitHub",
+      "intake_fields": "candidate_versions, existing_coverage and gap retain the historical intake assessment at the index base commit",
+      "additional_family_variants": [
+        "elementary-domain-log-ratio-v1",
+        "elementary-quantifier-order-v1"
+      ]
+    }
   }
 }

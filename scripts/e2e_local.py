@@ -126,17 +126,99 @@ def correct_answer(url: str, problem_id: str, *, wrong: bool = False) -> str:
         ).fetchone()
     if row is None:
         raise SystemExit(f"no private record for {problem_id}")
-    # Use the answer kind's trusted expression, not its display LaTeX.
+    return answer_text(engine_answer(row[0]), wrong=wrong)
+
+
+def engine_answer(record: dict[str, object]) -> Any:
+    from app.engine import practice as engine
+
+    return engine.replay(record).answer
+
+
+def answer_text(answer: Any, *, wrong: bool = False) -> str:
+    """Serialize trusted private targets for HTTP checks, never learner expressions."""
+    import re
+
     import sympy as sp
 
-    from app.engine import practice as engine
     from app.engine.answers.antiderivative import AntiderivativeAnswer
+    from app.engine.answers.computational import (
+        CategoryAnswer,
+        OrderedAnswer,
+        PeriodicSetAnswer,
+        RealSetAnswer,
+    )
+    from app.engine.answers.logic import LogicAnswer
     from app.engine.answers.structured import BooleanAnswer, FiniteSetAnswer, IntervalAnswer
 
-    answer = engine.replay(row[0]).answer
-
     def scalar(value: Any) -> str:
-        return str(sp.sstr(value)).replace("**", "^").replace("E", "e")
+        text = str(sp.sstr(value)).replace("**", "^").replace("E", "e").replace("Abs", "abs")
+        return re.sub(
+            r"x\^(\d+)",
+            lambda match: (
+                "(" + "*".join("x^" + str(min(12, n)) for n in range(int(match[1]), 0, -12)) + ")"
+                if int(match[1]) > 12
+                else match[0]
+            ),
+            text,
+        )
+
+    def real_set(value: Any) -> str:
+        if value == sp.S.Reals:
+            return "R"
+        if value == sp.S.EmptySet:
+            return "{}"
+        if isinstance(value, sp.Union):
+            return " U ".join(map(real_set, value.args))
+        if isinstance(value, sp.FiniteSet):
+            return "{" + ",".join(map(scalar, value)) + "}"
+        return (
+            ("(" if value.left_open else "[")
+            + ("-inf" if value.start == -sp.oo else scalar(value.start))
+            + ","
+            + ("inf" if value.end == sp.oo else scalar(value.end))
+            + (")" if value.right_open else "]")
+        )
+
+    if isinstance(answer, CategoryAnswer):
+        return (
+            next(choice for choice in answer.choices if choice != answer.expected)
+            if wrong
+            else answer.expected
+        )
+    if isinstance(answer, OrderedAnswer):
+        return (
+            "("
+            + ";".join(
+                answer_text(part, wrong=wrong and i == 0)
+                for i, part in enumerate(answer.components)
+            )
+            + ")"
+        )
+    if isinstance(answer, PeriodicSetAnswer):
+        base = (
+            (sp.S.EmptySet if answer.base != sp.S.EmptySet else sp.FiniteSet(0))
+            if wrong
+            else answer.base
+        )
+        return "(" + scalar(answer.period) + ";" + real_set(base) + ")"
+    if isinstance(answer, RealSetAnswer):
+        return (
+            ("{}" if answer.expected != sp.S.EmptySet else "R")
+            if wrong
+            else real_set(answer.expected)
+        )
+    if isinstance(answer, LogicAnswer):
+
+        def logic(node: Any) -> str:
+            if not node.children:
+                return str(node.value)
+            if node.value == "!":
+                return "!(" + logic(node.children[0]) + ")"
+            return "(" + logic(node.children[0]) + str(node.value) + logic(node.children[1]) + ")"
+
+        text = logic(answer.expected)
+        return "!(" + text + ")" if wrong else text
 
     if isinstance(answer, BooleanAnswer):
         return "true" if answer.expected != wrong else "false"
@@ -163,7 +245,7 @@ def correct_answer(url: str, problem_id: str, *, wrong: bool = False) -> str:
         value, constant = answer.primitive, " + C"
     else:
         value, constant = answer.expected, ""  # type: ignore[attr-defined]
-    text = sp.sstr(value).replace("**", "^").replace("Abs", "abs").replace("E", "e")
+    text = scalar(value)
     # #221: complex answers spell the imaginary unit as `i`.
     return text.replace("I", "i") + constant
 
@@ -194,7 +276,9 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
     )
     # Keep PR feedback fast: one representative cell per published topic/area.
     # The full level matrix remains covered by catalogue and worksheet tests.
-    cells: list[tuple[str, int, dict[str, str]]] = [(t["slug"], 1, {}) for t in topics["items"]]
+    cells: list[tuple[str, int, dict[str, str]]] = [
+        (t["slug"], min(t["availableDifficulties"]), {}) for t in topics["items"]
+    ]
     cells += [
         ("mixed", d, {"area": slug})
         for slug, area in areas.items()
@@ -219,8 +303,8 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
     probability = {t["slug"] for t in topics["items"] if t["area"] == "probability-statistics"}
     cells += [(slug, level, {}) for slug in sorted(probability) for level in range(2, 6)]
     check(
-        len(cells) == 124 and len(probability) == 9,
-        "45 topics, area mixes and all Analysis I/II plus Probability and Statistics cells",
+        len(cells) == 128 and len(probability) == 9,
+        "49 topics, area mixes and all Analysis I/II plus Probability and Statistics cells",
         len(cells),
     )
     created: list[str] = []
@@ -664,13 +748,19 @@ def database_failure(api: httpx.Client, stop: str, start: str) -> None:
     check(response.status_code == 200, "API recovers once the database is back", response.text)
 
 
-def probability_input_flow(api: httpx.Client, other: httpx.Client, base: str, url: str) -> None:
-    """All new input kinds, anonymous instructions, recipient copies and worksheet pools."""
+def computational_code_flow(
+    api: httpx.Client,
+    other: httpx.Client,
+    base: str,
+    url: str,
+    providers: Any,
+    names: tuple[str, ...],
+) -> None:
+    """Real HTTP/database ownership, private reveals and exact computational contracts."""
     from app.engine.codes import encode
-    from app.engine.generators.probability import generators
 
-    by_name = {g.template: g for g in generators()}
-    for name in ("events-independence", "finite-support", "ci-lower", "ci-mean-z"):
+    by_name = {g.template: g for g in providers}
+    for name in names:
         reset_limits()
         generator = by_name[name]
         code = encode(generator.prefix, 1, 200)
@@ -692,7 +782,7 @@ def probability_input_flow(api: httpx.Client, other: httpx.Client, base: str, ur
         problem = created.json()["problem"]
         pid = problem["id"]
         check(problem.get("answerInput") == projection["answerInput"], f"saved {name} input kind")
-        bad = api.post(f"/problems/{pid}/attempts", json={"answer": "999999"}, headers=key())
+        bad = api.post(f"/problems/{pid}/attempts", json={"answer": "bad input"}, headers=key())
         incorrect = api.post(
             f"/problems/{pid}/attempts",
             json={"answer": correct_answer(url, pid, wrong=True)},
@@ -707,6 +797,7 @@ def probability_input_flow(api: httpx.Client, other: httpx.Client, base: str, ur
             and incorrect.json()["attempt"]["result"] == "incorrect"
             and correct.json()["attempt"]["result"] == "correct",
             f"all attempt outcomes {name}",
+            [(response.status_code, response.text) for response in (bad, incorrect, correct)],
         )
         reopened = api.get(f"/problems/{pid}").json()["problem"]
         check(
@@ -714,6 +805,7 @@ def probability_input_flow(api: httpx.Client, other: httpx.Client, base: str, ur
             and reopened["attemptCount"] == 3
             and reopened["lastAttempt"]["answer"] == correct_answer(url, pid),
             f"history reopens structured {name}",
+            reopened,
         )
         share = api.post(f"/problems/{pid}/share").json()["share"]
         anonymous = httpx.get(f"{base}/shares/{share['token']}", timeout=20).json()["problem"]
@@ -747,6 +839,29 @@ def probability_input_flow(api: httpx.Client, other: httpx.Client, base: str, ur
             answer.status_code == solution.status_code == 200 and solution.json()["steps"],
             f"structured {name} authorized reveals",
         )
+        visual_builder = getattr(generator, "solution_visual", None)
+        expected_visual = visual_builder(generator.draw(200)) if callable(visual_builder) else None
+        if expected_visual is not None:
+            from app.visuals.plot2d import validate_plot
+
+            expected_visual = validate_plot(expected_visual)
+        check(
+            solution.json().get("visual") == expected_visual,
+            f"structured {name} frozen parameter-derived visual",
+        )
+
+
+def probability_input_flow(api: httpx.Client, other: httpx.Client, base: str, url: str) -> None:
+    from app.engine.generators.probability import generators
+
+    computational_code_flow(
+        api,
+        other,
+        base,
+        url,
+        generators(),
+        ("events-independence", "finite-support", "ci-lower", "ci-mean-z"),
+    )
     reset_limits()
     sheet = api.post(
         "/worksheets",
@@ -858,6 +973,27 @@ def main() -> int:
             combinations(api_a, url)
             permanent_code_flow(api_a, base, url)
             probability_input_flow(api_a, api_b, base, url)
+            from app.engine.generators.elementary import generators as elementary_generators
+
+            computational_code_flow(
+                api_a,
+                api_b,
+                base,
+                url,
+                elementary_generators(),
+                (
+                    "logic-negation-equivalence",
+                    "composition-root-power",
+                    "inverse-exponential",
+                    "inverse-semicircle-branch",
+                    "domain-arcsin-square",
+                    "log-equation-quadratic",
+                    "trig-linearization-fourth",
+                    "trig-equation-cos-mixed",
+                    "trig-domain-tan-ratio",
+                    "trig-inequality-sine-cosine",
+                ),
+            )
             malicious(api_a, created[0])
             saturation(api_a, url, created[0])
         if args.stop_db and args.start_db:

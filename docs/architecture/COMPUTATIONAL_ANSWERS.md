@@ -5,6 +5,12 @@ The existing 239 generator versions, grammar and frozen engine protocols stay
 unchanged. Curriculum providers and their independent mathematical certificates
 belong to #235-#242; this infrastructure does not certify source-family coverage.
 
+#235 supplies the bounded elementary providers and checking extensions in
+[ELEMENTARY_FUNCTIONS.md](ELEMENTARY_FUNCTIONS.md): full propositional truth-table
+equivalence, exact univariate formulas on stated branch domains, cosine
+linearization and canonical periodic unions. These are opt-in new-version
+policies, not reinterpretations of the 239 historical versions.
+
 ## Trusted grammar declaration
 
 A new provider supplies a plain `input_contract(drawn_params) -> InputContract`
@@ -25,6 +31,7 @@ The record remains exactly `{generator_version, code}`. `Task`, `Step`, `Answer`
 | `category` | Two to eight server-declared named choices; boolean/finite-set/single-interval historical kinds retain their existing semantics. |
 | `formula` | Exact identity over a declared Cartesian product of real, positive or integer symbol domains. Explicit multiplication between letter names, e.g. `a*x`, is required. Undefined/nonreal intermediate expressions and domain holes are checked before cancellation. |
 | `limit_result` | An exact finite constant, `inf`, `-inf`, or `does_not_exist`; signed infinity and nonexistence are distinct from finite values. |
+| `logic` (#235) | Up to three declared atoms p/q/r, 0/1 and bounded `! & | ^ -> <->` syntax; the server compares the entire truth table. |
 
 `OrderedAnswer` composes typed answers without turning vectors or full sets into
 scalar proxies. `RealSetAnswer` compares symmetric differences exactly.
@@ -56,7 +63,7 @@ are not accepted by guessing. Poles are omitted from the base set and endpoint
 closure is exact. The task/solution explains the integer-translate convention.
 
 General ODE completeness, implicit branches/equilibria, nonrectangular symbolic
-domains, logic formulas, region inequalities, arbitrary infinite series syntax
+domains outside the declared univariate families, region inequalities, arbitrary infinite series syntax
 and general integration-set-up equivalence are not claimed as generic automated
 graders. Their delivery issues must supply bounded family-specific verifiers
 and precise canonical representations. The reusable dispatcher can compose
@@ -67,6 +74,11 @@ and constant before it can be issued; an identity check on `C*exp(x)` alone does
 not prove completeness. Mathematical families must not issue until their actual
 requested target and independent tests exist. Learner proof/sketch/graph grading
 remains #244.
+
+#235 formula contracts additionally accept symbolic exponents on a positive
+numeric literal base, including a ratio of two numeric literals. The legacy
+parser's default remains unchanged. Base qualification never evaluates a
+computed power tower. All aggregate and per-exponent limits stay in force.
 
 ## Input and privacy boundaries
 

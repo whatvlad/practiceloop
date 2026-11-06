@@ -46,8 +46,12 @@ were visually checked against their extracted text. Every reference names its
 family contracts, page, method, result interaction and delivery components.
 30 references are wholly deferred to #244 and 146 combine computational and
 deferred components. Other references remain computational delivery work.
-`verified_versions` stays empty: this audit is not a generator coverage
-certificate. `candidate_versions` identifies inspected, related implementations;
+At intake `verified_versions` stayed empty: that audit was not a generator coverage
+certificate. #235 links 102 computational references/components under 20 family
+contracts to 81 new verified bounded versions; see
+[ELEMENTARY_FUNCTIONS.md](ELEMENTARY_FUNCTIONS.md). Other delivery issues remain
+pending, and mixed derivative/asymptote/proof/sketch components retain their
+separate routes. `candidate_versions` identifies inspected, related implementations;
 `existing_coverage: partial` never certifies the complete source family.
 
 Exam rows reuse method-family contracts while preserving all 84 source IDs.
@@ -110,7 +114,7 @@ the retained native integral/differentiation/multiple-integral providers, curren
 answer classes and structured parser. The old graph was built at
 `a5737c3f9d5fb44b8904e5d5d78a90195fe3b8d4`, predates these curricula and cannot
 certify current coverage. Graphify CLI and its optional NetworkX dependency
-were unavailable; a read-only adjacency traversal found old answer-related
+were unavailable during that intake; a read-only adjacency traversal found old answer-related
 nodes, and the audit used current source directly. Details are also in
 ANALYSIS_I.md and ANALYSIS_II.md.
 

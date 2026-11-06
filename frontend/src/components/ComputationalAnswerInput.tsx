@@ -17,6 +17,7 @@ interface Props {
 /** Syntax only: no expected values or correctness decisions are present here. */
 export function ComputationalAnswerInput({ id, spec, value, onChange, state, onEnter, describedBy, label = 'Your answer' }: Props) {
   const [plain, setPlain] = useState(false);
+  const names = Object.keys(spec.symbols ?? {});
   const analysis = analyseComputationalAnswer(value, spec);
   let parts: string[] | undefined;
   if (spec.kind === 'tuple') {
@@ -42,8 +43,9 @@ export function ComputationalAnswerInput({ id, spec, value, onChange, state, onE
         aria-invalid={state === 'invalid' || analysis.status === 'error'}
         onKeyDown={event => { if (event.key === 'Enter') { event.preventDefault(); onEnter?.(); } }} /></label>}
       {spec.kind === 'real_set' && <p className="pl-small">Use intervals and sets joined by <code>U</code>, for example <code>(-inf,0) U [2,3]</code>. Use <code>{'{}'}</code> for the empty set, <code>R</code> for all reals, or <code>{'R\\{0}'}</code> to exclude points.</p>}
-      {spec.kind === 'formula' && <p className="pl-small">Use explicit multiplication between names, for example <code>a*x</code>. {Object.entries(spec.symbols ?? {}).map(([name, domain]) => `${name}: ${domain}`).join('; ') || 'Use exact constants only.'}</p>}
+      {spec.kind === 'formula' && <p className="pl-small">{names.length ? <>Use explicit multiplication, for example <code>{`2*${names[0]}`}</code>. {Object.entries(spec.symbols!).map(([name, domain]) => `${name}: ${domain}`).join('; ')}. Each numeric exponent part is at most 12; write a larger power as nested powers, for example <code>{`(${names[0]}^4)^4`}</code>.</> : <>Use exact constants only, for example <code>sqrt(2)/3</code>.</>}</p>}
       {spec.kind === 'limit_result' && <p className="pl-small">Enter the exact finite value, <code>inf</code>, <code>-inf</code>, or <code>does_not_exist</code>.</p>}
+      {spec.kind === 'logic' && <p className="pl-small">Atoms: {spec.choices!.join(', ')}. Use <code>!</code> for not, <code>&amp;</code> for and, <code>|</code> for inclusive or, <code>^</code> for exclusive or, <code>-&gt;</code> for implication and <code>&lt;-&gt;</code> for equivalence. Parentheses make grouping explicit; implication associates to the right.</p>}
       {spec.kind === 'tuple' && <p className="pl-small">Keep the displayed order. Separate components with semicolons inside parentheses.</p>}
     </>}
     <div id={`${id}-preview`} className="pl-preview" role="status">{analysis.status === 'ok' ? <><span className="pl-label">Reads as</span><Tex latex={analysis.latex} /></>

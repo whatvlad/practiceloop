@@ -44,9 +44,11 @@ def test_matrix_covers_each_method_and_retains_existing_integral_and_derivative_
         assert topics()[slug].mixed_weight == 1
         assert set(levels) == set(range(1, 6))
         for level, kinds in levels.items():
-            assert {c.generator for c in topics()[slug].levels[level]} == {
-                f"analysis1-{k}-v1" for k in kinds
-            }
+            assert {
+                c.generator
+                for c in topics()[slug].levels[level]
+                if c.generator.startswith("analysis1-")
+            } == {f"analysis1-{k}-v1" for k in kinds}
     assert topics()["derivatives"].levels[1][0].generator == "practice-derivative-v1"
 
 
