@@ -27,6 +27,7 @@ vi.mock('./data/api', async importOriginal => ({
 }));
 
 import { App } from './App';
+import { CONTACT_EMAIL, OPERATOR } from './legal';
 
 const signedOut: AuthSnapshot = { status: 'unauthenticated', account: null, working: false, error: null };
 const signedIn: AuthSnapshot = { ...signedOut, status: 'authenticated', account: {
@@ -174,7 +175,7 @@ describe('client route protection and auth UI', () => {
 });
 
 describe('routes and public pages (#38)', () => {
-  it.each(['/', '/login', '/privacy', '/practice', '/missing', '/shared'])('starts %s with a skip link to the main content', async path => {
+  it.each(['/', '/login', '/privacy', '/terms', '/practice', '/missing', '/shared'])('starts %s with a skip link to the main content', async path => {
     await renderAt(path);
     const skip = element.querySelector<HTMLAnchorElement>('a.pl-skip')!;
     expect(element.querySelector('a')).toBe(skip);
@@ -189,14 +190,25 @@ describe('routes and public pages (#38)', () => {
     expect(cta.getAttribute('href')).toBe('/practice');
   });
 
-  it('serves the privacy draft without an account, naming processors and no invented operator', async () => {
+  it('serves the privacy page without an account, naming the operator, contact and processors', async () => {
     await renderAt('/privacy');
     expect(window.location.pathname).toBe('/privacy');
     expect(element.querySelector('h1')?.textContent).toBe('Privacy');
-    for (const name of ['Supabase', 'Google', 'Cloudflare', 'Oracle Cloud']) expect(element.textContent).toContain(name);
-    expect(element.textContent).toContain('Not decided yet');
-    expect(element.textContent).not.toMatch(/@|sp\. z o\.o\.|ul\./);
+    for (const name of ['Supabase', 'Google', 'Cloudflare', 'Oracle Cloud', OPERATOR, CONTACT_EMAIL]) expect(element.textContent).toContain(name);
+    expect(element.textContent).not.toMatch(/draft|not decided yet/i);
+    expect(element.querySelector('a[href="/terms"]')).not.toBeNull();
     expect(document.title).toBe('Privacy · PracticeLoop');
+  });
+
+  it('serves the terms without an account and links them from sign-in', async () => {
+    await renderAt('/terms');
+    expect(window.location.pathname).toBe('/terms');
+    expect(element.querySelector('h1')?.textContent).toBe('Terms of Service');
+    for (const text of [OPERATOR, CONTACT_EMAIL, 'aged 16 and over']) expect(element.textContent).toContain(text);
+    expect(element.querySelector('a[href="/privacy"]')).not.toBeNull();
+    expect(document.title).toBe('Terms of Service · PracticeLoop');
+    await renderAt('/login');
+    expect(element.querySelector('a[href="/terms"]')).not.toBeNull();
   });
 
   it('opens /shared/<token> like /s/<token>', async () => {

@@ -5,6 +5,11 @@ User-facing releases. Known limitations of the current release are in
 
 ## Unreleased
 
+- **Privacy and Terms of Service.** The Privacy page is no longer a draft: it
+  names the operator and a contact address and explains why data is used. A
+  new Terms of Service page is linked from the landing, sign-in, Privacy and
+  profile pages. (#39)
+
 - **Combinations topic (new generator engine).** Algebra has a new
   "Combinations" topic, level 1: calculate a binomial coefficient C(n, k) and
   answer with the exact number. It is the first topic served by the new
