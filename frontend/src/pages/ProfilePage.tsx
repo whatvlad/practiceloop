@@ -50,7 +50,7 @@ export function ProfilePage({ account, onLogOut, onDeleted = async () => {}, bus
       <LearningStatistics />
       <AccountSettings onDeleted={onDeleted} onNameSaved={() => setRevision(value => value + 1)} />
       <p className="pl-small pl-muted">
-        What we store and how deletion works: <Link to="/privacy">Privacy</Link>.
+        What we store and how deletion works: <Link to="/privacy">Privacy</Link>. Rules for using PracticeLoop: <Link to="/terms">Terms</Link>.
       </p>
     </main>
   );

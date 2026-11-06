@@ -101,7 +101,7 @@ html,body,#root{min-height:100%}
   .pl-expr{font-size:30px;padding:var(--space-5) var(--space-4)}
   .pl-problem--compact .pl-expr{padding:var(--space-5) var(--space-4)}
   .pl-steps li{padding:var(--space-4)}
-  .pl-steps .m,.pl-answer .v{font-size:20px;overflow-x:auto}
+  .pl-steps .m,.pl-answer .v{font-size:20px;overflow-x:auto;overflow-y:hidden}
   .pl-actions .pl-spacer{display:none}
   .pl-problem .pl-actions .pl-btn--secondary{flex:1}
 
