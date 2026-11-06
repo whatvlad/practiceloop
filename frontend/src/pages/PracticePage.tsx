@@ -23,6 +23,7 @@ import { eligibleRandomChoices, loadRandomMatrixOptions, loadRandomSelection, pi
 import type { CheckResult, FeedbackCode, MatrixOptions, OpenedProblem, RevealedSolution } from '../data/types';
 import { navigate } from '../router';
 import { useLoad } from '../useLoad';
+import { CookieSettingsLink } from '../components/CookieSettingsLink';
 import { CONTACT_EMAIL, FEEDBACK_HREF } from '../legal';
 
 /** Opens the most recent problem, or generates one when history is empty. */
@@ -140,7 +141,7 @@ export function PracticePage({ id, demo = false, randomAccountId, matrixOptions 
   return (
     <main id="main" tabIndex={-1} className="pl-wrap pl-wrap--narrow pl-practice-main">
       {!(startError || problem.status === 'error') && <h1 className="pl-sr-only">Practice problem</h1>}
-      {demo && problem.status === 'ready' && <p className="pl-small pl-muted">This is a demo problem, and nothing is saved. Sign in with Google to practise every topic and keep your history. Questions or ideas? <a href={FEEDBACK_HREF}>Send feedback to {CONTACT_EMAIL}</a>.</p>}
+      {demo && problem.status === 'ready' && <p className="pl-small pl-muted">This is a demo problem, and nothing is saved. Sign in with Google to practise every topic and keep your history. Questions or ideas? <a href={FEEDBACK_HREF}>Send feedback to {CONTACT_EMAIL}</a>. <CookieSettingsLink /></p>}
       {problem.status === 'ready' && <PracticeSession key={problem.data.problem.id} opened={problem.data} randomAccountId={randomAccountId} matrixOptions={matrixOptions} />}
       {!startError && problem.status === 'loading' && <p role="status">Loading problem…</p>}
       {(startError || problem.status === 'error') && (

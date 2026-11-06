@@ -247,3 +247,4 @@ body{--keyboard-background:var(--surface);--keyboard-border:var(--line);--keyboa
   margin: 0;
   min-inline-size: 0;
 }
+.pl-link-button{padding:0;border:0;background:none;color:inherit;font:inherit;text-decoration:underline;cursor:pointer}
