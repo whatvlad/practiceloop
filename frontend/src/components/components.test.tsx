@@ -38,7 +38,7 @@ describe('ProblemCard', () => {
   ] as const)('separates the instruction from the formula for %s', (topic, problemLatex, instruction, formula) => {
     const html = card({ topic, problemLatex });
     const lead = html.match(/<p class="pl-lead">(.*?)<\/p>/)?.[1];
-    const expression = html.match(/<div class="pl-expr">([\s\S]*?)<\/div>/)?.[1];
+    const expression = html.match(/<div class="pl-expr"[^>]*>([\s\S]*?)<\/div>/)?.[1];
     expect(lead).toContain(instruction);
     expect(expression).toContain(formula);
     expect(expression).not.toContain(instruction);

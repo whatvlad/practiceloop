@@ -205,6 +205,7 @@ describe('routes and public pages (#38)', () => {
     await act(async () => { await new Promise(resolve => setTimeout(resolve)); });
     expect(window.location.pathname).toBe('/demo');
     expect(element.textContent).toContain('This is a demo problem');
+    expect(element.querySelector('main a[href^="mailto:"]')).not.toBeNull();
     expect(element.textContent).toContain('Check answer');
     expect(element.textContent).toContain('Sign in for more practice');
     expect(element.textContent).not.toContain('Share problem');
