@@ -20,8 +20,8 @@ a{color:inherit}
 .pl-mono{font-family:var(--font-mono)}
 
 /* brand */
-.pl-logo{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-display);font-size:26px;line-height:1;letter-spacing:-.01em;text-decoration:none}
-.pl-logo svg{width:24px;height:24px;flex:none}
+.pl-logo{display:inline-flex;align-items:center;gap:12px;font-family:var(--font-display);font-size:34px;line-height:1;letter-spacing:-.01em;text-decoration:none}
+.pl-logo svg{width:30px;height:30px;flex:none}
 
 /* buttons */
 .pl-btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);height:44px;padding:0 var(--space-5);border-radius:var(--radius-md);border:1px solid transparent;font-weight:600;font-size:15px;cursor:pointer;text-decoration:none;white-space:nowrap;transition:background .15s,border-color .15s,color .15s}
@@ -223,12 +223,13 @@ body{--keyboard-background:var(--surface);--keyboard-border:var(--line);--keyboa
 .pl-hexport-count:empty{display:none}
 
 /* nav */
-.pl-nav{display:flex;align-items:center;justify-content:space-between;height:68px;padding:0 var(--space-6);border-bottom:1px solid var(--line);background:var(--canvas)}
+.pl-nav{display:flex;align-items:center;justify-content:space-between;height:84px;padding:0 var(--space-6);border-bottom:1px solid var(--line);background:var(--canvas)}
 .pl-nav nav{display:flex;gap:var(--space-1)}
-.pl-nav nav a{display:inline-flex;align-items:center;height:36px;padding:0 var(--space-4);border-radius:var(--radius-pill);color:var(--ink-muted);text-decoration:none;font-size:14px;font-weight:500}
+.pl-nav nav a{display:inline-flex;align-items:center;height:44px;padding:0 var(--space-4);border-radius:var(--radius-pill);color:var(--ink-muted);text-decoration:none;font-size:16px;font-weight:500}
+.pl-nav .pl-btn--sm{height:44px;padding:0 var(--space-5);font-size:16px}
 .pl-nav nav a:hover{color:var(--ink);background:var(--surface-hover)}
 .pl-nav nav a[aria-current="page"]{color:var(--ink);background:var(--surface-raised)}
-.pl-avatar{width:36px;height:36px;border-radius:var(--radius-pill);background:var(--action);color:var(--on-action);display:grid;place-items:center;font-weight:600;font-size:14px}
+.pl-avatar{width:40px;height:40px;border-radius:var(--radius-pill);background:var(--action);color:var(--on-action);display:grid;place-items:center;font-weight:600;font-size:14px}
 
 /* page scaffolds */
 .pl-page{min-height:100%;background:var(--canvas)}

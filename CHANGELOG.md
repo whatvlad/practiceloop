@@ -5,6 +5,10 @@ User-facing releases. Known limitations of the current release are in
 
 ## Unreleased
 
+- **Clearer header and footer.** The logo always leads to the home page. A larger
+  footer with Privacy, Terms, Feedback and Cookie settings appears on every page,
+  and the header, logo and its buttons are bigger.
+
 - **Cookie consent banner (Cookiebot).** The site can show a Cookiebot banner
   once the `COOKIEBOT_ID` repository variable is set. Privacy then names it and
   offers a button to change the choice.

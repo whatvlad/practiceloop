@@ -14,7 +14,6 @@ import './styles/components.css';
 import './styles/app.css';
 import { App } from './App';
 import { startWebAnalytics } from './analytics';
-import { startCookiebot } from './cookieConsent';
 import { ErrorBoundary } from './components/ErrorBoundary';
 
 const root = document.getElementById('root');
@@ -29,4 +28,3 @@ createRoot(root).render(
 );
 
 startWebAnalytics(import.meta.env.VITE_CF_WEB_ANALYTICS_TOKEN, window.location.pathname.slice(import.meta.env.BASE_URL.length - 1));
-startCookiebot(import.meta.env.VITE_COOKIEBOT_ID, window.location.pathname.slice(import.meta.env.BASE_URL.length - 1));

@@ -28,7 +28,9 @@ export function startCookiebot(id: string | undefined, pathname: string, doc: Do
   return true;
 }
 
-/** Reopens the banner so a visitor can change or withdraw their choice. */
-export function openCookieSettings(win: Window = window): void {
-  win.Cookiebot?.renew?.();
+/** Reopens the banner so a visitor can change or withdraw their choice; false if it has not loaded. */
+export function openCookieSettings(win: Window = window): boolean {
+  if (!win.Cookiebot?.renew) return false;
+  win.Cookiebot.renew();
+  return true;
 }

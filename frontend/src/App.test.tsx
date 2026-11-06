@@ -244,6 +244,23 @@ describe('routes and public pages (#38)', () => {
     expect(element.querySelector('footer button.pl-link-button')?.textContent).toBe('Cookie settings');
   });
 
+  it.each([
+    ['/', signedOut], ['/login', signedOut], ['/practice', signedOut], ['/privacy', signedOut], ['/terms', signedOut], ['/shared', signedOut], ['/missing', signedOut],
+    ['/dashboard', signedIn], ['/history', signedIn], ['/profile', signedIn],
+  ] as const)('shows the same footer links on %s', async (path, state) => {
+    await renderAt(path, state);
+    const footer = element.querySelector('footer')!;
+    expect(footer.querySelector('a[href="/privacy"]')).not.toBeNull();
+    expect(footer.querySelector('a[href="/terms"]')).not.toBeNull();
+    expect(footer.querySelector('a[href^="mailto:"]')?.textContent).toBe('Feedback');
+    expect(element.querySelectorAll('footer')).toHaveLength(1);
+  });
+
+  it('sends the logo to the home page when signed in', async () => {
+    await renderAt('/history', signedIn);
+    expect(element.querySelector('header .pl-logo')?.getAttribute('href')).toBe('/');
+  });
+
   it('serves the terms without an account and links them from sign-in', async () => {
     await renderAt('/terms');
     expect(window.location.pathname).toBe('/terms');

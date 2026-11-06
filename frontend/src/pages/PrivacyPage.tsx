@@ -1,8 +1,7 @@
-import { Logo, PublicNav } from '../components/AppNav';
+import { PublicNav } from '../components/AppNav';
 import { Button } from '../components/Button';
-import { CookieSettingsLink } from '../components/CookieSettingsLink';
 import { cookiebotEnabled, openCookieSettings } from '../cookieConsent';
-import { CONTACT_EMAIL, FEEDBACK_HREF, LEGAL_UPDATED, OPERATOR } from '../legal';
+import { CONTACT_EMAIL, LEGAL_UPDATED, OPERATOR } from '../legal';
 import { Link } from '../router';
 
 // Describes the data flows in this repository and nothing else. Update it with
@@ -176,10 +175,6 @@ export function PrivacyPage() {
           </p>
         </section>
       </main>
-      <footer className="pl-wrap pl-row pl-small pl-subtle pl-footer">
-        <Logo />
-        <span className="pl-footer-links"><Link to="/">Home</Link><Link to="/terms">Terms</Link><a href={FEEDBACK_HREF}>Feedback</a><CookieSettingsLink /></span>
-      </footer>
     </div>
   );
 }
