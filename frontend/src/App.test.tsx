@@ -27,6 +27,7 @@ vi.mock('./data/api', async importOriginal => ({
 }));
 
 import { App } from './App';
+import { configurePracticeAuth, resetPractice } from './data/practice';
 import { CONTACT_EMAIL, OPERATOR } from './legal';
 
 const signedOut: AuthSnapshot = { status: 'unauthenticated', account: null, working: false, error: null };
@@ -184,10 +185,37 @@ describe('routes and public pages (#38)', () => {
     expect(document.head.querySelector('meta[name="robots"]')?.getAttribute('content')).toBe('noindex, nofollow');
   });
 
-  it.each([signedOut, signedIn])('puts a practice CTA first in the hero', async state => {
+  it.each([[signedOut, '/demo'], [signedIn, '/practice']] as const)('puts a practice CTA first in the hero', async (state, href) => {
     await renderAt('/', state);
     const cta = element.querySelector<HTMLAnchorElement>('.pl-hero-actions a, .pl-hero-actions button')!;
-    expect(cta.getAttribute('href')).toBe('/practice');
+    expect(cta.getAttribute('href')).toBe(href);
+  });
+
+  it('opens the demo for a guest, without an account or saved-practice controls', async () => {
+    const fetched = vi.spyOn(globalThis, 'fetch').mockImplementation(async input => {
+      const url = String(input);
+      if (url.endsWith('/preview/sessions')) return new Response(JSON.stringify({ token: 'g'.repeat(32) }), { status: 201 });
+      if (url.endsWith('/preview/problems')) return new Response(JSON.stringify({ id: 'demo', topic: 'basic-integrals', difficulty: 1, problemLatex: '\\int x\\,dx', createdAt: '2026-11-06T00:00:00Z', answerRevealed: false, solutionRevealed: false, lastResult: null, lastAnswer: null }), { status: 201 });
+      return new Response('{}', { status: 404 });
+    });
+    resetPractice();
+    configurePracticeAuth(async () => null);
+    await renderAt('/demo');
+    await act(async () => { await vi.waitFor(() => expect(fetched.mock.calls.some(([url]) => String(url).endsWith('/preview/problems'))).toBe(true)); });
+    await act(async () => { await new Promise(resolve => setTimeout(resolve)); });
+    expect(window.location.pathname).toBe('/demo');
+    expect(element.textContent).toContain('This is a demo problem');
+    expect(element.textContent).toContain('Check answer');
+    expect(element.textContent).toContain('Sign in for more practice');
+    expect(element.textContent).not.toContain('Share problem');
+    expect(document.title).toBe('Demo problem · PracticeLoop');
+  });
+
+  it('sends a signed-in learner from the demo to the dashboard without creating a problem', async () => {
+    const fetched = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response('{}', { status: 404 }));
+    await renderAt('/demo', signedIn);
+    expect(window.location.pathname).toBe('/dashboard');
+    expect(fetched.mock.calls.some(([url]) => String(url).includes('/problems'))).toBe(false);
   });
 
   it('serves the privacy page without an account, naming the operator, contact and processors', async () => {

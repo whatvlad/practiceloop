@@ -5,6 +5,11 @@ User-facing releases. Known limitations of the current release are in
 
 ## Unreleased
 
+- **Try a problem without an account.** The landing page opens a demo problem
+  at `/demo` with answer checking and the full solution, and nothing is saved.
+  The landing copy now describes the working product, and long formulas shrink
+  to fit their box instead of hiding behind a scrollbar.
+
 - **Privacy and Terms of Service.** The Privacy page is no longer a draft: it
   names the operator and a contact address and explains why data is used. A
   new Terms of Service page is linked from the landing, sign-in, Privacy and
