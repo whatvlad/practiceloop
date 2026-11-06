@@ -5,6 +5,10 @@ User-facing releases. Known limitations of the current release are in
 
 ## Unreleased
 
+- **Cookie consent banner (Cookiebot).** The site can show a Cookiebot banner
+  once the `COOKIEBOT_ID` repository variable is set. Privacy then names it and
+  offers a button to change the choice.
+
 - **Feedback and accessibility.** Feedback links open an email to the support
   address. Long formulas can be scrolled with the keyboard, and the answer
   placeholder has better contrast.

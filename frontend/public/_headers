@@ -5,7 +5,7 @@
 # pagesHeaders in src/site.ts. Keep the /* rule starting with X-Robots-Tag.
 /*
   X-Robots-Tag: noindex
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data:; connect-src 'self' https://*.supabase.co https://cloudflareinsights.com; worker-src 'self' blob:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com https://consent.cookiebot.com https://consentcdn.cookiebot.com; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https://consent.cookiebot.com https://consentcdn.cookiebot.com; connect-src 'self' https://*.supabase.co https://cloudflareinsights.com https://consent.cookiebot.com https://consentcdn.cookiebot.com; worker-src 'self' blob:; frame-src https://consentcdn.cookiebot.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: no-referrer

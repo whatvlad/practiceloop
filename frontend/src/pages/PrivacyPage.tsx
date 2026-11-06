@@ -1,4 +1,6 @@
 import { Logo, PublicNav } from '../components/AppNav';
+import { Button } from '../components/Button';
+import { cookiebotEnabled, openCookieSettings } from '../cookieConsent';
 import { CONTACT_EMAIL, FEEDBACK_HREF, LEGAL_UPDATED, OPERATOR } from '../legal';
 import { Link } from '../router';
 
@@ -44,7 +46,15 @@ const STORED = [
   'Short-lived request keys that stop a double click from saving something twice, deleted after 24 hours.',
 ];
 
+const COOKIEBOT = {
+  name: 'Cookiebot (Usercentrics)',
+  role: 'Shows the cookie banner, records your consent choice and receives your browser’s technical data when it loads.',
+  where: 'Usercentrics’ own terms apply.',
+};
+
 export function PrivacyPage() {
+  const consentBanner = cookiebotEnabled();
+  const processors = consentBanner ? [...PROCESSORS, COOKIEBOT] : PROCESSORS;
   return (
     <div className="pl-page">
       <PublicNav />
@@ -100,9 +110,13 @@ export function PrivacyPage() {
         <section aria-labelledby="privacy-browser">
           <h2 id="privacy-browser" className="pl-h-lg">In your browser</h2>
           <p>
-            PracticeLoop sets no cookies. When you sign in, your session is kept in your browser’s local storage so you
-            stay signed in; logging out removes it. Fonts are served from this website, not from a third party.
+            {consentBanner
+              ? 'PracticeLoop itself sets no cookies. Our Cookiebot consent banner stores your choice in a cookie, so it does not ask again on every visit.'
+              : 'PracticeLoop sets no cookies.'}{' '}
+            When you sign in, your session is kept in your browser’s local storage so you stay signed in; logging out
+            removes it. Fonts are served from this website, not from a third party.
           </p>
+          {consentBanner && <Button variant="secondary" size="sm" onClick={() => openCookieSettings()}>Change cookie settings</Button>}
         </section>
 
         <section aria-labelledby="privacy-analytics">
@@ -116,7 +130,7 @@ export function PrivacyPage() {
         <section aria-labelledby="privacy-processors">
           <h2 id="privacy-processors" className="pl-h-lg">Who processes it</h2>
           <dl className="pl-stack pl-gap-3">
-            {PROCESSORS.map((item) => (
+            {processors.map((item) => (
               <div key={item.name}>
                 <dt className="pl-h-md">{item.name}</dt>
                 <dd className="pl-m-0">{item.role} {item.where}</dd>
