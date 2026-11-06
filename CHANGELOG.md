@@ -5,6 +5,10 @@ User-facing releases. Known limitations of the current release are in
 
 ## Unreleased
 
+- **Feedback and accessibility.** Feedback links open an email to the support
+  address. Long formulas can be scrolled with the keyboard, and the answer
+  placeholder has better contrast.
+
 - **Try a problem without an account.** The landing page opens a demo problem
   at `/demo` with answer checking and the full solution, and nothing is saved.
   The landing copy now describes the working product, and long formulas shrink

@@ -78,6 +78,7 @@ function Result({ found, shareRef, signedIn, authLoading, inactive }: { found: S
   const { topic, difficulty, problemLatex } = found.problem;
   return (
     <section className="pl-problem" aria-label={permanent ? 'Problem from code' : 'Shared problem'}>
+      <h1 className="pl-sr-only">{permanent ? 'Problem from code' : 'Shared problem'}</h1>
       <div className="pl-problem-head">
         <div className="meta">
           <span className="pl-tag">{problemTag(topic)}</span>

@@ -1,5 +1,5 @@
 import { Logo, PublicNav } from '../components/AppNav';
-import { CONTACT_EMAIL, LEGAL_UPDATED, OPERATOR } from '../legal';
+import { CONTACT_EMAIL, FEEDBACK_HREF, LEGAL_UPDATED, OPERATOR } from '../legal';
 import { Link } from '../router';
 
 export function TermsPage() {
@@ -107,7 +107,7 @@ export function TermsPage() {
       </main>
       <footer className="pl-wrap pl-row pl-small pl-subtle pl-footer">
         <Logo />
-        <span className="pl-footer-links"><Link to="/">Home</Link><Link to="/privacy">Privacy</Link></span>
+        <span className="pl-footer-links"><Link to="/">Home</Link><Link to="/privacy">Privacy</Link><a href={FEEDBACK_HREF}>Feedback</a></span>
       </footer>
     </div>
   );

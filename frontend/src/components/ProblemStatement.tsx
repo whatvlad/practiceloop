@@ -44,7 +44,7 @@ export function ProblemStatement({ topic, problemLatex }: { topic: TopicSlug; pr
   return (
     <div className="pl-stack pl-gap-3">
       <p className="pl-lead">{instruction}</p>
-      <div className="pl-expr" ref={box}><Tex latex={formula} display /></div>
+      <div className="pl-expr" ref={box} tabIndex={0} role="group" aria-label="Problem formula"><Tex latex={formula} display /></div>
     </div>
   );
 }

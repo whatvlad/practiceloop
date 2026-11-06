@@ -1,5 +1,5 @@
 import { Logo, PublicNav } from '../components/AppNav';
-import { CONTACT_EMAIL, LEGAL_UPDATED, OPERATOR } from '../legal';
+import { CONTACT_EMAIL, FEEDBACK_HREF, LEGAL_UPDATED, OPERATOR } from '../legal';
 import { Link } from '../router';
 
 // Describes the data flows in this repository and nothing else. Update it with
@@ -163,7 +163,7 @@ export function PrivacyPage() {
       </main>
       <footer className="pl-wrap pl-row pl-small pl-subtle pl-footer">
         <Logo />
-        <span className="pl-footer-links"><Link to="/">Home</Link><Link to="/terms">Terms</Link></span>
+        <span className="pl-footer-links"><Link to="/">Home</Link><Link to="/terms">Terms</Link><a href={FEEDBACK_HREF}>Feedback</a></span>
       </footer>
     </div>
   );

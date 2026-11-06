@@ -1,5 +1,6 @@
 import { PublicNav, Logo } from '../components/AppNav';
 import { Button, ButtonLink } from '../components/Button';
+import { FEEDBACK_HREF } from '../legal';
 import { Link } from '../router';
 
 export function LandingPage({ onSignIn, disabled = false, busy = false, error = null, signedIn = false }: {
@@ -29,7 +30,7 @@ export function LandingPage({ onSignIn, disabled = false, busy = false, error = 
       </main>
       <footer className="pl-wrap pl-row pl-small pl-subtle pl-footer">
         <Logo />
-        <span className="pl-footer-links"><span>Math practice, on loop.</span><Link to="/privacy">Privacy</Link><Link to="/terms">Terms</Link></span>
+        <span className="pl-footer-links"><span>Math practice, on loop.</span><Link to="/privacy">Privacy</Link><Link to="/terms">Terms</Link><a href={FEEDBACK_HREF}>Feedback</a></span>
       </footer>
     </div>
   );

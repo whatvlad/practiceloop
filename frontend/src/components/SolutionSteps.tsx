@@ -58,7 +58,7 @@ export function SolutionSteps({ steps, matrixStatement, colorEntries = true }: {
               <div className="say">{step.say}</div>
             </details></> : <>
               <div className="say">{step.say}</div>
-              <div className="m"><Tex latex={step.latex} /></div>
+              <div className="m" tabIndex={0}><Tex latex={step.latex} /></div>
             </>}
           </div>
         </li>

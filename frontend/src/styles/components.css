@@ -48,7 +48,7 @@ a{color:inherit}
 .pl-input.is-correct{border-color:var(--correct)}
 .pl-input.is-incorrect{border-color:var(--incorrect)}
 .pl-input.is-invalid{border-color:var(--invalid)}
-.pl-formula{display:flex;align-items:center;height:auto;min-height:60px;padding:var(--space-2) var(--space-4);font-family:var(--font-math);font-size:22px;--caret-color:var(--ink);--selection-background-color:var(--surface-hover);--placeholder-color:var(--ink-subtle);--contains-highlight-background-color:transparent;--primary-color:var(--ink);--text-font-family:var(--font-mono)}
+.pl-formula{display:flex;align-items:center;height:auto;min-height:60px;padding:var(--space-2) var(--space-4);font-family:var(--font-math);font-size:22px;--caret-color:var(--ink);--selection-background-color:var(--surface-hover);--placeholder-color:var(--ink-muted);--contains-highlight-background-color:transparent;--primary-color:var(--ink);--text-font-family:var(--font-mono)}
 .pl-formula:focus-within{outline:2px solid var(--focus);outline-offset:2px;border-color:var(--ink)}
 .pl-formula::part(virtual-keyboard-toggle),.pl-formula::part(menu-toggle){display:none}
 .pl-formula::part(content){padding:0}
