@@ -119,6 +119,7 @@ export function PracticePage({ id, demo = false }: { id: string | null; demo?: b
   return (
     <main id="main" tabIndex={-1} className="pl-wrap pl-wrap--narrow pl-practice-main">
       {!(startError || problem.status === 'error') && <h1 className="pl-sr-only">Practice problem</h1>}
+      {demo && problem.status === 'ready' && <p className="pl-small pl-muted">This is a demo problem, and nothing is saved. Sign in with Google to practise every topic and keep your history.</p>}
       {problem.status === 'ready' && <PracticeSession key={problem.data.problem.id} opened={problem.data} />}
       {!startError && problem.status === 'loading' && <p role="status">Loading problem…</p>}
       {(startError || problem.status === 'error') && (

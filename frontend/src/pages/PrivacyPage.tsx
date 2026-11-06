@@ -70,8 +70,9 @@ export function PrivacyPage() {
         <section aria-labelledby="privacy-without">
           <h2 id="privacy-without" className="pl-h-lg">Without an account</h2>
           <p>
-            You can browse the curriculum and open a shared problem without signing in. We do not create a profile of you.
-            Like most web servers, the API writes a short technical log line for each request (address, path and status).
+            You can browse the curriculum, solve one demo problem and open a shared problem without signing in. A demo
+            answer is sent to the API to be checked and is not stored, and we do not create a profile of you. Like most web
+            servers, the API writes a short technical log line for each request (address, path and status).
             We keep these logs only as long as we need them to run and secure the service.
           </p>
         </section>

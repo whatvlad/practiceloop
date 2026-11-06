@@ -19,7 +19,7 @@ describe('page metadata (#38)', () => {
     expect(indexHtml).not.toMatch(/Practice integration/);
   });
   it('gives every route its own title and description', () => {
-    const paths = ['/', '/privacy', '/terms', '/login', '/dashboard', '/practice', '/history', '/profile', '/shared', '/nope'];
+    const paths = ['/', '/privacy', '/terms', '/demo', '/login', '/dashboard', '/practice', '/history', '/profile', '/shared', '/nope'];
     const titles = new Set(paths.map((path) => pageMeta(path).title));
     expect(titles.size).toBe(paths.length);
     expect(pageMeta('/s/abc')).toBe(pageMeta('/shared'));

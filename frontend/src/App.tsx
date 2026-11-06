@@ -82,6 +82,8 @@ export function App() {
       }
       navigate('/login', { replace: true });
     }
+    // The demo is for guests; an account has real practice, and must not save the demo problem.
+    if (account && pathname === '/demo') navigate('/dashboard', { replace: true });
     if (account && (pathname === '/login' || pathname === '/auth/callback')) {
       const remembered = takeSharedReturn();
       const topic = topicReturn(sessionStorage.getItem(TOPIC_RETURN));
@@ -127,10 +129,11 @@ export function App() {
     if (pathname === '/privacy') return <PrivacyPage />;
     if (pathname === '/terms') return <TermsPage />;
     if (pathname === '/login') return <LoginPage onSignIn={handleSignIn} disabled={authDisabled} busy={auth.working} error={auth.error} />;
-    if (pathname === '/auth/callback' || (needsAccount && auth.status === 'loading')) {
+    if (pathname === '/demo' && auth.status !== 'loading' && !account) return <div className="pl-page"><PublicNav /><PracticePage id={null} demo /></div>;
+    if (pathname === '/demo' || pathname === '/auth/callback' || (needsAccount && auth.status === 'loading')) {
       return <div className="pl-page pl-login"><p role="status">Restoring your session…</p></div>;
     }
-    if (!account && pathname === '/practice' && auth.status !== 'loading') return <div className="pl-page"><PublicNav /><CurriculumPage /></div>;
+    if (!account && pathname === '/practice' && auth.status !== 'loading') return <div className="pl-page"><PublicNav /><CurriculumPage guest /></div>;
     if (!APP_ROUTES.has(pathname)) return <NotFoundPage />;
     if (!account) return <div className="pl-page" />;
 

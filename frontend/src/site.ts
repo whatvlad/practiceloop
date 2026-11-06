@@ -24,6 +24,7 @@ const PAGES: Record<string, PageMeta> = {
   '/terms': page('Terms of Service', 'The rules for using PracticeLoop, a free mathematics practice beta.', true),
   '/login': page('Sign in', 'Sign in with Google to save problems, attempts and statistics.'),
   '/dashboard': page('Dashboard', 'Your practice overview.'),
+  '/demo': page('Demo problem', 'Try one generated mathematics problem without signing in.'),
   '/practice': page('Practice', 'Solve a generated mathematics problem.'),
   '/history': page('History', 'Every problem you have generated.'),
   '/profile': page('Profile', 'Your account, statistics and data.'),

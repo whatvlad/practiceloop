@@ -13,16 +13,18 @@ export function LandingPage({ onSignIn, disabled = false, busy = false, error = 
         <section className="pl-wrap pl-hero">
           <div className="pl-label pl-hero-eyebrow">Mathematics practice</div>
           <h1 className="pl-display-xl">Explore mathematics, <em>one topic at a time.</em></h1>
-          <p className="pl-lead pl-hero-lead">Browse algebra and mathematical analysis. Practice is currently in development.</p>
+          <p className="pl-lead pl-hero-lead">Generated problems in algebra, analysis and probability, with instant answer checks and full solutions.</p>
           <div className="pl-actions pl-hero-actions">
-            <ButtonLink to="/practice" size="lg" pill arrow>Browse topics</ButtonLink>
+            {signedIn
+              ? <ButtonLink to="/practice" size="lg" pill arrow>Browse topics</ButtonLink>
+              : <ButtonLink to="/demo" size="lg" pill arrow>Try a problem</ButtonLink>}
             <Button variant="secondary" size="lg" pill onClick={onSignIn} disabled={disabled} aria-busy={busy}>{label}</Button>
           </div>
           {error && <p className="pl-result pl-result--invalid" role="alert">{error}</p>}
         </section>
         <section id="how" className="pl-wrap pl-section">
           <h2 className="pl-h-lg">Explore the curriculum</h2>
-          <p className="pl-muted">Choose an area and a problem type to see what is planned. Exercises will be added over time.</p>
+          <p className="pl-muted">The demo needs no account. Sign in with Google to generate problems in every available topic, print worksheets and keep your history. <Link to="/practice">Browse topics</Link>.</p>
         </section>
       </main>
       <footer className="pl-wrap pl-row pl-small pl-subtle pl-footer">
