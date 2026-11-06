@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { algebraSections, analysisSections, probabilitySections } from '../data/curriculum';
 import { algebraGroups } from '../data/algebraGroups';
+import { CookieSettingsLink } from '../components/CookieSettingsLink';
 import { Link } from '../router';
 
 const PRACTICE: Record<string, { topic: string; scope: string }> = {
@@ -78,7 +79,7 @@ export function CurriculumPage({ guest = false }: { guest?: boolean }) {
       <div className="pl-label">Curriculum</div>
       <h1 className="pl-display-md pl-page-title">Explore mathematics</h1>
       <p className="pl-muted">Choose an area and a problem type. Some exercises are available; others are in development.</p>
-      {guest && <p className="pl-muted">Exercises need a free account. <Link to="/demo">Try a demo problem without signing in</Link>.</p>}
+      {guest && <p className="pl-muted">Exercises need a free account. <Link to="/demo">Try a demo problem without signing in</Link>. <CookieSettingsLink /></p>}
       <div className="pl-chips" role="group" aria-label="Area">
         <button type="button" className="pl-chip" aria-pressed={area === 'algebra'} onClick={() => setArea('algebra')}>Algebra</button>
         <button type="button" className="pl-chip" aria-pressed={area === 'analysis'} onClick={() => setArea('analysis')}>Mathematical Analysis</button>

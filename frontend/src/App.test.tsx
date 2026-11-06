@@ -232,6 +232,7 @@ describe('routes and public pages (#38)', () => {
   it('names Cookiebot and offers cookie settings in Privacy only when the banner is configured', async () => {
     await renderAt('/privacy');
     expect(element.textContent).toContain('PracticeLoop sets no cookies.');
+    expect(element.querySelector('.pl-link-button')).toBeNull();
     expect(element.textContent).not.toContain('Cookiebot');
     vi.stubEnv('VITE_COOKIEBOT_ID', '01234567-89ab-cdef-0123-456789abcdef');
     await act(async () => root.unmount());
@@ -240,6 +241,7 @@ describe('routes and public pages (#38)', () => {
     vi.unstubAllEnvs();
     expect(element.textContent).toContain('Cookiebot (Usercentrics)');
     expect(element.textContent).toContain('Change cookie settings');
+    expect(element.querySelector('footer button.pl-link-button')?.textContent).toBe('Cookie settings');
   });
 
   it('serves the terms without an account and links them from sign-in', async () => {

@@ -1,5 +1,6 @@
 import { Logo, PublicNav } from '../components/AppNav';
 import { Button } from '../components/Button';
+import { CookieSettingsLink } from '../components/CookieSettingsLink';
 import { cookiebotEnabled, openCookieSettings } from '../cookieConsent';
 import { CONTACT_EMAIL, FEEDBACK_HREF, LEGAL_UPDATED, OPERATOR } from '../legal';
 import { Link } from '../router';
@@ -177,7 +178,7 @@ export function PrivacyPage() {
       </main>
       <footer className="pl-wrap pl-row pl-small pl-subtle pl-footer">
         <Logo />
-        <span className="pl-footer-links"><Link to="/">Home</Link><Link to="/terms">Terms</Link><a href={FEEDBACK_HREF}>Feedback</a></span>
+        <span className="pl-footer-links"><Link to="/">Home</Link><Link to="/terms">Terms</Link><a href={FEEDBACK_HREF}>Feedback</a><CookieSettingsLink /></span>
       </footer>
     </div>
   );
