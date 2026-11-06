@@ -29,7 +29,7 @@ interface AppNavProps {
 export function AppNav({ current, initial, onLogOut, busy = false }: AppNavProps) {
   return (
     <header className="pl-nav">
-      <Logo to="/dashboard" />
+      <Logo />
       <nav aria-label="Primary">
         {APP_ROUTES.map((route) => (
           <Link key={route.to} to={route.to} aria-current={route.to === current ? 'page' : undefined}>
@@ -56,11 +56,11 @@ export function PublicNav({ landing = false }: { landing?: boolean }) {
       <Logo />
       <div className="pl-row">
         {landing ? (
-          <a className="pl-btn pl-btn--ghost pl-btn--sm" href="#how">
+          <a className="pl-btn pl-btn--ghost pl-btn--sm pl-nav-secondary" href="#how">
             How it works
           </a>
         ) : (
-          <ButtonLink to="/" variant="ghost" size="sm">
+          <ButtonLink className="pl-nav-secondary" to="/" variant="ghost" size="sm">
             Home
           </ButtonLink>
         )}

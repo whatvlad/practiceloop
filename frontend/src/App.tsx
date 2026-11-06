@@ -4,7 +4,9 @@ import { AppNav, Logo, PublicNav } from './components/AppNav';
 import { PracticeSidebar } from './components/PracticeSidebar';
 import { matrixOptionsFromSearch } from './components/MatrixSettings';
 import { ButtonLink } from './components/Button';
+import { SiteFooter } from './components/SiteFooter';
 import { SkipLink } from './components/SkipLink';
+import { startCookiebot } from './cookieConsent';
 import { type ApiHealth, authStore, checkApiHealth } from './data/api';
 import { rememberSharedReturn, sharedReturn, takeSharedReturn } from './data/sharedReturn';
 import { CurriculumPage } from './pages/CurriculumPage';
@@ -72,6 +74,8 @@ export function App() {
 
   useEffect(() => {
     applyPageMeta(pathname, SITE);
+    // Per route: a visitor who arrives on a share link gets the banner on their next public page.
+    startCookiebot(import.meta.env.VITE_COOKIEBOT_ID, pathname);
   }, [pathname]);
 
   const needsAccount = APP_ROUTES.has(pathname) && pathname !== '/practice';
@@ -114,7 +118,7 @@ export function App() {
   }
 
   const authDisabled = auth.working || auth.status === 'loading' || !authStore.configured;
-  return <><SkipLink />{route()}</>;
+  return <><SkipLink /><div className="pl-shell">{route()}<SiteFooter /></div></>;
 
   function route() {
     if (pathname === '/') return <LandingPage onSignIn={handleSignIn} disabled={authDisabled} busy={auth.working} error={auth.error} signedIn={!!account} />;

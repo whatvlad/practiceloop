@@ -2,8 +2,6 @@ import { useState } from 'react';
 import { Button } from '../components/Button';
 import { StatTile } from '../components/StatTile';
 import { getDisplayName, getProfileCounts } from '../data/api';
-import { CookieSettingsLink } from '../components/CookieSettingsLink';
-import { FEEDBACK_HREF } from '../legal';
 import { Link } from '../router';
 import type { Account } from '../data/types';
 import { useLoad } from '../useLoad';
@@ -52,7 +50,7 @@ export function ProfilePage({ account, onLogOut, onDeleted = async () => {}, bus
       <LearningStatistics />
       <AccountSettings onDeleted={onDeleted} onNameSaved={() => setRevision(value => value + 1)} />
       <p className="pl-small pl-muted">
-        What we store and how deletion works: <Link to="/privacy">Privacy</Link>. Rules for using PracticeLoop: <Link to="/terms">Terms</Link>. Questions or ideas: <a href={FEEDBACK_HREF}>send feedback</a>. <CookieSettingsLink />
+        What we store and how deletion works: <Link to="/privacy">Privacy</Link>.
       </p>
     </main>
   );

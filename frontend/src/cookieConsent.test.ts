@@ -29,8 +29,8 @@ describe('Cookiebot', () => {
 
   it('reopens the banner when Cookiebot has loaded and does nothing otherwise', () => {
     const renew = vi.fn();
-    openCookieSettings({ Cookiebot: { renew } } as unknown as Window);
+    expect(openCookieSettings({ Cookiebot: { renew } } as unknown as Window)).toBe(true);
     expect(renew).toHaveBeenCalledOnce();
-    expect(() => openCookieSettings({} as Window)).not.toThrow();
+    expect(openCookieSettings({} as Window)).toBe(false);
   });
 });
