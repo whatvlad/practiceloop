@@ -160,3 +160,24 @@ main[tabindex="-1"]:focus{outline:none}
   .pl-worksheet-group .pl-seg .n{font-size:14px;opacity:1}
   .pl-worksheet-group .pl-seg .t{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
 }
+/* Workspace navigation; the content and theme remain independently adjustable. */
+.pl-workspace{display:grid;grid-template-columns:280px minmax(0,1fr);flex:1}
+.pl-workspace-content{min-width:0}
+.pl-practice-sidebar{padding:24px 18px;border-right:1px solid var(--line)}
+.pl-practice-sidebar details{margin:8px 0}
+.pl-practice-sidebar summary{cursor:pointer;padding:8px;border-radius:var(--radius-sm);font-weight:600}
+.pl-practice-sidebar summary:hover{background:var(--surface-hover)}
+.pl-practice-sidebar-group{margin-left:12px!important}
+.pl-practice-sidebar ul{list-style:none;margin:0;padding:0 0 0 20px}
+.pl-practice-sidebar li{padding:5px 8px;line-height:1.4}
+.pl-practice-sidebar li a{text-decoration:none}
+.pl-practice-sidebar li a:hover{text-decoration:underline}
+.pl-practice-sidebar li span,.pl-practice-sidebar small{color:var(--ink-muted)}
+.pl-random-toggle{width:100%;margin:8px 0;justify-content:center}
+.pl-random-toggle[aria-pressed="true"]{border-color:var(--ink)}
+.pl-random-group{display:block;margin:4px 0 4px 20px;font-size:12px;color:var(--ink-muted)}
+.pl-practice-sidebar input[type="checkbox"]{accent-color:var(--ink)}
+.pl-random-level{display:block;margin:6px 0 8px 20px;font-size:12px;color:var(--ink-muted)}
+.pl-random-level select{display:block;width:100%;margin-top:4px;padding:6px;background:var(--surface-raised);border:1px solid var(--control-border);border-radius:var(--radius-sm);color:var(--ink)}
+.pl-random-actions{margin-top:20px}.pl-random-actions .pl-btn{width:100%;justify-content:center}
+@media(max-width:760px){.pl-workspace{display:block}.pl-practice-sidebar{border-right:0;border-bottom:1px solid var(--line)}}

@@ -14,6 +14,7 @@ Domain = Literal["real", "positive", "integer"]
 COMPUTATIONAL_KINDS = frozenset({"real_set", "tuple", "category", "formula", "limit_result"})
 PARAMETER_NAMES = frozenset({"a", "b", "c", "C", "D", "k", "n", "t", "s"})
 COORDINATE_NAMES = frozenset({"x", "y", "z", "r", "theta"})
+_MATRIX_NAMES = ("one", "two", "three", "four", "five")
 
 
 @dataclass(frozen=True, slots=True)
@@ -52,12 +53,27 @@ class InputContract:
                 raise ValueError("Invalid category choice")
         elif self.choices:
             raise ValueError("Unexpected category choices")
+        matrix = (
+            self.kind == "tuple"
+            and 1 <= len(self.components) <= 5
+            and self.labels
+            == tuple(f"Matrix row {name}" for name in _MATRIX_NAMES[: len(self.components)])
+            and all(
+                row.kind == "tuple"
+                and 1 <= len(row.components) <= 5
+                and len(row.components) == len(self.components[0].components)
+                and row.labels
+                == tuple(f"Column {name}" for name in _MATRIX_NAMES[: len(row.components)])
+                and all(cell.kind == "formula" for cell in row.components)
+                for row in self.components
+            )
+        )
         stack = [(self, 0)]
         count = 0
         while stack:
             node, depth = stack.pop()
             count += 1
-            if depth > 3 or count > 16:
+            if depth > 3 or count > (31 if matrix else 16):
                 raise ValueError("Contract is too complex")
             stack.extend((child, depth + 1) for child in node.components)
 

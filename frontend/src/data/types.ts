@@ -67,6 +67,11 @@ export interface AvailableTopic extends Topic {
 
 export type Difficulty = 1 | 2 | 3 | 4 | 5;
 
+export interface MatrixOptions {
+  operation: 'add' | 'subtract' | 'multiply' | 'mixed';
+  size: '2x2' | '3x3' | 'rectangular';
+}
+
 /** Three API outcomes plus a display state for the missing_constant feedback code. */
 export type CheckResult = 'correct' | 'incorrect' | 'invalid' | 'missing_constant';
 
@@ -115,6 +120,8 @@ export interface RevealedAnswer {
 export interface SolutionStep {
   say: string;
   latex: string;
+  determinantMatrix?: number[][];
+  minorExpansion?: { matrix: number[][]; row: number; columns: number[] };
 }
 
 export interface RevealedSolution {

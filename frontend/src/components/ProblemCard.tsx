@@ -10,6 +10,7 @@ import { SolutionSteps } from './SolutionSteps';
 import { SolutionVisual } from '../visual/SolutionVisual';
 import type { VisualSpec } from '../visual/spec';
 import { ProblemStatement } from './ProblemStatement';
+import { displayProblem } from '../format';
 import text from '../../../backend/app/content/en.json';
 
 interface ProblemCardProps {
@@ -33,6 +34,7 @@ interface ProblemCardProps {
   onShowSolution: () => void;
   onNext: () => void;
   nextLabel?: string;
+  nextDisabled?: boolean;
   /** Present only after the backend returns it for Show Answer. */
   answerLatex?: string | null;
   /** Present only after the backend returns it for Show Solution. */
@@ -80,6 +82,7 @@ export function ProblemCard({
   onShowSolution,
   onNext,
   nextLabel = 'Generate next problem',
+  nextDisabled = false,
   answerLatex,
   solution,
   visual,
@@ -102,7 +105,7 @@ export function ProblemCard({
         <div className="meta">
           <span className="pl-tag">{problemTag(topic)}{mixed && ' · Mixed practice'}</span>
           <span className="pl-small pl-muted">
-            <DifficultyDots level={difficulty} />
+            <DifficultyDots level={difficulty} topic={topic} />
           </span>
         </div>
         {headLabel && <span className="pl-label">{headLabel}</span>}
@@ -139,12 +142,12 @@ export function ProblemCard({
           Show solution
         </Button>
         <span className="pl-spacer" />
-        <Button variant={solved ? 'primary' : 'ghost'} arrow onClick={onNext} disabled={busy}>
+        <Button variant={solved ? 'primary' : 'ghost'} arrow onClick={onNext} disabled={busy || nextDisabled}>
           {nextLabel}
         </Button>
       </div>
       {answerLatex && <RevealedAnswer latex={answerLatex} />}
-      {solution && <SolutionSteps steps={solution} />}
+      {solution && <SolutionSteps steps={solution} matrixStatement={['matrix-operations', 'determinants', 'inverse-matrices'].includes(topic) ? displayProblem(topic, problemLatex).formula : undefined} colorEntries={topic === 'matrix-operations'} />}
       {solution && visual && <SolutionVisual spec={visual} />}
     </section>
   );

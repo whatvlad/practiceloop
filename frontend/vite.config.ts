@@ -37,7 +37,10 @@ function crawlers(): Plugin {
 
 export default defineConfig({
   plugins: [crawlers()],
-  server: { proxy: { '/api': { target: 'http://127.0.0.1:8000', rewrite: path => path.replace(/^\/api/, '') } } },
+  server: { proxy: {
+    '/api': { target: 'http://127.0.0.1:8000', rewrite: path => path.replace(/^\/api/, '') },
+    '/local-matrix-preview': { target: 'http://127.0.0.1:8011', rewrite: path => path.replace(/^\/local-matrix-preview/, '') },
+  } },
   // Process CSS in tests so `?raw` imports return the stylesheet text.
   test: { css: true },
 });

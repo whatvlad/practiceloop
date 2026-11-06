@@ -6,9 +6,9 @@ exercise type with exact checking and solution steps. **Partial** means only som
 subtypes are covered. **In develop** means the curriculum page still shows it as
 in development.
 
-Every served answer is one exact number, expression or complex number a + bi
-(ADR-008: matrix, vector and set answer kinds have no editor yet). Exercises whose answer is a
-proof, a counterexample, a sketch of a region or a whole matrix are therefore
+Most of these served answers are one exact number, expression or complex number
+a + bi. Matrix operations now use a bounded matrix editor and check every entry;
+other exercises requiring a proof, a sketch or a whole matrix may still be
 asked through a scalar they determine, or stay in development.
 
 | Exercises | Content | Status | Topic / level |
@@ -18,7 +18,7 @@ asked through a scalar they determine, or stay in development.
 | 4 | Binomial expansions | In develop (whole expansions) | |
 | 5, 7 | Coefficients, constant terms, finding n | Covered | binomial-theorem 1–3 |
 | 6 | Numerical application | In develop | |
-| 8–9 | Matrix sums, products, transposes | Covered (one entry; 9b in develop) | matrix-operations 1–3 |
+| 8–9 | Matrix sums, products, transposes | Covered (full result; 9b in develop) | matrix-operations 1–3 |
 | 10–11 | Orthogonal/symmetric matrices, true or false | In develop (proofs) | |
 | 12–13 | Matrix equations | Covered (13, 22a style) | inverse-matrices 3 |
 | 14 | Determinant after row operations | Covered | determinants 2 |
@@ -75,3 +75,12 @@ asked through a scalar they determine, or stay in development.
 
 Out of scope for #221: numerical methods, complex analysis, learner-entered
 solution methods and localization.
+
+Matrix operations now use three displayed levels: Basic adds, subtracts or
+multiplies 2 × 2 and 3 × 3 matrices and multiplies compatible rectangular
+matrices; Intermediate includes rectangular products and combinations with
+transposition; Advanced includes the commutator and a symbolic trigonometric
+matrix product. Learners select an available operation and input size for the
+chosen level. Current generator versions show the intermediate
+entry-by-entry calculations before the final matrix. Earlier problem codes
+retain their original solutions.

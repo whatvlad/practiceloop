@@ -162,6 +162,19 @@ advertised. Omitting the area draws from Mathematical Analysis.
 {"topic":"mixed","area":"mathematical-analysis","difficulty":3}
 ```
 
+For `matrix-operations`, an optional `matrixOptions` selects an operation and
+the input matrix shape, for example:
+
+```json
+{"topic":"matrix-operations","difficulty":1,"matrixOptions":{"operation":"multiply","size":"3x3"}}
+```
+
+Operations are `add`, `subtract`, `multiply`, or `mixed`; sizes are `2x2`,
+`3x3`, or `rectangular`. Only combinations offered at the chosen difficulty
+are accepted; unsupported combinations and options on other topics return 422.
+Rectangular multiplication currently uses a 2×3 matrix times a 3×2 matrix.
+Omitting `matrixOptions` retains the existing mixed selection for the topic.
+
 Returns `201` and the shared problem shape after the public problem, private
 solution and idempotency record commit atomically. An exact replay returns the
 same status/body with `Idempotency-Replayed: true` and creates no second problem.

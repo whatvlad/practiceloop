@@ -83,6 +83,7 @@ def test_five_topics_have_nonempty_levels_and_replay_for_many_seeds() -> None:
         "double-integrals": "expression",
         "triple-integrals": "expression",
         "partial-derivatives": "expression",
+        "matrix-operations": "tuple",
     }
     for topic in topics.values():
         assert topic.slug in topics and topic.area and topic.mixed_weight >= 0

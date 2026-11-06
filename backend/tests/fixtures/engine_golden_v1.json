@@ -17674,5 +17674,795 @@
         "template": "test-difference"
       }
     }
+  ],
+  "matrix-combination-v2": [
+    {
+      "code": "MCB-2-0000000000000000-42",
+      "statement": "Calculate the full matrix: \\(3A^{T}-3C,\\quad A=\\begin{pmatrix}0&-5&-5\\\\3&1&-5\\end{pmatrix},\\ C=\\begin{pmatrix}0&5\\\\0&2\\\\-3&0\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "transpose",
+          "A^{T}=\\begin{pmatrix}0&3\\\\-5&1\\\\-5&-5\\end{pmatrix}"
+        ],
+        [
+          "combine",
+          "3A^{T}-3C=\\begin{pmatrix}0&-6\\\\-15&-3\\\\-6&-15\\end{pmatrix}"
+        ],
+        [
+          "full",
+          "\\begin{pmatrix}0&-6\\\\-15&-3\\\\-6&-15\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}0&-6\\\\-15&-3\\\\-6&-15\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "combination"
+      }
+    },
+    {
+      "code": "MCB-2-0000000000000001-59",
+      "statement": "Calculate the full matrix: \\(2A^{T}+3C,\\quad A=\\begin{pmatrix}-1&-4&-3\\\\-5&2&-5\\end{pmatrix},\\ C=\\begin{pmatrix}-4&5\\\\-1&-3\\\\-2&-4\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "transpose",
+          "A^{T}=\\begin{pmatrix}-1&-5\\\\-4&2\\\\-3&-5\\end{pmatrix}"
+        ],
+        [
+          "combine",
+          "2A^{T}+3C=\\begin{pmatrix}-14&5\\\\-11&-5\\\\-12&-22\\end{pmatrix}"
+        ],
+        [
+          "full",
+          "\\begin{pmatrix}-14&5\\\\-11&-5\\\\-12&-22\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}-14&5\\\\-11&-5\\\\-12&-22\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "combination"
+      }
+    },
+    {
+      "code": "MCB-2-0000000000000042-43",
+      "statement": "Calculate the full matrix: \\(-2A^{T}+3C,\\quad A=\\begin{pmatrix}4&0&4\\\\-2&2&-2\\end{pmatrix},\\ C=\\begin{pmatrix}-2&0\\\\0&0\\\\3&4\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "transpose",
+          "A^{T}=\\begin{pmatrix}4&-2\\\\0&2\\\\4&-2\\end{pmatrix}"
+        ],
+        [
+          "combine",
+          "-2A^{T}+3C=\\begin{pmatrix}-14&4\\\\0&-4\\\\1&16\\end{pmatrix}"
+        ],
+        [
+          "full",
+          "\\begin{pmatrix}-14&4\\\\0&-4\\\\1&16\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}-14&4\\\\0&-4\\\\1&16\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "combination"
+      }
+    }
+  ],
+  "matrix-product-v2": [
+    {
+      "code": "MPR-2-0000000000000000-06",
+      "statement": "Calculate the full matrix: \\(A=\\begin{pmatrix}0&3&1\\\\4&3&-4\\end{pmatrix},\\ B=\\begin{pmatrix}-3&3\\\\3&-1\\\\-3&1\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "dimensions",
+          "(2\\times 3)(3\\times 2)=2\\times 2"
+        ],
+        [
+          "row_column",
+          "(AB)_{21}=(4)(-3)+(3)(3)+(-4)(-3)"
+        ],
+        [
+          "full",
+          "\\begin{pmatrix}6&-2\\\\9&5\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}6&-2\\\\9&5\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "product"
+      }
+    },
+    {
+      "code": "MPR-2-0000000000000001-23",
+      "statement": "Calculate the full matrix: \\(A=\\begin{pmatrix}-4&-3&1\\\\-1&-2&2\\end{pmatrix},\\ B=\\begin{pmatrix}0&-3\\\\-2&1\\\\-4&-4\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "dimensions",
+          "(2\\times 3)(3\\times 2)=2\\times 2"
+        ],
+        [
+          "row_column",
+          "(AB)_{12}=(-4)(-3)+(-3)(1)+(1)(-4)"
+        ],
+        [
+          "full",
+          "\\begin{pmatrix}2&5\\\\-4&-7\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}2&5\\\\-4&-7\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "product"
+      }
+    },
+    {
+      "code": "MPR-2-0000000000000042-07",
+      "statement": "Calculate the full matrix: \\(A=\\begin{pmatrix}-3&2&3\\\\3&2&3\\end{pmatrix},\\ B=\\begin{pmatrix}-2&-3\\\\-4&-2\\\\-3&0\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "dimensions",
+          "(2\\times 3)(3\\times 2)=2\\times 2"
+        ],
+        [
+          "row_column",
+          "(AB)_{22}=(3)(-3)+(2)(-2)+(3)(0)"
+        ],
+        [
+          "full",
+          "\\begin{pmatrix}-11&5\\\\-23&-13\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}-11&5\\\\-23&-13\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "product"
+      }
+    }
+  ],
+  "matrix-commutator-v2": [
+    {
+      "code": "MCM-2-0000000000000000-62",
+      "statement": "Calculate the full matrix: \\(A=\\begin{pmatrix}0&-5\\\\-5&3\\end{pmatrix},\\ B=\\begin{pmatrix}1&-5\\\\0&5\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "products",
+          "AB=\\begin{pmatrix}0&-25\\\\-5&40\\end{pmatrix},\\quad BA=\\begin{pmatrix}25&-20\\\\-25&15\\end{pmatrix}"
+        ],
+        [
+          "difference",
+          "AB-BA=\\begin{pmatrix}-25&-5\\\\20&25\\end{pmatrix}"
+        ],
+        [
+          "full",
+          "\\begin{pmatrix}-25&-5\\\\20&25\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}-25&-5\\\\20&25\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "commutator"
+      }
+    },
+    {
+      "code": "MCM-2-0000000000000001-79",
+      "statement": "Calculate the full matrix: \\(A=\\begin{pmatrix}-1&-4\\\\-3&-5\\end{pmatrix},\\ B=\\begin{pmatrix}2&-5\\\\-4&5\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "products",
+          "AB=\\begin{pmatrix}14&-15\\\\14&-10\\end{pmatrix},\\quad BA=\\begin{pmatrix}13&17\\\\-11&-9\\end{pmatrix}"
+        ],
+        [
+          "difference",
+          "AB-BA=\\begin{pmatrix}1&-32\\\\25&-1\\end{pmatrix}"
+        ],
+        [
+          "full",
+          "\\begin{pmatrix}1&-32\\\\25&-1\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}1&-32\\\\25&-1\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "commutator"
+      }
+    },
+    {
+      "code": "MCM-2-0000000000000042-63",
+      "statement": "Calculate the full matrix: \\(A=\\begin{pmatrix}4&0\\\\4&-2\\end{pmatrix},\\ B=\\begin{pmatrix}2&-2\\\\-2&0\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "products",
+          "AB=\\begin{pmatrix}8&-8\\\\12&-8\\end{pmatrix},\\quad BA=\\begin{pmatrix}0&4\\\\-8&0\\end{pmatrix}"
+        ],
+        [
+          "difference",
+          "AB-BA=\\begin{pmatrix}8&-12\\\\20&-8\\end{pmatrix}"
+        ],
+        [
+          "full",
+          "\\begin{pmatrix}8&-12\\\\20&-8\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}8&-12\\\\20&-8\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "commutator"
+      }
+    }
+  ],
+  "matrix-sum-v1": [
+    {
+      "code": "MSU-1-0000000000000000-80",
+      "statement": "Subtract the matrices: \\(\\begin{pmatrix}-5&-5&3\\\\1&-5&0\\\\5&0&2\\end{pmatrix}-\\begin{pmatrix}-3&0&-2\\\\-5&-1&0\\\\3&-2&1\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "sum",
+          "\\begin{pmatrix}-2&-5&5\\\\6&-4&0\\\\2&2&1\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}-2&-5&5\\\\6&-4&0\\\\2&2&1\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "matrix-sum"
+      }
+    },
+    {
+      "code": "MSU-1-0000000000000001-00",
+      "statement": "Subtract the matrices: \\(\\begin{pmatrix}-4&-3\\\\-5&2\\end{pmatrix}-\\begin{pmatrix}-5&-4\\\\5&-1\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "sum",
+          "\\begin{pmatrix}1&1\\\\-10&3\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}1&1\\\\-10&3\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "matrix-sum"
+      }
+    },
+    {
+      "code": "MSU-1-0000000000000042-81",
+      "statement": "Add the matrices: \\(\\begin{pmatrix}0&4\\\\-2&2\\end{pmatrix}+\\begin{pmatrix}-2&-2\\\\0&0\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "sum",
+          "\\begin{pmatrix}-2&2\\\\-2&2\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}-2&2\\\\-2&2\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "matrix-sum"
+      }
+    }
+  ],
+  "matrix-trig-v1": [
+    {
+      "code": "MXTRIG-1-0000000000000000-44",
+      "statement": "Calculate the full matrix: \\(RDR^{T},\\quad R=\\begin{pmatrix}\\cos{\\left(\\theta \\right)}&- \\sin{\\left(\\theta \\right)}\\\\\\sin{\\left(\\theta \\right)}&\\cos{\\left(\\theta \\right)}\\end{pmatrix},\\ D=\\begin{pmatrix}4&0\\\\0&2\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "transpose",
+          "R^{T}=\\begin{pmatrix}\\cos{\\left(\\theta \\right)}&\\sin{\\left(\\theta \\right)}\\\\- \\sin{\\left(\\theta \\right)}&\\cos{\\left(\\theta \\right)}\\end{pmatrix}"
+        ],
+        [
+          "product",
+          "RDR^{T}=\\begin{pmatrix}2 \\sin^{2}{\\left(\\theta \\right)} + 4 \\cos^{2}{\\left(\\theta \\right)}&2 \\sin{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}\\\\2 \\sin{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}&4 \\sin^{2}{\\left(\\theta \\right)} + 2 \\cos^{2}{\\left(\\theta \\right)}\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}2 \\sin^{2}{\\left(\\theta \\right)} + 4 \\cos^{2}{\\left(\\theta \\right)}&2 \\sin{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}\\\\2 \\sin{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}&4 \\sin^{2}{\\left(\\theta \\right)} + 2 \\cos^{2}{\\left(\\theta \\right)}\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "matrix-trigonometric"
+      }
+    },
+    {
+      "code": "MXTRIG-1-0000000000000001-61",
+      "statement": "Calculate the full matrix: \\(RDR^{T},\\quad R=\\begin{pmatrix}\\cos{\\left(\\theta \\right)}&- \\sin{\\left(\\theta \\right)}\\\\\\sin{\\left(\\theta \\right)}&\\cos{\\left(\\theta \\right)}\\end{pmatrix},\\ D=\\begin{pmatrix}3&0\\\\0&1\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "transpose",
+          "R^{T}=\\begin{pmatrix}\\cos{\\left(\\theta \\right)}&\\sin{\\left(\\theta \\right)}\\\\- \\sin{\\left(\\theta \\right)}&\\cos{\\left(\\theta \\right)}\\end{pmatrix}"
+        ],
+        [
+          "product",
+          "RDR^{T}=\\begin{pmatrix}\\sin^{2}{\\left(\\theta \\right)} + 3 \\cos^{2}{\\left(\\theta \\right)}&2 \\sin{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}\\\\2 \\sin{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}&3 \\sin^{2}{\\left(\\theta \\right)} + \\cos^{2}{\\left(\\theta \\right)}\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}\\sin^{2}{\\left(\\theta \\right)} + 3 \\cos^{2}{\\left(\\theta \\right)}&2 \\sin{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}\\\\2 \\sin{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}&3 \\sin^{2}{\\left(\\theta \\right)} + \\cos^{2}{\\left(\\theta \\right)}\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "matrix-trigonometric"
+      }
+    },
+    {
+      "code": "MXTRIG-1-0000000000000042-45",
+      "statement": "Calculate the full matrix: \\(RDR^{T},\\quad R=\\begin{pmatrix}\\cos{\\left(\\theta \\right)}&- \\sin{\\left(\\theta \\right)}\\\\\\sin{\\left(\\theta \\right)}&\\cos{\\left(\\theta \\right)}\\end{pmatrix},\\ D=\\begin{pmatrix}3&0\\\\0&4\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "transpose",
+          "R^{T}=\\begin{pmatrix}\\cos{\\left(\\theta \\right)}&\\sin{\\left(\\theta \\right)}\\\\- \\sin{\\left(\\theta \\right)}&\\cos{\\left(\\theta \\right)}\\end{pmatrix}"
+        ],
+        [
+          "product",
+          "RDR^{T}=\\begin{pmatrix}4 \\sin^{2}{\\left(\\theta \\right)} + 3 \\cos^{2}{\\left(\\theta \\right)}&- \\sin{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}\\\\- \\sin{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}&3 \\sin^{2}{\\left(\\theta \\right)} + 4 \\cos^{2}{\\left(\\theta \\right)}\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}4 \\sin^{2}{\\left(\\theta \\right)} + 3 \\cos^{2}{\\left(\\theta \\right)}&- \\sin{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}\\\\- \\sin{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}&3 \\sin^{2}{\\left(\\theta \\right)} + 4 \\cos^{2}{\\left(\\theta \\right)}\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "matrix-trigonometric"
+      }
+    }
+  ],
+  "matrix-sum-v2": [
+    {
+      "code": "MSU-2-0000000000000000-81",
+      "statement": "Subtract the matrices: \\(\\begin{pmatrix}-5&-5&3\\\\1&-5&0\\\\5&0&2\\end{pmatrix}-\\begin{pmatrix}-3&0&-2\\\\-5&-1&0\\\\3&-2&1\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "expand",
+          "\\begin{pmatrix}(-5)-(-3)&(-5)-(0)&(3)-(-2)\\\\(1)-(-5)&(-5)-(-1)&(0)-(0)\\\\(5)-(3)&(0)-(-2)&(2)-(1)\\end{pmatrix}"
+        ],
+        [
+          "sum",
+          "\\begin{pmatrix}-2&-5&5\\\\6&-4&0\\\\2&2&1\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}-2&-5&5\\\\6&-4&0\\\\2&2&1\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "matrix-sum"
+      }
+    },
+    {
+      "code": "MSU-2-0000000000000001-01",
+      "statement": "Subtract the matrices: \\(\\begin{pmatrix}-4&-3\\\\-5&2\\end{pmatrix}-\\begin{pmatrix}-5&-4\\\\5&-1\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "expand",
+          "\\begin{pmatrix}(-4)-(-5)&(-3)-(-4)\\\\(-5)-(5)&(2)-(-1)\\end{pmatrix}"
+        ],
+        [
+          "sum",
+          "\\begin{pmatrix}1&1\\\\-10&3\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}1&1\\\\-10&3\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "matrix-sum"
+      }
+    },
+    {
+      "code": "MSU-2-0000000000000042-82",
+      "statement": "Add the matrices: \\(\\begin{pmatrix}0&4\\\\-2&2\\end{pmatrix}+\\begin{pmatrix}-2&-2\\\\0&0\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "expand",
+          "\\begin{pmatrix}(0)+(-2)&(4)+(-2)\\\\(-2)+(0)&(2)+(0)\\end{pmatrix}"
+        ],
+        [
+          "sum",
+          "\\begin{pmatrix}-2&2\\\\-2&2\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}-2&2\\\\-2&2\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "matrix-sum"
+      }
+    }
+  ],
+  "matrix-combination-v3": [
+    {
+      "code": "MCB-3-0000000000000000-43",
+      "statement": "Calculate the full matrix: \\(3A^{T}-3C,\\quad A=\\begin{pmatrix}0&-5&-5\\\\3&1&-5\\end{pmatrix},\\ C=\\begin{pmatrix}0&5\\\\0&2\\\\-3&0\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "transpose",
+          "A^{T}=\\begin{pmatrix}0&3\\\\-5&1\\\\-5&-5\\end{pmatrix}"
+        ],
+        [
+          "expand",
+          "\\begin{pmatrix}(3)\\cdot(0)+(-3)\\cdot(0)&(3)\\cdot(3)+(-3)\\cdot(5)\\\\(3)\\cdot(-5)+(-3)\\cdot(0)&(3)\\cdot(1)+(-3)\\cdot(2)\\\\(3)\\cdot(-5)+(-3)\\cdot(-3)&(3)\\cdot(-5)+(-3)\\cdot(0)\\end{pmatrix}"
+        ],
+        [
+          "full",
+          "\\begin{pmatrix}0&-6\\\\-15&-3\\\\-6&-15\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}0&-6\\\\-15&-3\\\\-6&-15\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "combination"
+      }
+    },
+    {
+      "code": "MCB-3-0000000000000001-60",
+      "statement": "Calculate the full matrix: \\(2A^{T}+3C,\\quad A=\\begin{pmatrix}-1&-4&-3\\\\-5&2&-5\\end{pmatrix},\\ C=\\begin{pmatrix}-4&5\\\\-1&-3\\\\-2&-4\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "transpose",
+          "A^{T}=\\begin{pmatrix}-1&-5\\\\-4&2\\\\-3&-5\\end{pmatrix}"
+        ],
+        [
+          "expand",
+          "\\begin{pmatrix}(2)\\cdot(-1)+(3)\\cdot(-4)&(2)\\cdot(-5)+(3)\\cdot(5)\\\\(2)\\cdot(-4)+(3)\\cdot(-1)&(2)\\cdot(2)+(3)\\cdot(-3)\\\\(2)\\cdot(-3)+(3)\\cdot(-2)&(2)\\cdot(-5)+(3)\\cdot(-4)\\end{pmatrix}"
+        ],
+        [
+          "full",
+          "\\begin{pmatrix}-14&5\\\\-11&-5\\\\-12&-22\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}-14&5\\\\-11&-5\\\\-12&-22\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "combination"
+      }
+    },
+    {
+      "code": "MCB-3-0000000000000042-44",
+      "statement": "Calculate the full matrix: \\(-2A^{T}+3C,\\quad A=\\begin{pmatrix}4&0&4\\\\-2&2&-2\\end{pmatrix},\\ C=\\begin{pmatrix}-2&0\\\\0&0\\\\3&4\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "transpose",
+          "A^{T}=\\begin{pmatrix}4&-2\\\\0&2\\\\4&-2\\end{pmatrix}"
+        ],
+        [
+          "expand",
+          "\\begin{pmatrix}(-2)\\cdot(4)+(3)\\cdot(-2)&(-2)\\cdot(-2)+(3)\\cdot(0)\\\\(-2)\\cdot(0)+(3)\\cdot(0)&(-2)\\cdot(2)+(3)\\cdot(0)\\\\(-2)\\cdot(4)+(3)\\cdot(3)&(-2)\\cdot(-2)+(3)\\cdot(4)\\end{pmatrix}"
+        ],
+        [
+          "full",
+          "\\begin{pmatrix}-14&4\\\\0&-4\\\\1&16\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}-14&4\\\\0&-4\\\\1&16\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "combination"
+      }
+    }
+  ],
+  "matrix-product-v3": [
+    {
+      "code": "MPR-3-0000000000000000-07",
+      "statement": "Calculate the full matrix: \\(A=\\begin{pmatrix}0&3&1\\\\4&3&-4\\end{pmatrix},\\ B=\\begin{pmatrix}-3&3\\\\3&-1\\\\-3&1\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "dimensions",
+          "(2\\times 3)(3\\times 2)=2\\times 2"
+        ],
+        [
+          "expand",
+          "AB=\\begin{pmatrix}(0)\\cdot(-3)+(3)\\cdot(3)+(1)\\cdot(-3)&(0)\\cdot(3)+(3)\\cdot(-1)+(1)\\cdot(1)\\\\(4)\\cdot(-3)+(3)\\cdot(3)+(-4)\\cdot(-3)&(4)\\cdot(3)+(3)\\cdot(-1)+(-4)\\cdot(1)\\end{pmatrix}"
+        ],
+        [
+          "full",
+          "AB=\\begin{pmatrix}6&-2\\\\9&5\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}6&-2\\\\9&5\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "product"
+      }
+    },
+    {
+      "code": "MPR-3-0000000000000001-24",
+      "statement": "Calculate the full matrix: \\(A=\\begin{pmatrix}-4&-3&1\\\\-1&-2&2\\end{pmatrix},\\ B=\\begin{pmatrix}0&-3\\\\-2&1\\\\-4&-4\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "dimensions",
+          "(2\\times 3)(3\\times 2)=2\\times 2"
+        ],
+        [
+          "expand",
+          "AB=\\begin{pmatrix}(-4)\\cdot(0)+(-3)\\cdot(-2)+(1)\\cdot(-4)&(-4)\\cdot(-3)+(-3)\\cdot(1)+(1)\\cdot(-4)\\\\(-1)\\cdot(0)+(-2)\\cdot(-2)+(2)\\cdot(-4)&(-1)\\cdot(-3)+(-2)\\cdot(1)+(2)\\cdot(-4)\\end{pmatrix}"
+        ],
+        [
+          "full",
+          "AB=\\begin{pmatrix}2&5\\\\-4&-7\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}2&5\\\\-4&-7\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "product"
+      }
+    },
+    {
+      "code": "MPR-3-0000000000000042-08",
+      "statement": "Calculate the full matrix: \\(A=\\begin{pmatrix}-3&2&3\\\\3&2&3\\end{pmatrix},\\ B=\\begin{pmatrix}-2&-3\\\\-4&-2\\\\-3&0\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "dimensions",
+          "(2\\times 3)(3\\times 2)=2\\times 2"
+        ],
+        [
+          "expand",
+          "AB=\\begin{pmatrix}(-3)\\cdot(-2)+(2)\\cdot(-4)+(3)\\cdot(-3)&(-3)\\cdot(-3)+(2)\\cdot(-2)+(3)\\cdot(0)\\\\(3)\\cdot(-2)+(2)\\cdot(-4)+(3)\\cdot(-3)&(3)\\cdot(-3)+(2)\\cdot(-2)+(3)\\cdot(0)\\end{pmatrix}"
+        ],
+        [
+          "full",
+          "AB=\\begin{pmatrix}-11&5\\\\-23&-13\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}-11&5\\\\-23&-13\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "product"
+      }
+    }
+  ],
+  "matrix-commutator-v3": [
+    {
+      "code": "MCM-3-0000000000000000-63",
+      "statement": "Calculate the full matrix: \\(A=\\begin{pmatrix}0&-5\\\\-5&3\\end{pmatrix},\\ B=\\begin{pmatrix}1&-5\\\\0&5\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "expand",
+          "AB=\\begin{pmatrix}(0)\\cdot(1)+(-5)\\cdot(0)&(0)\\cdot(-5)+(-5)\\cdot(5)\\\\(-5)\\cdot(1)+(3)\\cdot(0)&(-5)\\cdot(-5)+(3)\\cdot(5)\\end{pmatrix}=\\begin{pmatrix}0&-25\\\\-5&40\\end{pmatrix}"
+        ],
+        [
+          "expand",
+          "BA=\\begin{pmatrix}(1)\\cdot(0)+(-5)\\cdot(-5)&(1)\\cdot(-5)+(-5)\\cdot(3)\\\\(0)\\cdot(0)+(5)\\cdot(-5)&(0)\\cdot(-5)+(5)\\cdot(3)\\end{pmatrix}=\\begin{pmatrix}25&-20\\\\-25&15\\end{pmatrix}"
+        ],
+        [
+          "subtract",
+          "AB-BA=\\begin{pmatrix}(0)-(25)&(-25)-(-20)\\\\(-5)-(-25)&(40)-(15)\\end{pmatrix}"
+        ],
+        [
+          "full",
+          "AB-BA=\\begin{pmatrix}-25&-5\\\\20&25\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}-25&-5\\\\20&25\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "commutator"
+      }
+    },
+    {
+      "code": "MCM-3-0000000000000001-80",
+      "statement": "Calculate the full matrix: \\(A=\\begin{pmatrix}-1&-4\\\\-3&-5\\end{pmatrix},\\ B=\\begin{pmatrix}2&-5\\\\-4&5\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "expand",
+          "AB=\\begin{pmatrix}(-1)\\cdot(2)+(-4)\\cdot(-4)&(-1)\\cdot(-5)+(-4)\\cdot(5)\\\\(-3)\\cdot(2)+(-5)\\cdot(-4)&(-3)\\cdot(-5)+(-5)\\cdot(5)\\end{pmatrix}=\\begin{pmatrix}14&-15\\\\14&-10\\end{pmatrix}"
+        ],
+        [
+          "expand",
+          "BA=\\begin{pmatrix}(2)\\cdot(-1)+(-5)\\cdot(-3)&(2)\\cdot(-4)+(-5)\\cdot(-5)\\\\(-4)\\cdot(-1)+(5)\\cdot(-3)&(-4)\\cdot(-4)+(5)\\cdot(-5)\\end{pmatrix}=\\begin{pmatrix}13&17\\\\-11&-9\\end{pmatrix}"
+        ],
+        [
+          "subtract",
+          "AB-BA=\\begin{pmatrix}(14)-(13)&(-15)-(17)\\\\(14)-(-11)&(-10)-(-9)\\end{pmatrix}"
+        ],
+        [
+          "full",
+          "AB-BA=\\begin{pmatrix}1&-32\\\\25&-1\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}1&-32\\\\25&-1\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "commutator"
+      }
+    },
+    {
+      "code": "MCM-3-0000000000000042-64",
+      "statement": "Calculate the full matrix: \\(A=\\begin{pmatrix}4&0\\\\4&-2\\end{pmatrix},\\ B=\\begin{pmatrix}2&-2\\\\-2&0\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "expand",
+          "AB=\\begin{pmatrix}(4)\\cdot(2)+(0)\\cdot(-2)&(4)\\cdot(-2)+(0)\\cdot(0)\\\\(4)\\cdot(2)+(-2)\\cdot(-2)&(4)\\cdot(-2)+(-2)\\cdot(0)\\end{pmatrix}=\\begin{pmatrix}8&-8\\\\12&-8\\end{pmatrix}"
+        ],
+        [
+          "expand",
+          "BA=\\begin{pmatrix}(2)\\cdot(4)+(-2)\\cdot(4)&(2)\\cdot(0)+(-2)\\cdot(-2)\\\\(-2)\\cdot(4)+(0)\\cdot(4)&(-2)\\cdot(0)+(0)\\cdot(-2)\\end{pmatrix}=\\begin{pmatrix}0&4\\\\-8&0\\end{pmatrix}"
+        ],
+        [
+          "subtract",
+          "AB-BA=\\begin{pmatrix}(8)-(0)&(-8)-(4)\\\\(12)-(-8)&(-8)-(0)\\end{pmatrix}"
+        ],
+        [
+          "full",
+          "AB-BA=\\begin{pmatrix}8&-12\\\\20&-8\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}8&-12\\\\20&-8\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "commutator"
+      }
+    }
+  ],
+  "matrix-trig-v2": [
+    {
+      "code": "MXTRIG-2-0000000000000000-45",
+      "statement": "Calculate the full matrix: \\(RDR^{T},\\quad R=\\begin{pmatrix}\\cos{\\left(\\theta \\right)}&- \\sin{\\left(\\theta \\right)}\\\\\\sin{\\left(\\theta \\right)}&\\cos{\\left(\\theta \\right)}\\end{pmatrix},\\ D=\\begin{pmatrix}4&0\\\\0&2\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "transpose",
+          "R^{T}=\\begin{pmatrix}\\cos{\\left(\\theta \\right)}&\\sin{\\left(\\theta \\right)}\\\\- \\sin{\\left(\\theta \\right)}&\\cos{\\left(\\theta \\right)}\\end{pmatrix}"
+        ],
+        [
+          "first_product",
+          "RD=\\begin{pmatrix}4 \\cos{\\left(\\theta \\right)}&- 2 \\sin{\\left(\\theta \\right)}\\\\4 \\sin{\\left(\\theta \\right)}&2 \\cos{\\left(\\theta \\right)}\\end{pmatrix}"
+        ],
+        [
+          "expand",
+          "RDR^{T}=\\begin{pmatrix}(4 \\cos{\\left(\\theta \\right)})\\cdot(\\cos{\\left(\\theta \\right)})+(- 2 \\sin{\\left(\\theta \\right)})\\cdot(- \\sin{\\left(\\theta \\right)})&(4 \\cos{\\left(\\theta \\right)})\\cdot(\\sin{\\left(\\theta \\right)})+(- 2 \\sin{\\left(\\theta \\right)})\\cdot(\\cos{\\left(\\theta \\right)})\\\\(4 \\sin{\\left(\\theta \\right)})\\cdot(\\cos{\\left(\\theta \\right)})+(2 \\cos{\\left(\\theta \\right)})\\cdot(- \\sin{\\left(\\theta \\right)})&(4 \\sin{\\left(\\theta \\right)})\\cdot(\\sin{\\left(\\theta \\right)})+(2 \\cos{\\left(\\theta \\right)})\\cdot(\\cos{\\left(\\theta \\right)})\\end{pmatrix}"
+        ],
+        [
+          "product",
+          "RDR^{T}=\\begin{pmatrix}2 \\sin^{2}{\\left(\\theta \\right)} + 4 \\cos^{2}{\\left(\\theta \\right)}&2 \\sin{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}\\\\2 \\sin{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}&4 \\sin^{2}{\\left(\\theta \\right)} + 2 \\cos^{2}{\\left(\\theta \\right)}\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}2 \\sin^{2}{\\left(\\theta \\right)} + 4 \\cos^{2}{\\left(\\theta \\right)}&2 \\sin{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}\\\\2 \\sin{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}&4 \\sin^{2}{\\left(\\theta \\right)} + 2 \\cos^{2}{\\left(\\theta \\right)}\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "matrix-trigonometric"
+      }
+    },
+    {
+      "code": "MXTRIG-2-0000000000000001-62",
+      "statement": "Calculate the full matrix: \\(RDR^{T},\\quad R=\\begin{pmatrix}\\cos{\\left(\\theta \\right)}&- \\sin{\\left(\\theta \\right)}\\\\\\sin{\\left(\\theta \\right)}&\\cos{\\left(\\theta \\right)}\\end{pmatrix},\\ D=\\begin{pmatrix}3&0\\\\0&1\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "transpose",
+          "R^{T}=\\begin{pmatrix}\\cos{\\left(\\theta \\right)}&\\sin{\\left(\\theta \\right)}\\\\- \\sin{\\left(\\theta \\right)}&\\cos{\\left(\\theta \\right)}\\end{pmatrix}"
+        ],
+        [
+          "first_product",
+          "RD=\\begin{pmatrix}3 \\cos{\\left(\\theta \\right)}&- \\sin{\\left(\\theta \\right)}\\\\3 \\sin{\\left(\\theta \\right)}&\\cos{\\left(\\theta \\right)}\\end{pmatrix}"
+        ],
+        [
+          "expand",
+          "RDR^{T}=\\begin{pmatrix}(3 \\cos{\\left(\\theta \\right)})\\cdot(\\cos{\\left(\\theta \\right)})+(- \\sin{\\left(\\theta \\right)})\\cdot(- \\sin{\\left(\\theta \\right)})&(3 \\cos{\\left(\\theta \\right)})\\cdot(\\sin{\\left(\\theta \\right)})+(- \\sin{\\left(\\theta \\right)})\\cdot(\\cos{\\left(\\theta \\right)})\\\\(3 \\sin{\\left(\\theta \\right)})\\cdot(\\cos{\\left(\\theta \\right)})+(\\cos{\\left(\\theta \\right)})\\cdot(- \\sin{\\left(\\theta \\right)})&(3 \\sin{\\left(\\theta \\right)})\\cdot(\\sin{\\left(\\theta \\right)})+(\\cos{\\left(\\theta \\right)})\\cdot(\\cos{\\left(\\theta \\right)})\\end{pmatrix}"
+        ],
+        [
+          "product",
+          "RDR^{T}=\\begin{pmatrix}\\sin^{2}{\\left(\\theta \\right)} + 3 \\cos^{2}{\\left(\\theta \\right)}&2 \\sin{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}\\\\2 \\sin{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}&3 \\sin^{2}{\\left(\\theta \\right)} + \\cos^{2}{\\left(\\theta \\right)}\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}\\sin^{2}{\\left(\\theta \\right)} + 3 \\cos^{2}{\\left(\\theta \\right)}&2 \\sin{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}\\\\2 \\sin{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}&3 \\sin^{2}{\\left(\\theta \\right)} + \\cos^{2}{\\left(\\theta \\right)}\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "matrix-trigonometric"
+      }
+    },
+    {
+      "code": "MXTRIG-2-0000000000000042-46",
+      "statement": "Calculate the full matrix: \\(RDR^{T},\\quad R=\\begin{pmatrix}\\cos{\\left(\\theta \\right)}&- \\sin{\\left(\\theta \\right)}\\\\\\sin{\\left(\\theta \\right)}&\\cos{\\left(\\theta \\right)}\\end{pmatrix},\\ D=\\begin{pmatrix}3&0\\\\0&4\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "transpose",
+          "R^{T}=\\begin{pmatrix}\\cos{\\left(\\theta \\right)}&\\sin{\\left(\\theta \\right)}\\\\- \\sin{\\left(\\theta \\right)}&\\cos{\\left(\\theta \\right)}\\end{pmatrix}"
+        ],
+        [
+          "first_product",
+          "RD=\\begin{pmatrix}3 \\cos{\\left(\\theta \\right)}&- 4 \\sin{\\left(\\theta \\right)}\\\\3 \\sin{\\left(\\theta \\right)}&4 \\cos{\\left(\\theta \\right)}\\end{pmatrix}"
+        ],
+        [
+          "expand",
+          "RDR^{T}=\\begin{pmatrix}(3 \\cos{\\left(\\theta \\right)})\\cdot(\\cos{\\left(\\theta \\right)})+(- 4 \\sin{\\left(\\theta \\right)})\\cdot(- \\sin{\\left(\\theta \\right)})&(3 \\cos{\\left(\\theta \\right)})\\cdot(\\sin{\\left(\\theta \\right)})+(- 4 \\sin{\\left(\\theta \\right)})\\cdot(\\cos{\\left(\\theta \\right)})\\\\(3 \\sin{\\left(\\theta \\right)})\\cdot(\\cos{\\left(\\theta \\right)})+(4 \\cos{\\left(\\theta \\right)})\\cdot(- \\sin{\\left(\\theta \\right)})&(3 \\sin{\\left(\\theta \\right)})\\cdot(\\sin{\\left(\\theta \\right)})+(4 \\cos{\\left(\\theta \\right)})\\cdot(\\cos{\\left(\\theta \\right)})\\end{pmatrix}"
+        ],
+        [
+          "product",
+          "RDR^{T}=\\begin{pmatrix}4 \\sin^{2}{\\left(\\theta \\right)} + 3 \\cos^{2}{\\left(\\theta \\right)}&- \\sin{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}\\\\- \\sin{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}&3 \\sin^{2}{\\left(\\theta \\right)} + 4 \\cos^{2}{\\left(\\theta \\right)}\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}4 \\sin^{2}{\\left(\\theta \\right)} + 3 \\cos^{2}{\\left(\\theta \\right)}&- \\sin{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}\\\\- \\sin{\\left(\\theta \\right)} \\cos{\\left(\\theta \\right)}&3 \\sin^{2}{\\left(\\theta \\right)} + 4 \\cos^{2}{\\left(\\theta \\right)}\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "matrix-trigonometric"
+      }
+    }
+  ],
+  "matrix-multiply-v1": [
+    {
+      "code": "MXMUL-1-0000000000000000-16",
+      "statement": "Multiply the matrices: \\(\\begin{pmatrix}3&1&4\\\\3&-4&-3\\\\3&3&-1\\end{pmatrix}\\begin{pmatrix}-3&1&-2\\\\-4&-3&-2\\\\-3&3&2\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "dimensions",
+          "(3\\times 3)(3\\times 3)=3\\times 3"
+        ],
+        [
+          "expand",
+          "\\begin{pmatrix}(3)\\cdot(-3)+(1)\\cdot(-4)+(4)\\cdot(-3)&(3)\\cdot(1)+(1)\\cdot(-3)+(4)\\cdot(3)&(3)\\cdot(-2)+(1)\\cdot(-2)+(4)\\cdot(2)\\\\(3)\\cdot(-3)+(-4)\\cdot(-4)+(-3)\\cdot(-3)&(3)\\cdot(1)+(-4)\\cdot(-3)+(-3)\\cdot(3)&(3)\\cdot(-2)+(-4)\\cdot(-2)+(-3)\\cdot(2)\\\\(3)\\cdot(-3)+(3)\\cdot(-4)+(-1)\\cdot(-3)&(3)\\cdot(1)+(3)\\cdot(-3)+(-1)\\cdot(3)&(3)\\cdot(-2)+(3)\\cdot(-2)+(-1)\\cdot(2)\\end{pmatrix}"
+        ],
+        [
+          "full",
+          "\\begin{pmatrix}-25&12&0\\\\16&6&-4\\\\-18&-9&-14\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}-25&12&0\\\\16&6&-4\\\\-18&-9&-14\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "matrix-multiply"
+      }
+    },
+    {
+      "code": "MXMUL-1-0000000000000001-33",
+      "statement": "Multiply the matrices: \\(\\begin{pmatrix}-3&1\\\\-1&-2\\end{pmatrix}\\begin{pmatrix}2&0\\\\-3&-2\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "dimensions",
+          "(2\\times 2)(2\\times 2)=2\\times 2"
+        ],
+        [
+          "expand",
+          "\\begin{pmatrix}(-3)\\cdot(2)+(1)\\cdot(-3)&(-3)\\cdot(0)+(1)\\cdot(-2)\\\\(-1)\\cdot(2)+(-2)\\cdot(-3)&(-1)\\cdot(0)+(-2)\\cdot(-2)\\end{pmatrix}"
+        ],
+        [
+          "full",
+          "\\begin{pmatrix}-9&-2\\\\4&4\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}-9&-2\\\\4&4\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "matrix-multiply"
+      }
+    },
+    {
+      "code": "MXMUL-1-0000000000000042-17",
+      "statement": "Multiply the matrices: \\(\\begin{pmatrix}2&3&3\\\\2&3&-2\\\\-3&-4&-2\\end{pmatrix}\\begin{pmatrix}-3&0&0\\\\-2&0&-4\\\\-4&-2&2\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "dimensions",
+          "(3\\times 3)(3\\times 3)=3\\times 3"
+        ],
+        [
+          "expand",
+          "\\begin{pmatrix}(2)\\cdot(-3)+(3)\\cdot(-2)+(3)\\cdot(-4)&(2)\\cdot(0)+(3)\\cdot(0)+(3)\\cdot(-2)&(2)\\cdot(0)+(3)\\cdot(-4)+(3)\\cdot(2)\\\\(2)\\cdot(-3)+(3)\\cdot(-2)+(-2)\\cdot(-4)&(2)\\cdot(0)+(3)\\cdot(0)+(-2)\\cdot(-2)&(2)\\cdot(0)+(3)\\cdot(-4)+(-2)\\cdot(2)\\\\(-3)\\cdot(-3)+(-4)\\cdot(-2)+(-2)\\cdot(-4)&(-3)\\cdot(0)+(-4)\\cdot(0)+(-2)\\cdot(-2)&(-3)\\cdot(0)+(-4)\\cdot(-4)+(-2)\\cdot(2)\\end{pmatrix}"
+        ],
+        [
+          "full",
+          "\\begin{pmatrix}-24&-6&-6\\\\-4&4&-16\\\\25&4&12\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}-24&-6&-6\\\\-4&4&-16\\\\25&4&12\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "matrix-multiply"
+      }
+    }
   ]
 }

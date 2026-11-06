@@ -3,10 +3,31 @@ import type { AnswerInputSpec, ComputationalInputSpec } from './types';
 
 export const COMPUTATIONAL_KINDS = ['real_set', 'tuple', 'category', 'formula', 'limit_result'] as const;
 const SYMBOL_NAMES = ['x', 'y', 'z', 'r', 'theta', 'a', 'b', 'c', 'C', 'D', 'k', 'n', 't', 's'];
+const MATRIX_NAMES = ['one', 'two', 'three', 'four', 'five'];
 
-function computational(value: unknown, depth = 0, count = { value: 0 }): ComputationalInputSpec {
+function isMatrixShape(value: unknown): boolean {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+  const root = value as Record<string, unknown>;
+  if (root.kind !== 'tuple' || !Array.isArray(root.components) || !Array.isArray(root.labels)
+      || root.components.length < 1 || root.components.length > 5 || root.labels.length !== root.components.length) return false;
+  const rootLabels = root.labels;
+  let columns = 0;
+  return root.components.every((part, i) => {
+    if (!part || typeof part !== 'object' || Array.isArray(part) || rootLabels[i] !== `Matrix row ${MATRIX_NAMES[i]}`) return false;
+    const row = part as Record<string, unknown>;
+    if (row.kind !== 'tuple' || !Array.isArray(row.components) || !Array.isArray(row.labels)
+        || row.components.length < 1 || row.components.length > 5 || row.labels.length !== row.components.length) return false;
+    const rowLabels = row.labels;
+    if (columns && columns !== row.components.length) return false;
+    columns = row.components.length;
+    return row.components.every((cell, j) => rowLabels[j] === `Column ${MATRIX_NAMES[j]}`
+      && !!cell && typeof cell === 'object' && !Array.isArray(cell) && (cell as Record<string, unknown>).kind === 'formula');
+  });
+}
+
+function computational(value: unknown, depth = 0, count = { value: 0, limit: 16 }): ComputationalInputSpec {
   count.value += 1;
-  if (depth > 3 || count.value > 16 || !value || typeof value !== 'object' || Array.isArray(value)) throw new Error(text.service_error);
+  if (depth > 3 || count.value > count.limit || !value || typeof value !== 'object' || Array.isArray(value)) throw new Error(text.service_error);
   const data = value as Record<string, unknown>;
   if (!(COMPUTATIONAL_KINDS as readonly unknown[]).includes(data.kind) || data.maxBytes !== 256) throw new Error(text.service_error);
   const result: ComputationalInputSpec = { kind: data.kind as ComputationalInputSpec['kind'], maxBytes: 256 };
@@ -39,7 +60,7 @@ export function parseAnswerInput(value: unknown): AnswerInputSpec | undefined {
   if (value === undefined) return undefined;
   if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error(text.service_error);
   const data = value as Record<string, unknown>;
-  if ((COMPUTATIONAL_KINDS as readonly unknown[]).includes(data.kind)) return computational(data);
+  if ((COMPUTATIONAL_KINDS as readonly unknown[]).includes(data.kind)) return computational(data, 0, { value: 0, limit: isMatrixShape(data) ? 31 : 16 });
   if (!['boolean', 'finite_set', 'interval'].includes(data.kind as string) || data.maxBytes !== 256
       || (data.kind === 'finite_set' && data.maxItems !== 8)) throw new Error(text.service_error);
   return { kind: data.kind as AnswerInputSpec['kind'], maxBytes: 256, ...(data.kind === 'finite_set' ? { maxItems: 8 as const } : {}) };
