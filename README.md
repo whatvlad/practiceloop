@@ -122,6 +122,14 @@ Never copy the entire backend .env into the frontend. On Unix use
 
 ## Run
 
+For the local matrix generator preview, complete the setup above, then run
+`..\.venv\Scripts\python.exe -m uvicorn local_matrix_preview:app --host 127.0.0.1 --port 8011`
+from `backend/`. Run Vite from `frontend/` and open `/local-preview.html`.
+To view it on another Tailscale device, start Vite with
+`npm run dev -- --host <tailscale-ip> --port 5177` and use that IP and port.
+The preview uses real generators without login or saved history; it is local
+development tooling, not a production API.
+
 In two terminals:
 ```powershell
 .\.venv\Scripts\python.exe -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000

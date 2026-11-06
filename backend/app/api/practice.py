@@ -17,7 +17,7 @@ from collections import deque
 from collections.abc import Mapping
 from datetime import UTC, datetime
 from threading import Lock
-from typing import Annotated, Any, NamedTuple
+from typing import Annotated, Any, Literal, NamedTuple
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, Header, Query
@@ -133,12 +133,19 @@ reveal_limit = RateLimiter(60)
 NO_NUL = r"^[^\x00]*$"
 
 
+class MatrixOptions(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True)
+    operation: Literal["add", "subtract", "multiply", "mixed"]
+    size: Literal["2x2", "3x3", "rectangular"]
+
+
 class GenerateBody(BaseModel):
     model_config = ConfigDict(extra="forbid", strict=True)
     topic: str = Field(min_length=1, max_length=64)
     difficulty: int
     # Only with "mixed": Mathematical Analysis when omitted; legacy selectors remain valid.
     area: str | None = Field(default=None, min_length=1, max_length=64)
+    matrixOptions: MatrixOptions | None = None
 
 
 class AttemptBody(BaseModel):
@@ -423,6 +430,11 @@ def generate(body: GenerateBody, user: User, key: IdempotencyKey = None) -> JSON
         idempotency.request_hash(body.model_dump(exclude_none=True)),
     )
     topic = body.topic
+    if body.matrixOptions is not None and (
+        topic != "matrix-operations"
+        or not engine.matrix_options_supported(body.difficulty, body.matrixOptions.model_dump())
+    ):
+        raise _invalid()
     if topic == MIXED:
         area = body.area or "mathematical-analysis"
         slugs, weights = mixed_topics(area, body.difficulty) if _mixed(area) else ([], [])
@@ -443,7 +455,18 @@ def generate(body: GenerateBody, user: User, key: IdempotencyKey = None) -> JSON
         recent = records.recent_generator_data(
             conn, user.id, topic, body.difficulty, len(engine.pool(topic, body.difficulty)) // 2
         )
-        issued = engine.issue(topic, body.difficulty, recent=tuple(recent))
+        try:
+            if body.matrixOptions:
+                issued = engine.issue(
+                    topic,
+                    body.difficulty,
+                    recent=tuple(recent),
+                    matrix_options=body.matrixOptions.model_dump(),
+                )
+            else:
+                issued = engine.issue(topic, body.difficulty, recent=tuple(recent))
+        except ValueError as exc:
+            raise _invalid() from exc
         statement, solution = (
             issued.statement,
             records.PrivateSolution(

@@ -117,6 +117,37 @@ def stub_check(monkeypatch: pytest.MonkeyPatch, outcome: Any) -> None:
 # Generation
 
 
+def test_matrix_settings_are_applied_to_saved_problem(client: TestClient, url: str) -> None:
+    response = client.post(
+        "/problems",
+        json={
+            "topic": "matrix-operations",
+            "difficulty": 1,
+            "matrixOptions": {"operation": "multiply", "size": "3x3"},
+        },
+        headers=key(),
+    )
+    assert response.status_code == 201, response.text
+    problem = response.json()["problem"]
+    record = rows(
+        url,
+        "select generator_data from private.problem_solutions where problem_id = %s",
+        problem["id"],
+    )[0][0]
+    assert engine.matrix_classification(record) == ("multiply", "3x3")
+    assert problem["answerInput"]["kind"] == "tuple"
+    invalid = client.post(
+        "/problems",
+        json={
+            "topic": "matrix-operations",
+            "difficulty": 1,
+            "matrixOptions": {"operation": "add", "size": "rectangular"},
+        },
+        headers=key(),
+    )
+    assert invalid.status_code == 422
+
+
 def test_generation_persists_public_problem_and_private_solution_atomically(
     client: TestClient, users: Users, url: str
 ) -> None:
@@ -339,14 +370,20 @@ def answer_of(url: str, problem_id: str, *, wrong: bool = False) -> str:
 
     from app.engine.answers.antiderivative import AntiderivativeAnswer
     from app.engine.answers.structured import BooleanAnswer, FiniteSetAnswer, IntervalAnswer
+    from app.engine.generators.matrix_full import MatrixAnswer
 
     answer = engine.replay(data).answer
-    if answer.kind in {"real_set", "tuple", "category", "formula", "logic"}:
-        return computational_wrong(answer) if wrong else source(answer)
 
     def scalar(value: Any) -> str:
         return str(value).replace("**", "^").replace("E", "e")
 
+    if isinstance(answer, MatrixAnswer):
+        values = [list(row) for row in answer.expected]
+        if wrong:
+            values[0][0] += 1
+        return "(" + ";".join("(" + ";".join(map(scalar, row)) + ")" for row in values) + ")"
+    if answer.kind in {"real_set", "tuple", "category", "formula", "logic"}:
+        return computational_wrong(answer) if wrong else source(answer)
     if isinstance(answer, BooleanAnswer):
         return "true" if answer.expected != wrong else "false"
     if isinstance(answer, FiniteSetAnswer):

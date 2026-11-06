@@ -1,5 +1,6 @@
 """Private code replay and declarative topic views, including the shipped MVP slice."""
 
+from collections.abc import Mapping
 from dataclasses import replace
 from functools import partial
 
@@ -21,7 +22,23 @@ class OpenedCode(StoredModel):
 def _historical_views() -> tuple[Topic, ...]:
     # These registered engine versions remain permanent even after their topic
     # starts issuing a newer curriculum. They reference existing public topic rows.
-    aliases = (
+    aliases: tuple[tuple[str, Mapping[int, tuple[Choice, ...]]], ...] = (
+        (
+            "matrix-operations",
+            {
+                1: (Choice("matrix-sum-v1"),),
+                2: (Choice("matrix-product-v2"), Choice("matrix-combination-v2")),
+                3: (Choice("matrix-commutator-v2"), Choice("matrix-trig-v1")),
+            },
+        ),
+        (
+            "matrix-operations",
+            {
+                1: (Choice("matrix-combination-v1"),),
+                2: (Choice("matrix-product-v1"),),
+                3: (Choice("matrix-commutator-v1"),),
+            },
+        ),
         ("partial-fractions", {1: (Choice("partial-fractions-v1"),)}),
         (
             "derivatives",

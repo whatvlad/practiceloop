@@ -1,6 +1,8 @@
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import { ApiStatusNotice } from './components/ApiStatusNotice';
 import { AppNav, Logo, PublicNav } from './components/AppNav';
+import { PracticeSidebar } from './components/PracticeSidebar';
+import { matrixOptionsFromSearch } from './components/MatrixSettings';
 import { ButtonLink } from './components/Button';
 import { SkipLink } from './components/SkipLink';
 import { type ApiHealth, authStore, checkApiHealth } from './data/api';
@@ -147,10 +149,14 @@ export function App() {
           <p className="pl-small pl-muted" role="status">Problems, attempts and reveals are saved to your account.</p>
           {auth.error && <p className="pl-result pl-result--invalid" role="alert">{auth.error}</p>}
         </section>
+        {(pathname === '/dashboard' || pathname === '/practice') && <div className="pl-workspace">
+        <PracticeSidebar accountId={account.id} />
+        <div className="pl-workspace-content">
         {pathname === '/dashboard' && (params.has('topic')
           ? <DashboardPage key={`${params.get('area')}:${params.get('topic')}`} initialArea={params.get('area') === 'algebra' ? 'algebra' : params.get('area') === 'probability-statistics' ? 'probability-statistics' : 'mathematical-analysis'} initialTopic={params.get('topic') ?? undefined} />
           : <CurriculumPage />)}
-        {pathname === '/practice' && (params.has('id') ? <PracticePage key={params.get('id')} id={params.get('id')} /> : <CurriculumPage />)}
+        {pathname === '/practice' && (params.has('id') ? <PracticePage key={params.get('id')} id={params.get('id')} randomAccountId={params.get('mode') === 'random' ? account.id : undefined} matrixOptions={matrixOptionsFromSearch(params)} /> : <CurriculumPage />)}
+        </div></div>}
         {pathname === '/history' && <HistoryPage />}
         {pathname === '/profile' && <ProfilePage account={account} onLogOut={handleLogOut} onDeleted={handleDeleted} busy={auth.working} />}
       </div>

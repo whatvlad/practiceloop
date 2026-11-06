@@ -15,7 +15,6 @@ from app.engine.generators.matrix_operations import (
 )
 from app.engine.opening import rebuild
 from app.engine.practice import input_variables, replay
-from app.engine.topics.catalogue import topics
 from app.math_input import parse_math_input
 from app.services.math_worker import check_answer
 
@@ -27,11 +26,8 @@ TOPIC_OF = {
 
 
 @pytest.mark.parametrize("generator", generators(), ids=lambda g: g.version)
-def test_tasks_are_offered_replay_and_accept_only_their_own_answer(generator) -> None:
+def test_historical_tasks_replay_and_accept_only_their_own_answer(generator) -> None:
     level = TOPIC_OF[generator.version]
-    assert generator.version in {
-        choice.generator for choice in topics()["matrix-operations"].levels[level]
-    }
     for seed in range(200):
         params = generator.draw(seed)
         task = generator.build(params)

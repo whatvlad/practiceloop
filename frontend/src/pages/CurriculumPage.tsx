@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { algebraSections, analysisSections, probabilitySections } from '../data/curriculum';
+import { algebraGroups } from '../data/algebraGroups';
 import { Link } from '../router';
 
 const PRACTICE: Record<string, { topic: string; scope: string }> = {
@@ -87,7 +88,9 @@ export function CurriculumPage({ guest = false }: { guest?: boolean }) {
         <h2 id="ready-to-practise" className="pl-h-lg">Ready to practise</h2>
         <p className="pl-muted">Choose an available exercise to start practising.</p>
         <ul>
-          {sections.flatMap(section => section.types).filter(type => PRACTICE[type.name]).map(type => (
+          {area === 'algebra' ? algebraGroups.flatMap(group => group.items).filter(item => item.topic).map(item => (
+            <li key={item.topic}><Link to={`/dashboard?area=algebra&topic=${item.topic}`}>{item.title}</Link>{item.note && ` — ${item.note}`}</li>
+          )) : sections.flatMap(section => section.types).filter(type => PRACTICE[type.name]).map(type => (
             <li key={type.name}>
               <Link to={`/dashboard?area=${practiceArea}&topic=${PRACTICE[type.name].topic}`}>{PRACTICE[type.name].scope}</Link>
             </li>
@@ -95,7 +98,17 @@ export function CurriculumPage({ guest = false }: { guest?: boolean }) {
         </ul>
       </section>
       <div className="pl-stack pl-gap-4 pl-mt-4">
-        {sections.map(section => (
+        {area === 'algebra' ? algebraGroups.map(group => (
+          <details className="pl-card" key={group.title}>
+            <summary className="pl-h-lg">{group.title}</summary>
+            <ul>
+              {group.items.map(item => <li key={item.title}>
+                {item.topic ? <Link to={`/dashboard?area=algebra&topic=${item.topic}`}>{item.title}</Link> : item.title}
+                <span className="pl-small pl-muted"> — {item.topic ? item.note ?? 'Available' : 'In develop'}</span>
+              </li>)}
+            </ul>
+          </details>
+        )) : sections.map(section => (
           <details className="pl-card" key={section.name}>
             <summary className="pl-h-lg">{section.name} <span className="pl-small pl-muted">— {section.types.some(type => PRACTICE[type.name]) ? 'Selected problems available' : 'In develop'}</span></summary>
             <div className="pl-stack pl-gap-3 pl-mt-4">

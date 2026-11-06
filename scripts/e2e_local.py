@@ -150,6 +150,7 @@ def answer_text(answer: Any, *, wrong: bool = False) -> str:
     )
     from app.engine.answers.logic import LogicAnswer
     from app.engine.answers.structured import BooleanAnswer, FiniteSetAnswer, IntervalAnswer
+    from app.engine.generators.matrix_full import MatrixAnswer
 
     def scalar(value: Any) -> str:
         text = str(sp.sstr(value)).replace("**", "^").replace("E", "e").replace("Abs", "abs")
@@ -180,6 +181,11 @@ def answer_text(answer: Any, *, wrong: bool = False) -> str:
             + (")" if value.right_open else "]")
         )
 
+    if isinstance(answer, MatrixAnswer):
+        values = [list(row) for row in answer.expected]
+        if wrong:
+            values[0][0] += 1
+        return "(" + ";".join("(" + ";".join(map(scalar, row)) + ")" for row in values) + ")"
     if isinstance(answer, CategoryAnswer):
         return (
             next(choice for choice in answer.choices if choice != answer.expected)

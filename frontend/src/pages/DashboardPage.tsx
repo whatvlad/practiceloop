@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import text from '../../../backend/app/content/en.json';
 import { Button, ButtonLink } from '../components/Button';
 import { DifficultyScale } from '../components/DifficultyScale';
+import { initialMatrixOptions, matrixOptionsQuery, matrixOptionsValid, MatrixSettings } from '../components/MatrixSettings';
 import { HistoryList } from '../components/HistoryRow';
 import { StatTile } from '../components/StatTile';
 import { AreaChips, TopicChips } from '../components/TopicChips';
@@ -21,6 +22,7 @@ export function DashboardPage({ initialArea, initialTopic }: { initialArea?: Are
   const [area, setArea] = useState<AreaSlug>(initialArea ?? 'mathematical-analysis');
   const [topic, setTopic] = useState<PracticeTopic>(initialTopic ?? 'basic-integrals');
   const [difficulty, setDifficulty] = useState<Difficulty>(1);
+  const [matrixOptions, setMatrixOptions] = useState(() => initialMatrixOptions(1));
   const [busy, setBusy] = useState(false);
   const pending = useRef(false);
   const active = useRef(true);
@@ -29,10 +31,13 @@ export function DashboardPage({ initialArea, initialTopic }: { initialArea?: Are
   const areas = catalogue.status === 'ready' ? catalogue.data.areas : [];
   // ADR-005: the learner picks an area first; topics and mixed practice belong to it.
   const topics = catalogue.status === 'ready' ? catalogue.data.topics.filter(t => t.area === area) : [];
-  const mixed = areas.find(a => a.slug === area)?.mixed ?? null;
+  // Algebra's old server-side mixed pool still contains retired topics; the
+  // workspace random selector draws only the learner's explicit choices.
+  const mixed = area === 'algebra' ? null : areas.find(a => a.slug === area)?.mixed ?? null;
   const levels = topic === 'mixed' ? mixed?.availableDifficulties ?? [] : topics.find(t => t.slug === topic)?.availableDifficulties ?? [];
   const offered: PracticeTopic[] = [...topics.filter(t => t.availableDifficulties.length > 0).map(t => t.slug), ...(mixed ? ['mixed' as const] : [])];
   const available = levels.includes(difficulty);
+  const selectedMatrixOptions = matrixOptionsValid(difficulty, matrixOptions) ? matrixOptions : initialMatrixOptions(difficulty);
 
   useEffect(() => {
     if (initialTopic || last.status !== 'ready' || catalogue.status !== 'ready') return;
@@ -68,8 +73,9 @@ export function DashboardPage({ initialArea, initialTopic }: { initialArea?: Are
     setError('');
     setBusy(true);
     try {
-      const problem = await generateProblem(topic, difficulty, area);
-      if (active.current) navigate(`/practice?id=${encodeURIComponent(problem.id)}`);
+      const options = topic === 'matrix-operations' ? selectedMatrixOptions : undefined;
+      const problem = options ? await generateProblem(topic, difficulty, area, options) : await generateProblem(topic, difficulty, area);
+      if (active.current) navigate(`/practice?id=${encodeURIComponent(problem.id)}${options ? matrixOptionsQuery(options) : ''}`);
     } catch (failure) {
       if (active.current) setError(failure instanceof Error ? failure.message : text.service_error);
     } finally {
@@ -119,7 +125,8 @@ export function DashboardPage({ initialArea, initialTopic }: { initialArea?: Are
           <div id="difficulty-label" className="pl-label">
             Difficulty
           </div>
-          <DifficultyScale selected={difficulty} onSelect={setDifficulty} labelledBy="difficulty-label" available={busy ? [] : levels} shown={levels} />
+          <DifficultyScale selected={difficulty} onSelect={setDifficulty} labelledBy="difficulty-label" available={busy ? [] : levels} shown={levels} topic={topic} />
+          {topic === 'matrix-operations' && <MatrixSettings level={difficulty} value={selectedMatrixOptions} onChange={setMatrixOptions} />}
           {topic === 'mixed' && mixed && available && (
             <p className="pl-small pl-muted" id="mixed-weights">
               Mixed practice picks one topic for each problem with fixed weights:{' '}
