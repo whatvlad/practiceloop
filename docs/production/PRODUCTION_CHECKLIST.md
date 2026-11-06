@@ -18,7 +18,7 @@ the deployed preview. Requirements and decisions are in
 | 8 | Pages headers from `frontend/public/_headers`: CSP (`script-src 'self'` plus the analytics beacon, no inline script, no eval), `nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: no-referrer`, `Permissions-Policy`, COOP; fonts are self-hosted | `site.test.ts` "Pages headers" | `curl -sI https://practiceloop.pages.dev/` shows the headers; the browser console shows no CSP errors while practising and signing in |
 | 9 | API: HTTPS only (Caddy redirect and HSTS), exact-origin CORS without wildcards or plain HTTP, strict request models, 4 KB body cap, safe error envelope, security headers on every response | `backend/tests/test_health.py`, `test_practice_api.py`, `scripts/e2e_local.py` | `curl -sI https://92-5-92-72.sslip.io/health` shows `content-security-policy: default-src 'none'...`; an unknown `Origin` gets no CORS header |
 | 10 | Cloudflare Web Analytics only when `CF_WEB_ANALYTICS_TOKEN` is set; never on `/auth/*` or share URLs; no email, account ID or answer is ever in a URL; learning metrics stay in Supabase | `frontend/src/analytics.test.ts` | With the token set, the beacon loads on `/` but not on `/s/{token}` |
-| 11 | `/privacy` and `/terms` name the operators and contact, and `/privacy` describes the real data flows and processors (Supabase, Google, Cloudflare, Oracle) | `App.test.tsx` "serves the privacy page" and "serves the terms" | Read both pages against this repository's behaviour |
+| 11 | `/privacy` and `/terms` name the operator and contact, and `/privacy` describes the real data flows and processors (Supabase, Google, Cloudflare, Oracle) | `App.test.tsx` "serves the privacy page" and "serves the terms" | Read both pages against this repository's behaviour |
 | 12 | Domains, keys and tokens come from environment configuration; the browser build gets only public values | `scripts/check_repository.py`, Gitleaks, the Preview workflow's public-key check | GitHub variables: `API_BASE_URL`, `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, optional `CF_WEB_ANALYTICS_TOKEN`; no `VITE_SITE_URL` or `VITE_SITE_INDEXABLE` on preview |
 
 ## Running the checks
@@ -42,8 +42,8 @@ turn them into a launch are in [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md).
 - Custom production domain, then the `SITE_URL` and `SITE_INDEXABLE=true`
   repository variables (the launch build adds HSTS and drops the global
   `X-Robots-Tag: noindex` itself).
-- Qualified legal review of `/privacy` and `/terms`: the operators, their address
-  requirements, joint-controller arrangement and the legal basis for each purpose.
+- Qualified legal review of `/privacy` and `/terms`: the operator, address
+  requirements and the legal basis for each purpose.
 - Backup setup and retention for launch (the Free plan has no automatic backups).
 - Final product name, English hero, CTA and SEO copy, logo, favicon, Apple touch
   icon and Open Graph image (no `og:image` is emitted until then).

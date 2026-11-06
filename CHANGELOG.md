@@ -6,7 +6,7 @@ User-facing releases. Known limitations of the current release are in
 ## Unreleased
 
 - **Privacy and Terms of Service.** The Privacy page is no longer a draft: it
-  names the operators and a contact address and explains why data is used. A
+  names the operator and a contact address and explains why data is used. A
   new Terms of Service page is linked from the landing, sign-in, Privacy and
   profile pages. (#39)
 

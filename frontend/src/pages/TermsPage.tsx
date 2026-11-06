@@ -1,5 +1,5 @@
 import { Logo, PublicNav } from '../components/AppNav';
-import { CONTACT_EMAIL, LEGAL_UPDATED, OPERATORS } from '../legal';
+import { CONTACT_EMAIL, LEGAL_UPDATED, OPERATOR } from '../legal';
 import { Link } from '../router';
 
 export function TermsPage() {
@@ -18,7 +18,7 @@ export function TermsPage() {
         <section aria-labelledby="terms-who">
           <h2 id="terms-who" className="pl-h-lg">Who provides PracticeLoop</h2>
           <p>
-            PracticeLoop is a free beta run by {OPERATORS}, two individual developers. It is not run by a company.
+            PracticeLoop is a free beta run by {OPERATOR}, an individual developer, not a company. “We” on this page means the operator.
             Contact: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
           </p>
         </section>

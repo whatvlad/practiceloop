@@ -1,5 +1,5 @@
 import { Logo, PublicNav } from '../components/AppNav';
-import { CONTACT_EMAIL, LEGAL_UPDATED, OPERATORS } from '../legal';
+import { CONTACT_EMAIL, LEGAL_UPDATED, OPERATOR } from '../legal';
 import { Link } from '../router';
 
 // Describes the data flows in this repository and nothing else. Update it with
@@ -61,9 +61,8 @@ export function PrivacyPage() {
         <section aria-labelledby="privacy-who">
           <h2 id="privacy-who" className="pl-h-lg">Who runs PracticeLoop</h2>
           <p>
-            PracticeLoop is a free beta run by {OPERATORS}, two individual developers. We decide together how your data is
-            used, so we are joint controllers under the GDPR. You can use this one address for any privacy question or
-            request, and you can exercise your rights against either of us:{' '}
+            PracticeLoop is a free beta run by {OPERATOR}, an individual developer, who is the controller of your data under
+            the GDPR. “We” on this page means the operator. For any privacy question or request, write to{' '}
             <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
           </p>
         </section>

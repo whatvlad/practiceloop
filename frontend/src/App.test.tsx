@@ -27,7 +27,7 @@ vi.mock('./data/api', async importOriginal => ({
 }));
 
 import { App } from './App';
-import { CONTACT_EMAIL, OPERATORS } from './legal';
+import { CONTACT_EMAIL, OPERATOR } from './legal';
 
 const signedOut: AuthSnapshot = { status: 'unauthenticated', account: null, working: false, error: null };
 const signedIn: AuthSnapshot = { ...signedOut, status: 'authenticated', account: {
@@ -190,11 +190,11 @@ describe('routes and public pages (#38)', () => {
     expect(cta.getAttribute('href')).toBe('/practice');
   });
 
-  it('serves the privacy page without an account, naming the operators, contact and processors', async () => {
+  it('serves the privacy page without an account, naming the operator, contact and processors', async () => {
     await renderAt('/privacy');
     expect(window.location.pathname).toBe('/privacy');
     expect(element.querySelector('h1')?.textContent).toBe('Privacy');
-    for (const name of ['Supabase', 'Google', 'Cloudflare', 'Oracle Cloud', OPERATORS, CONTACT_EMAIL]) expect(element.textContent).toContain(name);
+    for (const name of ['Supabase', 'Google', 'Cloudflare', 'Oracle Cloud', OPERATOR, CONTACT_EMAIL]) expect(element.textContent).toContain(name);
     expect(element.textContent).not.toMatch(/draft|not decided yet/i);
     expect(element.querySelector('a[href="/terms"]')).not.toBeNull();
     expect(document.title).toBe('Privacy · PracticeLoop');
@@ -204,7 +204,7 @@ describe('routes and public pages (#38)', () => {
     await renderAt('/terms');
     expect(window.location.pathname).toBe('/terms');
     expect(element.querySelector('h1')?.textContent).toBe('Terms of Service');
-    for (const text of [OPERATORS, CONTACT_EMAIL, 'aged 16 and over']) expect(element.textContent).toContain(text);
+    for (const text of [OPERATOR, CONTACT_EMAIL, 'aged 16 and over']) expect(element.textContent).toContain(text);
     expect(element.querySelector('a[href="/privacy"]')).not.toBeNull();
     expect(document.title).toBe('Terms of Service · PracticeLoop');
     await renderAt('/login');
