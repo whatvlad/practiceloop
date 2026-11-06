@@ -1,9 +1,15 @@
 import { Logo, PublicNav } from '../components/AppNav';
+import { CONTACT_EMAIL, LEGAL_UPDATED, OPERATORS } from '../legal';
 import { Link } from '../router';
 
-// Draft (#38): it describes the data flows in this repository and nothing else.
-// The operator's legal identity, contact address, legal bases and the final
-// backup window are launch blockers (#39) and are stated as open, never guessed.
+// Describes the data flows in this repository and nothing else. Update it with
+// any change to what is stored, who processes it, analytics or backups.
+
+const LEGAL_BASES = [
+  'To provide your account, practice, history, statistics and share links: performing our agreement with you (GDPR Article 6(1)(b)).',
+  'To keep the service secure, stop abuse, keep technical logs and fix faulty problems: our legitimate interest in running a safe and working service (Article 6(1)(f)).',
+  'To meet a legal duty, if one applies (Article 6(1)(c)).',
+];
 
 const PROCESSORS = [
   {
@@ -18,7 +24,7 @@ const PROCESSORS = [
   },
   {
     name: 'Cloudflare',
-    role: 'Serves this website, forwards API requests and, if enabled, counts anonymous page views and page speed (Cloudflare Web Analytics).',
+    role: 'Serves this website and forwards API requests.',
     where: 'Cloudflare’s global network.',
   },
   {
@@ -44,28 +50,30 @@ export function PrivacyPage() {
       <PublicNav />
       <main id="main" tabIndex={-1} className="pl-wrap pl-wrap--narrow pl-app-main pl-stack pl-gap-5 pl-privacy">
         <div>
-          <div className="pl-label">Draft</div>
+          <div className="pl-label">Updated {LEGAL_UPDATED}</div>
           <h1 className="pl-display-md pl-mt-4">Privacy</h1>
           <p className="pl-lead">
-            This draft describes what PracticeLoop actually does with your data today. It is not final: the items under
-            “Not decided yet” must be completed before public launch.
+            This page describes what PracticeLoop does with your data today, who is responsible for it and what your
+            rights are.
           </p>
         </div>
 
         <section aria-labelledby="privacy-who">
           <h2 id="privacy-who" className="pl-h-lg">Who runs PracticeLoop</h2>
           <p>
-            PracticeLoop is a free beta built in Poland. The operator’s full legal name, address and a privacy contact
-            email will be published here before launch. They are not listed yet.
+            PracticeLoop is a free beta run by {OPERATORS}, two individual developers. We decide together how your data is
+            used, so we are joint controllers under the GDPR. You can use this one address for any privacy question or
+            request, and you can exercise your rights against either of us:{' '}
+            <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
           </p>
         </section>
 
         <section aria-labelledby="privacy-without">
           <h2 id="privacy-without" className="pl-h-lg">Without an account</h2>
           <p>
-            You can solve one demo problem without signing in. Your answer is sent to the API to be checked and is not
-            stored. Like most web servers, the API writes a short technical log line for each request (address, path and
-            status), never your answer.
+            You can browse the curriculum and open a shared problem without signing in. We do not create a profile of you.
+            Like most web servers, the API writes a short technical log line for each request (address, path and status).
+            We keep these logs only as long as we need them to run and secure the service.
           </p>
         </section>
 
@@ -81,6 +89,14 @@ export function PrivacyPage() {
           </p>
         </section>
 
+        <section aria-labelledby="privacy-bases">
+          <h2 id="privacy-bases" className="pl-h-lg">Why we may use your data</h2>
+          <ul className="pl-stack pl-gap-2">
+            {LEGAL_BASES.map((item) => <li key={item}>{item}</li>)}
+          </ul>
+          <p>You cannot have an account without the sign-in data above, because it is how the account works.</p>
+        </section>
+
         <section aria-labelledby="privacy-browser">
           <h2 id="privacy-browser" className="pl-h-lg">In your browser</h2>
           <p>
@@ -92,9 +108,8 @@ export function PrivacyPage() {
         <section aria-labelledby="privacy-analytics">
           <h2 id="privacy-analytics" className="pl-h-lg">Analytics</h2>
           <p>
-            If enabled, Cloudflare Web Analytics counts page views and measures page speed without cookies or local
-            storage. It never receives your email address, account ID or answers, and it is not loaded on sign-in or
-            shared-problem pages. Your learning statistics are calculated from your own data in our database.
+            PracticeLoop currently uses no analytics or advertising tools. Your learning statistics are calculated from
+            your own data in our database and are shown only to you.
           </p>
         </section>
 
@@ -108,6 +123,11 @@ export function PrivacyPage() {
               </div>
             ))}
           </dl>
+          <p>
+            Some of these providers operate worldwide, so some data may be processed outside the European Economic Area.
+            Where that happens, we rely on the safeguards the providers offer for such transfers, such as the EU standard
+            contractual clauses.
+          </p>
         </section>
 
         <section aria-labelledby="privacy-delete">
@@ -116,33 +136,34 @@ export function PrivacyPage() {
             Your data is kept while you have an account. You can delete your account yourself on your{' '}
             <Link to="/profile">profile</Link>. Deletion removes your account, problems, attempts, shares and reports
             immediately. The database currently has no automatic backups; any recovery copy made by hand must be
-            deleted within 30 days. The backup setup for launch will be confirmed here.
+            deleted within 30 days.
           </p>
         </section>
 
         <section aria-labelledby="privacy-rights">
           <h2 id="privacy-rights" className="pl-h-lg">Your rights</h2>
           <p>
-            You can see, correct and delete your data in the app. Under EU data-protection law (GDPR) you can also ask
-            for a copy of your data, object to its use, and complain to a data-protection authority; in Poland that is
-            the President of the Personal Data Protection Office (UODO).
+            You can see, correct and delete your data in the app. Under EU data-protection law (GDPR) you can also ask us
+            for access to your data or a copy of it, to correct, delete or restrict it, and object to uses based on our
+            legitimate interest. Write to <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+          </p>
+          <p>
+            You can also complain to a data-protection authority, for example where you live. In Ireland that is the Data
+            Protection Commission, and in Poland the President of the Personal Data Protection Office (UODO).
           </p>
         </section>
 
-        <section aria-labelledby="privacy-open" className="pl-card pl-stack pl-gap-3">
-          <h2 id="privacy-open" className="pl-h-lg">Not decided yet</h2>
-          <ul className="pl-stack pl-gap-2 pl-m-0">
-            <li>The operator’s legal identity and address.</li>
-            <li>A dedicated privacy contact email.</li>
-            <li>The legal basis for each use of data, after legal review.</li>
-            <li>The backup setup and its retention period.</li>
-            <li>Whether Cloudflare Web Analytics is switched on.</li>
-          </ul>
+        <section aria-labelledby="privacy-changes">
+          <h2 id="privacy-changes" className="pl-h-lg">Changes</h2>
+          <p>
+            If this page changes, we will update it and its date. The rules for using PracticeLoop are in the{' '}
+            <Link to="/terms">Terms of Service</Link>.
+          </p>
         </section>
       </main>
       <footer className="pl-wrap pl-row pl-small pl-subtle pl-footer">
         <Logo />
-        <Link to="/">Home</Link>
+        <span className="pl-footer-links"><Link to="/">Home</Link><Link to="/terms">Terms</Link></span>
       </footer>
     </div>
   );

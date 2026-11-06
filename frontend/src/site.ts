@@ -21,6 +21,7 @@ function page(title: string, description: string, indexable = false): PageMeta {
 const PAGES: Record<string, PageMeta> = {
   '/': page(SITE_NAME, DESCRIPTION, true),
   '/privacy': page('Privacy', 'What PracticeLoop stores, why, who processes it and how to delete it.', true),
+  '/terms': page('Terms of Service', 'The rules for using PracticeLoop, a free mathematics practice beta.', true),
   '/login': page('Sign in', 'Sign in with Google to save problems, attempts and statistics.'),
   '/dashboard': page('Dashboard', 'Your practice overview.'),
   '/practice': page('Practice', 'Solve a generated mathematics problem.'),

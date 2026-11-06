@@ -27,7 +27,7 @@ export function LandingPage({ onSignIn, disabled = false, busy = false, error = 
       </main>
       <footer className="pl-wrap pl-row pl-small pl-subtle pl-footer">
         <Logo />
-        <span className="pl-footer-links"><span>Math practice, on loop.</span><Link to="/privacy">Privacy</Link></span>
+        <span className="pl-footer-links"><span>Math practice, on loop.</span><Link to="/privacy">Privacy</Link><Link to="/terms">Terms</Link></span>
       </footer>
     </div>
   );
