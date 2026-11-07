@@ -19,7 +19,7 @@ describe('page metadata (#38)', () => {
     expect(indexHtml).not.toMatch(/Practice integration/);
   });
   it('gives every route its own title and description', () => {
-    const paths = ['/', '/privacy', '/login', '/dashboard', '/practice', '/history', '/profile', '/shared', '/nope'];
+    const paths = ['/', '/privacy', '/terms', '/demo', '/login', '/dashboard', '/practice', '/history', '/profile', '/shared', '/nope'];
     const titles = new Set(paths.map((path) => pageMeta(path).title));
     expect(titles.size).toBe(paths.length);
     expect(pageMeta('/s/abc')).toBe(pageMeta('/shared'));
@@ -27,7 +27,7 @@ describe('page metadata (#38)', () => {
   });
 
   it('only lists public pages in the sitemap', () => {
-    expect(PUBLIC_PATHS).toEqual(['/', '/privacy']);
+    expect(PUBLIC_PATHS).toEqual(['/', '/privacy', '/terms']);
   });
 
   it.each(['/', '/privacy', '/login', '/dashboard', '/practice', '/history', '/profile', '/s/abc', '/shared', '/missing'])(
@@ -84,10 +84,11 @@ describe('Pages headers (#38)', () => {
     expect(all).toContain('Referrer-Policy: no-referrer');
   });
 
-  it('allows scripts only from this site and the analytics beacon', () => {
+  it('allows scripts only from this site, the analytics beacon and Cookiebot', () => {
     const directive = (name: string) => csp.split('; ').find((part) => part.startsWith(`${name} `));
     expect(directive('default-src')).toBe("default-src 'self'");
-    expect(directive('script-src')).toBe("script-src 'self' https://static.cloudflareinsights.com");
+    expect(directive('script-src')).toBe("script-src 'self' https://static.cloudflareinsights.com https://consent.cookiebot.com https://consentcdn.cookiebot.com");
+    expect(directive('frame-src')).toBe('frame-src https://consentcdn.cookiebot.com');
     expect(directive('object-src')).toBe("object-src 'none'");
     expect(directive('frame-ancestors')).toBe("frame-ancestors 'none'");
     expect(directive('base-uri')).toBe("base-uri 'self'");

@@ -54,21 +54,74 @@ def _public(task: Task) -> Issued:
     return render(task, _registry())
 
 
+MATRIX_OPTIONS = {
+    1: frozenset((op, size) for op in ("add", "subtract") for size in ("2x2", "3x3"))
+    | frozenset(("multiply", size) for size in ("2x2", "3x3", "rectangular")),
+    2: frozenset({("multiply", "rectangular"), ("mixed", "rectangular")}),
+    3: frozenset({("multiply", "2x2"), ("mixed", "2x2")}),
+}
+
+
+def matrix_options_supported(level: int, options: dict[str, str]) -> bool:
+    return set(options) == {"operation", "size"} and (
+        options["operation"],
+        options["size"],
+    ) in MATRIX_OPTIONS.get(level, frozenset())
+
+
 def issue(
     slug: str,
     level: int,
     seed: int | None = None,
     *,
     recent: tuple[dict[str, object], ...] = (),
+    matrix_options: dict[str, str] | None = None,
 ) -> Issued:
     """Pick rendered private data; even a cold symbolic cell runs no SymPy."""
     topic = ENGINE_TOPICS[slug]
     if type(level) is not int or level not in topic.levels:
         raise ValueError("Unknown topic level")
     complete = pool(slug, level)
+    if matrix_options is not None:
+        if slug != "matrix-operations" or not matrix_options_supported(level, matrix_options):
+            raise ValueError("Invalid matrix settings")
+        wanted = (matrix_options["operation"], matrix_options["size"])
+        complete = tuple(
+            problem
+            for problem in complete
+            if matrix_classification(problem.issued().record) == wanted
+        )
+        if not complete:
+            raise ValueError("No matrix problems match these settings")
     candidates = tuple(p for p in complete if p.issued().record not in recent) or complete
     chosen = secrets.randbelow(len(candidates)) if seed is None else seed % len(candidates)
     return candidates[chosen].issued()
+
+
+def matrix_classification(record: dict[str, object]) -> tuple[str, str]:
+    """Derive public exercise settings from the trusted code, without building its answer."""
+    parsed = parse_code(str(record["code"]), _registry())
+    generator = _registry().get_code(parsed.prefix, parsed.version)
+    if generator.version != record.get("generator_version"):
+        raise ValueError("Invalid generator record")
+    params = generator.draw(parsed.seed)
+    if generator.version == "matrix-sum-v2":
+        return (
+            "add" if params.sign == 1 else "subtract",
+            f"{len(params.first)}x{len(params.first)}",
+        )
+    if generator.version == "matrix-multiply-v1":
+        rows, columns = len(params.first), len(params.first[0])
+        return ("multiply", f"{rows}x{columns}" if rows == columns else "rectangular")
+    if generator.version == "matrix-product-v3":
+        return ("multiply", "rectangular")
+    if generator.version == "matrix-trig-v2":
+        return ("multiply", "2x2")
+    if generator.version == "matrix-combination-v3":
+        return ("mixed", "rectangular")
+    if generator.version == "matrix-commutator-v3":
+        return ("mixed", "2x2")
+    raise ValueError("Not a current matrix exercise")
 
 
 def pooled(record: dict[str, object]) -> Issued:

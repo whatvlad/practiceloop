@@ -69,11 +69,6 @@ from app.engine.generators.linear_algebra import (
     NontrivialSolutions,
     SingularParameter,
 )
-from app.engine.generators.matrix_operations import (
-    MatrixCombination,
-    MatrixCommutator,
-    MatrixProduct,
-)
 from app.engine.generators.multiple import DoubleIntegrals, MultipleParams, TripleIntegrals
 from app.engine.generators.polynomials import (
     BinomialCoefficient,
@@ -393,9 +388,9 @@ def topics() -> dict[str, Topic]:
             "Matrix operations",
             4,
             {
-                1: (MatrixCombination.version,),
-                2: (MatrixProduct.version,),
-                3: (MatrixCommutator.version,),
+                1: ("matrix-sum-v2", "matrix-multiply-v1"),
+                2: ("matrix-product-v3", "matrix-combination-v3"),
+                3: ("matrix-commutator-v3", "matrix-trig-v2"),
             },
         ),
     ):

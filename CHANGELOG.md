@@ -5,6 +5,28 @@ User-facing releases. Known limitations of the current release are in
 
 ## Unreleased
 
+- **Clearer header and footer.** The logo always leads to the home page. A larger
+  footer with Privacy, Terms, Feedback and Cookie settings appears on every page,
+  and the header, logo and its buttons are bigger.
+
+- **Cookie consent banner (Cookiebot).** The site can show a Cookiebot banner
+  once the `COOKIEBOT_ID` repository variable is set. Privacy then names it and
+  offers a button to change the choice.
+
+- **Feedback and accessibility.** Feedback links open an email to the support
+  address. Long formulas can be scrolled with the keyboard, and the answer
+  placeholder has better contrast.
+
+- **Try a problem without an account.** The landing page opens a demo problem
+  at `/demo` with answer checking and the full solution, and nothing is saved.
+  The landing copy now describes the working product, and long formulas shrink
+  to fit their box instead of hiding behind a scrollbar.
+
+- **Privacy and Terms of Service.** The Privacy page is no longer a draft: it
+  names the operator and a contact address and explains why data is used. A
+  new Terms of Service page is linked from the landing, sign-in, Privacy and
+  profile pages. (#39)
+
 - **Combinations topic (new generator engine).** Algebra has a new
   "Combinations" topic, level 1: calculate a binomial coefficient C(n, k) and
   answer with the exact number. It is the first topic served by the new

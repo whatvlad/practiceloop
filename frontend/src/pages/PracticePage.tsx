@@ -5,9 +5,11 @@ import { ProblemCard } from '../components/ProblemCard';
 import { ReportProblem } from '../components/ReportProblem';
 import { ShareControls } from '../components/ShareControls';
 import { WorksheetBuilder } from '../components/WorksheetBuilder';
+import { initialMatrixOptions, matrixOptionsQuery, matrixOptionsValid } from '../components/MatrixSettings';
 import {
   NotFoundError,
   generateProblem,
+  getCatalogue,
   getLastSelection,
   openProblem,
   openDemo,
@@ -17,9 +19,11 @@ import {
   submitAttempt,
 } from '../data/api';
 import { areaOf } from '../data/topics';
-import type { CheckResult, FeedbackCode, OpenedProblem, RevealedSolution } from '../data/types';
+import { eligibleRandomChoices, loadRandomMatrixOptions, loadRandomSelection, pickRandomChoice } from '../data/randomPractice';
+import type { CheckResult, FeedbackCode, MatrixOptions, OpenedProblem, RevealedSolution } from '../data/types';
 import { navigate } from '../router';
 import { useLoad } from '../useLoad';
+import { CONTACT_EMAIL, FEEDBACK_HREF } from '../legal';
 
 /** Opens the most recent problem, or generates one when history is empty. */
 async function latestOrNewId(): Promise<string> {
@@ -29,11 +33,11 @@ async function latestOrNewId(): Promise<string> {
   return (await generateProblem(topic, difficulty, area)).id;
 }
 
-function practiceUrl(id: string): string {
-  return `/practice?id=${encodeURIComponent(id)}`;
+function practiceUrl(id: string, random = false, options?: MatrixOptions): string {
+  return `/practice?id=${encodeURIComponent(id)}${random ? '&mode=random' : ''}${options ? matrixOptionsQuery(options) : ''}`;
 }
 
-function PracticeSession({ opened }: { opened: OpenedProblem }) {
+function PracticeSession({ opened, randomAccountId, matrixOptions }: { opened: OpenedProblem; randomAccountId?: string; matrixOptions?: MatrixOptions }) {
   const { problem } = opened;
   const [answer, setAnswer] = useState(problem.lastAnswer ?? '');
   const answerRevision = useRef(0);
@@ -88,9 +92,26 @@ function PracticeSession({ opened }: { opened: OpenedProblem }) {
       onNext={() =>
         run(async () => {
           if (problem.saved === false) { navigate('/login'); return; }
+          if (randomAccountId) {
+            const catalogue = await getCatalogue();
+            const choices = eligibleRandomChoices(loadRandomSelection(randomAccountId), catalogue.topics);
+            if (!choices) throw new Error('Select available topics and a level for each before generating the next problem.');
+            const choice = pickRandomChoice(choices);
+            const storedOptions = loadRandomMatrixOptions(randomAccountId);
+            const options = choice.topic === 'matrix-operations'
+              ? storedOptions && matrixOptionsValid(choice.difficulty, storedOptions) ? storedOptions : initialMatrixOptions(choice.difficulty)
+              : undefined;
+            const next = options ? await generateProblem(choice.topic, choice.difficulty, choice.area, options)
+              : await generateProblem(choice.topic, choice.difficulty, choice.area);
+            if (active.current) navigate(practiceUrl(next.id, true));
+            return;
+          }
           // Mixed practice draws within one area, the one this problem's topic belongs to.
-          const next = await generateProblem(problem.mixed ? 'mixed' : problem.topic, problem.difficulty, areaOf(problem.topic));
-          if (active.current) navigate(practiceUrl(next.id));
+          const options = problem.topic === 'matrix-operations' ? matrixOptions : undefined;
+          const selectedTopic = problem.mixed ? 'mixed' : problem.topic;
+          const next = options ? await generateProblem(selectedTopic, problem.difficulty, areaOf(problem.topic), options)
+            : await generateProblem(selectedTopic, problem.difficulty, areaOf(problem.topic));
+          if (active.current) navigate(practiceUrl(next.id, false, options));
         })
       }
       nextLabel={problem.saved === false ? 'Sign in for more practice' : 'Generate next problem'}
@@ -105,7 +126,7 @@ function PracticeSession({ opened }: { opened: OpenedProblem }) {
   );
 }
 
-export function PracticePage({ id, demo = false }: { id: string | null; demo?: boolean }) {
+export function PracticePage({ id, demo = false, randomAccountId, matrixOptions }: { id: string | null; demo?: boolean; randomAccountId?: string; matrixOptions?: MatrixOptions }) {
   const [revision, setRevision] = useState(0);
   const [startError, setStartError] = useState(false);
   useEffect(() => {
@@ -119,7 +140,8 @@ export function PracticePage({ id, demo = false }: { id: string | null; demo?: b
   return (
     <main id="main" tabIndex={-1} className="pl-wrap pl-wrap--narrow pl-practice-main">
       {!(startError || problem.status === 'error') && <h1 className="pl-sr-only">Practice problem</h1>}
-      {problem.status === 'ready' && <PracticeSession key={problem.data.problem.id} opened={problem.data} />}
+      {demo && problem.status === 'ready' && <p className="pl-small pl-muted">This is a demo problem, and nothing is saved. Sign in with Google to practise every topic and keep your history. Questions or ideas? <a href={FEEDBACK_HREF}>Send feedback to {CONTACT_EMAIL}</a>.</p>}
+      {problem.status === 'ready' && <PracticeSession key={problem.data.problem.id} opened={problem.data} randomAccountId={randomAccountId} matrixOptions={matrixOptions} />}
       {!startError && problem.status === 'loading' && <p role="status">Loading problem…</p>}
       {(startError || problem.status === 'error') && (
         <section className="pl-card pl-card--lg pl-stack pl-gap-4">

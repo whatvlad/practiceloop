@@ -59,6 +59,8 @@ jobs:
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.SUPABASE_PUBLISHABLE_KEY || secrets.SUPABASE_PUBLISHABLE_KEY }}
           # Public site token; unset keeps the beacon off.
           VITE_CF_WEB_ANALYTICS_TOKEN: ${{ vars.CF_WEB_ANALYTICS_TOKEN }}
+          # Public Cookiebot domain group ID; unset keeps the banner off.
+          VITE_COOKIEBOT_ID: ${{ vars.COOKIEBOT_ID }}
           # Launch switches (#39, docs/production/LAUNCH_RUNBOOK.md). Unset keeps the noindex preview.
           VITE_SITE_URL: ${{ vars.SITE_URL }}
           VITE_SITE_INDEXABLE: ${{ vars.SITE_INDEXABLE }}

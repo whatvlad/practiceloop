@@ -11,4 +11,5 @@ interface ImportMetaEnv {
   readonly VITE_SITE_INDEXABLE?: string;
   /** Cloudflare Web Analytics site token (public); unset keeps the beacon off. */
   readonly VITE_CF_WEB_ANALYTICS_TOKEN?: string;
+  readonly VITE_COOKIEBOT_ID?: string;
 }

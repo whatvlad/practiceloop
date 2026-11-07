@@ -1,8 +1,12 @@
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import { ApiStatusNotice } from './components/ApiStatusNotice';
 import { AppNav, Logo, PublicNav } from './components/AppNav';
+import { PracticeSidebar } from './components/PracticeSidebar';
+import { matrixOptionsFromSearch } from './components/MatrixSettings';
 import { ButtonLink } from './components/Button';
+import { SiteFooter } from './components/SiteFooter';
 import { SkipLink } from './components/SkipLink';
+import { startCookiebot } from './cookieConsent';
 import { type ApiHealth, authStore, checkApiHealth } from './data/api';
 import { rememberSharedReturn, sharedReturn, takeSharedReturn } from './data/sharedReturn';
 import { CurriculumPage } from './pages/CurriculumPage';
@@ -12,6 +16,7 @@ import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/LoginPage';
 import { PracticePage } from './pages/PracticePage';
 import { PrivacyPage } from './pages/PrivacyPage';
+import { TermsPage } from './pages/TermsPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { SharedProblemPage } from './pages/SharedProblemPage';
 import { navigate, useLocation } from './router';
@@ -69,6 +74,8 @@ export function App() {
 
   useEffect(() => {
     applyPageMeta(pathname, SITE);
+    // Per route: a visitor who arrives on a share link gets the banner on their next public page.
+    startCookiebot(import.meta.env.VITE_COOKIEBOT_ID, pathname);
   }, [pathname]);
 
   const needsAccount = APP_ROUTES.has(pathname) && pathname !== '/practice';
@@ -81,6 +88,8 @@ export function App() {
       }
       navigate('/login', { replace: true });
     }
+    // The demo is for guests; an account has real practice, and must not save the demo problem.
+    if (account && pathname === '/demo') navigate('/dashboard', { replace: true });
     if (account && (pathname === '/login' || pathname === '/auth/callback')) {
       const remembered = takeSharedReturn();
       const topic = topicReturn(sessionStorage.getItem(TOPIC_RETURN));
@@ -109,7 +118,7 @@ export function App() {
   }
 
   const authDisabled = auth.working || auth.status === 'loading' || !authStore.configured;
-  return <><SkipLink />{route()}</>;
+  return <><SkipLink /><div className="pl-shell">{route()}<SiteFooter /></div></>;
 
   function route() {
     if (pathname === '/') return <LandingPage onSignIn={handleSignIn} disabled={authDisabled} busy={auth.working} error={auth.error} signedIn={!!account} />;
@@ -124,11 +133,13 @@ export function App() {
     const shared = /^\/(?:s|shared)\/([^/]+)$/.exec(pathname);
     if (shared) return <SharedProblemPage key={`${account?.id ?? auth.status}:${shared[1]}`} token={decodeURIComponent(shared[1])} code={null} signedIn={!!account} authLoading={auth.status === 'loading'} />;
     if (pathname === '/privacy') return <PrivacyPage />;
+    if (pathname === '/terms') return <TermsPage />;
     if (pathname === '/login') return <LoginPage onSignIn={handleSignIn} disabled={authDisabled} busy={auth.working} error={auth.error} />;
-    if (pathname === '/auth/callback' || (needsAccount && auth.status === 'loading')) {
+    if (pathname === '/demo' && auth.status !== 'loading' && !account) return <div className="pl-page"><PublicNav /><PracticePage id={null} demo /></div>;
+    if (pathname === '/demo' || pathname === '/auth/callback' || (needsAccount && auth.status === 'loading')) {
       return <div className="pl-page pl-login"><p role="status">Restoring your session…</p></div>;
     }
-    if (!account && pathname === '/practice' && auth.status !== 'loading') return <div className="pl-page"><PublicNav /><CurriculumPage /></div>;
+    if (!account && pathname === '/practice' && auth.status !== 'loading') return <div className="pl-page"><PublicNav /><CurriculumPage guest /></div>;
     if (!APP_ROUTES.has(pathname)) return <NotFoundPage />;
     if (!account) return <div className="pl-page" />;
 
@@ -142,10 +153,14 @@ export function App() {
           <p className="pl-small pl-muted" role="status">Problems, attempts and reveals are saved to your account.</p>
           {auth.error && <p className="pl-result pl-result--invalid" role="alert">{auth.error}</p>}
         </section>
+        {(pathname === '/dashboard' || pathname === '/practice') && <div className="pl-workspace">
+        <PracticeSidebar accountId={account.id} />
+        <div className="pl-workspace-content">
         {pathname === '/dashboard' && (params.has('topic')
           ? <DashboardPage key={`${params.get('area')}:${params.get('topic')}`} initialArea={params.get('area') === 'algebra' ? 'algebra' : params.get('area') === 'probability-statistics' ? 'probability-statistics' : 'mathematical-analysis'} initialTopic={params.get('topic') ?? undefined} />
           : <CurriculumPage />)}
-        {pathname === '/practice' && (params.has('id') ? <PracticePage key={params.get('id')} id={params.get('id')} /> : <CurriculumPage />)}
+        {pathname === '/practice' && (params.has('id') ? <PracticePage key={params.get('id')} id={params.get('id')} randomAccountId={params.get('mode') === 'random' ? account.id : undefined} matrixOptions={matrixOptionsFromSearch(params)} /> : <CurriculumPage />)}
+        </div></div>}
         {pathname === '/history' && <HistoryPage />}
         {pathname === '/profile' && <ProfilePage account={account} onLogOut={handleLogOut} onDeleted={handleDeleted} busy={auth.working} />}
       </div>

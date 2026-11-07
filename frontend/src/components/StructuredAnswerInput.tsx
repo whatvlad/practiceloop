@@ -5,6 +5,9 @@ import { COMPUTATIONAL_KINDS } from '../data/answerInput';
 import { ComputationalAnswerInput } from './ComputationalAnswerInput';
 import { AnswerInput } from './AnswerInput';
 import { Tex } from './Tex';
+import { matrixDimensions, parseMatrixAnswer, serializeMatrixAnswer } from '../data/matrixContract';
+import { MatrixAnswerInput } from './MatrixAnswerInput';
+import { ANSWER_VARIABLES, type AnswerVariable } from '../answerSyntax';
 
 interface Props {
   id: string;
@@ -31,6 +34,13 @@ function entries(value: string, kind: AnswerInputSpec['kind']): string[] {
 
 /** The server supplies only an input kind. Correctness remains server-side. */
 export function StructuredAnswerInput({ id, spec, value, onChange, state, onEnter, describedBy }: Props) {
+  const dimensions = matrixDimensions(spec as ComputationalInputSpec);
+  const matrix = dimensions && parseMatrixAnswer(value, ...dimensions);
+  if (matrix) {
+    const symbols = (spec as ComputationalInputSpec).components?.[0]?.components?.[0]?.symbols;
+    const variables = symbols ? Object.keys(symbols).filter((name): name is AnswerVariable => ANSWER_VARIABLES.includes(name as AnswerVariable)) : undefined;
+    return <MatrixAnswerInput value={matrix} variables={variables} onChange={next => onChange(serializeMatrixAnswer(next))} />;
+  }
   if ((COMPUTATIONAL_KINDS as readonly string[]).includes(spec.kind)) return <ComputationalAnswerInput
     id={id} spec={spec as ComputationalInputSpec} value={value} onChange={onChange} state={state} onEnter={onEnter} describedBy={describedBy} />;
   return <LegacyStructuredAnswerInput id={id} spec={spec as LegacyAnswerInputSpec} value={value} onChange={onChange} state={state} onEnter={onEnter} describedBy={describedBy} />;

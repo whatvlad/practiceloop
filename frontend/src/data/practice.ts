@@ -6,7 +6,7 @@ import { parseVisual } from '../visual/spec';
 import { AREAS, areaOf, isTopicSlug, listedArea, rememberTopics } from './topics';
 import { FEEDBACK_CODES } from './types';
 import { parseAnswerInput } from './answerInput';
-import type { AreaSlug, AvailableArea, AvailableTopic, Catalogue, CheckOutcome, Difficulty, LearningStatistics, OmissionMetric, OpenedProblem, ProblemPage, ProblemShare, ProfileCounts, PublicProblem, ReportCategory, RevealedAnswer, RevealedSolution, PracticeTopic, TopicSlug, WorksheetCapacity } from './types';
+import type { AreaSlug, AvailableArea, AvailableTopic, Catalogue, CheckOutcome, Difficulty, LearningStatistics, MatrixOptions, OmissionMetric, OpenedProblem, ProblemPage, ProblemShare, ProfileCounts, PublicProblem, ReportCategory, RevealedAnswer, RevealedSolution, PracticeTopic, TopicSlug, WorksheetCapacity } from './types';
 
 const base = (import.meta.env.VITE_API_BASE_URL ?? '/api').trim().replace(/\/+$/, '');
 let token: Promise<string> | null = null;
@@ -431,19 +431,20 @@ export async function getCatalogue(): Promise<Catalogue> {
 }
 
 /** `area` picks the area mixed practice draws from; a topic carries its own area. */
-export function generateProblem(topic: PracticeTopic, difficulty: Difficulty, area: AreaSlug = 'mathematical-analysis'): Promise<PublicProblem> {
+export function generateProblem(topic: PracticeTopic, difficulty: Difficulty, area: AreaSlug = 'mathematical-analysis', matrixOptions?: MatrixOptions): Promise<PublicProblem> {
   const mixed = topic === 'mixed';
   if ((!mixed && !isTopicSlug(topic)) || ![1, 2, 3, 4, 5].includes(difficulty)
-    || !AREAS.some(a => a.slug === area)) return Promise.reject(new Error(text.unsupported));
+    || !AREAS.some(a => a.slug === area) || (matrixOptions && topic !== 'matrix-operations')) return Promise.reject(new Error(text.unsupported));
   const drawFrom = mixed ? area : areaOf(topic);
   if (generating) return generating;
   const started = epoch;
   const operation = (async () => {
     const { bearer, saved } = await credentials();
     if (!saved && (mixed || !PREVIEW_TOPICS.some(t => t.slug === topic && t.availableDifficulties.includes(difficulty)))) throw new Error(text.unsupported);
-    const operation = mixed ? `generate:mixed:${drawFrom}:${difficulty}` : `generate:${topic}:${difficulty}`;
+    const operation = (mixed ? `generate:mixed:${drawFrom}:${difficulty}` : `generate:${topic}:${difficulty}`)
+      + (matrixOptions ? `:${matrixOptions.operation}:${matrixOptions.size}` : '');
     const authorized = await authorize(started, saved, bearer);
-    const body = mixed ? { topic, area: drawFrom, difficulty } : { topic, difficulty };
+    const body = mixed ? { topic, area: drawFrom, difficulty } : { topic, difficulty, ...(matrixOptions ? { matrixOptions } : {}) };
     const response = await request('/problems', body, authorized, saved, operation);
     const data = saved ? object(response.problem) : response;
     if (started !== epoch) throw new Error(text.expired);

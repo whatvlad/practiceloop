@@ -4,6 +4,7 @@ import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { DashboardPage } from './DashboardPage';
 import { PracticePage } from './PracticePage';
+import { matrixOptionsFromSearch } from '../components/MatrixSettings';
 import { configurePracticeAuth, generateProblem, getProblem, resetPractice } from '../data/practice';
 import type { PublicProblem } from '../data/types';
 import type { AnswerInputSpec } from '../data/types';
@@ -26,6 +27,52 @@ const INTEGRALS = [
 let catalogue: unknown;
 const response = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status });
 const button = (label: string) => Array.from(element.querySelectorAll('button')).find(b => b.textContent?.includes(label))!;
+
+it('generates and continues matrix practice with the chosen operation and size', async () => {
+  catalogue = { areas: [{ slug: 'algebra', name: 'Algebra', mixed: null }], items: [
+    { slug: 'matrix-operations', name: 'Matrix operations', area: 'algebra', availableDifficulties: [1, 2, 3] },
+  ] };
+  await act(async () => root.render(<DashboardPage initialArea="algebra" initialTopic="matrix-operations" />));
+  const select = (name: string) => [...element.querySelectorAll('label')].find(label => label.textContent?.startsWith(name))!.querySelector('select')!;
+  await act(async () => { select('Operation').value = 'multiply'; select('Operation').dispatchEvent(new Event('change', { bubbles: true })); });
+  await act(async () => { select('Matrix size').value = '3x3'; select('Matrix size').dispatchEvent(new Event('change', { bubbles: true })); });
+  await act(async () => button('Generate problem').click());
+  const options = { operation: 'multiply', size: '3x3' };
+  expect(calls.filter(call => call.path === '/api/problems').at(-1)?.body).toMatchObject({ topic: 'matrix-operations', difficulty: 1, matrixOptions: options });
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id')!;
+  expect(matrixOptionsFromSearch(params)).toEqual(options);
+  await act(async () => root.render(<PracticePage id={id} matrixOptions={matrixOptionsFromSearch(params)} />));
+  await act(async () => button('Generate next problem').click());
+  expect(calls.filter(call => call.path === '/api/problems').at(-1)?.body).toMatchObject({ topic: 'matrix-operations', difficulty: 1, matrixOptions: options });
+  expect(matrixOptionsFromSearch(new URLSearchParams(window.location.search))).toEqual(options);
+});
+
+it('generates the next random problem from the saved selection', async () => {
+  localStorage.setItem('practiceloop:random-selection:random-test', JSON.stringify({ substitution: 1 }));
+  const first = await generateProblem('basic-integrals', 1, 'mathematical-analysis');
+  await act(async () => root.render(<PracticePage id={first.id} randomAccountId="random-test" />));
+  await act(async () => button('Generate next problem').click());
+  expect(calls.filter(call => call.path === '/api/problems').at(-1)?.body).toMatchObject({ topic: 'substitution', difficulty: 1 });
+  expect(window.location.search).toContain('mode=random');
+  localStorage.removeItem('practiceloop:random-selection:random-test');
+});
+
+it('keeps operation and size for random matrix practice', async () => {
+  catalogue = { areas: [{ slug: 'algebra', name: 'Algebra', mixed: null }], items: [
+    { slug: 'matrix-operations', name: 'Matrix operations', area: 'algebra', availableDifficulties: [1] },
+  ] };
+  localStorage.setItem('practiceloop:random-selection:matrix-test', JSON.stringify({ 'matrix-operations': 1 }));
+  localStorage.setItem('practiceloop:random-matrix:matrix-test', JSON.stringify({ operation: 'multiply', size: '3x3' }));
+  const first = await generateProblem('matrix-operations', 1, 'algebra');
+  await act(async () => root.render(<PracticePage id={first.id} randomAccountId="matrix-test" />));
+  await act(async () => button('Generate next problem').click());
+  expect(calls.filter(call => call.path === '/api/problems').at(-1)?.body).toMatchObject({
+    topic: 'matrix-operations', difficulty: 1, matrixOptions: { operation: 'multiply', size: '3x3' },
+  });
+  localStorage.removeItem('practiceloop:random-selection:matrix-test');
+  localStorage.removeItem('practiceloop:random-matrix:matrix-test');
+});
 
 it('restores a probability topic in its own area after generation before catalogue loading', async () => {
   catalogue = { areas: [

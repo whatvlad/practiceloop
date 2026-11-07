@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PracticeLoop · Workspace preview</title>
+  <link rel="stylesheet" href="../frontend/node_modules/@fontsource/instrument-serif/400.css">
+  <style>
+    :root { color-scheme: dark; font-family: Inter, system-ui, sans-serif; color: #f8f8f8; background: #000; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-size: 14px; }
+    button, select, input { font: inherit; }
+    button, select { cursor: pointer; }
+    button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+    header { height: 70px; border-bottom: 1px solid #262626; display: flex; align-items: center; justify-content: space-between; padding: 0 34px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; font: 400 26px/1 'Instrument Serif', Georgia, serif; letter-spacing: -.01em; } .brand svg { width: 24px; height: 24px; flex: none; }
+    .top-right, .actions, .row { display: flex; align-items: center; gap: 12px; }
+    .preview { border: 1px solid #363636; color: #aaa; padding: 6px 9px; border-radius: 6px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+    .profile { width: 34px; height: 34px; border-radius: 50%; border: 1px solid #626262; background: #171717; color: white; }
+    .layout { display: grid; grid-template-columns: 310px minmax(0, 1fr); min-height: calc(100vh - 70px); }
+    aside { border-right: 1px solid #262626; padding: 29px 18px 40px; }
+    .sidebar-head { display: flex; justify-content: space-between; align-items: baseline; padding: 0 10px 15px; }
+    .label { color: #969696; text-transform: uppercase; font-size: 10px; letter-spacing: .14em; font-weight: 700; }
+    .count { color: #a0a0a0; font-size: 12px; }
+    .random-toggle { width: 100%; text-align: left; background: #151515; border: 1px solid #353535; border-radius: 8px; color: #fff; padding: 11px 12px; margin-bottom: 17px; }
+    .random-toggle[aria-pressed="true"] { background: #f7f7f7; color: #111; }
+    body:not(.random-mode) input[type=checkbox] { display: none; }
+    body:not(.random-mode) #count { visibility: hidden; }
+    details > summary { list-style: none; cursor: pointer; } details > summary::-webkit-details-marker { display: none; }
+    .area > summary, .group > summary { display: flex; align-items: center; gap: 10px; padding: 11px 10px; border-radius: 8px; }
+    .area > summary:hover, .group > summary:hover, .topic:hover { background: #171717; }
+    .chevron { color: #888; font-size: 11px; display: inline-block; transition: transform .15s; }
+    details[open] > summary .chevron { transform: rotate(90deg); }
+    .area-title { font-weight: 650; flex: 1; } .group > summary { color: #d9d9d9; padding-left: 26px; font-size: 13px; }
+    .topic { display: flex; gap: 10px; align-items: center; padding: 9px 8px 9px 49px; color: #aaa; font-size: 12px; border-radius: 7px; }
+    input[type=checkbox] { accent-color: #fff; width: 15px; height: 15px; margin: 0; flex: 0 0 auto; }
+    .topic:has(input:checked) { color: #fff; background: #151515; } .soon { color: #707070; margin-left: auto; font-size: 10px; white-space: nowrap; }
+    main { width: min(100%, 1050px); padding: 58px clamp(28px, 7vw, 110px) 90px; margin: 0 auto; }
+    .breadcrumb { color: #888; font-size: 12px; margin-bottom: 27px; }
+    h1 { font: 400 clamp(40px, 5vw, 58px)/1.04 Georgia, serif; letter-spacing: -1.8px; margin: 0 0 13px; }
+    .subtitle { color: #9b9b9b; line-height: 1.6; margin: 0 0 32px; }
+    .card { border: 1px solid #2d2d2d; border-radius: 16px; background: #0a0a0a; padding: 28px; }
+    .card-top { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+    .pill { color: #c1c1c1; border: 1px solid #383838; border-radius: 20px; font-size: 11px; padding: 6px 10px; }
+    h2 { font-size: 19px; margin: 24px 0 8px; letter-spacing: -.3px; }
+    .muted { color: #999; line-height: 1.6; } .equation { font: 25px/1.5 Georgia, serif; text-align: center; padding: 29px 12px; }
+    .matrix { display: inline-grid; grid-template-columns: auto auto; gap: 0 17px; position: relative; padding: 0 13px; vertical-align: middle; text-align: center; }
+    .matrix:before,.matrix:after { content: ''; position: absolute; top: 3px; bottom: 3px; width: 5px; border-top: 1px solid; border-bottom: 1px solid; }
+    .matrix:before { left: 0; border-left: 1px solid; } .matrix:after { right: 0; border-right: 1px solid; }
+    .answer { border-top: 1px solid #292929; padding-top: 23px; } .answer-title { display: block; font-weight: 600; margin-bottom: 11px; }
+    .answer-box { border: 1px solid #3b3b3b; border-radius: 12px; background: #111; overflow: hidden; transition: border-color .15s; }
+    .answer-box:focus-within { border-color: #aaa; }
+    .matrix-editor { display: flex; align-items: center; gap: 8px; padding: 25px 24px; overflow-x: auto; }
+    .matrix-bracket { align-self: stretch; width: 9px; min-height: 70px; border-top: 2px solid #ddd; border-bottom: 2px solid #ddd; }
+    .matrix-bracket.left { border-left: 2px solid #ddd; } .matrix-bracket.right { border-right: 2px solid #ddd; }
+    .matrix-grid { display: grid; gap: 6px; }
+    .matrix-grid input { width: 74px; height: 45px; border: 1px solid #3a3a3a; border-radius: 6px; background: #191919; color: #fff; text-align: center; font: 16px Georgia, serif; }
+    .matrix-grid input:focus { outline: 2px solid #c3c3c3; outline-offset: 1px; border-color: transparent; }
+    .dimensions { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: #aaa; font-size: 12px; }
+    .dimensions select { width: auto; min-width: 54px; padding: 6px 8px; }
+    .math-tools { padding: 12px; border-top: 1px solid #292929; background: #0d0d0d; }
+    .math-tools[hidden], .math-tools button[hidden] { display: none; }
+    .keypad-header { display: flex; justify-content: space-between; align-items: center; margin: 0 0 10px; color: #999; font-size: 12px; }
+    .keypad-close { border: 0; background: transparent; color: #aaa; padding: 4px; cursor: pointer; }
+    .keypad-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(52px,1fr)); gap: 8px; }
+    .keypad-grid button { height: 44px; padding: 0 8px; border: 1px solid #6b6b6b; border-radius: 6px; color: #fff; background: #141414; font: 18px Georgia, serif; cursor: pointer; }
+    .keypad-grid button:hover { border-color: white; background: #1c1c1c; }
+    .keypad-grid .toggle { color: #aaa; font: 600 13px system-ui, sans-serif; }
+    .helper { font-size: 12px; color: #898989; margin: 10px 0 22px; }
+    .btn { border-radius: 7px; border: 1px solid #4a4a4a; padding: 11px 15px; color: #eee; background: transparent; font-weight: 600; }
+    .btn.primary { background: white; border-color: white; color: #000; } .btn:hover { opacity: .8; }
+    .actions { flex-wrap: wrap; } .actions .next { margin-left: auto; }
+    .settings { margin: 25px 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .setting { border: 1px solid #292929; border-radius: 10px; padding: 14px; } .setting label { display: block; margin-bottom: 9px; color: #aaa; font-size: 12px; }
+    select { width: 100%; background: #151515; border: 1px solid #3c3c3c; border-radius: 6px; color: white; padding: 9px; }
+    .note { color: #888; font-size: 12px; line-height: 1.6; margin-top: 20px; } .output { min-height: 20px; color: #bbb; margin: 14px 0 0; }
+    @media (max-width: 760px) { header { padding: 0 20px; height: 60px; } .layout { display: block; } aside { border-right: 0; border-bottom: 1px solid #262626; padding: 18px; } main { padding: 36px 20px 60px; } .card { padding: 20px; } .actions .next { margin-left: 0; } }
+    @media (max-width: 430px) { .settings { grid-template-columns: 1fr; } .preview { display: none; } }
+  </style>
+</head>
+<body>
+  <header><div class="brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66" stroke-width="2.5"/><circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none"/></svg>PracticeLoop</div><div class="top-right"><span class="preview">Interactive mockup</span><span class="count">History</span><button class="profile" aria-label="Profile">A</button></div></header>
+  <div class="layout">
+    <aside aria-label="Practice topics">
+      <div class="sidebar-head"><span class="label">Your practice</span><span class="count" id="count">1 selected</span></div>
+      <button class="random-toggle" id="random-toggle" aria-pressed="false">⤨ &nbsp; Random problems</button>
+      <details class="area" open><summary><span class="chevron">▶</span><span class="area-title">Algebra</span></summary>
+        <details class="group" open><summary><span class="chevron">▶</span><input type="checkbox" aria-label="Select all available matrix topics" data-group><span>Matrices</span></summary>
+          <label class="topic"><input type="checkbox" checked data-topic> Matrix operations</label>
+          <label class="topic"><input type="checkbox" data-topic> Determinants</label>
+          <label class="topic"><input type="checkbox" data-topic> Inverse matrices</label>
+          <label class="topic"><input type="checkbox" data-topic> Matrix rank</label>
+          <label class="topic"><input type="checkbox" data-topic> Linear systems</label>
+        </details>
+        <details class="group"><summary><span class="chevron">▶</span><input type="checkbox" aria-label="Select all available complex numbers topics" data-group><span>Complex numbers</span></summary>
+          <label class="topic"><input type="checkbox" data-topic> Arithmetic</label><label class="topic"><input type="checkbox" data-topic> Equations</label><label class="topic"><input type="checkbox" data-topic> Polar form</label><label class="topic"><input type="checkbox" data-topic> Powers and roots</label>
+        </details>
+        <details class="group"><summary><span class="chevron">▶</span><input type="checkbox" aria-label="Select all available polynomial topics" data-group><span>Polynomials</span></summary>
+          <label class="topic"><input type="checkbox" data-topic> Operations and division</label><label class="topic"><input type="checkbox" data-topic> Remainders and divisibility</label><label class="topic"><input type="checkbox" data-topic> Roots and factors</label><label class="topic"><input type="checkbox" data-topic> Partial fractions</label>
+        </details>
+        <details class="group"><summary><span class="chevron">▶</span><input type="checkbox" aria-label="Select all available eigenvalue topics" data-group><span>Eigenvalues & eigenvectors</span></summary>
+          <label class="topic"><input type="checkbox" data-topic> Eigenvalues</label><label class="topic"><input type="checkbox" data-topic> Eigenvectors</label><label class="topic"><input type="checkbox" disabled> Diagonalization <span class="soon">In preparation</span></label><label class="topic"><input type="checkbox" data-topic> Matrix powers</label>
+        </details>
+        <details class="group"><summary><span class="chevron">▶</span><input type="checkbox" aria-label="Select all available geometry topics" data-group><span>Analytic geometry</span></summary>
+          <label class="topic"><input type="checkbox" data-topic> Vector operations</label><label class="topic"><input type="checkbox" data-topic> Lengths and angles</label><label class="topic"><input type="checkbox" data-topic> Areas and volumes</label><label class="topic"><input type="checkbox" data-topic> Lines and planes</label><label class="topic"><input type="checkbox" data-topic> Distances and intersections</label><label class="topic"><input type="checkbox" data-topic> Projections and reflections</label>
+        </details>
+      </details>
+      <details class="area"><summary><span class="chevron">▶</span><span class="area-title">Mathematical analysis</span><span class="soon">Existing topics</span></summary><label class="topic"><input type="checkbox" data-topic> Integrals</label><label class="topic"><input type="checkbox" data-topic> Derivatives</label></details>
+      <details class="area"><summary><span class="chevron">▶</span><span class="area-title">Probability & statistics</span><span class="soon">Existing topics</span></summary><label class="topic"><input type="checkbox" data-topic> Combinations</label><label class="topic"><input type="checkbox" data-topic> Probability</label></details>
+    </aside>
+    <main>
+      <div class="breadcrumb">Your practice &nbsp;/&nbsp; Algebra &nbsp;/&nbsp; Matrix operations</div>
+      <h1>Let's work <i>it out.</i></h1><p class="subtitle">Choose what to practise, then take it one problem at a time.</p>
+      <div class="settings"><div class="setting"><label for="size">Matrix size</label><select id="size"><option>Choose a size</option><option>2 × 2</option><option>3 × 3</option><option>Rectangular</option></select></div><div class="setting"><label for="level">Difficulty</label><select id="level"><option>Choose a level</option><option>Basic</option><option>Intermediate</option><option>Advanced</option></select></div></div>
+      <section class="card" aria-labelledby="problem-title"><div class="card-top"><span class="label">Algebra · Matrices</span><span class="pill">Matrix operations</span></div><h2 id="problem-title">Calculate the sum of the matrices.</h2><p class="muted">Enter the complete resulting matrix below.</p>
+        <div class="equation"><span class="matrix"><span>2</span><span>−1</span><span>3</span><span>4</span></span> &nbsp;+&nbsp; <span class="matrix"><span>1</span><span>5</span><span>−2</span><span>0</span></span> &nbsp;=</div>
+        <div class="answer"><div class="answer-title" id="answer-label">Your answer</div><div class="dimensions"><label for="matrix-rows">Rows</label><select id="matrix-rows" aria-label="Number of rows"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option></select><span>×</span><label for="matrix-cols">Columns</label><select id="matrix-cols" aria-label="Number of columns"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option></select></div><div class="answer-box"><div class="matrix-editor" role="group" aria-labelledby="answer-label"><span class="matrix-bracket left" aria-hidden="true"></span><div class="matrix-grid" id="matrix-grid"></div><span class="matrix-bracket right" aria-hidden="true"></span></div><div class="math-tools" id="math-tools" hidden><div class="keypad-header"><span>Math keypad</span><button type="button" class="keypad-close" id="close-keypad" aria-label="Close math keypad">✕</button></div><div class="keypad-grid" role="group" aria-label="Math keypad"><button type="button" data-open="x">x</button><button type="button" data-open="pi">π</button><button type="button" data-open="e^(" data-close=")">eˣ</button><button type="button" data-open="^2">x²</button><button type="button" data-open="^">xⁿ</button><button type="button" data-open="sqrt(" data-close=")">√</button><button type="button" data-open="(" data-close=")">( )</button><button type="button" data-open="abs(" data-close=")">|x|</button><button type="button" data-open="+">+</button><button type="button" data-open="-">−</button><button type="button" data-open="*">×</button><button type="button" data-open="/">÷</button><button type="button" data-open="sin(" data-close=")">sin</button><button type="button" data-open="cos(" data-close=")">cos</button><button type="button" data-open="tan(" data-close=")">tan</button><button type="button" data-open="ln(" data-close=")">ln</button><button type="button" data-move="-1" aria-label="Move left">←</button><button type="button" data-move="1" aria-label="Move right">→</button><button type="button" data-open="sec(" data-close=")" data-more hidden>sec</button><button type="button" data-open="csc(" data-close=")" data-more hidden>csc</button><button type="button" data-open="cot(" data-close=")" data-more hidden>cot</button><button type="button" data-open="asin(" data-close=")" data-more hidden>arcsin</button><button type="button" data-open="acos(" data-close=")" data-more hidden>arccos</button><button type="button" data-open="atan(" data-close=")" data-more hidden>arctan</button><button type="button" data-open="exp(" data-close=")" data-more hidden>exp</button><button type="button" class="toggle" id="more-keys" aria-expanded="false">More</button></div></div></div><p class="helper">Enter each element separately. Use arrows or Enter to move between cells.</p><div class="actions"><button class="btn primary" data-action="check">Check answer</button><button class="btn" data-action="answer">Show answer</button><button class="btn" data-action="solution">Show solution</button><button class="btn next" data-action="next">Generate next →</button></div><p class="output" id="output" aria-live="polite"></p></div>
+      </section><p class="note">Design preview only. The example, profile and topic availability are illustrative; answers are not saved or sent anywhere.</p>
+    </main>
+  </div>
+  <script>
+    const topics = [...document.querySelectorAll('[data-topic]')];
+    const count = document.querySelector('#count');
+    const grid = document.querySelector('#matrix-grid');
+    const rows = document.querySelector('#matrix-rows');
+    const cols = document.querySelector('#matrix-cols');
+    const keypad = document.querySelector('#math-tools');
+    let activeCell = null;
+    function renderMatrix() {
+      const previous = new Map([...grid.querySelectorAll('input')].map(input => [input.dataset.position, input.value]));
+      grid.replaceChildren();
+      grid.style.gridTemplateColumns = `repeat(${Number(cols.value)}, 74px)`;
+      for (let row = 0; row < Number(rows.value); row++) for (let col = 0; col < Number(cols.value); col++) {
+        const input = document.createElement('input');
+        input.type = 'text'; input.autocomplete = 'off'; input.dataset.position = `${row},${col}`;
+        input.setAttribute('aria-label', `Row ${row + 1}, column ${col + 1}`);
+        input.value = previous.get(input.dataset.position) ?? '';
+        input.addEventListener('focus', () => { activeCell = input; keypad.hidden = false; });
+        input.addEventListener('keydown', event => {
+          const directions = { ArrowUp: [-1, 0], ArrowDown: [1, 0], ArrowLeft: [0, -1], ArrowRight: [0, 1], Enter: [0, 1] };
+          const delta = directions[event.key];
+          if (!delta) return;
+          if (event.key === 'ArrowLeft' && input.selectionStart !== 0) return;
+          if (event.key === 'ArrowRight' && input.selectionStart !== input.value.length) return;
+          const next = grid.querySelector(`[data-position="${row + delta[0]},${col + delta[1]}"]`);
+          if (next) { event.preventDefault(); next.focus(); }
+        });
+        grid.append(input);
+      }
+      activeCell = grid.querySelector('input');
+    }
+    rows.addEventListener('change', renderMatrix);
+    cols.addEventListener('change', renderMatrix);
+    renderMatrix();
+    document.querySelector('#close-keypad').addEventListener('click', () => { keypad.hidden = true; });
+    document.querySelector('#more-keys').addEventListener('click', event => {
+      const expanded = event.currentTarget.getAttribute('aria-expanded') !== 'true';
+      event.currentTarget.setAttribute('aria-expanded', String(expanded));
+      event.currentTarget.textContent = expanded ? 'Less' : 'More';
+      document.querySelectorAll('[data-more]').forEach(button => { button.hidden = !expanded; });
+    });
+    document.querySelectorAll('[data-open], [data-move]').forEach(button => {
+      button.addEventListener('pointerdown', event => event.preventDefault());
+      button.addEventListener('click', () => {
+        if (!activeCell) return;
+        activeCell.focus();
+        const start = activeCell.selectionStart;
+        const end = activeCell.selectionEnd;
+        if (button.dataset.move) {
+          const next = Math.max(0, Math.min(activeCell.value.length, start + Number(button.dataset.move)));
+          activeCell.setSelectionRange(next, next);
+          return;
+        }
+        const open = button.dataset.open;
+        const close = button.dataset.close ?? '';
+        const selected = activeCell.value.slice(start, end);
+        activeCell.setRangeText(open + selected + close, start, end, 'end');
+        const caret = start + open.length + selected.length + (selected ? close.length : 0);
+        activeCell.setSelectionRange(caret, caret);
+      });
+    });
+    const randomToggle = document.querySelector('#random-toggle');
+    randomToggle.addEventListener('click', () => {
+      const active = document.body.classList.toggle('random-mode');
+      randomToggle.setAttribute('aria-pressed', String(active));
+      randomToggle.textContent = active ? '✓   Random problems' : '⤨   Random problems';
+    });
+    document.querySelectorAll('label.topic').forEach(label => label.addEventListener('click', event => {
+      if (!document.body.classList.contains('random-mode')) {
+        event.preventDefault();
+        if (!label.querySelector('input:disabled')) document.querySelector('.breadcrumb').textContent = `Your practice / ${label.textContent.trim()}`;
+      }
+    }));
+    function update() {
+      count.textContent = `${topics.filter(input => input.checked).length} selected`;
+      document.querySelectorAll('[data-group]').forEach(group => {
+        const children = [...group.closest('details').querySelectorAll('[data-topic]')];
+        group.checked = children.length > 0 && children.every(input => input.checked);
+        group.indeterminate = children.some(input => input.checked) && !group.checked;
+      });
+    }
+    topics.forEach(input => input.addEventListener('change', update));
+    document.querySelectorAll('[data-group]').forEach(group => {
+      group.addEventListener('click', event => event.stopPropagation());
+      group.addEventListener('change', () => { group.closest('details').querySelectorAll('[data-topic]').forEach(input => { input.checked = group.checked; }); update(); });
+    });
+    document.querySelectorAll('[data-action]').forEach(button => button.addEventListener('click', () => {
+      const messages = { check: 'Preview only: answer checking is not connected.', answer: 'Example answer: [3, 4; 1, 4]', solution: 'Add corresponding entries of both matrices.', next: 'Preview only: problem generation is not connected.' };
+      document.querySelector('#output').textContent = messages[button.dataset.action];
+    }));
+    update();
+  </script>
+</body>
+</html>

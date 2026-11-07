@@ -24,7 +24,7 @@ export function LoginPage({ onSignIn, disabled = false, busy = false, error = nu
           </span>{' '}
           {busy ? 'Opening Google…' : 'Continue with Google'}
         </Button>
-        <p className="pl-small pl-subtle pl-m-0 pl-center">Google is the only sign-in method. Accounts are for learners aged 16 and over. <Link to="/privacy">Privacy</Link></p>
+        <p className="pl-small pl-subtle pl-m-0 pl-center">Google is the only sign-in method. Accounts are for learners aged 16 and over. By continuing, you agree to the <Link to="/terms">Terms</Link> and can read the <Link to="/privacy">Privacy</Link> page.</p>
       </main>
     </div>
   );
