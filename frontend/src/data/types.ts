@@ -118,6 +118,7 @@ export interface RevealedAnswer {
 }
 
 export interface SolutionStep {
+  rules?: readonly { title: string; latex: string; explanation: string }[];
   say: string;
   latex: string;
   determinantMatrix?: number[][];

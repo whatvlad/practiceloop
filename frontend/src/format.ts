@@ -33,9 +33,9 @@ export function problemKind(topic: TopicSlug, problemLatex: string): ProblemKind
   if (['probability-events', 'conditional-probability', 'discrete-random-variables', 'discrete-distributions',
     'continuous-distributions', 'moments-joint-distributions', 'descriptive-statistics', 'confidence-intervals', 'hypothesis-tests'].includes(topic)) return 'numeric';
   if (['functions-and-sequences', 'limits-and-continuity', 'differential-calculus', 'series'].includes(topic)) return 'expression';
-  if (topic === 'algebraic-expressions') return 'numeric';
-  if (topic === 'complex-arithmetic' || topic === 'complex-polar-form') return 'complex';
-  if (topic === 'polynomial-division' && problemLatex.startsWith('\\text{Find the remainder when ')) return 'numeric';
+  if (topic === 'algebraic-expressions' || topic === 'complex-argument') return 'numeric';
+  if (topic === 'complex-arithmetic' || topic === 'complex-polar-form' || topic === 'complex-conversion') return 'complex';
+  if (topic === 'polynomial-division' && /^\\text\{Find (?:the remainder|k )/.test(problemLatex)) return 'numeric';
   if (topic === 'partial-derivatives') return 'partial';
   if (topic === 'derivatives') return 'derivative';
   // A double integral's answer is also one exact number (#99).

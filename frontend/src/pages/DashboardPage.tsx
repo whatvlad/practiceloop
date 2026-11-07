@@ -5,7 +5,6 @@ import { DifficultyScale } from '../components/DifficultyScale';
 import { initialMatrixOptions, matrixOptionsQuery, matrixOptionsValid, MatrixSettings } from '../components/MatrixSettings';
 import { HistoryList } from '../components/HistoryRow';
 import { StatTile } from '../components/StatTile';
-import { AreaChips, TopicChips } from '../components/TopicChips';
 import { generateProblem, getCatalogue, getLastSelection, getProfileCounts, listProblemPage } from '../data/api';
 import { mixedShares } from '../data/topics';
 import type { AreaSlug, Difficulty, PracticeTopic } from '../data/types';
@@ -104,23 +103,9 @@ export function DashboardPage({ initialArea, initialTopic }: { initialArea?: Are
           <h2 id="start-title" className="pl-h-lg">
             Start a new problem
           </h2>
-          <p className="pl-muted pl-mt-1">Choose {areas.length > 1 ? 'an area, a topic' : 'a topic'} and a difficulty. We generate the rest.</p>
+          <p className="pl-muted pl-mt-1">Choose a topic from the practice tree, then select a difficulty.</p>
         </div>
-        {areas.length > 1 && (
-          <div className="pl-stack pl-gap-3">
-            <div id="area-label" className="pl-label">
-              Area
-            </div>
-            <AreaChips areas={areas.map(a => a.slug)} selected={area} onSelect={setArea} labelledBy="area-label" disabled={busy} />
-          </div>
-        )}
-        <div className="pl-stack pl-gap-3">
-          <div id="topic-label" className="pl-label">
-            Topic
-          </div>
-          <TopicChips topics={topics} selected={topic} onSelect={setTopic} labelledBy="topic-label" mixed={mixed !== null} available={busy ? [] : offered} />
-          <p className="pl-small pl-muted">Disabled options are not available yet.</p>
-        </div>
+        <p className="pl-small">Selected topic: {topics.find(item => item.slug === topic)?.name ?? topic}</p>
         <div className="pl-stack pl-gap-3">
           <div id="difficulty-label" className="pl-label">
             Difficulty

@@ -56,7 +56,14 @@ export function SolutionSteps({ steps, matrixStatement, colorEntries = true }: {
               <details className="pl-solution-detail">
               <summary><StepFormula latex={product || !colorEntries ? step.latex : colorMatrixEntries(step.latex)} /><span className="pl-small pl-muted">Show explanation</span></summary>
               <div className="say">{step.say}</div>
-            </details></> : <>
+            </details></> : step.rules?.length ? <details className="pl-solution-detail">
+              <summary><span className="say">{step.say}</span><StepFormula latex={step.latex} /><span className="pl-small pl-muted">Show formula and explanation</span></summary>
+              {step.rules.map(rule => <div className="pl-rule" key={rule.title}>
+                <strong className="pl-small">{rule.title}</strong>
+                <StepFormula latex={rule.latex} />
+                <p className="say">{rule.explanation}</p>
+              </div>)}
+            </details> : <>
               <div className="say">{step.say}</div>
               <div className="m" tabIndex={0}><Tex latex={step.latex} /></div>
             </>}

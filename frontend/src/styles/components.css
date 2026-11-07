@@ -73,6 +73,7 @@ body{--keyboard-background:var(--surface);--keyboard-border:var(--line);--keyboa
 .pl-key:active{background:var(--surface-hover)}
 .pl-key[disabled]{opacity:.4;cursor:not-allowed}
 .pl-matrix-answer{min-width:0;margin:0;padding:0;border:0}
+.pl-circle-answer{min-width:0;margin:0;padding:0;border:0}
 .pl-matrix-entry{display:flex;gap:8px;align-items:stretch;overflow-x:auto;padding:16px 0}
 .pl-matrix-grid{display:grid;gap:6px}
 .pl-matrix-grid .pl-input{width:76px;min-width:64px;text-align:center;padding:8px}
@@ -135,6 +136,8 @@ body{--keyboard-background:var(--surface);--keyboard-border:var(--line);--keyboa
 .pl-solution-detail summary{cursor:pointer;display:flex;flex-direction:column;gap:6px;min-width:0}
 .pl-solution-detail .m{display:block}
 .pl-solution-detail .say{margin-top:8px}
+.pl-rule{border-top:1px solid var(--line);margin-top:12px;padding-top:12px;min-width:0}
+.pl-rule .m{display:block}
 .pl-row-legend{white-space:normal}
 .pl-row-target{color:#65df91}.pl-row-reference{color:#5fa8ff}
 .pl-steps .say{overflow-wrap:anywhere}

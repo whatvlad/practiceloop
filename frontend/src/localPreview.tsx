@@ -11,10 +11,10 @@ import './styles/app.css';
 import { AppNav } from './components/AppNav';
 import { PracticeSidebar } from './components/PracticeSidebar';
 import { LocalMatrixProblem } from './components/LocalMatrixProblem';
+import { LocalRandomPractice } from './components/LocalRandomPractice';
 import { LocalDeterminantProblem } from './components/LocalDeterminantProblem';
 import { algebraGroups } from './data/algebraGroups';
 import type { Catalogue } from './data/types';
-import { CurriculumPage } from './pages/CurriculumPage';
 
 // Local-only visual preview: no account or saved-problem access is simulated.
 const preview: Catalogue = {
@@ -35,10 +35,19 @@ const root = document.getElementById('root');
 if (!root) throw new Error('Missing preview root');
 function LocalPreview() {
   const [topic, setTopic] = useState('matrix-operations');
+  const [menuOpen, setMenuOpen] = useState(false);
+  const selectTopic = (next: string) => {
+    setTopic(next); setMenuOpen(false);
+    if (window.matchMedia('(max-width: 760px)').matches) requestAnimationFrame(() => {
+      const content = document.querySelector<HTMLElement>('.pl-workspace-content');
+      content?.focus({ preventScroll: true }); content?.scrollIntoView({ block: 'start' });
+    });
+  };
   return <div className="pl-page">
   <AppNav current="/dashboard" initial="A" onLogOut={() => {}} busy={false} />
   <div className="pl-wrap pl-api-notice"><p className="pl-small pl-muted">Local visual preview — practice links require a configured account.</p></div>
-  <div className="pl-workspace"><PracticeSidebar preview={preview} onPreviewTopic={setTopic} /><div className="pl-workspace-content">{topic === 'determinants' || topic === 'inverse-matrices' ? <LocalDeterminantProblem key={topic} topic={topic} /> : <LocalMatrixProblem />}<CurriculumPage /></div></div>
+  <button type="button" className="pl-btn pl-btn--secondary pl-local-menu-toggle" aria-expanded={menuOpen} aria-controls="local-topic-panel" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? 'Close topics' : 'Choose topic'}</button>
+  <div className="pl-workspace"><div id="local-topic-panel" className={`pl-local-topic-panel${menuOpen ? ' is-open' : ''}`}><PracticeSidebar preview={preview} onPreviewTopic={selectTopic} onLocalRandom={() => selectTopic('local-random')} /></div><div className="pl-workspace-content" tabIndex={-1}>{topic === 'local-random' ? <LocalRandomPractice /> : topic === 'determinants' || topic === 'inverse-matrices' || topic === 'matrix-rank' || topic === 'linear-systems' || topic === 'complex-arithmetic' || topic === 'complex-numbers' || topic === 'complex-polar-form' || topic === 'complex-conversion' || topic === 'polynomial-division' || topic === 'polynomial-roots' || topic === 'polynomial-operations' || topic === 'partial-fractions' || topic === 'fundamental-theorem-algebra' ? <LocalDeterminantProblem key={topic} topic={topic} /> : <LocalMatrixProblem />}</div></div>
 </div>;
 }
 createRoot(root).render(<LocalPreview />);

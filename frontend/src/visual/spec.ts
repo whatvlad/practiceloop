@@ -69,7 +69,16 @@ export interface Plot2dSpec {
   points: { label: string; x: number; y: number; included: boolean }[];
 }
 
-export type VisualSpec = DefiniteSpec | IndefiniteSpec | Region2dSpec | Solid3dSpec | Plot2dSpec;
+export interface ComplexPlaneSpec {
+  kind: 'complex-plane'; version: 1;
+  mode: 'add' | 'subtract' | 'multiply' | 'divide' | 'modulus' | 'argument' | 'power' | 'root' | 'circle';
+  first: readonly [number, number]; second: readonly [number, number] | null;
+  result: readonly [number, number] | null; power: number | null;
+  radius?: number;
+  firstLabel?: string;
+}
+
+export type VisualSpec = DefiniteSpec | IndefiniteSpec | Region2dSpec | Solid3dSpec | Plot2dSpec | ComplexPlaneSpec;
 
 const REGION_VARIABLES = { cartesian: ['x', 'y'], polar: ['r', 'theta'] } as const;
 const SOLID_VARIABLES = { cartesian: ['x', 'y'], cylindrical: ['r', 'theta'] } as const;
@@ -107,6 +116,28 @@ const POINT_KINDS: readonly PointKind[] = ['zero', 'extremum', 'inflection', 'po
 
 /** One validator per kind; a later Issue adds its kind here and in SolutionVisual. */
 const VALIDATORS: Record<string, (data: Record<string, unknown>) => VisualSpec> = {
+  'complex-plane'(data) {
+    const modes = ['add', 'subtract', 'multiply', 'divide', 'modulus', 'argument', 'power', 'root', 'circle'] as const;
+    if (typeof data.mode !== 'string' || !modes.includes(data.mode as typeof modes[number])) throw new Error('Bad mode');
+    const mode = data.mode as typeof modes[number];
+    const point = (value: unknown): readonly [number, number] => {
+      if (!Array.isArray(value) || value.length !== 2) throw new Error('Bad point');
+      const x = finite(value[0]); const y = finite(value[1]);
+      if (Math.abs(x) > 1e8 || Math.abs(y) > 1e8) throw new Error('Point out of range');
+      return [x, y];
+    };
+    const first = point(data.first);
+    const second = data.second === null ? null : point(data.second);
+    const result = data.result === null ? null : point(data.result);
+    const power = data.power === null ? null : finite(data.power);
+    if (['add', 'subtract', 'multiply', 'divide'].includes(mode) && (!second || !result)) throw new Error('Missing operands');
+    if (mode === 'root' && !result) throw new Error('Missing root');
+    if (mode === 'power' && (!result || power === null || !Number.isInteger(power) || power < 1 || power > 20)) throw new Error('Bad power');
+    const radius = mode === 'circle' ? finite(data.radius) : undefined;
+    if (radius !== undefined && (!(radius > 0) || radius > 1e8)) throw new Error('Bad radius');
+    const firstLabel = data.firstLabel === undefined ? undefined : text(data.firstLabel);
+    return { kind: 'complex-plane', version: 1, mode, first, second, result, power, radius, firstLabel };
+  },
   plot2d(data) {
     if (new TextEncoder().encode(JSON.stringify(data)).length > 8192) throw new Error('Oversized diagram');
     const coordinate = (value: unknown) => {

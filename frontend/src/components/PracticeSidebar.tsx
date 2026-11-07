@@ -10,7 +10,7 @@ import { Link, navigate } from '../router';
 import { useLoad } from '../useLoad';
 
 /** The server catalogue remains the authority for available topics and levels. */
-export function PracticeSidebar({ preview, accountId = 'local-preview', onPreviewTopic }: { preview?: Catalogue; accountId?: string; onPreviewTopic?: (topic: string) => void } = {}) {
+export function PracticeSidebar({ preview, accountId = 'local-preview', onLocalRandom, onPreviewTopic }: { preview?: Catalogue; accountId?: string; onPreviewTopic?: (topic: string) => void; onLocalRandom?: () => void } = {}) {
   const loaded = useLoad(getCatalogue);
   const catalogue = preview ? { status: 'ready' as const, data: preview } : loaded;
   const topics = catalogue.status === 'ready' ? catalogue.data.topics : [];
@@ -49,8 +49,9 @@ export function PracticeSidebar({ preview, accountId = 'local-preview', onPrevie
         {checked && topic.slug === 'matrix-operations' && selection[topic.slug] && <MatrixSettings
           level={selection[topic.slug]!} value={matrixOptions}
           onChange={value => { setMatrixOptions(value); saveRandomMatrixOptions(accountId, value); }} />}
-      </> : onPreviewTopic && ['matrix-operations', 'determinants', 'inverse-matrices'].includes(topic.slug)
+      </> : onPreviewTopic && ['matrix-operations', 'determinants', 'inverse-matrices', 'matrix-rank', 'linear-systems', 'complex-arithmetic', 'complex-numbers', 'complex-polar-form', 'complex-conversion', 'polynomial-division', 'polynomial-roots', 'polynomial-operations', 'partial-fractions', 'fundamental-theorem-algebra'].includes(topic.slug)
         ? <button type="button" className="pl-sidebar-topic" onClick={() => onPreviewTopic(topic.slug)}>{title}</button>
+        : preview && onPreviewTopic ? <span aria-disabled="true">{title} <small>Not available locally</small></span>
         : <Link to={`/dashboard?area=${topic.area}&topic=${topic.slug}`}>{title}</Link>}
     </li>;
   }
@@ -76,7 +77,7 @@ export function PracticeSidebar({ preview, accountId = 'local-preview', onPrevie
   return (
     <aside className="pl-practice-sidebar" aria-label="Practice topics">
       <p className="pl-label">Practice topics</p>
-      <button type="button" className="pl-btn pl-btn--secondary pl-random-toggle" aria-pressed={randomMode} onClick={() => setRandomMode(!randomMode)}>Random problems</button>
+      <button type="button" className="pl-btn pl-btn--secondary pl-random-toggle" aria-pressed={randomMode} onClick={() => onLocalRandom ? onLocalRandom() : setRandomMode(!randomMode)}>Random problems</button>
       {catalogue.status === 'loading' && <p role="status">Loading topics…</p>}
       {catalogue.status === 'error' && <p role="alert">Topics could not be loaded.</p>}
       {catalogue.status === 'ready' && <>
@@ -88,7 +89,7 @@ export function PracticeSidebar({ preview, accountId = 'local-preview', onPrevie
             return <details className="pl-practice-sidebar-group" key={group.title}>
               <summary>{group.title}</summary>
               {randomMode && available.length > 0 && <label className="pl-random-group"><input type="checkbox" checked={selected.length === available.length} onChange={event => toggle(available.map(topic => topic.slug), event.target.checked)} /> Select all in {group.title}</label>}
-              <ul>{group.items.map(item => {
+              <ul>{group.items.filter(item => !(preview && onLocalRandom && ['polynomial-operations', 'fundamental-theorem-algebra'].includes(item.topic ?? ''))).map(item => {
                 const topic = available.find(entry => entry.slug === item.topic);
                 return topic ? topicRow(topic, item.title) : <li key={item.title}><span>{item.title} <small>In develop</small></span></li>;
               })}</ul>
