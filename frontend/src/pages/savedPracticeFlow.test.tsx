@@ -81,8 +81,7 @@ it('restores a probability topic in its own area after generation before catalog
   ], items: [...INTEGRALS, { slug: 'probability-events', name: 'Events and counting', area: 'probability-statistics', availableDifficulties: [1,2,3,4,5] }] };
   await generateProblem('probability-events', 1, 'probability-statistics');
   await act(async () => root.render(<DashboardPage />));
-  expect(button('Probability and Statistics').getAttribute('aria-pressed')).toBe('true');
-  expect(button('Events and counting').getAttribute('aria-pressed')).toBe('true');
+  expect(element.textContent).toContain('Selected topic: Events and counting');
   expect(button('Generate problem').disabled).toBe(false);
 });
 
@@ -197,7 +196,7 @@ it('uses topic-specific availability and retries a failed catalogue without gene
   await act(async () => button('Retry loading topics').click());
   expect(button('Generate problem').disabled).toBe(false);
   await act(async () => button('Easy').click());
-  await act(async () => button('Substitution').click());
+  await act(async () => root.render(<DashboardPage key="substitution" initialArea="mathematical-analysis" initialTopic="substitution" />));
   // Substitution has only level 1 here: level 2 is hidden and the choice moves to 1.
   expect(button('Easy')).toBeUndefined();
   expect(button('1Basic').getAttribute('aria-pressed')).toBe('true');
@@ -271,14 +270,13 @@ it('shares a saved problem by link and code and stops sharing it (#37)', async (
   expect(button('Share problem')).toBeDefined();
 });
 
-it('shows integral and derivative topics together in Mathematical Analysis', async () => {
+it('uses the derivative topic selected from the tree', async () => {
   catalogue = {
     areas: [{ slug: 'mathematical-analysis', name: 'Mathematical Analysis', mixed: null }],
     items: [...INTEGRALS, { slug: 'derivatives', name: 'Derivatives', area: 'mathematical-analysis', availableDifficulties: [1, 2, 3] }],
   };
-  await act(async () => root.render(<DashboardPage />));
-  expect(button('Basic integrals')).toBeDefined();
-  await act(async () => button('Derivatives').click());
+  await act(async () => root.render(<DashboardPage initialArea="mathematical-analysis" initialTopic="derivatives" />));
+  expect(element.textContent).toContain('Selected topic: Derivatives');
   expect(button('Generate problem').disabled).toBe(false);
   expect(element.querySelectorAll('.pl-seg button')).toHaveLength(3);
   await act(async () => button('Medium').click());
@@ -291,8 +289,7 @@ it('sends Mathematical Analysis as the mixed-practice area', async () => {
     areas: [{ slug: 'mathematical-analysis', name: 'Mathematical Analysis', mixed: { availableDifficulties: [1, 2], weights: { 'basic-integrals': 1, substitution: 2 } } }],
     items: INTEGRALS,
   };
-  await act(async () => root.render(<DashboardPage />));
-  await act(async () => button('Mixed practice').click());
+  await act(async () => root.render(<DashboardPage initialArea="mathematical-analysis" initialTopic="mixed" />));
   expect(element.querySelector('#mixed-weights')?.textContent).toContain('Basic integrals 33%, Substitution 67%');
   await act(async () => button('Generate problem').click());
   expect(calls.find(call => call.path === '/api/problems')?.body).toEqual({ topic: 'mixed', area: 'mathematical-analysis', difficulty: 1 });

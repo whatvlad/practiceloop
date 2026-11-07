@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { mixedShares } from './data/topics';
 import type { AvailableTopic, Difficulty, TopicSlug } from './data/types';
-import { answerVariables, formatWhen, isDefinite, keypadVariables, leadText, problemKind } from './format';
+import { answerVariables, displayProblem, formatWhen, isDefinite, keypadVariables, leadText, problemKind } from './format';
 import text from '../../backend/app/content/en.json';
 
 it('offers x for polynomial quotient problems', () => {
@@ -124,5 +124,14 @@ describe('problem kinds', () => {
       .toEqual(['x', 'y']);
     expect(answerVariables('partial', 'f\\quad(r > 0,\\ \\theta, z \\in \\mathbb{R})')).toEqual(['z', 'r', 'theta']);
     expect(answerVariables('derivative', '\\frac{d}{dx} x\\quad(x > 0)')).toBeUndefined();
+  });
+});
+
+
+it('keeps the complex-arithmetic instruction outside the example', () => {
+  const statement = String.raw`\text{Calculate }(2+3i)\text{.}`;
+  expect(displayProblem('complex-arithmetic', statement)).toEqual({
+    instruction: 'Give the answer in the form a + bi.',
+    formula: String.raw`(2+3i)`,
   });
 });

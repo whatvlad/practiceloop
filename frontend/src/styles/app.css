@@ -196,3 +196,12 @@ main[tabindex="-1"]:focus{outline:none}
 .pl-random-level select{display:block;width:100%;margin-top:4px;padding:6px;background:var(--surface-raised);border:1px solid var(--control-border);border-radius:var(--radius-sm);color:var(--ink)}
 .pl-random-actions{margin-top:20px}.pl-random-actions .pl-btn{width:100%;justify-content:center}
 @media(max-width:760px){.pl-workspace{display:block}.pl-practice-sidebar{border-right:0;border-bottom:1px solid var(--line)}}
+
+.pl-local-menu-toggle{display:none}
+.pl-local-topic-panel{min-width:0}
+.pl-local-random-config summary{cursor:pointer;padding:12px 0;font-weight:600}
+.pl-local-random-list{display:grid;gap:12px;margin:16px 0}
+.pl-local-random-topic{border:1px solid var(--line);border-radius:var(--radius-md);padding:12px}
+.pl-local-random-settings{display:grid;gap:10px;margin-top:10px}
+.pl-local-random-settings fieldset{display:flex;flex-wrap:wrap;gap:4px 16px;border:0;padding:0;margin:0}
+@media(max-width:760px){.pl-local-menu-toggle{display:block;margin:12px 16px}.pl-local-topic-panel{display:none}.pl-local-topic-panel.is-open{display:block}}

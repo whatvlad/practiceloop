@@ -70,7 +70,7 @@ export function LocalMatrixProblem() {
     {error && <p role="alert">{error}</p>}
     {!problem && <button type="button" className="pl-btn pl-btn--secondary" disabled={busy || !compatible} onClick={() => void run(next)}>Generate problem</button>}
     {problem && <>
-      <ProblemCard answerInput={problem.answerInput} topic="matrix-operations" difficulty={problemLevel} problemLatex={problem.statement}
+      <ProblemCard difficultyScale={3} answerInput={problem.answerInput} topic="matrix-operations" difficulty={problemLevel} problemLatex={problem.statement}
         answer={answer} onAnswerChange={value => { setAnswer(value); setResult(null); }} result={result} busy={busy}
         onCheck={() => void run(async () => {
           const data = await post('check', { code: problem.code, answer });

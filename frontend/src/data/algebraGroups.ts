@@ -11,11 +11,11 @@ export const algebraGroups: AlgebraGroup[] = [
     { title: 'Inverse matrices', topic: 'inverse-matrices' },
     { title: 'Matrix rank', topic: 'matrix-rank' },
     { title: 'Systems of linear equations', topic: 'linear-systems' },
-    { title: 'Matrix basics', topic: 'matrices' },
   ] },
   { title: 'Complex numbers', items: [
-    { title: 'Complex arithmetic and equations', topic: 'complex-arithmetic', note: 'Combined practice' },
-    { title: 'Complex numbers', topic: 'complex-numbers' },
+    { title: 'Complex arithmetic', topic: 'complex-arithmetic' },
+    { title: 'Modulus', topic: 'complex-numbers' },
+    { title: 'Converting complex forms', topic: 'complex-conversion' },
     { title: 'Polar form, powers and roots', topic: 'complex-polar-form', note: 'Combined practice' },
   ] },
   { title: 'Polynomials', items: [
@@ -23,7 +23,7 @@ export const algebraGroups: AlgebraGroup[] = [
     { title: 'Roots and factors', topic: 'polynomial-roots' },
     { title: 'Fundamental theorem of algebra', topic: 'fundamental-theorem-algebra' },
     { title: 'Partial fractions', topic: 'partial-fractions' },
-    { title: 'Polynomial operations' },
+    { title: 'Polynomial operations', topic: 'polynomial-operations' },
   ] },
   { title: 'Eigenvalues and eigenvectors', items: [
     { title: 'Eigenvalues and eigenvectors', topic: 'eigenvalues', note: 'Combined practice' },

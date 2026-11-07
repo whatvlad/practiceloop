@@ -144,3 +144,23 @@ def test_explanations_include_sign_checkerboard_and_textbook_reasoning() -> None
             for step in expansions:
                 assert f"Row {step['minorExpansion']['row'] + 1}" in step["say"]
                 assert "cofactor sign" in step["say"]
+
+
+def test_equivalent_numeric_denominators_are_checked_safely() -> None:
+    client = TestClient(app)
+    generator = LocalDeterminantGenerator()
+    task = next(
+        generator.build(generator.draw(determinant_seed(1, 2, i)))
+        for i in range(200)
+        if generator.build(generator.draw(determinant_seed(1, 2, i))).answer.expected == -1
+    )
+    for answer in ("-1", "1/(-1)", "1/(0-1)"):
+        assert (
+            client.post("/check", json={"code": task.code, "answer": answer}).json()["result"]
+            == "correct"
+        )
+    for answer in ("1/(1-1)", "1/(2-2)"):
+        assert (
+            client.post("/check", json={"code": task.code, "answer": answer}).json()["result"]
+            == "invalid"
+        )

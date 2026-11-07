@@ -28,16 +28,16 @@ export function DifficultyScale({ selected, onSelect, labelledBy, available, sho
 }
 
 /** Compact indicator wherever a problem's difficulty is shown; always with "n/5". */
-export function DifficultyDots({ level, topic }: { level: Difficulty; topic?: string }) {
-  if (topic === 'matrix-operations' && level <= 3) return <span>{difficultyLabel(topic, level)}</span>;
+export function DifficultyDots({ level, topic, total = 5 }: { level: Difficulty; topic?: string; total?: 3 | 5 }) {
+  if (total === 5 && topic === 'matrix-operations' && level <= 3) return <span>{difficultyLabel(topic, level)}</span>;
   return (
     <>
-      <span className="pl-dots" role="img" aria-label={`Difficulty ${level} of 5`}>
-        {DIFFICULTIES.map((d) => (
+      <span className="pl-dots" role="img" aria-label={`Difficulty ${level} of ${total}`}>
+        {DIFFICULTIES.filter(d => d.level <= total).map((d) => (
           <i key={d.level} className={d.level <= level ? 'on' : undefined} />
         ))}
       </span>
-      <span aria-hidden="true">{'\u00a0'}{level}/5</span>
+      <span aria-hidden="true">{'\u00a0'}{level}/{total}</span>
     </>
   );
 }

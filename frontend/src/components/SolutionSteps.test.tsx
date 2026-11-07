@@ -140,3 +140,24 @@ it('renders colored calculation groups for the determinant', async () => {
   expect(colors).toContain('rgb(117, 155, 255)');
   await act(async () => root.unmount()); host.remove();
 });
+
+it('opens a used formula and its explanation from the calculation step', async () => {
+  (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
+  const host = document.createElement('div'); document.body.append(host);
+  const root = createRoot(host);
+  await act(async () => root.render(<SolutionSteps steps={[
+    { say: 'Write the original problem.', latex: 'x^2-1' },
+    { say: 'Multiply the divisor.', latex: 'x(x+1)=x^2+x', rules: [
+      { title: 'Distributive law', latex: 'a(b+c)=ab+ac', explanation: 'Multiply each term.' },
+    ] },
+  ]} />));
+  expect(host.querySelectorAll('details')).toHaveLength(1);
+  const details = host.querySelector('details')!;
+  expect(details.open).toBe(false);
+  await act(async () => details.querySelector('summary')!.click());
+  expect(details.open).toBe(true);
+  expect(details.textContent).toContain('Distributive law');
+  expect(details.textContent).toContain('Multiply each term.');
+  expect(details.querySelectorAll('.katex').length).toBe(2);
+  await act(async () => root.unmount()); host.remove();
+});
