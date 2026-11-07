@@ -3,6 +3,7 @@
 import math
 
 import pytest
+from seed_sweep import sweep
 
 from app.engine.generators.elementary import generators
 from app.visuals.plot2d import validate_plot
@@ -18,7 +19,7 @@ from app.visuals.plot2d import validate_plot
     ids=lambda g: g.template,
 )
 def test_thousand_inverse_diagrams_preserve_function_branch_and_exact_reflection(generator):
-    for seed in range(1000):
+    for seed in sweep(1000):
         params = generator.draw(seed)
         a, b, c, variant = params.a, params.b, params.c, params.variant
         diagram = validate_plot(generator.solution_visual(params))

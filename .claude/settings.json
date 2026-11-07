@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(./graphify-out/graph.json)",
+      "Read(./graphify-out/manifest.json)",
+      "Read(./frontend/package-lock.json)"
+    ]
+  }
+}

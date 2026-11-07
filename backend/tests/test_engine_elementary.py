@@ -7,6 +7,7 @@ from pathlib import Path
 
 import pytest
 import sympy as sp
+from seed_sweep import sweep
 
 from app.engine.answers.computational import (
     CategoryAnswer,
@@ -145,7 +146,7 @@ def certify_canonical(answer):
 
 @pytest.mark.parametrize("generator", generators(), ids=lambda g: g.template)
 def test_thousand_seeds_preserve_full_targets_and_input_budgets(generator):
-    for seed in range(1000):
+    for seed in sweep(1000):
         params = generator.draw(seed)
         task = generator.build(params)
         assert task == generator.build(generator.draw(seed))

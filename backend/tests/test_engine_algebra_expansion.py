@@ -5,6 +5,7 @@ import sys
 import pytest
 import sympy as sp
 from pydantic import ValidationError
+from seed_sweep import sweep
 
 from app.engine.generators.algebra_expansion import (
     PolynomialQuotient,
@@ -38,7 +39,7 @@ def test_quadratic_remainder_matches_pdf_example_and_replays() -> None:
 def test_quadratic_remainders_match_division_and_open_for_1000_seeds() -> None:
     generator = QuadraticRemainder()
     x = sp.Symbol("x", real=True)
-    for seed in range(1000):
+    for seed in sweep(1000):
         params = generator.draw(seed)
         task = generator.build(params)
         divisor = (x - params.first) * (x - params.second)
@@ -88,7 +89,7 @@ def test_remainder_theorem_is_offered_in_algebra_practice() -> None:
 def test_remainder_theorem_accepts_own_answer_for_many_seeds() -> None:
     generator = RemainderTheorem()
     x = sp.Symbol("x", real=True)
-    for seed in range(1000):
+    for seed in sweep(1000):
         params = generator.draw(seed)
         task = generator.build(params)
         polynomial = params.a * x**2 + params.b * x + params.c
@@ -127,7 +128,7 @@ def test_polynomial_division_returns_quotient_of_dividend() -> None:
 def test_polynomial_division_replays_and_checks_1000_draws() -> None:
     generator = PolynomialQuotient()
     x = sp.Symbol("x", real=True)
-    for seed in range(1000):
+    for seed in sweep(1000):
         params = generator.draw(seed)
         task = generator.build(params)
         dividend = params.a * x**2 + params.b * x + params.c

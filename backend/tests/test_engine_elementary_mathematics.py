@@ -4,6 +4,7 @@ from functools import cache
 
 import pytest
 import sympy as sp
+from seed_sweep import sweep
 from sympy.calculus.util import continuous_domain, function_range
 
 from app.engine.generators.elementary import generators
@@ -44,7 +45,7 @@ def natural_domain(expression):
 def test_thousand_seeds_match_independent_complete_real_solvers(template):
     generator = GENERATORS[template]
     x = X
-    for seed in range(1000):
+    for seed in sweep(1000):
         params = generator.draw(seed)
         a, b, c = params.a, params.b, params.c
         target = generator.build(params).answer.expected
@@ -97,7 +98,7 @@ def test_thousand_seeds_match_independent_complete_real_solvers(template):
 def test_thousand_domain_seeds_match_independent_continuity_domains(template):
     generator = GENERATORS[template]
     x = X
-    for seed in range(1000):
+    for seed in sweep(1000):
         params = generator.draw(seed)
         a, b, c, v = params.a, params.b, params.c, params.variant
         expressions = {
@@ -210,7 +211,7 @@ def affine_preimage(base, period, slope, phase):
 )
 def test_thousand_periodic_seeds_match_complete_independent_angle_solvers(template):
     generator = GENERATORS[template]
-    for seed in range(1000):
+    for seed in sweep(1000):
         params = generator.draw(seed)
         base, period = angle_solutions(template, params.variant)
         slope = (
@@ -227,7 +228,7 @@ def test_mixed_cosine_equation_has_exactly_the_two_declared_root_lattices():
     factorization = -2 * sp.sin(7 * u / 4 + pi / 4) * sp.sin(9 * u / 4 - pi / 4)
     assert sp.trigsimp(sp.expand_trig(factorization - (sp.cos(4 * u) - sp.sin(u / 2)))) == 0
     generator = GENERATORS["trig-equation-cos-mixed"]
-    for seed in range(1000):
+    for seed in sweep(1000):
         params = generator.draw(seed)
         first, second = generator.build(params).answer.components
         assert first.period == 4 * pi / (9 * params.b)
@@ -294,7 +295,7 @@ def test_thousand_exponential_logarithmic_seeds_match_independent_transformed_so
     generator = GENERATORS[template]
     x = X
     positive = sp.Interval.open(0, sp.oo)
-    for seed in range(1000):
+    for seed in sweep(1000):
         params = generator.draw(seed)
         a, b, c, v = params.a, params.b, params.c, params.variant
         if template == "exponential-linear":
@@ -373,7 +374,7 @@ def inverse_certificate(function, source_domain, inverse, inverse_domain):
 def test_thousand_inverse_seeds_have_the_full_exact_range_and_correct_branch(template):
     generator = GENERATORS[template]
     x = X
-    for seed in range(1000):
+    for seed in sweep(1000):
         params = generator.draw(seed)
         a, b, v = params.a, params.b, params.variant
         if template == "inverse-mobius":
@@ -417,7 +418,7 @@ def composition_certificate(outer, outer_condition, inner, actual_formula, actua
 def test_thousand_composition_seeds_retain_inner_and_outer_domain_constraints(template):
     generator = GENERATORS[template]
     x = X
-    for seed in range(1000):
+    for seed in sweep(1000):
         params = generator.draw(seed)
         a, b, c, v = params.a, params.b, params.c, params.variant
         if template == "composition-affine":
@@ -449,7 +450,7 @@ def test_thousand_composition_seeds_retain_inner_and_outer_domain_constraints(te
 @pytest.mark.parametrize("template", ["domain-quadratic-rational", "domain-arccot-affine"])
 def test_thousand_original_denominator_and_total_arccot_domains(template):
     generator = GENERATORS[template]
-    for seed in range(1000):
+    for seed in sweep(1000):
         params = generator.draw(seed)
         if template == "domain-quadratic-rational":
             sign = 1 if params.variant % 2 else -1
@@ -475,7 +476,7 @@ def parity_certificate(expression, domain):
 def test_thousand_parity_seeds_match_the_definition_and_domain_symmetry():
     generator = GENERATORS["parity"]
     x = X
-    for seed in range(1000):
+    for seed in sweep(1000):
         params = generator.draw(seed)
         a, b, c, v = params.a, params.b, params.c, params.variant
         expression = (
@@ -497,7 +498,7 @@ def test_thousand_parity_seeds_match_the_definition_and_domain_symmetry():
 )
 def test_thousand_logarithmic_value_seeds_match_direct_exact_evaluation(template):
     generator = GENERATORS[template]
-    for seed in range(1000):
+    for seed in sweep(1000):
         params = generator.draw(seed)
         a, b, c = params.a, params.b, params.c
         base = sp.Integer(a + 1)
@@ -525,7 +526,7 @@ def test_thousand_logarithmic_value_seeds_match_direct_exact_evaluation(template
 @pytest.mark.parametrize("template", ["trig-linearization-square", "trig-linearization-fourth"])
 def test_thousand_multiple_angle_seeds_match_independent_trig_reduction(template):
     generator = GENERATORS[template]
-    for seed in range(1000):
+    for seed in sweep(1000):
         params = generator.draw(seed)
         function = sp.cos if params.variant % 2 else sp.sin
         original = (
@@ -551,7 +552,7 @@ def trig_identity(expression):
 )
 def test_thousand_principal_inverse_trig_seeds_have_independent_exact_values(template):
     generator = GENERATORS[template]
-    for seed in range(1000):
+    for seed in sweep(1000):
         params = generator.draw(seed)
         a, b, c, v = params.a, params.b, params.c, params.variant
         actual = generator.build(params).answer.expected
@@ -605,7 +606,7 @@ def test_thousand_three_atom_negations_and_nested_not_match_independent_boolean_
 
     from app.engine.answers.logic import truth
 
-    for seed in range(1000):
+    for seed in sweep(1000):
         generator = GENERATORS["logic-negation-equivalence"]
         params = generator.draw(seed)
         answer = generator.build(params).answer
@@ -623,7 +624,7 @@ def test_thousand_three_atom_negations_and_nested_not_match_independent_boolean_
 
 
 def test_thousand_quantifier_models_have_explicit_global_witnesses_or_counterexamples():
-    for seed in range(1000):
+    for seed in sweep(1000):
         for name in (
             "quantifier-order",
             "quantifier-polynomial",

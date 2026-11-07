@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 import sympy as sp
 from pydantic import ValidationError
+from seed_sweep import sweep
 
 from app.engine.blocks.integers import IntegerRange
 from app.engine.blocks.polynomial import Polynomial
@@ -35,7 +36,7 @@ def test_integer_range_rejects_invalid_constraints(params: dict[str, object]) ->
 def test_integer_range_draw_is_reproducible_and_respects_exclusions() -> None:
     allowed = IntegerRange(minimum=-2, maximum=2, exclude=(-2, 0, 2))
     assert allowed.model_validate_json(allowed.model_dump_json()) == allowed
-    for seed in range(1000):
+    for seed in sweep(1000):
         left = allowed.draw(DeterministicRNG(seed))
         assert left == allowed.draw(DeterministicRNG(seed))
         assert left in {-1, 1}
@@ -67,7 +68,7 @@ def test_polynomial_from_coefficients_and_roots() -> None:
 def test_polynomial_draw_is_bounded_and_deterministic() -> None:
     assert Polynomial.draw(DeterministicRNG(123), 3).coefficients == (1, 0, -4, 5)
     for degree in range(6):
-        for seed in range(1000):
+        for seed in sweep(1000):
             result = Polynomial.draw(DeterministicRNG(seed), degree)
             assert result == Polynomial.draw(DeterministicRNG(seed), degree)
             assert len(result.coefficients) == degree + 1
@@ -117,7 +118,7 @@ def test_rational_draw_is_bounded_deterministic_and_keeps_all_poles() -> None:
     assert pinned.poles == (1, 0, 2)
     assert pinned.numerators == (-1, 5, -1)
     for terms in range(1, 5):
-        for seed in range(1000):
+        for seed in sweep(1000):
             result = PartialFractionRational.draw(DeterministicRNG(seed), terms)
             assert result == PartialFractionRational.draw(DeterministicRNG(seed), terms)
             assert len(set(result.poles)) == terms

@@ -7,15 +7,12 @@ The agents have no permanent roles such as “frontend agent” or “backend ag
 ## Before starting work
 
 1. Use a separate clone or worktree.
-2. Read these files in full:
-   - AGENTS.md
-   - README.md
-   - docs/PRACTICELOOP_MVP.md
-   - docs/agents/STATUS.md
-   - docs/agents/WORKFLOW.md
-   - docs/agents/TASK_PROTOCOL.md
-   - docs/agents/REVIEW_PROTOCOL.md
-   - docs/agents/HANDOFF.md
+2. Read AGENTS.md, docs/agents/STATUS.md and docs/agents/WORKFLOW.md. Open the
+   other documents only when the task needs them: README.md (setup, commands),
+   docs/PRACTICELOOP_MVP.md (original spec, UTF-16), docs/agents/TASK_PROTOCOL.md,
+   docs/agents/REVIEW_PROTOCOL.md, docs/agents/HANDOFF.md, and the
+   docs/architecture file named in the Issue. docs/agents/archive/ holds handoffs
+   of closed Issues; skip it.
 3. Run:
    - git status --short --branch
    - git remote -v
@@ -54,6 +51,30 @@ The agents have no permanent roles such as “frontend agent” or “backend ag
 - Review by the other agent or human is optional; ask for it on database, authentication or mathematical-logic changes.
 - Open pull requests as drafts while you are still pushing fixes, and mark them ready for review when done. CI skips the slow Backend, Database isolation and Worksheet TeX jobs on drafts, which saves the repository's billed Actions minutes; merge only after the ready-for-review run is green.
 
+## Keeping token use low
+
+Agent limits are spent mostly by long sessions: every turn re-sends the whole
+conversation, including code and logs already read.
+
+- One session per small unit of work: two to four generator families, or one
+  phase (design, implementation, PR/CI/merge). Write the plan and progress to a
+  file in the branch and start a fresh session (`/clear` in Claude Code, a new
+  chat in Codex) for the next unit instead of continuing a long one.
+- Local generator sweeps are capped at 50 seeds by `backend/tests/seed_sweep.py`;
+  hosted CI (`CI` set) always runs the full counts. Set `PRACTICELOOP_SEEDS=1000`
+  only for a final local check.
+- Run the narrowest test and keep output short, for example
+  `python -m pytest -q -x --tb=short tests/test_engine_<area>.py -k <family> 2>&1 | tail -40`.
+  Do not paste full test or CI logs; read only the failing part.
+- Do not wait for hosted CI inside a session or poll it in a loop. Push, end the
+  turn, and check the result once later.
+- Do not open large data files whole. Use
+  `python scripts/source-index.py --issue <N>` for the Analysis source matrix.
+  `.ignore` keeps `graphify-out/`, test fixtures, the source matrix and lockfiles
+  out of search results.
+- After a merge, run `python scripts/finish-issue.py <N> --apply` for the project
+  steps below instead of separate `gh project` calls.
+
 Coordination record: docs/agents/TASK_PROTOCOL.md. Implementation workflow and
 completion criteria: docs/agents/WORKFLOW.md. Receiving a HANDOFF and review
 format: docs/agents/REVIEW_PROTOCOL.md. HANDOFF format: docs/agents/HANDOFF.md.
@@ -85,7 +106,9 @@ format: docs/agents/REVIEW_PROTOCOL.md. HANDOFF format: docs/agents/HANDOFF.md.
 ## After a merge
 
 Updating the project is part of the merge, not a later chore. Right after your
-pull request is merged, and before you report the task as done:
+pull request is merged, and before you report the task as done, run
+`python scripts/finish-issue.py <N>` to see the plan and then with `--apply`.
+It does these steps:
 
 1. Close the Issue (or confirm `Closes #N` closed it).
 2. Set its project `Status` to `Done` and clear its `Order`.
@@ -113,15 +136,13 @@ application dependency, production service, container layer or runtime request.
 
 - Install or update it with `scripts/setup-graphify.sh`. The script keeps its
   source and virtual environment under the ignored `.local/` directory.
-- When `graphify-out/graph.json` exists, run a scoped
-  `.local/graphify-venv/bin/graphify query "<question>" --budget 2500` before the
-  first broad repository search or source-file read for a codebase question.
-- Use `path` for relationships and `explain` for a focused concept. Use
-  `graphify-out/GRAPH_REPORT.md` only for broad architecture review or when a
-  scoped query is insufficient.
-- Verify relevant graph results against source code. If Graphify is unavailable
-  or stale, say so and continue with normal repository tools.
-- After code changes, run `.local/graphify-venv/bin/graphify update .` and review
-  changes to the shared graph outputs before committing them.
+- Agents do not need Graphify for normal work; plain search is cheaper at this
+  repository size. A scoped
+  `.local/graphify-venv/bin/graphify query "<question>" --budget 2500` is
+  optional for broad architecture questions. Never read `graphify-out/graph.json`
+  directly.
+- Do not run `graphify update` or commit `graphify-out/` changes in feature
+  branches; the Preview workflow rebuilds the published graph on every push to
+  `main`.
 - Never commit Graphify caches, cost history, interpreter paths or other
   machine-specific state.

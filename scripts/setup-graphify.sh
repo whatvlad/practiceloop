@@ -57,8 +57,8 @@ fi
 
 if [[ -x "$venv_dir/Scripts/python.exe" ]]; then
   "$venv_dir/Scripts/python.exe" -m pip install --upgrade "$source_dir[sql]"
-  # Shims so the documented .local/graphify-venv/bin/graphify path (AGENTS.md,
-  # .codex/hooks.json) works from Git Bash, PowerShell and cmd.
+  # Shims so the documented .local/graphify-venv/bin/graphify path (AGENTS.md)
+  # works from Git Bash, PowerShell and cmd.
   mkdir -p "$venv_dir/bin"
   printf '#!/bin/sh\nexec "$(dirname "$0")/../Scripts/graphify.exe" "$@"\n' \
     >"$venv_dir/bin/graphify"

@@ -174,6 +174,10 @@ name and update the list when other critical tests are added. The broader genera
 and visualization tests are not part of this fast check. Run the full backend suite
 locally with the `pytest` command above, or run the CI workflow manually with
 `full_backend` enabled. Database isolation and Security keep their separate checks.
+Local runs cap randomised generator seed sweeps at 50 seeds per test to keep
+iterations short; hosted CI (where `CI` is set) always runs the full counts. Set
+`$env:PRACTICELOOP_SEEDS = "1000"` (PowerShell) or `PRACTICELOOP_SEEDS=1000` to
+run the full sweep locally (`backend/tests/seed_sweep.py`).
 Worksheet TeX is temporarily disabled in CI until the worksheet is reworked
 ([#181](https://github.com/whatvlad/practiceloop/issues/181)).
 
