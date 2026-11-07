@@ -102,6 +102,12 @@ format: docs/agents/REVIEW_PROTOCOL.md. HANDOFF format: docs/agents/HANDOFF.md.
   Issues to `1…N` without changing their relative order.
 - Other documents (roadmaps, STATUS.md) describe stages and dependencies but
   never override `Order`.
+- A large Issue may be split into GitHub sub-issues ("parts"). Only the parent
+  is in the project and has an `Order`; its parts are not added separately.
+  When the parent is next in the queue, take its first open part in the order
+  the parent's "Parts" section lists. Merging a part closes only that part; the
+  deploy/live check and the "After a merge" project steps run once, when the
+  parent closes after its last part.
 
 ## After a merge
 
