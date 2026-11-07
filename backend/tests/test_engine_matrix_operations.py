@@ -5,6 +5,7 @@ import sys
 import pytest
 import sympy as sp
 from pydantic import ValidationError
+from seed_sweep import sweep
 
 from app.engine.generators.matrix_operations import (
     MatrixCombination,
@@ -28,7 +29,7 @@ TOPIC_OF = {
 @pytest.mark.parametrize("generator", generators(), ids=lambda g: g.version)
 def test_historical_tasks_replay_and_accept_only_their_own_answer(generator) -> None:
     level = TOPIC_OF[generator.version]
-    for seed in range(200):
+    for seed in sweep(200):
         params = generator.draw(seed)
         task = generator.build(params)
         assert task == generator.build(type(params).model_validate_json(params.model_dump_json()))
@@ -62,7 +63,7 @@ def test_operations_match_pdf_exercises_8_and_9a() -> None:
 
 
 def test_products_match_sympy() -> None:
-    for seed in range(200):
+    for seed in sweep(200):
         params = MatrixProduct().draw(seed)
         product = sp.Matrix(params.first) * sp.Matrix(params.second)
         task = MatrixProduct().build(params)

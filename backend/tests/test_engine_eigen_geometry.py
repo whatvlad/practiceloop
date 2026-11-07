@@ -5,6 +5,7 @@ import sys
 import pytest
 import sympy as sp
 from pydantic import ValidationError
+from seed_sweep import sweep
 
 from app.engine.generators.eigen_geometry import (
     DiagonalPower,
@@ -74,7 +75,7 @@ def test_every_generator_is_offered_at_its_declared_level() -> None:
 @pytest.mark.parametrize("generator", generators(), ids=lambda g: g.version)
 def test_tasks_replay_open_and_accept_only_their_own_answer(generator) -> None:
     slug, level = TOPIC_OF[generator.version]
-    for seed in range(150):
+    for seed in sweep(150):
         params = generator.draw(seed)
         task = generator.build(params)
         assert task == generator.build(type(params).model_validate_json(params.model_dump_json()))
@@ -121,7 +122,7 @@ def test_eigen_tasks_match_pdf_exercises_64_66_67_and_69() -> None:
 
 
 def test_matrix_powers_match_direct_multiplication() -> None:
-    for seed in range(200):
+    for seed in sweep(200):
         params = DiagonalPower().draw(seed)
         power = params.matrix() ** params.power
         assert DiagonalPower().build(params).answer.expected == power[params.row, params.column]
@@ -198,7 +199,7 @@ def test_plane_tasks_match_pdf_exercises_82_86_89_and_96() -> None:
 
 
 def test_distances_match_an_independent_projection() -> None:
-    for seed in range(200):
+    for seed in sweep(200):
         params = PointPlaneDistance().draw(seed)
         a, b, c, d = (sp.Matrix(p) for p in params.points)
         normal = (b - a).cross(c - a)

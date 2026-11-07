@@ -6,6 +6,7 @@ from itertools import permutations
 import pytest
 import sympy as sp
 from pydantic import ValidationError
+from seed_sweep import sweep
 
 from app.engine.generators.linear_algebra import (
     CramerRule,
@@ -77,7 +78,7 @@ def test_every_generator_is_offered_at_its_declared_level() -> None:
 @pytest.mark.parametrize("generator", generators(), ids=lambda g: g.version)
 def test_tasks_replay_open_and_accept_only_their_own_answer(generator) -> None:
     slug, level = TOPIC_OF[generator.version]
-    for seed in range(200):
+    for seed in sweep(200):
         params = generator.draw(seed)
         task = generator.build(params)
         assert task == generator.build(type(params).model_validate_json(params.model_dump_json()))
@@ -95,7 +96,7 @@ def test_tasks_replay_open_and_accept_only_their_own_answer(generator) -> None:
 
 def test_determinants_match_an_independent_expansion() -> None:
     for generator in (Determinant3(), Determinant4()):
-        for seed in range(300):
+        for seed in sweep(300):
             params = generator.draw(seed)
             matrix = sp.Matrix([list(row) for row in params.matrix])
             assert generator.build(params).answer.expected == matrix.det(method="lu")
@@ -164,7 +165,7 @@ def test_inverse_entries_match_pdf_exercises_20_and_21() -> None:
 
 def test_inverse_entries_are_entries_of_the_inverse() -> None:
     for generator in (InverseEntry(), InverseEntry3()):
-        for seed in range(300):
+        for seed in sweep(300):
             params = generator.draw(seed)
             inverse = sp.Matrix([list(row) for row in params.matrix]).inv()
             task = generator.build(params)
@@ -173,7 +174,7 @@ def test_inverse_entries_are_entries_of_the_inverse() -> None:
 
 def test_matrix_equations_solve_for_the_unknown_matrix() -> None:
     generator = MatrixEquation()
-    for seed in range(300):
+    for seed in sweep(300):
         params = generator.draw(seed)
         a = sp.Matrix([list(row) for row in params.matrix])
         x = sp.Matrix([list(row) for row in params.unknown])
@@ -194,7 +195,7 @@ def test_gaussian_elimination_matches_pdf_exercise_31a() -> None:
 
 def test_systems_have_the_drawn_unique_solution() -> None:
     for generator in (CramerRule(), CramerRule3(), GaussianElimination(), GaussianElimination4()):
-        for seed in range(300):
+        for seed in sweep(300):
             params = generator.draw(seed)
             a = sp.Matrix([list(row) for row in params.matrix])
             b = a * sp.Matrix(params.solution)
@@ -209,7 +210,7 @@ def test_systems_have_the_drawn_unique_solution() -> None:
 
 def test_rank_and_free_parameters_follow_kronecker_capelli() -> None:
     seen = set()
-    for seed in range(300):
+    for seed in sweep(300):
         params = MatrixRank().draw(seed)
         matrix = sp.Matrix([list(row) for row in params.matrix])
         assert MatrixRank().build(params).answer.expected == matrix.rank() == params.rank

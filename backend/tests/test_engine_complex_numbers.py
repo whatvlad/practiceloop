@@ -5,6 +5,7 @@ import sys
 import pytest
 import sympy as sp
 from pydantic import ValidationError
+from seed_sweep import sweep
 
 from app.engine.answers.complex import ComplexAnswer
 from app.engine.generators.complex_numbers import (
@@ -94,7 +95,7 @@ def test_every_generator_is_offered_at_its_declared_level() -> None:
 @pytest.mark.parametrize("generator", generators(), ids=lambda g: g.version)
 def test_tasks_replay_open_and_accept_only_their_own_answer(generator) -> None:
     slug, level = TOPIC_OF[generator.version]
-    for seed in range(200):
+    for seed in sweep(200):
         params = generator.draw(seed)
         task = generator.build(params)
         assert task == generator.build(type(params).model_validate_json(params.model_dump_json()))
@@ -122,7 +123,7 @@ def test_arithmetic_matches_pdf_exercise_41() -> None:
 
 def test_linear_equations_have_the_drawn_solution() -> None:
     z = sp.Symbol("z")
-    for seed in range(300):
+    for seed in sweep(300):
         params = ComplexLinearEquation().draw(seed)
         solution = params.solution[0] + params.solution[1] * sp.I
         assert ComplexLinearEquation().build(params).answer.expected == solution
@@ -147,7 +148,7 @@ def test_square_roots_and_quadratics_match_pdf_exercises_42c_and_51b() -> None:
 
 def test_quadratic_roots_solve_the_equation() -> None:
     z = sp.Symbol("z")
-    for seed in range(300):
+    for seed in sweep(300):
         params = ComplexQuadratic().draw(seed)
         (a, b), (c, d) = params.roots
         first, second = a + b * sp.I, c + d * sp.I
@@ -172,7 +173,7 @@ def test_polar_form_matches_pdf_exercises_45_46_and_49() -> None:
 
 
 def test_arguments_and_roots_are_independently_correct() -> None:
-    for seed in range(300):
+    for seed in sweep(300):
         argument = ComplexArgument().build(ComplexArgument().draw(seed))
         assert -sp.pi < argument.answer.expected <= sp.pi
         params = ComplexRoot().draw(seed)

@@ -1,5 +1,10 @@
 # Optional Graphify tooling
 
+Agents do not need Graphify for normal Issue work (see AGENTS.md "Keeping token
+use low"). There is no Codex pre-command hook any more, and feature branches do
+not refresh or commit `graphify-out/`; the Preview workflow rebuilds the
+published graph from `main`.
+
 Graphify is an agent navigation tool, not an application dependency. Its source,
 virtual environment, caches and interpreter markers stay under ignored local
 directories. Run setup in each clone/worktree that needs its own graph.

@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Any
 
 import pytest
+from seed_sweep import sweep
 
 from app.engine.answers import _symbolic
 from app.engine.codes import parse_code
@@ -25,7 +26,7 @@ from app.engine.topics.catalogue import topics
 GOLDEN = json.loads(
     (Path(__file__).parent / "fixtures" / "engine_golden_v1.json").read_text(encoding="utf-8")
 )
-SWEEP_SEEDS = range(1000)
+SWEEP_SEEDS = sweep(1000)
 # The rational families have few distinct functions, so most sweep seeds repeat
 # an antiderivative check; caching this pure check keeps the sweep within CI time.
 _cached_is_primitive = cache(_symbolic.is_primitive)

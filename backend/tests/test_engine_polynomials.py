@@ -5,6 +5,7 @@ import sys
 import pytest
 import sympy as sp
 from pydantic import ValidationError
+from seed_sweep import sweep
 
 from app.engine.generators.polynomials import (
     BinomialCoefficient,
@@ -70,7 +71,7 @@ def test_every_generator_is_offered_at_its_declared_level() -> None:
 @pytest.mark.parametrize("generator", generators(), ids=lambda g: g.version)
 def test_tasks_replay_open_and_accept_only_their_own_answer(generator) -> None:
     slug, level = TOPIC_OF[generator.version]
-    for seed in range(150):
+    for seed in sweep(150):
         params = generator.draw(seed)
         task = generator.build(params)
         assert task == generator.build(type(params).model_validate_json(params.model_dump_json()))
@@ -100,7 +101,7 @@ def test_binomial_tasks_match_pdf_exercises_5_and_7() -> None:
 
 
 def test_binomial_results_match_the_expansion() -> None:
-    for seed in range(200):
+    for seed in sweep(200):
         params = BinomialConstantTerm().draw(seed)
         expansion = sp.expand((params.a * X**params.p + params.b / X**params.q) ** params.n)
         task = BinomialConstantTerm().build(params)
@@ -124,7 +125,7 @@ def test_roots_and_factors_match_pdf_exercises_55_57_and_58() -> None:
 
 
 def test_rational_roots_are_all_the_rational_roots() -> None:
-    for seed in range(200):
+    for seed in sweep(200):
         params = RationalRoots().draw(seed)
         task = RationalRoots().build(params)
         (p1, q1), (p2, q2) = params.roots
@@ -156,7 +157,7 @@ def test_remainder_tasks_match_pdf_exercises_61_62_and_63c() -> None:
 
 
 def test_cubic_remainders_match_division() -> None:
-    for seed in range(200):
+    for seed in sweep(200):
         params = CubicRemainder().draw(seed)
         polynomial = sum(
             c * X**e for c, e in zip(params.coefficients, params.exponents, strict=True)

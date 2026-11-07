@@ -1,0 +1,8 @@
+# Large generated or data files that ripgrep-based agent search (Claude Code Grep,
+# Codex rg) should skip. They stay tracked in git; open them only on purpose.
+graphify-out/
+backend/tests/fixtures/*.json
+docs/architecture/analysis_pdf_source_index.json
+frontend/package-lock.json
+mockups/
+docs/agents/archive/
