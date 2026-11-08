@@ -144,6 +144,7 @@ def answer_text(answer: Any, *, wrong: bool = False) -> str:
     from app.engine.answers.antiderivative import AntiderivativeAnswer
     from app.engine.answers.computational import (
         CategoryAnswer,
+        LimitAnswer,
         OrderedAnswer,
         PeriodicSetAnswer,
         RealSetAnswer,
@@ -186,6 +187,14 @@ def answer_text(answer: Any, *, wrong: bool = False) -> str:
         if wrong:
             values[0][0] += 1
         return "(" + ";".join("(" + ";".join(map(scalar, row)) + ")" for row in values) + ")"
+    if isinstance(answer, LimitAnswer):
+        if wrong:
+            return "-inf" if answer.expected == sp.oo else "inf"
+        if answer.expected in {sp.oo, -sp.oo}:
+            return "inf" if answer.expected == sp.oo else "-inf"
+        if answer.expected == "does_not_exist":
+            return "does_not_exist"
+        return scalar(answer.expected)
     if isinstance(answer, CategoryAnswer):
         return (
             next(choice for choice in answer.choices if choice != answer.expected)
