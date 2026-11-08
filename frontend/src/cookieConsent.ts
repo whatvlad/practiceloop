@@ -7,7 +7,7 @@ const CBID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 declare global {
   interface Window {
-    Cookiebot?: { renew?: () => void };
+    Cookiebot?: { renew?: () => void; consent?: { statistics?: boolean } };
   }
 }
 
@@ -26,6 +26,23 @@ export function startCookiebot(id: string | undefined, pathname: string, doc: Do
   script.dataset.cbid = id;
   doc.head.append(script);
   return true;
+}
+
+/**
+ * Runs `start` once the visitor has allowed statistics cookies, now or later.
+ * Cookiebot fires CookiebotOnConsentReady on load (stored choice) and on every
+ * change, so nothing optional runs before consent (Cookiebot "prior consent").
+ */
+export function whenStatisticsAllowed(start: () => void, win: Window = window): void {
+  let started = false;
+  const check = () => {
+    if (started || !win.Cookiebot?.consent?.statistics) return;
+    started = true;
+    win.removeEventListener('CookiebotOnConsentReady', check);
+    start();
+  };
+  win.addEventListener('CookiebotOnConsentReady', check);
+  check();
 }
 
 /** Reopens the banner so a visitor can change or withdraw their choice; false if it has not loaded. */

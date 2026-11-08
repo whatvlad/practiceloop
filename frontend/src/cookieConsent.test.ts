@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { COOKIEBOT_SRC, cookiebotEnabled, openCookieSettings, startCookiebot } from './cookieConsent';
+import { COOKIEBOT_SRC, cookiebotEnabled, openCookieSettings, startCookiebot, whenStatisticsAllowed } from './cookieConsent';
 
 const ID = '01234567-89ab-cdef-0123-456789abcdef';
 
@@ -32,5 +32,25 @@ describe('Cookiebot', () => {
     expect(openCookieSettings({ Cookiebot: { renew } } as unknown as Window)).toBe(true);
     expect(renew).toHaveBeenCalledOnce();
     expect(openCookieSettings({} as Window)).toBe(false);
+  });
+
+  it('waits for statistics consent before starting analytics, then starts once', () => {
+    const start = vi.fn();
+    whenStatisticsAllowed(start);
+    expect(start).not.toHaveBeenCalled();
+    window.Cookiebot = { consent: { statistics: false } };
+    window.dispatchEvent(new Event('CookiebotOnConsentReady'));
+    expect(start).not.toHaveBeenCalled();
+    window.Cookiebot = { consent: { statistics: true } };
+    window.dispatchEvent(new Event('CookiebotOnConsentReady'));
+    window.dispatchEvent(new Event('CookiebotOnConsentReady'));
+    expect(start).toHaveBeenCalledOnce();
+    delete window.Cookiebot;
+  });
+
+  it('starts at once when statistics consent is already stored', () => {
+    const start = vi.fn();
+    whenStatisticsAllowed(start, { Cookiebot: { consent: { statistics: true } }, addEventListener: vi.fn(), removeEventListener: vi.fn() } as unknown as Window);
+    expect(start).toHaveBeenCalledOnce();
   });
 });
