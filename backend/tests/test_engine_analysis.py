@@ -8,7 +8,7 @@ import pytest
 import sympy as sp
 from engine_fixtures import PUBLISHED_TOPICS
 from pydantic import ValidationError
-from test_engine_elementary import source
+from test_engine_analysis_limits import source as limit_source
 
 from app.api import practice
 from app.engine import practice as engine
@@ -34,7 +34,7 @@ def answer_text(record: dict[str, object]) -> str:
     answer = engine.replay(record).answer
     if answer.kind == "expression":
         return sp.sstr(answer.expected).replace("**", "^")
-    return source(answer)
+    return limit_source(answer)
 
 
 @pytest.mark.parametrize("a", range(1, 6))
