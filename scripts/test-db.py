@@ -227,7 +227,7 @@ def main() -> int:
     parser.add_argument("--serve", action="store_true", help="keep the database until Ctrl+C")
     parser.add_argument("--native", action="store_true", help="use PostgreSQL binaries, not Docker")
     parser.add_argument("--pg-bin", help="folder with initdb, pg_ctl and psql")
-    parser.add_argument("pytest_args", nargs="*", help="pytest arguments instead of -m db")
+    parser.add_argument("pytest_args", nargs="*", help="extra pytest arguments; skips e2e")
     args = parser.parse_args()
     with disposable_database(args.pg_bin, args.native) as database:
         apply_ci_sql(database)
@@ -244,8 +244,8 @@ def main() -> int:
         env = os.environ | {"PRACTICELOOP_TEST_DATABASE_URL": url}
         backend = ROOT / "backend"
         run([sys.executable, "-m", "app.engine.catalogue"], cwd=backend, env=env)
-        pytest_args = args.pytest_args or ["-m", "db"]
-        run([sys.executable, "-m", "pytest", *pytest_args], cwd=backend, env=env)
+        # addopts deselects db tests; a later -m in pytest_args still wins.
+        run([sys.executable, "-m", "pytest", "-m", "db", *args.pytest_args], cwd=backend, env=env)
         if args.pytest_args:
             return 0
         run(
