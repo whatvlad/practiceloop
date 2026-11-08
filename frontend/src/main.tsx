@@ -14,7 +14,13 @@ import './styles/components.css';
 import './styles/app.css';
 import { App } from './App';
 import { startWebAnalytics } from './analytics';
+import { cookiebotEnabled, startCookiebot, whenStatisticsAllowed } from './cookieConsent';
 import { ErrorBoundary } from './components/ErrorBoundary';
+
+const path = () => window.location.pathname.slice(import.meta.env.BASE_URL.length - 1);
+// The banner loads before the app renders, so it is in place before anything else
+// runs; App.tsx adds it later for a visitor who landed on a private URL.
+startCookiebot(import.meta.env.VITE_COOKIEBOT_ID, path());
 
 const root = document.getElementById('root');
 if (!root) throw new Error('Missing application root');
@@ -27,4 +33,8 @@ createRoot(root).render(
   </StrictMode>,
 );
 
-startWebAnalytics(import.meta.env.VITE_CF_WEB_ANALYTICS_TOKEN, window.location.pathname.slice(import.meta.env.BASE_URL.length - 1));
+// With a consent banner the beacon waits for statistics consent; without one it is
+// cookieless and needs none.
+const analytics = () => startWebAnalytics(import.meta.env.VITE_CF_WEB_ANALYTICS_TOKEN, path());
+if (cookiebotEnabled()) whenStatisticsAllowed(analytics);
+else analytics();
