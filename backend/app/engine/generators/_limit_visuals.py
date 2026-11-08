@@ -402,7 +402,7 @@ def rational_pole_and_domain(a: int, b: int, c: int) -> dict[str, Any]:
 
 def exponential_pole(a: int, b: int, c: int) -> dict[str, Any]:
     def f(x: float) -> float:
-        return b / (1 - (a + 1) ** (c - x))
+        return b / (1 - float(a + 1) ** (c - x))
 
     return plot(
         "Exponential pole and horizontal lines",
