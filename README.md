@@ -166,11 +166,39 @@ cd ..
 .\.venv\Scripts\python.exe scripts/check_repository.py
 .\.venv\Scripts\python.exe scripts/test-db.py
 ```
-`scripts/test-db.py` runs CI's Database isolation job locally: it needs Docker,
-starts a disposable PostgreSQL 17 container, applies every migration, runs the
-RLS and hosted-check SQL, `pytest -m db` and the
-[end-to-end check](docs/production/MVP_E2E_CHECK.md), then removes the container
-(`--sql-only` skips the Python parts). Never point these files at Supabase or shared data. Git history secret scan is also in CI;
+Before the first push of a pull request, run `python scripts/pre-push.py`: ruff,
+`ruff format --check`, mypy and the database tests below, one line per step
+(`--no-db` skips the database). mypy checks as Linux (`platform = "linux"`), so a
+clean run on Windows means a clean Backend CI run.
+
+### Local database
+
+`scripts/test-db.py` runs CI's Database isolation job locally: it starts a
+disposable PostgreSQL 17, applies every migration, runs the RLS and hosted-check
+SQL, `pytest -m db` and the [end-to-end check](docs/production/MVP_E2E_CHECK.md),
+then removes the database (`--sql-only` skips the Python parts). It uses Docker
+(`postgres:17`, as in CI) when installed, otherwise native PostgreSQL 17 binaries.
+On Windows without Docker, once:
+
+1. Download the PostgreSQL 17 "Windows x86-64" binaries zip (not the installer)
+   from https://www.enterprisedb.com/download-postgresql-binaries.
+2. Extract it so `C:\PracticeLoop\.local\postgres\bin\initdb.exe` exists (the zip
+   holds a `pgsql` folder; rename it to `postgres`). `.local/` is git-ignored and
+   worktrees use the main checkout's copy. No admin rights or service needed.
+   An installed PostgreSQL 17 in `C:\Program Files\PostgreSQL\17\bin`, a folder in
+   `PRACTICELOOP_PG_BIN` or `--pg-bin`, or `initdb` on `PATH` also work.
+
+Then from the repository root:
+
+```powershell
+.\.venv\Scripts\python.exe scripts/test-db.py                    # whole CI job
+.\.venv\Scripts\python.exe scripts/test-db.py -- -q tests/test_practice_api.py
+.\.venv\Scripts\python.exe scripts/test-db.py --serve            # keep it, print the URL
+```
+
+Arguments after `--` replace `-m db` (and skip the end-to-end flow). `--serve`
+prints `PRACTICELOOP_TEST_DATABASE_URL` for running `pytest -m db` from another
+terminal until Ctrl+C. Never point these files at Supabase or shared data. Git history secret scan is also in CI;
 run Gitleaks locally with `gitleaks git . --config .gitleaks.toml --redact` if needed.
 No command should report success on skipped/missing tests. CI jobs are Frontend,
 Backend, Database isolation and Security; hosted outcomes are unverified until run.
@@ -202,8 +230,9 @@ Two developers, each with an AI agent, as equal collaborators. Rules:
 1. Get collaborator access to the repository and the
    [Implementation Queue](https://github.com/users/whatvlad/projects/1), and sign in
    `gh` with the `project` scope: `gh auth login`, then `gh auth refresh -s project`.
-2. Clone once and follow [Local setup](#local-setup) and [Verify](#verify). Docker
-   is only needed for `scripts/test-db.py`.
+2. Clone once and follow [Local setup](#local-setup) and [Verify](#verify). Docker or
+   PostgreSQL 17 binaries are only needed for `scripts/test-db.py`
+   ([Local database](#local-database)).
 3. Give each agent (Codex, Claude Code) its own worktree and branch from the
    latest `main`, so agents never share a working directory:
    ```powershell

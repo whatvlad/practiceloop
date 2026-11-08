@@ -1,29 +1,40 @@
-"""Run CI's Database isolation job locally against a disposable PostgreSQL container.
+"""Run CI's Database isolation job locally against a disposable PostgreSQL 17.
 
 Mirrors the `database` job in .github/workflows/ci.yml: auth fixture, every
 migration in order, RLS isolation, hosted-check SQL, API ownership queries
 (`pytest -m db`) and the end-to-end API flow, including its database outage.
-Needs Docker and the backend installed in this Python (README "Local setup").
+Uses Docker (`postgres:17`, as in CI) when it is installed, otherwise native
+PostgreSQL 17 binaries (`initdb`, `pg_ctl`, `psql`) found in --pg-bin,
+PRACTICELOOP_PG_BIN, .local/postgres/bin (here or in the main checkout),
+C:/Program Files/PostgreSQL/17/bin or PATH. The database lives in a temporary
+folder and is removed afterwards.
+Needs the backend installed in this Python (README "Local setup").
 Never point any of these files at Supabase or shared data.
 
     python scripts/test-db.py            # from the repository root
     python scripts/test-db.py --sql-only # skip pytest and the end-to-end flow
+    python scripts/test-db.py --serve    # apply the SQL, print the URL, wait
 """
 
 from __future__ import annotations
 
 import argparse
 import os
+import shlex
 import shutil
 import socket
 import subprocess
 import sys
+import tempfile
 import time
 import uuid
+from collections.abc import Iterator
+from contextlib import contextmanager
 from pathlib import Path
+from typing import Protocol
 
 ROOT = Path(__file__).resolve().parents[1]
-PASSWORD = "local-ci-only"  # noqa: S105 - throwaway container, same as CI
+PASSWORD = "local-ci-only"  # noqa: S105 - throwaway database, same as CI
 USER_A = "00000000-0000-0000-0000-000000000001"
 USER_B = "00000000-0000-0000-0000-000000000002"
 HOSTED_USERS = f"insert into auth.users(id) values ('{USER_A}'), ('{USER_B}')"  # noqa: S608
@@ -32,29 +43,23 @@ EMPTY_AFTER_CLEANUP = (
     "assert (select count(*) from public.attempts) = 0; "
     "assert (select count(*) from private.problem_solutions) = 0; end $$"
 )
+PG_BIN_DIRS = (ROOT / ".local/postgres/bin", Path("C:/Program Files/PostgreSQL/17/bin"))
+
+
+def main_checkout() -> Path:
+    # Worktrees share one .local/ in the main checkout.
+    result = subprocess.run(  # noqa: S603
+        ["git", "rev-parse", "--path-format=absolute", "--git-common-dir"],  # noqa: S607
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
+    return Path(result.stdout.strip()).parent if result.returncode == 0 else ROOT
 
 
 def run(command: list[str], **kwargs: object) -> None:
     # Fixed argument lists built here; no shell and no user-supplied commands.
     subprocess.run(command, check=True, **kwargs)  # noqa: S603
-
-
-def psql(docker: str, container: str, sql: str) -> None:
-    run(
-        [docker, "exec", "-i", container, "psql", "-U", "postgres", "-v", "ON_ERROR_STOP=1", "-q"],
-        input=sql.encode(),
-    )
-
-
-def wait_ready(docker: str, container: str) -> None:
-    for _ in range(60):
-        probe = subprocess.run(  # noqa: S603
-            [docker, "exec", container, "pg_isready", "-U", "postgres"], capture_output=True
-        )
-        if probe.returncode == 0:
-            return
-        time.sleep(1)
-    raise RuntimeError("PostgreSQL did not become ready")
 
 
 def free_port() -> int:
@@ -63,67 +68,192 @@ def free_port() -> int:
         return int(sock.getsockname()[1])
 
 
+def command_line(*parts: str | Path) -> str:
+    # e2e_local.py splits these like a POSIX shell, so use forward slashes.
+    return " ".join(shlex.quote(Path(p).as_posix() if isinstance(p, Path) else p) for p in parts)
+
+
+class Database(Protocol):
+    port: int
+    stop_command: str
+    start_command: str
+
+    def psql(self, sql: str) -> None: ...
+
+
+class DockerDatabase:
+    def __init__(self, docker: str, port: int) -> None:
+        self.docker = docker
+        self.port = port
+        self.container = f"practiceloop-test-{uuid.uuid4().hex[:10]}"
+        self.stop_command = command_line(docker, "stop", self.container)
+        self.start_command = command_line(docker, "start", self.container)
+
+    def start(self) -> None:
+        run(
+            [
+                self.docker,
+                "run",
+                "--detach",
+                "--name",
+                self.container,
+                "--env",
+                f"POSTGRES_PASSWORD={PASSWORD}",
+                "--publish",
+                f"127.0.0.1:{self.port}:5432",
+                "postgres:17",
+            ],
+            stdout=subprocess.DEVNULL,
+        )
+        for _ in range(60):
+            probe = subprocess.run(  # noqa: S603
+                [self.docker, "exec", self.container, "pg_isready", "-U", "postgres"],
+                capture_output=True,
+            )
+            if probe.returncode == 0:
+                return
+            time.sleep(1)
+        raise RuntimeError("PostgreSQL did not become ready")
+
+    def remove(self) -> None:
+        subprocess.run([self.docker, "rm", "--force", self.container], capture_output=True)  # noqa: S603
+
+    def psql(self, sql: str) -> None:
+        run(
+            [self.docker, "exec", "-i", self.container]
+            + ["psql", "-U", "postgres", "-v", "ON_ERROR_STOP=1", "-q"],
+            input=sql.encode(),
+        )
+
+
+class NativeDatabase:
+    def __init__(self, bin_dir: Path, data: Path, port: int) -> None:
+        self.bin = bin_dir
+        self.data = data / "data"
+        self.log = data / "postgres.log"
+        self.port = port
+        pg_ctl = self.tool("pg_ctl")
+        options = f"-p {port} -c listen_addresses=127.0.0.1"
+        self.stop_command = command_line(pg_ctl, "stop", "-D", self.data, "-m", "fast", "-w")
+        self.start_command = command_line(
+            pg_ctl, "start", "-D", self.data, "-l", self.log, "-o", options, "-w"
+        )
+
+    def tool(self, name: str) -> Path:
+        suffix = ".exe" if os.name == "nt" else ""
+        return self.bin / f"{name}{suffix}"
+
+    def start(self) -> None:
+        with tempfile.NamedTemporaryFile("w", delete=False, suffix=".pw") as pwfile:
+            pwfile.write(PASSWORD)
+        try:
+            run(
+                [str(self.tool("initdb")), "-D", str(self.data), "-U", "postgres"]
+                + ["--pwfile", pwfile.name, "--auth=scram-sha-256", "--encoding=UTF8"]
+                + ["--locale=C", "--locale-provider=icu", "--icu-locale=en-US"],
+                stdout=subprocess.DEVNULL,
+            )
+        finally:
+            os.unlink(pwfile.name)
+        run(shlex.split(self.start_command), stdout=subprocess.DEVNULL)
+
+    def remove(self) -> None:
+        subprocess.run(shlex.split(self.stop_command), capture_output=True)  # noqa: S603
+
+    def psql(self, sql: str) -> None:
+        run(
+            [str(self.tool("psql")), "-h", "127.0.0.1", "-p", str(self.port), "-U", "postgres"]
+            + ["-v", "ON_ERROR_STOP=1", "-q"],
+            input=sql.encode(),
+            env=os.environ | {"PGPASSWORD": PASSWORD, "PGCLIENTENCODING": "UTF8"},
+        )
+
+
+def find_pg_bin(explicit: str | None) -> Path | None:
+    candidates = [Path(p) for p in (explicit, os.environ.get("PRACTICELOOP_PG_BIN")) if p]
+    candidates += [*PG_BIN_DIRS, main_checkout() / ".local/postgres/bin"]
+    initdb = shutil.which("initdb")
+    if initdb:
+        candidates.append(Path(initdb).parent)
+    suffix = ".exe" if os.name == "nt" else ""
+    return next((p for p in candidates if (p / f"initdb{suffix}").is_file()), None)
+
+
+@contextmanager
+def disposable_database(pg_bin: str | None, native: bool) -> Iterator[Database]:
+    port = free_port()
+    docker = None if native else shutil.which("docker")
+    if docker is not None:
+        database = DockerDatabase(docker, port)
+        try:
+            database.start()
+            yield database
+        finally:
+            database.remove()
+        return
+    bin_dir = find_pg_bin(pg_bin)
+    if bin_dir is None:
+        raise SystemExit(
+            "Neither Docker nor PostgreSQL 17 binaries found; see README 'Local database'"
+        )
+    with tempfile.TemporaryDirectory(prefix="practiceloop-pg-") as folder:
+        native_db = NativeDatabase(bin_dir, Path(folder), port)
+        try:
+            native_db.start()
+            yield native_db
+        finally:
+            native_db.remove()
+
+
+def apply_ci_sql(database: Database) -> None:
+    read = lambda name: (ROOT / name).read_text(encoding="utf-8")  # noqa: E731
+    database.psql(read("supabase/tests/auth_fixture.sql"))
+    for migration in sorted((ROOT / "supabase/migrations").glob("*.sql")):
+        database.psql(migration.read_text(encoding="utf-8"))
+    database.psql(read("supabase/tests/isolation.sql"))
+    database.psql(HOSTED_USERS)
+    fixture = read("supabase/tests/hosted_fixture.sql")
+    fixture = fixture.replace("REPLACE_WITH_USER_A_UUID", USER_A)
+    database.psql(fixture.replace("REPLACE_WITH_USER_B_UUID", USER_B))
+    database.psql(read("supabase/tests/hosted_schema.sql"))
+    database.psql(read("supabase/tests/hosted_cleanup.sql"))
+    database.psql(EMPTY_AFTER_CLEANUP)
+    print("Migrations, RLS isolation and hosted-check SQL passed")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--sql-only", action="store_true", help="skip pytest -m db and e2e")
+    parser.add_argument("--serve", action="store_true", help="keep the database until Ctrl+C")
+    parser.add_argument("--native", action="store_true", help="use PostgreSQL binaries, not Docker")
+    parser.add_argument("--pg-bin", help="folder with initdb, pg_ctl and psql")
+    parser.add_argument("pytest_args", nargs="*", help="pytest arguments instead of -m db")
     args = parser.parse_args()
-    docker = shutil.which("docker")
-    if docker is None:
-        raise RuntimeError("Docker is required for the disposable database")
-    container = f"practiceloop-test-{uuid.uuid4().hex[:10]}"
-    port = free_port()
-    run(
-        [
-            docker,
-            "run",
-            "--detach",
-            "--name",
-            container,
-            "--env",
-            f"POSTGRES_PASSWORD={PASSWORD}",
-            "--publish",
-            f"127.0.0.1:{port}:5432",
-            "postgres:17",
-        ],
-        stdout=subprocess.DEVNULL,
-    )
-    try:
-        wait_ready(docker, container)
-        read = lambda name: (ROOT / name).read_text(encoding="utf-8")  # noqa: E731
-        psql(docker, container, read("supabase/tests/auth_fixture.sql"))
-        for migration in sorted((ROOT / "supabase/migrations").glob("*.sql")):
-            psql(docker, container, migration.read_text(encoding="utf-8"))
-        psql(docker, container, read("supabase/tests/isolation.sql"))
-        psql(docker, container, HOSTED_USERS)
-        fixture = read("supabase/tests/hosted_fixture.sql")
-        fixture = fixture.replace("REPLACE_WITH_USER_A_UUID", USER_A)
-        psql(docker, container, fixture.replace("REPLACE_WITH_USER_B_UUID", USER_B))
-        psql(docker, container, read("supabase/tests/hosted_schema.sql"))
-        psql(docker, container, read("supabase/tests/hosted_cleanup.sql"))
-        psql(docker, container, EMPTY_AFTER_CLEANUP)
-        print("Migrations, RLS isolation and hosted-check SQL passed")
+    with disposable_database(args.pg_bin, args.native) as database:
+        apply_ci_sql(database)
+        url = f"postgresql://postgres:{PASSWORD}@127.0.0.1:{database.port}/postgres"
+        if args.serve:
+            print(f"PRACTICELOOP_TEST_DATABASE_URL={url}\nCtrl+C stops and removes it")
+            try:
+                while True:
+                    time.sleep(3600)
+            except KeyboardInterrupt:
+                return 0
         if args.sql_only:
             return 0
-        env = os.environ | {
-            "PRACTICELOOP_TEST_DATABASE_URL": f"postgresql://postgres:{PASSWORD}@127.0.0.1:{port}/postgres"
-        }
+        env = os.environ | {"PRACTICELOOP_TEST_DATABASE_URL": url}
         backend = ROOT / "backend"
         run([sys.executable, "-m", "app.engine.catalogue"], cwd=backend, env=env)
-        run([sys.executable, "-m", "pytest", "-m", "db"], cwd=backend, env=env)
+        pytest_args = args.pytest_args or ["-m", "db"]
+        run([sys.executable, "-m", "pytest", *pytest_args], cwd=backend, env=env)
+        if args.pytest_args:
+            return 0
         run(
-            [
-                sys.executable,
-                str(ROOT / "scripts/e2e_local.py"),
-                "--stop-db",
-                f"docker stop {container}",
-                "--start-db",
-                f"docker start {container}",
-            ],
+            [sys.executable, str(ROOT / "scripts/e2e_local.py")]
+            + ["--stop-db", database.stop_command, "--start-db", database.start_command],
             cwd=backend,
             env=env,
         )
-    finally:
-        subprocess.run([docker, "rm", "--force", container], capture_output=True)  # noqa: S603
     return 0
 
 

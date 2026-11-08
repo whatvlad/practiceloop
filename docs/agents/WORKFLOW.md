@@ -12,6 +12,8 @@
 8. Run the actual verification commands documented in README.md.
 9. Inspect the complete diff against the base commit.
 10. Check formatting, types, tests, security boundaries, migrations, dependencies, and secret exposure.
+    Before the first push of a pull request, run `python scripts/pre-push.py`
+    once (ruff, format, mypy, database tests; README "Verify").
 11. Update relevant documentation when behavior, APIs, migrations, or decisions change.
 12. Create a focused pull request only when authorized by the accountable human.
 13. Optionally request review from the other agent or human (recommended for database, authentication and mathematical logic).
