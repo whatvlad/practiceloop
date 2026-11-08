@@ -24458,5 +24458,4336 @@
         "template": "matrix-multiply"
       }
     }
+  ],
+  "analysis1-limits-bound-trigonometric-v1": [
+    {
+      "code": "SLAA-1-0000000000000003-11",
+      "statement": "\\(\\text{Classify boundedness and give the two bounds from separate numerator and}\\text{ denominator bounds using } -1\\le\\sin n,\\cos n\\le1:\\quad a_n=\\frac{\\sin{\\left(n \\right)} + 3}{7 - 5 \\cos{\\left(n \\right)}},\\quad n\\ge1.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Bound numerator and denominator separately using }-1\\le\\sin n,\\cos n\\le1."
+        ],
+        [
+          "calculation",
+          "\\frac{1}{6}\\le a_n\\le2"
+        ],
+        [
+          "result",
+          "\\left(\\text{both},\\;\\frac{1}{6},\\;2\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{both},\\;\\frac{1}{6},\\;2\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "SLAA-1-0000000000000200-87",
+      "statement": "\\(\\text{Classify boundedness and give the two bounds from separate numerator and}\\text{ denominator bounds using } -1\\le\\sin n,\\cos n\\le1:\\quad a_n=\\frac{\\sin{\\left(n \\right)} + 6}{7 - \\cos{\\left(n \\right)}},\\quad n\\ge1.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Bound numerator and denominator separately using }-1\\le\\sin n,\\cos n\\le1."
+        ],
+        [
+          "calculation",
+          "\\frac{5}{8}\\le a_n\\le\\frac{7}{6}"
+        ],
+        [
+          "result",
+          "\\left(\\text{both},\\;\\frac{5}{8},\\;\\frac{7}{6}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{both},\\;\\frac{5}{8},\\;\\frac{7}{6}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "SLAA-1-0000000000000999-04",
+      "statement": "\\(\\text{Classify boundedness and give the two bounds from separate numerator and}\\text{ denominator bounds using } -1\\le\\sin n,\\cos n\\le1:\\quad a_n=\\frac{\\sin{\\left(n \\right)} + 3}{9 - 5 \\cos{\\left(n \\right)}},\\quad n\\ge1.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Bound numerator and denominator separately using }-1\\le\\sin n,\\cos n\\le1."
+        ],
+        [
+          "calculation",
+          "\\frac{1}{7}\\le a_n\\le1"
+        ],
+        [
+          "result",
+          "\\left(\\text{both},\\;\\frac{1}{7},\\;1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{both},\\;\\frac{1}{7},\\;1\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-limits-bound-radical-v1": [
+    {
+      "code": "SLAB-1-0000000000000003-65",
+      "statement": "\\(\\text{Classify boundedness and give the least upper bound:}\\quad a_n=2 - \\sqrt{n + 5},\\quad n\\ge1.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The square root increases without bound as }n\\to\\infty."
+        ],
+        [
+          "calculation",
+          "a_n\\le a_1=2 - \\sqrt{6},\\qquad a_n\\to-\\infty."
+        ],
+        [
+          "result",
+          "\\left(\\text{upper only},\\;2 - \\sqrt{6}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{upper only},\\;2 - \\sqrt{6}\\right)",
+      "metadata": {
+        "difficulty": 1
+      }
+    },
+    {
+      "code": "SLAB-1-0000000000000200-44",
+      "statement": "\\(\\text{Classify boundedness and give the least upper bound:}\\quad a_n=5 - 5 \\sqrt{n + 1},\\quad n\\ge1.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The square root increases without bound as }n\\to\\infty."
+        ],
+        [
+          "calculation",
+          "a_n\\le a_1=5 - 5 \\sqrt{2},\\qquad a_n\\to-\\infty."
+        ],
+        [
+          "result",
+          "\\left(\\text{upper only},\\;5 - 5 \\sqrt{2}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{upper only},\\;5 - 5 \\sqrt{2}\\right)",
+      "metadata": {
+        "difficulty": 1
+      }
+    },
+    {
+      "code": "SLAB-1-0000000000000999-58",
+      "statement": "\\(\\text{Classify boundedness and give the least upper bound:}\\quad a_n=2 - 3 \\sqrt{n + 5},\\quad n\\ge1.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The square root increases without bound as }n\\to\\infty."
+        ],
+        [
+          "calculation",
+          "a_n\\le a_1=2 - 3 \\sqrt{6},\\qquad a_n\\to-\\infty."
+        ],
+        [
+          "result",
+          "\\left(\\text{upper only},\\;2 - 3 \\sqrt{6}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{upper only},\\;2 - 3 \\sqrt{6}\\right)",
+      "metadata": {
+        "difficulty": 1
+      }
+    }
+  ],
+  "analysis1-limits-monotone-factorial-v1": [
+    {
+      "code": "SLAC-1-0000000000000003-96",
+      "statement": "\\(\\text{Give the eventual strict direction and the least }N\\ge1\\text{ for which it holds at every step }n\\ge N:\\quad a_n=\\frac{4^{n}}{\\left(n + 5\\right)!}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The terms are positive, so compare their consecutive ratio with }1."
+        ],
+        [
+          "calculation",
+          "\\frac{a_{n+1}}{a_n}=\\frac{4}{n+6}<1\\iff n>-2,\\qquad N=1."
+        ],
+        [
+          "result",
+          "\\left(\\text{decreasing},\\;1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{decreasing},\\;1\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLAC-1-0000000000000200-75",
+      "statement": "\\(\\text{Give the eventual strict direction and the least }N\\ge1\\text{ for which it holds at every step }n\\ge N:\\quad a_n=\\frac{5 \\cdot 7^{n}}{\\left(n + 1\\right)!}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The terms are positive, so compare their consecutive ratio with }1."
+        ],
+        [
+          "calculation",
+          "\\frac{a_{n+1}}{a_n}=\\frac{7}{n+2}<1\\iff n>5,\\qquad N=6."
+        ],
+        [
+          "result",
+          "\\left(\\text{decreasing},\\;6\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{decreasing},\\;6\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLAC-1-0000000000000999-89",
+      "statement": "\\(\\text{Give the eventual strict direction and the least }N\\ge1\\text{ for which it holds at every step }n\\ge N:\\quad a_n=\\frac{3 \\cdot 4^{n}}{\\left(n + 5\\right)!}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The terms are positive, so compare their consecutive ratio with }1."
+        ],
+        [
+          "calculation",
+          "\\frac{a_{n+1}}{a_n}=\\frac{4}{n+6}<1\\iff n>-2,\\qquad N=1."
+        ],
+        [
+          "result",
+          "\\left(\\text{decreasing},\\;1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{decreasing},\\;1\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-monotone-radical-v1": [
+    {
+      "code": "SLAD-1-0000000000000003-88",
+      "statement": "\\(\\text{Give the eventual strict direction and the least }N\\ge1\\text{ for which it holds at every step }n\\ge N:\\quad a_n=\\sqrt{\\left(n - 3\\right)^{2} + 1} + 5\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Compare radicands because the square root is strictly increasing.}"
+        ],
+        [
+          "calculation",
+          "((n-2)^2+1)-((n-3)^2+1)=2n-5>0\\iff n\\ge 3\\quad(n\\in\\mathbb{Z})."
+        ],
+        [
+          "result",
+          "\\left(\\text{increasing},\\;3\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{increasing},\\;3\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "SLAD-1-0000000000000200-67",
+      "statement": "\\(\\text{Give the eventual strict direction and the least }N\\ge1\\text{ for which it holds at every step }n\\ge N:\\quad a_n=\\sqrt{\\left(n - 6\\right)^{2} + 5} + 1\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Compare radicands because the square root is strictly increasing.}"
+        ],
+        [
+          "calculation",
+          "((n-5)^2+5)-((n-6)^2+5)=2n-11>0\\iff n\\ge 6\\quad(n\\in\\mathbb{Z})."
+        ],
+        [
+          "result",
+          "\\left(\\text{increasing},\\;6\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{increasing},\\;6\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "SLAD-1-0000000000000999-81",
+      "statement": "\\(\\text{Give the eventual strict direction and the least }N\\ge1\\text{ for which it holds at every step }n\\ge N:\\quad a_n=\\sqrt{\\left(n - 3\\right)^{2} + 3} + 5\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Compare radicands because the square root is strictly increasing.}"
+        ],
+        [
+          "calculation",
+          "((n-2)^2+3)-((n-3)^2+3)=2n-5>0\\iff n\\ge 3\\quad(n\\in\\mathbb{Z})."
+        ],
+        [
+          "result",
+          "\\left(\\text{increasing},\\;3\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{increasing},\\;3\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-definition-reciprocal-v1": [
+    {
+      "code": "SLAE-1-0000000000000003-36",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}2 + \\frac{1}{n + 5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use the definition with an arbitrary }\\varepsilon>0."
+        ],
+        [
+          "calculation",
+          "|a_n-2|=\\frac{1}{n+5}<\\varepsilon\\quad\\text{if }n>\\frac{1}{\\varepsilon}."
+        ],
+        [
+          "result",
+          "2"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "SLAE-1-0000000000000200-15",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}5 + \\frac{5}{n + 1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use the definition with an arbitrary }\\varepsilon>0."
+        ],
+        [
+          "calculation",
+          "|a_n-5|=\\frac{5}{n+1}<\\varepsilon\\quad\\text{if }n>\\frac{5}{\\varepsilon}."
+        ],
+        [
+          "result",
+          "5"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "5",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "SLAE-1-0000000000000999-29",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}2 + \\frac{3}{n + 5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use the definition with an arbitrary }\\varepsilon>0."
+        ],
+        [
+          "calculation",
+          "|a_n-2|=\\frac{3}{n+5}<\\varepsilon\\quad\\text{if }n>\\frac{3}{\\varepsilon}."
+        ],
+        [
+          "result",
+          "2"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-limits-definition-growth-v1": [
+    {
+      "code": "SLAF-1-0000000000000003-47",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}2 n^{2} + n - 5\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{For every real threshold }M\\text{ choose an index after which }a_n>M."
+        ],
+        [
+          "calculation",
+          "a_n\\ge 2n^2-5>M\\quad \\text{if }n>\\sqrt{\\max(0,(M+5)/2)}."
+        ],
+        [
+          "result",
+          "\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\infty",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "SLAF-1-0000000000000200-26",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}5 n^{2} + 5 n - 1\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{For every real threshold }M\\text{ choose an index after which }a_n>M."
+        ],
+        [
+          "calculation",
+          "a_n\\ge 5n^2-1>M\\quad \\text{if }n>\\sqrt{\\max(0,(M+1)/5)}."
+        ],
+        [
+          "result",
+          "\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\infty",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "SLAF-1-0000000000000999-40",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}2 n^{2} + 3 n - 5\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{For every real threshold }M\\text{ choose an index after which }a_n>M."
+        ],
+        [
+          "calculation",
+          "a_n\\ge 2n^2-5>M\\quad \\text{if }n>\\sqrt{\\max(0,(M+5)/2)}."
+        ],
+        [
+          "result",
+          "\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\infty",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-limits-rational-leading-v1": [
+    {
+      "code": "SLAG-1-0000000000000003-73",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{2 n^{3} + n + 5}{- 6 n^{3} + n}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Divide the numerator and denominator by }n^3."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{2+1/n^2+5/n^3}{1/n^2-6}\\to\\frac{2}{-6}."
+        ],
+        [
+          "result",
+          "- \\frac{1}{3}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "- \\frac{1}{3}",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "SLAG-1-0000000000000200-52",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{5 n^{3} + 5 n + 1}{- 2 n^{3} + n}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Divide the numerator and denominator by }n^3."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{5+5/n^2+1/n^3}{1/n^2-2}\\to\\frac{5}{-2}."
+        ],
+        [
+          "result",
+          "- \\frac{5}{2}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "- \\frac{5}{2}",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "SLAG-1-0000000000000999-66",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{2 n^{3} + 3 n + 5}{- 6 n^{3} + n}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Divide the numerator and denominator by }n^3."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{2+3/n^2+5/n^3}{1/n^2-6}\\to\\frac{2}{-6}."
+        ],
+        [
+          "result",
+          "- \\frac{1}{3}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "- \\frac{1}{3}",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-factorial-limit-v1": [
+    {
+      "code": "SLAH-1-0000000000000003-91",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{\\left(2 n^{2} + 1\\right) n!}{\\left(5 n + 1\\right) \\left(n + 1\\right)!}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Cancel }n!\\text{ using }(n+1)!=(n+1)n!."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{2n^2+1}{(5n+1)(n+1)}=\\frac{2+1/n^2}{(5+1/n)(1+1/n)}\\to\\frac{2}{5}."
+        ],
+        [
+          "result",
+          "\\frac{2}{5}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{2}{5}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLAH-1-0000000000000200-70",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{\\left(5 n^{2} + 5\\right) n!}{\\left(n + 1\\right) \\left(n + 1\\right)!}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Cancel }n!\\text{ using }(n+1)!=(n+1)n!."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{5n^2+5}{(1n+1)(n+1)}=\\frac{5+5/n^2}{(1+1/n)(1+1/n)}\\to\\frac{5}{1}."
+        ],
+        [
+          "result",
+          "5"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "5",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLAH-1-0000000000000999-84",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{\\left(2 n^{2} + 3\\right) n!}{\\left(5 n + 1\\right) \\left(n + 1\\right)!}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Cancel }n!\\text{ using }(n+1)!=(n+1)n!."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{2n^2+3}{(5n+1)(n+1)}=\\frac{2+3/n^2}{(5+1/n)(1+1/n)}\\to\\frac{2}{5}."
+        ],
+        [
+          "result",
+          "\\frac{2}{5}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{2}{5}",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-conjugate-sequence-v1": [
+    {
+      "code": "SLAI-1-0000000000000003-74",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}- \\sqrt{n^{2} + 2 n} + \\sqrt{n^{2} + 6 n + 5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Multiply and divide by the sum of the radicals.}"
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{4n+5}{\\sqrt{n^{2} + 2 n} + \\sqrt{n^{2} + 6 n + 5}}\\to\\frac{4}{2}\\quad\\text{after division by }n."
+        ],
+        [
+          "result",
+          "2"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLAI-1-0000000000000200-53",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}- \\sqrt{n^{2} + 10 n} + \\sqrt{n^{2} + 20 n + 1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Multiply and divide by the sum of the radicals.}"
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{10n+1}{\\sqrt{n^{2} + 10 n} + \\sqrt{n^{2} + 20 n + 1}}\\to\\frac{10}{2}\\quad\\text{after division by }n."
+        ],
+        [
+          "result",
+          "5"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "5",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLAI-1-0000000000000999-67",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}- \\sqrt{n^{2} + 6 n} + \\sqrt{n^{2} + 10 n + 5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Multiply and divide by the sum of the radicals.}"
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{4n+5}{\\sqrt{n^{2} + 6 n} + \\sqrt{n^{2} + 10 n + 5}}\\to\\frac{4}{2}\\quad\\text{after division by }n."
+        ],
+        [
+          "result",
+          "2"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-squeeze-oscillation-v1": [
+    {
+      "code": "SLAJ-1-0000000000000003-28",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{\\left(-1\\right)^{n} + 2 n}{n + 5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use }-1\\le(-1)^n\\le1\\text{ and the positive denominator.}"
+        ],
+        [
+          "calculation",
+          "\\frac{2n-1}{1n+5}\\le a_n\\le\\frac{2n+1}{1n+5},\\qquad \\text{both bounds tend to }\\frac{2}{1}."
+        ],
+        [
+          "result",
+          "2"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "SLAJ-1-0000000000000200-07",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{\\left(-1\\right)^{n} + 5 n}{5 n + 1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use }-1\\le(-1)^n\\le1\\text{ and the positive denominator.}"
+        ],
+        [
+          "calculation",
+          "\\frac{5n-1}{5n+1}\\le a_n\\le\\frac{5n+1}{5n+1},\\qquad \\text{both bounds tend to }\\frac{5}{5}."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "SLAJ-1-0000000000000999-21",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{\\left(-1\\right)^{n} + 2 n}{3 n + 5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use }-1\\le(-1)^n\\le1\\text{ and the positive denominator.}"
+        ],
+        [
+          "calculation",
+          "\\frac{2n-1}{3n+5}\\le a_n\\le\\frac{2n+1}{3n+5},\\qquad \\text{both bounds tend to }\\frac{2}{3}."
+        ],
+        [
+          "result",
+          "\\frac{2}{3}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{2}{3}",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-squeeze-floor-v1": [
+    {
+      "code": "SLAK-1-0000000000000003-05",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{\\left\\lfloor{\\sqrt{3} n}\\right\\rfloor + 5}{\\left\\lfloor{\\sqrt{6} n}\\right\\rfloor + 5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{For real }t,\\ t-1<\\lfloor t\\rfloor\\le t.\\quad\\text{The lower bounds on numerator and denominator are positive.}"
+        ],
+        [
+          "calculation",
+          "\\frac{(\\sqrt{3})n+5-1}{(\\sqrt{6})n+5}<a_n<\\frac{(\\sqrt{3})n+5}{(\\sqrt{6})n+5-1}.\\quad\\text{Divide through by }n\\text{ on both sides.}"
+        ],
+        [
+          "result",
+          "\\frac{\\sqrt{2}}{2}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{\\sqrt{2}}{2}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLAK-1-0000000000000200-81",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{\\left\\lfloor{\\sqrt{6} n}\\right\\rfloor + 1}{\\left\\lfloor{5 \\sqrt{2} n}\\right\\rfloor + 1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{For real }t,\\ t-1<\\lfloor t\\rfloor\\le t.\\quad\\text{The lower bounds on numerator and denominator are positive.}"
+        ],
+        [
+          "calculation",
+          "\\frac{(\\sqrt{6})n+1-1}{(5 \\sqrt{2})n+1}<a_n<\\frac{(\\sqrt{6})n+1}{(5 \\sqrt{2})n+1-1}.\\quad\\text{Divide through by }n\\text{ on both sides.}"
+        ],
+        [
+          "result",
+          "\\frac{\\sqrt{3}}{5}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{\\sqrt{3}}{5}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLAK-1-0000000000000999-95",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{\\left\\lfloor{\\sqrt{3} n}\\right\\rfloor + 5}{\\left\\lfloor{3 \\sqrt{6} n}\\right\\rfloor + 5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{For real }t,\\ t-1<\\lfloor t\\rfloor\\le t.\\quad\\text{The lower bounds on numerator and denominator are positive.}"
+        ],
+        [
+          "calculation",
+          "\\frac{(\\sqrt{3})n+5-1}{(3 \\sqrt{6})n+5}<a_n<\\frac{(\\sqrt{3})n+5}{(3 \\sqrt{6})n+5-1}.\\quad\\text{Divide through by }n\\text{ on both sides.}"
+        ],
+        [
+          "result",
+          "\\frac{\\sqrt{2}}{6}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{\\sqrt{2}}{6}",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-squeeze-root-v1": [
+    {
+      "code": "SLAL-1-0000000000000003-82",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(\\cos{\\left(n \\right)} + 8\\right)^{\\frac{1}{n}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Bound the cosine before taking the positive }n\\text{th root.}"
+        ],
+        [
+          "calculation",
+          "7^{1/n}\\le a_n\\le 9^{1/n},\\qquad d^{1/n}=\\exp((\\log d)/n)\\to1\\quad(d>0)."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLAL-1-0000000000000200-61",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(\\cos{\\left(5 n \\right)} + 7\\right)^{\\frac{1}{n}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Bound the cosine before taking the positive }n\\text{th root.}"
+        ],
+        [
+          "calculation",
+          "6^{1/n}\\le a_n\\le 8^{1/n},\\qquad d^{1/n}=\\exp((\\log d)/n)\\to1\\quad(d>0)."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLAL-1-0000000000000999-75",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(\\cos{\\left(3 n \\right)} + 8\\right)^{\\frac{1}{n}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Bound the cosine before taking the positive }n\\text{th root.}"
+        ],
+        [
+          "calculation",
+          "7^{1/n}\\le a_n\\le 9^{1/n},\\qquad d^{1/n}=\\exp((\\log d)/n)\\to1\\quad(d>0)."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-squeeze-sum-v1": [
+    {
+      "code": "SLAM-1-0000000000000003-34",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\sum_{k=1}^{n} \\frac{1}{k + 2 n^{2} + 5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Each of the }n\\text{ positive summands is at most }1/(an^2)\\text{ with }a=2."
+        ],
+        [
+          "calculation",
+          "0<a_n\\le\\frac{n}{2n^2}=\\frac{1}{2n}\\to0."
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "SLAM-1-0000000000000200-13",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\sum_{k=1}^{n} \\frac{1}{5 k + 5 n^{2} + 1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Each of the }n\\text{ positive summands is at most }1/(an^2)\\text{ with }a=5."
+        ],
+        [
+          "calculation",
+          "0<a_n\\le\\frac{n}{5n^2}=\\frac{1}{5n}\\to0."
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "SLAM-1-0000000000000999-27",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\sum_{k=1}^{n} \\frac{1}{3 k + 2 n^{2} + 5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Each of the }n\\text{ positive summands is at most }1/(an^2)\\text{ with }a=2."
+        ],
+        [
+          "calculation",
+          "0<a_n\\le\\frac{n}{2n^2}=\\frac{1}{2n}\\to0."
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 5
+      }
+    }
+  ],
+  "analysis1-limits-exponential-power-v1": [
+    {
+      "code": "SLAN-1-0000000000000003-10",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(1 + \\frac{2}{n + 1}\\right)^{5 n - 2}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Take logarithms. The base is positive and tends to }1."
+        ],
+        [
+          "calculation",
+          "\\log a_n=\\frac{\\log(1+u_n)}{u_n}\\,( 5n-2)u_n,\\qquad u_n=\\frac{2}{n+1},\\quad (5n-2)u_n\\to 10."
+        ],
+        [
+          "result",
+          "e^{10}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "e^{10}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLAN-1-0000000000000200-86",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(1 + \\frac{5}{n + 5}\\right)^{n - 5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Take logarithms. The base is positive and tends to }1."
+        ],
+        [
+          "calculation",
+          "\\log a_n=\\frac{\\log(1+u_n)}{u_n}\\,( 1n-5)u_n,\\qquad u_n=\\frac{5}{n+5},\\quad (1n-5)u_n\\to 5."
+        ],
+        [
+          "result",
+          "e^{5}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "e^{5}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLAN-1-0000000000000999-03",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(1 + \\frac{2}{n + 3}\\right)^{5 n - 2}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Take logarithms. The base is positive and tends to }1."
+        ],
+        [
+          "calculation",
+          "\\log a_n=\\frac{\\log(1+u_n)}{u_n}\\,( 5n-2)u_n,\\qquad u_n=\\frac{2}{n+3},\\quad (5n-2)u_n\\to 10."
+        ],
+        [
+          "result",
+          "e^{10}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "e^{10}",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-exponential-difference-v1": [
+    {
+      "code": "SLAO-1-0000000000000003-03",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{\\left(n + 2\\right)^{n} - \\left(n + 3\\right)^{n}}{\\left(n + 3\\right)^{n} - \\left(n + 8\\right)^{n}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Divide each power by }(n+a)^n\\text{ and use }(1+d/(n+a))^n\\to e^d."
+        ],
+        [
+          "calculation",
+          "\\frac{1-(1+1/(n+2))^n}{(1+1/(n+2))^n-(1+6/(n+2))^n}\\to\\frac{1-e^{1}}{e^{1}-e^{6}}."
+        ],
+        [
+          "result",
+          "\\frac{1 - e}{e - e^{6}}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{1 - e}{e - e^{6}}",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "SLAO-1-0000000000000200-79",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{\\left(n + 5\\right)^{n} - \\left(n + 10\\right)^{n}}{\\left(n + 10\\right)^{n} - \\left(n + 11\\right)^{n}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Divide each power by }(n+a)^n\\text{ and use }(1+d/(n+a))^n\\to e^d."
+        ],
+        [
+          "calculation",
+          "\\frac{1-(1+5/(n+5))^n}{(1+5/(n+5))^n-(1+6/(n+5))^n}\\to\\frac{1-e^{5}}{e^{5}-e^{6}}."
+        ],
+        [
+          "result",
+          "\\frac{1 - e^{5}}{- e^{6} + e^{5}}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{1 - e^{5}}{- e^{6} + e^{5}}",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "SLAO-1-0000000000000999-93",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{\\left(n + 2\\right)^{n} - \\left(n + 5\\right)^{n}}{\\left(n + 5\\right)^{n} - \\left(n + 10\\right)^{n}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Divide each power by }(n+a)^n\\text{ and use }(1+d/(n+a))^n\\to e^d."
+        ],
+        [
+          "calculation",
+          "\\frac{1-(1+3/(n+2))^n}{(1+3/(n+2))^n-(1+8/(n+2))^n}\\to\\frac{1-e^{3}}{e^{3}-e^{8}}."
+        ],
+        [
+          "result",
+          "\\frac{1 - e^{3}}{- e^{8} + e^{3}}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{1 - e^{3}}{- e^{8} + e^{3}}",
+      "metadata": {
+        "difficulty": 5
+      }
+    }
+  ],
+  "analysis1-limits-infinite-exponential-v1": [
+    {
+      "code": "SLAP-1-0000000000000003-25",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}3^{n} - 5^{n} + 5\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Factor the dominant exponential, which grows without bound.}"
+        ],
+        [
+          "calculation",
+          "a_n=5^n\\left(5/5^n+(3/5)^n-1\\right),\\quad\\text{the factor in parentheses tends to }-1."
+        ],
+        [
+          "result",
+          "-\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "-\\infty",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "SLAP-1-0000000000000200-04",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}- 12^{n} + 6^{n} + 1\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Factor the dominant exponential, which grows without bound.}"
+        ],
+        [
+          "calculation",
+          "a_n=12^n\\left(1/12^n+(6/12)^n-1\\right),\\quad\\text{the factor in parentheses tends to }-1."
+        ],
+        [
+          "result",
+          "-\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "-\\infty",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "SLAP-1-0000000000000999-18",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}3^{n} - 7^{n} + 5\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Factor the dominant exponential, which grows without bound.}"
+        ],
+        [
+          "calculation",
+          "a_n=7^n\\left(5/7^n+(3/7)^n-1\\right),\\quad\\text{the factor in parentheses tends to }-1."
+        ],
+        [
+          "result",
+          "-\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "-\\infty",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-bound-conjugate-v1": [
+    {
+      "code": "SLAQ-1-0000000000000003-29",
+      "statement": "\\(\\text{Classify boundedness and give the greatest lower bound and least upper bound:}\\quad a_n=- 5 \\sqrt{n + 1} + 5 \\sqrt{n + 3},\\quad n\\ge1.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Rationalize. Both radicals in the denominator increase without bound.}"
+        ],
+        [
+          "calculation",
+          "0<a_n=\\frac{10}{\\sqrt{n + 1} + \\sqrt{n + 3}}\\le a_1=10 - 5 \\sqrt{2}."
+        ],
+        [
+          "result",
+          "\\left(\\text{both},\\;0,\\;10 - 5 \\sqrt{2}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{both},\\;0,\\;10 - 5 \\sqrt{2}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "SLAQ-1-0000000000000200-08",
+      "statement": "\\(\\text{Classify boundedness and give the greatest lower bound and least upper bound:}\\quad a_n=- \\sqrt{n + 5} + \\sqrt{n + 10},\\quad n\\ge1.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Rationalize. Both radicals in the denominator increase without bound.}"
+        ],
+        [
+          "calculation",
+          "0<a_n=\\frac{5}{\\sqrt{n + 5} + \\sqrt{n + 10}}\\le a_1=- \\sqrt{6} + \\sqrt{11}."
+        ],
+        [
+          "result",
+          "\\left(\\text{both},\\;0,\\;- \\sqrt{6} + \\sqrt{11}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{both},\\;0,\\;- \\sqrt{6} + \\sqrt{11}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "SLAQ-1-0000000000000999-22",
+      "statement": "\\(\\text{Classify boundedness and give the greatest lower bound and least upper bound:}\\quad a_n=- 5 \\sqrt{n + 3} + 5 \\sqrt{n + 5},\\quad n\\ge1.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Rationalize. Both radicals in the denominator increase without bound.}"
+        ],
+        [
+          "calculation",
+          "0<a_n=\\frac{10}{\\sqrt{n + 3} + \\sqrt{n + 5}}\\le a_1=-10 + 5 \\sqrt{6}."
+        ],
+        [
+          "result",
+          "\\left(\\text{both},\\;0,\\;-10 + 5 \\sqrt{6}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{both},\\;0,\\;-10 + 5 \\sqrt{6}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-limits-monotone-ratio-v1": [
+    {
+      "code": "SLAR-1-0000000000000003-81",
+      "statement": "\\(\\text{Give the eventual strict direction and the least }N\\ge1\\text{ for which it holds at every step }n\\ge N:\\quad a_n=\\frac{5^{n}}{3^{n} + 5 \\cdot 4^{n}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Divide numerator and denominator by the numerator.}"
+        ],
+        [
+          "calculation",
+          "a_n=\\frac1{(3/5)^n+5(4/5)^n}.\\quad\\text{Both ratios lie in }(0,1)\\text{, so the positive denominator decreases.}"
+        ],
+        [
+          "result",
+          "\\left(\\text{increasing},\\;1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{increasing},\\;1\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLAR-1-0000000000000200-60",
+      "statement": "\\(\\text{Give the eventual strict direction and the least }N\\ge1\\text{ for which it holds at every step }n\\ge N:\\quad a_n=\\frac{12^{n}}{11^{n} + 6^{n}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Divide numerator and denominator by the numerator.}"
+        ],
+        [
+          "calculation",
+          "a_n=\\frac1{(6/12)^n+1(11/12)^n}.\\quad\\text{Both ratios lie in }(0,1)\\text{, so the positive denominator decreases.}"
+        ],
+        [
+          "result",
+          "\\left(\\text{increasing},\\;1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{increasing},\\;1\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLAR-1-0000000000000999-74",
+      "statement": "\\(\\text{Give the eventual strict direction and the least }N\\ge1\\text{ for which it holds at every step }n\\ge N:\\quad a_n=\\frac{7^{n}}{3^{n} + 5 \\cdot 6^{n}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Divide numerator and denominator by the numerator.}"
+        ],
+        [
+          "calculation",
+          "a_n=\\frac1{(3/7)^n+5(6/7)^n}.\\quad\\text{Both ratios lie in }(0,1)\\text{, so the positive denominator decreases.}"
+        ],
+        [
+          "result",
+          "\\left(\\text{increasing},\\;1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{increasing},\\;1\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-rational-zero-v1": [
+    {
+      "code": "SLAS-1-0000000000000003-92",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{2 n + 1}{5 n^{2} + 1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The denominator has the higher degree. Divide by }n^2."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{2/n+1/n^2}{5+1/n^2}\\to 0."
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "SLAS-1-0000000000000200-71",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{5 n + 5}{n^{2} + 1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The denominator has the higher degree. Divide by }n^2."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{5/n+5/n^2}{1+1/n^2}\\to 0."
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "SLAS-1-0000000000000999-85",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{2 n + 3}{5 n^{2} + 1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The denominator has the higher degree. Divide by }n^2."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{2/n+3/n^2}{5+1/n^2}\\to 0."
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-limits-arithmetic-sum-ratio-v1": [
+    {
+      "code": "SLAT-1-0000000000000003-20",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{\\sum_{k=1}^{n} \\left(2 k + 1\\right)}{\\sum_{k=1}^{n} \\left(5 k + 1\\right)}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use the finite arithmetic sum formula in both sums.}"
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{2n(n+1)/2+1n}{5n(n+1)/2+n}\\to\\frac{2}{5}."
+        ],
+        [
+          "result",
+          "\\frac{2}{5}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{2}{5}",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "SLAT-1-0000000000000200-96",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{\\sum_{k=1}^{n} \\left(5 k + 5\\right)}{\\sum_{k=1}^{n} \\left(k + 1\\right)}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use the finite arithmetic sum formula in both sums.}"
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{5n(n+1)/2+5n}{1n(n+1)/2+n}\\to\\frac{5}{1}."
+        ],
+        [
+          "result",
+          "5"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "5",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "SLAT-1-0000000000000999-13",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{\\sum_{k=1}^{n} \\left(2 k + 3\\right)}{\\sum_{k=1}^{n} \\left(5 k + 1\\right)}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use the finite arithmetic sum formula in both sums.}"
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{2n(n+1)/2+3n}{5n(n+1)/2+n}\\to\\frac{2}{5}."
+        ],
+        [
+          "result",
+          "\\frac{2}{5}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{2}{5}",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-root-exponential-ratio-v1": [
+    {
+      "code": "SLAU-1-0000000000000003-09",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(\\frac{3^{n} + 5^{n}}{11^{n} + 5^{n}}\\right)^{\\frac{1}{n}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Factor the largest base power from each sum.}"
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{5}{11}\\left(\\frac{1+(3/5)^n}{1+(5/11)^n}\\right)^{1/n}.\\quad\\text{The factor in parentheses is between }1/2\\text{ and }2."
+        ],
+        [
+          "result",
+          "\\frac{5}{11}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{5}{11}",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "SLAU-1-0000000000000200-85",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(\\frac{12^{n} + 6^{n}}{12^{n} + 14^{n}}\\right)^{\\frac{1}{n}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Factor the largest base power from each sum.}"
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{12}{14}\\left(\\frac{1+(6/12)^n}{1+(12/14)^n}\\right)^{1/n}.\\quad\\text{The factor in parentheses is between }1/2\\text{ and }2."
+        ],
+        [
+          "result",
+          "\\frac{6}{7}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{6}{7}",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "SLAU-1-0000000000000999-02",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(\\frac{3^{n} + 7^{n}}{13^{n} + 7^{n}}\\right)^{\\frac{1}{n}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Factor the largest base power from each sum.}"
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{7}{13}\\left(\\frac{1+(3/7)^n}{1+(7/13)^n}\\right)^{1/n}.\\quad\\text{The factor in parentheses is between }1/2\\text{ and }2."
+        ],
+        [
+          "result",
+          "\\frac{7}{13}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{7}{13}",
+      "metadata": {
+        "difficulty": 5
+      }
+    }
+  ],
+  "analysis1-limits-logarithmic-power-v1": [
+    {
+      "code": "SLAV-1-0000000000000003-52",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(1 + \\frac{2}{\\log{\\left(n + 5 \\right)}}\\right)^{\\log{\\left(n + 5 \\right)}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Take logarithms and use }\\log(1+u)/u\\to1."
+        ],
+        [
+          "calculation",
+          "\\log a_n=2\\frac{\\log(1+u_n)}{u_n}\\to 2,\\qquad u_n=2/\\log(n+5)\\to0."
+        ],
+        [
+          "result",
+          "e^{2}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "e^{2}",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "SLAV-1-0000000000000200-31",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(1 + \\frac{5}{\\log{\\left(n + 1 \\right)}}\\right)^{5 \\log{\\left(n + 1 \\right)}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Take logarithms and use }\\log(1+u)/u\\to1."
+        ],
+        [
+          "calculation",
+          "\\log a_n=25\\frac{\\log(1+u_n)}{u_n}\\to 25,\\qquad u_n=5/\\log(n+1)\\to0."
+        ],
+        [
+          "result",
+          "e^{25}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "e^{25}",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "SLAV-1-0000000000000999-45",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(1 + \\frac{2}{\\log{\\left(n + 5 \\right)}}\\right)^{3 \\log{\\left(n + 5 \\right)}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Take logarithms and use }\\log(1+u)/u\\to1."
+        ],
+        [
+          "calculation",
+          "\\log a_n=6\\frac{\\log(1+u_n)}{u_n}\\to 6,\\qquad u_n=2/\\log(n+5)\\to0."
+        ],
+        [
+          "result",
+          "e^{6}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "e^{6}",
+      "metadata": {
+        "difficulty": 5
+      }
+    }
+  ],
+  "analysis1-limits-infinite-factorial-v1": [
+    {
+      "code": "SLAW-1-0000000000000003-76",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{1 - 2 \\left(n + 1\\right)!}{n! + 5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use }(n+1)!=(n+1)n!\\text{ and divide by }n!."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{1/n!-2(n+1)}{1+5/n!}.\\quad\\text{The numerator tends to }-\\infty\\text{ and the denominator tends to }1."
+        ],
+        [
+          "result",
+          "-\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "-\\infty",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLAW-1-0000000000000200-55",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{5 - 5 \\left(n + 1\\right)!}{n! + 1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use }(n+1)!=(n+1)n!\\text{ and divide by }n!."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{5/n!-5(n+1)}{1+1/n!}.\\quad\\text{The numerator tends to }-\\infty\\text{ and the denominator tends to }1."
+        ],
+        [
+          "result",
+          "-\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "-\\infty",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLAW-1-0000000000000999-69",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{3 - 2 \\left(n + 1\\right)!}{n! + 5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use }(n+1)!=(n+1)n!\\text{ and divide by }n!."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{3/n!-2(n+1)}{1+5/n!}.\\quad\\text{The numerator tends to }-\\infty\\text{ and the denominator tends to }1."
+        ],
+        [
+          "result",
+          "-\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "-\\infty",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-divergent-oscillation-v1": [
+    {
+      "code": "SLAX-1-0000000000000003-37",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}2 \\left(-1\\right)^{n} + 1 + \\frac{5}{n}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{A convergent sequence must have the same limit along every subsequence.}"
+        ],
+        [
+          "calculation",
+          "a_{2k}\\to 3,\\qquad a_{2k+1}\\to -1,\\qquad 3\\ne -1."
+        ],
+        [
+          "result",
+          "\\text{does not exist}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\text{does not exist}",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "SLAX-1-0000000000000200-16",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}5 \\left(-1\\right)^{n} + 5 + \\frac{1}{n}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{A convergent sequence must have the same limit along every subsequence.}"
+        ],
+        [
+          "calculation",
+          "a_{2k}\\to 10,\\qquad a_{2k+1}\\to 0,\\qquad 10\\ne 0."
+        ],
+        [
+          "result",
+          "\\text{does not exist}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\text{does not exist}",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "SLAX-1-0000000000000999-30",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}2 \\left(-1\\right)^{n} + 3 + \\frac{5}{n}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{A convergent sequence must have the same limit along every subsequence.}"
+        ],
+        [
+          "calculation",
+          "a_{2k}\\to 5,\\qquad a_{2k+1}\\to 1,\\qquad 5\\ne 1."
+        ],
+        [
+          "result",
+          "\\text{does not exist}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\text{does not exist}",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-scaled-conjugate-v1": [
+    {
+      "code": "SLAY-1-0000000000000003-89",
+      "statement": "\\(\\text{Evaluate for integers }n\\ge3:\\quad\\lim_{n\\to\\infty}n \\left(- 2 n + \\sqrt{4 n^{2} - 5}\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Rationalize the difference and divide the denominator by }n."
+        ],
+        [
+          "calculation",
+          "\\frac{-5n}{\\sqrt{4n^2-5}+2n}=\\frac{-5}{\\sqrt{4-5/n^2}+2}\\to-\\frac{5}{4}."
+        ],
+        [
+          "result",
+          "- \\frac{5}{4}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "- \\frac{5}{4}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLAY-1-0000000000000200-68",
+      "statement": "\\(\\text{Evaluate for integers }n\\ge3:\\quad\\lim_{n\\to\\infty}5 n \\left(- 5 n + \\sqrt{25 n^{2} - 1}\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Rationalize the difference and divide the denominator by }n."
+        ],
+        [
+          "calculation",
+          "\\frac{-5n}{\\sqrt{25n^2-1}+5n}=\\frac{-5}{\\sqrt{25-1/n^2}+5}\\to-\\frac{5}{10}."
+        ],
+        [
+          "result",
+          "- \\frac{1}{2}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "- \\frac{1}{2}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLAY-1-0000000000000999-82",
+      "statement": "\\(\\text{Evaluate for integers }n\\ge3:\\quad\\lim_{n\\to\\infty}3 n \\left(- 2 n + \\sqrt{4 n^{2} - 5}\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Rationalize the difference and divide the denominator by }n."
+        ],
+        [
+          "calculation",
+          "\\frac{-15n}{\\sqrt{4n^2-5}+2n}=\\frac{-15}{\\sqrt{4-5/n^2}+2}\\to-\\frac{15}{4}."
+        ],
+        [
+          "result",
+          "- \\frac{15}{4}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "- \\frac{15}{4}",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-definition-pole-v1": [
+    {
+      "code": "FLAA-1-0000000000000003-84",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 5^+}\\frac{3}{x - 5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Approach the pole from the right.}"
+        ],
+        [
+          "calculation",
+          "\\text{For }M>0,\\quad 0<x-5<\\frac{3}{M}\\implies \\frac{3}{x-5}>M."
+        ],
+        [
+          "result",
+          "\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\infty",
+      "metadata": {
+        "difficulty": 1
+      }
+    },
+    {
+      "code": "FLAA-1-0000000000000200-63",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 1^+}\\frac{10}{x - 1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Approach the pole from the right.}"
+        ],
+        [
+          "calculation",
+          "\\text{For }M>0,\\quad 0<x-1<\\frac{10}{M}\\implies \\frac{10}{x-1}>M."
+        ],
+        [
+          "result",
+          "\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\infty",
+      "metadata": {
+        "difficulty": 1
+      }
+    },
+    {
+      "code": "FLAA-1-0000000000000999-77",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 5^+}\\frac{5}{x - 5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Approach the pole from the right.}"
+        ],
+        [
+          "calculation",
+          "\\text{For }M>0,\\quad 0<x-5<\\frac{5}{M}\\implies \\frac{5}{x-5}>M."
+        ],
+        [
+          "result",
+          "\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\infty",
+      "metadata": {
+        "difficulty": 1
+      }
+    }
+  ],
+  "analysis1-limits-rational-cancellation-v1": [
+    {
+      "code": "FLAB-1-0000000000000003-80",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 5}\\frac{2 x^{2} - 50}{\\left(x - 5\\right) \\left(x + 1\\right)}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Factor the difference of squares and cancel away from the limit point.}"
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{2 x + 10}{x + 1}\\quad(x\\ne 5,-1),\\qquad \\frac{2 x + 10}{x + 1}\\bigg|_{x=5}=\\frac{20}{6}."
+        ],
+        [
+          "result",
+          "\\frac{10}{3}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{10}{3}",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "FLAB-1-0000000000000200-59",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 1}\\frac{5 x^{2} - 5}{\\left(x - 1\\right) \\left(x + 5\\right)}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Factor the difference of squares and cancel away from the limit point.}"
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{5 x + 5}{x + 5}\\quad(x\\ne 1,-5),\\qquad \\frac{5 x + 5}{x + 5}\\bigg|_{x=1}=\\frac{10}{6}."
+        ],
+        [
+          "result",
+          "\\frac{5}{3}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{5}{3}",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "FLAB-1-0000000000000999-73",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 5}\\frac{2 x^{2} - 50}{\\left(x - 5\\right) \\left(x + 3\\right)}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Factor the difference of squares and cancel away from the limit point.}"
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{2 x + 10}{x + 3}\\quad(x\\ne 5,-3),\\qquad \\frac{2 x + 10}{x + 3}\\bigg|_{x=5}=\\frac{20}{8}."
+        ],
+        [
+          "result",
+          "\\frac{5}{2}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{5}{2}",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-limits-radical-cancellation-v1": [
+    {
+      "code": "FLAC-1-0000000000000003-33",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 5}\\frac{\\sqrt{2 x - 9} - 1}{x - 5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Multiply numerator and denominator by the conjugate.}"
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{2}{\\sqrt{2(x-5)+1}+1}\\quad(x\\ne 5),\\qquad f(x)\\to\\frac{2}{2}."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLAC-1-0000000000000200-12",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 1}\\frac{\\sqrt{5 x + 20} - 5}{x - 1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Multiply numerator and denominator by the conjugate.}"
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{5}{\\sqrt{5(x-1)+25}+5}\\quad(x\\ne 1),\\qquad f(x)\\to\\frac{5}{10}."
+        ],
+        [
+          "result",
+          "\\frac{1}{2}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{1}{2}",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLAC-1-0000000000000999-26",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 5}\\frac{\\sqrt{2 x - 1} - 3}{x - 5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Multiply numerator and denominator by the conjugate.}"
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{2}{\\sqrt{2(x-5)+9}+3}\\quad(x\\ne 5),\\qquad f(x)\\to\\frac{2}{6}."
+        ],
+        [
+          "result",
+          "\\frac{1}{3}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{1}{3}",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-exponential-dominance-v1": [
+    {
+      "code": "FLAD-1-0000000000000003-88",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\infty}\\frac{3^{x} + 5}{5^{x} + 1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Divide both numerator and denominator by the larger exponential.}"
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{(3/5)^x+5/5^x}{1+1/5^x}\\to0."
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "FLAD-1-0000000000000200-67",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\infty}\\frac{6^{x} + 1}{12^{x} + 5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Divide both numerator and denominator by the larger exponential.}"
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{(6/12)^x+1/12^x}{1+5/12^x}\\to0."
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "FLAD-1-0000000000000999-81",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\infty}\\frac{3^{x} + 5}{7^{x} + 3}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Divide both numerator and denominator by the larger exponential.}"
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{(3/7)^x+5/7^x}{1+3/7^x}\\to0."
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-limits-absolute-jump-v1": [
+    {
+      "code": "FLAE-1-0000000000000003-75",
+      "statement": "\\(\\text{Give both one-sided limits and the two-sided limit at }x=5:\\quad f(x)=\\frac{2 x - 10}{\\left|{x - 5}\\right|} + 1.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The ratio of a nonzero number to its absolute value is its sign.}"
+        ],
+        [
+          "calculation",
+          "f(x)=1-2\\quad(x<5),\\qquad f(x)=1+2\\quad(x>5).\\quad\\text{The one-sided limits differ.}"
+        ],
+        [
+          "result",
+          "\\left(-1,\\;3,\\;\\text{does not exist}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(-1,\\;3,\\;\\text{does not exist}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "FLAE-1-0000000000000200-54",
+      "statement": "\\(\\text{Give both one-sided limits and the two-sided limit at }x=1:\\quad f(x)=\\frac{5 x - 5}{\\left|{x - 1}\\right|} + 5.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The ratio of a nonzero number to its absolute value is its sign.}"
+        ],
+        [
+          "calculation",
+          "f(x)=5-5\\quad(x<1),\\qquad f(x)=5+5\\quad(x>1).\\quad\\text{The one-sided limits differ.}"
+        ],
+        [
+          "result",
+          "\\left(0,\\;10,\\;\\text{does not exist}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(0,\\;10,\\;\\text{does not exist}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "FLAE-1-0000000000000999-68",
+      "statement": "\\(\\text{Give both one-sided limits and the two-sided limit at }x=5:\\quad f(x)=\\frac{2 x - 10}{\\left|{x - 5}\\right|} + 3.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The ratio of a nonzero number to its absolute value is its sign.}"
+        ],
+        [
+          "calculation",
+          "f(x)=3-2\\quad(x<5),\\qquad f(x)=3+2\\quad(x>5).\\quad\\text{The one-sided limits differ.}"
+        ],
+        [
+          "result",
+          "\\left(1,\\;5,\\;\\text{does not exist}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(1,\\;5,\\;\\text{does not exist}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-limits-essential-exponential-v1": [
+    {
+      "code": "FLAF-1-0000000000000003-25",
+      "statement": "\\(\\text{Give both one-sided limits and the two-sided limit at }x=5:\\quad f(x)=e^{\\frac{2}{x - 5}} + 1.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The exponent has opposite infinite limits on the two sides.}"
+        ],
+        [
+          "calculation",
+          "\\frac{2}{x-5}\\to-\\infty\\text{ from the left, and }+\\infty\\text{ from the right. Thus the exponential tends to }0\\text{ and }+\\infty."
+        ],
+        [
+          "result",
+          "\\left(1,\\;\\infty,\\;\\text{does not exist}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(1,\\;\\infty,\\;\\text{does not exist}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLAF-1-0000000000000200-04",
+      "statement": "\\(\\text{Give both one-sided limits and the two-sided limit at }x=1:\\quad f(x)=e^{\\frac{5}{x - 1}} + 5.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The exponent has opposite infinite limits on the two sides.}"
+        ],
+        [
+          "calculation",
+          "\\frac{5}{x-1}\\to-\\infty\\text{ from the left, and }+\\infty\\text{ from the right. Thus the exponential tends to }0\\text{ and }+\\infty."
+        ],
+        [
+          "result",
+          "\\left(5,\\;\\infty,\\;\\text{does not exist}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(5,\\;\\infty,\\;\\text{does not exist}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLAF-1-0000000000000999-18",
+      "statement": "\\(\\text{Give both one-sided limits and the two-sided limit at }x=5:\\quad f(x)=e^{\\frac{2}{x - 5}} + 3.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The exponent has opposite infinite limits on the two sides.}"
+        ],
+        [
+          "calculation",
+          "\\frac{2}{x-5}\\to-\\infty\\text{ from the left, and }+\\infty\\text{ from the right. Thus the exponential tends to }0\\text{ and }+\\infty."
+        ],
+        [
+          "result",
+          "\\left(3,\\;\\infty,\\;\\text{does not exist}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(3,\\;\\infty,\\;\\text{does not exist}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-squeeze-function-v1": [
+    {
+      "code": "FLAG-1-0000000000000003-58",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 5^+}\\sqrt{x - 5} \\sin{\\left(\\frac{2}{\\left(x - 5\\right)^{2}} \\right)} + 1\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{On the right, bound the sine by }-1\\text{ and }1."
+        ],
+        [
+          "calculation",
+          "1-\\sqrt{x-5}\\le f(x)\\le1+\\sqrt{x-5},\\qquad\\text{both bounds tend to }1."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLAG-1-0000000000000200-37",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 1^+}\\sqrt{x - 1} \\sin{\\left(\\frac{5}{\\left(x - 1\\right)^{2}} \\right)} + 5\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{On the right, bound the sine by }-1\\text{ and }1."
+        ],
+        [
+          "calculation",
+          "5-\\sqrt{x-1}\\le f(x)\\le5+\\sqrt{x-1},\\qquad\\text{both bounds tend to }5."
+        ],
+        [
+          "result",
+          "5"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "5",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLAG-1-0000000000000999-51",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 5^+}\\sqrt{x - 5} \\sin{\\left(\\frac{2}{\\left(x - 5\\right)^{2}} \\right)} + 3\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{On the right, bound the sine by }-1\\text{ and }1."
+        ],
+        [
+          "calculation",
+          "3-\\sqrt{x-5}\\le f(x)\\le3+\\sqrt{x-5},\\qquad\\text{both bounds tend to }3."
+        ],
+        [
+          "result",
+          "3"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "3",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-infinitesimal-exp-sin-v1": [
+    {
+      "code": "FLAH-1-0000000000000003-83",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 5}\\frac{e^{2 x - 10} - 1}{\\sin{\\left(x - 5 \\right)}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use the standard equivalents }e^u-1\\sim u\\text{ and }\\sin u\\sim u."
+        ],
+        [
+          "calculation",
+          "e^{2(x-5)}-1\\sim 2(x-5),\\qquad\\sin(1(x-5))\\sim 1(x-5)."
+        ],
+        [
+          "result",
+          "2"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLAH-1-0000000000000200-62",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 1}\\frac{e^{5 x - 5} - 1}{\\sin{\\left(5 x - 5 \\right)}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use the standard equivalents }e^u-1\\sim u\\text{ and }\\sin u\\sim u."
+        ],
+        [
+          "calculation",
+          "e^{5(x-1)}-1\\sim 5(x-1),\\qquad\\sin(5(x-1))\\sim 5(x-1)."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLAH-1-0000000000000999-76",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 5}\\frac{e^{2 x - 10} - 1}{\\sin{\\left(3 x - 15 \\right)}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use the standard equivalents }e^u-1\\sim u\\text{ and }\\sin u\\sim u."
+        ],
+        [
+          "calculation",
+          "e^{2(x-5)}-1\\sim 2(x-5),\\qquad\\sin(3(x-5))\\sim 3(x-5)."
+        ],
+        [
+          "result",
+          "\\frac{2}{3}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{2}{3}",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-infinitesimal-log-v1": [
+    {
+      "code": "FLAI-1-0000000000000003-77",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 5}\\frac{\\log{\\left(2 x - 9 \\right)}}{\\operatorname{atan}{\\left(x - 5 \\right)}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Both functions are defined in a neighborhood of the limit point.}"
+        ],
+        [
+          "calculation",
+          "\\log(1+2(x-5))\\sim 2(x-5),\\qquad\\arctan(1(x-5))\\sim 1(x-5)."
+        ],
+        [
+          "result",
+          "2"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLAI-1-0000000000000200-56",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 1}\\frac{\\log{\\left(5 x - 4 \\right)}}{\\operatorname{atan}{\\left(5 x - 5 \\right)}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Both functions are defined in a neighborhood of the limit point.}"
+        ],
+        [
+          "calculation",
+          "\\log(1+5(x-1))\\sim 5(x-1),\\qquad\\arctan(5(x-1))\\sim 5(x-1)."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLAI-1-0000000000000999-70",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 5}\\frac{\\log{\\left(2 x - 9 \\right)}}{\\operatorname{atan}{\\left(3 x - 15 \\right)}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Both functions are defined in a neighborhood of the limit point.}"
+        ],
+        [
+          "calculation",
+          "\\log(1+2(x-5))\\sim 2(x-5),\\qquad\\arctan(3(x-5))\\sim 3(x-5)."
+        ],
+        [
+          "result",
+          "\\frac{2}{3}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{2}{3}",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-infinitesimal-power-v1": [
+    {
+      "code": "FLAJ-1-0000000000000003-59",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 5}\\left(2 x - 9\\right)^{\\frac{1}{x - 5}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The base is positive sufficiently close to the limit point. Take logs.}"
+        ],
+        [
+          "calculation",
+          "\\log f(x)=\\frac{1\\log(1+2(x-5))}{x-5}\\to 2."
+        ],
+        [
+          "result",
+          "e^{2}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "e^{2}",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "FLAJ-1-0000000000000200-38",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 1}\\left(5 x - 4\\right)^{\\frac{5}{x - 1}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The base is positive sufficiently close to the limit point. Take logs.}"
+        ],
+        [
+          "calculation",
+          "\\log f(x)=\\frac{5\\log(1+5(x-1))}{x-1}\\to 25."
+        ],
+        [
+          "result",
+          "e^{25}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "e^{25}",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "FLAJ-1-0000000000000999-52",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 5}\\left(2 x - 9\\right)^{\\frac{3}{x - 5}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The base is positive sufficiently close to the limit point. Take logs.}"
+        ],
+        [
+          "calculation",
+          "\\log f(x)=\\frac{3\\log(1+2(x-5))}{x-5}\\to 6."
+        ],
+        [
+          "result",
+          "e^{6}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "e^{6}",
+      "metadata": {
+        "difficulty": 5
+      }
+    }
+  ],
+  "analysis1-limits-asymptote-rational-v1": [
+    {
+      "code": "FLAK-1-0000000000000003-94",
+      "statement": "\\(\\text{Give all vertical asymptote locations as a set and both asymptotic line}\\text{ expressions at }-\\infty\\text{ and }+\\infty:\\quad f(x)=2 x + 1 + \\frac{5}{x^{2} - 1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The remainder has two simple poles and tends to zero at both ends.}"
+        ],
+        [
+          "calculation",
+          "f(x)-(2 x + 1)=\\frac{5}{(x+1)(x-1)}\\to0\\quad(x\\to\\pm\\infty),\\qquad x=\\pm 1\\text{ are simple poles}."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{-1, 1\\right\\},\\;2 x + 1,\\;2 x + 1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{-1, 1\\right\\},\\;2 x + 1,\\;2 x + 1\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLAK-1-0000000000000200-73",
+      "statement": "\\(\\text{Give all vertical asymptote locations as a set and both asymptotic line}\\text{ expressions at }-\\infty\\text{ and }+\\infty:\\quad f(x)=5 x + 5 + \\frac{1}{x^{2} - 25}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The remainder has two simple poles and tends to zero at both ends.}"
+        ],
+        [
+          "calculation",
+          "f(x)-(5 x + 5)=\\frac{1}{(x+5)(x-5)}\\to0\\quad(x\\to\\pm\\infty),\\qquad x=\\pm 5\\text{ are simple poles}."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{-5, 5\\right\\},\\;5 x + 5,\\;5 x + 5\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{-5, 5\\right\\},\\;5 x + 5,\\;5 x + 5\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLAK-1-0000000000000999-87",
+      "statement": "\\(\\text{Give all vertical asymptote locations as a set and both asymptotic line}\\text{ expressions at }-\\infty\\text{ and }+\\infty:\\quad f(x)=2 x + 3 + \\frac{5}{x^{2} - 9}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The remainder has two simple poles and tends to zero at both ends.}"
+        ],
+        [
+          "calculation",
+          "f(x)-(2 x + 3)=\\frac{5}{(x+3)(x-3)}\\to0\\quad(x\\to\\pm\\infty),\\qquad x=\\pm 3\\text{ are simple poles}."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{-3, 3\\right\\},\\;2 x + 3,\\;2 x + 3\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{-3, 3\\right\\},\\;2 x + 3,\\;2 x + 3\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-asymptote-inverse-trig-v1": [
+    {
+      "code": "FLAL-1-0000000000000003-75",
+      "statement": "\\(\\text{Give all vertical asymptote locations as a set and both asymptotic line}\\text{ expressions at }-\\infty\\text{ and }+\\infty:\\quad f(x)=2 x + \\operatorname{atan}{\\left(x - 5 \\right)}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{There are no finite poles because the function is continuous everywhere.}"
+        ],
+        [
+          "calculation",
+          "f(x)-2x=1\\arctan(x-5)\\to\\pm\\frac{1\\pi}{2}\\quad(x\\to\\pm\\infty\\text{ respectively})."
+        ],
+        [
+          "result",
+          "\\left(\\emptyset,\\;2 x - \\frac{\\pi}{2},\\;2 x + \\frac{\\pi}{2}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\emptyset,\\;2 x - \\frac{\\pi}{2},\\;2 x + \\frac{\\pi}{2}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLAL-1-0000000000000200-54",
+      "statement": "\\(\\text{Give all vertical asymptote locations as a set and both asymptotic line}\\text{ expressions at }-\\infty\\text{ and }+\\infty:\\quad f(x)=5 x + 5 \\operatorname{atan}{\\left(x - 1 \\right)}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{There are no finite poles because the function is continuous everywhere.}"
+        ],
+        [
+          "calculation",
+          "f(x)-5x=5\\arctan(x-1)\\to\\pm\\frac{5\\pi}{2}\\quad(x\\to\\pm\\infty\\text{ respectively})."
+        ],
+        [
+          "result",
+          "\\left(\\emptyset,\\;5 x - \\frac{5 \\pi}{2},\\;5 x + \\frac{5 \\pi}{2}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\emptyset,\\;5 x - \\frac{5 \\pi}{2},\\;5 x + \\frac{5 \\pi}{2}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLAL-1-0000000000000999-68",
+      "statement": "\\(\\text{Give all vertical asymptote locations as a set and both asymptotic line}\\text{ expressions at }-\\infty\\text{ and }+\\infty:\\quad f(x)=2 x + 3 \\operatorname{atan}{\\left(x - 5 \\right)}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{There are no finite poles because the function is continuous everywhere.}"
+        ],
+        [
+          "calculation",
+          "f(x)-2x=3\\arctan(x-5)\\to\\pm\\frac{3\\pi}{2}\\quad(x\\to\\pm\\infty\\text{ respectively})."
+        ],
+        [
+          "result",
+          "\\left(\\emptyset,\\;2 x - \\frac{3 \\pi}{2},\\;2 x + \\frac{3 \\pi}{2}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\emptyset,\\;2 x - \\frac{3 \\pi}{2},\\;2 x + \\frac{3 \\pi}{2}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-continuity-sine-v1": [
+    {
+      "code": "FLAM-1-0000000000000003-65",
+      "statement": "\\(\\text{Find the parameters }p,q\\text{ for continuity on }\\mathbb R:\\quad f(x)=\\begin{cases}2,&x<0\\\\p+q\\sin(1x),&0\\le x\\le \\pi/2\\\\7,&x>\\pi/2\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Each branch is continuous on its interval. Match values at both joins.}"
+        ],
+        [
+          "calculation",
+          "p+q\\sin 0=2,\\qquad p+q\\sin(\\pi/2)=7\\quad\\Longrightarrow\\quad p=2,\\ q=5."
+        ],
+        [
+          "result",
+          "\\left(2,\\;5\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(2,\\;5\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLAM-1-0000000000000200-44",
+      "statement": "\\(\\text{Find the parameters }p,q\\text{ for continuity on }\\mathbb R:\\quad f(x)=\\begin{cases}5,&x<0\\\\p+q\\sin(5x),&0\\le x\\le \\pi/10\\\\6,&x>\\pi/10\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Each branch is continuous on its interval. Match values at both joins.}"
+        ],
+        [
+          "calculation",
+          "p+q\\sin 0=5,\\qquad p+q\\sin(\\pi/2)=6\\quad\\Longrightarrow\\quad p=5,\\ q=1."
+        ],
+        [
+          "result",
+          "\\left(5,\\;1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(5,\\;1\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLAM-1-0000000000000999-58",
+      "statement": "\\(\\text{Find the parameters }p,q\\text{ for continuity on }\\mathbb R:\\quad f(x)=\\begin{cases}2,&x<0\\\\p+q\\sin(3x),&0\\le x\\le \\pi/6\\\\7,&x>\\pi/6\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Each branch is continuous on its interval. Match values at both joins.}"
+        ],
+        [
+          "calculation",
+          "p+q\\sin 0=2,\\qquad p+q\\sin(\\pi/2)=7\\quad\\Longrightarrow\\quad p=2,\\ q=5."
+        ],
+        [
+          "result",
+          "\\left(2,\\;5\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(2,\\;5\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-continuity-reciprocal-v1": [
+    {
+      "code": "FLAN-1-0000000000000003-28",
+      "statement": "\\(\\text{Find the parameter }p\\text{ for continuity on }\\mathbb R:\\quad f(x)=\\begin{cases}2+p/x,&x<-1\\\\5-x,&x\\ge-1\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The pole at zero is outside the reciprocal branch. Match at the join.}"
+        ],
+        [
+          "calculation",
+          "2-\\frac{p}{1}=6\\quad\\Longrightarrow\\quad p=-4."
+        ],
+        [
+          "result",
+          "-4"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "-4",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLAN-1-0000000000000200-07",
+      "statement": "\\(\\text{Find the parameter }p\\text{ for continuity on }\\mathbb R:\\quad f(x)=\\begin{cases}5+p/x,&x<-5\\\\1-x,&x\\ge-5\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The pole at zero is outside the reciprocal branch. Match at the join.}"
+        ],
+        [
+          "calculation",
+          "5-\\frac{p}{5}=6\\quad\\Longrightarrow\\quad p=-5."
+        ],
+        [
+          "result",
+          "-5"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "-5",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLAN-1-0000000000000999-21",
+      "statement": "\\(\\text{Find the parameter }p\\text{ for continuity on }\\mathbb R:\\quad f(x)=\\begin{cases}2+p/x,&x<-3\\\\5-x,&x\\ge-3\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The pole at zero is outside the reciprocal branch. Match at the join.}"
+        ],
+        [
+          "calculation",
+          "2-\\frac{p}{3}=8\\quad\\Longrightarrow\\quad p=-18."
+        ],
+        [
+          "result",
+          "-18"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "-18",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-discontinuity-arctan-v1": [
+    {
+      "code": "FLAO-1-0000000000000003-89",
+      "statement": "\\(\\text{Give the discontinuity location, both one-sided limits and its type:}\\quad f(x)=\\begin{cases}1+2\\arctan\\!\\left(\\frac1{x-5}\\right),&x\\ne 5\\\\1,&x=5\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The formula is continuous away from the join. At the join, use the arctan limits.}"
+        ],
+        [
+          "calculation",
+          "\\frac1{x-5}\\to\\pm\\infty\\quad\\Longrightarrow\\quad f(x)\\to 1\\pm\\frac{2\\pi}{2}\\quad\\text{from the right and left respectively}."
+        ],
+        [
+          "result",
+          "\\left(5,\\;1 - \\pi,\\;1 + \\pi,\\;\\text{jump}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(5,\\;1 - \\pi,\\;1 + \\pi,\\;\\text{jump}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLAO-1-0000000000000200-68",
+      "statement": "\\(\\text{Give the discontinuity location, both one-sided limits and its type:}\\quad f(x)=\\begin{cases}5+5\\arctan\\!\\left(\\frac1{x-1}\\right),&x\\ne 1\\\\5,&x=1\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The formula is continuous away from the join. At the join, use the arctan limits.}"
+        ],
+        [
+          "calculation",
+          "\\frac1{x-1}\\to\\pm\\infty\\quad\\Longrightarrow\\quad f(x)\\to 5\\pm\\frac{5\\pi}{2}\\quad\\text{from the right and left respectively}."
+        ],
+        [
+          "result",
+          "\\left(1,\\;5 - \\frac{5 \\pi}{2},\\;5 + \\frac{5 \\pi}{2},\\;\\text{jump}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(1,\\;5 - \\frac{5 \\pi}{2},\\;5 + \\frac{5 \\pi}{2},\\;\\text{jump}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLAO-1-0000000000000999-82",
+      "statement": "\\(\\text{Give the discontinuity location, both one-sided limits and its type:}\\quad f(x)=\\begin{cases}3+2\\arctan\\!\\left(\\frac1{x-5}\\right),&x\\ne 5\\\\3,&x=5\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The formula is continuous away from the join. At the join, use the arctan limits.}"
+        ],
+        [
+          "calculation",
+          "\\frac1{x-5}\\to\\pm\\infty\\quad\\Longrightarrow\\quad f(x)\\to 3\\pm\\frac{2\\pi}{2}\\quad\\text{from the right and left respectively}."
+        ],
+        [
+          "result",
+          "\\left(5,\\;3 - \\pi,\\;3 + \\pi,\\;\\text{jump}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(5,\\;3 - \\pi,\\;3 + \\pi,\\;\\text{jump}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-discontinuity-oscillatory-v1": [
+    {
+      "code": "FLAP-1-0000000000000003-13",
+      "statement": "\\(\\text{Give the discontinuity location, both one-sided limits and its type:}\\quad f(x)=\\begin{cases}1+2\\cos\\!\\left(\\frac{5}{x-1}\\right),&x\\ne 1\\\\1,&x=1\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The function is continuous off the join. Approach along two sequences per side.}"
+        ],
+        [
+          "calculation",
+          "x_k=1\\pm\\frac{5}{2k\\pi},\\quad y_k=1\\pm\\frac{5}{(2k+1)\\pi},\\qquad f(x_k)=3,\\ f(y_k)=-1."
+        ],
+        [
+          "result",
+          "\\left(1,\\;\\text{does not exist},\\;\\text{does not exist},\\;\\text{oscillatory}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(1,\\;\\text{does not exist},\\;\\text{does not exist},\\;\\text{oscillatory}\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "FLAP-1-0000000000000200-89",
+      "statement": "\\(\\text{Give the discontinuity location, both one-sided limits and its type:}\\quad f(x)=\\begin{cases}5+5\\cos\\!\\left(\\frac{1}{x-5}\\right),&x\\ne 5\\\\5,&x=5\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The function is continuous off the join. Approach along two sequences per side.}"
+        ],
+        [
+          "calculation",
+          "x_k=5\\pm\\frac{1}{2k\\pi},\\quad y_k=5\\pm\\frac{1}{(2k+1)\\pi},\\qquad f(x_k)=10,\\ f(y_k)=0."
+        ],
+        [
+          "result",
+          "\\left(5,\\;\\text{does not exist},\\;\\text{does not exist},\\;\\text{oscillatory}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(5,\\;\\text{does not exist},\\;\\text{does not exist},\\;\\text{oscillatory}\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "FLAP-1-0000000000000999-06",
+      "statement": "\\(\\text{Give the discontinuity location, both one-sided limits and its type:}\\quad f(x)=\\begin{cases}3+2\\cos\\!\\left(\\frac{5}{x-3}\\right),&x\\ne 3\\\\3,&x=3\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The function is continuous off the join. Approach along two sequences per side.}"
+        ],
+        [
+          "calculation",
+          "x_k=3\\pm\\frac{5}{2k\\pi},\\quad y_k=3\\pm\\frac{5}{(2k+1)\\pi},\\qquad f(x_k)=5,\\ f(y_k)=1."
+        ],
+        [
+          "result",
+          "\\left(3,\\;\\text{does not exist},\\;\\text{does not exist},\\;\\text{oscillatory}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(3,\\;\\text{does not exist},\\;\\text{does not exist},\\;\\text{oscillatory}\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    }
+  ],
+  "analysis1-limits-certified-root-v1": [
+    {
+      "code": "FLAQ-1-0000000000000003-66",
+      "statement": "\\(\\text{Bisect the unique root bracket six times. Give the final midpoint}\\text{ and half-width as exact fractions:}\\quad \\exp((x-5)/1)+((x-5)/1)^2=3,\\quad x\\in[5,7].\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Set }t=(x-5)/1.\\quad e^t+t^2\\text{ is strictly increasing on the bracket and crosses the target.}"
+        ],
+        [
+          "calculation",
+          "\\text{Taylor enclosures certify the sign at each midpoint:}\\quad \\left[0,1\\right]\\ \\to\\ \\left[\\frac{1}{2},1\\right]\\ \\to\\ \\left[\\frac{3}{4},1\\right]\\ \\to\\ \\left[\\frac{3}{4},\\frac{7}{8}\\right]\\ \\to\\ \\left[\\frac{13}{16},\\frac{7}{8}\\right]\\ \\to\\ \\left[\\frac{13}{16},\\frac{27}{32}\\right]\\quad\\text{in }t,\\qquad x=5+1t."
+        ],
+        [
+          "result",
+          "\\left(\\frac{373}{64},\\;\\frac{1}{64}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{373}{64},\\;\\frac{1}{64}\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "FLAQ-1-0000000000000200-45",
+      "statement": "\\(\\text{Bisect the unique root bracket six times. Give the final midpoint}\\text{ and half-width as exact fractions:}\\quad \\exp((x-1)/5)+((x-1)/5)^2=6,\\quad x\\in[1,26].\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Set }t=(x-1)/5.\\quad e^t+t^2\\text{ is strictly increasing on the bracket and crosses the target.}"
+        ],
+        [
+          "calculation",
+          "\\text{Taylor enclosures certify the sign at each midpoint:}\\quad \\left[0,\\frac{5}{2}\\right]\\ \\to\\ \\left[\\frac{5}{4},\\frac{5}{2}\\right]\\ \\to\\ \\left[\\frac{5}{4},\\frac{15}{8}\\right]\\ \\to\\ \\left[\\frac{5}{4},\\frac{25}{16}\\right]\\ \\to\\ \\left[\\frac{5}{4},\\frac{45}{32}\\right]\\ \\to\\ \\left[\\frac{85}{64},\\frac{45}{32}\\right]\\quad\\text{in }t,\\qquad x=1+5t."
+        ],
+        [
+          "result",
+          "\\left(\\frac{1003}{128},\\;\\frac{25}{128}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{1003}{128},\\;\\frac{25}{128}\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "FLAQ-1-0000000000000999-59",
+      "statement": "\\(\\text{Bisect the unique root bracket six times. Give the final midpoint}\\text{ and half-width as exact fractions:}\\quad \\exp((x-5)/3)+((x-5)/3)^2=3,\\quad x\\in[5,11].\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Set }t=(x-5)/3.\\quad e^t+t^2\\text{ is strictly increasing on the bracket and crosses the target.}"
+        ],
+        [
+          "calculation",
+          "\\text{Taylor enclosures certify the sign at each midpoint:}\\quad \\left[0,1\\right]\\ \\to\\ \\left[\\frac{1}{2},1\\right]\\ \\to\\ \\left[\\frac{3}{4},1\\right]\\ \\to\\ \\left[\\frac{3}{4},\\frac{7}{8}\\right]\\ \\to\\ \\left[\\frac{13}{16},\\frac{7}{8}\\right]\\ \\to\\ \\left[\\frac{13}{16},\\frac{27}{32}\\right]\\quad\\text{in }t,\\qquad x=5+3t."
+        ],
+        [
+          "result",
+          "\\left(\\frac{479}{64},\\;\\frac{3}{64}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{479}{64},\\;\\frac{3}{64}\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    }
+  ],
+  "analysis1-limits-two-sided-absolute-v1": [
+    {
+      "code": "FLAR-1-0000000000000003-27",
+      "statement": "\\(\\text{Give both one-sided limits and the two-sided limit at }x=5:\\quad f(x)=\\frac{2 \\left(x - 5\\right)^{2}}{\\left|{x - 5}\\right|} + 1.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{For a nonzero }t,\\ t^2/|t|=|t|."
+        ],
+        [
+          "calculation",
+          "f(x)=2|x-5|+1\\quad(x\\ne 5),\\qquad \\lim_{x\\to5}f(x)=1."
+        ],
+        [
+          "result",
+          "\\left(1,\\;1,\\;1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(1,\\;1,\\;1\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "FLAR-1-0000000000000200-06",
+      "statement": "\\(\\text{Give both one-sided limits and the two-sided limit at }x=1:\\quad f(x)=\\frac{5 \\left(x - 1\\right)^{2}}{\\left|{x - 1}\\right|} + 5.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{For a nonzero }t,\\ t^2/|t|=|t|."
+        ],
+        [
+          "calculation",
+          "f(x)=5|x-1|+5\\quad(x\\ne 1),\\qquad \\lim_{x\\to1}f(x)=5."
+        ],
+        [
+          "result",
+          "\\left(5,\\;5,\\;5\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(5,\\;5,\\;5\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "FLAR-1-0000000000000999-20",
+      "statement": "\\(\\text{Give both one-sided limits and the two-sided limit at }x=5:\\quad f(x)=\\frac{2 \\left(x - 5\\right)^{2}}{\\left|{x - 5}\\right|} + 3.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{For a nonzero }t,\\ t^2/|t|=|t|."
+        ],
+        [
+          "calculation",
+          "f(x)=2|x-5|+3\\quad(x\\ne 5),\\qquad \\lim_{x\\to5}f(x)=3."
+        ],
+        [
+          "result",
+          "\\left(3,\\;3,\\;3\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(3,\\;3,\\;3\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-limits-squeeze-at-infinity-v1": [
+    {
+      "code": "FLAS-1-0000000000000003-08",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\infty}\\frac{\\cos{\\left(5 x \\right)} + 2}{x^{2}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The numerator stays between two constants. The denominator grows.}"
+        ],
+        [
+          "calculation",
+          "\\frac{1}{x^2}\\le f(x)\\le \\frac{3}{x^2}\\quad(x\\ne0).\\quad\\text{Both outer terms tend to zero.}"
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "FLAS-1-0000000000000200-84",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\infty}\\frac{5 \\cos{\\left(x \\right)} + 5}{x^{2}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The numerator stays between two constants. The denominator grows.}"
+        ],
+        [
+          "calculation",
+          "\\frac{0}{x^2}\\le f(x)\\le \\frac{10}{x^2}\\quad(x\\ne0).\\quad\\text{Both outer terms tend to zero.}"
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "FLAS-1-0000000000000999-01",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\infty}\\frac{3 \\cos{\\left(5 x \\right)} + 2}{x^{2}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The numerator stays between two constants. The denominator grows.}"
+        ],
+        [
+          "calculation",
+          "\\frac{-1}{x^2}\\le f(x)\\le \\frac{5}{x^2}\\quad(x\\ne0).\\quad\\text{Both outer terms tend to zero.}"
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-limits-infinitesimal-inverse-trig-v1": [
+    {
+      "code": "FLAT-1-0000000000000003-13",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 5}\\frac{\\operatorname{asin}{\\left(2 x - 10 \\right)}}{\\operatorname{atan}{\\left(x - 5 \\right)}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The derivatives of arcsine and arctangent at zero both equal }1."
+        ],
+        [
+          "calculation",
+          "\\arcsin(2(x-5))\\sim2(x-5),\\qquad\\arctan(1(x-5))\\sim1(x-5)."
+        ],
+        [
+          "result",
+          "2"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLAT-1-0000000000000200-89",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 1}\\frac{\\operatorname{asin}{\\left(5 x - 5 \\right)}}{\\operatorname{atan}{\\left(5 x - 5 \\right)}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The derivatives of arcsine and arctangent at zero both equal }1."
+        ],
+        [
+          "calculation",
+          "\\arcsin(5(x-1))\\sim5(x-1),\\qquad\\arctan(5(x-1))\\sim5(x-1)."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLAT-1-0000000000000999-06",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 5}\\frac{\\operatorname{asin}{\\left(2 x - 10 \\right)}}{\\operatorname{atan}{\\left(3 x - 15 \\right)}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The derivatives of arcsine and arctangent at zero both equal }1."
+        ],
+        [
+          "calculation",
+          "\\arcsin(2(x-5))\\sim2(x-5),\\qquad\\arctan(3(x-5))\\sim3(x-5)."
+        ],
+        [
+          "result",
+          "\\frac{2}{3}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{2}{3}",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-horizontal-asymptote-v1": [
+    {
+      "code": "FLAU-1-0000000000000003-65",
+      "statement": "\\(\\text{Give all vertical asymptote locations as a set and both asymptotic line}\\text{ expressions at }-\\infty\\text{ and }+\\infty:\\quad f(x)=\\frac{3 e^{5 x} + 1}{e^{5 x} + 1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The denominator is strictly positive, so there is no vertical asymptote.}"
+        ],
+        [
+          "calculation",
+          "\\lim_{x\\to-\\infty}e^{5x}=0\\ \\Rightarrow\\ f(x)\\to1.\\quad f(x)=\\frac{3+1e^{-5x}}{1+e^{-5x}}\\to3\\quad(x\\to+\\infty)."
+        ],
+        [
+          "result",
+          "\\left(\\emptyset,\\;1,\\;3\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\emptyset,\\;1,\\;3\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLAU-1-0000000000000200-44",
+      "statement": "\\(\\text{Give all vertical asymptote locations as a set and both asymptotic line}\\text{ expressions at }-\\infty\\text{ and }+\\infty:\\quad f(x)=\\frac{10 e^{x} + 5}{e^{x} + 1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The denominator is strictly positive, so there is no vertical asymptote.}"
+        ],
+        [
+          "calculation",
+          "\\lim_{x\\to-\\infty}e^{1x}=0\\ \\Rightarrow\\ f(x)\\to5.\\quad f(x)=\\frac{10+5e^{-1x}}{1+e^{-1x}}\\to10\\quad(x\\to+\\infty)."
+        ],
+        [
+          "result",
+          "\\left(\\emptyset,\\;5,\\;10\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\emptyset,\\;5,\\;10\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLAU-1-0000000000000999-58",
+      "statement": "\\(\\text{Give all vertical asymptote locations as a set and both asymptotic line}\\text{ expressions at }-\\infty\\text{ and }+\\infty:\\quad f(x)=\\frac{5 e^{5 x} + 3}{e^{5 x} + 1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The denominator is strictly positive, so there is no vertical asymptote.}"
+        ],
+        [
+          "calculation",
+          "\\lim_{x\\to-\\infty}e^{5x}=0\\ \\Rightarrow\\ f(x)\\to3.\\quad f(x)=\\frac{5+3e^{-5x}}{1+e^{-5x}}\\to5\\quad(x\\to+\\infty)."
+        ],
+        [
+          "result",
+          "\\left(\\emptyset,\\;3,\\;5\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\emptyset,\\;3,\\;5\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-discontinuity-removable-v1": [
+    {
+      "code": "FLAV-1-0000000000000003-27",
+      "statement": "\\(\\text{Give the discontinuity location, both one-sided limits and its type:}\\quad f(x)=\\begin{cases}\\frac{2(x^2-25)}{x-5},&x\\ne5\\\\21,&x=5\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Cancel the factor }x-c\\text{ away from the join.}"
+        ],
+        [
+          "calculation",
+          "f(x)=2(x+5)\\quad(x\\ne5),\\qquad \\lim_{x\\to5}f(x)=20\\ne f(5)=21."
+        ],
+        [
+          "result",
+          "\\left(5,\\;20,\\;20,\\;\\text{removable}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(5,\\;20,\\;20,\\;\\text{removable}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLAV-1-0000000000000200-06",
+      "statement": "\\(\\text{Give the discontinuity location, both one-sided limits and its type:}\\quad f(x)=\\begin{cases}\\frac{5(x^2-1)}{x-1},&x\\ne1\\\\15,&x=1\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Cancel the factor }x-c\\text{ away from the join.}"
+        ],
+        [
+          "calculation",
+          "f(x)=5(x+1)\\quad(x\\ne1),\\qquad \\lim_{x\\to1}f(x)=10\\ne f(1)=15."
+        ],
+        [
+          "result",
+          "\\left(1,\\;10,\\;10,\\;\\text{removable}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(1,\\;10,\\;10,\\;\\text{removable}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLAV-1-0000000000000999-20",
+      "statement": "\\(\\text{Give the discontinuity location, both one-sided limits and its type:}\\quad f(x)=\\begin{cases}\\frac{2(x^2-25)}{x-5},&x\\ne5\\\\23,&x=5\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Cancel the factor }x-c\\text{ away from the join.}"
+        ],
+        [
+          "calculation",
+          "f(x)=2(x+5)\\quad(x\\ne5),\\qquad \\lim_{x\\to5}f(x)=20\\ne f(5)=23."
+        ],
+        [
+          "result",
+          "\\left(5,\\;20,\\;20,\\;\\text{removable}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(5,\\;20,\\;20,\\;\\text{removable}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-discontinuity-infinite-v1": [
+    {
+      "code": "FLAW-1-0000000000000003-32",
+      "statement": "\\(\\text{Give the discontinuity location, both one-sided limits and its type:}\\quad f(x)=\\begin{cases}2/(x-5)^2+1,&x\\ne5\\\\1,&x=5\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The denominator tends to zero through positive values on each side.}"
+        ],
+        [
+          "calculation",
+          "f(x)-1=\\frac{2}{(x-5)^2}\\to+\\infty\\quad\\text{from both sides. There are no other singularities.}"
+        ],
+        [
+          "result",
+          "\\left(5,\\;\\infty,\\;\\infty,\\;\\text{infinite}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(5,\\;\\infty,\\;\\infty,\\;\\text{infinite}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLAW-1-0000000000000200-11",
+      "statement": "\\(\\text{Give the discontinuity location, both one-sided limits and its type:}\\quad f(x)=\\begin{cases}5/(x-1)^2+5,&x\\ne1\\\\5,&x=1\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The denominator tends to zero through positive values on each side.}"
+        ],
+        [
+          "calculation",
+          "f(x)-5=\\frac{5}{(x-1)^2}\\to+\\infty\\quad\\text{from both sides. There are no other singularities.}"
+        ],
+        [
+          "result",
+          "\\left(1,\\;\\infty,\\;\\infty,\\;\\text{infinite}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(1,\\;\\infty,\\;\\infty,\\;\\text{infinite}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLAW-1-0000000000000999-25",
+      "statement": "\\(\\text{Give the discontinuity location, both one-sided limits and its type:}\\quad f(x)=\\begin{cases}2/(x-5)^2+3,&x\\ne5\\\\3,&x=5\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The denominator tends to zero through positive values on each side.}"
+        ],
+        [
+          "calculation",
+          "f(x)-3=\\frac{2}{(x-5)^2}\\to+\\infty\\quad\\text{from both sides. There are no other singularities.}"
+        ],
+        [
+          "result",
+          "\\left(5,\\;\\infty,\\;\\infty,\\;\\text{infinite}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(5,\\;\\infty,\\;\\infty,\\;\\text{infinite}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-certified-cubic-v1": [
+    {
+      "code": "FLAX-1-0000000000000003-57",
+      "statement": "\\(\\text{Bisect the unique root bracket five times. Give the final midpoint and half-width.}\\text{ If a midpoint is an exact root, report it with zero error:}\\quad (x-5)^3+2(x-5)-2=0,\\qquad x\\in[5,8].\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{In }t=x-5,\\quad g'(t)=3t^2+2>0,\\quad g(0)=-2,\\quad g(3)=31>0."
+        ],
+        [
+          "calculation",
+          "\\text{The signs bracket the unique root at each step:}\\quad \\left[5,\\frac{13}{2}\\right]\\ \\to\\ \\left[\\frac{23}{4},\\frac{13}{2}\\right]\\ \\to\\ \\left[\\frac{23}{4},\\frac{49}{8}\\right]\\ \\to\\ \\left[\\frac{23}{4},\\frac{95}{16}\\right]\\ \\to\\ \\left[\\frac{23}{4},\\frac{187}{32}\\right]"
+        ],
+        [
+          "result",
+          "\\left(\\frac{371}{64},\\;\\frac{3}{64}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{371}{64},\\;\\frac{3}{64}\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "FLAX-1-0000000000000200-36",
+      "statement": "\\(\\text{Bisect the unique root bracket five times. Give the final midpoint and half-width.}\\text{ If a midpoint is an exact root, report it with zero error:}\\quad (x-1)^3+6(x-1)-5=0,\\qquad x\\in[1,7].\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{In }t=x-1,\\quad g'(t)=3t^2+6>0,\\quad g(0)=-5,\\quad g(6)=247>0."
+        ],
+        [
+          "calculation",
+          "\\text{The signs bracket the unique root at each step:}\\quad \\left[1,4\\right]\\ \\to\\ \\left[1,\\frac{5}{2}\\right]\\ \\to\\ \\left[\\frac{7}{4},\\frac{5}{2}\\right]\\ \\to\\ \\left[\\frac{7}{4},\\frac{17}{8}\\right]\\ \\to\\ \\left[\\frac{7}{4},\\frac{31}{16}\\right]"
+        ],
+        [
+          "result",
+          "\\left(\\frac{59}{32},\\;\\frac{3}{32}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{59}{32},\\;\\frac{3}{32}\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "FLAX-1-0000000000000999-50",
+      "statement": "\\(\\text{Bisect the unique root bracket five times. Give the final midpoint and half-width.}\\text{ If a midpoint is an exact root, report it with zero error:}\\quad (x-5)^3+4(x-5)-2=0,\\qquad x\\in[5,8].\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{In }t=x-5,\\quad g'(t)=3t^2+4>0,\\quad g(0)=-2,\\quad g(3)=37>0."
+        ],
+        [
+          "calculation",
+          "\\text{The signs bracket the unique root at each step:}\\quad \\left[5,\\frac{13}{2}\\right]\\ \\to\\ \\left[5,\\frac{23}{4}\\right]\\ \\to\\ \\left[\\frac{43}{8},\\frac{23}{4}\\right]\\ \\to\\ \\left[\\frac{43}{8},\\frac{89}{16}\\right]\\ \\to\\ \\left[\\frac{175}{32},\\frac{89}{16}\\right]"
+        ],
+        [
+          "result",
+          "\\left(\\frac{353}{64},\\;\\frac{3}{64}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{353}{64},\\;\\frac{3}{64}\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    }
+  ],
+  "analysis1-limits-radical-asymptote-v1": [
+    {
+      "code": "FLAY-1-0000000000000003-48",
+      "statement": "\\(\\text{Give all vertical asymptote locations as a set and both asymptotic line}\\text{ expressions at }-\\infty\\text{ and }+\\infty:\\quad f(x)=\\frac{2 x - 2}{\\sqrt{x^{2} - 1}} + 5\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The real domain is }(-\\infty,-1)\\cup(1,\\infty).\\quad f(x)\\to-\\infty\\quad(x\\to-1^-)."
+        ],
+        [
+          "calculation",
+          "x\\to1^+:\\quad \\frac{x-1}{\\sqrt{(x-1)(x+1)}}=\\sqrt{\\frac{x-1}{x+1}}\\to0.\\quad\\text{At infinity divide by }|x|\\text{ to obtain the two horizontal lines.}"
+        ],
+        [
+          "result",
+          "\\left(\\left\\{-1\\right\\},\\;3,\\;7\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{-1\\right\\},\\;3,\\;7\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "FLAY-1-0000000000000200-27",
+      "statement": "\\(\\text{Give all vertical asymptote locations as a set and both asymptotic line}\\text{ expressions at }-\\infty\\text{ and }+\\infty:\\quad f(x)=\\frac{5 x - 25}{\\sqrt{x^{2} - 25}} + 1\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The real domain is }(-\\infty,-5)\\cup(5,\\infty).\\quad f(x)\\to-\\infty\\quad(x\\to-5^-)."
+        ],
+        [
+          "calculation",
+          "x\\to5^+:\\quad \\frac{x-5}{\\sqrt{(x-5)(x+5)}}=\\sqrt{\\frac{x-5}{x+5}}\\to0.\\quad\\text{At infinity divide by }|x|\\text{ to obtain the two horizontal lines.}"
+        ],
+        [
+          "result",
+          "\\left(\\left\\{-5\\right\\},\\;-4,\\;6\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{-5\\right\\},\\;-4,\\;6\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "FLAY-1-0000000000000999-41",
+      "statement": "\\(\\text{Give all vertical asymptote locations as a set and both asymptotic line}\\text{ expressions at }-\\infty\\text{ and }+\\infty:\\quad f(x)=\\frac{2 x - 6}{\\sqrt{x^{2} - 9}} + 5\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The real domain is }(-\\infty,-3)\\cup(3,\\infty).\\quad f(x)\\to-\\infty\\quad(x\\to-3^-)."
+        ],
+        [
+          "calculation",
+          "x\\to3^+:\\quad \\frac{x-3}{\\sqrt{(x-3)(x+3)}}=\\sqrt{\\frac{x-3}{x+3}}\\to0.\\quad\\text{At infinity divide by }|x|\\text{ to obtain the two horizontal lines.}"
+        ],
+        [
+          "result",
+          "\\left(\\left\\{-3\\right\\},\\;3,\\;7\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{-3\\right\\},\\;3,\\;7\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    }
+  ],
+  "analysis1-limits-high-order-pole-v1": [
+    {
+      "code": "FLAZ-1-0000000000000003-61",
+      "statement": "\\(\\text{Give all vertical asymptote locations as a set and both asymptotic line}\\text{ expressions at }-\\infty\\text{ and }+\\infty:\\quad f(x)=2 x - 5 + \\frac{3}{\\left(x - 1\\right)^{12}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The positive remainder diverges on both sides of }x=1\\text{ because the pole has even order }12."
+        ],
+        [
+          "calculation",
+          "f(x)-(2 x - 5)=\\frac{3}{(x-1)^{12}}\\to0\\quad(x\\to\\pm\\infty)."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{1\\right\\},\\;2 x - 5,\\;2 x - 5\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{1\\right\\},\\;2 x - 5,\\;2 x - 5\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLAZ-1-0000000000000200-40",
+      "statement": "\\(\\text{Give all vertical asymptote locations as a set and both asymptotic line}\\text{ expressions at }-\\infty\\text{ and }+\\infty:\\quad f(x)=5 x - 1 + \\frac{10}{\\left(x - 5\\right)^{4}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The positive remainder diverges on both sides of }x=5\\text{ because the pole has even order }4."
+        ],
+        [
+          "calculation",
+          "f(x)-(5 x - 1)=\\frac{10}{(x-5)^{4}}\\to0\\quad(x\\to\\pm\\infty)."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{5\\right\\},\\;5 x - 1,\\;5 x - 1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{5\\right\\},\\;5 x - 1,\\;5 x - 1\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLAZ-1-0000000000000999-54",
+      "statement": "\\(\\text{Give all vertical asymptote locations as a set and both asymptotic line}\\text{ expressions at }-\\infty\\text{ and }+\\infty:\\quad f(x)=2 x - 5 + \\frac{5}{\\left(x - 3\\right)^{12}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The positive remainder diverges on both sides of }x=3\\text{ because the pole has even order }12."
+        ],
+        [
+          "calculation",
+          "f(x)-(2 x - 5)=\\frac{5}{(x-3)^{12}}\\to0\\quad(x\\to\\pm\\infty)."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{3\\right\\},\\;2 x - 5,\\;2 x - 5\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{3\\right\\},\\;2 x - 5,\\;2 x - 5\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-conjugate-at-infinity-v1": [
+    {
+      "code": "FLBA-1-0000000000000003-05",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\infty}- x + \\sqrt{x^{2} + 2 x + 5} + 1\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{For large positive }x\\text{ the radicand is positive. Rationalize the difference.}"
+        ],
+        [
+          "calculation",
+          "f(x)=1+\\frac{2+5/x}{\\sqrt{1+2/x+5/x^2}+1}\\to1+\\frac{2}{2}."
+        ],
+        [
+          "result",
+          "2"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLBA-1-0000000000000200-81",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\infty}- x + \\sqrt{x^{2} + 5 x + 1} + 5\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{For large positive }x\\text{ the radicand is positive. Rationalize the difference.}"
+        ],
+        [
+          "calculation",
+          "f(x)=5+\\frac{5+1/x}{\\sqrt{1+5/x+1/x^2}+1}\\to5+\\frac{5}{2}."
+        ],
+        [
+          "result",
+          "\\frac{15}{2}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{15}{2}",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLBA-1-0000000000000999-95",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\infty}- x + \\sqrt{x^{2} + 2 x + 5} + 3\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{For large positive }x\\text{ the radicand is positive. Rationalize the difference.}"
+        ],
+        [
+          "calculation",
+          "f(x)=3+\\frac{2+5/x}{\\sqrt{1+2/x+5/x^2}+1}\\to3+\\frac{2}{2}."
+        ],
+        [
+          "result",
+          "4"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "4",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-removable-trigonometric-v1": [
+    {
+      "code": "FLBB-1-0000000000000003-49",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 5}\\frac{2 \\sin^{2}{\\left(x - 5 \\right)}}{1 - \\cos{\\left(x - 5 \\right)}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Factor }\\sin^2 u=1-\\cos^2 u\\text{ and cancel at nearby nonzero }u."
+        ],
+        [
+          "calculation",
+          "f(x)=2(1+\\cos(1(x-5)))\\to 4."
+        ],
+        [
+          "result",
+          "4"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "4",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "FLBB-1-0000000000000200-28",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 1}\\frac{5 \\sin^{2}{\\left(5 x - 5 \\right)}}{1 - \\cos{\\left(5 x - 5 \\right)}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Factor }\\sin^2 u=1-\\cos^2 u\\text{ and cancel at nearby nonzero }u."
+        ],
+        [
+          "calculation",
+          "f(x)=5(1+\\cos(5(x-1)))\\to 10."
+        ],
+        [
+          "result",
+          "10"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "10",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "FLBB-1-0000000000000999-42",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 5}\\frac{2 \\sin^{2}{\\left(3 x - 15 \\right)}}{1 - \\cos{\\left(3 x - 15 \\right)}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Factor }\\sin^2 u=1-\\cos^2 u\\text{ and cancel at nearby nonzero }u."
+        ],
+        [
+          "calculation",
+          "f(x)=2(1+\\cos(3(x-5)))\\to 4."
+        ],
+        [
+          "result",
+          "4"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "4",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-limits-power-difference-v1": [
+    {
+      "code": "FLBC-1-0000000000000003-45",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 5}\\frac{- \\frac{\\sqrt{5} x^{\\frac{11}{2}}}{15625} + \\frac{x}{5}}{x - 5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Rescale the variable. At }t=1\\text{ both powers equal }1."
+        ],
+        [
+          "calculation",
+          "\\frac1{5}\\left(\\frac{t^{1}-1}{t-1}-\\frac{t^{\\frac{11}{2}}-1}{t-1}\\right)\\to\\frac{1-\\frac{11}{2}}{5}."
+        ],
+        [
+          "result",
+          "- \\frac{9}{10}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "- \\frac{9}{10}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLBC-1-0000000000000200-24",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 1}\\frac{- x^{\\frac{15}{2}} + x^{\\frac{5}{2}}}{x - 1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Rescale the variable. At }t=1\\text{ both powers equal }1."
+        ],
+        [
+          "calculation",
+          "\\frac1{1}\\left(\\frac{t^{\\frac{5}{2}}-1}{t-1}-\\frac{t^{\\frac{15}{2}}-1}{t-1}\\right)\\to\\frac{\\frac{5}{2}-\\frac{15}{2}}{1}."
+        ],
+        [
+          "result",
+          "-5"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "-5",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLBC-1-0000000000000999-38",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 5}\\frac{- \\frac{\\sqrt{5} x^{\\frac{13}{2}}}{78125} + \\frac{x}{5}}{x - 5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Rescale the variable. At }t=1\\text{ both powers equal }1."
+        ],
+        [
+          "calculation",
+          "\\frac1{5}\\left(\\frac{t^{1}-1}{t-1}-\\frac{t^{\\frac{13}{2}}-1}{t-1}\\right)\\to\\frac{1-\\frac{13}{2}}{5}."
+        ],
+        [
+          "result",
+          "- \\frac{11}{10}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "- \\frac{11}{10}",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-finite-heine-limit-v1": [
+    {
+      "code": "FLBD-1-0000000000000003-35",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 6}\\left(x - 1\\right)^{3} + 2\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Take any sequence }x_n\\to b+c\\text{ with }x_n\\ne b+c."
+        ],
+        [
+          "calculation",
+          "x_n-1\\to 5\\quad\\Longrightarrow\\quad (x_n-1)^3+2\\to 127.\\quad\\text{By the sequential criterion this is the function limit.}"
+        ],
+        [
+          "result",
+          "127"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "127",
+      "metadata": {
+        "difficulty": 1
+      }
+    },
+    {
+      "code": "FLBD-1-0000000000000200-14",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 6}\\left(x - 5\\right)^{3} + 5\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Take any sequence }x_n\\to b+c\\text{ with }x_n\\ne b+c."
+        ],
+        [
+          "calculation",
+          "x_n-5\\to 1\\quad\\Longrightarrow\\quad (x_n-5)^3+5\\to 6.\\quad\\text{By the sequential criterion this is the function limit.}"
+        ],
+        [
+          "result",
+          "6"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "6",
+      "metadata": {
+        "difficulty": 1
+      }
+    },
+    {
+      "code": "FLBD-1-0000000000000999-28",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 8}\\left(x - 3\\right)^{3} + 2\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Take any sequence }x_n\\to b+c\\text{ with }x_n\\ne b+c."
+        ],
+        [
+          "calculation",
+          "x_n-3\\to 5\\quad\\Longrightarrow\\quad (x_n-3)^3+2\\to 127.\\quad\\text{By the sequential criterion this is the function limit.}"
+        ],
+        [
+          "result",
+          "127"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "127",
+      "metadata": {
+        "difficulty": 1
+      }
+    }
+  ],
+  "analysis1-limits-heine-at-infinity-v1": [
+    {
+      "code": "FLBE-1-0000000000000003-93",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to -\\infty}\\frac{2 x + 1}{x^{2} + 5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Take any sequence }x_n\\to-\\infty\\text{ and divide by }x_n^2\\text{ eventually.}"
+        ],
+        [
+          "calculation",
+          "f(x_n)=\\frac{2/x_n+1/x_n^2}{1+5/x_n^2}\\to0.\\quad\\text{Apply the sequential criterion.}"
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "FLBE-1-0000000000000200-72",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to -\\infty}\\frac{5 x + 5}{x^{2} + 1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Take any sequence }x_n\\to-\\infty\\text{ and divide by }x_n^2\\text{ eventually.}"
+        ],
+        [
+          "calculation",
+          "f(x_n)=\\frac{5/x_n+5/x_n^2}{1+1/x_n^2}\\to0.\\quad\\text{Apply the sequential criterion.}"
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "FLBE-1-0000000000000999-86",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to -\\infty}\\frac{2 x + 3}{x^{2} + 5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Take any sequence }x_n\\to-\\infty\\text{ and divide by }x_n^2\\text{ eventually.}"
+        ],
+        [
+          "calculation",
+          "f(x_n)=\\frac{2/x_n+3/x_n^2}{1+5/x_n^2}\\to0.\\quad\\text{Apply the sequential criterion.}"
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-limits-continuity-free-parameter-v1": [
+    {
+      "code": "FLBF-1-0000000000000003-90",
+      "statement": "\\(\\text{Find the value of }p\\text{ and the set of }q\\text{ for continuity on }\\mathbb R:\\quad f(x)=\\begin{cases}px^2+5,&x<-2\\\\1x+5,&-2\\le x\\le0\\\\x^3+qx+5,&x>0\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{At zero the middle and right branches agree for every }q."
+        ],
+        [
+          "calculation",
+          "x=-2:\\quad 4p+5=5-2\\quad\\Longrightarrow\\quad p=-\\frac{1}{2},\\quad q\\in\\mathbb R."
+        ],
+        [
+          "result",
+          "\\left(- \\frac{1}{2},\\;\\mathbb{R}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\frac{1}{2},\\;\\mathbb{R}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLBF-1-0000000000000200-69",
+      "statement": "\\(\\text{Find the value of }p\\text{ and the set of }q\\text{ for continuity on }\\mathbb R:\\quad f(x)=\\begin{cases}px^2+1,&x<-5\\\\5x+1,&-5\\le x\\le0\\\\x^3+qx+1,&x>0\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{At zero the middle and right branches agree for every }q."
+        ],
+        [
+          "calculation",
+          "x=-5:\\quad 25p+1=1-25\\quad\\Longrightarrow\\quad p=-\\frac{5}{5},\\quad q\\in\\mathbb R."
+        ],
+        [
+          "result",
+          "\\left(-1,\\;\\mathbb{R}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(-1,\\;\\mathbb{R}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLBF-1-0000000000000999-83",
+      "statement": "\\(\\text{Find the value of }p\\text{ and the set of }q\\text{ for continuity on }\\mathbb R:\\quad f(x)=\\begin{cases}px^2+5,&x<-2\\\\3x+5,&-2\\le x\\le0\\\\x^3+qx+5,&x>0\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{At zero the middle and right branches agree for every }q."
+        ],
+        [
+          "calculation",
+          "x=-2:\\quad 4p+5=5-6\\quad\\Longrightarrow\\quad p=-\\frac{3}{2},\\quad q\\in\\mathbb R."
+        ],
+        [
+          "result",
+          "\\left(- \\frac{3}{2},\\;\\mathbb{R}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\frac{3}{2},\\;\\mathbb{R}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-discontinuity-pole-and-hole-v1": [
+    {
+      "code": "FLBG-1-0000000000000003-35",
+      "statement": "\\(\\text{Give the two discontinuities in increasing order. For each give its location,}\\text{ both one-sided limits and type:}\\quad f(x)=\\begin{cases}\\frac{5(x-1)}{(x+2)(x-1)},&x\\notin\\{-2,1\\}\\\\0,&x\\in\\{-2,1\\}\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Away from the two assigned points, }f(x)=\\frac{5}{x+2}."
+        ],
+        [
+          "calculation",
+          "x=-2:\\quad L_-=-\\infty,\\ L_+=+\\infty;\\qquad x=1:\\quad L_-=L_+=\\frac{5}{3}\\ne f(1)=0."
+        ],
+        [
+          "result",
+          "\\left(\\left(-2,\\;-\\infty,\\;\\infty,\\;\\text{infinite}\\right),\\;\\left(1,\\;\\frac{5}{3},\\;\\frac{5}{3},\\;\\text{removable}\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(-2,\\;-\\infty,\\;\\infty,\\;\\text{infinite}\\right),\\;\\left(1,\\;\\frac{5}{3},\\;\\frac{5}{3},\\;\\text{removable}\\right)\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "FLBG-1-0000000000000200-14",
+      "statement": "\\(\\text{Give the two discontinuities in increasing order. For each give its location,}\\text{ both one-sided limits and type:}\\quad f(x)=\\begin{cases}\\frac{1(x-5)}{(x+5)(x-5)},&x\\notin\\{-5,5\\}\\\\0,&x\\in\\{-5,5\\}\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Away from the two assigned points, }f(x)=\\frac{1}{x+5}."
+        ],
+        [
+          "calculation",
+          "x=-5:\\quad L_-=-\\infty,\\ L_+=+\\infty;\\qquad x=5:\\quad L_-=L_+=\\frac{1}{10}\\ne f(5)=0."
+        ],
+        [
+          "result",
+          "\\left(\\left(-5,\\;-\\infty,\\;\\infty,\\;\\text{infinite}\\right),\\;\\left(5,\\;\\frac{1}{10},\\;\\frac{1}{10},\\;\\text{removable}\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(-5,\\;-\\infty,\\;\\infty,\\;\\text{infinite}\\right),\\;\\left(5,\\;\\frac{1}{10},\\;\\frac{1}{10},\\;\\text{removable}\\right)\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "FLBG-1-0000000000000999-28",
+      "statement": "\\(\\text{Give the two discontinuities in increasing order. For each give its location,}\\text{ both one-sided limits and type:}\\quad f(x)=\\begin{cases}\\frac{5(x-3)}{(x+2)(x-3)},&x\\notin\\{-2,3\\}\\\\0,&x\\in\\{-2,3\\}\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Away from the two assigned points, }f(x)=\\frac{5}{x+2}."
+        ],
+        [
+          "calculation",
+          "x=-2:\\quad L_-=-\\infty,\\ L_+=+\\infty;\\qquad x=3:\\quad L_-=L_+=\\frac{5}{5}\\ne f(3)=0."
+        ],
+        [
+          "result",
+          "\\left(\\left(-2,\\;-\\infty,\\;\\infty,\\;\\text{infinite}\\right),\\;\\left(3,\\;1,\\;1,\\;\\text{removable}\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(-2,\\;-\\infty,\\;\\infty,\\;\\text{infinite}\\right),\\;\\left(3,\\;1,\\;1,\\;\\text{removable}\\right)\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    }
+  ],
+  "analysis1-limits-unique-log-exponential-root-v1": [
+    {
+      "code": "FLBH-1-0000000000000003-03",
+      "statement": "\\(\\text{Find the unique positive solution:}\\quad 6 x + e^{\\frac{x}{2} - 1} + \\frac{\\log{\\left(x \\right)}}{\\log{\\left(2 \\right)}}=14.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{All three terms are strictly increasing on }(0,\\infty)\\text{ since the logarithm has base }2>1."
+        ],
+        [
+          "calculation",
+          "x=2:\\quad 6x=12,\\quad \\log_{2}x=1,\\quad e^{x/2-1}=1.\\quad\\text{Their sum is }14."
+        ],
+        [
+          "result",
+          "2"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLBH-1-0000000000000200-79",
+      "statement": "\\(\\text{Find the unique positive solution:}\\quad 2 x + e^{\\frac{x}{36} - 1} + \\frac{\\log{\\left(x \\right)}}{\\log{\\left(6 \\right)}}=75.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{All three terms are strictly increasing on }(0,\\infty)\\text{ since the logarithm has base }6>1."
+        ],
+        [
+          "calculation",
+          "x=36:\\quad 2x=72,\\quad \\log_{6}x=2,\\quad e^{x/36-1}=1.\\quad\\text{Their sum is }75."
+        ],
+        [
+          "result",
+          "36"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "36",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLBH-1-0000000000000999-93",
+      "statement": "\\(\\text{Find the unique positive solution:}\\quad 6 x + e^{\\frac{x}{4} - 1} + \\frac{\\log{\\left(x \\right)}}{\\log{\\left(4 \\right)}}=26.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{All three terms are strictly increasing on }(0,\\infty)\\text{ since the logarithm has base }4>1."
+        ],
+        [
+          "calculation",
+          "x=4:\\quad 6x=24,\\quad \\log_{4}x=1,\\quad e^{x/4-1}=1.\\quad\\text{Their sum is }26."
+        ],
+        [
+          "result",
+          "4"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "4",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-rational-pole-and-domain-v1": [
+    {
+      "code": "FLBI-1-0000000000000003-83",
+      "statement": "\\(\\text{Give the real domain, all vertical asymptote locations as a set, and both lines}\\text{ at }-\\infty\\text{ and }+\\infty:\\quad f(x)=\\frac{2 x \\left(x - 5\\right) - 5 x + 26}{x - 5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{At }x=5\\text{ the denominator vanishes but the numerator is }1\\ne0."
+        ],
+        [
+          "calculation",
+          "f(x)=2 x - 5+\\frac{1}{x-5}\\quad(x\\ne5).\\quad\\text{The remainder diverges at the pole and vanishes at both infinities.}"
+        ],
+        [
+          "result",
+          "\\left(\\left(-\\infty, 5\\right) \\cup \\left(5, \\infty\\right),\\;\\left\\{5\\right\\},\\;2 x - 5,\\;2 x - 5\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(-\\infty, 5\\right) \\cup \\left(5, \\infty\\right),\\;\\left\\{5\\right\\},\\;2 x - 5,\\;2 x - 5\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLBI-1-0000000000000200-62",
+      "statement": "\\(\\text{Give the real domain, all vertical asymptote locations as a set, and both lines}\\text{ at }-\\infty\\text{ and }+\\infty:\\quad f(x)=\\frac{5 x \\left(x - 1\\right) - x + 6}{x - 1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{At }x=1\\text{ the denominator vanishes but the numerator is }5\\ne0."
+        ],
+        [
+          "calculation",
+          "f(x)=5 x - 1+\\frac{5}{x-1}\\quad(x\\ne1).\\quad\\text{The remainder diverges at the pole and vanishes at both infinities.}"
+        ],
+        [
+          "result",
+          "\\left(\\left(-\\infty, 1\\right) \\cup \\left(1, \\infty\\right),\\;\\left\\{1\\right\\},\\;5 x - 1,\\;5 x - 1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(-\\infty, 1\\right) \\cup \\left(1, \\infty\\right),\\;\\left\\{1\\right\\},\\;5 x - 1,\\;5 x - 1\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLBI-1-0000000000000999-76",
+      "statement": "\\(\\text{Give the real domain, all vertical asymptote locations as a set, and both lines}\\text{ at }-\\infty\\text{ and }+\\infty:\\quad f(x)=\\frac{2 x \\left(x - 5\\right) - 5 x + 28}{x - 5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{At }x=5\\text{ the denominator vanishes but the numerator is }3\\ne0."
+        ],
+        [
+          "calculation",
+          "f(x)=2 x - 5+\\frac{3}{x-5}\\quad(x\\ne5).\\quad\\text{The remainder diverges at the pole and vanishes at both infinities.}"
+        ],
+        [
+          "result",
+          "\\left(\\left(-\\infty, 5\\right) \\cup \\left(5, \\infty\\right),\\;\\left\\{5\\right\\},\\;2 x - 5,\\;2 x - 5\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(-\\infty, 5\\right) \\cup \\left(5, \\infty\\right),\\;\\left\\{5\\right\\},\\;2 x - 5,\\;2 x - 5\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-exponential-pole-v1": [
+    {
+      "code": "FLBJ-1-0000000000000003-48",
+      "statement": "\\(\\text{Give all vertical asymptote locations as a set and both asymptotic line}\\text{ expressions at }-\\infty\\text{ and }+\\infty:\\quad f(x)=\\frac{3^{x}}{3^{x} - 243}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The denominator is strictly increasing with a simple zero at }x=5.\\quad\\text{The numerator there is nonzero.}"
+        ],
+        [
+          "calculation",
+          "x\\to-\\infty:\\quad 3^x\\to0,\\ f(x)\\to0.\\quad x\\to+\\infty:\\quad f(x)=\\frac{1}{1-3^{5-x}}\\to 1."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{5\\right\\},\\;0,\\;1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{5\\right\\},\\;0,\\;1\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLBJ-1-0000000000000200-27",
+      "statement": "\\(\\text{Give all vertical asymptote locations as a set and both asymptotic line}\\text{ expressions at }-\\infty\\text{ and }+\\infty:\\quad f(x)=\\frac{5 \\cdot 6^{x}}{6^{x} - 6}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The denominator is strictly increasing with a simple zero at }x=1.\\quad\\text{The numerator there is nonzero.}"
+        ],
+        [
+          "calculation",
+          "x\\to-\\infty:\\quad 6^x\\to0,\\ f(x)\\to0.\\quad x\\to+\\infty:\\quad f(x)=\\frac{5}{1-6^{1-x}}\\to 5."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{1\\right\\},\\;0,\\;5\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{1\\right\\},\\;0,\\;5\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLBJ-1-0000000000000999-41",
+      "statement": "\\(\\text{Give all vertical asymptote locations as a set and both asymptotic line}\\text{ expressions at }-\\infty\\text{ and }+\\infty:\\quad f(x)=\\frac{3 \\cdot 3^{x}}{3^{x} - 243}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The denominator is strictly increasing with a simple zero at }x=5.\\quad\\text{The numerator there is nonzero.}"
+        ],
+        [
+          "calculation",
+          "x\\to-\\infty:\\quad 3^x\\to0,\\ f(x)\\to0.\\quad x\\to+\\infty:\\quad f(x)=\\frac{3}{1-3^{5-x}}\\to 3."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{5\\right\\},\\;0,\\;3\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{5\\right\\},\\;0,\\;3\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
   ]
 }

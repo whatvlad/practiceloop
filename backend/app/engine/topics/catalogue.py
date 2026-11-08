@@ -14,6 +14,7 @@ from app.engine.generators.algebra_expansion import (
 )
 from app.engine.generators.algebra_expressions import RationalizeDenominator, SimplifyRadicals
 from app.engine.generators.analysis import AnalysisParams, analysis_generators
+from app.engine.generators.analysis_limits import generators as limit_generators
 from app.engine.generators.analysis_one import MATRIX as ANALYSIS_ONE
 from app.engine.generators.complex_numbers import (
     ComplexArgument,
@@ -534,6 +535,12 @@ def topics() -> dict[str, Topic]:
             space_cm=5 if slug == "differential-calculus" else 4,
             served=True,
         )
+    for limit_generator in limit_generators():
+        topic = declared[limit_generator.topic]
+        limit_levels = dict(topic.levels)
+        level = limit_generator.difficulty
+        limit_levels[level] = (*limit_levels[level], Choice(limit_generator.version))
+        declared[topic.slug] = replace(topic, levels=limit_levels)
     # #146: retain product identity/weights and the three proven introductory forms.
     retained = {
         "improper-integrals": "practice-improper-v1",

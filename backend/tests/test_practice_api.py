@@ -377,6 +377,11 @@ def answer_of(url: str, problem_id: str, *, wrong: bool = False) -> str:
     def scalar(value: Any) -> str:
         return str(value).replace("**", "^").replace("E", "e")
 
+    if str(data["generator_version"]).startswith("analysis1-limits-"):
+        from test_engine_analysis_limits import different_source
+        from test_engine_analysis_limits import source as limit_source
+
+        return different_source(answer) if wrong else limit_source(answer)
     if isinstance(answer, MatrixAnswer):
         values = [list(row) for row in answer.expected]
         if wrong:

@@ -81,3 +81,6 @@ The shared 1,000-seed sweep, private pool replay and all-golden opening tests al
 discover these versions. HTTP E2E covers all 15 Analysis I topic/level cells,
 attempts, reveals, saved history, statistics and learner-safe anonymous sharing.
 Hosted CI and deployed checks are recorded in the linked PR and HANDOFF.
+
+The separate [sequence and continuity expansion](ANALYSIS_LIMITS.md) records
+the #236 methods, answer contracts and source coverage.
