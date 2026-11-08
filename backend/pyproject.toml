@@ -48,6 +48,8 @@ known-first-party = ["app"]
 
 [tool.mypy]
 python_version = "3.12"
+# CI runs on Linux; check as Linux everywhere so Windows runs match (#297).
+platform = "linux"
 strict = true
 files = ["app"]
 
