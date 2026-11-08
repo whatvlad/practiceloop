@@ -9,6 +9,7 @@ from uuid import UUID, uuid4
 
 import pytest
 from fastapi.testclient import TestClient
+from test_engine_analysis_limits import source as limit_source
 from test_engine_elementary import source
 
 from app.api import codes, practice, shares
@@ -23,6 +24,7 @@ from app.engine.answers.computational import (
 )
 from app.engine.answers.logic import LogicAnswer
 from app.engine.codes import parse_code
+from app.engine.generators.analysis_limits import generators as limit_generators
 from app.engine.generators.elementary import generators
 from app.engine.opening import rebuild
 from app.engine.topics.catalogue import Choice
@@ -49,11 +51,18 @@ REPRESENTATIVES = (
 )
 
 
-@pytest.mark.parametrize("template", REPRESENTATIVES)
+@pytest.mark.parametrize(
+    ("generator", "answer_source"),
+    [
+        *((g, source) for g in generators() if g.template in REPRESENTATIVES),
+        *((g, limit_source) for g in limit_generators() if g.prefix in {"SLAC", "FLAK", "FLBG"}),
+    ],
+    ids=[g.template for g in generators() if g.template in REPRESENTATIVES]
+    + [g.prefix for g in limit_generators() if g.prefix in {"SLAC", "FLAK", "FLBG"}],
+)
 def test_saved_generation_reopen_history_owner_copy_reveal_and_share_are_consistent(
-    template, monkeypatch
+    generator, answer_source, monkeypatch
 ):
-    generator = next(g for g in generators() if g.template == template)
     topic = next(
         t
         for t in engine.ENGINE_TOPICS.values()
@@ -188,7 +197,7 @@ def test_saved_generation_reopen_history_owner_copy_reveal_and_share_are_consist
                 assert set(restored) == set(saved) | {"attemptCount", "worksheetId"}
             attempt = client.post(
                 f"/problems/{original_id}/attempts",
-                json={"answer": source(picked.answer)},
+                json={"answer": answer_source(picked.answer)},
                 headers={"Idempotency-Key": str(uuid4())},
             )
             assert (

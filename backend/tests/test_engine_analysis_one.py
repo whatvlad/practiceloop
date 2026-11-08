@@ -48,6 +48,7 @@ def test_matrix_covers_each_method_and_retains_existing_integral_and_derivative_
                 c.generator
                 for c in topics()[slug].levels[level]
                 if c.generator.startswith("analysis1-")
+                and not c.generator.startswith("analysis1-limits-")
             } == {f"analysis1-{k}-v1" for k in kinds}
     assert topics()["derivatives"].levels[1][0].generator == "practice-derivative-v1"
 

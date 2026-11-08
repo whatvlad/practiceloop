@@ -238,3 +238,7 @@ or a few scalar representatives work. It closes only after computational
 source-family reconciliation, all first-stage mathematical deliveries, hosted
 CI, deployment and actual live checks. Every deferred proof/sketch component
 must explicitly link to the owner-accepted later stage #244.
+
+The [sequence and continuity implementation checkpoint](ANALYSIS_LIMITS.md)
+documents the current #236 methods. The machine-readable index identifies
+which references are still pending.
