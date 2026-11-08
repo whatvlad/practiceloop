@@ -289,8 +289,10 @@ def main() -> int:
                 return 0
         if args.sql_only:
             return 0
-        env = os.environ | {"PRACTICELOOP_TEST_DATABASE_URL": url}
         backend = ROOT / "backend"
+        # PYTHONPATH stands in for CI's `pip install -e .` (a WSL venv has no install).
+        path = os.pathsep.join(p for p in (str(backend), os.environ.get("PYTHONPATH")) if p)
+        env = os.environ | {"PRACTICELOOP_TEST_DATABASE_URL": url, "PYTHONPATH": path}
         run([sys.executable, "-m", "app.engine.catalogue"], cwd=backend, env=env)
         # addopts deselects db tests; a later -m in pytest_args still wins.
         run([sys.executable, "-m", "pytest", "-m", "db", *args.pytest_args], cwd=backend, env=env)
