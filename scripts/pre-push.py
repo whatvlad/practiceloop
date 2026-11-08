@@ -2,8 +2,9 @@
 
 ruff check, ruff format --check and mypy (as in the Backend job), then the
 Database isolation job: `pytest -m db` against PRACTICELOOP_TEST_DATABASE_URL
-when it is set, otherwise scripts/test-db.py with a disposable PostgreSQL 17
-(Docker or native binaries) when one is available. Prints one line per step and
+when it is set, otherwise scripts/test-db.py with a disposable PostgreSQL 17:
+in WSL on Windows (scripts/setup-wsl-tests.sh), Docker or native binaries
+elsewhere. Prints one line per step and
 only the tail of a failing step. Run once before the first push of a PR.
 
     python scripts/pre-push.py           # from the repository root
@@ -26,13 +27,19 @@ BACKEND = ROOT / "backend"
 TAIL = 40
 
 
-def database_available() -> bool:
+def database_command(python: str) -> list[str] | None:
+    """scripts/test-db.py in WSL on Windows (math worker), else Docker or binaries."""
     spec = importlib.util.spec_from_file_location("test_db", ROOT / "scripts/test-db.py")
     if spec is None or spec.loader is None:
-        return False
+        return None
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    return shutil.which("docker") is not None or module.find_pg_bin(None) is not None
+    script = [python, "scripts/test-db.py"]
+    if os.name == "nt":
+        return [*script, "--wsl"] if module.wsl_ready() else None
+    if shutil.which("docker") is not None or module.find_pg_bin(None) is not None:
+        return script
+    return None
 
 
 def step(name: str, command: list[str], cwd: Path) -> bool:
@@ -66,10 +73,10 @@ def main() -> int:
         if os.environ.get("PRACTICELOOP_TEST_DATABASE_URL"):
             db = [python, "-m", "pytest", "-m", "db", "-q", "-x", "--tb=short"]
             checks.append(("pytest -m db", db, BACKEND))
-        elif database_available():
-            checks.append(("test-db.py", [python, "scripts/test-db.py"], ROOT))
+        elif command := database_command(python):
+            checks.append(("test-db.py", command, ROOT))
         else:
-            skipped = "skip  database tests: no Docker, PostgreSQL 17 or URL (README)"
+            skipped = "skip  database tests: see README Local database"
     failed = [name for name, command, cwd in checks if not step(name, command, cwd)]
     if skipped:
         print(skipped)

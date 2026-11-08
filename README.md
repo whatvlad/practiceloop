@@ -178,7 +178,22 @@ disposable PostgreSQL 17, applies every migration, runs the RLS and hosted-check
 SQL, `pytest -m db` and the [end-to-end check](docs/production/MVP_E2E_CHECK.md),
 then removes the database (`--sql-only` skips the Python parts). It uses Docker
 (`postgres:17`, as in CI) when installed, otherwise native PostgreSQL 17 binaries.
-On Windows without Docker, once:
+
+On Windows, most API tests check answers through the math worker, which only runs
+on Linux, so run the job in WSL (Ubuntu 24.04). One-time setup, no sudo: it
+installs `uv`, a Python 3.12 venv with `backend/requirements.txt` and PostgreSQL
+17 from apt.postgresql.org (unpacked, not installed) into
+`~/.local/share/practiceloop` inside WSL:
+
+```powershell
+wsl bash scripts/setup-wsl-tests.sh
+.\.venv\Scripts\python.exe scripts/test-db.py --wsl                  # whole CI job
+.\.venv\Scripts\python.exe scripts/test-db.py --wsl -- -q tests/test_practice_api.py
+```
+
+`scripts/pre-push.py` uses `--wsl` on Windows when this setup exists. To check
+only the SQL part on Windows itself (migrations, RLS, hosted checks), without
+Docker:
 
 1. Download the PostgreSQL 17 "Windows x86-64" binaries zip (not the installer)
    from https://www.enterprisedb.com/download-postgresql-binaries.
@@ -188,15 +203,10 @@ On Windows without Docker, once:
    An installed PostgreSQL 17 in `C:\Program Files\PostgreSQL\17\bin`, a folder in
    `PRACTICELOOP_PG_BIN` or `--pg-bin`, or `initdb` on `PATH` also work.
 
-Then from the repository root:
+3. Run `.\.venv\Scripts\python.exe scripts/test-db.py --sql-only`.
 
-```powershell
-.\.venv\Scripts\python.exe scripts/test-db.py                    # whole CI job
-.\.venv\Scripts\python.exe scripts/test-db.py -- -q tests/test_practice_api.py
-.\.venv\Scripts\python.exe scripts/test-db.py --serve            # keep it, print the URL
-```
-
-Arguments after `--` replace `-m db` (and skip the end-to-end flow). `--serve`
+On Linux or macOS, `python scripts/test-db.py` runs the whole job directly.
+Arguments after `--` are added to `pytest -m db` (and skip the end-to-end flow). `--serve`
 prints `PRACTICELOOP_TEST_DATABASE_URL` for running `pytest -m db` from another
 terminal until Ctrl+C. Never point these files at Supabase or shared data. Git history secret scan is also in CI;
 run Gitleaks locally with `gitleaks git . --config .gitleaks.toml --redact` if needed.

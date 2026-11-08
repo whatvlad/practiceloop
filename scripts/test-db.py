@@ -6,14 +6,17 @@ migration in order, RLS isolation, hosted-check SQL, API ownership queries
 Uses Docker (`postgres:17`, as in CI) when it is installed, otherwise native
 PostgreSQL 17 binaries (`initdb`, `pg_ctl`, `psql`) found in --pg-bin,
 PRACTICELOOP_PG_BIN, .local/postgres/bin (here or in the main checkout),
-C:/Program Files/PostgreSQL/17/bin or PATH. The database lives in a temporary
-folder and is removed afterwards.
-Needs the backend installed in this Python (README "Local setup").
+C:/Program Files/PostgreSQL/17/bin, the WSL setup or PATH. The database lives in a
+temporary folder and is removed afterwards.
+Needs the backend installed in this Python (README "Local setup"). On Windows,
+--wsl reruns this script in WSL after `wsl bash scripts/setup-wsl-tests.sh`,
+because the math worker behind most API tests only runs on Linux.
 Never point any of these files at Supabase or shared data.
 
     python scripts/test-db.py            # from the repository root
     python scripts/test-db.py --sql-only # skip pytest and the end-to-end flow
     python scripts/test-db.py --serve    # apply the SQL, print the URL, wait
+    python scripts/test-db.py --wsl      # Windows: run it all in WSL (Linux)
 """
 
 from __future__ import annotations
@@ -43,17 +46,25 @@ EMPTY_AFTER_CLEANUP = (
     "assert (select count(*) from public.attempts) = 0; "
     "assert (select count(*) from private.problem_solutions) = 0; end $$"
 )
-PG_BIN_DIRS = (ROOT / ".local/postgres/bin", Path("C:/Program Files/PostgreSQL/17/bin"))
+WSL_HOME = "~/.local/share/practiceloop"  # scripts/setup-wsl-tests.sh
+PG_BIN_DIRS = (
+    ROOT / ".local/postgres/bin",
+    Path("C:/Program Files/PostgreSQL/17/bin"),
+    Path(WSL_HOME).expanduser() / "postgres/usr/lib/postgresql/17/bin",
+)
 
 
 def main_checkout() -> Path:
     # Worktrees share one .local/ in the main checkout.
-    result = subprocess.run(  # noqa: S603
-        ["git", "rev-parse", "--path-format=absolute", "--git-common-dir"],  # noqa: S607
-        cwd=ROOT,
-        capture_output=True,
-        text=True,
-    )
+    try:
+        result = subprocess.run(  # noqa: S603
+            ["git", "rev-parse", "--path-format=absolute", "--git-common-dir"],  # noqa: S607
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+        )
+    except OSError:
+        return ROOT
     return Path(result.stdout.strip()).parent if result.returncode == 0 else ROOT
 
 
@@ -134,6 +145,13 @@ class NativeDatabase:
         self.port = port
         pg_ctl = self.tool("pg_ctl")
         options = f"-p {port} -c listen_addresses=127.0.0.1"
+        if os.name != "nt":
+            options += f" -k {shlex.quote(str(data))}"
+        # Unpacked Debian packages keep libpq in usr/lib/x86_64-linux-gnu.
+        libs = bin_dir.parent.parent.parent / "x86_64-linux-gnu"
+        if os.name != "nt" and libs.is_dir():
+            old = os.environ.get("LD_LIBRARY_PATH")
+            os.environ["LD_LIBRARY_PATH"] = f"{libs}:{old}" if old else str(libs)
         self.stop_command = command_line(pg_ctl, "stop", "-D", self.data, "-m", "fast", "-w")
         self.start_command = command_line(
             pg_ctl, "start", "-D", self.data, "-l", self.log, "-o", options, "-w"
@@ -221,14 +239,44 @@ def apply_ci_sql(database: Database) -> None:
     print("Migrations, RLS isolation and hosted-check SQL passed")
 
 
+def wsl_ready() -> bool:
+    """Whether scripts/setup-wsl-tests.sh has prepared WSL on this Windows PC."""
+    if os.name != "nt" or shutil.which("wsl") is None:
+        return False
+    home = WSL_HOME.replace("~", "$HOME")
+    initdb = f"{home}/postgres/usr/lib/postgresql/17/bin/initdb"
+    check = f'test -x "{home}/venv/bin/python" && test -x "{initdb}"'
+    result = subprocess.run(["wsl", "-e", "bash", "-c", check], capture_output=True)  # noqa: S603,S607
+    return result.returncode == 0
+
+
+def in_wsl(arguments: list[str]) -> int:
+    if not wsl_ready():
+        raise SystemExit("WSL is not set up; run: wsl bash scripts/setup-wsl-tests.sh")
+    script = subprocess.run(  # noqa: S603
+        ["wsl", "-e", "wslpath", "-u", str(Path(__file__).resolve())],  # noqa: S607
+        capture_output=True,
+        text=True,
+        check=True,
+    ).stdout.strip()
+    python = WSL_HOME.replace("~", "$HOME") + "/venv/bin/python"
+    # $HOME expands inside WSL; the script path and arguments pass through as-is.
+    launcher = f'exec "{python}" "$@"'
+    command = ["wsl", "-e", "bash", "-c", launcher, "test-db", script, "--native", *arguments]
+    return subprocess.run(command).returncode  # noqa: S603,S607
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--sql-only", action="store_true", help="skip pytest -m db and e2e")
     parser.add_argument("--serve", action="store_true", help="keep the database until Ctrl+C")
     parser.add_argument("--native", action="store_true", help="use PostgreSQL binaries, not Docker")
     parser.add_argument("--pg-bin", help="folder with initdb, pg_ctl and psql")
+    parser.add_argument("--wsl", action="store_true", help="Windows: rerun everything in WSL")
     parser.add_argument("pytest_args", nargs="*", help="extra pytest arguments; skips e2e")
     args = parser.parse_args()
+    if args.wsl:
+        return in_wsl([a for a in sys.argv[1:] if a != "--wsl"])
     with disposable_database(args.pg_bin, args.native) as database:
         apply_ci_sql(database)
         url = f"postgresql://postgres:{PASSWORD}@127.0.0.1:{database.port}/postgres"

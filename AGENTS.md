@@ -68,7 +68,8 @@ conversation, including code and logs already read.
   Do not paste full test or CI logs; read only the failing part.
 - Narrow runs skip older suites, so before the first push of a pull request run
   `python scripts/pre-push.py` once. It runs ruff, `ruff format --check`, mypy
-  and the database tests (`scripts/test-db.py`, README "Local database") with
+  and the database tests (`scripts/test-db.py`, in WSL on Windows; README
+  "Local database") with
   one line per step and only the tail of a failure. If it reports `skip`
   for the database, say so in the pull request.
 - Do not wait for hosted CI inside a session or poll it in a loop. Push, end the
