@@ -67,6 +67,10 @@ html,body,#root{min-height:100%}
 .pl-hero-lead{max-width:560px;margin:var(--space-6) auto 0}
 .pl-hero-actions{justify-content:center;margin-top:var(--space-6)}
 .pl-section{padding-bottom:var(--space-8)}
+.pl-how{padding-top:var(--space-8);scroll-margin-top:var(--space-5)}
+.pl-how-steps{list-style:none;margin:var(--space-6) 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-6)}
+.pl-how-steps p{margin:var(--space-2) 0 0;max-width:36ch}
+.pl-how-note{margin:var(--space-7) 0 0;max-width:68ch}
 .pl-landing-demo{margin:0}
 .pl-landing-demo-answer .pl-input{flex:1;min-width:0}
 .pl-landing-demo-answer .pl-btn{height:60px}
@@ -89,6 +93,7 @@ html,body,#root{min-height:100%}
   .pl-display-lg{font-size:40px}
   .pl-grid-4{grid-template-columns:repeat(2,1fr)}
   .pl-principles{grid-template-columns:1fr}
+  .pl-how-steps{grid-template-columns:minmax(0,1fr);gap:var(--space-5)}
 }
 
 @media (max-width:640px){

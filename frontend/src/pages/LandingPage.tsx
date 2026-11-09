@@ -21,9 +21,14 @@ export function LandingPage({ onSignIn, disabled = false, busy = false, error = 
           </div>
           {error && <p className="pl-result pl-result--invalid" role="alert">{error}</p>}
         </section>
-        <section id="how" className="pl-wrap pl-section">
-          <h2 className="pl-h-lg">Explore the curriculum</h2>
-          <p className="pl-muted">The demo needs no account. Sign in with Google to generate problems in every available topic, print worksheets and keep your history. <Link to="/practice">Browse topics</Link>.</p>
+        <section id="how" className="pl-wrap pl-section pl-how" aria-labelledby="how-title">
+          <h2 id="how-title" className="pl-display-md">How it works</h2>
+          <ul className="pl-how-steps">
+            <li><h3 className="pl-h-md">Pick a topic and a level</h3><p className="pl-muted">Matrices, integrals, complex numbers, probability and more, from basic to advanced.</p></li>
+            <li><h3 className="pl-h-md">Solve and check</h3><p className="pl-muted">Type your answer as a formula. MathLoop checks it at once, so you know straight away.</p></li>
+            <li><h3 className="pl-h-md">See the full solution</h3><p className="pl-muted">Reveal the answer or every step. Each problem stays in your history to retry or print.</p></li>
+          </ul>
+          <p className="pl-muted pl-how-note">The demo needs no account. Sign in with Google to practise every topic and keep your history. <Link to="/practice">Browse topics</Link></p>
         </section>
       </main>
     </div>
