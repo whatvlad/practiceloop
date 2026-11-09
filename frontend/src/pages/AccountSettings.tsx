@@ -17,7 +17,7 @@ function NameForm({ initial, onSaved }: { initial: string | null; onSaved: () =>
     finally { pending.current = false; setBusy(false); }
   }}>
     <label htmlFor="display-name">Display name (optional)</label>
-    <input id="display-name" className="pl-input" maxLength={80} value={name} disabled={busy} onChange={event => setName(event.target.value)} aria-describedby="name-help" />
+    <input id="display-name" className="pl-input pl-input--text" maxLength={80} value={name} disabled={busy} onChange={event => setName(event.target.value)} aria-describedby="name-help" />
     <p id="name-help" className="pl-small pl-muted pl-m-0">Private to you. Leave blank and save to remove it. This does not change your Google name.</p>
     <div><Button type="submit" variant="secondary" disabled={busy}>{busy ? 'Saving…' : 'Save display name'}</Button></div>
     {message && <p role="status">{message}</p>}
@@ -42,7 +42,7 @@ export function AccountSettings({ onDeleted, onNameSaved }: { onDeleted: () => P
     <h3 className="pl-h-md">Delete your account</h3>
     <p className="pl-small pl-muted pl-m-0">Permanently delete your MathLoop account, problems, answers, results and profile. This cannot be undone. Your Google account is unaffected.</p>
     <p className="pl-small pl-muted pl-m-0">Active data is removed immediately. Our retention policy requires recovery backups to expire within 30 days.</p>
-    {!confirming ? <div><Button variant="secondary" onClick={() => setConfirming(true)}>Delete account…</Button></div> :
+    {!confirming ? <div><Button variant="secondary" className="pl-btn--danger" onClick={() => setConfirming(true)}>Delete account…</Button></div> :
       <form className="pl-stack pl-gap-3" onSubmit={async event => {
         event.preventDefault();
         if (pending.current || confirmation !== 'DELETE') return;
@@ -52,8 +52,8 @@ export function AccountSettings({ onDeleted, onNameSaved }: { onDeleted: () => P
         finally { pending.current = false; setBusy(false); }
       }}>
         <label htmlFor="delete-confirmation">Type DELETE to confirm permanent deletion</label>
-        <input id="delete-confirmation" className="pl-input" value={confirmation} onChange={event => setConfirmation(event.target.value)} disabled={busy} autoComplete="off" />
-        <div className="pl-actions"><Button type="submit" disabled={busy || confirmation !== 'DELETE'}>{busy ? 'Deleting…' : 'Permanently delete account'}</Button><Button variant="ghost" disabled={busy} onClick={() => { setConfirming(false); setConfirmation(''); setError(''); }}>Cancel</Button></div>
+        <input id="delete-confirmation" className="pl-input pl-input--text" value={confirmation} onChange={event => setConfirmation(event.target.value)} disabled={busy} autoComplete="off" />
+        <div className="pl-actions"><Button type="submit" variant="secondary" className="pl-btn--danger" disabled={busy || confirmation !== 'DELETE'}>{busy ? 'Deleting…' : 'Permanently delete account'}</Button><Button variant="ghost" disabled={busy} onClick={() => { setConfirming(false); setConfirmation(''); setError(''); }}>Cancel</Button></div>
       </form>}
     {error && <p role="alert">{error}</p>}
   </section>;

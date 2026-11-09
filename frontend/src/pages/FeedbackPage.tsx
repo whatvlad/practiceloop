@@ -26,6 +26,7 @@ export function FeedbackPage({ name: initialName, email, fetchImpl = fetch, getT
   const [sent, setSent] = useState(false);
   const [openedAt] = useState(() => Date.now());
   const pending = useRef(false);
+  const nearLimit = message.length > LIMITS.message * 0.8;
 
   async function submit(event: FormEvent) {
     event.preventDefault();
@@ -77,9 +78,10 @@ export function FeedbackPage({ name: initialName, email, fetchImpl = fetch, getT
             </select>
           </label>
           <label className="pl-field">Message
-            <textarea className="pl-input pl-input--text pl-feedback-message" name="message" rows={7} maxLength={LIMITS.message} value={message} onChange={e => setMessage(e.target.value)} disabled={busy} required aria-describedby="feedback-count" />
+            <textarea className="pl-input pl-input--text pl-feedback-message" name="message" rows={7} maxLength={LIMITS.message} value={message} onChange={e => setMessage(e.target.value)} disabled={busy} required aria-describedby={nearLimit ? 'feedback-count' : undefined} />
           </label>
-          <p id="feedback-count" className="pl-small pl-subtle pl-m-0">{message.length} / {LIMITS.message}</p>
+          {/* The counter appears only near the limit; a 0 / 4000 under an empty box is noise. */}
+          {nearLimit && <p id="feedback-count" className="pl-small pl-subtle pl-m-0">{LIMITS.message - message.length} characters left</p>}
           {/* Honeypot: off-screen and skipped by keyboard and screen readers, so only bots fill it. */}
           <div className="pl-feedback-trap" aria-hidden="true">
             <label>Website <input name="website" tabIndex={-1} autoComplete="off" value={website} onChange={e => setWebsite(e.target.value)} /></label>

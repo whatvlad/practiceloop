@@ -31,14 +31,14 @@ it('shows both areas, descriptions, subtypes and an inactive placeholder', async
   expect(ready.querySelector('a[href="/dashboard?area=algebra&topic=polynomial-division"]')).not.toBeNull();
   expect(element.textContent).toContain('Diagonalization');
   const planned = [...element.querySelectorAll('li')].find(item => item.textContent?.includes('Diagonalization'))!;
-  expect(planned.textContent).toContain('In develop');
+  expect(planned.textContent).toContain('Coming soon');
   expect(element.querySelector('button[aria-label="Start practice"]')).toBeNull();
   const matrixLinks = element.querySelectorAll<HTMLAnchorElement>('a[href="/dashboard?area=algebra&topic=inverse-matrices"]');
   expect(matrixLinks.length).toBeGreaterThan(0);
   const polynomialLink = element.querySelector<HTMLAnchorElement>('a[href="/dashboard?area=algebra&topic=fundamental-theorem-algebra"]');
   expect(polynomialLink).not.toBeNull();
   expect(element.textContent).toContain('Matrix operations');
-  expect(element.textContent).toContain('In develop');
+  expect(element.textContent).toContain('Coming soon');
   expect(element.querySelector('button')?.textContent).not.toContain('Generate');
   const analysis = [...element.querySelectorAll('button')].find(button => button.textContent === 'Mathematical Analysis')!;
   await act(async () => analysis.click());
@@ -53,7 +53,7 @@ it('shows both areas, descriptions, subtypes and an inactive placeholder', async
   expect(element.textContent).toContain('Differential equations');
   expect(element.querySelector('a[href="/dashboard?area=mathematical-analysis&topic=derivatives"]')).not.toBeNull();
   expect(element.textContent).not.toContain('Inverse matrices');
-  expect(element.textContent).toContain('In develop');
+  expect(element.textContent).toContain('Coming soon');
   const probability = [...element.querySelectorAll('button')].find(button => button.textContent === 'Probability and Statistics')!;
   await act(async () => probability.click());
   expect(probabilitySections.flatMap(section => section.types)).toHaveLength(9);

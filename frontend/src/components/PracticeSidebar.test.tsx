@@ -19,7 +19,7 @@ it('links available topics and marks unavailable algebra topics', async () => {
   await act(async () => root.render(<PracticeSidebar />));
   expect(element.querySelector('a[href="/dashboard?area=algebra&topic=matrix-operations"]')).not.toBeNull();
   expect(element.textContent).toContain('Diagonalization');
-  expect(element.textContent).toContain('In develop');
+  expect(element.textContent).toContain('Coming soon');
   expect(element.querySelector('a[href*="algebraic-expressions"]')).toBeNull();
   await act(async () => root.unmount());
   element.remove();

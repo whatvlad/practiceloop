@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { getCatalogue } from '../data/api';
 import { algebraGroups } from '../data/algebraGroups';
 import type { AvailableTopic, Catalogue } from '../data/types';
@@ -23,14 +24,21 @@ export function PracticeSidebar({ preview, onLocalRandom, onPreviewTopic }: { pr
     </li>;
   }
   const randomCurrent = pathname === '/random';
+  // Phones show the tree only on request, so the page itself is the first thing on screen.
+  // The local preview has its own menu button, so its tree is never folded a second time.
+  const [open, setOpen] = useState(Boolean(preview));
+  const where = `${pathname}?${params.toString()}`;
+  useEffect(() => { if (!preview) setOpen(false); }, [where, preview]);
   return (
-    <aside className="pl-practice-sidebar" aria-label="Practice topics">
+    <aside className={`pl-practice-sidebar${open ? ' is-open' : ''}`} aria-label="Practice topics">
       <div className="pl-sidebar-head">
-        <p className="pl-label pl-m-0">Topics</p>
+        <p className="pl-label pl-m-0 pl-sidebar-title">Topics</p>
+        {!preview && <button type="button" className="pl-btn pl-btn--secondary pl-btn--sm pl-sidebar-toggle" aria-expanded={open} aria-controls="pl-sidebar-tree" onClick={() => setOpen(value => !value)}>{open ? 'Hide topics' : 'Topics'}</button>}
         {onLocalRandom
           ? <button type="button" className="pl-btn pl-btn--secondary pl-btn--sm pl-random-toggle" onClick={onLocalRandom}>Random problems</button>
           : <Link className="pl-btn pl-btn--secondary pl-btn--sm pl-random-toggle" to="/random" aria-current={randomCurrent ? 'page' : undefined}>Random problems</Link>}
       </div>
+      <div id="pl-sidebar-tree" className="pl-sidebar-tree">
       {catalogue.status === 'loading' && <p role="status">Loading topics…</p>}
       {catalogue.status === 'error' && <p role="alert">Topics could not be loaded.</p>}
       {catalogue.status === 'ready' && <>
@@ -43,7 +51,7 @@ export function PracticeSidebar({ preview, onLocalRandom, onPreviewTopic }: { pr
               <summary>{group.title}</summary>
               <ul>{group.items.filter(item => !(preview && onLocalRandom && ['polynomial-operations', 'fundamental-theorem-algebra'].includes(item.topic ?? ''))).map(item => {
                 const topic = available.find(entry => entry.slug === item.topic);
-                return topic ? topicRow(topic, item.title) : <li key={item.title}><span>{item.title} <small>In develop</small></span></li>;
+                return topic ? topicRow(topic, item.title) : <li key={item.title}><span>{item.title} <small>Coming soon</small></span></li>;
               })}</ul>
             </details>;
           })}
@@ -56,6 +64,7 @@ export function PracticeSidebar({ preview, onLocalRandom, onPreviewTopic }: { pr
           </details>;
         })}
       </>}
+      </div>
     </aside>
   );
 }

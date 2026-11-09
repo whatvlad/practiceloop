@@ -178,7 +178,10 @@ main[tabindex="-1"]:focus{outline:none}
 /* Workspace: the topic tree on the left, the page beside it. */
 .pl-workspace{display:grid;grid-template-columns:288px minmax(0,1fr);flex:1}
 .pl-workspace-content{min-width:0}
-.pl-practice-sidebar{padding:var(--space-5) var(--space-4);border-right:1px solid var(--line);font-size:15px;line-height:22px}
+.pl-practice-sidebar{padding:var(--space-5) var(--space-4);font-size:15px;line-height:22px}
+/* The divider sits on the content column, which always runs to the footer; the sticky sidebar stops at its last topic. */
+.pl-workspace-content{border-left:1px solid var(--line)}
+.pl-sidebar-toggle{display:none}
 .pl-sidebar-head{display:flex;flex-direction:column;gap:var(--space-3);padding:0 var(--space-2);margin-bottom:var(--space-4)}
 .pl-practice-sidebar details{margin:2px 0}
 .pl-practice-sidebar summary{cursor:pointer;padding:6px var(--space-2);border-radius:var(--radius-sm);font-weight:600}
@@ -196,7 +199,17 @@ main[tabindex="-1"]:focus{outline:none}
 .pl-practice-sidebar small{font-size:13px}
 .pl-random-toggle{width:100%;justify-content:center}
 .pl-random-toggle[aria-current="page"]{border-color:var(--ink);background:var(--surface-raised)}
-@media(max-width:760px){.pl-workspace{display:block}.pl-practice-sidebar{border-right:0;border-bottom:1px solid var(--line)}}
+@media(max-width:760px){
+  .pl-workspace{display:block}
+  .pl-workspace-content{border-left:0}
+  .pl-practice-sidebar{border-bottom:1px solid var(--line);padding:var(--space-3) var(--space-4)}
+  .pl-sidebar-head{flex-direction:row;padding:0;margin:0}
+  .pl-sidebar-title{display:none}
+  .pl-sidebar-toggle{display:inline-flex;flex:1;justify-content:center}
+  .pl-random-toggle{flex:1;width:auto}
+  .pl-sidebar-tree{display:none}
+  .pl-practice-sidebar.is-open .pl-sidebar-tree{display:block;margin-top:var(--space-3)}
+}
 @media(min-width:761px){.pl-practice-sidebar{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto}}
 
 /* Home: last problem and activity in the centre, progress on the right. */
@@ -261,8 +274,13 @@ main[tabindex="-1"]:focus{outline:none}
 /* Feedback form */
 .pl-feedback{display:flex;flex-direction:column;gap:var(--space-4)}
 .pl-feedback .pl-field{font-weight:500}
+.pl-feedback .pl-select{height:48px}
 .pl-feedback-row{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4)}
 .pl-input--text{height:48px;font-family:var(--font-sans);font-size:16px;font-weight:400}
 .pl-feedback-message{height:auto;min-height:160px;padding:var(--space-3) var(--space-4);line-height:24px;resize:vertical}
 .pl-feedback-trap{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
 @media(max-width:640px){.pl-feedback-row{grid-template-columns:1fr}}
+
+/* Destructive actions: outlined like a secondary button, in the warning colour, so they never read as a routine save. */
+.pl-btn--danger{color:var(--incorrect);border-color:var(--incorrect)}
+.pl-btn--danger:hover:not(:disabled){background:var(--incorrect-soft);border-color:var(--incorrect);color:var(--incorrect)}

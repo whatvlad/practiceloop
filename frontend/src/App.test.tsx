@@ -63,7 +63,7 @@ describe('client route protection and auth UI', () => {
   it('shows a guest the curriculum instead of starting a practice session', async () => {
     await renderAt('/practice', signedOut);
     expect(element.textContent).toContain('Explore mathematics');
-    expect(element.textContent).toContain('In develop');
+    expect(element.textContent).toContain('Coming soon');
     expect(element.textContent).not.toContain('Generate problem');
   });
 

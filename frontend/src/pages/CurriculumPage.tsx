@@ -90,20 +90,20 @@ export function CurriculumPage({ guest = false }: { guest?: boolean }) {
             <ul>
               {group.items.map(item => <li key={item.title}>
                 {item.topic ? <Link to={`/dashboard?area=algebra&topic=${item.topic}`}>{item.title}</Link> : item.title}
-                <span className="pl-small pl-muted"> — {item.topic ? item.note ?? 'Available' : 'In develop'}</span>
+                <span className="pl-small pl-muted"> — {item.topic ? item.note ?? 'Available' : 'Coming soon'}</span>
               </li>)}
             </ul>
           </details>
         )) : sections.map(section => (
           <details className="pl-card" key={section.name}>
-            <summary className="pl-h-lg">{section.name} <span className="pl-small pl-muted">— {section.types.some(type => PRACTICE[type.name]) ? 'Selected problems available' : 'In develop'}</span></summary>
+            <summary className="pl-h-lg">{section.name} <span className="pl-small pl-muted">— {section.types.some(type => PRACTICE[type.name]) ? 'Selected problems available' : 'Coming soon'}</span></summary>
             <div className="pl-stack pl-gap-3 pl-mt-4">
               {section.types.map(type => (
                 <details className="pl-card" key={type.name}>
-                  <summary className="pl-h-md">{type.name} <span className="pl-small pl-muted">— {PRACTICE[type.name] ? 'Selected problems available · In develop' : 'In develop'}</span></summary>
+                  <summary className="pl-h-md">{type.name} <span className="pl-small pl-muted">— {PRACTICE[type.name] ? 'Selected problems available · Coming soon' : 'Coming soon'}</span></summary>
                   <p className="pl-muted">{type.description}</p>
                   {type.subtypes && <ul>{type.subtypes.map(subtype => <li key={subtype}>{subtype}</li>)}</ul>}
-                  {PRACTICE[type.name] ? <div><p>{PRACTICE[type.name].scope}</p><Link className="pl-btn pl-btn--primary" to={`/dashboard?area=${practiceArea}&topic=${PRACTICE[type.name].topic}`}>Practice</Link></div> : <p className="pl-display-md" role="status">In develop</p>}
+                  {PRACTICE[type.name] ? <div><p>{PRACTICE[type.name].scope}</p><Link className="pl-btn pl-btn--primary" to={`/dashboard?area=${practiceArea}&topic=${PRACTICE[type.name].topic}`}>Practice</Link></div> : <p className="pl-display-md" role="status">Coming soon</p>}
                 </details>
               ))}
             </div>
