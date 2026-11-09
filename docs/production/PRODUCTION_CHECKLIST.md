@@ -1,7 +1,7 @@
 # Production checklist (#38)
 
 The twelve gates a release must pass on the preview
-(https://practiceloop.pages.dev) before the custom-domain launch (#39). Each item
+(https://mathloop.pages.dev) before the custom-domain launch (#39). Each item
 names the automated check that covers it in CI and the smoke check to repeat on
 the deployed preview. Requirements and decisions are in
 [PRODUCTION_READINESS_PLAN.md](PRODUCTION_READINESS_PLAN.md).
@@ -15,7 +15,7 @@ the deployed preview. Requirements and decisions are in
 | 5 | Loading, empty, success and safe error states; a pending request disables its button so a double click sends one request | Page tests (`PracticePage`, `HistoryPage`, `SharedProblemPage`, `ReportProblem`) | Double-click *Check answer*: one attempt appears in history |
 | 6 | *Report a problem* stores only problem, category and optional comment, is limited to 5 a minute and 30 an hour per user, and shows safe errors | `backend/tests/test_reports_api.py`, `supabase/tests/isolation.sql`, `ReportProblem.test.tsx` | Signed in, send a report; send six quickly and see the "going a bit fast" message |
 | 7 | Skip link, one `h1` per page, labelled controls, visible focus, keyboard use, alternative text and layouts without horizontal scroll at 375 px | Component and App tests; a Chromium + axe-core run of the built site (see below) | Tab from the top of `/`: *Skip to content* appears first; nothing scrolls sideways on a phone |
-| 8 | Pages headers from `frontend/public/_headers`: CSP (`script-src 'self'` plus the analytics beacon, no inline script, no eval), `nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: no-referrer`, `Permissions-Policy`, COOP; fonts are self-hosted | `site.test.ts` "Pages headers" | `curl -sI https://practiceloop.pages.dev/` shows the headers; the browser console shows no CSP errors while practising and signing in |
+| 8 | Pages headers from `frontend/public/_headers`: CSP (`script-src 'self'` plus the analytics beacon, no inline script, no eval), `nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: no-referrer`, `Permissions-Policy`, COOP; fonts are self-hosted | `site.test.ts` "Pages headers" | `curl -sI https://mathloop.pages.dev/` shows the headers; the browser console shows no CSP errors while practising and signing in |
 | 9 | API: HTTPS only (Caddy redirect and HSTS), exact-origin CORS without wildcards or plain HTTP, strict request models, 4 KB body cap, safe error envelope, security headers on every response | `backend/tests/test_health.py`, `test_practice_api.py`, `scripts/e2e_local.py` | `curl -sI https://92-5-92-72.sslip.io/health` shows `content-security-policy: default-src 'none'...`; an unknown `Origin` gets no CORS header |
 | 10 | Cloudflare Web Analytics only when `CF_WEB_ANALYTICS_TOKEN` is set; never on `/auth/*` or share URLs; no email, account ID or answer is ever in a URL; learning metrics stay in Supabase | `frontend/src/analytics.test.ts` | With the token set, the beacon loads on `/` but not on `/s/{token}` |
 | 11 | `/privacy` and `/terms` name the operator and contact, and `/privacy` describes the real data flows and processors (Supabase, Google, Cloudflare, Oracle) | `App.test.tsx` "serves the privacy page" and "serves the terms" | Read both pages against this repository's behaviour |

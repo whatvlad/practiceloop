@@ -96,7 +96,7 @@ install -d -m 755 /etc/practiceloop
 if [[ ! -f /etc/practiceloop/api.env ]]; then
   cat > /etc/practiceloop/api.env <<ENV
 # Exact browser origins allowed by CORS, comma-separated.
-ALLOWED_ORIGINS=https://practiceloop.pages.dev,http://localhost:5173,http://127.0.0.1:5173
+ALLOWED_ORIGINS=https://mathloop.pages.dev,http://localhost:5173,http://127.0.0.1:5173
 ENV
 fi
 chown root:root /etc/practiceloop/api.env

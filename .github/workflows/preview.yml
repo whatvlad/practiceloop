@@ -1,7 +1,7 @@
 name: Preview
 # Preview hosting on Cloudflare Pages: the frontend (mock data) at / and the
 # Graphify code graph at /graph/, rebuilt from each push to main.
-# Served at https://practiceloop.pages.dev (noindex, Google login; headers in frontend/public/_headers).
+# Served at https://mathloop.pages.dev (noindex, Google login; headers in frontend/public/_headers).
 # The app calls the API same-origin at /api; functions/api forwards that to repo variable
 # API_BASE_URL (the Oracle backend; empty skips it), so filtering networks only see pages.dev.
 # Needs repo secrets CLOUDFLARE_API_TOKEN (Account > Cloudflare Pages > Edit) and
@@ -19,7 +19,9 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  CLOUDFLARE_PROJECT: practiceloop
+  CLOUDFLARE_PROJECT: mathloop
+  # The pre-rename project; every deploy turns it into a redirect to the MathLoop address.
+  LEGACY_PROJECT: practiceloop
 
 jobs:
   deploy:
@@ -90,6 +92,11 @@ jobs:
           else
             grep -A1 -x '/\*' frontend/dist/_headers | grep -q 'X-Robots-Tag: noindex'
           fi
+      - name: Create the Pages project
+        if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != ''
+        run: |
+          npx --yes wrangler@4.147.0 pages project create "$CLOUDFLARE_PROJECT" --production-branch main \
+            || echo "Project already exists."
       # A Pages secret applies to deployments made after it is set, so it goes first.
       - name: Give the feedback form its mail key
         if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != '' && env.RESEND_API_KEY != ''
@@ -106,9 +113,18 @@ jobs:
           # SUPABASE_* are public; the feedback function uses them to check the sender's session.
           printf 'name = "%s"\npages_build_output_dir = "dist"\ncompatibility_date = "2026-10-01"\n\n[vars]\nAPI_ORIGIN = "%s"\nSUPABASE_URL = "%s"\nSUPABASE_PUBLISHABLE_KEY = "%s"\n' \
             "$CLOUDFLARE_PROJECT" "$API_ORIGIN" "$SUPABASE_URL" "$SUPABASE_PUBLISHABLE_KEY" > wrangler.toml
-          npx --yes wrangler@4.147.0 pages project create "$CLOUDFLARE_PROJECT" --production-branch main \
-            || echo "Project already exists."
           npx --yes wrangler@4.147.0 pages deploy dist --project-name "$CLOUDFLARE_PROJECT" \
+            --branch main --commit-hash "$GITHUB_SHA"
+      # Old links (shared problems included) keep working: practiceloop.pages.dev answers every
+      # path with a permanent redirect to the same path on mathloop.pages.dev.
+      - name: Redirect the old address
+        if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != ''
+        run: |
+          mkdir -p "$RUNNER_TEMP/legacy"
+          printf '/* https://%s.pages.dev/:splat 301\n' "$CLOUDFLARE_PROJECT" > "$RUNNER_TEMP/legacy/_redirects"
+          printf '/*\n  X-Robots-Tag: noindex\n' > "$RUNNER_TEMP/legacy/_headers"
+          cd "$RUNNER_TEMP"
+          npx --yes wrangler@4.147.0 pages deploy legacy --project-name "$LEGACY_PROJECT" \
             --branch main --commit-hash "$GITHUB_SHA"
       - name: Check the API through pages.dev
         if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != '' && env.API_ORIGIN != ''

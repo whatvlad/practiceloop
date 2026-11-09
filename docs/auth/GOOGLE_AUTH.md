@@ -14,8 +14,8 @@ add every test Google account there. Google is the only supported provider.
 
 Supabase Authentication → URL Configuration:
 
-- Site URL: `https://practiceloop.pages.dev`
-- Redirect URLs: `https://practiceloop.pages.dev/**`, `http://localhost:5173/**`
+- Site URL: `https://mathloop.pages.dev`
+- Redirect URLs: `https://mathloop.pages.dev/**`, `http://localhost:5173/**`
 
 The application's callback is `/auth/callback` at the same origin from which the
 login started. The Google→Supabase callback and Supabase→application callback

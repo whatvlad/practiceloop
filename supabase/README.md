@@ -110,8 +110,8 @@ This test is deliberately separate from the ordinary CI fixture. Never execute
    URI to `https://<project-ref>.supabase.co/auth/v1/callback`. Put the client ID and
    secret directly into Supabase → Authentication → Sign In / Providers → Google.
    Enable Google only; disable email/password, phone and anonymous Auth sign-in.
-3. Authentication → URL Configuration: Site URL `https://practiceloop.pages.dev`;
-   redirect URLs `https://practiceloop.pages.dev/**` and `http://localhost:5173/**`.
+3. Authentication → URL Configuration: Site URL `https://mathloop.pages.dev`;
+   redirect URLs `https://mathloop.pages.dev/**` and `http://localhost:5173/**`.
    Google consent/testing configuration must allow both real test Google accounts.
 4. Obtain two real Google-authenticated user sessions. You can use the human-only
    helper below, which avoids copying tokens and does not depend on the #5 client.

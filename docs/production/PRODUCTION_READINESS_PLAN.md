@@ -27,7 +27,7 @@ content, or infrastructure details.
   or contact form.
 - The planned stack is Cloudflare Pages, FastAPI on Oracle Free Tier, and
   Supabase Auth/PostgreSQL.
-- The current development preview is <https://practiceloop.pages.dev>
+- The current development preview is <https://mathloop.pages.dev>
   (Cloudflare Pages; GitHub Pages stopped when the repository became private).
 - Development and preview hosts stay `noindex`; indexing starts only after a
   custom production domain is approved.

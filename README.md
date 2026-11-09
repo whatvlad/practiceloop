@@ -6,7 +6,7 @@ five topics, difficulty levels 1–5, Google login, saved attempts, answer and
 solution reveal, history and a profile. [Original specification](docs/PRACTICELOOP_MVP.md).
 
 **Status: MVP complete (0.1.0, see [CHANGELOG](CHANGELOG.md)).** Live at
-https://practiceloop.pages.dev (noindex). Signed-in learners can:
+https://mathloop.pages.dev (noindex). Signed-in learners can:
 
 - practise the current 49 Algebra, Mathematical Analysis, and Probability and Statistics topics, with their
   available levels and mixed practice supplied by the API, including the
@@ -140,7 +140,7 @@ npm run dev
 ```
 A preview of `main` (saved practice, plus the Graphify code graph at `/graph/`)
 deploys to Cloudflare Pages via `.github/workflows/preview.yml` at
-https://practiceloop.pages.dev (noindex, Google login; practice is persisted).
+https://mathloop.pages.dev (noindex, Google login; practice is persisted).
 Frontend: http://localhost:5173. Backend health: http://localhost:8000/health.
 OpenAPI: http://localhost:8000/docs. Health is liveness, not database readiness.
 

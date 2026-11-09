@@ -70,7 +70,7 @@ None of these may be guessed or filled with placeholders (#39, PRODUCTION_CHECKL
 curl -sI https://<domain>/ | grep -i -E 'strict-transport|x-robots|content-security'
 #   HSTS present, no X-Robots-Tag
 curl -sI https://<domain>/practice | grep -i x-robots     # noindex
-curl -sI https://practiceloop.pages.dev/ | grep -i x-robots  # noindex
+curl -sI https://mathloop.pages.dev/ | grep -i x-robots  # noindex
 curl -s https://<domain>/robots.txt                       # Sitemap: https://<domain>/sitemap.xml
 curl -s https://<domain>/sitemap.xml                      # / and /privacy only
 curl -s https://<domain>/api/health                       # {"status":"ok"}
