@@ -40,9 +40,9 @@ export function AppNav({ current, initial, onLogOut, busy = false }: AppNavProps
         <Button variant="ghost" size="sm" onClick={onLogOut} disabled={busy} aria-busy={busy}>
           {busy ? 'Logging out…' : 'Log out'}
         </Button>
-        <span className="pl-avatar" aria-hidden="true">
-          {initial}
-        </span>
+        <Link className="pl-avatar pl-avatar-link" to="/profile" aria-label="Profile" aria-current={current === '/profile' ? 'page' : undefined}>
+          <span aria-hidden="true">{initial}</span>
+        </Link>
       </div>
     </header>
   );

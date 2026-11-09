@@ -232,6 +232,8 @@ body{--keyboard-background:var(--surface);--keyboard-border:var(--line);--keyboa
 .pl-nav nav a:hover{color:var(--ink);background:var(--surface-hover)}
 .pl-nav nav a[aria-current="page"]{color:var(--accent);background:var(--surface-raised)}
 .pl-avatar{width:40px;height:40px;border-radius:var(--radius-pill);background:var(--action);color:var(--on-action);display:grid;place-items:center;font-weight:600;font-size:14px}
+.pl-avatar-link{width:44px;height:44px;text-decoration:none;transition:background-color .15s}
+.pl-avatar-link:hover{background:var(--action-hover)}
 
 /* page scaffolds */
 .pl-page{min-height:100%;background:var(--canvas)}
