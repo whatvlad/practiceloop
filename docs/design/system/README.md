@@ -1,4 +1,4 @@
-PracticeLoop practises mathematics the way a good tutor would: one clean problem at a time, a quiet room, and an honest answer. The look is a black room with white objects: true-black canvas, white type, and the single white button that matters.
+MathLoop practises mathematics the way a good tutor would: one clean problem at a time, a quiet room, and an honest answer. The look is a black room with white objects: true-black canvas, white type, and the single white button that matters.
 
 ## Directions
 
@@ -34,7 +34,7 @@ Pick one theme per product release; do not mix themes inside a view.
 
 ## Iconography
 
-Icons are 24-unit line icons, 2px stroke, round caps and joins, drawn in `currentColor` at 16–22px: check, cross, warning, arrow, chevron, dash, refresh. Use them to pair with status words, never as decoration. The PracticeLoop mark is a ring with a gap and a centre point, set beside the wordmark in Instrument Serif. It is drawn inline (in `currentColor`) and is original to this system; replace it with the owner's final logo when one exists.
+Icons are 24-unit line icons, 2px stroke, round caps and joins, drawn in `currentColor` at 16–22px: check, cross, warning, arrow, chevron, dash, refresh. Use them to pair with status words, never as decoration. The MathLoop mark is a ring with a gap and a centre point, set beside the wordmark in Instrument Serif. It is drawn inline (in `currentColor`) and is original to this system; replace it with the owner's final logo when one exists.
 
 ## Using the components
 

@@ -13,7 +13,7 @@ Status: robocze; decyzje potwierdzone w rozmowie oraz punkty do ustalenia oznacz
 
 - Tekst produktu i wyjaśnień pozostaje po angielsku. Pisz krótko, precyzyjnie, w stylu podręcznika, bezosobowo; inspiruj się zasadami prostego języka STE, bez deklarowania zgodności z ASD-STE100. Styl wypowiedzi użytkownika ma pierwszeństwo przed starszą propozycją zwracania się do czytelnika „you”.
 - Zachowaj istniejące logo, ciemną estetykę i komponenty projektu. Treść polecenia umieść poza polem przykładu; w samym polu pokaż wyłącznie niepokolorowane wyrażenie matematyczne.
-- Korzystaj z KaTeX i istniejącego pola odpowiedzi z klawiaturą PracticeLoop. Opis, pole odpowiedzi i przyciski pozostają widoczne i czytelne na telefonie.
+- Korzystaj z KaTeX i istniejącego pola odpowiedzi z klawiaturą MathLoop. Opis, pole odpowiedzi i przyciski pozostają widoczne i czytelne na telefonie.
 - Długie wzory, macierze i kroki muszą mieć lokalne przewijanie poziome, bez ucinania treści i bez poziomego przewijania całej strony. Zachowaj dostępność klawiatury i czytelne oznaczenia niezależne od koloru.
 
 ## Rozwiązania

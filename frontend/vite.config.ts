@@ -12,7 +12,7 @@ function crawlers(): Plugin {
   let site: SiteConfig = siteConfig(undefined, undefined);
   let outDir = 'dist';
   return {
-    name: 'practiceloop-crawlers',
+    name: 'mathloop-crawlers',
     apply: 'build',
     configResolved(config) {
       const env = loadEnv(config.mode, config.envDir || process.cwd(), 'VITE_');

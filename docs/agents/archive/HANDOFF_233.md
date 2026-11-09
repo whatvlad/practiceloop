@@ -71,7 +71,7 @@ because there are none.
 
 ## Recovery, review and next action
 
-Worktree: `C:/PracticeLoop/.worktrees/analysis-pdf-intake`.
+Worktree: `C:/MathLoop/.worktrees/analysis-pdf-intake`.
 Source text, renders and validation/reconciliation helpers stay ignored under
 `.local/pdf-intake`; the original PDFs remain unchanged outside the repository.
 The published implementation is in the commits of #243. Other branches and

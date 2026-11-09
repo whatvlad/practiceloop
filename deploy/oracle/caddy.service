@@ -1,5 +1,5 @@
 [Unit]
-Description=Caddy HTTPS proxy for the PracticeLoop API
+Description=Caddy HTTPS proxy for the MathLoop API
 After=network-online.target
 Wants=network-online.target
 

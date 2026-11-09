@@ -94,7 +94,7 @@ worksheet id and the problem ids. An exact retry returns the same worksheet.
 ### `GET /api/worksheets/{id}/pdf`
 
 Renders and returns `application/pdf` with
-`Content-Disposition: attachment; filename="practiceloop-worksheet-<date>.pdf"`.
+`Content-Disposition: attachment; filename="mathloop-worksheet-<date>.pdf"`.
 It is read-only: it changes no flags, so a failed render is retried safely and
 the same worksheet can be downloaded again. It reads `problem_latex` from the
 problems and `answer_latex` from the private solutions after checking the
@@ -120,7 +120,7 @@ owner, and includes answers only when the worksheet has `answer_key`.
   server-generated LaTeX (`problem_latex`, `answer_latex`, the catalogue's text)
   and enum options. Users cannot type text into it; a future title field must be
   escaped before it is added.
-- A header with "PracticeLoop worksheet", the date and blank Name and Date lines.
+- A header with "MathLoop worksheet", the date and blank Name and Date lines.
 - One section per group with its label. Problems are numbered 1 to N through the
   whole worksheet, not per group.
 - After each problem, blank writing space: the topic's base height times

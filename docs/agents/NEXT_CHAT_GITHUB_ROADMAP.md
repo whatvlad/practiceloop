@@ -1,4 +1,4 @@
-# PracticeLoop production roadmap
+# MathLoop production roadmap
 
 Status: approved roadmap; publication tracked by GitHub Issue #31.
 
@@ -54,7 +54,7 @@ changes merely to obtain a clean branch.
 
 ## Confirmed product direction
 
-PracticeLoop addresses the lack of useful mathematics practice. The first beta
+MathLoop addresses the lack of useful mathematics practice. The first beta
 focuses on integration for secondary-school and university learners, with other
 mathematics topics possible later. The beta is international and English-first.
 The code should make additional languages practical later without building a
@@ -75,7 +75,7 @@ passes.
 ## Planned Graphify policy
 
 Graphify exists only to help agents understand and change the repository with
-less repeated full-repository reading. It is not part of the PracticeLoop
+less repeated full-repository reading. It is not part of the MathLoop
 product or production architecture.
 
 Issue #32 owns the publication of these planned repository assets:
@@ -318,7 +318,7 @@ values remain explicit rather than fabricated.
 
 ### Issue #39: custom-domain public launch
 
-Suggested title: `Launch PracticeLoop on the approved production domain`
+Suggested title: `Launch MathLoop on the approved production domain`
 
 - Type: Infrastructure
 - Priority: P0

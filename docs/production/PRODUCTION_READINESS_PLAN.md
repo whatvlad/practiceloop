@@ -1,4 +1,4 @@
-# PracticeLoop production readiness plan
+# MathLoop production readiness plan
 
 Status: approved requirements draft. The MVP (0.1.0) implements the account,
 practice and hosting parts. #38 implements the must-haves that need no final
@@ -12,7 +12,7 @@ content, or infrastructure details.
 
 ## Product decisions
 
-- PracticeLoop addresses the shortage of useful mathematics practice. The first
+- MathLoop addresses the shortage of useful mathematics practice. The first
   beta covers integration, while the product may later cover other topics.
 - The initial audience includes secondary-school and university students in an
   international, English-language beta.

@@ -1,6 +1,6 @@
-# PracticeLoop domain language
+# MathLoop domain language
 
-PracticeLoop generates integration exercises, checks learner submissions and
+MathLoop generates integration exercises, checks learner submissions and
 keeps private learning history. These terms are canonical across the UI, API and
 database.
 

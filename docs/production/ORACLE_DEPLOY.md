@@ -192,7 +192,7 @@ unaffected. Restart the service after editing.
 
 ## When the API is down
 
-The signed-in app shows "Can't reach the PracticeLoop server" and keeps working on
+The signed-in app shows "Can't reach the MathLoop server" and keeps working on
 its demo data. Check from the VM:
 
 ```

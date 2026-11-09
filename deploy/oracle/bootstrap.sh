@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# One-time setup of the Oracle VM that runs the PracticeLoop API.
+# One-time setup of the Oracle VM that runs the MathLoop API.
 # Run as root on the VM from this folder (see docs/production/ORACLE_DEPLOY.md):
 #   sudo bash bootstrap.sh <public-ip> "<deploy public key>" [api-hostname]
 # Safe to re-run: it only adds what is missing and never deletes releases.

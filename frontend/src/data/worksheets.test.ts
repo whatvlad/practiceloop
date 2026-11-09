@@ -62,10 +62,10 @@ it('maps rate limits, a busy compiler and a failed render to clear messages with
 
 it('downloads the PDF with the server filename', async () => {
   fetchMock.mockResolvedValueOnce(new Response(new Blob(['%PDF-1.5'], { type: 'application/pdf' }), {
-    status: 200, headers: { 'Content-Type': 'application/pdf', 'Content-Disposition': 'attachment; filename="practiceloop-worksheet-2026-10-22.pdf"' } }));
+    status: 200, headers: { 'Content-Type': 'application/pdf', 'Content-Disposition': 'attachment; filename="mathloop-worksheet-2026-10-22.pdf"' } }));
   const pdf = await fetchWorksheetPdf('w 1');
   expect(fetchMock.mock.calls[0][0]).toBe('/api/worksheets/w%201/pdf');
-  expect(pdf.filename).toBe('practiceloop-worksheet-2026-10-22.pdf');
+  expect(pdf.filename).toBe('mathloop-worksheet-2026-10-22.pdf');
   expect(pdf.blob.type).toBe('application/pdf');
 });
 

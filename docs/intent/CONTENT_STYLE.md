@@ -2,9 +2,9 @@
 
 Status: confirmed by the product owner on 2026-10-18.
 
-PracticeLoop uses **STE-inspired plain English** for learner-facing educational
+MathLoop uses **STE-inspired plain English** for learner-facing educational
 content. The goal is clear and consistent English that remains natural in an
-educational product. PracticeLoop does not claim formal ASD-STE100 compliance,
+educational product. MathLoop does not claim formal ASD-STE100 compliance,
 certification, or endorsement.
 
 The current reference at the time of this decision is ASD-STE100 Simplified
@@ -18,7 +18,7 @@ easy to understand for learners who do not use English as their first language.
 Apply approximately 80% of the useful STE principles while preserving enough
 freedom for explanations and feedback to sound natural.
 
-The 80% value is an internal PracticeLoop quality target. It is not an official
+The 80% value is an internal MathLoop quality target. It is not an official
 ASD-STE100 conformance score.
 
 ## Content in scope
@@ -99,13 +99,13 @@ language exists.
 
 ## Vocabulary and source material
 
-PracticeLoop maintains its own glossary of approved mathematical, educational,
+MathLoop maintains its own glossary of approved mathematical, educational,
 and product terms. The repository can implement the subset of writing checks
 needed by this policy, but it must not copy the full official ASD-STE100
 dictionary or bundle the official PDF.
 
 Documentation must describe the policy as STE-inspired and must not imply that
-ASD or STEMG reviewed, certified, or endorsed PracticeLoop.
+ASD or STEMG reviewed, certified, or endorsed MathLoop.
 
 ## Success criteria
 
@@ -120,7 +120,7 @@ ASD or STEMG reviewed, certified, or endorsed PracticeLoop.
 
 - the exact scoring weights;
 - the complete list of hard and soft rules;
-- the first approved PracticeLoop vocabulary;
+- the first approved MathLoop vocabulary;
 - implementation language and file format;
 - formal ASD-STE100 certification;
 - automated translation or runtime rewriting.
