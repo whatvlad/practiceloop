@@ -7,7 +7,7 @@ it runs the backend tests, uploads a release over SSH, switches to it, and check
 built with `VITE_API_BASE_URL` set to the same address.
 
 ```
-Browser ── HTTPS ──> practiceloop.pages.dev            (Cloudflare Pages, static)
+Browser ── HTTPS ──> mathloop.pages.dev            (Cloudflare Pages, static)
    └────── HTTPS ──> <ip-with-dashes>.sslip.io:443     (Caddy on the VM, Let's Encrypt)
                         └── http ──> 127.0.0.1:8000    (uvicorn, systemd: practiceloop-api)
 ```
@@ -129,7 +129,7 @@ artifacts or VM snapshots.
 ## Browser path
 
 The deployed app never calls sslip.io directly. It calls `/api/*` on
-practiceloop.pages.dev, and the Pages Function `frontend/functions/api/[[path]].ts`
+mathloop.pages.dev, and the Pages Function `frontend/functions/api/[[path]].ts`
 forwards that to `API_BASE_URL`. Campus networks such as eduroam behind a FortiGate
 intercept HTTPS to unfamiliar hosts like sslip.io and break it with their own
 certificate, but leave pages.dev alone.
@@ -137,7 +137,7 @@ certificate, but leave pages.dev alone.
 ## CORS
 
 `ALLOWED_ORIGINS` in `/etc/practiceloop/api.env` lists the exact origins the API
-answers (only direct browser calls need it now): `https://practiceloop.pages.dev` and the local Vite server
+answers (only direct browser calls need it now): `https://mathloop.pages.dev` and the local Vite server
 (`http://localhost:5173`, `http://127.0.0.1:5173`). `*` is ignored. After an edit,
 run `sudo systemctl restart practiceloop-api`.
 
@@ -238,7 +238,7 @@ Public checks from any PC:
 ```powershell
 curl.exe -sS https://92-5-92-72.sslip.io/health        # {"status":"ok"}
 curl.exe -sSI http://92-5-92-72.sslip.io/health        # 308 to https
-curl.exe -sS https://practiceloop.pages.dev/api/health  # {"status":"ok"}
+curl.exe -sS https://mathloop.pages.dev/api/health  # {"status":"ok"}
 curl.exe -sSI -X OPTIONS https://92-5-92-72.sslip.io/topics -H "Origin: https://evil.example" -H "Access-Control-Request-Method: GET"  # 400, no Allow-Origin
 ```
 
