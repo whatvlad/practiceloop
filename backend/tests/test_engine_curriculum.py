@@ -15,16 +15,21 @@ from app.engine.blocks.multiple.form import MultipleForm
 from app.engine.blocks.multiple.setup import Setup, integrate_setup
 from app.engine.topics.elementary import NEW_TOPICS
 
+# Topics published after the frozen corpus: the elementary set and the algebra conversions.
+ADDED_TOPICS = (*NEW_TOPICS, "complex-conversion")
+# Levels added to published topics; existing levels never change.
+ADDED_LEVELS = {"polynomial-roots": (4,), "matrix-rank": (3,)}
+
 
 def test_published_topic_order_levels_weights_and_worksheet_space_are_unchanged() -> None:
-    assert [slug for slug in practice.TOPICS if slug not in NEW_TOPICS] == list(PUBLISHED_TOPICS)
-    assert set(practice.TOPICS) - set(PUBLISHED_TOPICS) == set(NEW_TOPICS)
+    assert [slug for slug in practice.TOPICS if slug not in ADDED_TOPICS] == list(PUBLISHED_TOPICS)
+    assert set(practice.TOPICS) - set(PUBLISHED_TOPICS) == set(ADDED_TOPICS)
     for slug, expected in PUBLISHED_TOPICS.items():
         actual = practice.TOPICS[slug]
         assert tuple(actual) == (
             expected.name,
             expected.area,
-            (*expected.levels, 4) if slug == "polynomial-roots" else expected.levels,
+            (*expected.levels, *ADDED_LEVELS.get(slug, ())),
             expected.mixed_weight,
             expected.space_cm,
         )

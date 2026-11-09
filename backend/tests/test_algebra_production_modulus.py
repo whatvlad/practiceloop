@@ -108,7 +108,8 @@ def test_standard_complex_practice_does_not_include_modulus(
     for index in range(len(candidates)):
         issued = practice.issue("complex-numbers", 1, seed=index)
         assert issued.record["generator_version"] not in {
-            LocalModulusCircle.version, LocalModulusPractice.version,
+            LocalModulusCircle.version,
+            LocalModulusPractice.version,
         }
 
 
@@ -183,11 +184,21 @@ def test_production_catalogue_rejects_invalid_complex_diagrams() -> None:
 
     with pytest.raises(ValueError):
         StoredProblem(
-            code="code", generator_version="version", statement="x", answer_latex="x",
+            code="code",
+            generator_version="version",
+            statement="x",
+            answer_latex="x",
             steps=({"say": "step", "latex": "x"},),
-            visual={"kind": "complex-plane", "version": 1, "mode": "circle",
-                    "first": [0, 0], "second": None, "result": None, "power": None,
-                    "radius": -1},
+            visual={
+                "kind": "complex-plane",
+                "version": 1,
+                "mode": "circle",
+                "first": [0, 0],
+                "second": None,
+                "result": None,
+                "power": None,
+                "radius": -1,
+            },
         )
 
 

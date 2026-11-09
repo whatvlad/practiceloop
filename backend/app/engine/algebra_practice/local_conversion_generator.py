@@ -31,6 +31,7 @@ class LocalConversionGenerator:
 
     def input_variables(self, params: ConversionParameters) -> dict[str, VariableDomain]:
         return {"i": "imaginary"}
+
     step_text = {
         "rewrite": "Write the original expression.",
         "parts": "Identify the real part a and the coefficient b of i.",

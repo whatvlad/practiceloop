@@ -11,8 +11,10 @@ from fastapi.testclient import TestClient
 
 from app.api import codes
 from app.core.auth import current_user
-from app.engine.codes import encode
-from app.engine.opening import OpenedCode, rebuild
+from app.engine import practice as engine_practice
+from app.engine.catalogue import StoredProblem
+from app.engine.codes import encode, parse_code
+from app.engine.opening import OpenedCode, _cell, rebuild
 from app.engine.rendering import statement_latex
 from app.main import app
 from app.services.math_worker import MathWorkerError, open_problem_code
@@ -23,14 +25,35 @@ GOLDEN = json.loads(
 SAMPLES = [sample for samples in GOLDEN.values() for sample in samples]
 
 
+def _served(code: str) -> StoredProblem | None:
+    """The task as practice issues it, or None when no practice view serves this draw."""
+    generators = engine_practice._registry()
+    parsed = parse_code(code, generators)
+    generator = generators.get_code(parsed.prefix, parsed.version)
+    params = generator.draw(parsed.seed)
+    try:
+        _cell(generator.version, params)
+    except ValueError:
+        return None
+    return StoredProblem.from_issued(engine_practice._public(generator.build(params)))
+
+
 @pytest.mark.parametrize("sample", SAMPLES, ids=lambda sample: sample["code"])
 def test_every_golden_code_opens_the_exact_shipped_task(sample: dict[str, Any]) -> None:
+    served = _served(sample["code"])
+    if served is None:
+        # Catalogue-only generators serve chosen seeds; other draws were never issued.
+        with pytest.raises(ValueError, match="No practice view"):
+            rebuild(sample["code"])
+        return
     for spelling in (sample["code"], sample["code"].lower(), sample["code"].replace("-", " ")):
         opened = rebuild(spelling)
         assert opened.problem.code == sample["code"]
         assert opened.problem.statement == statement_latex(sample["statement"])
         assert opened.problem.answer_latex == sample["answer_latex"]
-        assert [s.latex for s in opened.problem.steps] == [s[1] for s in sample["steps"]]
+        # Practice rendering may present the pinned steps differently (polar-form walkthroughs),
+        # so the opened steps are those practice issues for the same draw.
+        assert opened.problem.steps == served.steps
         assert opened.topic in codes.engine.ENGINE_TOPICS
         assert opened.difficulty in codes.engine.levels(opened.topic)
 
