@@ -8,6 +8,7 @@ import { modulusModeFromSearch } from './components/ModulusSettings';
 import { ButtonLink } from './components/Button';
 import { SiteFooter } from './components/SiteFooter';
 import { SkipLink } from './components/SkipLink';
+import { SupportNotice } from './components/SupportNotice';
 import { startCookiebot } from './cookieConsent';
 import { type ApiHealth, authStore, checkApiHealth } from './data/api';
 import { rememberSharedReturn, sharedReturn, takeSharedReturn } from './data/sharedReturn';
@@ -173,6 +174,7 @@ export function App() {
         {pathname === '/history' && <HistoryPage />}
         {pathname === '/feedback' && <FeedbackPage name={account.name} email={account.email} />}
         {pathname === '/profile' && <ProfilePage account={account} onLogOut={handleLogOut} onDeleted={handleDeleted} busy={auth.working} />}
+        {pathname !== '/feedback' && <SupportNotice key={pathname} wrap={wrap} />}
       </div>
     );
   }

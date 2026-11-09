@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react';
+import { recordSolved } from '../support';
 import type { AnswerInputSpec, CheckResult, Difficulty, FeedbackCode, SolutionStep, TopicSlug } from '../data/types';
 import { answerVariables, keypadVariables, problemKind, type ProblemKind } from '../format';
 import { problemTag } from '../data/topics';
@@ -93,6 +95,12 @@ export function ProblemCard({
   visual,
 }: ProblemCardProps) {
   const solved = result === 'correct';
+  // Counts answers solved here, not a correct result restored when a problem reopens.
+  const previous = useRef(result);
+  useEffect(() => {
+    if (result === 'correct' && previous.current !== 'correct') recordSolved();
+    previous.current = result;
+  }, [result]);
   const kind = problemKind(topic, problemLatex);
   const message = result === 'incorrect' ? answerInput ? {
     boolean: 'Recheck the stated conditions and your decision, or reveal the solution.',
