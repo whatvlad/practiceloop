@@ -29,7 +29,11 @@ import { SharedProblemPage } from './pages/SharedProblemPage';
 import { navigate, useLocation } from './router';
 import { applyPageMeta, siteConfig } from './site';
 
-const SITE = siteConfig(import.meta.env.VITE_SITE_URL, import.meta.env.VITE_SITE_INDEXABLE);
+const site = siteConfig(import.meta.env.VITE_SITE_URL, import.meta.env.VITE_SITE_INDEXABLE);
+// The same build can serve the apex, www and Pages previews during rollout.
+const SITE = site.url && new URL(site.url).origin === window.location.origin
+  ? site
+  : siteConfig(undefined, undefined);
 
 const APP_ROUTES = new Set(['/dashboard', '/practice', '/random', '/history', '/profile', '/feedback', '/algebra-random']);
 // Routes with the topic sidebar beside the page.

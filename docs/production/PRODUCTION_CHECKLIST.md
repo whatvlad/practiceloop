@@ -1,7 +1,7 @@
 # Production checklist (#38)
 
 The twelve gates a release must pass on the preview
-(https://mathloop.pages.dev) before the custom-domain launch (#39). Each item
+(https://mathloop.pages.dev) before the https://mathloop.net launch (#39). Each item
 names the automated check that covers it in CI and the smoke check to repeat on
 the deployed preview. Requirements and decisions are in
 [PRODUCTION_READINESS_PLAN.md](PRODUCTION_READINESS_PLAN.md).
@@ -39,9 +39,10 @@ the deployed preview. Requirements and decisions are in
 These stay open on purpose. Do not fill them with placeholders. The steps that
 turn them into a launch are in [LAUNCH_RUNBOOK.md](LAUNCH_RUNBOOK.md).
 
-- Custom production domain, then the `SITE_URL` and `SITE_INDEXABLE=true`
-  repository variables (the launch build adds HSTS and drops the global
-  `X-Robots-Tag: noindex` itself).
+- Active Pages attachments for `mathloop.net` and `www.mathloop.net`. Follow
+  [the runbook](LAUNCH_RUNBOOK.md) for the `CANONICAL_REDIRECTS` and
+  `SITE_INDEXABLE` switches. The indexable build adds HSTS and keeps noindex
+  on non-public routes and preview hosts.
 - Qualified legal review of `/privacy` and `/terms`: the operator, address
   requirements and the legal basis for each purpose.
 - Backup setup and retention for launch (the Free plan has no automatic backups).

@@ -14,8 +14,11 @@ add every test Google account there. Google is the only supported provider.
 
 Supabase Authentication → URL Configuration:
 
-- Site URL: `https://mathloop.pages.dev`
-- Redirect URLs: `https://mathloop.pages.dev/**`, `http://localhost:5173/**`
+- Site URL: `https://mathloop.net` once the apex serves the app.
+- Redirect URLs: `https://mathloop.net/**` and `http://localhost:5173/**`.
+  Keep `https://mathloop.pages.dev/**` during rollout and rollback.
+- Google OAuth Authorized JavaScript origins: add `https://mathloop.net`.
+  Keep the Supabase callback above as the authorized redirect URI.
 
 The application's callback is `/auth/callback` at the same origin from which the
 login started. The Google→Supabase callback and Supabase→application callback

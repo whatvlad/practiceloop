@@ -5,7 +5,7 @@ import indexHtml from '../index.html?raw';
 import { PUBLIC_PATHS, applyPageMeta, crawlerFiles, pageMeta, pagesHeaders, shellRobots, siteConfig } from './site';
 
 const PREVIEW = siteConfig(undefined, undefined);
-const LAUNCHED = siteConfig('https://example.org/', 'true');
+const LAUNCHED = siteConfig('https://mathloop.net/', 'true');
 
 function meta(selector: string): string | null {
   return document.head.querySelector(selector)?.getAttribute('content') ?? null;
@@ -56,8 +56,8 @@ describe('page metadata (#38)', () => {
   it('indexes public pages only on an approved HTTPS site', () => {
     applyPageMeta('/privacy', LAUNCHED);
     expect(meta('meta[name="robots"]')).toBe('index, follow');
-    expect(document.head.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe('https://example.org/privacy');
-    expect(meta('meta[property="og:url"]')).toBe('https://example.org/privacy');
+    expect(document.head.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe('https://mathloop.net/privacy');
+    expect(meta('meta[property="og:url"]')).toBe('https://mathloop.net/privacy');
     expect(siteConfig('http://example.org', 'true').indexable).toBe(false);
     expect(siteConfig('https://example.org', 'false').indexable).toBe(false);
     expect(siteConfig('not a url', 'true')).toEqual({ url: null, indexable: false });
@@ -66,10 +66,19 @@ describe('page metadata (#38)', () => {
   it('writes crawler files from the route list', () => {
     expect(crawlerFiles(PREVIEW)).toEqual({ robots: 'User-agent: *\nAllow: /\n', sitemap: null });
     const launched = crawlerFiles(LAUNCHED);
-    expect(launched.robots).toContain('Sitemap: https://example.org/sitemap.xml');
-    expect(launched.sitemap).toContain('<loc>https://example.org/</loc>');
-    expect(launched.sitemap).toContain('<loc>https://example.org/privacy</loc>');
+    expect(launched.robots).toContain('Sitemap: https://mathloop.net/sitemap.xml');
+    expect(launched.sitemap).toContain('<loc>https://mathloop.net/</loc>');
+    expect(launched.sitemap).toContain('<loc>https://mathloop.net/privacy</loc>');
     expect(launched.sitemap).not.toContain('/practice');
+  });
+
+  it('uses the canonical URL on the apex while indexing is off', () => {
+    const staged = siteConfig('https://mathloop.net', 'false');
+    applyPageMeta('/', staged);
+    expect(meta('meta[name="robots"]')).toBe('noindex, nofollow');
+    expect(document.head.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe('https://mathloop.net/');
+    expect(meta('meta[property="og:url"]')).toBe('https://mathloop.net/');
+    expect(crawlerFiles(staged).sitemap).toBeNull();
   });
 });
 
@@ -112,6 +121,7 @@ describe('Pages headers (#38)', () => {
     }
     expect(launched).not.toMatch(/^\/(privacy)?\n {2}X-Robots-Tag/m);
     expect(rule('https://:project.pages.dev/*')).toContain('X-Robots-Tag: noindex');
+    expect(rule('https://www.mathloop.net/*')).toContain('X-Robots-Tag: noindex');
     expect(launched).toContain('/graph/*\n  ! Content-Security-Policy');
     expect(shellRobots(LAUNCHED)).toBe('index, follow');
     expect(() => pagesHeaders('/*\n  X-Frame-Options: DENY\n', LAUNCHED)).toThrow();

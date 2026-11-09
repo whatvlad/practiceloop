@@ -101,7 +101,7 @@ function setCanonical(href: string | null): void {
 export function applyPageMeta(pathname: string, config: SiteConfig): void {
   const meta = pageMeta(pathname);
   const indexed = config.indexable && meta.indexable;
-  const canonical = indexed && config.url ? config.url + (pathname === '/' ? '/' : pathname) : null;
+  const canonical = meta.indexable && config.url ? config.url + (pathname === '/' ? '/' : pathname) : null;
   document.title = meta.title;
   setMeta('name', 'description', meta.description);
   setMeta('name', 'robots', indexed ? 'index, follow' : 'noindex, nofollow');
@@ -158,6 +158,7 @@ export function pagesHeaders(preview: string, config: SiteConfig): string {
     ...NOINDEX_PATHS.map((path) => `${path}\n  X-Robots-Tag: noindex`),
     'https://:project.pages.dev/*\n  X-Robots-Tag: noindex',
     'https://:version.:project.pages.dev/*\n  X-Robots-Tag: noindex',
+    'https://www.mathloop.net/*\n  X-Robots-Tag: noindex',
   ];
   return `${preview.replace(GLOBAL_NOINDEX, '/*\n  Strict-Transport-Security: max-age=31536000\n').trimEnd()}
 
