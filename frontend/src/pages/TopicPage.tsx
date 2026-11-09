@@ -1,23 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
 import text from '../../../backend/app/content/en.json';
-import { Button, ButtonLink } from '../components/Button';
+import { Button } from '../components/Button';
 import { DifficultyScale } from '../components/DifficultyScale';
 import { initialMatrixOptions, matrixOptionsQuery, matrixOptionsValid, MatrixSettings } from '../components/MatrixSettings';
 import { modulusModeQuery, type ModulusMode } from '../components/ModulusSettings';
-import { HistoryList } from '../components/HistoryRow';
-import { StatTile } from '../components/StatTile';
-import { generateProblem, getCatalogue, getLastSelection, getProfileCounts, listProblemPage } from '../data/api';
+import { generateProblem, getCatalogue, getLastSelection } from '../data/api';
 import { mixedShares } from '../data/topics';
 import type { AreaSlug, Difficulty, PracticeTopic } from '../data/types';
 import { navigate } from '../router';
 import { useLoad } from '../useLoad';
 
-export function DashboardPage({ initialArea, initialTopic }: { initialArea?: AreaSlug; initialTopic?: PracticeTopic } = {}) {
+export function TopicPage({ initialArea, initialTopic }: { initialArea?: AreaSlug; initialTopic?: PracticeTopic } = {}) {
   const [catalogueRevision, setCatalogueRevision] = useState(0);
   const catalogue = useLoad(getCatalogue, String(catalogueRevision));
-  const [dataRevision, setDataRevision] = useState(0);
-  const counts = useLoad(getProfileCounts, String(dataRevision));
-  const recent = useLoad(async () => (await listProblemPage({ limit: 3 })).items, String(dataRevision));
   const last = useLoad(getLastSelection);
   const [area, setArea] = useState<AreaSlug>(initialArea ?? 'mathematical-analysis');
   const [topic, setTopic] = useState<PracticeTopic>(initialTopic ?? 'basic-integrals');
@@ -89,27 +84,15 @@ export function DashboardPage({ initialArea, initialTopic }: { initialArea?: Are
 
   return (
     <main id="main" tabIndex={-1} className="pl-wrap pl-app-main">
-      <div className="pl-label">Dashboard</div>
-      <h1 className="pl-display-md pl-page-title">
-        Pick up where you <em>left off.</em>
-      </h1>
-      {counts.status === 'ready' && (
-        <div className="pl-grid-3 pl-mb-6">
-          <StatTile label="Generated" value={counts.data.generated} />
-          <StatTile label="Attempted" value={counts.data.attempted} />
-          <StatTile label="Correct" value={counts.data.correct} of={counts.data.attempted} />
-        </div>
-      )}
-      {counts.status === 'loading' && <p role="status">Loading your statistics…</p>}
-      {(counts.status === 'error' || recent.status === 'error') && <div role="alert"><p>Your history or statistics could not be loaded.</p><Button variant="secondary" onClick={() => setDataRevision(value => value + 1)}>Retry history and statistics</Button></div>}
+      <div className="pl-label">{areas.find(a => a.slug === area)?.name ?? 'Practice'}</div>
+      <h1 className="pl-display-md pl-page-title">{topic === 'mixed' ? 'Mixed practice' : topics.find(item => item.slug === topic)?.name ?? 'Practice'}</h1>
       <section className="pl-problem pl-problem--flat pl-mb-6" aria-labelledby="start-title">
         <div>
           <h2 id="start-title" className="pl-h-lg">
             Start a new problem
           </h2>
-          <p className="pl-muted pl-mt-1">Choose a topic from the practice tree, then select a difficulty.</p>
+          <p className="pl-muted pl-mt-1">Select a difficulty, then generate. Other topics are in the list on the left.</p>
         </div>
-        <p className="pl-small">Selected topic: {topics.find(item => item.slug === topic)?.name ?? topic}</p>
         <div className="pl-stack pl-gap-3">
           <div id="difficulty-label" className="pl-label">
             Difficulty
@@ -140,19 +123,6 @@ export function DashboardPage({ initialArea, initialTopic }: { initialArea?: Are
           {error && <p role="alert">{error}</p>}
         </div>
       </section>
-      <div className="pl-row pl-section-head">
-        <h2 className="pl-h-lg">Recent problems</h2>
-        <ButtonLink to="/history" variant="ghost" size="sm" arrow>
-          View all history
-        </ButtonLink>
-      </div>
-      {recent.status === 'ready' &&
-        (recent.data.length > 0 ? (
-          <HistoryList problems={recent.data} />
-        ) : (
-          <p className="pl-muted">Problems you generate appear here.</p>
-        ))}
-      {recent.status === 'loading' && <p role="status">Loading recent problems…</p>}
     </main>
   );
 }

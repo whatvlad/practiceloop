@@ -22,14 +22,13 @@ it('shows both areas, descriptions, subtypes and an inactive placeholder', async
   await act(async () => root.render(<CurriculumPage />));
   expect(element.textContent).toContain('Algebra');
   expect(element.textContent).toContain('Mathematical Analysis');
-  const ready = element.querySelector('section[aria-labelledby="ready-to-practise"]')!;
-  expect(ready.textContent).toContain('Ready to practise');
+  expect(element.querySelector('section[aria-labelledby="ready-to-practise"]')).toBeNull();
+  const ready = element;
   expect(ready.querySelector('a[href="/dashboard?area=algebra&topic=determinants"]')).not.toBeNull();
   expect(ready.querySelector('a[href="/dashboard?area=algebra&topic=linear-systems"]')).not.toBeNull();
   expect(ready.querySelector('a[href="/dashboard?area=algebra&topic=algebraic-expressions"]')).toBeNull();
   expect(ready.querySelector('a[href="/dashboard?area=algebra&topic=binomial-theorem"]')).toBeNull();
   expect(ready.querySelector('a[href="/dashboard?area=algebra&topic=polynomial-division"]')).not.toBeNull();
-  expect(ready.textContent).not.toContain('Diagonalization');
   expect(element.textContent).toContain('Diagonalization');
   const planned = [...element.querySelectorAll('li')].find(item => item.textContent?.includes('Diagonalization'))!;
   expect(planned.textContent).toContain('In develop');

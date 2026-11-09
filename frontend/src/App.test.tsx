@@ -60,11 +60,27 @@ async function renderAt(path: string, state = signedOut) {
 }
 
 describe('client route protection and auth UI', () => {
-  it.each([signedOut, signedIn])('shows the curriculum instead of starting a practice session', async state => {
-    await renderAt('/practice', state);
+  it('shows a guest the curriculum instead of starting a practice session', async () => {
+    await renderAt('/practice', signedOut);
     expect(element.textContent).toContain('Explore mathematics');
     expect(element.textContent).toContain('In develop');
     expect(element.textContent).not.toContain('Generate problem');
+  });
+
+  it('sends a signed-in learner from the old practice overview to home', async () => {
+    await renderAt('/practice', signedIn);
+    expect(window.location.pathname).toBe('/dashboard');
+    expect(element.textContent).toContain('Welcome back');
+    expect(element.querySelector('nav[aria-label="Primary"] a[aria-current="page"]')?.textContent).toBe('Home');
+  });
+
+  it('keeps the home and topic pages in the same column, without a shifting account notice', async () => {
+    await renderAt('/dashboard', signedIn);
+    expect(element.querySelector('[aria-label="Account status"]')).toBeNull();
+    expect(element.querySelector('.pl-practice-sidebar')).not.toBeNull();
+    await renderAt('/random', signedIn);
+    expect(element.querySelector('h1')?.textContent).toBe('Mix topics');
+    expect(element.querySelector('.pl-practice-sidebar a[href="/random"]')?.getAttribute('aria-current')).toBe('page');
   });
 
   it('opens saved problems for practice again', async () => {
@@ -82,7 +98,7 @@ describe('client route protection and auth UI', () => {
     await renderAt('/shared', state);
     expect(window.location.pathname).toBe('/shared');
     expect(element.querySelector('h1')?.textContent).toBe('Open a shared problem');
-    expect(document.title).toBe('Shared problem · PracticeLoop');
+    expect(document.title).toBe('Shared problem · MathLoop');
     await renderAt('/s/short', state);
     expect(window.location.pathname).toBe('/s/short');
     expect(element.textContent).toContain('That link or code is not valid.');
@@ -109,21 +125,21 @@ describe('client route protection and auth UI', () => {
     expect(element.textContent).toContain('learner@example.invalid');
     expect(element.textContent).toContain('Learner');
     expect(element.textContent).not.toContain('Alex Morgan');
-    expect(element.textContent).toContain('Problems, attempts and reveals are saved to your account');
+    expect(element.textContent).not.toContain('Remembering + C');
     await act(async () => harness.set(signedOut));
     expect(window.location.pathname).toBe('/login');
     expect(element.textContent).not.toContain('learner@example.invalid');
   });
 
-  it('puts the account notice in the column of the page below it (#128)', async () => {
+  it('puts an account error in the column of the page below it (#128)', async () => {
     const column = () => {
       const notice = element.querySelector('[aria-label="Account status"]');
       const main = element.querySelector('main');
       return [notice?.classList.contains('pl-wrap--narrow'), main?.classList.contains('pl-wrap--narrow')];
     };
-    await renderAt('/profile', signedIn);
+    await renderAt('/practice?id=old', { ...signedIn, error: 'Sign-in expired.' });
     expect(column()).toEqual([true, true]);
-    await renderAt('/history', signedIn);
+    await renderAt('/history', { ...signedIn, error: 'Sign-in expired.' });
     expect(column()).toEqual([false, false]);
   });
 
@@ -185,7 +201,7 @@ describe('routes and public pages (#38)', () => {
     expect(document.head.querySelector('meta[name="robots"]')?.getAttribute('content')).toBe('noindex, nofollow');
   });
 
-  it.each([[signedOut, '/demo'], [signedIn, '/practice']] as const)('puts a practice CTA first in the hero', async (state, href) => {
+  it.each([[signedOut, '/demo'], [signedIn, '/dashboard']] as const)('puts a practice CTA first in the hero', async (state, href) => {
     await renderAt('/', state);
     const cta = element.querySelector<HTMLAnchorElement>('.pl-hero-actions a, .pl-hero-actions button')!;
     expect(cta.getAttribute('href')).toBe(href);
@@ -209,7 +225,7 @@ describe('routes and public pages (#38)', () => {
     expect(element.textContent).toContain('Check answer');
     expect(element.textContent).toContain('Sign in for more practice');
     expect(element.textContent).not.toContain('Share problem');
-    expect(document.title).toBe('Demo problem · PracticeLoop');
+    expect(document.title).toBe('Demo problem · MathLoop');
   });
 
   it('sends a signed-in learner from the demo to the dashboard without creating a problem', async () => {
@@ -226,12 +242,12 @@ describe('routes and public pages (#38)', () => {
     for (const name of ['Supabase', 'Google', 'Cloudflare', 'Oracle Cloud', OPERATOR, CONTACT_EMAIL]) expect(element.textContent).toContain(name);
     expect(element.textContent).not.toMatch(/draft|not decided yet/i);
     expect(element.querySelector('a[href="/terms"]')).not.toBeNull();
-    expect(document.title).toBe('Privacy · PracticeLoop');
+    expect(document.title).toBe('Privacy · MathLoop');
   });
 
   it('names Cookiebot and offers cookie settings in Privacy only when the banner is configured', async () => {
     await renderAt('/privacy');
-    expect(element.textContent).toContain('PracticeLoop sets no cookies.');
+    expect(element.textContent).toContain('MathLoop sets no cookies.');
     expect(element.querySelector('.pl-link-button')).toBeNull();
     expect(element.textContent).not.toContain('Cookiebot');
     vi.stubEnv('VITE_COOKIEBOT_ID', '01234567-89ab-cdef-0123-456789abcdef');
@@ -267,7 +283,7 @@ describe('routes and public pages (#38)', () => {
     expect(element.querySelector('h1')?.textContent).toBe('Terms of Service');
     for (const text of [OPERATOR, CONTACT_EMAIL, 'aged 16 and over']) expect(element.textContent).toContain(text);
     expect(element.querySelector('a[href="/privacy"]')).not.toBeNull();
-    expect(document.title).toBe('Terms of Service · PracticeLoop');
+    expect(document.title).toBe('Terms of Service · MathLoop');
     await renderAt('/login');
     expect(element.querySelector('a[href="/terms"]')).not.toBeNull();
   });
@@ -282,7 +298,7 @@ describe('routes and public pages (#38)', () => {
     expect(element.textContent).toContain('There is no page at this address.');
     const links = [...element.querySelectorAll('main a')].map(link => link.getAttribute('href'));
     expect(links).toEqual(expect.arrayContaining(['/', '/practice']));
-    expect(document.title).toBe('Page not found · PracticeLoop');
+    expect(document.title).toBe('Page not found · MathLoop');
   });
 
   it.each(['/dashboard', '/history', '/profile'])('sends a signed-out visitor from %s to sign-in', async path => {

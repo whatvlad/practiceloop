@@ -10,7 +10,7 @@ export function SiteFooter() {
       <div className="pl-wrap pl-footer">
         <div className="pl-footer-brand">
           <Logo />
-          <span>Math practice, on loop.</span>
+          <span>Generated mathematics problems with checked answers.</span>
         </div>
         <nav className="pl-footer-links" aria-label="Footer">
           <Link to="/privacy">Privacy</Link>

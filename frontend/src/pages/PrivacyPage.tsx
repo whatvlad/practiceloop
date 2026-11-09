@@ -31,7 +31,7 @@ const PROCESSORS = [
   },
   {
     name: 'Oracle Cloud',
-    role: 'Runs the PracticeLoop API, which generates problems and checks answers.',
+    role: 'Runs the MathLoop API, which generates problems and checks answers.',
     where: 'EU (Frankfurt).',
   },
 ];
@@ -63,15 +63,15 @@ export function PrivacyPage() {
           <div className="pl-label">Updated {LEGAL_UPDATED}</div>
           <h1 className="pl-display-md pl-mt-4">Privacy</h1>
           <p className="pl-lead">
-            This page describes what PracticeLoop does with your data today, who is responsible for it and what your
+            This page describes what MathLoop does with your data today, who is responsible for it and what your
             rights are.
           </p>
         </div>
 
         <section aria-labelledby="privacy-who">
-          <h2 id="privacy-who" className="pl-h-lg">Who runs PracticeLoop</h2>
+          <h2 id="privacy-who" className="pl-h-lg">Who runs MathLoop</h2>
           <p>
-            PracticeLoop is a free beta run by {OPERATOR}, an individual developer, who is the controller of your data under
+            MathLoop is a free beta run by {OPERATOR}, an individual developer, who is the controller of your data under
             the GDPR. “We” on this page means the operator. For any privacy question or request, write to{' '}
             <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
           </p>
@@ -111,8 +111,8 @@ export function PrivacyPage() {
           <h2 id="privacy-browser" className="pl-h-lg">In your browser</h2>
           <p>
             {consentBanner
-              ? 'PracticeLoop itself sets no cookies. Our Cookiebot consent banner stores your choice in a cookie, so it does not ask again on every visit.'
-              : 'PracticeLoop sets no cookies.'}{' '}
+              ? 'MathLoop itself sets no cookies. Our Cookiebot consent banner stores your choice in a cookie, so it does not ask again on every visit.'
+              : 'MathLoop sets no cookies.'}{' '}
             When you sign in, your session is kept in your browser’s local storage so you stay signed in; logging out
             removes it. Fonts are served from this website, not from a third party.
           </p>
@@ -122,7 +122,7 @@ export function PrivacyPage() {
         <section aria-labelledby="privacy-analytics">
           <h2 id="privacy-analytics" className="pl-h-lg">Analytics</h2>
           <p>
-            PracticeLoop currently uses no analytics or advertising tools. Your learning statistics are calculated from
+            MathLoop currently uses no analytics or advertising tools. Your learning statistics are calculated from
             your own data in our database and are shown only to you.
           </p>
         </section>
@@ -170,7 +170,7 @@ export function PrivacyPage() {
         <section aria-labelledby="privacy-changes">
           <h2 id="privacy-changes" className="pl-h-lg">Changes</h2>
           <p>
-            If this page changes, we will update it and its date. The rules for using PracticeLoop are in the{' '}
+            If this page changes, we will update it and its date. The rules for using MathLoop are in the{' '}
             <Link to="/terms">Terms of Service</Link>.
           </p>
         </section>

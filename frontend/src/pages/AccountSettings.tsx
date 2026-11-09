@@ -40,7 +40,7 @@ export function AccountSettings({ onDeleted, onNameSaved }: { onDeleted: () => P
     {displayName.status === 'error' && <div role="alert"><p>Your display name could not be loaded.</p><Button variant="secondary" onClick={() => setRevision(value => value + 1)}>Retry loading name</Button></div>}
     <hr className="pl-sep" />
     <h3 className="pl-h-md">Delete your account</h3>
-    <p className="pl-small pl-muted pl-m-0">Permanently delete your PracticeLoop account, problems, answers, results and profile. This cannot be undone. Your Google account is unaffected.</p>
+    <p className="pl-small pl-muted pl-m-0">Permanently delete your MathLoop account, problems, answers, results and profile. This cannot be undone. Your Google account is unaffected.</p>
     <p className="pl-small pl-muted pl-m-0">Active data is removed immediately. Our retention policy requires recovery backups to expire within 30 days.</p>
     {!confirming ? <div><Button variant="secondary" onClick={() => setConfirming(true)}>Delete account…</Button></div> :
       <form className="pl-stack pl-gap-3" onSubmit={async event => {

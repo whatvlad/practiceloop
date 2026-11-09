@@ -1,4 +1,4 @@
-/* PracticeLoop tokens. Mirrors docs/design/system/tokens.json; src/styles/tokens.test.ts fails on drift. */
+/* MathLoop tokens. Mirrors docs/design/system/tokens.json; src/styles/tokens.test.ts fails on drift. */
 :root,[data-theme="ink"]{
   --canvas:#000000;
   --surface:#0a0a0a;

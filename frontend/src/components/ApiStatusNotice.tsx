@@ -10,7 +10,7 @@ export function ApiStatusNotice({ health, wrap = 'pl-wrap' }: { health: ApiHealt
       <div className="pl-result pl-result--invalid" role="status">
         <WarningIcon />
         <div>
-          <b>Can’t reach the PracticeLoop server</b>
+          <b>Can’t reach the MathLoop server</b>
           <span>{text.service_error}</span>
         </div>
       </div>

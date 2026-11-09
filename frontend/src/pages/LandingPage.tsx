@@ -5,18 +5,18 @@ import { Link } from '../router';
 export function LandingPage({ onSignIn, disabled = false, busy = false, error = null, signedIn = false }: {
   onSignIn: () => void; disabled?: boolean; busy?: boolean; error?: string | null; signedIn?: boolean;
 }) {
-  const label = busy ? 'Opening Google…' : signedIn ? 'Open your dashboard' : 'Continue with Google';
+  const label = busy ? 'Opening Google…' : signedIn ? 'Open MathLoop' : 'Continue with Google';
   return (
     <div className="pl-page">
       <PublicNav landing />
       <main id="main" tabIndex={-1}>
         <section className="pl-wrap pl-hero">
           <div className="pl-label pl-hero-eyebrow">Mathematics practice</div>
-          <h1 className="pl-display-xl">Explore mathematics, <em>one topic at a time.</em></h1>
+          <h1 className="pl-display-xl">Practice mathematics, one problem at a time</h1>
           <p className="pl-lead pl-hero-lead">Generated problems in algebra, analysis and probability, with instant answer checks and full solutions.</p>
           <div className="pl-actions pl-hero-actions">
             {signedIn
-              ? <ButtonLink to="/practice" size="lg" pill arrow>Browse topics</ButtonLink>
+              ? <ButtonLink to="/dashboard" size="lg" pill arrow>Go to home</ButtonLink>
               : <ButtonLink to="/demo" size="lg" pill arrow>Try a problem</ButtonLink>}
             <Button variant="secondary" size="lg" pill onClick={onSignIn} disabled={disabled} aria-busy={busy}>{label}</Button>
           </div>

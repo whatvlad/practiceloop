@@ -12,9 +12,7 @@ export function LoginPage({ onSignIn, disabled = false, busy = false, error = nu
           <Logo />
         </div>
         <div className="pl-center">
-          <h1 className="pl-display-md">
-            Welcome <em>back.</em>
-          </h1>
+          <h1 className="pl-display-md">Sign in</h1>
           <p className="pl-muted pl-login-text">Sign in to save your practice, history and progress.</p>
         </div>
         {error && <p className="pl-result pl-result--invalid" role="alert">{error}</p>}

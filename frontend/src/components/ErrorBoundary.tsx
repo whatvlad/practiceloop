@@ -18,7 +18,7 @@ export class ErrorBoundary extends Component<{ children: ReactNode }, { failed: 
           <p className="pl-muted pl-m-0">{text.service_error}</p>
           <div>
             <a className="pl-btn pl-btn--primary" href={import.meta.env.BASE_URL}>
-              Reload PracticeLoop
+              Reload MathLoop
             </a>
           </div>
         </main>

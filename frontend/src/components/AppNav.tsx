@@ -6,16 +6,15 @@ export function Logo({ to = '/' }: { to?: string }) {
   return (
     <Link className="pl-logo" to={to}>
       <LoopMark />
-      PracticeLoop
+      MathLoop
     </Link>
   );
 }
 
 const APP_ROUTES = [
-  { to: '/dashboard', label: 'Dashboard' },
-  { to: '/practice', label: 'Practice' },
-  { to: '/history', label: 'History' },
-  { to: '/profile', label: 'Profile' },
+  { to: '/dashboard', label: 'Home', also: ['/practice', '/random'] },
+  { to: '/history', label: 'History', also: [] },
+  { to: '/profile', label: 'Profile', also: [] },
 ] as const;
 
 interface AppNavProps {
@@ -25,14 +24,14 @@ interface AppNavProps {
   busy?: boolean;
 }
 
-/** Signed-in app bar: wordmark, the four routes and the account area. */
+/** Signed-in app bar: wordmark, the three routes and the account area. */
 export function AppNav({ current, initial, onLogOut, busy = false }: AppNavProps) {
   return (
     <header className="pl-nav">
       <Logo />
       <nav aria-label="Primary">
         {APP_ROUTES.map((route) => (
-          <Link key={route.to} to={route.to} aria-current={route.to === current ? 'page' : undefined}>
+          <Link key={route.to} to={route.to} aria-current={route.to === current || (route.also as readonly string[]).includes(current) ? 'page' : undefined}>
             {route.label}
           </Link>
         ))}

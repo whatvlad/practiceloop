@@ -125,11 +125,11 @@ export function HistoryPage({ inactive = false }: { inactive?: boolean }) {
 
   return (
     <main id="main" tabIndex={-1} className="pl-wrap pl-app-main">
-      <div className="pl-label">History</div>
       <div className="pl-row pl-title-row">
-        <h1 className="pl-display-md">
-          Every problem, <em>saved.</em>
-        </h1>
+        <div>
+          <h1 className="pl-display-md">History</h1>
+          <p className="pl-muted pl-m-0">Problems you have generated, newest first. Open any row to continue it.</p>
+        </div>
         <ButtonLink to="/dashboard" arrow>
           {inactive ? 'Browse topics' : 'New problem'}
         </ButtonLink>
@@ -157,11 +157,11 @@ export function HistoryPage({ inactive = false }: { inactive?: boolean }) {
             <HistoryList problems={shown} header selection={inactive ? undefined : { selected, full: selected.size >= MAX_EXPORT, onToggle: toggle }} />
           ) : (
             <p className="pl-muted">{all.length === 0
-              ? worksheet ? 'No problems from worksheets yet.' : inactive ? 'No saved problems yet.' : 'No saved problems yet. Generate your first problem from the dashboard.'
+              ? worksheet ? 'No problems from worksheets yet.' : inactive ? 'No saved problems yet.' : 'No saved problems yet. Generate your first problem on the home page.'
               : 'No loaded problems match this filter.'}</p>
           )}
           <p className="pl-small pl-subtle pl-mt-4">
-            Showing {shown.length} of {all.length} loaded problems · {inactive ? 'Saved problems are currently inactive.' : 'Select any row to reopen it.'}
+            Showing {shown.length} of {all.length} loaded problems{inactive ? ' · Saved problems are currently inactive.' : ''}
           </p>
           {nextCursor && <Button variant="secondary" onClick={() => void load(nextCursor, worksheet)} disabled={busy}>Load more problems</Button>}
           {nextCursor && filter !== 'all' && !worksheet && <p className="pl-small pl-muted">Load more to include older problems in this filter.</p>}

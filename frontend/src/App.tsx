@@ -11,11 +11,13 @@ import { startCookiebot } from './cookieConsent';
 import { type ApiHealth, authStore, checkApiHealth } from './data/api';
 import { rememberSharedReturn, sharedReturn, takeSharedReturn } from './data/sharedReturn';
 import { CurriculumPage } from './pages/CurriculumPage';
-import { DashboardPage } from './pages/DashboardPage';
+import { HomePage } from './pages/HomePage';
 import { HistoryPage } from './pages/HistoryPage';
 import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/LoginPage';
 import { PracticePage } from './pages/PracticePage';
+import { RandomPracticePage } from './pages/RandomPracticePage';
+import { TopicPage } from './pages/TopicPage';
 import { PrivacyPage } from './pages/PrivacyPage';
 import { TermsPage } from './pages/TermsPage';
 import { ProfilePage } from './pages/ProfilePage';
@@ -25,9 +27,9 @@ import { applyPageMeta, siteConfig } from './site';
 
 const SITE = siteConfig(import.meta.env.VITE_SITE_URL, import.meta.env.VITE_SITE_INDEXABLE);
 
-const APP_ROUTES = new Set(['/dashboard', '/practice', '/history', '/profile']);
-// Pages whose main column is .pl-wrap--narrow (760px) instead of the full 1120px.
-const NARROW_ROUTES = new Set(['/practice', '/profile']);
+const APP_ROUTES = new Set(['/dashboard', '/practice', '/random', '/history', '/profile']);
+// Routes with the topic sidebar beside the page.
+const WORKSPACE_ROUTES = new Set(['/dashboard', '/practice', '/random']);
 const TOPIC_RETURN = 'practiceloop:topic-return';
 
 function topicReturn(value: string | null): string | null {
@@ -44,7 +46,7 @@ function NotFoundPage() {
           <Logo />
         </div>
         <h1 className="pl-display-md">
-          Nothing <em>here.</em>
+          Nothing here
         </h1>
         <p className="pl-muted pl-m-0">There is no page at this address.</p>
         <div className="pl-actions pl-center">
@@ -80,6 +82,7 @@ export function App() {
   }, [pathname]);
 
   const needsAccount = APP_ROUTES.has(pathname) && pathname !== '/practice';
+  const problemId = params.get('id');
   useEffect(() => {
     if (auth.status === 'loading') return;
     if (!account && (needsAccount || pathname === '/auth/callback')) {
@@ -91,13 +94,15 @@ export function App() {
     }
     // The demo is for guests; an account has real practice, and must not save the demo problem.
     if (account && pathname === '/demo') navigate('/dashboard', { replace: true });
+    // Home replaced the old topic overview at /practice; a problem link keeps its id.
+    if (account && pathname === '/practice' && !problemId) navigate('/dashboard', { replace: true });
     if (account && (pathname === '/login' || pathname === '/auth/callback')) {
       const remembered = takeSharedReturn();
       const topic = topicReturn(sessionStorage.getItem(TOPIC_RETURN));
       sessionStorage.removeItem(TOPIC_RETURN);
       navigate(nextShare ?? remembered ?? topic ?? '/dashboard', { replace: true });
     }
-  }, [auth.status, account, needsAccount, pathname, nextShare]);
+  }, [auth.status, account, needsAccount, pathname, nextShare, problemId]);
 
   async function handleSignIn() {
     if (account) navigate('/dashboard');
@@ -145,22 +150,22 @@ export function App() {
     if (!account) return <div className="pl-page" />;
 
     // Notices share the column of the page below them, so their left edges line up.
-    const wrap = NARROW_ROUTES.has(pathname) ? 'pl-wrap pl-wrap--narrow' : 'pl-wrap';
+    const wrap = pathname === '/practice' ? 'pl-wrap pl-wrap--narrow' : 'pl-wrap';
     return (
       <div className="pl-page" key={account.id}>
         <AppNav current={pathname} initial={account.name.charAt(0).toUpperCase()} onLogOut={handleLogOut} busy={auth.working} />
         <ApiStatusNotice health={apiHealth} wrap={wrap} />
-        <section className={`${wrap} pl-api-notice`} aria-label="Account status">
-          <p className="pl-small pl-muted" role="status">Problems, attempts and reveals are saved to your account.</p>
-          {auth.error && <p className="pl-result pl-result--invalid" role="alert">{auth.error}</p>}
-        </section>
-        {(pathname === '/dashboard' || pathname === '/practice') && <div className="pl-workspace">
-        <PracticeSidebar accountId={account.id} />
+        {auth.error && <section className={`${wrap} pl-api-notice`} aria-label="Account status">
+          <p className="pl-result pl-result--invalid" role="alert">{auth.error}</p>
+        </section>}
+        {WORKSPACE_ROUTES.has(pathname) && <div className="pl-workspace">
+        <PracticeSidebar />
         <div className="pl-workspace-content">
         {pathname === '/dashboard' && (params.has('topic')
-          ? <DashboardPage key={`${params.get('area')}:${params.get('topic')}`} initialArea={params.get('area') === 'algebra' ? 'algebra' : params.get('area') === 'probability-statistics' ? 'probability-statistics' : 'mathematical-analysis'} initialTopic={params.get('topic') ?? undefined} />
-          : <CurriculumPage />)}
-        {pathname === '/practice' && (params.has('id') ? <PracticePage key={params.get('id')} id={params.get('id')} randomAccountId={params.get('mode') === 'random' ? account.id : undefined} matrixOptions={matrixOptionsFromSearch(params)} modulusMode={modulusModeFromSearch(params)} /> : <CurriculumPage />)}
+          ? <TopicPage key={`${params.get('area')}:${params.get('topic')}`} initialArea={params.get('area') === 'algebra' ? 'algebra' : params.get('area') === 'probability-statistics' ? 'probability-statistics' : 'mathematical-analysis'} initialTopic={params.get('topic') ?? undefined} />
+          : <HomePage name={account.name} />)}
+        {pathname === '/practice' && params.has('id') && <PracticePage key={params.get('id')} id={params.get('id')} randomAccountId={params.get('mode') === 'random' ? account.id : undefined} matrixOptions={matrixOptionsFromSearch(params)} modulusMode={modulusModeFromSearch(params)} />}
+        {pathname === '/random' && <RandomPracticePage accountId={account.id} />}
         </div></div>}
         {pathname === '/history' && <HistoryPage />}
         {pathname === '/profile' && <ProfilePage account={account} onLogOut={handleLogOut} onDeleted={handleDeleted} busy={auth.working} />}
