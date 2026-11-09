@@ -194,11 +194,11 @@ main[tabindex="-1"]:focus{outline:none}
 .pl-practice-sidebar li>a,.pl-practice-sidebar li>span,.pl-practice-sidebar li>.pl-sidebar-topic{display:block;width:100%;padding:6px var(--space-2);border-radius:var(--radius-sm);text-decoration:none}
 .pl-practice-sidebar li>a{color:var(--ink-muted)}
 .pl-practice-sidebar li>a:hover{color:var(--ink);background:var(--surface-hover)}
-.pl-practice-sidebar li>a[aria-current="page"]{color:var(--ink);background:var(--surface-raised);font-weight:600}
+.pl-practice-sidebar li>a[aria-current="page"]{color:var(--accent);background:var(--surface-raised);font-weight:600}
 .pl-practice-sidebar li span,.pl-practice-sidebar small{color:var(--ink-subtle)}
 .pl-practice-sidebar small{font-size:13px}
 .pl-random-toggle{width:100%;justify-content:center}
-.pl-random-toggle[aria-current="page"]{border-color:var(--ink);background:var(--surface-raised)}
+.pl-random-toggle[aria-current="page"]{color:var(--accent);border-color:var(--action);background:var(--surface-raised)}
 @media(max-width:760px){
   .pl-workspace{display:block}
   .pl-workspace-content{border-left:0}
@@ -249,7 +249,7 @@ main[tabindex="-1"]:focus{outline:none}
 .pl-rtiles{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:var(--space-3);align-items:start}
 .pl-rtile{background:var(--surface);border:1px solid transparent;border-radius:var(--radius-lg);transition:border-color .15s,background .15s}
 .pl-rtile:hover{background:var(--surface-hover)}
-.pl-rtile.is-on{border-color:var(--ink);background:var(--surface-raised)}
+.pl-rtile.is-on{border-color:var(--action);background:var(--surface-raised)}
 .pl-rtile-toggle{display:flex;align-items:center;gap:var(--space-3);width:100%;padding:var(--space-4);background:none;border:0;text-align:left;font-weight:600;cursor:pointer;border-radius:var(--radius-lg)}
 .pl-rtile-check{display:grid;place-items:center;flex:none;width:22px;height:22px;border-radius:var(--radius-sm);border:1.5px solid var(--control-border)}
 .pl-rtile.is-on .pl-rtile-check{background:var(--action);border-color:var(--action);color:var(--on-action)}
