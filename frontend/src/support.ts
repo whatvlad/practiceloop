@@ -3,7 +3,7 @@
 // while after it is closed. Everything lives in this browser's local storage.
 
 /** The external support page; empty hides every support link and the notice. */
-export const SUPPORT_URL = '';
+export const SUPPORT_URL = 'https://ko-fi.com/mathloop';
 export const SUPPORT_PROVIDER = 'Ko-fi';
 export const SUPPORT_AFTER_SOLVED = 3;
 export const SUPPORT_SNOOZE_DAYS = 60;
