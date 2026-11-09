@@ -80,7 +80,7 @@ export function HomePage({ name }: { name: string }) {
           ? <LatestProblem problem={latest} onNew={() => void start(latest)} busy={busy} />
           : <section className="pl-card pl-card--lg pl-home-empty" aria-labelledby="empty-title">
               <h2 id="empty-title" className="pl-h-md pl-m-0">Generate your first problem</h2>
-              <p className="pl-muted pl-m-0">Choose a topic on the left, or start straight away with an integral. Every problem you generate is saved here.</p>
+              <p className="pl-muted pl-m-0">Choose a topic on the left, or start with an integral.</p>
               <div className="pl-actions">
                 <Button arrow onClick={() => void start()} disabled={busy} aria-busy={busy}>{busy ? 'Generating…' : 'Generate a problem'}</Button>
                 <ButtonLink to="/random" variant="secondary">Random problems</ButtonLink>

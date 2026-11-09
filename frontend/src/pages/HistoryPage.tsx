@@ -126,10 +126,7 @@ export function HistoryPage({ inactive = false }: { inactive?: boolean }) {
   return (
     <main id="main" tabIndex={-1} className="pl-wrap pl-app-main">
       <div className="pl-row pl-title-row">
-        <div>
-          <h1 className="pl-display-md">History</h1>
-          <p className="pl-muted pl-m-0">Problems you have generated, newest first. Open any row to continue it.</p>
-        </div>
+        <h1 className="pl-display-md">History</h1>
         <ButtonLink to="/dashboard" arrow>
           {inactive ? 'Browse topics' : 'New problem'}
         </ButtonLink>

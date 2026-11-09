@@ -106,9 +106,8 @@ export function RandomPracticePage({ accountId }: { accountId: string }) {
   const groups = catalogue.status === 'ready' ? groupsOf(catalogue.data) : [];
   return (
     <main id="main" tabIndex={-1} className="pl-wrap pl-app-main pl-random">
-      <div className="pl-label">Random practice</div>
       <h1 className="pl-display-md pl-page-title">Mix topics</h1>
-      <p className="pl-lead pl-random-lead">Select topics and a level for each. Every problem comes from one of them, chosen at random.</p>
+      <p className="pl-lead pl-random-lead">Pick topics and a level for each.</p>
       {catalogue.status === 'loading' && <p role="status">Loading topics…</p>}
       {catalogue.status === 'error' && <p role="alert">Topics could not be loaded.</p>}
       {groups.map(group => {
@@ -116,10 +115,7 @@ export function RandomPracticePage({ accountId }: { accountId: string }) {
         const all = slugs.every(slug => Object.hasOwn(selection, slug));
         return <section key={group.key} className="pl-rgroup" aria-labelledby={`random-${group.key}`}>
           <div className="pl-rgroup-head">
-            <h2 id={`random-${group.key}`} className="pl-h-md">
-              {group.title !== group.area && <span className="pl-rgroup-area">{group.area}</span>}
-              {group.title}
-            </h2>
+            <h2 id={`random-${group.key}`} className="pl-h-md">{group.title}</h2>
             <Button variant="ghost" size="sm" onClick={() => toggle(slugs, !all)}>{all ? 'Clear group' : 'Select all'}</Button>
           </div>
           <ul className="pl-rtiles">{group.topics.map(tile)}</ul>

@@ -48,12 +48,12 @@ export function FeedbackPage({ name: initialName = '', email: initialEmail = '',
       {sent ? (
         <section className="pl-card pl-card--lg pl-stack pl-gap-4" role="status">
           <h2 className="pl-h-md pl-m-0">Thank you, your message was sent</h2>
-          <p className="pl-muted pl-m-0">We read every message and reply to {email} when there is something to answer.</p>
+          <p className="pl-muted pl-m-0">We will reply to {email}.</p>
           <div><Button variant="secondary" onClick={() => { setSent(false); setMessage(''); }}>Send another message</Button></div>
         </section>
       ) : (
         <form className="pl-card pl-card--lg pl-feedback" onSubmit={submit} noValidate>
-          <p className="pl-muted pl-m-0">Found a wrong answer, a bug or have an idea? Tell us here and we will reply by email.</p>
+          <p className="pl-muted pl-m-0">Report a wrong answer or a bug, or suggest an idea. We reply by email.</p>
           <div className="pl-feedback-row">
             <label className="pl-field">Name
               <input className="pl-input pl-input--text" name="name" autoComplete="name" maxLength={LIMITS.name} value={name} onChange={e => setName(e.target.value)} disabled={busy} required />

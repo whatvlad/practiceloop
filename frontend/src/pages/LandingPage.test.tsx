@@ -4,7 +4,7 @@ import { LandingPage } from './LandingPage';
 
 it('offers guests the demo and describes what the product does', () => {
   const html = renderToStaticMarkup(<LandingPage onSignIn={() => {}} />);
-  expect(html).toContain('Mathematics practice');
+  expect(html).toContain('Practice mathematics');
   expect(html).toContain('algebra, analysis and probability');
   expect(html).toContain('href="/demo"');
   expect(html).toContain('href="/practice"');

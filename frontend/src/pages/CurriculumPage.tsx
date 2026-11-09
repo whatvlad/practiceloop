@@ -75,7 +75,6 @@ export function CurriculumPage({ guest = false }: { guest?: boolean }) {
 
   return (
     <main id="main" tabIndex={-1} className="pl-wrap pl-app-main">
-      <div className="pl-label">Curriculum</div>
       <h1 className="pl-display-md pl-page-title">Explore mathematics</h1>
       <p className="pl-muted">Choose an area and a problem type. Some exercises are available; others are in development.</p>
       {guest && <p className="pl-muted">Exercises need a free account. <Link to="/demo">Try a demo problem without signing in</Link>.</p>}

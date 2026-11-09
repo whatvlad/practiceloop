@@ -63,7 +63,7 @@ export function PublicNav({ landing = false }: { landing?: boolean }) {
             Home
           </ButtonLink>
         )}
-        <ButtonLink to="/login" variant="secondary" size="sm" pill>
+        <ButtonLink to="/login" variant="secondary" size="sm">
           Sign in
         </ButtonLink>
       </div>

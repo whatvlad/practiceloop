@@ -8,8 +8,8 @@ export function TermsPage() {
       <PublicNav />
       <main id="main" tabIndex={-1} className="pl-wrap pl-wrap--narrow pl-app-main pl-stack pl-gap-5 pl-privacy">
         <div>
-          <div className="pl-label">Updated {LEGAL_UPDATED}</div>
-          <h1 className="pl-display-md pl-mt-4">Terms of Service</h1>
+          <h1 className="pl-display-md">Terms of Service</h1>
+          <p className="pl-small pl-muted">Updated {LEGAL_UPDATED}</p>
           <p className="pl-lead">
             These terms apply when you use MathLoop. By creating an account or using the service, you agree to them.
           </p>

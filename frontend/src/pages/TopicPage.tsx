@@ -84,15 +84,9 @@ export function TopicPage({ initialArea, initialTopic }: { initialArea?: AreaSlu
 
   return (
     <main id="main" tabIndex={-1} className="pl-wrap pl-app-main">
-      <div className="pl-label">{areas.find(a => a.slug === area)?.name ?? 'Practice'}</div>
       <h1 className="pl-display-md pl-page-title">{topic === 'mixed' ? 'Mixed practice' : topics.find(item => item.slug === topic)?.name ?? 'Practice'}</h1>
       <section className="pl-problem pl-problem--flat pl-mb-6" aria-labelledby="start-title">
-        <div>
-          <h2 id="start-title" className="pl-h-lg">
-            Start a new problem
-          </h2>
-          <p className="pl-muted pl-mt-1">Select a difficulty, then generate. Other topics are in the list on the left.</p>
-        </div>
+        <h2 id="start-title" className="pl-h-md">New problem</h2>
         <div className="pl-stack pl-gap-3">
           <div id="difficulty-label" className="pl-label">
             Difficulty
