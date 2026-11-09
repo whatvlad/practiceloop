@@ -95,8 +95,8 @@ export function PrivacyPage() {
         <section aria-labelledby="privacy-feedback">
           <h2 id="privacy-feedback" className="pl-h-lg">Feedback form</h2>
           <p>
-            When you send the feedback form, your name, email address, topic, message and the page you came from are
-            emailed to our support mailbox through Resend, so we can read and answer it. We keep these emails only as long as
+            Signed-in learners can send the feedback form. Your name, your account email address, the topic, the message
+            and the page you came from are emailed to our support mailbox through Resend, so we can read and answer it. We keep these emails only as long as
             the conversation needs, and you can ask us to delete them.
           </p>
         </section>

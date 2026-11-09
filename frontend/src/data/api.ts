@@ -21,6 +21,7 @@ configurePracticeAuth(async () => {
 });
 
 export {
+  feedbackToken,
   getDisplayName,
   saveDisplayName,
   getLearningStatistics,

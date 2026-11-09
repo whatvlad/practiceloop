@@ -98,10 +98,14 @@ jobs:
       - name: Deploy to Cloudflare Pages
         if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != ''
         working-directory: frontend
+        env:
+          SUPABASE_URL: ${{ vars.SUPABASE_URL || secrets.SUPABASE_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ vars.SUPABASE_PUBLISHABLE_KEY || secrets.SUPABASE_PUBLISHABLE_KEY }}
         run: |
           # Gives functions/api its upstream; deploying from frontend/ picks up functions/.
-          printf 'name = "%s"\npages_build_output_dir = "dist"\ncompatibility_date = "2026-10-01"\n\n[vars]\nAPI_ORIGIN = "%s"\n' \
-            "$CLOUDFLARE_PROJECT" "$API_ORIGIN" > wrangler.toml
+          # SUPABASE_* are public; the feedback function uses them to check the sender's session.
+          printf 'name = "%s"\npages_build_output_dir = "dist"\ncompatibility_date = "2026-10-01"\n\n[vars]\nAPI_ORIGIN = "%s"\nSUPABASE_URL = "%s"\nSUPABASE_PUBLISHABLE_KEY = "%s"\n' \
+            "$CLOUDFLARE_PROJECT" "$API_ORIGIN" "$SUPABASE_URL" "$SUPABASE_PUBLISHABLE_KEY" > wrangler.toml
           npx --yes wrangler@4.147.0 pages project create "$CLOUDFLARE_PROJECT" --production-branch main \
             || echo "Project already exists."
           npx --yes wrangler@4.147.0 pages deploy dist --project-name "$CLOUDFLARE_PROJECT" \

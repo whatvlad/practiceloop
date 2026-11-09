@@ -28,7 +28,7 @@ import { applyPageMeta, siteConfig } from './site';
 
 const SITE = siteConfig(import.meta.env.VITE_SITE_URL, import.meta.env.VITE_SITE_INDEXABLE);
 
-const APP_ROUTES = new Set(['/dashboard', '/practice', '/random', '/history', '/profile']);
+const APP_ROUTES = new Set(['/dashboard', '/practice', '/random', '/history', '/profile', '/feedback']);
 // Routes with the topic sidebar beside the page.
 const WORKSPACE_ROUTES = new Set(['/dashboard', '/practice', '/random']);
 const TOPIC_RETURN = 'practiceloop:topic-return';
@@ -141,13 +141,6 @@ export function App() {
     if (shared) return <SharedProblemPage key={`${account?.id ?? auth.status}:${shared[1]}`} token={decodeURIComponent(shared[1])} code={null} signedIn={!!account} authLoading={auth.status === 'loading'} />;
     if (pathname === '/privacy') return <PrivacyPage />;
     if (pathname === '/terms') return <TermsPage />;
-    if (pathname === '/feedback') {
-      if (auth.status === 'loading') return <div className="pl-page" />;
-      return <div className="pl-page">
-        {account ? <AppNav current={pathname} initial={account.name.charAt(0).toUpperCase()} onLogOut={handleLogOut} busy={auth.working} /> : <PublicNav />}
-        <FeedbackPage key={account?.id ?? 'guest'} name={account?.name} email={account?.email} />
-      </div>;
-    }
     if (pathname === '/login') return <LoginPage onSignIn={handleSignIn} disabled={authDisabled} busy={auth.working} error={auth.error} />;
     if (pathname === '/demo' && auth.status !== 'loading' && !account) return <div className="pl-page"><PublicNav /><PracticePage id={null} demo /></div>;
     if (pathname === '/demo' || pathname === '/auth/callback' || (needsAccount && auth.status === 'loading')) {
@@ -176,6 +169,7 @@ export function App() {
         {pathname === '/random' && <RandomPracticePage accountId={account.id} />}
         </div></div>}
         {pathname === '/history' && <HistoryPage />}
+        {pathname === '/feedback' && <FeedbackPage name={account.name} email={account.email} />}
         {pathname === '/profile' && <ProfilePage account={account} onLogOut={handleLogOut} onDeleted={handleDeleted} busy={auth.working} />}
       </div>
     );

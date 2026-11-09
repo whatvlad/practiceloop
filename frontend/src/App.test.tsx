@@ -272,12 +272,14 @@ describe('routes and public pages (#38)', () => {
     expect(element.querySelectorAll('footer')).toHaveLength(1);
   });
 
-  it.each([signedOut, signedIn])('opens the feedback form for guests and learners', async state => {
-    await renderAt('/feedback', state);
+  it('opens the feedback form only for a signed-in learner, with the account email', async () => {
+    await renderAt('/feedback', signedIn);
     expect(element.querySelector('h1')?.textContent).toBe('Feedback');
     expect(element.querySelector('form textarea[name="message"]')).not.toBeNull();
     expect(document.title).toBe('Feedback · MathLoop');
-    expect(element.querySelector<HTMLInputElement>('input[name="email"]')?.value).toBe(state.account?.email ?? '');
+    expect(element.querySelector('form')?.textContent).toContain('learner@example.invalid');
+    await renderAt('/feedback', signedOut);
+    expect(window.location.pathname).toBe('/login');
   });
 
   it('sends the logo to the home page when signed in', async () => {

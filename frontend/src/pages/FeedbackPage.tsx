@@ -1,15 +1,23 @@
 import { useRef, useState, type FormEvent } from 'react';
 import { Button } from '../components/Button';
+import { feedbackToken } from '../data/api';
 import { checkFeedback, LIMITS, TOPICS } from '../edge/feedback';
 import { CONTACT_EMAIL } from '../legal';
 import { Link } from '../router';
 
 const ENDPOINT = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/api/feedback`;
 
-/** The feedback form; /api/feedback (a Pages Function) emails it to the support mailbox. */
-export function FeedbackPage({ name: initialName = '', email: initialEmail = '', fetchImpl = fetch }: { name?: string; email?: string; fetchImpl?: typeof fetch }) {
+interface FeedbackPageProps {
+  name: string;
+  /** The signed-in account's email; the server reads it from the session, so it is shown, not edited. */
+  email: string;
+  fetchImpl?: typeof fetch;
+  getToken?: () => Promise<string | null>;
+}
+
+/** The feedback form for signed-in learners; /api/feedback (a Pages Function) emails it to the support mailbox. */
+export function FeedbackPage({ name: initialName, email, fetchImpl = fetch, getToken = feedbackToken }: FeedbackPageProps) {
   const [name, setName] = useState(initialName);
-  const [email, setEmail] = useState(initialEmail);
   const [topic, setTopic] = useState<string>(TOPICS[0]);
   const [message, setMessage] = useState('');
   const [website, setWebsite] = useState('');
@@ -22,20 +30,26 @@ export function FeedbackPage({ name: initialName = '', email: initialEmail = '',
   async function submit(event: FormEvent) {
     event.preventDefault();
     if (pending.current) return;
-    const payload = { name, email, topic, message, website, elapsed: Date.now() - openedAt };
+    const payload = { name, topic, message, website, elapsed: Date.now() - openedAt };
     const checked = checkFeedback(payload);
     if (!checked.ok) { setError(checked.error); return; }
     pending.current = true;
     setBusy(true);
     setError('');
     try {
-      const response = await fetchImpl(ENDPOINT, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) });
+      const token = await getToken();
+      if (!token) { setError('Sign in again to send feedback.'); return; }
+      const response = await fetchImpl(ENDPOINT, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', authorization: `Bearer ${token}` },
+        body: JSON.stringify(payload),
+      });
       const body = await response.json().catch(() => ({})) as { error?: string; code?: string };
       if (response.ok) setSent(true);
       else if (body.code === 'not_configured') setError(`The form is not connected yet. Please write to ${CONTACT_EMAIL}.`);
       else setError(body.error ?? `The message could not be sent. Please write to ${CONTACT_EMAIL}.`);
-    } catch {
-      setError(`The message could not be sent. Check your connection, or write to ${CONTACT_EMAIL}.`);
+    } catch (failure) {
+      setError(failure instanceof Error && failure.message ? failure.message : `The message could not be sent. Please write to ${CONTACT_EMAIL}.`);
     } finally {
       pending.current = false;
       setBusy(false);
@@ -53,15 +67,10 @@ export function FeedbackPage({ name: initialName = '', email: initialEmail = '',
         </section>
       ) : (
         <form className="pl-card pl-card--lg pl-feedback" onSubmit={submit} noValidate>
-          <p className="pl-muted pl-m-0">Report a wrong answer or a bug, or suggest an idea. We reply by email.</p>
-          <div className="pl-feedback-row">
-            <label className="pl-field">Name
-              <input className="pl-input pl-input--text" name="name" autoComplete="name" maxLength={LIMITS.name} value={name} onChange={e => setName(e.target.value)} disabled={busy} required />
-            </label>
-            <label className="pl-field">Email
-              <input className="pl-input pl-input--text" type="email" name="email" autoComplete="email" maxLength={LIMITS.email} value={email} onChange={e => setEmail(e.target.value)} disabled={busy} required />
-            </label>
-          </div>
+          <p className="pl-muted pl-m-0">Report a wrong answer or a bug, or suggest an idea. We reply to <strong>{email}</strong>.</p>
+          <label className="pl-field">Name
+            <input className="pl-input pl-input--text" name="name" autoComplete="name" maxLength={LIMITS.name} value={name} onChange={e => setName(e.target.value)} disabled={busy} required />
+          </label>
           <label className="pl-field">Topic
             <select className="pl-select" name="topic" value={topic} onChange={e => setTopic(e.target.value)} disabled={busy}>
               {TOPICS.map(item => <option key={item} value={item}>{item}</option>)}
@@ -78,7 +87,7 @@ export function FeedbackPage({ name: initialName = '', email: initialEmail = '',
           {error && <p className="pl-result pl-result--invalid pl-m-0" role="alert">{error}</p>}
           <div className="pl-actions">
             <Button type="submit" arrow disabled={busy} aria-busy={busy}>{busy ? 'Sending…' : 'Send message'}</Button>
-            <span className="pl-small pl-muted">Your name and email are used only to answer you. See <Link to="/privacy">Privacy</Link>.</span>
+            <span className="pl-small pl-muted">See <Link to="/privacy">Privacy</Link> for how we use it.</span>
           </div>
         </form>
       )}
