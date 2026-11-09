@@ -4,6 +4,7 @@ import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { TopicPage } from './TopicPage';
 import { PracticePage } from './PracticePage';
+import { LocalRandomPractice } from '../components/LocalRandomPractice';
 import { matrixOptionsFromSearch } from '../components/MatrixSettings';
 import { modulusModeFromSearch } from '../components/ModulusSettings';
 import { configurePracticeAuth, generateProblem, getProblem, resetPractice, revealSolution } from '../data/practice';
@@ -29,6 +30,127 @@ let catalogue: unknown;
 const response = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status });
 const button = (label: string) => Array.from(element.querySelectorAll('button')).find(b => b.textContent?.includes(label))!;
 
+it('persists and reuses random algebra settings for saved problems', async () => {
+  localStorage.removeItem('practiceloop:algebra-random:student');
+  catalogue = { areas: [{ slug: 'algebra', name: 'Algebra', mixed: null }], items: [
+    { slug: 'determinants', name: 'Determinants', area: 'algebra', availableDifficulties: [1, 2, 3] },
+  ] };
+  await act(async () => root.render(<LocalRandomPractice accountId="student" />));
+  const topic = [...element.querySelectorAll('label')].find(label => label.textContent?.trim() === 'Determinants')!.querySelector('input')!;
+  await act(async () => topic.click());
+  const select = (name: string) => [...element.querySelectorAll('label')].find(label => label.textContent?.startsWith(name))!.querySelector('select')!;
+  await act(async () => { select('Difficulty').value = '2'; select('Difficulty').dispatchEvent(new Event('change', { bubbles: true })); });
+  await act(async () => { select('Matrix size').value = '4'; select('Matrix size').dispatchEvent(new Event('change', { bubbles: true })); });
+  await act(async () => button('Generate problem').click());
+  expect(calls.filter(call => call.path === '/api/problems').at(-1)?.body).toMatchObject({ topic: 'determinants', difficulty: 2, squareSize: 4 });
+  const params = new URLSearchParams(window.location.search);
+  expect(params.get('mode')).toBe('algebra-random');
+  await act(async () => root.render(<PracticePage id={params.get('id')} algebraRandomAccountId="student" />));
+  await act(async () => button('Generate next problem').click());
+  expect(calls.filter(call => call.path === '/api/problems').at(-1)?.body).toMatchObject({ topic: 'determinants', difficulty: 2, squareSize: 4 });
+  localStorage.removeItem('practiceloop:algebra-random:student');
+});
+
+it('generates and continues polar powers without a difficulty selector', async () => {
+  catalogue = { areas: [{ slug: 'algebra', name: 'Algebra', mixed: null }], items: [
+    { slug: 'complex-polar-form', name: 'Polar form', area: 'algebra', availableDifficulties: [1, 2, 3] },
+  ] };
+  await act(async () => root.render(<TopicPage initialArea="algebra" initialTopic="complex-polar-form" />));
+  const select = [...element.querySelectorAll('label')].find(label => label.textContent?.startsWith('Exercise type'))!.querySelector('select')!;
+  await act(async () => { select.value = 'power'; select.dispatchEvent(new Event('change', { bubbles: true })); });
+  expect(element.textContent).not.toContain('Difficulty');
+  await act(async () => button('Generate problem').click());
+  expect(calls.filter(call => call.path === '/api/problems').at(-1)?.body).toMatchObject({ topic: 'complex-polar-form', difficulty: 2, exerciseMode: 'power' });
+  await act(async () => root.render(<PracticePage id={new URLSearchParams(window.location.search).get('id')} />));
+  await act(async () => button('Generate next problem').click());
+  expect(calls.filter(call => call.path === '/api/problems').at(-1)?.body).toMatchObject({ topic: 'complex-polar-form', exerciseMode: 'power' });
+});
+
+it('uses local polynomial root exercises', async () => {
+  catalogue = { areas: [{ slug: 'algebra', name: 'Algebra', mixed: null }], items: [
+    { slug: 'polynomial-roots', name: 'Roots and factors', area: 'algebra', availableDifficulties: [1, 2, 3] },
+  ] };
+  await act(async () => root.render(<TopicPage initialArea="algebra" initialTopic="polynomial-roots" />));
+  await act(async () => button('Generate problem').click());
+  expect(calls.filter(call => call.path === '/api/problems').at(-1)?.body).toMatchObject({ topic: 'polynomial-roots', exerciseMode: 'roots' });
+});
+
+it('preserves complex conversion direction for the next saved problem', async () => {
+  catalogue = { areas: [{ slug: 'algebra', name: 'Algebra', mixed: null }], items: [
+    { slug: 'complex-conversion', name: 'Converting complex forms', area: 'algebra', availableDifficulties: [1, 2, 3] },
+  ] };
+  await act(async () => root.render(<TopicPage initialArea="algebra" initialTopic="complex-conversion" />));
+  const select = [...element.querySelectorAll('label')].find(label => label.textContent?.startsWith('Exercise type'))!.querySelector('select')!;
+  await act(async () => { select.value = 'exp-alg'; select.dispatchEvent(new Event('change', { bubbles: true })); });
+  await act(async () => button('Generate problem').click());
+  expect(calls.filter(call => call.path === '/api/problems').at(-1)?.body).toMatchObject({ topic: 'complex-conversion', exerciseMode: 'exp-alg' });
+  await act(async () => root.render(<PracticePage id={new URLSearchParams(window.location.search).get('id')} />));
+  await act(async () => button('Generate next problem').click());
+  expect(calls.filter(call => call.path === '/api/problems').at(-1)?.body).toMatchObject({ topic: 'complex-conversion', exerciseMode: 'exp-alg' });
+});
+
+it('preserves complex exercise mode for the next saved problem', async () => {
+  catalogue = { areas: [{ slug: 'algebra', name: 'Algebra', mixed: null }], items: [
+    { slug: 'complex-arithmetic', name: 'Complex arithmetic', area: 'algebra', availableDifficulties: [1, 2, 3] },
+  ] };
+  await act(async () => root.render(<TopicPage initialArea="algebra" initialTopic="complex-arithmetic" />));
+  const select = [...element.querySelectorAll('label')].find(label => label.textContent?.startsWith('Exercise type'))!.querySelector('select')!;
+  await act(async () => { select.value = 'divide'; select.dispatchEvent(new Event('change', { bubbles: true })); });
+  await act(async () => button('Generate problem').click());
+  expect(calls.filter(call => call.path === '/api/problems').at(-1)?.body).toMatchObject({ topic: 'complex-arithmetic', exerciseMode: 'divide' });
+  await act(async () => root.render(<PracticePage id={new URLSearchParams(window.location.search).get('id')} />));
+  await act(async () => button('Generate next problem').click());
+  expect(calls.filter(call => call.path === '/api/problems').at(-1)?.body).toMatchObject({ topic: 'complex-arithmetic', exerciseMode: 'divide' });
+});
+
+it('preserves determinant size for the next saved problem', async () => {
+  catalogue = { areas: [{ slug: 'algebra', name: 'Algebra', mixed: null }], items: [
+    { slug: 'determinants', name: 'Determinants', area: 'algebra', availableDifficulties: [1, 2, 3] },
+  ] };
+  await act(async () => root.render(<TopicPage initialArea="algebra" initialTopic="determinants" />));
+  const select = [...element.querySelectorAll('label')].find(label => label.textContent?.startsWith('Matrix size'))!.querySelector('select')!;
+  await act(async () => { select.value = '4'; select.dispatchEvent(new Event('change', { bubbles: true })); });
+  await act(async () => button('Generate problem').click());
+  expect(calls.filter(call => call.path === '/api/problems').at(-1)?.body).toMatchObject({ topic: 'determinants', squareSize: 4 });
+  await act(async () => root.render(<PracticePage id={new URLSearchParams(window.location.search).get('id')} />));
+  await act(async () => button('Generate next problem').click());
+  expect(calls.filter(call => call.path === '/api/problems').at(-1)?.body).toMatchObject({ topic: 'determinants', squareSize: 4 });
+});
+
+it('generates and continues a custom matrix exercise', async () => {
+  catalogue = { areas: [{ slug: 'algebra', name: 'Algebra', mixed: null }], items: [
+    { slug: 'matrix-operations', name: 'Matrix operations', area: 'algebra', availableDifficulties: [1, 2, 3] },
+  ] };
+  await act(async () => root.render(<TopicPage initialArea="algebra" initialTopic="matrix-operations" />));
+  await act(async () => element.querySelector<HTMLInputElement>('input[type="checkbox"]')!.click());
+  const select = (name: string) => [...element.querySelectorAll('label')].find(label => label.textContent?.startsWith(name))!.querySelector('select')!;
+  await act(async () => { select('Operation').value = 'multiply'; select('Operation').dispatchEvent(new Event('change', { bubbles: true })); });
+  await act(async () => { select('Columns of A').value = '3'; select('Columns of A').dispatchEvent(new Event('change', { bubbles: true })); });
+  await act(async () => { select('Rows of B').value = '3'; select('Rows of B').dispatchEvent(new Event('change', { bubbles: true })); });
+  await act(async () => { select('Columns of B').value = '4'; select('Columns of B').dispatchEvent(new Event('change', { bubbles: true })); });
+  await act(async () => button('Generate problem').click());
+  const dimensions = { operation: 'multiply', rowsA: 2, colsA: 3, rowsB: 3, colsB: 4 };
+  expect(calls.filter(call => call.path === '/api/problems').at(-1)?.body).toMatchObject({ matrixDimensions: dimensions });
+  await act(async () => root.render(<PracticePage id={new URLSearchParams(window.location.search).get('id')} />));
+  await act(async () => button('Generate next problem').click());
+  expect(calls.filter(call => call.path === '/api/problems').at(-1)?.body).toMatchObject({ matrixDimensions: dimensions });
+});
+
+it('preserves rank dimensions when generating the next saved problem', async () => {
+  catalogue = { areas: [{ slug: 'algebra', name: 'Algebra', mixed: null }], items: [
+    { slug: 'matrix-rank', name: 'Matrix rank', area: 'algebra', availableDifficulties: [1, 2, 3] },
+  ] };
+  await act(async () => root.render(<TopicPage initialArea="algebra" initialTopic="matrix-rank" />));
+  const select = (name: string) => [...element.querySelectorAll('label')].find(label => label.textContent?.startsWith(name))!.querySelector('select')!;
+  await act(async () => { select('Rows').value = '3'; select('Rows').dispatchEvent(new Event('change', { bubbles: true })); });
+  await act(async () => { select('Columns').value = '5'; select('Columns').dispatchEvent(new Event('change', { bubbles: true })); });
+  await act(async () => button('Generate problem').click());
+  expect(calls.filter(call => call.path === '/api/problems').at(-1)?.body).toMatchObject({ topic: 'matrix-rank', rankDimensions: { rows: 3, columns: 5 } });
+  await act(async () => root.render(<PracticePage id={new URLSearchParams(window.location.search).get('id')} />));
+  await act(async () => button('Generate next problem').click());
+  expect(calls.filter(call => call.path === '/api/problems').at(-1)?.body).toMatchObject({ topic: 'matrix-rank', rankDimensions: { rows: 3, columns: 5 } });
+});
+
 it('retains formula explanations provided with a revealed solution', async () => {
   const original = fetchMock.getMockImplementation()!;
   fetchMock.mockImplementation((url, options) => String(url).endsWith('/reveal-solution')
@@ -38,6 +160,22 @@ it('retains formula explanations provided with a revealed solution', async () =>
   const problem = await generateProblem('basic-integrals', 1);
   const solution = await revealSolution(problem.id);
   expect(solution.steps[0].rules?.[0].title).toBe('Modulus as distance');
+});
+
+it('retains determinant diagram data from the solution', async () => {
+  const original = fetchMock.getMockImplementation()!;
+  fetchMock.mockImplementation((url, options) => String(url).endsWith('/reveal-solution')
+    ? Promise.resolve(response({ steps: [{ say: 'Expand.', latex: '1', determinantMatrix: [[1, 2], [3, 4]] }] })) : original(url, options));
+  const problem = await generateProblem('basic-integrals', 1);
+  expect((await revealSolution(problem.id)).steps[0].determinantMatrix).toEqual([[1, 2], [3, 4]]);
+});
+
+it('accepts detailed solutions for a five by five determinant', async () => {
+  const original = fetchMock.getMockImplementation()!;
+  fetchMock.mockImplementation((url, options) => String(url).endsWith('/reveal-solution')
+    ? Promise.resolve(response({ steps: Array.from({ length: 44 }, (_, i) => ({ say: `Step ${i + 1}`, latex: '1' })) })) : original(url, options));
+  const problem = await generateProblem('basic-integrals', 1);
+  expect((await revealSolution(problem.id)).steps).toHaveLength(44);
 });
 
 it('generates and continues the chosen modulus exercise', async () => {

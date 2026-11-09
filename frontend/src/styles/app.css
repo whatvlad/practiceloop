@@ -194,6 +194,8 @@ main[tabindex="-1"]:focus{outline:none}
 /* The divider sits on the content column, which always runs to the footer; the sticky sidebar stops at its last topic. */
 .pl-workspace-content{border-left:1px solid var(--line)}
 .pl-sidebar-toggle{display:none}
+.pl-sidebar-extra{display:block;margin:0 0 var(--space-3);padding:0 var(--space-2);font-size:14px;color:var(--ink-muted)}
+.pl-sidebar-extra:hover{color:var(--ink)}
 .pl-sidebar-head{display:flex;flex-direction:column;gap:var(--space-3);padding:0 var(--space-2);margin-bottom:var(--space-4)}
 .pl-practice-sidebar details{margin:2px 0}
 .pl-practice-sidebar summary{cursor:pointer;padding:6px var(--space-2);border-radius:var(--radius-sm);font-weight:600}

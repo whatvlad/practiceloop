@@ -21,6 +21,7 @@ import {
 } from '../data/api';
 import { areaOf } from '../data/topics';
 import { eligibleRandomChoices, loadRandomMatrixOptions, loadRandomSelection, pickRandomChoice } from '../data/randomPractice';
+import { generateAlgebraRandom, loadAlgebraRandom } from '../data/algebraRandom';
 import type { CheckResult, FeedbackCode, MatrixOptions, OpenedProblem, RevealedSolution } from '../data/types';
 import { Link, navigate } from '../router';
 import { useLoad } from '../useLoad';
@@ -38,7 +39,7 @@ function practiceUrl(id: string, random = false, options?: MatrixOptions, modulu
   return `/practice?id=${encodeURIComponent(id)}${random ? '&mode=random' : ''}${options ? matrixOptionsQuery(options) : ''}${modulusMode ? modulusModeQuery(modulusMode) : ''}`;
 }
 
-function PracticeSession({ opened, randomAccountId, matrixOptions, modulusMode }: { opened: OpenedProblem; randomAccountId?: string; matrixOptions?: MatrixOptions; modulusMode?: ModulusMode }) {
+function PracticeSession({ opened, randomAccountId, algebraRandomAccountId, matrixOptions, modulusMode }: { opened: OpenedProblem; randomAccountId?: string; algebraRandomAccountId?: string; matrixOptions?: MatrixOptions; modulusMode?: ModulusMode }) {
   const { problem } = opened;
   const [answer, setAnswer] = useState(problem.lastAnswer ?? '');
   const answerRevision = useRef(0);
@@ -75,7 +76,7 @@ function PracticeSession({ opened, randomAccountId, matrixOptions, modulusMode }
       answerInput={problem.answerInput}
       topic={problem.topic}
       difficulty={problem.difficulty}
-      difficultyScale={problem.modulusMode ? 3 : 5}
+      difficultyScale={problem.topic === 'complex-polar-form' && problem.exerciseMode ? null : problem.modulusMode ? 3 : 5}
       problemLatex={problem.problemLatex}
       mixed={problem.mixed === true}
       headLabel={problem.saved ? 'Saved to your account' : 'Temporary practice'}
@@ -94,6 +95,11 @@ function PracticeSession({ opened, randomAccountId, matrixOptions, modulusMode }
       onNext={() =>
         run(async () => {
           if (problem.saved === false) { navigate('/login'); return; }
+          if (algebraRandomAccountId) {
+            const next = await generateAlgebraRandom(loadAlgebraRandom(algebraRandomAccountId));
+            if (active.current) navigate(`/practice?id=${encodeURIComponent(next.id)}&mode=algebra-random`);
+            return;
+          }
           if (randomAccountId) {
             const catalogue = await getCatalogue();
             const choices = eligibleRandomChoices(loadRandomSelection(randomAccountId), catalogue.topics);
@@ -109,10 +115,10 @@ function PracticeSession({ opened, randomAccountId, matrixOptions, modulusMode }
             return;
           }
           // Mixed practice draws within one area, the one this problem's topic belongs to.
-          const options = problem.topic === 'matrix-operations' ? matrixOptions : undefined;
+          const options = problem.topic === 'matrix-operations' && !problem.matrixDimensions ? matrixOptions : undefined;
           const selectedTopic = problem.mixed ? 'mixed' : problem.topic;
           const mode = problem.topic === 'complex-numbers' && !problem.mixed ? problem.modulusMode ?? modulusMode : undefined;
-          const next = await generateProblem(selectedTopic, problem.difficulty, areaOf(problem.topic), options, mode);
+          const next = await generateProblem(selectedTopic, problem.difficulty, areaOf(problem.topic), options, mode, problem.rankDimensions, problem.matrixDimensions, problem.squareSize, problem.exerciseMode);
           if (active.current) navigate(practiceUrl(next.id, false, options, mode));
         })
       }
@@ -128,7 +134,7 @@ function PracticeSession({ opened, randomAccountId, matrixOptions, modulusMode }
   );
 }
 
-export function PracticePage({ id, demo = false, randomAccountId, matrixOptions, modulusMode }: { id: string | null; demo?: boolean; randomAccountId?: string; matrixOptions?: MatrixOptions; modulusMode?: ModulusMode }) {
+export function PracticePage({ id, demo = false, randomAccountId, algebraRandomAccountId, matrixOptions, modulusMode }: { id: string | null; demo?: boolean; randomAccountId?: string; algebraRandomAccountId?: string; matrixOptions?: MatrixOptions; modulusMode?: ModulusMode }) {
   const [revision, setRevision] = useState(0);
   const [startError, setStartError] = useState(false);
   useEffect(() => {
@@ -143,7 +149,7 @@ export function PracticePage({ id, demo = false, randomAccountId, matrixOptions,
     <main id="main" tabIndex={-1} className="pl-wrap pl-wrap--narrow pl-practice-main">
       {!(startError || problem.status === 'error') && <h1 className="pl-sr-only">Practice problem</h1>}
       {demo && problem.status === 'ready' && <p className="pl-small pl-muted">This is a demo problem, and nothing is saved. Sign in with Google to practise every topic and keep your history. Questions or ideas? <Link to={FEEDBACK_PATH}>Send us feedback</Link>.</p>}
-      {problem.status === 'ready' && <PracticeSession key={problem.data.problem.id} opened={problem.data} randomAccountId={randomAccountId} matrixOptions={matrixOptions} modulusMode={modulusMode} />}
+      {problem.status === 'ready' && <PracticeSession key={problem.data.problem.id} opened={problem.data} randomAccountId={randomAccountId} algebraRandomAccountId={algebraRandomAccountId} matrixOptions={matrixOptions} modulusMode={modulusMode} />}
       {!startError && problem.status === 'loading' && <p role="status">Loading problem…</p>}
       {(startError || problem.status === 'error') && (
         <section className="pl-card pl-card--lg pl-stack pl-gap-4">

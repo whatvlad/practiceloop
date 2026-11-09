@@ -49,6 +49,7 @@ def test_five_topics_have_nonempty_levels_and_replay_for_many_seeds() -> None:
         "linear-systems",
         "matrix-rank",
         "complex-arithmetic",
+        "complex-conversion",
         "complex-polar-form",
         "binomial-theorem",
         "polynomial-roots",
@@ -79,7 +80,6 @@ def test_five_topics_have_nonempty_levels_and_replay_for_many_seeds() -> None:
     }
     generators = registry()
     expected_kinds = {
-        "partial-fractions": "expression",
         "derivatives": "derivative",
         "indefinite-integrals": "antiderivative",
         "definite-integrals": "expression",
@@ -96,7 +96,9 @@ def test_five_topics_have_nonempty_levels_and_replay_for_many_seeds() -> None:
             assert choices
             for seed in range(8):
                 task = topic.generate(level, seed, generators)
-                if topic.slug in expected_kinds:
+                if topic.slug == "partial-fractions":
+                    assert task.answer.kind in {"expression", "tuple"}
+                elif topic.slug in expected_kinds:
                     assert task.answer.kind == expected_kinds[topic.slug]
                 else:
                     assert task.answer.kind in {

@@ -2,6 +2,7 @@ import { useEffect, useState, useSyncExternalStore } from 'react';
 import { ApiStatusNotice } from './components/ApiStatusNotice';
 import { AppNav, Logo, PublicNav } from './components/AppNav';
 import { PracticeSidebar } from './components/PracticeSidebar';
+import { LocalRandomPractice } from './components/LocalRandomPractice';
 import { matrixOptionsFromSearch } from './components/MatrixSettings';
 import { modulusModeFromSearch } from './components/ModulusSettings';
 import { ButtonLink } from './components/Button';
@@ -28,9 +29,9 @@ import { applyPageMeta, siteConfig } from './site';
 
 const SITE = siteConfig(import.meta.env.VITE_SITE_URL, import.meta.env.VITE_SITE_INDEXABLE);
 
-const APP_ROUTES = new Set(['/dashboard', '/practice', '/random', '/history', '/profile', '/feedback']);
+const APP_ROUTES = new Set(['/dashboard', '/practice', '/random', '/history', '/profile', '/feedback', '/algebra-random']);
 // Routes with the topic sidebar beside the page.
-const WORKSPACE_ROUTES = new Set(['/dashboard', '/practice', '/random']);
+const WORKSPACE_ROUTES = new Set(['/dashboard', '/practice', '/random', '/algebra-random']);
 const TOPIC_RETURN = 'practiceloop:topic-return';
 
 function topicReturn(value: string | null): string | null {
@@ -165,8 +166,9 @@ export function App() {
         {pathname === '/dashboard' && (params.has('topic')
           ? <TopicPage key={`${params.get('area')}:${params.get('topic')}`} initialArea={params.get('area') === 'algebra' ? 'algebra' : params.get('area') === 'probability-statistics' ? 'probability-statistics' : 'mathematical-analysis'} initialTopic={params.get('topic') ?? undefined} />
           : <HomePage name={account.name} />)}
-        {pathname === '/practice' && params.has('id') && <PracticePage key={params.get('id')} id={params.get('id')} randomAccountId={params.get('mode') === 'random' ? account.id : undefined} matrixOptions={matrixOptionsFromSearch(params)} modulusMode={modulusModeFromSearch(params)} />}
+        {pathname === '/practice' && params.has('id') && <PracticePage key={params.get('id')} id={params.get('id')} randomAccountId={params.get('mode') === 'random' ? account.id : undefined} algebraRandomAccountId={params.get('mode') === 'algebra-random' ? account.id : undefined} matrixOptions={matrixOptionsFromSearch(params)} modulusMode={modulusModeFromSearch(params)} />}
         {pathname === '/random' && <RandomPracticePage accountId={account.id} />}
+        {pathname === '/algebra-random' && <LocalRandomPractice accountId={account.id} />}
         </div></div>}
         {pathname === '/history' && <HistoryPage />}
         {pathname === '/feedback' && <FeedbackPage name={account.name} email={account.email} />}

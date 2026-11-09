@@ -29014,5 +29014,1717 @@
         "template": "geometry"
       }
     }
+  ],
+  "local-rank-v1": [
+    {
+      "code": "LRANK-1-0000000000000000-34",
+      "statement": "Find the rank of the matrix: \\(\\begin{pmatrix}0&0\\\\1&0\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "start",
+          "\\left[\\begin{array}{cc}0 & 0\\\\1 & 0\\end{array}\\right]"
+        ],
+        [
+          "swap",
+          "R_{1}\\leftrightarrow R_{2}\\quad \\left[\\begin{array}{cc}1 & 0\\\\0 & 0\\end{array}\\right]"
+        ],
+        [
+          "count",
+          "\\operatorname{rank} A=1"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 1,
+        "template": "local-rank"
+      }
+    },
+    {
+      "code": "LRANK-1-0000000000000001-51",
+      "statement": "Find the rank of the matrix: \\(\\begin{pmatrix}0&0\\\\0&0\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "start",
+          "\\left[\\begin{array}{cc}0 & 0\\\\0 & 0\\end{array}\\right]"
+        ],
+        [
+          "count",
+          "\\operatorname{rank} A=0"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 1,
+        "template": "local-rank"
+      }
+    },
+    {
+      "code": "LRANK-1-0000000000000002-68",
+      "statement": "Find the rank of the matrix: \\(\\begin{pmatrix}0&0\\\\0&0\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "start",
+          "\\left[\\begin{array}{cc}0 & 0\\\\0 & 0\\end{array}\\right]"
+        ],
+        [
+          "count",
+          "\\operatorname{rank} A=0"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 1,
+        "template": "local-rank"
+      }
+    }
+  ],
+  "local-complex-v1": [
+    {
+      "code": "LCX-1-0000000000000000-47",
+      "statement": "Calculate \\((3 - i) + (2 i)\\).",
+      "steps": [
+        [
+          "rewrite",
+          "(3 - i) + (2 i)"
+        ],
+        [
+          "standard",
+          "\\left(\\color{#65adff}{3} -\\color{#ffb65c}{i}\\right)+\\left(\\color{#65adff}{0} +\\color{#ffb65c}{2i}\\right)"
+        ],
+        [
+          "parts",
+          "\\color{#65adff}{(3) + (0)} + \\color{#ffb65c}{((-1) + (2))i}"
+        ],
+        [
+          "result",
+          "\\color{#65adff}{3} +\\color{#ffb65c}{i}"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "3 + i",
+      "metadata": {
+        "difficulty": 1,
+        "template": "add"
+      }
+    },
+    {
+      "code": "LCX-1-0000000000000001-64",
+      "statement": "Calculate \\((1 - i) + (1 + i)\\).",
+      "steps": [
+        [
+          "rewrite",
+          "(1 - i) + (1 + i)"
+        ],
+        [
+          "parts",
+          "\\color{#65adff}{(1) + (1)} + \\color{#ffb65c}{((-1) + (1))i}"
+        ],
+        [
+          "result",
+          "\\color{#65adff}{2}"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 1,
+        "template": "add"
+      }
+    },
+    {
+      "code": "LCX-1-0000000000000002-81",
+      "statement": "Calculate \\((-2 - 2 i) + (-1 + 2 i)\\).",
+      "steps": [
+        [
+          "rewrite",
+          "(-2 - 2 i) + (-1 + 2 i)"
+        ],
+        [
+          "parts",
+          "\\color{#65adff}{(-2) + (-1)} + \\color{#ffb65c}{((-2) + (2))i}"
+        ],
+        [
+          "result",
+          "\\color{#65adff}{-3}"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "-3",
+      "metadata": {
+        "difficulty": 1,
+        "template": "add"
+      }
+    }
+  ],
+  "local-conversion-v1": [
+    {
+      "code": "LCV-1-0002000000000000-73",
+      "statement": "Convert to algebraic form: \\(z=2\\left(\\cos\\left(\\frac{\\pi}{2}\\right)+i\\sin\\left(\\frac{\\pi}{2}\\right)\\right)\\).",
+      "steps": [
+        [
+          "rewrite",
+          "z=2\\left(\\cos\\left(\\frac{\\pi}{2}\\right)+i\\sin\\left(\\frac{\\pi}{2}\\right)\\right)"
+        ],
+        [
+          "given",
+          "r=2,\\quad\\varphi=\\frac{\\pi}{2}"
+        ],
+        [
+          "evaluate",
+          "z=2\\left((0)+i(1)\\right)"
+        ],
+        [
+          "result",
+          "z=2 i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "2 i",
+      "metadata": {
+        "difficulty": 1,
+        "template": "trig-alg"
+      }
+    },
+    {
+      "code": "LCV-1-0002000000000001-90",
+      "statement": "Convert to algebraic form: \\(z=2\\left(\\cos\\left(\\frac{\\pi}{2}\\right)+i\\sin\\left(\\frac{\\pi}{2}\\right)\\right)\\).",
+      "steps": [
+        [
+          "rewrite",
+          "z=2\\left(\\cos\\left(\\frac{\\pi}{2}\\right)+i\\sin\\left(\\frac{\\pi}{2}\\right)\\right)"
+        ],
+        [
+          "given",
+          "r=2,\\quad\\varphi=\\frac{\\pi}{2}"
+        ],
+        [
+          "evaluate",
+          "z=2\\left((0)+i(1)\\right)"
+        ],
+        [
+          "result",
+          "z=2 i"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "2 i",
+      "metadata": {
+        "difficulty": 1,
+        "template": "trig-alg"
+      }
+    },
+    {
+      "code": "LCV-1-0002000000000002-10",
+      "statement": "Convert to algebraic form: \\(z=2\\left(\\cos\\left(0\\right)+i\\sin\\left(0\\right)\\right)\\).",
+      "steps": [
+        [
+          "rewrite",
+          "z=2\\left(\\cos\\left(0\\right)+i\\sin\\left(0\\right)\\right)"
+        ],
+        [
+          "given",
+          "r=2,\\quad\\varphi=0"
+        ],
+        [
+          "evaluate",
+          "z=2\\left((1)+i(0)\\right)"
+        ],
+        [
+          "result",
+          "z=2"
+        ]
+      ],
+      "answer_kind": "complex",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 1,
+        "template": "trig-alg"
+      }
+    }
+  ],
+  "local-conversion-polar-v1": [
+    {
+      "code": "LCP-1-0000000000000000-95",
+      "statement": "Convert to trigonometric form using the principal argument in radians: \\(z=- \\sqrt{2} + \\sqrt{2} i\\).",
+      "steps": [
+        [
+          "rewrite",
+          "z=- \\sqrt{2} + \\sqrt{2} i"
+        ],
+        [
+          "parts",
+          "a=- \\sqrt{2},\\quad b=\\sqrt{2}"
+        ],
+        [
+          "modulus",
+          "r=\\sqrt{(- \\sqrt{2})^2+(\\sqrt{2})^2}=2"
+        ],
+        [
+          "trig_values",
+          "\\cos\\varphi=- \\frac{\\sqrt{2}}{2},\\quad \\sin\\varphi=\\frac{\\sqrt{2}}{2}"
+        ],
+        [
+          "angle",
+          "\\varphi=\\frac{3 \\pi}{4}"
+        ],
+        [
+          "result",
+          "z=2\\left(\\cos\\left(\\frac{3 \\pi}{4}\\right)+i\\sin\\left(\\frac{3 \\pi}{4}\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(2,\\;\\frac{3 \\pi}{4}\\right)",
+      "metadata": {
+        "difficulty": 1,
+        "template": "alg-trig"
+      }
+    },
+    {
+      "code": "LCP-1-0000000000000001-15",
+      "statement": "Convert to trigonometric form using the principal argument in radians: \\(z=- i\\).",
+      "steps": [
+        [
+          "rewrite",
+          "z=- i"
+        ],
+        [
+          "parts",
+          "a=0,\\quad b=-1"
+        ],
+        [
+          "modulus",
+          "r=\\sqrt{(0)^2+(-1)^2}=1"
+        ],
+        [
+          "trig_values",
+          "\\cos\\varphi=0,\\quad \\sin\\varphi=-1"
+        ],
+        [
+          "angle",
+          "\\varphi=- \\frac{\\pi}{2}"
+        ],
+        [
+          "result",
+          "z=1\\left(\\cos\\left(- \\frac{\\pi}{2}\\right)+i\\sin\\left(- \\frac{\\pi}{2}\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(1,\\;- \\frac{\\pi}{2}\\right)",
+      "metadata": {
+        "difficulty": 1,
+        "template": "alg-trig"
+      }
+    },
+    {
+      "code": "LCP-1-0000000000000002-32",
+      "statement": "Convert to trigonometric form using the principal argument in radians: \\(z=i\\).",
+      "steps": [
+        [
+          "rewrite",
+          "z=i"
+        ],
+        [
+          "parts",
+          "a=0,\\quad b=1"
+        ],
+        [
+          "modulus",
+          "r=\\sqrt{(0)^2+(1)^2}=1"
+        ],
+        [
+          "trig_values",
+          "\\cos\\varphi=0,\\quad \\sin\\varphi=1"
+        ],
+        [
+          "angle",
+          "\\varphi=\\frac{\\pi}{2}"
+        ],
+        [
+          "result",
+          "z=1\\left(\\cos\\left(\\frac{\\pi}{2}\\right)+i\\sin\\left(\\frac{\\pi}{2}\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(1,\\;\\frac{\\pi}{2}\\right)",
+      "metadata": {
+        "difficulty": 1,
+        "template": "alg-trig"
+      }
+    }
+  ],
+  "local-determinant-v1": [
+    {
+      "code": "LDET-1-0000000000000000-06",
+      "statement": "Calculate the determinant: \\(\\det\\begin{pmatrix}0&-1\\\\0&-1\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "expand2",
+          "\\det A=(0)\\cdot(-1)-(-1)\\cdot(0)"
+        ],
+        [
+          "minors",
+          "\\det A=(0)-(0)"
+        ],
+        [
+          "result",
+          "\\det A=0"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 1,
+        "template": "local-determinant"
+      }
+    },
+    {
+      "code": "LDET-1-0000000000000001-23",
+      "statement": "Calculate the determinant: \\(\\det\\begin{pmatrix}0&1\\\\1&-2\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "expand2",
+          "\\det A=(0)\\cdot(-2)-(1)\\cdot(1)"
+        ],
+        [
+          "minors",
+          "\\det A=(0)-(1)"
+        ],
+        [
+          "result",
+          "\\det A=-1"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "-1",
+      "metadata": {
+        "difficulty": 1,
+        "template": "local-determinant"
+      }
+    },
+    {
+      "code": "LDET-1-0000000000000002-40",
+      "statement": "Calculate the determinant: \\(\\det\\begin{pmatrix}1&-2\\\\-2&0\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "expand2",
+          "\\det A=(1)\\cdot(0)-(-2)\\cdot(-2)"
+        ],
+        [
+          "minors",
+          "\\det A=(0)-(4)"
+        ],
+        [
+          "result",
+          "\\det A=-4"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "-4",
+      "metadata": {
+        "difficulty": 1,
+        "template": "local-determinant"
+      }
+    }
+  ],
+  "local-determinant-v2": [
+    {
+      "code": "LDET-2-0000000000000000-07",
+      "statement": "Calculate the determinant: \\(\\det\\begin{pmatrix}0&-1\\\\0&-1\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "expand2",
+          "\\det\\begin{pmatrix}0&-1\\\\0&-1\\end{pmatrix}=(0)\\cdot(-1)-(-1)\\cdot(0)"
+        ],
+        [
+          "evaluate",
+          "(0)-(0)=0"
+        ],
+        [
+          "result",
+          "\\det A=0"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 1,
+        "template": "local-determinant"
+      }
+    },
+    {
+      "code": "LDET-2-0000000000000001-24",
+      "statement": "Calculate the determinant: \\(\\det\\begin{pmatrix}0&1\\\\1&-2\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "expand2",
+          "\\det\\begin{pmatrix}0&1\\\\1&-2\\end{pmatrix}=(0)\\cdot(-2)-(1)\\cdot(1)"
+        ],
+        [
+          "evaluate",
+          "(0)-(1)=-1"
+        ],
+        [
+          "result",
+          "\\det A=-1"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "-1",
+      "metadata": {
+        "difficulty": 1,
+        "template": "local-determinant"
+      }
+    },
+    {
+      "code": "LDET-2-0000000000000002-41",
+      "statement": "Calculate the determinant: \\(\\det\\begin{pmatrix}1&-2\\\\-2&0\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "expand2",
+          "\\det\\begin{pmatrix}1&-2\\\\-2&0\\end{pmatrix}=(1)\\cdot(0)-(-2)\\cdot(-2)"
+        ],
+        [
+          "evaluate",
+          "(0)-(4)=-4"
+        ],
+        [
+          "result",
+          "\\det A=-4"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "-4",
+      "metadata": {
+        "difficulty": 1,
+        "template": "local-determinant"
+      }
+    }
+  ],
+  "local-determinant-v3": [
+    {
+      "code": "LDET-3-0000000000000000-08",
+      "statement": "Calculate the determinant: \\(\\det\\begin{pmatrix}0&-1\\\\0&-1\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "expand2",
+          "\\det\\begin{pmatrix}0&-1\\\\0&-1\\end{pmatrix}=\\color{#f17baa}{(0)\\cdot(-1)}-\\color{#759bff}{(-1)\\cdot(0)}"
+        ],
+        [
+          "evaluate",
+          "\\color{#f17baa}{(0)}-\\color{#759bff}{(0)}=0"
+        ],
+        [
+          "result",
+          "\\det A=0"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 1,
+        "template": "local-determinant"
+      }
+    },
+    {
+      "code": "LDET-3-0000000000000001-25",
+      "statement": "Calculate the determinant: \\(\\det\\begin{pmatrix}0&1\\\\1&-2\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "expand2",
+          "\\det\\begin{pmatrix}0&1\\\\1&-2\\end{pmatrix}=\\color{#f17baa}{(0)\\cdot(-2)}-\\color{#759bff}{(1)\\cdot(1)}"
+        ],
+        [
+          "evaluate",
+          "\\color{#f17baa}{(0)}-\\color{#759bff}{(1)}=-1"
+        ],
+        [
+          "result",
+          "\\det A=-1"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "-1",
+      "metadata": {
+        "difficulty": 1,
+        "template": "local-determinant"
+      }
+    },
+    {
+      "code": "LDET-3-0000000000000002-42",
+      "statement": "Calculate the determinant: \\(\\det\\begin{pmatrix}1&-2\\\\-2&0\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "expand2",
+          "\\det\\begin{pmatrix}1&-2\\\\-2&0\\end{pmatrix}=\\color{#f17baa}{(1)\\cdot(0)}-\\color{#759bff}{(-2)\\cdot(-2)}"
+        ],
+        [
+          "evaluate",
+          "\\color{#f17baa}{(0)}-\\color{#759bff}{(4)}=-4"
+        ],
+        [
+          "result",
+          "\\det A=-4"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "-4",
+      "metadata": {
+        "difficulty": 1,
+        "template": "local-determinant"
+      }
+    }
+  ],
+  "local-determinant-v4": [
+    {
+      "code": "LDET-4-0000000000000000-09",
+      "statement": "Calculate the determinant: \\(\\det\\begin{pmatrix}0&-1\\\\0&-1\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "cofactor",
+          "(-1)^{i+j}:\\quad \\begin{pmatrix}\\color{#65df91}{+}&\\color{#ff829d}{-}\\\\\\color{#ff829d}{-}&\\color{#65df91}{+}\\end{pmatrix}"
+        ],
+        [
+          "expand2",
+          "\\det\\begin{pmatrix}0&-1\\\\0&-1\\end{pmatrix}=\\color{#f17baa}{(0)\\cdot(-1)}-\\color{#759bff}{(-1)\\cdot(0)}"
+        ],
+        [
+          "evaluate",
+          "\\color{#f17baa}{(0)}-\\color{#759bff}{(0)}=0"
+        ],
+        [
+          "result",
+          "\\det A=0"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 1,
+        "template": "local-determinant"
+      }
+    },
+    {
+      "code": "LDET-4-0000000000000001-26",
+      "statement": "Calculate the determinant: \\(\\det\\begin{pmatrix}0&1\\\\1&-2\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "cofactor",
+          "(-1)^{i+j}:\\quad \\begin{pmatrix}\\color{#65df91}{+}&\\color{#ff829d}{-}\\\\\\color{#ff829d}{-}&\\color{#65df91}{+}\\end{pmatrix}"
+        ],
+        [
+          "expand2",
+          "\\det\\begin{pmatrix}0&1\\\\1&-2\\end{pmatrix}=\\color{#f17baa}{(0)\\cdot(-2)}-\\color{#759bff}{(1)\\cdot(1)}"
+        ],
+        [
+          "evaluate",
+          "\\color{#f17baa}{(0)}-\\color{#759bff}{(1)}=-1"
+        ],
+        [
+          "result",
+          "\\det A=-1"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "-1",
+      "metadata": {
+        "difficulty": 1,
+        "template": "local-determinant"
+      }
+    },
+    {
+      "code": "LDET-4-0000000000000002-43",
+      "statement": "Calculate the determinant: \\(\\det\\begin{pmatrix}1&-2\\\\-2&0\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "cofactor",
+          "(-1)^{i+j}:\\quad \\begin{pmatrix}\\color{#65df91}{+}&\\color{#ff829d}{-}\\\\\\color{#ff829d}{-}&\\color{#65df91}{+}\\end{pmatrix}"
+        ],
+        [
+          "expand2",
+          "\\det\\begin{pmatrix}1&-2\\\\-2&0\\end{pmatrix}=\\color{#f17baa}{(1)\\cdot(0)}-\\color{#759bff}{(-2)\\cdot(-2)}"
+        ],
+        [
+          "evaluate",
+          "\\color{#f17baa}{(0)}-\\color{#759bff}{(4)}=-4"
+        ],
+        [
+          "result",
+          "\\det A=-4"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "-4",
+      "metadata": {
+        "difficulty": 1,
+        "template": "local-determinant"
+      }
+    }
+  ],
+  "local-inverse-v1": [
+    {
+      "code": "LINV-1-0000000000000000-41",
+      "statement": "Find the inverse of the matrix: \\(A=\\begin{pmatrix}1&-2\\\\0&1\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "check",
+          "\\det A=1\\ne 0"
+        ],
+        [
+          "augment",
+          "\\left[\\begin{array}{cc|cc}1 & -2 & 1 & 0\\\\0 & 1 & 0 & 1\\end{array}\\right]"
+        ],
+        [
+          "row_eliminate",
+          "R_{1}\\leftarrow R_{1}-(-2)R_{2}\\quad \\left[\\begin{array}{cc|cc}1 & 0 & 1 & 2\\\\0 & 1 & 0 & 1\\end{array}\\right]"
+        ],
+        [
+          "inverse",
+          "A^{-1}=\\begin{pmatrix}1&2\\\\0&1\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}1&2\\\\0&1\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "local-inverse"
+      }
+    },
+    {
+      "code": "LINV-1-0000000000000001-58",
+      "statement": "Find the inverse of the matrix: \\(A=\\begin{pmatrix}1&-1\\\\0&-1\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "check",
+          "\\det A=-1\\ne 0"
+        ],
+        [
+          "augment",
+          "\\left[\\begin{array}{cc|cc}1 & -1 & 1 & 0\\\\0 & -1 & 0 & 1\\end{array}\\right]"
+        ],
+        [
+          "row_scale",
+          "R_{2}\\leftarrow \\frac{R_{2}}{-1}\\quad \\left[\\begin{array}{cc|cc}1 & -1 & 1 & 0\\\\0 & 1 & 0 & -1\\end{array}\\right]"
+        ],
+        [
+          "row_eliminate",
+          "R_{1}\\leftarrow R_{1}-(-1)R_{2}\\quad \\left[\\begin{array}{cc|cc}1 & 0 & 1 & -1\\\\0 & 1 & 0 & -1\\end{array}\\right]"
+        ],
+        [
+          "inverse",
+          "A^{-1}=\\begin{pmatrix}1&-1\\\\0&-1\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}1&-1\\\\0&-1\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "local-inverse"
+      }
+    },
+    {
+      "code": "LINV-1-0000000000000002-75",
+      "statement": "Find the inverse of the matrix: \\(A=\\begin{pmatrix}1&1\\\\0&-1\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "check",
+          "\\det A=-1\\ne 0"
+        ],
+        [
+          "augment",
+          "\\left[\\begin{array}{cc|cc}1 & 1 & 1 & 0\\\\0 & -1 & 0 & 1\\end{array}\\right]"
+        ],
+        [
+          "row_scale",
+          "R_{2}\\leftarrow \\frac{R_{2}}{-1}\\quad \\left[\\begin{array}{cc|cc}1 & 1 & 1 & 0\\\\0 & 1 & 0 & -1\\end{array}\\right]"
+        ],
+        [
+          "row_eliminate",
+          "R_{1}\\leftarrow R_{1}-(1)R_{2}\\quad \\left[\\begin{array}{cc|cc}1 & 0 & 1 & 1\\\\0 & 1 & 0 & -1\\end{array}\\right]"
+        ],
+        [
+          "inverse",
+          "A^{-1}=\\begin{pmatrix}1&1\\\\0&-1\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}1&1\\\\0&-1\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "local-inverse"
+      }
+    }
+  ],
+  "local-matrix-sized-v1": [
+    {
+      "code": "MXSIZE-1-0000000000000000-50",
+      "statement": "Add the matrices: \\(\\begin{pmatrix}0\\end{pmatrix}+\\begin{pmatrix}-1\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "dimensions",
+          "A: 1\\times 1,\\quad B: 1\\times 1"
+        ],
+        [
+          "expand",
+          "\\begin{pmatrix}(0)+(-1)\\end{pmatrix}"
+        ],
+        [
+          "result",
+          "\\begin{pmatrix}-1\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}-1\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "local-matrix-sized"
+      }
+    },
+    {
+      "code": "MXSIZE-1-0000000000000001-67",
+      "statement": "Add the matrices: \\(\\begin{pmatrix}0\\end{pmatrix}+\\begin{pmatrix}1\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "dimensions",
+          "A: 1\\times 1,\\quad B: 1\\times 1"
+        ],
+        [
+          "expand",
+          "\\begin{pmatrix}(0)+(1)\\end{pmatrix}"
+        ],
+        [
+          "result",
+          "\\begin{pmatrix}1\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}1\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "local-matrix-sized"
+      }
+    },
+    {
+      "code": "MXSIZE-1-0000000000000002-84",
+      "statement": "Add the matrices: \\(\\begin{pmatrix}1\\end{pmatrix}+\\begin{pmatrix}-2\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "dimensions",
+          "A: 1\\times 1,\\quad B: 1\\times 1"
+        ],
+        [
+          "expand",
+          "\\begin{pmatrix}(1)+(-2)\\end{pmatrix}"
+        ],
+        [
+          "result",
+          "\\begin{pmatrix}-1\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}-1\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "local-matrix-sized"
+      }
+    }
+  ],
+  "local-matrix-division-v2": [
+    {
+      "code": "MXDIV-1-5781000000000000-32",
+      "statement": "Divide the matrices: \\(\\begin{pmatrix}-2&0\\\\-2&-2\\end{pmatrix}:\\begin{pmatrix}1&0\\\\-1&1\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "dimensions",
+          "A: 2\\times 2,\\quad B: 2\\times 2"
+        ],
+        [
+          "augment",
+          "\\left[\\begin{array}{cc|cc}1 & 0 & 1 & 0\\\\-1 & 1 & 0 & 1\\end{array}\\right]"
+        ],
+        [
+          "row_eliminate",
+          "R_{2}\\leftarrow R_{2}-(-1)R_{1}\\quad \\left[\\begin{array}{cc|cc}1 & 0 & 1 & 0\\\\0 & 1 & 1 & 1\\end{array}\\right]"
+        ],
+        [
+          "inverse",
+          "B^{-1}=\\begin{pmatrix}1&0\\\\1&1\\end{pmatrix}"
+        ],
+        [
+          "rewrite",
+          "A:B=A\\cdot B^{-1}=\\begin{pmatrix}-2&0\\\\-2&-2\\end{pmatrix}\\cdot\\begin{pmatrix}1&0\\\\1&1\\end{pmatrix}"
+        ],
+        [
+          "expand",
+          "\\begin{pmatrix}(-2)\\cdot(1)+(0)\\cdot(1)&(-2)\\cdot(0)+(0)\\cdot(1)\\\\(-2)\\cdot(1)+(-2)\\cdot(1)&(-2)\\cdot(0)+(-2)\\cdot(1)\\end{pmatrix}"
+        ],
+        [
+          "result",
+          "\\begin{pmatrix}-2&0\\\\-4&-2\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}-2&0\\\\-4&-2\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "local-matrix-sized"
+      }
+    },
+    {
+      "code": "MXDIV-1-5781000000000001-49",
+      "statement": "Divide the matrices: \\(\\begin{pmatrix}1&0\\\\1&0\\end{pmatrix}:\\begin{pmatrix}1&-1\\\\-1&2\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "dimensions",
+          "A: 2\\times 2,\\quad B: 2\\times 2"
+        ],
+        [
+          "augment",
+          "\\left[\\begin{array}{cc|cc}1 & -1 & 1 & 0\\\\-1 & 2 & 0 & 1\\end{array}\\right]"
+        ],
+        [
+          "row_eliminate",
+          "R_{2}\\leftarrow R_{2}-(-1)R_{1}\\quad \\left[\\begin{array}{cc|cc}1 & -1 & 1 & 0\\\\0 & 1 & 1 & 1\\end{array}\\right]"
+        ],
+        [
+          "row_eliminate",
+          "R_{1}\\leftarrow R_{1}-(-1)R_{2}\\quad \\left[\\begin{array}{cc|cc}1 & 0 & 2 & 1\\\\0 & 1 & 1 & 1\\end{array}\\right]"
+        ],
+        [
+          "inverse",
+          "B^{-1}=\\begin{pmatrix}2&1\\\\1&1\\end{pmatrix}"
+        ],
+        [
+          "rewrite",
+          "A:B=A\\cdot B^{-1}=\\begin{pmatrix}1&0\\\\1&0\\end{pmatrix}\\cdot\\begin{pmatrix}2&1\\\\1&1\\end{pmatrix}"
+        ],
+        [
+          "expand",
+          "\\begin{pmatrix}(1)\\cdot(2)+(0)\\cdot(1)&(1)\\cdot(1)+(0)\\cdot(1)\\\\(1)\\cdot(2)+(0)\\cdot(1)&(1)\\cdot(1)+(0)\\cdot(1)\\end{pmatrix}"
+        ],
+        [
+          "result",
+          "\\begin{pmatrix}2&1\\\\2&1\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}2&1\\\\2&1\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "local-matrix-sized"
+      }
+    },
+    {
+      "code": "MXDIV-1-5781000000000002-66",
+      "statement": "Divide the matrices: \\(\\begin{pmatrix}0&0\\\\1&2\\end{pmatrix}:\\begin{pmatrix}1&0\\\\-1&1\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "dimensions",
+          "A: 2\\times 2,\\quad B: 2\\times 2"
+        ],
+        [
+          "augment",
+          "\\left[\\begin{array}{cc|cc}1 & 0 & 1 & 0\\\\-1 & 1 & 0 & 1\\end{array}\\right]"
+        ],
+        [
+          "row_eliminate",
+          "R_{2}\\leftarrow R_{2}-(-1)R_{1}\\quad \\left[\\begin{array}{cc|cc}1 & 0 & 1 & 0\\\\0 & 1 & 1 & 1\\end{array}\\right]"
+        ],
+        [
+          "inverse",
+          "B^{-1}=\\begin{pmatrix}1&0\\\\1&1\\end{pmatrix}"
+        ],
+        [
+          "rewrite",
+          "A:B=A\\cdot B^{-1}=\\begin{pmatrix}0&0\\\\1&2\\end{pmatrix}\\cdot\\begin{pmatrix}1&0\\\\1&1\\end{pmatrix}"
+        ],
+        [
+          "expand",
+          "\\begin{pmatrix}(0)\\cdot(1)+(0)\\cdot(1)&(0)\\cdot(0)+(0)\\cdot(1)\\\\(1)\\cdot(1)+(2)\\cdot(1)&(1)\\cdot(0)+(2)\\cdot(1)\\end{pmatrix}"
+        ],
+        [
+          "result",
+          "\\begin{pmatrix}0&0\\\\3&2\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}0&0\\\\3&2\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "local-matrix-sized"
+      }
+    }
+  ],
+  "local-matrix-division-v3": [
+    {
+      "code": "MXDIV-2-5781000000000000-33",
+      "statement": "Divide the matrices: \\(\\begin{pmatrix}-2&0\\\\-2&-2\\end{pmatrix}:\\begin{pmatrix}1&0\\\\-1&1\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "dimensions",
+          "A: 2\\times 2,\\quad B: 2\\times 2"
+        ],
+        [
+          "augment",
+          "\\left[\\begin{array}{cc|cc}1 & 0 & 1 & 0\\\\-1 & 1 & 0 & 1\\end{array}\\right]"
+        ],
+        [
+          "row_eliminate",
+          "R_{2}\\leftarrow R_{2}-(-1)R_{1}\\quad \\left[\\begin{array}{cc|cc}1 & 0 & 1 & 0\\\\0 & 1 & 1 & 1\\end{array}\\right]"
+        ],
+        [
+          "inverse",
+          "B^{-1}=\\begin{pmatrix}1&0\\\\1&1\\end{pmatrix}"
+        ],
+        [
+          "rewrite",
+          "A:B=A\\cdot B^{-1}=\\begin{pmatrix}-2&0\\\\-2&-2\\end{pmatrix}\\cdot\\begin{pmatrix}1&0\\\\1&1\\end{pmatrix}"
+        ],
+        [
+          "expand",
+          "\\begin{pmatrix}(-2)\\cdot(1)+(0)\\cdot(1)&(-2)\\cdot(0)+(0)\\cdot(1)\\\\(-2)\\cdot(1)+(-2)\\cdot(1)&(-2)\\cdot(0)+(-2)\\cdot(1)\\end{pmatrix}"
+        ],
+        [
+          "result",
+          "\\begin{pmatrix}-2&0\\\\-4&-2\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}-2&0\\\\-4&-2\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "local-matrix-sized"
+      }
+    },
+    {
+      "code": "MXDIV-2-5781000000000001-50",
+      "statement": "Divide the matrices: \\(\\begin{pmatrix}1&0\\\\1&0\\end{pmatrix}:\\begin{pmatrix}1&-1\\\\-1&2\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "dimensions",
+          "A: 2\\times 2,\\quad B: 2\\times 2"
+        ],
+        [
+          "augment",
+          "\\left[\\begin{array}{cc|cc}1 & -1 & 1 & 0\\\\-1 & 2 & 0 & 1\\end{array}\\right]"
+        ],
+        [
+          "row_eliminate",
+          "R_{2}\\leftarrow R_{2}-(-1)R_{1}\\quad \\left[\\begin{array}{cc|cc}1 & -1 & 1 & 0\\\\0 & 1 & 1 & 1\\end{array}\\right]"
+        ],
+        [
+          "row_eliminate",
+          "R_{1}\\leftarrow R_{1}-(-1)R_{2}\\quad \\left[\\begin{array}{cc|cc}1 & 0 & 2 & 1\\\\0 & 1 & 1 & 1\\end{array}\\right]"
+        ],
+        [
+          "inverse",
+          "B^{-1}=\\begin{pmatrix}2&1\\\\1&1\\end{pmatrix}"
+        ],
+        [
+          "rewrite",
+          "A:B=A\\cdot B^{-1}=\\begin{pmatrix}1&0\\\\1&0\\end{pmatrix}\\cdot\\begin{pmatrix}2&1\\\\1&1\\end{pmatrix}"
+        ],
+        [
+          "expand",
+          "\\begin{pmatrix}(1)\\cdot(2)+(0)\\cdot(1)&(1)\\cdot(1)+(0)\\cdot(1)\\\\(1)\\cdot(2)+(0)\\cdot(1)&(1)\\cdot(1)+(0)\\cdot(1)\\end{pmatrix}"
+        ],
+        [
+          "result",
+          "\\begin{pmatrix}2&1\\\\2&1\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}2&1\\\\2&1\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "local-matrix-sized"
+      }
+    },
+    {
+      "code": "MXDIV-2-5781000000000002-67",
+      "statement": "Divide the matrices: \\(\\begin{pmatrix}0&0\\\\1&2\\end{pmatrix}:\\begin{pmatrix}1&0\\\\-1&1\\end{pmatrix}\\).",
+      "steps": [
+        [
+          "dimensions",
+          "A: 2\\times 2,\\quad B: 2\\times 2"
+        ],
+        [
+          "augment",
+          "\\left[\\begin{array}{cc|cc}1 & 0 & 1 & 0\\\\-1 & 1 & 0 & 1\\end{array}\\right]"
+        ],
+        [
+          "row_eliminate",
+          "R_{2}\\leftarrow R_{2}-(-1)R_{1}\\quad \\left[\\begin{array}{cc|cc}1 & 0 & 1 & 0\\\\0 & 1 & 1 & 1\\end{array}\\right]"
+        ],
+        [
+          "inverse",
+          "B^{-1}=\\begin{pmatrix}1&0\\\\1&1\\end{pmatrix}"
+        ],
+        [
+          "rewrite",
+          "A:B=A\\cdot B^{-1}=\\begin{pmatrix}0&0\\\\1&2\\end{pmatrix}\\cdot\\begin{pmatrix}1&0\\\\1&1\\end{pmatrix}"
+        ],
+        [
+          "expand",
+          "\\begin{pmatrix}(0)\\cdot(1)+(0)\\cdot(1)&(0)\\cdot(0)+(0)\\cdot(1)\\\\(1)\\cdot(1)+(2)\\cdot(1)&(1)\\cdot(0)+(2)\\cdot(1)\\end{pmatrix}"
+        ],
+        [
+          "result",
+          "\\begin{pmatrix}0&0\\\\3&2\\end{pmatrix}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\begin{pmatrix}0&0\\\\3&2\\end{pmatrix}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "local-matrix-sized"
+      }
+    }
+  ],
+  "local-polynomial-extra-v1": [
+    {
+      "code": "LPE-1-0000000000000000-17",
+      "statement": "Calculate the polynomial: \\(\\left(3 x^{2} + 3 x + 3\\right)+\\left(5 x + 3\\right)\\).",
+      "steps": [
+        [
+          "rewrite",
+          "\\left(3 x^{2} + 3 x + 3\\right)+\\left(5 x + 3\\right)"
+        ],
+        [
+          "group",
+          "\\left(3 x^{2} + 3 x + 3\\right)+\\left(5 x + 3\\right)=3 x^{2} + 8 x + 6"
+        ],
+        [
+          "result",
+          "3 x^{2} + 8 x + 6"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "3 x^{2} + 8 x + 6",
+      "metadata": {
+        "difficulty": 1,
+        "template": "add"
+      }
+    },
+    {
+      "code": "LPE-1-0000000000000001-34",
+      "statement": "Calculate the polynomial: \\(\\left(- x^{2} - 5 x + 1\\right)+\\left(6 - 4 x\\right)\\).",
+      "steps": [
+        [
+          "rewrite",
+          "\\left(- x^{2} - 5 x + 1\\right)+\\left(6 - 4 x\\right)"
+        ],
+        [
+          "group",
+          "\\left(- x^{2} - 5 x + 1\\right)+\\left(6 - 4 x\\right)=- x^{2} - 9 x + 7"
+        ],
+        [
+          "result",
+          "- x^{2} - 9 x + 7"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "- x^{2} - 9 x + 7",
+      "metadata": {
+        "difficulty": 1,
+        "template": "add"
+      }
+    },
+    {
+      "code": "LPE-1-0000000000000002-51",
+      "statement": "Calculate the polynomial: \\(\\left(4 x^{2} + x\\right)+\\left(- 3 x - 1\\right)\\).",
+      "steps": [
+        [
+          "rewrite",
+          "\\left(4 x^{2} + x\\right)+\\left(- 3 x - 1\\right)"
+        ],
+        [
+          "group",
+          "\\left(4 x^{2} + x\\right)+\\left(- 3 x - 1\\right)=4 x^{2} - 2 x - 1"
+        ],
+        [
+          "result",
+          "4 x^{2} - 2 x - 1"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "4 x^{2} - 2 x - 1",
+      "metadata": {
+        "difficulty": 1,
+        "template": "add"
+      }
+    }
+  ],
+  "local-partial-fractions-v1": [
+    {
+      "code": "LPF-1-0004000000000000-42",
+      "statement": "Find the partial-fraction coefficients: \\(\\frac{2 x}{(x + 2)(x - 2)}=\\frac{A}{x + 2}+\\frac{B}{x - 2}\\).",
+      "steps": [
+        [
+          "rewrite",
+          "\\frac{2 x}{(x + 2)(x - 2)}=\\frac{A}{x + 2}+\\frac{B}{x - 2}"
+        ],
+        [
+          "domain",
+          "x\\ne -2,\\quad x\\ne 2"
+        ],
+        [
+          "form",
+          "\\frac{A}{x + 2}+\\frac{B}{x - 2}"
+        ],
+        [
+          "clear",
+          "2 x=A(x - 2)+B(x + 2)"
+        ],
+        [
+          "first",
+          "A=\\frac{-4}{-4}=1"
+        ],
+        [
+          "second",
+          "B=\\frac{4}{4}=1"
+        ],
+        [
+          "result",
+          "A=1,\\quad B=1"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(1,\\;1\\right)",
+      "metadata": {
+        "difficulty": 1,
+        "template": "fractions"
+      }
+    },
+    {
+      "code": "LPF-1-0004000000000001-59",
+      "statement": "Find the partial-fraction coefficients: \\(\\frac{- 5 x - 9}{(x + 3)(x + 1)}=\\frac{A}{x + 3}+\\frac{B}{x + 1}\\).",
+      "steps": [
+        [
+          "rewrite",
+          "\\frac{- 5 x - 9}{(x + 3)(x + 1)}=\\frac{A}{x + 3}+\\frac{B}{x + 1}"
+        ],
+        [
+          "domain",
+          "x\\ne -3,\\quad x\\ne -1"
+        ],
+        [
+          "form",
+          "\\frac{A}{x + 3}+\\frac{B}{x + 1}"
+        ],
+        [
+          "clear",
+          "- 5 x - 9=A(x + 1)+B(x + 3)"
+        ],
+        [
+          "first",
+          "A=\\frac{6}{-2}=-3"
+        ],
+        [
+          "second",
+          "B=\\frac{-4}{2}=-2"
+        ],
+        [
+          "result",
+          "A=-3,\\quad B=-2"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(-3,\\;-2\\right)",
+      "metadata": {
+        "difficulty": 1,
+        "template": "fractions"
+      }
+    },
+    {
+      "code": "LPF-1-0004000000000002-76",
+      "statement": "Find the partial-fraction coefficients: \\(\\frac{- x - 4}{(x + 1)(x + 2)}=\\frac{A}{x + 1}+\\frac{B}{x + 2}\\).",
+      "steps": [
+        [
+          "rewrite",
+          "\\frac{- x - 4}{(x + 1)(x + 2)}=\\frac{A}{x + 1}+\\frac{B}{x + 2}"
+        ],
+        [
+          "domain",
+          "x\\ne -1,\\quad x\\ne -2"
+        ],
+        [
+          "form",
+          "\\frac{A}{x + 1}+\\frac{B}{x + 2}"
+        ],
+        [
+          "clear",
+          "- x - 4=A(x + 2)+B(x + 1)"
+        ],
+        [
+          "first",
+          "A=\\frac{-3}{1}=-3"
+        ],
+        [
+          "second",
+          "B=\\frac{-2}{-1}=2"
+        ],
+        [
+          "result",
+          "A=-3,\\quad B=2"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(-3,\\;2\\right)",
+      "metadata": {
+        "difficulty": 1,
+        "template": "fractions"
+      }
+    }
+  ],
+  "local-polynomial-division-v1": [
+    {
+      "code": "LPD-1-0000000000000000-03",
+      "statement": "Find the quotient and remainder: \\(\\left(3 x^{2} - 6 x - 9\\right)\\div\\left(x - 3\\right)\\).",
+      "steps": [
+        [
+          "rewrite",
+          "\\left(3 x^{2} - 6 x - 9\\right)\\div\\left(x - 3\\right)"
+        ],
+        [
+          "lead",
+          "\\frac{3 x^{2}}{x}=3 x"
+        ],
+        [
+          "multiply",
+          "(3 x)(x - 3)=3 x^{2} - 9 x"
+        ],
+        [
+          "subtract",
+          "\\left(3 x^{2} - 6 x - 9\\right)-\\left(3 x^{2} - 9 x\\right)=3 x - 9"
+        ],
+        [
+          "lead",
+          "\\frac{3 x}{x}=3"
+        ],
+        [
+          "multiply",
+          "(3)(x - 3)=3 x - 9"
+        ],
+        [
+          "subtract",
+          "\\left(3 x - 9\\right)-\\left(3 x - 9\\right)=0"
+        ],
+        [
+          "finish",
+          "Q(x)=3 x + 3,\\quad R(x)=0"
+        ],
+        [
+          "identity",
+          "3 x^{2} - 6 x - 9=(x - 3)(3 x + 3)+(0)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(3 x + 3,\\;0\\right)",
+      "metadata": {
+        "difficulty": 1,
+        "template": "division"
+      }
+    },
+    {
+      "code": "LPD-1-0000000000000001-20",
+      "statement": "Find the quotient and remainder: \\(\\left(- x^{2} - 4 x + 2\\right)\\div\\left(x - 1\\right)\\).",
+      "steps": [
+        [
+          "rewrite",
+          "\\left(- x^{2} - 4 x + 2\\right)\\div\\left(x - 1\\right)"
+        ],
+        [
+          "lead",
+          "\\frac{- x^{2}}{x}=- x"
+        ],
+        [
+          "multiply",
+          "(- x)(x - 1)=- x^{2} + x"
+        ],
+        [
+          "subtract",
+          "\\left(- x^{2} - 4 x + 2\\right)-\\left(- x^{2} + x\\right)=2 - 5 x"
+        ],
+        [
+          "lead",
+          "\\frac{- 5 x}{x}=-5"
+        ],
+        [
+          "multiply",
+          "(-5)(x - 1)=5 - 5 x"
+        ],
+        [
+          "subtract",
+          "\\left(2 - 5 x\\right)-\\left(5 - 5 x\\right)=-3"
+        ],
+        [
+          "finish",
+          "Q(x)=- x - 5,\\quad R(x)=-3"
+        ],
+        [
+          "identity",
+          "- x^{2} - 4 x + 2=(x - 1)(- x - 5)+(-3)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- x - 5,\\;-3\\right)",
+      "metadata": {
+        "difficulty": 1,
+        "template": "division"
+      }
+    },
+    {
+      "code": "LPD-1-0000000000000002-37",
+      "statement": "Find the quotient and remainder: \\(\\left(4 x^{2} + 9 x + 4\\right)\\div\\left(x + 2\\right)\\).",
+      "steps": [
+        [
+          "rewrite",
+          "\\left(4 x^{2} + 9 x + 4\\right)\\div\\left(x + 2\\right)"
+        ],
+        [
+          "lead",
+          "\\frac{4 x^{2}}{x}=4 x"
+        ],
+        [
+          "multiply",
+          "(4 x)(x + 2)=4 x^{2} + 8 x"
+        ],
+        [
+          "subtract",
+          "\\left(4 x^{2} + 9 x + 4\\right)-\\left(4 x^{2} + 8 x\\right)=x + 4"
+        ],
+        [
+          "lead",
+          "\\frac{x}{x}=1"
+        ],
+        [
+          "multiply",
+          "(1)(x + 2)=x + 2"
+        ],
+        [
+          "subtract",
+          "\\left(x + 4\\right)-\\left(x + 2\\right)=2"
+        ],
+        [
+          "finish",
+          "Q(x)=4 x + 1,\\quad R(x)=2"
+        ],
+        [
+          "identity",
+          "4 x^{2} + 9 x + 4=(x + 2)(4 x + 1)+(2)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(4 x + 1,\\;2\\right)",
+      "metadata": {
+        "difficulty": 1,
+        "template": "division"
+      }
+    }
+  ],
+  "local-polynomial-scalar-v1": [
+    {
+      "code": "LPS-1-0001000000000000-52",
+      "statement": "Find the remainder: \\(P(x)=- 2 x^{2} - 5 x,\\quad D(x)=x\\).",
+      "steps": [
+        [
+          "rewrite",
+          "P(x)=- 2 x^{2} - 5 x,\\quad D(x)=x"
+        ],
+        [
+          "theorem",
+          "R=P(a),\\quad D(x)=x-a"
+        ],
+        [
+          "substitute",
+          "P(0)=(-2)(0)^{2}+(-5)(0)^{1}=0"
+        ],
+        [
+          "result",
+          "R=0"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 1,
+        "template": "remainder"
+      }
+    },
+    {
+      "code": "LPS-1-0001000000000001-69",
+      "statement": "Find the remainder: \\(P(x)=5 x^{2} - 10 x - 1,\\quad D(x)=x - 2\\).",
+      "steps": [
+        [
+          "rewrite",
+          "P(x)=5 x^{2} - 10 x - 1,\\quad D(x)=x - 2"
+        ],
+        [
+          "theorem",
+          "R=P(a),\\quad D(x)=x-a"
+        ],
+        [
+          "substitute",
+          "P(2)=(5)(2)^{2}+(-10)(2)^{1}+(-1)(2)^{0}=-1"
+        ],
+        [
+          "result",
+          "R=-1"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "-1",
+      "metadata": {
+        "difficulty": 1,
+        "template": "remainder"
+      }
+    },
+    {
+      "code": "LPS-1-0001000000000002-86",
+      "statement": "Find the remainder: \\(P(x)=2 x^{2} - 2 x - 4,\\quad D(x)=x - 2\\).",
+      "steps": [
+        [
+          "rewrite",
+          "P(x)=2 x^{2} - 2 x - 4,\\quad D(x)=x - 2"
+        ],
+        [
+          "theorem",
+          "R=P(a),\\quad D(x)=x-a"
+        ],
+        [
+          "substitute",
+          "P(2)=(2)(2)^{2}+(-2)(2)^{1}+(-4)(2)^{0}=0"
+        ],
+        [
+          "result",
+          "R=0"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 1,
+        "template": "remainder"
+      }
+    }
+  ],
+  "local-polynomial-roots-v1": [
+    {
+      "code": "LPR-1-0000000000000000-63",
+      "statement": "Find all distinct real roots: \\(x^{2} - x - 6=0\\).",
+      "steps": [
+        [
+          "rewrite",
+          "x^{2} - x - 6=0"
+        ],
+        [
+          "candidates",
+          "\\{-6,-3,-2,-1,1,2,3,6\\}"
+        ],
+        [
+          "evaluate",
+          "\\left.\\left(x^{2} - x - 6\\right)\\right|_{x=3}=0"
+        ],
+        [
+          "factor",
+          "x^{2} - x - 6=(x - 3)(x + 2)"
+        ],
+        [
+          "evaluate",
+          "\\left.\\left(x + 2\\right)\\right|_{x=-2}=0"
+        ],
+        [
+          "factor",
+          "x + 2=(x + 2)(1)"
+        ],
+        [
+          "factorization",
+          "P(x)=\\left(x - 3\\right) \\left(x + 2\\right)"
+        ],
+        [
+          "result",
+          "\\{-2,3\\}"
+        ]
+      ],
+      "answer_kind": "finite_set",
+      "answer_latex": "\\left\\{-2, 3\\right\\}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "real-roots"
+      }
+    },
+    {
+      "code": "LPR-1-0000000000000001-80",
+      "statement": "Find all distinct real roots: \\(x^{2} - 3 x + 2=0\\).",
+      "steps": [
+        [
+          "rewrite",
+          "x^{2} - 3 x + 2=0"
+        ],
+        [
+          "candidates",
+          "\\{-2,-1,1,2\\}"
+        ],
+        [
+          "evaluate",
+          "\\left.\\left(x^{2} - 3 x + 2\\right)\\right|_{x=1}=0"
+        ],
+        [
+          "factor",
+          "x^{2} - 3 x + 2=(x - 1)(x - 2)"
+        ],
+        [
+          "evaluate",
+          "\\left.\\left(x - 2\\right)\\right|_{x=2}=0"
+        ],
+        [
+          "factor",
+          "x - 2=(x - 2)(1)"
+        ],
+        [
+          "factorization",
+          "P(x)=\\left(x - 2\\right) \\left(x - 1\\right)"
+        ],
+        [
+          "result",
+          "\\{1,2\\}"
+        ]
+      ],
+      "answer_kind": "finite_set",
+      "answer_latex": "\\left\\{1, 2\\right\\}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "real-roots"
+      }
+    },
+    {
+      "code": "LPR-1-0000000000000002-00",
+      "statement": "Find all distinct real roots: \\(x^{2} + 5 x + 6=0\\).",
+      "steps": [
+        [
+          "rewrite",
+          "x^{2} + 5 x + 6=0"
+        ],
+        [
+          "candidates",
+          "\\{-6,-3,-2,-1,1,2,3,6\\}"
+        ],
+        [
+          "evaluate",
+          "\\left.\\left(x^{2} + 5 x + 6\\right)\\right|_{x=-2}=0"
+        ],
+        [
+          "factor",
+          "x^{2} + 5 x + 6=(x + 2)(x + 3)"
+        ],
+        [
+          "evaluate",
+          "\\left.\\left(x + 3\\right)\\right|_{x=-3}=0"
+        ],
+        [
+          "factor",
+          "x + 3=(x + 3)(1)"
+        ],
+        [
+          "factorization",
+          "P(x)=\\left(x + 2\\right) \\left(x + 3\\right)"
+        ],
+        [
+          "result",
+          "\\{-3,-2\\}"
+        ]
+      ],
+      "answer_kind": "finite_set",
+      "answer_latex": "\\left\\{-3, -2\\right\\}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "real-roots"
+      }
+    }
+  ],
+  "local-system-v1": [
+    {
+      "code": "LSYS-1-0000000000000000-12",
+      "statement": "Solve the system: \\(\\begin{cases}x_1-2x_2=5\\\\x_2=-1\\end{cases}\\).",
+      "steps": [
+        [
+          "start",
+          "\\left[\\begin{array}{cc|c}1 & -2 & 5\\\\0 & 1 & -1\\end{array}\\right]"
+        ],
+        [
+          "eliminate",
+          "R_{1}\\leftarrow R_{1}-(-2)R_{2}\\quad \\left[\\begin{array}{cc|c}1 & 0 & 3\\\\0 & 1 & -1\\end{array}\\right]"
+        ],
+        [
+          "result",
+          "x_1=3,\\quad x_2=-1"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(3,\\;-1\\right)",
+      "metadata": {
+        "difficulty": 1,
+        "template": "local-system"
+      }
+    },
+    {
+      "code": "LSYS-1-0000000000000001-29",
+      "statement": "Solve the system: \\(\\begin{cases}x_1-x_2=2\\\\-x_2=1\\end{cases}\\).",
+      "steps": [
+        [
+          "start",
+          "\\left[\\begin{array}{cc|c}1 & -1 & 2\\\\0 & -1 & 1\\end{array}\\right]"
+        ],
+        [
+          "scale",
+          "R_{2}\\leftarrow R_{2}/(-1)\\quad \\left[\\begin{array}{cc|c}1 & -1 & 2\\\\0 & 1 & -1\\end{array}\\right]"
+        ],
+        [
+          "eliminate",
+          "R_{1}\\leftarrow R_{1}-(-1)R_{2}\\quad \\left[\\begin{array}{cc|c}1 & 0 & 1\\\\0 & 1 & -1\\end{array}\\right]"
+        ],
+        [
+          "result",
+          "x_1=1,\\quad x_2=-1"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(1,\\;-1\\right)",
+      "metadata": {
+        "difficulty": 1,
+        "template": "local-system"
+      }
+    },
+    {
+      "code": "LSYS-1-0000000000000002-46",
+      "statement": "Solve the system: \\(\\begin{cases}x_1+x_2=-4\\\\-x_2=2\\end{cases}\\).",
+      "steps": [
+        [
+          "start",
+          "\\left[\\begin{array}{cc|c}1 & 1 & -4\\\\0 & -1 & 2\\end{array}\\right]"
+        ],
+        [
+          "scale",
+          "R_{2}\\leftarrow R_{2}/(-1)\\quad \\left[\\begin{array}{cc|c}1 & 1 & -4\\\\0 & 1 & -2\\end{array}\\right]"
+        ],
+        [
+          "eliminate",
+          "R_{1}\\leftarrow R_{1}-(1)R_{2}\\quad \\left[\\begin{array}{cc|c}1 & 0 & -2\\\\0 & 1 & -2\\end{array}\\right]"
+        ],
+        [
+          "result",
+          "x_1=-2,\\quad x_2=-2"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(-2,\\;-2\\right)",
+      "metadata": {
+        "difficulty": 1,
+        "template": "local-system"
+      }
+    }
   ]
 }

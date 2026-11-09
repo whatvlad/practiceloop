@@ -12,7 +12,7 @@ export function Logo({ to = '/' }: { to?: string }) {
 }
 
 const APP_ROUTES = [
-  { to: '/dashboard', label: 'Home', also: ['/practice', '/random'] },
+  { to: '/dashboard', label: 'Home', also: ['/practice', '/random', '/algebra-random'] },
   { to: '/history', label: 'History', also: [] },
   { to: '/profile', label: 'Profile', also: [] },
 ] as const;

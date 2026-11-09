@@ -39,6 +39,7 @@ export function PracticeSidebar({ preview, onLocalRandom, onPreviewTopic }: { pr
           : <Link className="pl-btn pl-btn--secondary pl-btn--sm pl-random-toggle" to="/random" aria-current={randomCurrent ? 'page' : undefined}>Random problems</Link>}
       </div>
       <div id="pl-sidebar-tree" className="pl-sidebar-tree">
+      {!preview && <Link className="pl-sidebar-extra" to="/algebra-random">Random algebra with settings</Link>}
       {catalogue.status === 'loading' && <p role="status">Loading topics…</p>}
       {catalogue.status === 'error' && <p role="alert">Topics could not be loaded.</p>}
       {catalogue.status === 'ready' && <>

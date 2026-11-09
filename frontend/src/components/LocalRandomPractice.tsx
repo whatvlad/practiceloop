@@ -4,6 +4,8 @@ import { chooseLocalRandom, initialLocalChoice, LOCAL_RANDOM_TOPICS, localRandom
 import type { AnswerInputSpec, CheckResult, Difficulty, SolutionStep } from '../data/types';
 import { parseVisual, type VisualSpec } from '../visual/spec';
 import { ProblemCard } from './ProblemCard';
+import { generateAlgebraRandom, loadAlgebraRandom, saveAlgebraRandom } from '../data/algebraRandom';
+import { navigate } from '../router';
 
 const STORAGE = 'practiceloop:local-random:v1';
 function load(): LocalSelection {
@@ -28,8 +30,8 @@ async function post(path: string, body: object): Promise<Record<string, unknown>
 type Draw = { topic: string; kind: string; level: Difficulty; code: string; statement: string; input?: AnswerInputSpec };
 const LABELS: Record<string, string> = { default: 'Available exercise', add: 'Addition', subtract: 'Subtraction', multiply: 'Multiplication', divide: 'Division', expression: 'Modulus of an expression', properties: 'Modulus properties', geometry: 'Modulus as distance', argument: 'Principal argument', power: 'Powers', root: 'One root', division: 'Quotient and remainder', remainder: 'Remainder theorem', divisibility: 'Divisibility condition', 'alg-trig': 'Algebraic → trigonometric', 'alg-exp': 'Algebraic → exponential', 'trig-alg': 'Trigonometric → algebraic', 'exp-alg': 'Exponential → algebraic' };
 
-export function LocalRandomPractice() {
-  const [selection, setSelection] = useState<LocalSelection>(load);
+export function LocalRandomPractice({ accountId }: { accountId?: string } = {}) {
+  const [selection, setSelection] = useState<LocalSelection>(() => accountId ? loadAlgebraRandom(accountId) : load());
   const [problem, setProblem] = useState<Draw | null>(null);
   const [configOpen, setConfigOpen] = useState(true);
   const [answer, setAnswer] = useState('');
@@ -40,7 +42,7 @@ export function LocalRandomPractice() {
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const pending = useRef(false);
-  function save(next: LocalSelection) { setSelection(next); try { localStorage.setItem(STORAGE, JSON.stringify(next)); } catch { setError('Could not save the selection on this device.'); } }
+  function save(next: LocalSelection) { setSelection(next); try { if (accountId) saveAlgebraRandom(accountId, next); else localStorage.setItem(STORAGE, JSON.stringify(next)); } catch { setError('Could not save the selection on this device.'); } }
   function update(topic: string, patch: Partial<LocalChoice>) { save({ ...selection, [topic]: { ...selection[topic], ...patch } }); }
   async function run(action: () => Promise<void>) {
     if (pending.current) return;
@@ -49,6 +51,11 @@ export function LocalRandomPractice() {
     finally { pending.current = false; setBusy(false); }
   }
   async function next() {
+    if (accountId) {
+      const generated = await generateAlgebraRandom(selection);
+      navigate(`/practice?id=${encodeURIComponent(generated.id)}&mode=algebra-random`);
+      return;
+    }
     const picked = chooseLocalRandom(selection);
     const data = await post('generate', picked.body);
     if (typeof data.code !== 'string' || typeof data.statement !== 'string') throw new Error('Invalid generated problem.');
@@ -59,7 +66,7 @@ export function LocalRandomPractice() {
   }
   const sizeSelect = (topic: string, choice: LocalChoice, key: 'size' | 'columns' | 'rowsA' | 'colsA' | 'rowsB' | 'colsB', label: string, min = 1) =>
     <label className="pl-label" key={key}>{label}<select className="pl-input" value={choice[key]} onChange={event => update(topic, { [key]: Number(event.target.value) })}>{[1, 2, 3, 4, 5].filter(n => n >= min).map(n => <option key={n} value={n}>{n}</option>)}</select></label>;
-  return <section className="pl-wrap pl-mb-6" aria-label="Local random practice">
+  return <section className="pl-wrap pl-mb-6" aria-label={accountId ? 'Random algebra practice' : 'Local random practice'}>
     <h2 className="pl-h-md">Random problems</h2><p className="pl-small pl-muted">Choose topics, their levels and exercise types. Each topic has an equal chance.</p>
     <details className="pl-local-random-config" open={configOpen} onToggle={event => setConfigOpen(event.currentTarget.open)}>
     <summary>Choose topics and settings ({Object.keys(selection).length} selected)</summary>

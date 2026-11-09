@@ -78,15 +78,103 @@ def issue(
     recent: tuple[dict[str, object], ...] = (),
     matrix_options: dict[str, str] | None = None,
     modulus_mode: str | None = None,
+    rank_dimensions: dict[str, int] | None = None,
+    matrix_dimensions: dict[str, Any] | None = None,
+    square_size: int | None = None,
+    exercise_mode: str | None = None,
 ) -> Issued:
     """Pick rendered private data; even a cold symbolic cell runs no SymPy."""
     topic = ENGINE_TOPICS[slug]
     if type(level) is not int or level not in topic.levels:
         raise ValueError("Unknown topic level")
     complete = pool(slug, level)
+    if exercise_mode is not None:
+        supported = {
+            "complex-arithmetic": {"multiply", "divide"},
+            "polynomial-division": {"division", "remainder", "divisibility"},
+            "complex-conversion": {"alg-trig", "alg-exp", "trig-alg", "exp-alg"},
+            "polynomial-roots": {"roots"},
+            "partial-fractions": {"fractions"},
+            "complex-polar-form": {"argument", "power", "root"},
+        }
+        if level not in (1, 2, 3) or exercise_mode not in supported.get(slug, set()):
+            raise ValueError("Invalid exercise mode")
+        complete = tuple(
+            p
+            for p in complete
+            if public_settings(p.issued().record).get("exerciseMode") == exercise_mode
+        )
+        if not complete:
+            raise ValueError("No problems match this exercise mode")
+    if square_size is not None:
+        versions = {
+            "determinants": "local-determinant-v4",
+            "inverse-matrices": "local-inverse-v1",
+            "linear-systems": "local-system-v1",
+        }
+        if (
+            slug not in versions
+            or level not in (1, 2, 3)
+            or type(square_size) is not int
+            or square_size not in (2, 3, 4, 5)
+        ):
+            raise ValueError("Invalid matrix size")
+        complete = tuple(
+            p
+            for p in complete
+            if p.generator_version == versions[slug]
+            and (parse_code(p.code, _registry()).seed // 10**12) % 4 + 2 == square_size
+        )
+        if not complete:
+            raise ValueError("No problems match this size")
+    if matrix_dimensions is not None:
+        from app.engine.algebra_practice.local_matrix_generator import make_seed
+
+        if slug != "matrix-operations" or set(matrix_dimensions) != {
+            "operation",
+            "rowsA",
+            "colsA",
+            "rowsB",
+            "colsB",
+        }:
+            raise ValueError("Invalid matrix settings")
+        try:
+            seed = make_seed(
+                matrix_dimensions["operation"],
+                level,
+                tuple(matrix_dimensions[key] for key in ("rowsA", "colsA", "rowsB", "colsB")),
+                0,
+            )
+        except (ValueError, TypeError) as exc:
+            raise ValueError("Invalid matrix settings") from exc
+        complete = tuple(
+            p
+            for p in complete
+            if p.generator_version in {"local-matrix-sized-v1", "local-matrix-division-v3"}
+            and parse_code(p.code, _registry()).seed // 10**12 == seed // 10**12
+        )
+        if not complete:
+            raise ValueError("No matrix problems match these settings")
+    if rank_dimensions is not None:
+        if (
+            slug != "matrix-rank"
+            or level not in (1, 2, 3)
+            or set(rank_dimensions) != {"rows", "columns"}
+            or any(type(v) is not int or not 2 <= v <= 5 for v in rank_dimensions.values())
+        ):
+            raise ValueError("Invalid rank dimensions")
+        complete = tuple(
+            problem
+            for problem in complete
+            if problem.generator_version == "local-rank-v1"
+            and _rank_dimensions(problem.code) == rank_dimensions
+        )
+        if not complete:
+            raise ValueError("No rank problems match these dimensions")
     if slug == "complex-numbers" and modulus_mode is None:
         complete = tuple(
-            problem for problem in complete
+            problem
+            for problem in complete
             if problem.generator_version
             not in {LocalModulusCircle.version, LocalModulusPractice.version}
         )
@@ -119,7 +207,8 @@ def issue(
         complete = tuple(
             problem
             for problem in complete
-            if matrix_classification(problem.issued().record) == wanted
+            if not problem.generator_version.startswith("local-matrix-")
+            and matrix_classification(problem.issued().record) == wanted
         )
         if not complete:
             raise ValueError("No matrix problems match these settings")
@@ -163,10 +252,115 @@ def is_engine_record(record: Any) -> bool:
     return isinstance(record, dict) and "code" in record
 
 
-def public_settings(record: Any) -> dict[str, str]:
+def _rank_dimensions(code: str) -> dict[str, int]:
+    parsed = parse_code(code, _registry())
+    shape = (parsed.seed // 10**12) % 16
+    return {"rows": shape // 4 + 2, "columns": shape % 4 + 2}
+
+
+def _matrix_dimensions(code: str) -> dict[str, Any]:
+    from app.engine.algebra_practice.local_matrix_generator import OPERATIONS
+
+    parsed = parse_code(code, _registry())
+    index = parsed.seed // 10**12
+    dims = []
+    for _ in range(4):
+        dims.append(index % 5 + 1)
+        index //= 5
+    dims.reverse()
+    return dict(
+        zip(
+            ("operation", "rowsA", "colsA", "rowsB", "colsB"),
+            (OPERATIONS[index // 3], *dims),
+            strict=True,
+        )
+    )
+
+
+def public_settings(record: Any) -> dict[str, Any]:
     """Recover learner-selected settings without exposing answer parameters."""
+    polar_modes = {
+        "complex-argument-v1": "argument",
+        "complex-de-moivre-v1": "power",
+        "complex-root-v1": "root",
+    }
+    if is_engine_record(record) and record.get("generator_version") in polar_modes:
+        parsed = parse_code(record["code"], _registry())
+        if (
+            _registry().get_code(parsed.prefix, parsed.version).version
+            != record["generator_version"]
+        ):
+            raise ValueError("Record version differs from its code")
+        return {"exerciseMode": polar_modes[record["generator_version"]]}
+    if is_engine_record(record) and record.get("generator_version") in {
+        "local-polynomial-roots-v1",
+        "local-partial-fractions-v1",
+    }:
+        parsed = parse_code(record["code"], _registry())
+        if (
+            _registry().get_code(parsed.prefix, parsed.version).version
+            != record["generator_version"]
+        ):
+            raise ValueError("Record version differs from its code")
+        return {
+            "exerciseMode": "roots"
+            if record["generator_version"] == "local-polynomial-roots-v1"
+            else "fractions"
+        }
+    if is_engine_record(record) and record.get("generator_version") in {
+        "local-complex-v1",
+        "local-polynomial-division-v1",
+        "local-polynomial-scalar-v1",
+        "local-conversion-v1",
+        "local-conversion-polar-v1",
+    }:
+        parsed = parse_code(record["code"], _registry())
+        generator = _registry().get_code(parsed.prefix, parsed.version)
+        if generator.version != record["generator_version"]:
+            raise ValueError("Record version differs from its code")
+        index = parsed.seed // 10**12
+        if generator.version.startswith("local-conversion"):
+            from app.engine.algebra_practice.local_conversion_generator import DIRECTIONS
+
+            return {"exerciseMode": DIRECTIONS[index % len(DIRECTIONS)]}
+        if generator.version == "local-complex-v1":
+            from app.engine.algebra_practice.local_complex_generator import OPERATIONS
+
+            return {"exerciseMode": OPERATIONS[index % len(OPERATIONS)]}
+        from app.engine.algebra_practice.local_polynomial_generator import MODES
+
+        return {"exerciseMode": MODES[index % len(MODES)]}
+    if is_engine_record(record) and record.get("generator_version") in {
+        "local-determinant-v4",
+        "local-inverse-v1",
+        "local-system-v1",
+    }:
+        parsed = parse_code(record["code"], _registry())
+        if (
+            _registry().get_code(parsed.prefix, parsed.version).version
+            != record["generator_version"]
+        ):
+            raise ValueError("Record version differs from its code")
+        return {"squareSize": (parsed.seed // 10**12) % 4 + 2}
+    if is_engine_record(record) and record.get("generator_version") in {
+        "local-matrix-sized-v1",
+        "local-matrix-division-v3",
+    }:
+        parsed = parse_code(record["code"], _registry())
+        if (
+            _registry().get_code(parsed.prefix, parsed.version).version
+            != record["generator_version"]
+        ):
+            raise ValueError("Record version differs from its code")
+        return {"matrixDimensions": _matrix_dimensions(record["code"])}
+    if is_engine_record(record) and record.get("generator_version") == "local-rank-v1":
+        parsed = parse_code(record["code"], _registry())
+        if _registry().get_code(parsed.prefix, parsed.version).version != "local-rank-v1":
+            raise ValueError("Record version differs from its code")
+        return {"rankDimensions": _rank_dimensions(record["code"])}
     if not is_engine_record(record) or record.get("generator_version") not in {
-        LocalModulusPractice.version, LocalModulusCircle.version,
+        LocalModulusPractice.version,
+        LocalModulusCircle.version,
     }:
         return {}
     code = parse_code(record["code"], _registry())
@@ -211,6 +405,12 @@ def input_variables(record: dict[str, object]) -> dict[str, VariableDomain] | No
     generator = _registry().get_code(code.prefix, code.version)
     if generator.version != record["generator_version"]:
         raise ValueError("Record version differs from its code")
+    if generator.version in {
+        "local-complex-v1",
+        "local-conversion-v1",
+        "local-conversion-polar-v1",
+    }:
+        return {"i": "imaginary"}
     describe = getattr(generator, "input_variables", None)
     if describe is None:
         return None
@@ -259,6 +459,46 @@ def input_contract(record: dict[str, object]) -> InputContract | None:
         return None
     code = parse_code(record["code"], _registry())  # type: ignore[arg-type]
     generator = _registry().get_code(code.prefix, code.version)
+    version = generator.version
+    if version in {"local-matrix-sized-v1", "local-matrix-division-v3", "local-inverse-v1"}:
+        from app.engine.generators.matrix_full import matrix_contract
+
+        if version == "local-inverse-v1":
+            size = (code.seed // 10**12) % 4 + 2
+            return matrix_contract(size, size)
+        dimensions = _matrix_dimensions(str(record["code"]))
+        return matrix_contract(dimensions["rowsA"], dimensions["colsB"])
+    if (
+        version == "local-rank-v1"
+        or version == "local-determinant-v4"
+        or version == "local-polynomial-scalar-v1"
+    ):
+        return InputContract("formula")
+    if version in {
+        "local-system-v1",
+        "local-conversion-polar-v1",
+        "local-polynomial-division-v1",
+        "local-partial-fractions-v1",
+        "local-modulus-circle-v1",
+    }:
+        formula = InputContract("formula")
+        if version == "local-system-v1":
+            count = (code.seed // 10**12) % 4 + 2
+            labels = tuple(
+                f"Variable {name}" for name in ("one", "two", "three", "four", "five")[:count]
+            )
+            components = (formula,) * count
+        elif version == "local-conversion-polar-v1":
+            labels, components = ("Modulus r", "Principal argument"), (formula, formula)
+        elif version == "local-modulus-circle-v1":
+            labels, components = ("Centre x", "Centre y", "Radius"), (formula, formula, formula)
+        elif version == "local-polynomial-division-v1":
+            polynomial = InputContract("formula", symbols=(("x", "real"),))
+            labels, components = ("Quotient", "Remainder"), (polynomial, polynomial)
+        else:
+            count = 2 if (code.seed // 10**12) // 5 == 0 else 3
+            labels, components = ("A", "B", "C")[:count], (formula,) * count
+        return InputContract("tuple", components=components, labels=labels)
     describe = getattr(generator, "input_contract", None)
     if not callable(describe):
         raise ValueError("Generator must declare its computational grammar")

@@ -420,25 +420,45 @@ def complex_plane(spec: dict[str, Any]) -> str:
 
     spec = validate_visual(spec)
     x, y = spec["first"]
+    points = [
+        point
+        for point in (spec["first"], spec.get("second"), spec.get("result"))
+        if point is not None
+    ]
     radius = spec.get("radius", 0.0)
     margin = max(1.0, radius * 0.25)
     canvas = Canvas(
-        (min(0.0, x - radius) - margin, max(0.0, x + radius) + margin),
-        (min(0.0, y - radius) - margin, max(0.0, y + radius) + margin),
+        (
+            min(0.0, x - radius, *(p[0] for p in points)) - margin,
+            max(0.0, x + radius, *(p[0] for p in points)) + margin,
+        ),
+        (
+            min(0.0, y - radius, *(p[1] for p in points)) - margin,
+            max(0.0, y + radius, *(p[1] for p in points)) + margin,
+        ),
         equal=True,
     )
     canvas.axes(r"\mathrm{Re}", r"\mathrm{Im}")
     canvas.dot(x, y)
     if spec["mode"] == "circle":
-        canvas.stroke([
-            (x + radius * math.cos(2 * math.pi * i / 96),
-             y + radius * math.sin(2 * math.pi * i / 96))
-            for i in range(97)
-        ])
+        canvas.stroke(
+            [
+                (
+                    x + radius * math.cos(2 * math.pi * i / 96),
+                    y + radius * math.sin(2 * math.pi * i / 96),
+                )
+                for i in range(97)
+            ]
+        )
         caption = "The centre and radius on the complex plane."
-    else:
+    elif spec["mode"] == "modulus":
         canvas.stroke([(0.0, 0.0), (x, y)])
         caption = "The modulus is the distance from the origin."
+    else:
+        for point in points:
+            canvas.dot(*point)
+            canvas.stroke([(0.0, 0.0), tuple(point)])
+        caption = "The complex numbers on the complex plane."
     return canvas.tex() + _caption(caption)
 
 

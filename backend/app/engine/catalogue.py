@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import logging
 from copy import deepcopy
+from dataclasses import replace
 from functools import cache
 from pathlib import Path
 from typing import Any, Literal
@@ -92,11 +93,77 @@ class Catalogue(StoredModel):
             raise ValueError("Catalogue cells differ from the engine topics")
         for cell in self.cells:
             versions = {c.generator for c in entries[cell.topic].levels[cell.level]}
+            expanded_matrix = (
+                cell.topic == "matrix-operations" and "local-matrix-sized-v1" in versions
+            )
+            expected_size = self.pool_size + (400 if expanded_matrix else 0)
             if (
-                len(cell.problems) != self.pool_size
-                or len({p.code for p in cell.problems}) != self.pool_size
+                len(cell.problems) != expected_size
+                or len({p.code for p in cell.problems}) != expected_size
             ):
                 raise ValueError(f"Incomplete catalogue pool: {cell.topic} level {cell.level}")
+            if expanded_matrix:
+                from app.engine.algebra_practice.catalogue_seeds import matrix_seeds
+
+                actual_seeds = {
+                    parse_code(problem.code, generators).seed
+                    for problem in cell.problems
+                    if problem.generator_version
+                    in {"local-matrix-sized-v1", "local-matrix-division-v3"}
+                }
+                if actual_seeds != set(matrix_seeds(cell.level, 0)) | set(
+                    matrix_seeds(cell.level, 1)
+                ):
+                    raise ValueError("Matrix catalogue settings are incomplete")
+            if cell.level <= 3 and self.pool_size >= 16:
+                present = {
+                    (problem.generator_version, parse_code(problem.code, generators).seed)
+                    for problem in cell.problems
+                }
+                required: set[tuple[str, int]] = set()
+                if cell.topic == "matrix-rank" and "local-rank-v1" in versions:
+                    from app.engine.algebra_practice.rank import rank_seed
+
+                    required = {
+                        ("local-rank-v1", rank_seed(cell.level, rows, cols, 0))
+                        for rows in range(2, 6)
+                        for cols in range(2, 6)
+                    }
+                square_version = {
+                    "determinants": "local-determinant-v4",
+                    "inverse-matrices": "local-inverse-v1",
+                    "linear-systems": "local-system-v1",
+                }.get(cell.topic)
+                if square_version and square_version in versions:
+                    from app.engine.algebra_practice.local_determinant_generator import (
+                        determinant_seed,
+                    )
+
+                    required = {
+                        (square_version, determinant_seed(cell.level, size, 0))
+                        for size in range(2, 6)
+                    }
+                if (
+                    cell.topic
+                    in {
+                        "complex-arithmetic",
+                        "complex-numbers",
+                        "polynomial-division",
+                        "complex-conversion",
+                        "polynomial-roots",
+                        "partial-fractions",
+                    }
+                    or cell.topic == "complex-polar-form"
+                ):
+                    from app.engine.algebra_practice.catalogue_seeds import mode_seeds
+
+                    modes = mode_seeds(cell.topic, cell.level, 0)
+                    if all(version in versions for _, version, _ in modes):
+                        required = {(version, seed) for _, version, seed in modes}
+                if not required <= present:
+                    raise ValueError(
+                        f"Catalogue settings incomplete: {cell.topic} level {cell.level}"
+                    )
             for problem in cell.problems:
                 code = parse_code(problem.code, generators)
                 if (
@@ -127,6 +194,117 @@ def build(
     for slug, topic in entries.items():
         for level in sorted(topic.levels):
             problems: dict[str, StoredProblem] = {}
+            if (
+                slug
+                in (
+                    "complex-arithmetic",
+                    "complex-numbers",
+                    "polynomial-division",
+                    "complex-conversion",
+                    "polynomial-roots",
+                    "partial-fractions",
+                    "complex-polar-form",
+                )
+                and level <= 3
+            ):
+                from app.engine.algebra_practice.catalogue_seeds import mode_seeds
+
+                local_modes = mode_seeds(slug, level, 0)
+                if all(
+                    any(c.generator == version for c in topic.levels[level])
+                    for _, version, _ in local_modes
+                ):
+                    for variation in (0, 1):
+                        for _, version, seed in mode_seeds(slug, level, variation):
+                            if len(problems) == pool_size:
+                                break
+                            generator = generators.get(version)
+                            task = generator.build(generator.draw(seed))
+                            problem = StoredProblem.from_issued(render(task, generators))
+                            problems[problem.code] = problem
+                    if len(problems) == pool_size:
+                        cells.append(
+                            StoredCell(topic=slug, level=level, problems=tuple(problems.values()))
+                        )
+                        continue
+                    local_versions = {version for _, version, _ in local_modes}
+                    legacy = tuple(
+                        c for c in topic.levels[level] if c.generator not in local_versions
+                    )
+                    if not legacy:
+                        variation = 2
+                        while len(problems) < pool_size:
+                            for _, version, seed in mode_seeds(slug, level, variation):
+                                generator = generators.get(version)
+                                task = generator.build(generator.draw(seed))
+                                problem = StoredProblem.from_issued(render(task, generators))
+                                problems.setdefault(problem.code, problem)
+                                if len(problems) == pool_size:
+                                    break
+                            variation += 1
+                        cells.append(
+                            StoredCell(topic=slug, level=level, problems=tuple(problems.values()))
+                        )
+                        continue
+                    topic = replace(topic, levels={**topic.levels, level: legacy})
+            local_version = {
+                "determinants": "local-determinant-v4",
+                "inverse-matrices": "local-inverse-v1",
+                "linear-systems": "local-system-v1",
+            }.get(slug)
+            if local_version and any(
+                choice.generator == local_version for choice in topic.levels[level]
+            ):
+                from app.engine.algebra_practice.local_determinant_generator import determinant_seed
+
+                generator = generators.get(local_version)
+                for variation in (0, 1):
+                    for size in range(2, 6):
+                        if len(problems) == pool_size:
+                            break
+                        seed = determinant_seed(level, size, variation)
+                        task = generator.build(generator.draw(seed))
+                        problem = StoredProblem.from_issued(render(task, generators))
+                        problems[problem.code] = problem
+                if len(problems) == pool_size:
+                    cells.append(
+                        StoredCell(topic=slug, level=level, problems=tuple(problems.values()))
+                    )
+                    continue
+                legacy = tuple(
+                    choice for choice in topic.levels[level] if choice.generator != local_version
+                )
+                topic = replace(topic, levels={**topic.levels, level: legacy})
+            expanded_matrix = slug == "matrix-operations" and any(
+                c.generator == "local-matrix-sized-v1" for c in topic.levels[level]
+            )
+            if expanded_matrix:
+                legacy = tuple(
+                    c for c in topic.levels[level] if not c.generator.startswith("local-matrix-")
+                )
+                topic = replace(topic, levels={**topic.levels, level: legacy})
+            if slug == "matrix-rank" and any(
+                choice.generator == "local-rank-v1" for choice in topic.levels[level]
+            ):
+                from app.engine.algebra_practice.rank import rank_seed
+
+                generator = generators.get("local-rank-v1")
+                old_choices = tuple(
+                    choice for choice in topic.levels[level] if choice.generator != "local-rank-v1"
+                )
+                count = min(32, pool_size) if old_choices else pool_size
+                for index in range(count):
+                    rows, columns = 2 + index % 16 // 4, 2 + index % 4
+                    seed = rank_seed(level, rows, columns, index // 16)
+                    task = generator.build(generator.draw(seed))
+                    problem = StoredProblem.from_issued(render(task, generators))
+                    problems[problem.code] = problem
+                if not old_choices or len(problems) == pool_size:
+                    cells.append(
+                        StoredCell(topic=slug, level=level, problems=tuple(problems.values()))
+                    )
+                    continue
+                topic = replace(topic, levels={**topic.levels, level: old_choices})
             for seed in range(pool_size * ATTEMPTS_PER_SLOT):
                 try:
                     task = topic.generate(level, seed, generators)
@@ -139,6 +317,25 @@ def build(
                     break
             if len(problems) != pool_size:
                 raise ValueError(f"Cannot fill catalogue pool: {slug} level {level}")
+            if expanded_matrix:
+                from app.engine.algebra_practice.catalogue_seeds import matrix_seeds
+                from app.engine.algebra_practice.local_matrix_generator import (
+                    OPERATIONS,
+                    VARIATIONS,
+                )
+
+                for variation in (0, 1):
+                    for seed in matrix_seeds(level, variation):
+                        operation = OPERATIONS[(seed // VARIATIONS) // (3 * 5**4)]
+                        version = (
+                            "local-matrix-division-v3"
+                            if operation == "divide" and level > 1
+                            else "local-matrix-sized-v1"
+                        )
+                        generator = generators.get(version)
+                        task = generator.build(generator.draw(seed))
+                        problem = StoredProblem.from_issued(render(task, generators))
+                        problems[problem.code] = problem
             cells.append(StoredCell(topic=slug, level=level, problems=tuple(problems.values())))
     result = Catalogue(pool_size=pool_size, cells=tuple(cells))
     result.validate_cells(entries, generators)
@@ -189,4 +386,7 @@ def lookup(record: dict[str, object]) -> Issued:
 
 if __name__ == "__main__":
     catalogue = write()
-    print(f"Verified engine catalogue: {len(catalogue.cells)} cells x {catalogue.pool_size} codes")
+    print(
+        f"Verified engine catalogue: {len(catalogue.cells)} cells, "
+        f"{sum(len(cell.problems) for cell in catalogue.cells)} codes"
+    )

@@ -7,6 +7,7 @@ import { AREAS, areaOf, isTopicSlug, listedArea, rememberTopics } from './topics
 import { FEEDBACK_CODES } from './types';
 import { parseAnswerInput } from './answerInput';
 import type { ModulusMode } from '../components/ModulusSettings';
+import type { MatrixDimensions } from './types';
 import type { AreaSlug, AvailableArea, AvailableTopic, Catalogue, CheckOutcome, Difficulty, LearningStatistics, MatrixOptions, OmissionMetric, OpenedProblem, ProblemPage, ProblemShare, ProfileCounts, PublicProblem, ReportCategory, RevealedAnswer, RevealedSolution, PracticeTopic, TopicSlug, WorksheetCapacity } from './types';
 
 const base = (import.meta.env.VITE_API_BASE_URL ?? '/api').trim().replace(/\/+$/, '');
@@ -163,6 +164,12 @@ function verdict(data: Record<string, unknown>): CheckOutcome {
 
 function publicProblem(value: unknown): PublicProblem {
   const data = object(value);
+  if (data.exerciseMode !== undefined && !(data.topic === 'complex-arithmetic' ? ['multiply', 'divide'] : data.topic === 'polynomial-division' ? ['division', 'remainder', 'divisibility'] : data.topic === 'complex-conversion' ? ['alg-trig', 'alg-exp', 'trig-alg', 'exp-alg'] : data.topic === 'polynomial-roots' ? ['roots'] : data.topic === 'partial-fractions' ? ['fractions'] : data.topic === 'complex-polar-form' ? ['argument', 'power', 'root'] : []).includes(data.exerciseMode as string)) throw new Error(text.service_error);
+  if (data.squareSize !== undefined && (!['determinants', 'inverse-matrices', 'linear-systems'].includes(data.topic as string) || ![2, 3, 4, 5].includes(data.squareSize as number))) throw new Error(text.service_error);
+  const matrixDimensions = data.matrixDimensions === undefined ? undefined : object(data.matrixDimensions);
+  if (matrixDimensions && (data.topic !== 'matrix-operations' || !['add', 'subtract', 'multiply', 'divide'].includes(matrixDimensions.operation as string) || !['rowsA', 'colsA', 'rowsB', 'colsB'].every(k => [1, 2, 3, 4, 5].includes(matrixDimensions[k] as number)))) throw new Error(text.service_error);
+  const dimensions = data.rankDimensions === undefined ? undefined : object(data.rankDimensions);
+  if (dimensions && (data.topic !== 'matrix-rank' || ![2, 3, 4, 5].includes(dimensions.rows as number) || ![2, 3, 4, 5].includes(dimensions.columns as number))) throw new Error(text.service_error);
   if (typeof data.id !== 'string' || typeof data.problemLatex !== 'string' || typeof data.createdAt !== 'string'
     || !isTopicSlug(data.topic) || ![1, 2, 3, 4, 5].includes(data.difficulty as number)
     || typeof data.answerRevealed !== 'boolean' || typeof data.solutionRevealed !== 'boolean'
@@ -177,7 +184,11 @@ function publicProblem(value: unknown): PublicProblem {
     lastResult: last ? verdict(last).result : null, lastFeedback: last ? verdict(last).feedback : null,
     lastAnswer: last ? last.answer as string : null, worksheetId: (data.worksheetId as string | null | undefined) ?? null,
     ...(data.answerInput === undefined ? {} : { answerInput: parseAnswerInput(data.answerInput) }),
-    ...(data.modulusMode === undefined ? {} : { modulusMode: data.modulusMode as ModulusMode }) };
+    ...(data.modulusMode === undefined ? {} : { modulusMode: data.modulusMode as ModulusMode }),
+    ...(dimensions ? { rankDimensions: { rows: dimensions.rows as number, columns: dimensions.columns as number } } : {}),
+    ...(matrixDimensions ? { matrixDimensions: { operation: matrixDimensions.operation as MatrixDimensions['operation'], rowsA: matrixDimensions.rowsA as number, colsA: matrixDimensions.colsA as number, rowsB: matrixDimensions.rowsB as number, colsB: matrixDimensions.colsB as number } } : {}),
+    ...(data.squareSize === undefined ? {} : { squareSize: data.squareSize as number }),
+    ...(data.exerciseMode === undefined ? {} : { exerciseMode: data.exerciseMode as PublicProblem['exerciseMode'] }) };
 }
 
 function cache(problem: PublicProblem): PublicProblem {
@@ -188,20 +199,30 @@ function cache(problem: PublicProblem): PublicProblem {
 }
 
 function solution(data: Record<string, unknown>): RevealedSolution {
-  if (!Array.isArray(data.steps) || data.steps.length > 20) throw new Error(text.service_error);
+  if (!Array.isArray(data.steps) || data.steps.length > 128) throw new Error(text.service_error);
   const steps = data.steps.map((value: unknown) => {
     const step = object(value);
     if (typeof step.say !== 'string' || typeof step.latex !== 'string') throw new Error(text.service_error);
-    if (step.rules === undefined) return { say: step.say, latex: step.latex };
-    if (!Array.isArray(step.rules) || step.rules.length > 4) throw new Error(text.service_error);
-    const rules = step.rules.map(value => {
+    if (step.rules !== undefined && (!Array.isArray(step.rules) || step.rules.length > 4)) throw new Error(text.service_error);
+    const rules = (step.rules as unknown[] | undefined)?.map(value => {
       const rule = object(value);
       if (typeof rule.title !== 'string' || rule.title.length > 120
         || typeof rule.latex !== 'string' || rule.latex.length > 2000
         || typeof rule.explanation !== 'string' || rule.explanation.length > 1000) throw new Error(text.service_error);
       return { title: rule.title, latex: rule.latex, explanation: rule.explanation };
     });
-    return { say: step.say, latex: step.latex, rules };
+    const matrix = (value: unknown): number[][] => {
+      if (!Array.isArray(value) || value.length < 2 || value.length > 5 || value.some(row => !Array.isArray(row) || row.length !== value.length || row.some((n: unknown) => !Number.isSafeInteger(n) || Math.abs(n as number) > 1e8))) throw new Error(text.service_error);
+      return value as number[][];
+    };
+    const determinantMatrix = step.determinantMatrix === undefined ? undefined : matrix(step.determinantMatrix);
+    let minorExpansion: { matrix: number[][]; row: number; columns: number[] } | undefined;
+    if (step.minorExpansion !== undefined) {
+      const source = object(step.minorExpansion); const m = matrix(source.matrix);
+      if (!Number.isInteger(source.row) || (source.row as number) < 0 || (source.row as number) >= m.length || !Array.isArray(source.columns) || source.columns.some(col => !Number.isInteger(col) || col < 0 || col >= m.length)) throw new Error(text.service_error);
+      minorExpansion = { matrix: m, row: source.row as number, columns: source.columns as number[] };
+    }
+    return { say: step.say, latex: step.latex, ...(rules ? { rules } : {}), ...(determinantMatrix ? { determinantMatrix } : {}), ...(minorExpansion ? { minorExpansion } : {}) };
   });
   // A visual this build cannot read is left out; the steps never depend on it.
   const visual = parseVisual(data.visual);
@@ -446,11 +467,15 @@ export async function getCatalogue(): Promise<Catalogue> {
 }
 
 /** `area` picks the area mixed practice draws from; a topic carries its own area. */
-export function generateProblem(topic: PracticeTopic, difficulty: Difficulty, area: AreaSlug = 'mathematical-analysis', matrixOptions?: MatrixOptions, modulusMode?: ModulusMode): Promise<PublicProblem> {
+export function generateProblem(topic: PracticeTopic, difficulty: Difficulty, area: AreaSlug = 'mathematical-analysis', matrixOptions?: MatrixOptions, modulusMode?: ModulusMode, rankDimensions?: { rows: number; columns: number }, matrixDimensions?: MatrixDimensions, squareSize?: number, exerciseMode?: PublicProblem['exerciseMode']): Promise<PublicProblem> {
   const mixed = topic === 'mixed';
   if ((!mixed && !isTopicSlug(topic)) || ![1, 2, 3, 4, 5].includes(difficulty)
     || !AREAS.some(a => a.slug === area) || (matrixOptions && topic !== 'matrix-operations')
-    || (modulusMode && (topic !== 'complex-numbers' || difficulty > 3 || !['expression', 'properties', 'geometry'].includes(modulusMode)))) return Promise.reject(new Error(text.unsupported));
+    || (modulusMode && (topic !== 'complex-numbers' || difficulty > 3 || !['expression', 'properties', 'geometry'].includes(modulusMode)))
+    || (rankDimensions && (topic !== 'matrix-rank' || difficulty > 3 || ![2, 3, 4, 5].includes(rankDimensions.rows) || ![2, 3, 4, 5].includes(rankDimensions.columns)))
+    || (matrixDimensions && (topic !== 'matrix-operations' || difficulty > 3 || !!matrixOptions))
+    || (squareSize !== undefined && (!['determinants', 'inverse-matrices', 'linear-systems'].includes(topic) || difficulty > 3 || ![2, 3, 4, 5].includes(squareSize)))
+    || (exerciseMode && (difficulty > 3 || !(topic === 'complex-arithmetic' ? ['multiply', 'divide'] : topic === 'polynomial-division' ? ['division', 'remainder', 'divisibility'] : topic === 'complex-conversion' ? ['alg-trig', 'alg-exp', 'trig-alg', 'exp-alg'] : topic === 'polynomial-roots' ? ['roots'] : topic === 'partial-fractions' ? ['fractions'] : topic === 'complex-polar-form' ? ['argument', 'power', 'root'] : []).includes(exerciseMode)))) return Promise.reject(new Error(text.unsupported));
   const drawFrom = mixed ? area : areaOf(topic);
   if (generating) return generating;
   const started = epoch;
@@ -458,9 +483,9 @@ export function generateProblem(topic: PracticeTopic, difficulty: Difficulty, ar
     const { bearer, saved } = await credentials();
     if (!saved && (mixed || !PREVIEW_TOPICS.some(t => t.slug === topic && t.availableDifficulties.includes(difficulty)))) throw new Error(text.unsupported);
     const operation = (mixed ? `generate:mixed:${drawFrom}:${difficulty}` : `generate:${topic}:${difficulty}`)
-      + (matrixOptions ? `:${matrixOptions.operation}:${matrixOptions.size}` : '') + (modulusMode ? `:${modulusMode}` : '');
+      + (matrixOptions ? `:${matrixOptions.operation}:${matrixOptions.size}` : '') + (modulusMode ? `:${modulusMode}` : '') + (rankDimensions ? `:${rankDimensions.rows}:${rankDimensions.columns}` : '') + (matrixDimensions ? `:${JSON.stringify(matrixDimensions)}` : '') + (squareSize ? `:${squareSize}` : '') + (exerciseMode ? `:${exerciseMode}` : '');
     const authorized = await authorize(started, saved, bearer);
-    const body = mixed ? { topic, area: drawFrom, difficulty } : { topic, difficulty, ...(matrixOptions ? { matrixOptions } : {}), ...(modulusMode ? { modulusMode } : {}) };
+    const body = mixed ? { topic, area: drawFrom, difficulty } : { topic, difficulty, ...(matrixOptions ? { matrixOptions } : {}), ...(modulusMode ? { modulusMode } : {}), ...(rankDimensions ? { rankDimensions } : {}), ...(matrixDimensions ? { matrixDimensions } : {}), ...(squareSize ? { squareSize } : {}), ...(exerciseMode ? { exerciseMode } : {}) };
     const response = await request('/problems', body, authorized, saved, operation);
     const data = saved ? object(response.problem) : response;
     if (started !== epoch) throw new Error(text.expired);
@@ -472,7 +497,7 @@ export function generateProblem(topic: PracticeTopic, difficulty: Difficulty, ar
       problemLatex: data.problemLatex, createdAt: data.createdAt, answerRevealed: false, solutionRevealed: false,
       lastResult: null, lastAnswer: null, ...(mixed ? { mixed: true } : {}),
       ...(data.answerInput === undefined ? {} : { answerInput: parseAnswerInput(data.answerInput) }),
-      ...(modulusMode ? { modulusMode } : {}) };
+      ...(modulusMode ? { modulusMode } : {}), ...(rankDimensions ? { rankDimensions } : {}), ...(matrixDimensions ? { matrixDimensions } : {}), ...(squareSize ? { squareSize } : {}), ...(exerciseMode ? { exerciseMode } : {}) };
     problems.unshift(problem);
     selection = { topic, difficulty, area: drawFrom };
     keys.delete(operation);

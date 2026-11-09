@@ -26,6 +26,7 @@ const PAGES: Record<string, PageMeta> = {
   '/login': page('Sign in', 'Sign in with Google to save problems, attempts and statistics.'),
   '/dashboard': page('Home', 'Your last problem, recent activity and topics.'),
   '/random': page('Random practice', 'Mix topics and levels in one practice session.'),
+  '/algebra-random': page('Random algebra', 'Random algebra problems with per-topic levels and settings.'),
   '/demo': page('Demo problem', 'Try one generated mathematics problem without signing in.'),
   '/practice': page('Practice', 'Solve a generated mathematics problem.'),
   '/history': page('History', 'Every problem you have generated.'),
