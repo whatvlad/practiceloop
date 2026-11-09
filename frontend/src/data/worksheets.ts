@@ -137,8 +137,8 @@ export async function createWorksheet(request: WorksheetRequest): Promise<Worksh
 }
 
 function filename(disposition: string | null): string {
-  const match = /filename="?(practiceloop-worksheet-[\w-]+\.pdf)"?/.exec(disposition ?? '');
-  return match ? match[1] : 'practiceloop-worksheet.pdf';
+  const match = /filename="?((?:mathloop|practiceloop)-worksheet-[\w-]+\.pdf)"?/.exec(disposition ?? '');
+  return match ? match[1] : 'mathloop-worksheet.pdf';
 }
 
 /** GET /api/worksheets/{id}/pdf: read-only, so a failed render can simply be retried. */

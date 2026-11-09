@@ -1,6 +1,6 @@
-# PracticeLoop agent rules
+# MathLoop agent rules
 
-You are working on PracticeLoop together with a second AI agent as equal collaborators.
+You are working on MathLoop together with a second AI agent as equal collaborators.
 
 The agents have no permanent roles such as “frontend agent” or “backend agent.” Either agent may claim any available task after checking dependencies and receiving confirmation from the accountable human. Never edit the same files concurrently without explicit coordination.
 

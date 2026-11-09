@@ -4,7 +4,7 @@ import { useSyncExternalStore, type AnchorHTMLAttributes, type MouseEvent } from
 // Routes are written from "/"; BASE is the deploy prefix (e.g. "/practiceloop"
 // on GitHub Pages, set with `vite build --base`), empty in dev.
 
-const CHANGE = 'practiceloop:navigate';
+const CHANGE = 'mathloop:navigate';
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 function withBase(to: string): string {

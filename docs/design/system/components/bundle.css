@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap");
 
-/* PracticeLoop component styles. Every value comes from tokens.css. */
+/* MathLoop component styles. Every value comes from tokens.css. */
 *,*::before,*::after{box-sizing:border-box}
 html,body{margin:0;background:var(--canvas);color:var(--ink);font-family:var(--font-sans);font-size:15px;line-height:24px;-webkit-font-smoothing:antialiased}
 button,input{font:inherit;color:inherit}

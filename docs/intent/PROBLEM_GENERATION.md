@@ -2,7 +2,7 @@
 
 Status: confirmed by the product owner on 2026-10-18.
 
-This document records the intended learning behavior of the PracticeLoop problem
+This document records the intended learning behavior of the MathLoop problem
 generator. It is not an implementation plan and does not define the final
 template matrix.
 

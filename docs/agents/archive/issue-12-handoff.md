@@ -47,7 +47,7 @@ engine pipe remained unavailable; no fixtures were pointed at shared Supabase.
 Open findings and risks: root checkout has unrelated uncommitted Graphify outputs;
 they are preserved. Graphify's launcher needs execution outside the sandbox.
 Uncommitted changes or recovery instructions: own worktree
-D:/PracticeLoop/.worktrees/issue-12-history; preserve all other worktrees.
+D:/MathLoop/.worktrees/issue-12-history; preserve all other worktrees.
 Review status: owner-scoped database queries will be highlighted for optional review.
 Merge status: not merged.
 Next concrete action: publish the PR, offer optional review of SQL changes,

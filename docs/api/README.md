@@ -448,7 +448,7 @@ or `{"source":"history","problemIds":["uuid", ...],"paper":"letter","columns":2,
 ### `GET /api/worksheets/{id}/pdf`
 
 Returns `200 application/pdf` with
-`Content-Disposition: attachment; filename="practiceloop-worksheet-YYYY-MM-DD.pdf"`
+`Content-Disposition: attachment; filename="mathloop-worksheet-YYYY-MM-DD.pdf"`
 (the creation date). It is read-only: no flag changes, so it can be retried or
 repeated. One section per group, problems numbered through the whole sheet with
 writing space, and with the key an "Answers" section on a new page (final

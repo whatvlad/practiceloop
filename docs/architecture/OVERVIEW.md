@@ -3,7 +3,7 @@
 Source: [original MVP](../PRACTICELOOP_MVP.md), copied byte-for-byte on 2026-10-15.
 SHA-256: `F8605364CE622BEC262AE61AA6C3D1971AD99CF67BE97200FE00E691A4701944`.
 
-PracticeLoop validates demand for reliable, useful, varied mathematical practice.
+MathLoop validates demand for reliable, useful, varied mathematical practice.
 Google login -> choose one of five Integration topics and difficulty 1–5 ->
 generate and immediately persist -> submit repeated attempts -> return Correct,
 Incorrect or Invalid expression -> explicitly reveal answer/steps -> reopen

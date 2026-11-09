@@ -2,7 +2,7 @@
 
 Date: 2026-10-19. Status: accepted by accountable human Feijhoaaaaa.
 
-PracticeLoop accepts a deliberately small mathematical language, constructs
+MathLoop accepts a deliberately small mathematical language, constructs
 SymPy objects from a validated internal syntax tree, and checks answers over the
 real domain declared by the generating template. This resolves OQ-01, OQ-02 and
 OQ-03 without exposing Python or SymPy string parsers to learner input.

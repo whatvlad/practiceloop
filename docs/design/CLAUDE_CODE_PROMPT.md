@@ -1,10 +1,10 @@
-# Prompt for Claude Code: implement the PracticeLoop frontend design
+# Prompt for Claude Code: implement the MathLoop frontend design
 
 Copy everything below the line into a new Claude Code session.
 
 ---
 
-You are working on PracticeLoop. First follow AGENTS.md: read the files it lists, check GitHub Issues and open PRs, and get the accountable human's confirmation that this work is available before implementing. Work in your own branch from the latest main. Do not edit docs/PRACTICELOOP_MVP.md.
+You are working on MathLoop. First follow AGENTS.md: read the files it lists, check GitHub Issues and open PRs, and get the accountable human's confirmation that this work is available before implementing. Work in your own branch from the latest main. Do not edit docs/PRACTICELOOP_MVP.md.
 
 ## Goal
 

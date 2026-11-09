@@ -3,7 +3,7 @@
 Agent: Codex. Accountable human: Vlad / whatvlad.
 Branch: `codex/issue-235-elementary-functions`; PR #247.
 Exact base: `24f14ec37c4dd5e30d1b40faf7e21bf192cfe3c2`.
-Isolated worktree: `C:/PracticeLoop/.worktrees/issue-235`.
+Isolated worktree: `C:/MathLoop/.worktrees/issue-235`.
 Status: implementation and local verification complete; final ready hosted CI,
 merge, deployment/live checks and Project maintenance remain release gates.
 GitHub records final acceptance state. Self-review is not independent review.

@@ -98,7 +98,7 @@ review is advisory and welcome, especially exact set/domain semantics and family
 completeness boundaries. The tooling agent independently diagnosed Graphify only.
 There are no unresolved acceptance findings claimed fixed without evidence.
 
-Worktree: `C:/PracticeLoop/.worktrees/issue-234`. Other branches and uncommitted
+Worktree: `C:/MathLoop/.worktrees/issue-234`. Other branches and uncommitted
 work were preserved. Local venvs, code catalogue, browser fixture/screenshots,
 Graphify source/cache/diagnostics and Linux test paths remain ignored. The
 published commits are recoverable from the PR branch; no force push was used.

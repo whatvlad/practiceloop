@@ -1,5 +1,5 @@
 [Unit]
-Description=PracticeLoop API (FastAPI)
+Description=MathLoop API (FastAPI)
 After=network-online.target
 Wants=network-online.target
 

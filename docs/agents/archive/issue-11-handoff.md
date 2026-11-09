@@ -49,7 +49,7 @@ Open findings and risks: #12 read routes are not implemented; current browser
 history/counters remain limited to this page session. Graphify executable is
 unavailable at the documented Windows path; source inspection is used instead.
 Uncommitted changes or recovery instructions: worktree under
-D:/PracticeLoop/.worktrees/issue-11-practice; do not reset the original checkout.
+D:/MathLoop/.worktrees/issue-11-practice; do not reset the original checkout.
 Review status: no independent review requested yet.
 Merge status: not merged.
 Next concrete action: publish the focused PR, wait for hosted CI, merge and update the queue.
