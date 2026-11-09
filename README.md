@@ -5,8 +5,9 @@ answer verification and personal practice history. The MVP covers Integration:
 five topics, difficulty levels 1–5, Google login, saved attempts, answer and
 solution reveal, history and a profile. [Original specification](docs/PRACTICELOOP_MVP.md).
 
-**Status: MVP complete (0.1.0, see [CHANGELOG](CHANGELOG.md)).** Live at
-https://mathloop.pages.dev (noindex). Signed-in learners can:
+**Status: MVP complete (0.1.0, see [CHANGELOG](CHANGELOG.md)).** The canonical
+address is https://mathloop.net. During the [domain cutover](docs/production/LAUNCH_RUNBOOK.md)
+the preview is at https://mathloop.pages.dev. Signed-in learners can:
 
 - practise the current 49 Algebra, Mathematical Analysis, and Probability and Statistics topics, with their
   available levels and mixed practice supplied by the API, including the
@@ -34,8 +35,8 @@ A signed-out visitor gets one fixed, untracked demo problem. Details:
 [answer checking](docs/architecture/ANSWER_CHECK.md),
 [API](docs/api/README.md), [operations](docs/production/ORACLE_DEPLOY.md).
 
-Private repository [whatvlad/practiceloop](https://github.com/whatvlad/practiceloop);
-tasks are [GitHub Issues](https://github.com/whatvlad/practiceloop/issues) worked in
+Private repository [whatvlad/mathloop](https://github.com/whatvlad/mathloop);
+tasks are [GitHub Issues](https://github.com/whatvlad/mathloop/issues) worked in
 the order of the [Implementation Queue](https://github.com/users/whatvlad/projects/1).
 
 ## Known limitations
@@ -140,7 +141,8 @@ npm run dev
 ```
 A preview of `main` (saved practice, plus the Graphify code graph at `/graph/`)
 deploys to Cloudflare Pages via `.github/workflows/preview.yml` at
-https://mathloop.pages.dev (noindex, Google login; practice is persisted).
+https://mathloop.net after the domain cutover. Until then the noindex preview is
+at https://mathloop.pages.dev (Google login; practice is persisted).
 Frontend: http://localhost:5173. Backend health: http://localhost:8000/health.
 OpenAPI: http://localhost:8000/docs. Health is liveness, not database readiness.
 

@@ -1,9 +1,9 @@
 name: Preview
-# Preview hosting on Cloudflare Pages: the frontend (mock data) at / and the
+# Hosting on Cloudflare Pages: the frontend at / and the
 # Graphify code graph at /graph/, rebuilt from each push to main.
-# Served at https://mathloop.pages.dev (noindex, Google login; headers in frontend/public/_headers).
+# Canonical origin: https://mathloop.net. See docs/production/LAUNCH_RUNBOOK.md.
 # The app calls the API same-origin at /api; functions/api forwards that to repo variable
-# API_BASE_URL (the Oracle backend; empty skips it), so filtering networks only see pages.dev.
+# API_BASE_URL (the Oracle backend; empty skips it).
 # Needs repo secrets CLOUDFLARE_API_TOKEN (Account > Cloudflare Pages > Edit) and
 # CLOUDFLARE_ACCOUNT_ID; without them the build still runs and the deploy is skipped.
 on:
@@ -20,12 +20,15 @@ concurrency:
 
 env:
   CLOUDFLARE_PROJECT: mathloop
-  # The pre-rename project; every deploy turns it into a redirect to the MathLoop address.
+  # Separate Pages project for old links.
   LEGACY_PROJECT: practiceloop
+  SITE_URL: ${{ vars.SITE_URL || 'https://mathloop.net' }}
+  CANONICAL_REDIRECTS: ${{ vars.CANONICAL_REDIRECTS == 'true' && 'true' || 'false' }}
 
 jobs:
   deploy:
     name: Build and deploy
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
@@ -43,6 +46,12 @@ jobs:
           node-version: '24'
       - run: npm ci --ignore-scripts
         working-directory: frontend
+      - name: Validate the canonical origin
+        run: |
+          if [ "$SITE_URL" != 'https://mathloop.net' ]; then
+            echo '::error::SITE_URL must be https://mathloop.net.'
+            exit 1
+          fi
       - name: Validate public browser auth settings
         env:
           SUPABASE_URL: ${{ vars.SUPABASE_URL || secrets.SUPABASE_URL }}
@@ -66,7 +75,7 @@ jobs:
           # Public Cookiebot domain group ID; unset keeps the banner off.
           VITE_COOKIEBOT_ID: ${{ vars.COOKIEBOT_ID }}
           # Launch switches (#39, docs/production/LAUNCH_RUNBOOK.md). Unset keeps the noindex preview.
-          VITE_SITE_URL: ${{ vars.SITE_URL }}
+          VITE_SITE_URL: ${{ env.SITE_URL }}
           VITE_SITE_INDEXABLE: ${{ vars.SITE_INDEXABLE }}
       # Same Graphify release as scripts/setup-graphify.sh (v0.9.92), pinned to its commit.
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
@@ -92,6 +101,41 @@ jobs:
           else
             grep -A1 -x '/\*' frontend/dist/_headers | grep -q 'X-Robots-Tag: noindex'
           fi
+      - name: Verify the apex before enabling redirects
+        if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != '' && env.CANONICAL_REDIRECTS == 'true'
+        run: |
+          if [ -z "$API_ORIGIN" ]; then
+            echo '::error::Configure API_BASE_URL before enabling canonical redirects.'
+            exit 1
+          fi
+          for domain in mathloop.net www.mathloop.net; do
+            endpoint="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/pages/projects/$CLOUDFLARE_PROJECT/domains/$domain"
+            if ! curl -fsS --max-time 15 -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" "$endpoint" \
+              | jq -e --arg domain "$domain" '.success and .result.name == $domain and .result.status == "active"' > /dev/null; then
+              echo "::error::$domain must be Active on the $CLOUDFLARE_PROJECT Pages project."
+              exit 1
+            fi
+          done
+          # A redirect, unrelated homepage or dead API must not pass this gate.
+          [ "$(curl -fsS --max-time 15 -o "$RUNNER_TEMP/apex.html" -w '%{http_code}' "$SITE_URL/")" = 200 ]
+          grep -q '<title>MathLoop</title>' "$RUNNER_TEMP/apex.html"
+          [ "$(curl -fsS --max-time 15 -o "$RUNNER_TEMP/apex-health.json" -w '%{http_code}' "$SITE_URL/api/health")" = 200 ]
+          jq -e '.status == "ok"' "$RUNNER_TEMP/apex-health.json" > /dev/null
+      - name: Verify both API names before switching the upstream
+        if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != '' && env.API_ORIGIN == 'https://api.mathloop.net'
+        run: |
+          for host in api.mathloop.net 92-5-92-72.sslip.io; do
+            [ "$(curl -fsS --max-time 10 -o "$RUNNER_TEMP/oracle-health.json" -w '%{http_code}' "https://$host/health")" = 200 ]
+            jq -e '.status == "ok"' "$RUNNER_TEMP/oracle-health.json" > /dev/null
+          done
+          for origin in "$SITE_URL" https://www.mathloop.net https://mathloop.pages.dev; do
+            headers="$(curl -fsS --max-time 10 -D - -o /dev/null -X OPTIONS "$API_ORIGIN/topics" \
+              -H "Origin: $origin" -H 'Access-Control-Request-Method: GET')"
+            if ! printf '%s\n' "$headers" | tr -d '\r' | grep -Fixq "access-control-allow-origin: $origin"; then
+              echo "::error::The new API must allow $origin."
+              exit 1
+            fi
+          done
       - name: Create the Pages project
         if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != ''
         run: |
@@ -111,30 +155,53 @@ jobs:
         run: |
           # Gives functions/api its upstream; deploying from frontend/ picks up functions/.
           # SUPABASE_* are public; the feedback function uses them to check the sender's session.
-          printf 'name = "%s"\npages_build_output_dir = "dist"\ncompatibility_date = "2026-10-01"\n\n[vars]\nAPI_ORIGIN = "%s"\nSUPABASE_URL = "%s"\nSUPABASE_PUBLISHABLE_KEY = "%s"\n' \
-            "$CLOUDFLARE_PROJECT" "$API_ORIGIN" "$SUPABASE_URL" "$SUPABASE_PUBLISHABLE_KEY" > wrangler.toml
+          printf 'name = "%s"\npages_build_output_dir = "dist"\ncompatibility_date = "2026-10-01"\n\n[vars]\nAPI_ORIGIN = "%s"\nSUPABASE_URL = "%s"\nSUPABASE_PUBLISHABLE_KEY = "%s"\nCANONICAL_REDIRECTS = "%s"\n' \
+            "$CLOUDFLARE_PROJECT" "$API_ORIGIN" "$SUPABASE_URL" "$SUPABASE_PUBLISHABLE_KEY" "$CANONICAL_REDIRECTS" > wrangler.toml
+
+          deploy_legacy() (
+            legacy="$RUNNER_TEMP/mathloop-legacy"
+            mkdir -p "$legacy/functions" "$legacy/dist"
+            cp functions/_middleware.ts "$legacy/functions/"
+            cp dist/_routes.json "$legacy/dist/"
+            printf '/*\n  X-Robots-Tag: noindex\n' > "$legacy/dist/_headers"
+            printf '<!doctype html><title>MathLoop</title>\n' > "$legacy/dist/index.html"
+            cd "$legacy"
+            printf 'name = "%s"\npages_build_output_dir = "dist"\ncompatibility_date = "2026-10-01"\n\n[vars]\nCANONICAL_REDIRECTS = "%s"\n' \
+              "$LEGACY_PROJECT" "$CANONICAL_REDIRECTS" > wrangler.toml
+            npx --yes wrangler@4.147.0 pages deploy dist --project-name "$LEGACY_PROJECT" \
+              --branch main --commit-hash "$GITHUB_SHA"
+          )
+          # On cutover move legacy first. On rollback restore the app first.
+          if [ "$CANONICAL_REDIRECTS" = true ]; then deploy_legacy; fi
           npx --yes wrangler@4.147.0 pages deploy dist --project-name "$CLOUDFLARE_PROJECT" \
             --branch main --commit-hash "$GITHUB_SHA"
-      # Old links (shared problems included) keep working: practiceloop.pages.dev answers every
-      # path with a permanent redirect to the same path on mathloop.pages.dev.
-      - name: Redirect the old address
-        if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != ''
-        run: |
-          mkdir -p "$RUNNER_TEMP/legacy"
-          printf '/* https://%s.pages.dev/:splat 301\n' "$CLOUDFLARE_PROJECT" > "$RUNNER_TEMP/legacy/_redirects"
-          printf '/*\n  X-Robots-Tag: noindex\n' > "$RUNNER_TEMP/legacy/_headers"
-          cd "$RUNNER_TEMP"
-          npx --yes wrangler@4.147.0 pages deploy legacy --project-name "$LEGACY_PROJECT" \
-            --branch main --commit-hash "$GITHUB_SHA"
-      - name: Check the API through pages.dev
+          if [ "$CANONICAL_REDIRECTS" = false ]; then deploy_legacy; fi
+      - name: Check the API through Pages
         if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != '' && env.API_ORIGIN != ''
         run: |
+          origin="https://$CLOUDFLARE_PROJECT.pages.dev"
+          if [ "$CANONICAL_REDIRECTS" = true ]; then origin="$SITE_URL"; fi
           for _ in $(seq 1 20); do
-            curl -fsS --max-time 10 "https://$CLOUDFLARE_PROJECT.pages.dev/api/health" && exit 0
+            if [ "$(curl -fsS --max-time 10 -o "$RUNNER_TEMP/pages-health.json" -w '%{http_code}' "$origin/api/health")" = 200 ] \
+              && jq -e '.status == "ok"' "$RUNNER_TEMP/pages-health.json" > /dev/null; then
+              exit 0
+            fi
             sleep 6
           done
-          echo "::error::https://$CLOUDFLARE_PROJECT.pages.dev/api/health did not answer."
+          echo "::error::$origin/api/health did not return a healthy API response."
           exit 1
+      - name: Verify direct redirects
+        if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != '' && env.CANONICAL_REDIRECTS == 'true'
+        run: |
+          for host in "$CLOUDFLARE_PROJECT.pages.dev" "$LEGACY_PROJECT.pages.dev" www.mathloop.net; do
+            for suffix in '/' '/practice?from=a%2Bb&x=1&x=2' '/api/health?smoke=1' '/robots.txt?smoke=1'; do
+              result="$(curl -fsS --max-time 10 -o /dev/null -w '%{http_code} %{redirect_url}' "https://$host$suffix")"
+              if [ "$result" != "301 $SITE_URL$suffix" ]; then
+                echo "::error::Wrong redirect for $host$suffix: $result"
+                exit 1
+              fi
+            done
+          done
       - name: Report skipped deploy
         if: env.CLOUDFLARE_API_TOKEN == '' || env.CLOUDFLARE_ACCOUNT_ID == ''
         run: echo "::notice::Cloudflare secrets are not set, so the preview was built but not deployed."

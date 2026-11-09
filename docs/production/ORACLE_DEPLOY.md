@@ -4,18 +4,17 @@ The FastAPI backend runs on one Oracle Cloud Free Tier VM. Every push to `main`
 that changes `backend/` or `deploy/oracle/` runs `.github/workflows/backend-deploy.yml`:
 it runs the backend tests, uploads a release over SSH, switches to it, and checks
 `https://<api host>/health`. The frontend on Cloudflare Pages (`preview.yml`) is
-built with `VITE_API_BASE_URL` set to the same address.
+built with `VITE_API_BASE_URL=/api`. Pages forwards to `API_BASE_URL`.
 
 ```
-Browser ── HTTPS ──> mathloop.pages.dev            (Cloudflare Pages, static)
-   └────── HTTPS ──> <ip-with-dashes>.sslip.io:443     (Caddy on the VM, Let's Encrypt)
+Browser ── HTTPS ──> mathloop.net                    (Cloudflare Pages)
+   Pages ── HTTPS ──> api.mathloop.net:443             (Caddy on the VM, Let's Encrypt)
                         └── http ──> 127.0.0.1:8000    (uvicorn, systemd: practiceloop-api)
 ```
 
-There is no domain yet, so the API host is `<ip-with-dashes>.sslip.io`, a public
-DNS name that resolves to the VM's IP and lets Caddy get a real certificate. With a
-domain later, pass it as the third argument to `bootstrap.sh` and update
-`API_BASE_URL`.
+Until cutover, Pages uses `92-5-92-72.sslip.io`. Keep that host during the
+transition and follow [API hostname cutover](#api-hostname-cutover) for the
+existing VM. Bootstrap accepts an explicit API hostname for a fresh VM.
 
 ## On the VM
 
@@ -128,18 +127,73 @@ artifacts or VM snapshots.
 
 ## Browser path
 
-The deployed app never calls sslip.io directly. It calls `/api/*` on
-mathloop.pages.dev, and the Pages Function `frontend/functions/api/[[path]].ts`
-forwards that to `API_BASE_URL`. Campus networks such as eduroam behind a FortiGate
-intercept HTTPS to unfamiliar hosts like sslip.io and break it with their own
-certificate, but leave pages.dev alone.
+The app calls `/api/*` on its own origin. The Pages Function
+`frontend/functions/api/[[path]].ts` forwards to `API_BASE_URL`. The feedback
+function handles `/api/feedback` on Pages itself.
 
 ## CORS
 
 `ALLOWED_ORIGINS` in `/etc/practiceloop/api.env` lists the exact origins the API
-answers (only direct browser calls need it now): `https://mathloop.pages.dev` and the local Vite server
-(`http://localhost:5173`, `http://127.0.0.1:5173`). `*` is ignored. After an edit,
-run `sudo systemctl restart practiceloop-api`.
+answers on direct browser calls. Allow `https://mathloop.net`,
+`https://www.mathloop.net`, and keep `https://mathloop.pages.dev` during rollout.
+Preserve existing localhost entries. `*` is ignored. Bootstrap only seeds a new
+env file, so an administrator must apply the following steps on the existing VM.
+
+## API hostname cutover
+
+1. In Cloudflare DNS add A `api.mathloop.net` → `92.5.92.72`, **DNS only**.
+   Verify the A record resolves to that address before reloading Caddy.
+2. On the VM, back up the current Caddyfile before editing.
+
+   ```sh
+   sudo cp -a /etc/caddy/Caddyfile "/etc/caddy/Caddyfile.before-domain.$(date -u +%Y%m%dT%H%M%SZ)"
+   sudoedit /etc/caddy/Caddyfile
+   ```
+
+   Change only the site label for the existing FastAPI proxy to
+   `92-5-92-72.sslip.io, api.mathloop.net {`. Keep both names on the same block
+   and preserve its headers, protocols and proxy target.
+
+   ```sh
+   sudo caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
+   sudo systemctl reload caddy
+   ```
+
+   Wait for TLS issuance. If validation fails, restore the saved file before
+   attempting a reload. On failure after reload, restore, validate and reload.
+3. Back up the root-only env file and use `sudoedit` to add any missing origins
+   to the existing comma-separated `ALLOWED_ORIGINS` line. The resulting list
+   must include `https://mathloop.net`, `https://www.mathloop.net` and
+   `https://mathloop.pages.dev`. Preserve the current entries and every other
+   setting. Do not print the env file.
+
+   ```sh
+   sudo cp -a /etc/practiceloop/api.env "/etc/practiceloop/api.env.before-domain.$(date -u +%Y%m%dT%H%M%SZ)"
+   sudoedit /etc/practiceloop/api.env
+   sudo systemctl restart practiceloop-api
+   ```
+
+4. From outside the VM, require a direct HTTPS 200 and `{"status":"ok"}` for
+   both hosts. Verify the CORS preflight against the new API host for the apex,
+   www and pages.dev before switching the upstream.
+
+   ```sh
+   for host in api.mathloop.net 92-5-92-72.sslip.io; do
+     curl -fsS -w '\n%{http_code}\n' "https://$host/health"
+   done
+   for origin in https://mathloop.net https://www.mathloop.net https://mathloop.pages.dev; do
+     curl -fsS -D - -o /dev/null -X OPTIONS https://api.mathloop.net/topics \
+       -H "Origin: $origin" -H 'Access-Control-Request-Method: GET'
+   done
+   ```
+
+5. Set the GitHub Actions secret `API_BASE_URL` to `https://api.mathloop.net`.
+   Both deploy workflows give an Actions variable of the same name precedence.
+   If present, remove the stale variable or set it to the same URL. Run Preview
+   on main with `CANONICAL_REDIRECTS` off and verify `/api/health` through Pages.
+   If that fails, restore the old upstream value and rerun Preview. Keep both
+   Caddy names serving during migration. The workflow requires both until the
+   compatibility check is removed in a follow-up.
 
 ## Before adding Supabase credentials (human only)
 

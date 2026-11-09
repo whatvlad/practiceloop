@@ -22,7 +22,7 @@ if [[ $# -lt 2 ]]; then
 fi
 PUBLIC_IP="$1"
 DEPLOY_KEY="$2"
-# No domain yet: sslip.io resolves 1-2-3-4.sslip.io to 1.2.3.4, so Caddy can get a real certificate.
+# If no API hostname is supplied, sslip.io gives the VM a public DNS name for TLS.
 API_HOST="${3:-${PUBLIC_IP//./-}.sslip.io}"
 if [[ ! $PUBLIC_IP =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
   echo "The first argument must be the VM's public IPv4 address." >&2
@@ -96,7 +96,7 @@ install -d -m 755 /etc/practiceloop
 if [[ ! -f /etc/practiceloop/api.env ]]; then
   cat > /etc/practiceloop/api.env <<ENV
 # Exact browser origins allowed by CORS, comma-separated.
-ALLOWED_ORIGINS=https://mathloop.pages.dev,http://localhost:5173,http://127.0.0.1:5173
+ALLOWED_ORIGINS=https://mathloop.net,https://www.mathloop.net,https://mathloop.pages.dev,http://localhost:5173,http://127.0.0.1:5173
 ENV
 fi
 chown root:root /etc/practiceloop/api.env

@@ -48,7 +48,7 @@ and `test_math_worker.py`.
 
 ## Manual: deployed site
 
-On https://mathloop.pages.dev, ideally in a private window:
+On https://mathloop.net (https://mathloop.pages.dev before cutover), ideally in a private window:
 
 1. Sign in with Google. You land back on the site, signed in.
 2. Choose a topic and level, generate a problem.
