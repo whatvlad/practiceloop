@@ -24,7 +24,7 @@ export function SupportNotice({ url = SUPPORT_URL }: { url?: string }) {
       <p className="pl-support-title">Enjoying MathLoop?</p>
       <p className="pl-small pl-muted pl-m-0">It is free and has no ads. If it helps you, you can support the project.</p>
       <div className="pl-support-actions">
-        <Link className={buttonClass({ size: 'sm' })} to={SUPPORT_PATH} onClick={close}>Support</Link>
+        <Link className={buttonClass({ size: 'sm' })} to={SUPPORT_PATH} onClick={close}>Support us</Link>
         <button type="button" className={buttonClass({ variant: 'ghost', size: 'sm' })} onClick={close}>Not now</button>
       </div>
     </aside>

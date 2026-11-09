@@ -17,7 +17,7 @@ export function SiteFooter({ supportUrl = SUPPORT_URL }: { supportUrl?: string }
           <Link to="/privacy">Privacy</Link>
           <Link to="/terms">Terms</Link>
           <Link to={FEEDBACK_PATH}>Feedback</Link>
-          {supportUrl && <Link to={SUPPORT_PATH}>Support</Link>}
+          {supportUrl && <Link to={SUPPORT_PATH}>Support us</Link>}
           <CookieSettingsLink />
         </nav>
       </div>
