@@ -26,9 +26,16 @@ html,body,#root{min-height:100%}
 .pl-gap-4{gap:var(--space-4)}
 .pl-gap-5{gap:var(--space-5)}
 .pl-spacer{flex:1}
-.pl-fade{animation:pl-fade .15s ease-out}
-@keyframes pl-fade{from{opacity:0}to{opacity:1}}
-@media (prefers-reduced-motion:reduce){.pl-fade{animation:none}}
+/* Motion, kept small: a page or a result enters once, a pressed control gives a little.
+   Movement and blur run only without reduced motion; with it, things fade in place. */
+@keyframes pl-fade{from{opacity:0}}
+@keyframes pl-enter{from{opacity:0;transform:translateY(12px);filter:blur(4px)}}
+.pl-fade,main#main{animation:pl-fade .3s ease-out backwards}
+@media (prefers-reduced-motion:no-preference){
+  .pl-fade,main#main{animation-name:pl-enter}
+  .pl-btn,.pl-chip,.pl-seg button,.pl-rlevel,.pl-rtile-toggle,.pl-avatar-link{transition-property:background-color,border-color,color,scale;transition-duration:.15s;transition-timing-function:ease-out}
+  .pl-btn:not(:disabled):active,.pl-chip:not(:disabled):active,.pl-seg button:not(:disabled):active,.pl-rlevel:not(:disabled):active,.pl-avatar-link:active{scale:.96}
+}
 
 /* components */
 .pl-nav--bare{border-bottom:0}
