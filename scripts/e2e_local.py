@@ -318,8 +318,8 @@ def full_flow(api: httpx.Client, url: str) -> list[str]:
     probability = {t["slug"] for t in topics["items"] if t["area"] == "probability-statistics"}
     cells += [(slug, level, {}) for slug in sorted(probability) for level in range(2, 6)]
     check(
-        len(cells) == 128 and len(probability) == 9,
-        "49 topics, area mixes and all Analysis I/II plus Probability and Statistics cells",
+        len(cells) == 129 and len(probability) == 9,
+        "50 topics, area mixes and all Analysis I/II plus Probability and Statistics cells",
         len(cells),
     )
     created: list[str] = []
