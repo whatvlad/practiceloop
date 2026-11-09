@@ -1,4 +1,4 @@
-# PracticeLoop
+# MathLoop
 
 A mathematics practice platform with rule-based problem generation, symbolic
 answer verification and personal practice history. The MVP covers Integration:
