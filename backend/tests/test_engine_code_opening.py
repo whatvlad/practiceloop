@@ -11,6 +11,7 @@ from fastapi.testclient import TestClient
 
 from app.api import codes
 from app.core.auth import current_user
+from app.engine import catalogue
 from app.engine import practice as engine_practice
 from app.engine.catalogue import StoredProblem
 from app.engine.codes import encode, parse_code
@@ -129,13 +130,32 @@ def test_invalid_unknown_and_wrong_checksum_codes_fail_before_symbolic_work(
 
 
 @pytest.mark.skipif(sys.platform != "linux", reason="Linux resource limits")
-@pytest.mark.parametrize(
-    "sample", [s[0] for s in GOLDEN.values()], ids=lambda sample: sample["code"]
-)
-def test_each_version_rebuilds_in_the_limited_worker(sample: dict[str, Any]) -> None:
-    opened = OpenedCode.model_validate_json(open_problem_code(sample["code"]))
-    assert opened.problem.statement == statement_latex(sample["statement"])
-    assert opened.problem.answer_latex == sample["answer_latex"]
+@pytest.mark.parametrize("version", sorted(GOLDEN))
+def test_each_version_rebuilds_in_the_limited_worker(version: str) -> None:
+    # A served golden draw when there is one, otherwise a stored catalogue code.
+    sample = next((s for s in GOLDEN[version] if _served(s["code"]) is not None), None)
+    if sample is not None:
+        code, statement = sample["code"], statement_latex(sample["statement"])
+        answer = sample["answer_latex"]
+    else:
+        stored = next(
+            (
+                problem
+                for cell in catalogue.load().cells
+                for problem in cell.problems
+                if problem.generator_version == version
+            ),
+            None,
+        )
+        if stored is None:
+            # Superseded catalogue-only versions: no practice view serves them, so the
+            # worker refuses their codes like any unknown code.
+            assert open_problem_code(GOLDEN[version][0]["code"]) == b"invalid_code"
+            return
+        code, statement, answer = stored.code, stored.statement, stored.answer_latex
+    opened = OpenedCode.model_validate_json(open_problem_code(code))
+    assert opened.problem.statement == statement
+    assert opened.problem.answer_latex == answer
 
 
 def test_code_worker_failure_is_retryable_and_releases_the_shared_slot(
