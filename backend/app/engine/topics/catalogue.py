@@ -126,6 +126,10 @@ def _modulus_practice_level(level: int, params: Drawn) -> bool:
     )
 
 
+def _local_level(level: int, params: Drawn) -> bool:
+    return getattr(params, "level", None) == level
+
+
 @dataclass(frozen=True, slots=True)
 class Choice:
     generator: str
@@ -174,7 +178,46 @@ class Topic:
         choice = choices[rng.randbelow(len(choices))]
         generator = generators.get(choice.generator)
         for _ in range(MAX_DRAWS):
-            params = generator.draw(rng.randbelow(10**16))
+            seed = rng.randbelow(10**16)
+            if choice.generator == "local-rank-v1":
+                from app.engine.algebra_practice.rank import rank_seed
+
+                seed = rank_seed(level, 2 + rng.randbelow(4), 2 + rng.randbelow(4), seed % 10**12)
+            elif choice.generator in {
+                "local-determinant-v4",
+                "local-inverse-v1",
+                "local-system-v1",
+            }:
+                from app.engine.algebra_practice.local_determinant_generator import determinant_seed
+
+                seed = determinant_seed(level, 2 + rng.randbelow(4), seed % 10**12)
+            elif choice.generator in {
+                "local-complex-v1",
+                "local-polynomial-division-v1",
+                "local-polynomial-scalar-v1",
+                "local-conversion-v1",
+                "local-conversion-polar-v1",
+                "local-polynomial-roots-v1",
+                "local-partial-fractions-v1",
+            }:
+                from app.engine.algebra_practice.catalogue_seeds import mode_seeds
+
+                candidates = tuple(
+                    item[2]
+                    for item in mode_seeds(self.slug, level, seed % 10**12)
+                    if item[1] == choice.generator
+                )
+                seed = candidates[rng.randbelow(len(candidates))]
+            elif choice.generator in {"local-matrix-sized-v1", "local-matrix-division-v3"}:
+                from app.engine.algebra_practice.catalogue_seeds import matrix_seeds
+
+                candidates = tuple(matrix_seeds(level, seed % 10**12))
+                if choice.generator == "local-matrix-division-v3":
+                    candidates = tuple(
+                        value for value in candidates if value // 10**12 // (3 * 5**4) == 3
+                    )
+                seed = candidates[rng.randbelow(len(candidates))]
+            params = generator.draw(seed)
             if not choice.predicate(params):
                 continue
             try:
@@ -619,6 +662,68 @@ def topics() -> dict[str, Topic]:
                 space_cm=6,
                 served=True,
             )
+    matrix = declared["matrix-operations"]
+    declared["matrix-operations"] = replace(
+        matrix,
+        levels={
+            level: (
+                *choices,
+                Choice("local-matrix-sized-v1", partial(_local_level, level)),
+                Choice("local-matrix-division-v3", partial(_local_level, level)),
+            )
+            for level, choices in matrix.levels.items()
+        },
+    )
+    rank = declared["matrix-rank"]
+    rank_levels = dict(rank.levels)
+    for level in (1, 2, 3):
+        rank_levels[level] = (
+            *rank_levels.get(level, ()),
+            Choice("local-rank-v1", partial(_local_level, level)),
+        )
+    declared["matrix-rank"] = replace(rank, levels=rank_levels)
+    declared["complex-conversion"] = Topic(
+        "complex-conversion",
+        "algebra",
+        {
+            level: (
+                Choice("local-conversion-v1", partial(_local_level, level)),
+                Choice("local-conversion-polar-v1", partial(_local_level, level)),
+            )
+            for level in (1, 2, 3)
+        },
+        0,
+        title="Converting complex forms",
+        space_cm=5,
+        served=True,
+    )
+    for slug, versions in (
+        ("complex-arithmetic", ("local-complex-v1",)),
+        ("polynomial-division", ("local-polynomial-division-v1", "local-polynomial-scalar-v1")),
+        ("polynomial-roots", ("local-polynomial-roots-v1",)),
+        ("partial-fractions", ("local-partial-fractions-v1",)),
+    ):
+        topic = declared[slug]
+        combined = dict(topic.levels)
+        for level in (1, 2, 3):
+            combined[level] = (
+                *combined.get(level, ()),
+                *(Choice(version, partial(_local_level, level)) for version in versions),
+            )
+        declared[slug] = replace(topic, levels=combined)
+    for slug, version in (
+        ("determinants", "local-determinant-v4"),
+        ("inverse-matrices", "local-inverse-v1"),
+        ("linear-systems", "local-system-v1"),
+    ):
+        topic = declared[slug]
+        combined = dict(topic.levels)
+        for level in (1, 2, 3):
+            combined[level] = (
+                *combined.get(level, ()),
+                Choice(version, partial(_local_level, level)),
+            )
+        declared[slug] = replace(topic, levels=combined)
     return declared
 
 

@@ -2,6 +2,7 @@ import { useEffect, useState, useSyncExternalStore } from 'react';
 import { ApiStatusNotice } from './components/ApiStatusNotice';
 import { AppNav, Logo, PublicNav } from './components/AppNav';
 import { PracticeSidebar } from './components/PracticeSidebar';
+import { LocalRandomPractice } from './components/LocalRandomPractice';
 import { matrixOptionsFromSearch } from './components/MatrixSettings';
 import { modulusModeFromSearch } from './components/ModulusSettings';
 import { ButtonLink } from './components/Button';
@@ -25,7 +26,7 @@ import { applyPageMeta, siteConfig } from './site';
 
 const SITE = siteConfig(import.meta.env.VITE_SITE_URL, import.meta.env.VITE_SITE_INDEXABLE);
 
-const APP_ROUTES = new Set(['/dashboard', '/practice', '/history', '/profile']);
+const APP_ROUTES = new Set(['/dashboard', '/practice', '/history', '/profile', '/algebra-random']);
 // Pages whose main column is .pl-wrap--narrow (760px) instead of the full 1120px.
 const NARROW_ROUTES = new Set(['/practice', '/profile']);
 const TOPIC_RETURN = 'practiceloop:topic-return';
@@ -154,13 +155,14 @@ export function App() {
           <p className="pl-small pl-muted" role="status">Problems, attempts and reveals are saved to your account.</p>
           {auth.error && <p className="pl-result pl-result--invalid" role="alert">{auth.error}</p>}
         </section>
-        {(pathname === '/dashboard' || pathname === '/practice') && <div className="pl-workspace">
+        {(pathname === '/dashboard' || pathname === '/practice' || pathname === '/algebra-random') && <div className="pl-workspace">
         <PracticeSidebar accountId={account.id} />
         <div className="pl-workspace-content">
         {pathname === '/dashboard' && (params.has('topic')
           ? <DashboardPage key={`${params.get('area')}:${params.get('topic')}`} initialArea={params.get('area') === 'algebra' ? 'algebra' : params.get('area') === 'probability-statistics' ? 'probability-statistics' : 'mathematical-analysis'} initialTopic={params.get('topic') ?? undefined} />
           : <CurriculumPage />)}
-        {pathname === '/practice' && (params.has('id') ? <PracticePage key={params.get('id')} id={params.get('id')} randomAccountId={params.get('mode') === 'random' ? account.id : undefined} matrixOptions={matrixOptionsFromSearch(params)} modulusMode={modulusModeFromSearch(params)} /> : <CurriculumPage />)}
+        {pathname === '/practice' && (params.has('id') ? <PracticePage key={params.get('id')} id={params.get('id')} randomAccountId={params.get('mode') === 'random' ? account.id : undefined} algebraRandomAccountId={params.get('mode') === 'algebra-random' ? account.id : undefined} matrixOptions={matrixOptionsFromSearch(params)} modulusMode={modulusModeFromSearch(params)} /> : <CurriculumPage />)}
+        {pathname === '/algebra-random' && <LocalRandomPractice accountId={account.id} />}
         </div></div>}
         {pathname === '/history' && <HistoryPage />}
         {pathname === '/profile' && <ProfilePage account={account} onLogOut={handleLogOut} onDeleted={handleDeleted} busy={auth.working} />}

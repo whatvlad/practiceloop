@@ -71,11 +71,33 @@ def render(task: Task, generators: Registry) -> Issued:
         built = build_visual(generator.draw(code.seed))
         if built is not None:
             visual = validate_visual(built)
+    elif generator.version in {
+        "local-complex-v1",
+        "local-conversion-v1",
+        "local-conversion-polar-v1",
+        "complex-argument-v1",
+        "complex-de-moivre-v1",
+        "complex-root-v1",
+    }:
+        from app.engine.algebra_practice.complex_visual import complex_visual
+        from app.engine.codes import parse_code
+        from app.visuals.complex_plane import validate_visual
+
+        code = parse_code(task.code, generators)
+        built = complex_visual(generator, generator.draw(code.seed), task)
+        if built is not None:
+            visual = validate_visual(built)
     steps = []
     for step in task.steps:
         if step.text_key not in step_text:
             raise ValueError(f"No learner text for step {step.text_key}")
         steps.append({"say": step_text[step.text_key], "latex": step.latex})
+    if generator.version == "complex-de-moivre-v1":
+        from app.engine.algebra_practice.polar_steps import de_moivre_steps
+        from app.engine.codes import parse_code
+
+        code = parse_code(task.code, generators)
+        steps = de_moivre_steps(generator.draw(code.seed))
     return Issued(
         statement=statement_latex(task.statement),
         record={"generator_version": task.generator_version, "code": task.code},

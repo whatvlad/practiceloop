@@ -11,6 +11,48 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, ConfigDict, Field
 
 from app.api.practice import MatrixOptions
+from app.engine.algebra_practice.local_complex_generator import LocalComplexGenerator, complex_seed
+from app.engine.algebra_practice.local_conversion_generator import (
+    DIRECTIONS,
+    LocalConversionGenerator,
+    LocalConversionToPolarGenerator,
+)
+from app.engine.algebra_practice.local_determinant_generator import (
+    ColoredDeterminantGenerator,
+    DetailedDeterminantGenerator,
+    ExplainedDeterminantGenerator,
+    LocalDeterminantGenerator,
+    determinant_seed,
+)
+from app.engine.algebra_practice.local_inverse_generator import LocalInverseGenerator, inverse_seed
+from app.engine.algebra_practice.local_matrix_generator import (
+    VARIATIONS,
+    LeveledMatrixDivisionGenerator,
+    LocalMatrixDivisionGenerator,
+    LocalMatrixGenerator,
+    make_seed,
+)
+from app.engine.algebra_practice.local_polynomial_extras import (
+    KINDS,
+    PartialFractionsExtras,
+    PolynomialExtras,
+)
+from app.engine.algebra_practice.local_polynomial_generator import (
+    MODES,
+    LocalPolynomialGenerator,
+    LocalPolynomialScalarGenerator,
+)
+from app.engine.algebra_practice.local_polynomial_generator import (
+    RULES as POLYNOMIAL_RULES,
+)
+from app.engine.algebra_practice.local_polynomial_roots_generator import (
+    RULES as POLYNOMIAL_ROOT_RULES,
+)
+from app.engine.algebra_practice.local_polynomial_roots_generator import (
+    LocalPolynomialRootsGenerator,
+)
+from app.engine.algebra_practice.local_system_generator import LocalSystemGenerator, system_seed
+from app.engine.algebra_practice.rank import LocalRankGenerator, rank_seed
 from app.engine.algebra_practice.selection import modulus_selection
 from app.engine.codes import parse_code
 from app.engine.generators.catalogue import registry
@@ -20,48 +62,10 @@ from app.engine.rendering import render
 from app.engine.topics.catalogue import topics
 from app.math_input.parser import MathInputError, MathNode
 from app.math_input.structured import parse_answer_input
-from local_complex_generator import LocalComplexGenerator, complex_seed
 from local_complex_visual import complex_visual
-from local_conversion_generator import (
-    DIRECTIONS,
-    LocalConversionGenerator,
-    LocalConversionToPolarGenerator,
-)
-from local_determinant_generator import (
-    ColoredDeterminantGenerator,
-    DetailedDeterminantGenerator,
-    ExplainedDeterminantGenerator,
-    LocalDeterminantGenerator,
-    determinant_seed,
-)
-from local_inverse_generator import LocalInverseGenerator, inverse_seed
-from local_matrix_generator import (
-    VARIATIONS,
-    LeveledMatrixDivisionGenerator,
-    LocalMatrixDivisionGenerator,
-    LocalMatrixGenerator,
-    make_seed,
-)
 from local_modulus_generator import LocalModulusCircle, LocalModulusGenerator, LocalModulusPractice
 from local_polar_steps import de_moivre_steps
-from local_polynomial_extras import KINDS, PartialFractionsExtras, PolynomialExtras
-from local_polynomial_generator import (
-    MODES,
-    LocalPolynomialGenerator,
-    LocalPolynomialScalarGenerator,
-)
-from local_polynomial_generator import (
-    RULES as POLYNOMIAL_RULES,
-)
-from local_polynomial_roots_generator import (
-    RULES as POLYNOMIAL_ROOT_RULES,
-)
-from local_polynomial_roots_generator import (
-    LocalPolynomialRootsGenerator,
-)
-from local_rank_generator import LocalRankGenerator, rank_seed
 from local_solution_rules import ARGUMENT, DEMOIVRE, MODULUS, POLAR, complex_rules
-from local_system_generator import LocalSystemGenerator, system_seed
 
 app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 
@@ -116,25 +120,7 @@ class Check(Code):
 @cache
 def _registry():
     result = registry()
-    result.register(LocalMatrixGenerator())
-    result.register(LocalMatrixDivisionGenerator())
-    result.register(LeveledMatrixDivisionGenerator())
-    result.register(LocalDeterminantGenerator())
-    result.register(DetailedDeterminantGenerator())
-    result.register(ColoredDeterminantGenerator())
-    result.register(ExplainedDeterminantGenerator())
-    result.register(LocalInverseGenerator())
-    result.register(LocalRankGenerator())
-    result.register(LocalSystemGenerator())
-    result.register(LocalComplexGenerator())
     result.register(LocalModulusGenerator())
-    result.register(LocalConversionGenerator())
-    result.register(LocalConversionToPolarGenerator())
-    result.register(LocalPolynomialGenerator())
-    result.register(LocalPolynomialScalarGenerator())
-    result.register(LocalPolynomialRootsGenerator())
-    result.register(PolynomialExtras())
-    result.register(PartialFractionsExtras())
     return result
 
 
@@ -491,6 +477,8 @@ def generate(body: Generate):
             body.level, secrets.randbelow(10**16), _registry()
         )
         record = {"code": task.code, "generator_version": task.generator_version}
+        if body.matrixOptions is not None and task.generator_version.startswith("local-matrix-"):
+            continue
         if body.matrixOptions is None or matrix_classification(record) == (
             body.matrixOptions.operation,
             body.matrixOptions.size,

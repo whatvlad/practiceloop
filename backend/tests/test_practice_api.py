@@ -32,6 +32,78 @@ from app.services.math_worker import AnswerCheck, MathCheckInconclusive, MathWor
 pytestmark = pytest.mark.db
 
 
+@pytest.mark.parametrize(
+    "body",
+    [
+        {
+            "topic": "matrix-operations",
+            "difficulty": 2,
+            "matrixDimensions": {
+                "operation": "multiply",
+                "rowsA": 2,
+                "colsA": 3,
+                "rowsB": 3,
+                "colsB": 4,
+            },
+        },
+        {"topic": "determinants", "difficulty": 1, "squareSize": 5},
+        {"topic": "inverse-matrices", "difficulty": 1, "squareSize": 3},
+        {"topic": "matrix-rank", "difficulty": 1, "rankDimensions": {"rows": 3, "columns": 5}},
+        {"topic": "linear-systems", "difficulty": 1, "squareSize": 3},
+        {"topic": "complex-arithmetic", "difficulty": 1, "exerciseMode": "divide"},
+        {"topic": "complex-numbers", "difficulty": 1, "modulusMode": "geometry"},
+        {"topic": "complex-conversion", "difficulty": 1, "exerciseMode": "alg-trig"},
+        {"topic": "complex-polar-form", "difficulty": 2, "exerciseMode": "power"},
+        {"topic": "polynomial-division", "difficulty": 1, "exerciseMode": "division"},
+        {"topic": "polynomial-roots", "difficulty": 1, "exerciseMode": "roots"},
+        {"topic": "partial-fractions", "difficulty": 1, "exerciseMode": "fractions"},
+    ],
+)
+def test_algebra_settings_are_saved_and_reopened(
+    client: TestClient, body: dict[str, Any], url: str, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from app.math_input import MathInputError, parse_answer_input
+
+    def check_locally(answer: str, record: dict[str, object]) -> AnswerCheck:
+        try:
+            tree = parse_answer_input(
+                answer,
+                engine.input_kind(record),
+                engine.input_variables(record),
+                contract=engine.input_contract(record),
+            )
+        except MathInputError:
+            return AnswerCheck("invalid")
+        outcome = engine.check(record, tree)
+        assert outcome in ("correct", "incorrect", "invalid")
+        return AnswerCheck(outcome)
+
+    monkeypatch.setattr(practice, "shared_check", check_locally)
+    created = client.post("/problems", json=body, headers=key())
+    assert created.status_code == 201, created.text
+    problem = created.json()["problem"]
+    opened = client.get(f"/problems/{problem['id']}")
+    assert opened.status_code == 200, opened.text
+    for field in (
+        "matrixDimensions",
+        "rankDimensions",
+        "squareSize",
+        "modulusMode",
+        "exerciseMode",
+    ):
+        if field in body:
+            assert opened.json()["problem"][field] == body[field]
+    wrong = attempt(client, problem["id"], answer_of(url, problem["id"], wrong=True))
+    assert wrong.status_code == 201, wrong.text
+    assert wrong.json()["attempt"]["result"] != "correct"
+    submitted = attempt(client, problem["id"], answer_of(url, problem["id"]))
+    assert submitted.status_code == 201, submitted.text
+    assert submitted.json()["attempt"]["result"] == "correct"
+    revealed = client.post(f"/problems/{problem['id']}/reveal-solution")
+    assert revealed.status_code == 200, revealed.text
+    assert revealed.json()["steps"]
+
+
 class Users:
     def __init__(self) -> None:
         self.alice = uuid4()
@@ -717,7 +789,7 @@ def test_topics_lists_only_generated_cells(client: TestClient) -> None:
         ("determinants", [1, 2, 3, 4]),
         ("inverse-matrices", [1, 2, 3]),
         ("linear-systems", [1, 2, 3, 4, 5]),
-        ("matrix-rank", [1, 2]),
+        ("matrix-rank", [1, 2, 3]),
         ("complex-arithmetic", [1, 2, 3, 4, 5]),
         ("complex-polar-form", [1, 2, 3]),
         ("binomial-theorem", [1, 2, 3]),
@@ -727,6 +799,7 @@ def test_topics_lists_only_generated_cells(client: TestClient) -> None:
         ("lines-and-planes", [1, 2, 3, 4, 5]),
         ("matrix-operations", [1, 2, 3]),
         ("real-inequalities", [3, 4]),
+        ("complex-conversion", [1, 2, 3]),
         ("basic-integrals", [1, 2, 3, 4, 5]),
         ("substitution", [1, 2, 3, 4, 5]),
         ("integration-by-parts", [1, 2, 3]),

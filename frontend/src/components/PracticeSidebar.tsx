@@ -78,6 +78,7 @@ export function PracticeSidebar({ preview, accountId = 'local-preview', onLocalR
     <aside className="pl-practice-sidebar" aria-label="Practice topics">
       <p className="pl-label">Practice topics</p>
       <button type="button" className="pl-btn pl-btn--secondary pl-random-toggle" aria-pressed={randomMode} onClick={() => onLocalRandom ? onLocalRandom() : setRandomMode(!randomMode)}>Random problems</button>
+      {!preview && <Link to="/algebra-random">Random algebra with settings</Link>}
       {catalogue.status === 'loading' && <p role="status">Loading topics…</p>}
       {catalogue.status === 'error' && <p role="alert">Topics could not be loaded.</p>}
       {catalogue.status === 'ready' && <>

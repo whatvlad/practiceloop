@@ -94,6 +94,10 @@ export interface CheckOutcome {
 export type AttemptResult = CheckResult | null;
 
 export interface PublicProblem {
+  exerciseMode?: 'multiply' | 'divide' | 'division' | 'remainder' | 'divisibility' | 'alg-trig' | 'alg-exp' | 'trig-alg' | 'exp-alg' | 'roots' | 'fractions' | 'argument' | 'power' | 'root';
+  squareSize?: number;
+  matrixDimensions?: MatrixDimensions;
+  rankDimensions?: { rows: number; columns: number };
   modulusMode?: 'expression' | 'properties' | 'geometry';
   answerInput?: AnswerInputSpec;
   attemptCount?: number;
@@ -112,6 +116,11 @@ export interface PublicProblem {
   lastAnswer: string | null;
   /** The worksheet that created this problem (ADR-007), or null. */
   worksheetId?: string | null;
+}
+
+export interface MatrixDimensions {
+  operation: 'add' | 'subtract' | 'multiply' | 'divide';
+  rowsA: number; colsA: number; rowsB: number; colsB: number;
 }
 
 export interface RevealedAnswer {

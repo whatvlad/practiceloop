@@ -23,7 +23,7 @@ jobs:
   deploy:
     name: Test and deploy
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 45
     env:
       ORACLE_SSH_KEY: ${{ secrets.ORACLE_SSH_KEY }}
       ORACLE_HOST: ${{ vars.ORACLE_HOST || secrets.ORACLE_HOST }}

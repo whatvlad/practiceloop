@@ -175,6 +175,25 @@ are accepted; unsupported combinations and options on other topics return 422.
 Rectangular multiplication currently uses a 2×3 matrix times a 3×2 matrix.
 Omitting `matrixOptions` retains the existing mixed selection for the topic.
 
+For the algebra practice settings, use exactly one of these optional fields with
+difficulty 1–3; incompatible settings return 422:
+
+- `matrixDimensions`: `operation` (`add`, `subtract`, `multiply`, `divide`) and
+  `rowsA`, `colsA`, `rowsB`, `colsB` (1–5), with compatible matrix dimensions.
+- `rankDimensions`: `rows` and `columns` (2–5), for `matrix-rank`.
+- `squareSize`: integer 2–5, for `determinants`, `inverse-matrices` or `linear-systems`.
+- `modulusMode`: `expression`, `properties` or `geometry`, for `complex-numbers`.
+- `exerciseMode`: `multiply` or `divide` for `complex-arithmetic`; `alg-trig`,
+  `alg-exp`, `trig-alg` or `exp-alg` for `complex-conversion`; `argument`, `power`
+  or `root` for `complex-polar-form`; `division`, `remainder` or `divisibility`
+  for `polynomial-division`; `roots` for `polynomial-roots`; and `fractions` for
+  `partial-fractions`.
+
+The selected settings are returned with saved problems so a later request can
+generate another problem with the same settings. The local algebra random
+selector stores each account's choices on the device; generated problems are
+saved to that account.
+
 Returns `201` and the shared problem shape after the public problem, private
 solution and idempotency record commit atomically. An exact replay returns the
 same status/body with `Idempotency-Replayed: true` and creates no second problem.

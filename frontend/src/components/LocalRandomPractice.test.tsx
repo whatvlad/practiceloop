@@ -4,6 +4,15 @@ import { createRoot } from 'react-dom/client';
 import { expect, it, vi } from 'vitest';
 import { LocalRandomPractice } from './LocalRandomPractice';
 
+it('offers saved algebra random practice for signed-in accounts', async () => {
+  (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
+  const host = document.createElement('div'); document.body.append(host); const root = createRoot(host);
+  await act(async () => root.render(<LocalRandomPractice accountId="student" />));
+  expect(host.querySelector('section')?.getAttribute('aria-label')).toBe('Random algebra practice');
+  expect(host.textContent).toContain('Choose topics');
+  await act(async () => root.unmount()); host.remove();
+});
+
 it('generates and continues a saved selection without a signed-in account', async () => {
   (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
   localStorage.clear();

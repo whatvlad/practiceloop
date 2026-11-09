@@ -8,7 +8,7 @@ worked in `Order`. Post-MVP work is the open queue (#30 roadmap and its stages).
 
 Where each part is documented:
 
-The current 49 public topics use the native engine, and permanent
+The current 50 public topics use the native engine, and permanent
 problem codes open at `/p/<code>` (#198). #199 removes the obsolete runtime and
 records the final ADR-008; #162 is the parent completion audit. Future curriculum
 issues remain separate. #145 adds the full bounded Analysis I matrix, reusing

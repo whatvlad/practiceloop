@@ -29,7 +29,8 @@ def test_every_declared_cell_is_full_and_every_code_replays_its_stored_fields() 
         (slug, level) for slug, entry in topics().items() for level in entry.levels
     }
     for cell in stored.cells:
-        assert len(cell.problems) == len({p.code for p in cell.problems}) == catalogue.POOL_SIZE
+        expected_size = catalogue.POOL_SIZE + (400 if cell.topic == "matrix-operations" else 0)
+        assert len(cell.problems) == len({p.code for p in cell.problems}) == expected_size
         for problem in cell.problems:
             issued = problem.issued()
             assert engine.public_replay(issued.record) == issued
@@ -60,7 +61,9 @@ def test_cold_symbolic_issuing_and_worksheet_preparation_call_no_sympy(
                 statement, solution = worksheets._prepare(record)
                 assert statement and solution.answer_latex and solution.solution_steps
                 assert issued.record in [p.issued().record for p in engine.pool(slug, level)]
-                assert practice.capacity(slug, level) == catalogue.POOL_SIZE
+                assert practice.capacity(slug, level) == catalogue.POOL_SIZE + (
+                    400 if slug == "matrix-operations" else 0
+                )
     finally:
         sys.setprofile(previous)
     assert calls == []

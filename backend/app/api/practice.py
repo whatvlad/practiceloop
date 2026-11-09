@@ -139,6 +139,21 @@ class MatrixOptions(BaseModel):
     size: Literal["2x2", "3x3", "rectangular"]
 
 
+class RankDimensions(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True)
+    rows: int = Field(ge=2, le=5)
+    columns: int = Field(ge=2, le=5)
+
+
+class MatrixDimensions(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True)
+    operation: Literal["add", "subtract", "multiply", "divide"]
+    rowsA: int = Field(ge=1, le=5)
+    colsA: int = Field(ge=1, le=5)
+    rowsB: int = Field(ge=1, le=5)
+    colsB: int = Field(ge=1, le=5)
+
+
 class GenerateBody(BaseModel):
     model_config = ConfigDict(extra="forbid", strict=True)
     topic: str = Field(min_length=1, max_length=64)
@@ -147,6 +162,28 @@ class GenerateBody(BaseModel):
     area: str | None = Field(default=None, min_length=1, max_length=64)
     matrixOptions: MatrixOptions | None = None
     modulusMode: Literal["expression", "properties", "geometry"] | None = None
+    rankDimensions: RankDimensions | None = None
+    matrixDimensions: MatrixDimensions | None = None
+    squareSize: int | None = Field(default=None, ge=2, le=5)
+    exerciseMode: (
+        Literal[
+            "multiply",
+            "divide",
+            "division",
+            "remainder",
+            "divisibility",
+            "alg-trig",
+            "alg-exp",
+            "trig-alg",
+            "exp-alg",
+            "roots",
+            "fractions",
+            "argument",
+            "power",
+            "root",
+        ]
+        | None
+    ) = None
 
 
 class AttemptBody(BaseModel):
@@ -432,6 +469,58 @@ def generate(body: GenerateBody, user: User, key: IdempotencyKey = None) -> JSON
         idempotency.request_hash(body.model_dump(exclude_none=True)),
     )
     topic = body.topic
+    if body.exerciseMode is not None and (
+        body.difficulty not in (1, 2, 3)
+        or body.exerciseMode
+        not in {
+            "complex-arithmetic": {"multiply", "divide"},
+            "polynomial-division": {"division", "remainder", "divisibility"},
+            "complex-conversion": {"alg-trig", "alg-exp", "trig-alg", "exp-alg"},
+            "polynomial-roots": {"roots"},
+            "partial-fractions": {"fractions"},
+            "complex-polar-form": {"argument", "power", "root"},
+        }.get(topic, set())
+        or any(
+            value is not None
+            for value in (
+                body.matrixOptions,
+                body.matrixDimensions,
+                body.rankDimensions,
+                body.modulusMode,
+                body.squareSize,
+            )
+        )
+    ):
+        raise _invalid()
+    if body.squareSize is not None and (
+        topic not in ("determinants", "inverse-matrices", "linear-systems")
+        or body.difficulty not in (1, 2, 3)
+        or any(
+            value is not None
+            for value in (
+                body.matrixOptions,
+                body.matrixDimensions,
+                body.rankDimensions,
+                body.modulusMode,
+            )
+        )
+    ):
+        raise _invalid()
+    if body.matrixDimensions is not None and (
+        topic != "matrix-operations"
+        or body.difficulty not in (1, 2, 3)
+        or body.matrixOptions is not None
+        or body.rankDimensions is not None
+        or body.modulusMode is not None
+    ):
+        raise _invalid()
+    if body.rankDimensions is not None and (
+        topic != "matrix-rank"
+        or body.difficulty not in (1, 2, 3)
+        or body.matrixOptions is not None
+        or body.modulusMode is not None
+    ):
+        raise _invalid()
     if body.modulusMode is not None and (
         topic != "complex-numbers" or body.difficulty not in (1, 2, 3)
     ):
@@ -462,7 +551,29 @@ def generate(body: GenerateBody, user: User, key: IdempotencyKey = None) -> JSON
             conn, user.id, topic, body.difficulty, len(engine.pool(topic, body.difficulty)) // 2
         )
         try:
-            if body.matrixOptions:
+            if body.exerciseMode is not None:
+                issued = engine.issue(
+                    topic, body.difficulty, recent=tuple(recent), exercise_mode=body.exerciseMode
+                )
+            elif body.squareSize is not None:
+                issued = engine.issue(
+                    topic, body.difficulty, recent=tuple(recent), square_size=body.squareSize
+                )
+            elif body.matrixDimensions:
+                issued = engine.issue(
+                    topic,
+                    body.difficulty,
+                    recent=tuple(recent),
+                    matrix_dimensions=body.matrixDimensions.model_dump(),
+                )
+            elif body.rankDimensions:
+                issued = engine.issue(
+                    topic,
+                    body.difficulty,
+                    recent=tuple(recent),
+                    rank_dimensions=body.rankDimensions.model_dump(),
+                )
+            elif body.matrixOptions:
                 issued = engine.issue(
                     topic,
                     body.difficulty,
@@ -496,6 +607,7 @@ def generate(body: GenerateBody, user: User, key: IdempotencyKey = None) -> JSON
                     "difficulty": problem.difficulty,
                     "problemLatex": problem.problem_latex,
                     **engine.input_projection(problem.generator_data),
+                    **engine.public_settings(problem.generator_data),
                     "createdAt": _timestamp(problem.created_at),
                     "answerRevealed": problem.answer_revealed,
                     "solutionRevealed": problem.solution_revealed,
