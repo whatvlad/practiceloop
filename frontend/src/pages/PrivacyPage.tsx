@@ -3,6 +3,7 @@ import { Button } from '../components/Button';
 import { cookiebotEnabled, openCookieSettings } from '../cookieConsent';
 import { CONTACT_EMAIL, LEGAL_UPDATED, OPERATOR } from '../legal';
 import { Link } from '../router';
+import { SUPPORT_PROVIDER, SUPPORT_URL } from '../support';
 
 // Describes the data flows in this repository and nothing else. Update it with
 // any change to what is stored, who processes it, analytics or backups.
@@ -101,6 +102,17 @@ export function PrivacyPage() {
           </p>
         </section>
 
+        {SUPPORT_URL && <section aria-labelledby="privacy-support">
+          <h2 id="privacy-support" className="pl-h-lg">Supporting MathLoop</h2>
+          <p>
+            MathLoop is free, and supporting it is voluntary and gives no extra features. The Support links open our page on{' '}
+            {SUPPORT_PROVIDER}, a separate service. Anything you send there, including your payment details, is handled by{' '}
+            {SUPPORT_PROVIDER} and its payment providers under their own privacy policies; we do not receive your card or bank
+            details. {SUPPORT_PROVIDER} tells us your name or nickname, any message you leave, and the amount, which we use
+            only to thank you and keep our accounts.
+          </p>
+        </section>}
+
         <section aria-labelledby="privacy-stored">
           <h2 id="privacy-stored" className="pl-h-lg">What we store when you sign in</h2>
           <p>Accounts are for learners aged 16 and over. We store:</p>
@@ -109,7 +121,7 @@ export function PrivacyPage() {
           </ul>
           <p>
             We use this to run the practice, show your history and statistics, and fix faulty problems. Nobody else can
-            see it: every database query is limited to your own account. There are no adverts, payments or newsletters.
+            see it: every database query is limited to your own account. There are no adverts or newsletters, and nothing in MathLoop is paid.
           </p>
         </section>
 
@@ -128,7 +140,7 @@ export function PrivacyPage() {
               ? 'MathLoop itself sets no cookies. Our Cookiebot consent banner stores your choice in a cookie, so it does not ask again on every visit.'
               : 'MathLoop sets no cookies.'}{' '}
             When you sign in, your session is kept in your browser’s local storage so you stay signed in; logging out
-            removes it. Fonts are served from this website, not from a third party.
+            removes it. Local storage also keeps a count of the problems you solved on this device and when you last closed the support notice, so it does not keep asking. Fonts are served from this website, not from a third party.
           </p>
           {consentBanner && <Button variant="secondary" size="sm" onClick={() => openCookieSettings()}>Change cookie settings</Button>}
         </section>
