@@ -65,12 +65,12 @@ def render(task: Task, generators: Registry) -> Issued:
     build_visual = getattr(generator, "solution_visual", None)
     if callable(build_visual):
         from app.engine.codes import parse_code
-        from app.visuals.plot2d import validate_plot
+        from app.visuals.complex_plane import validate_visual
 
         code = parse_code(task.code, generators)
         built = build_visual(generator.draw(code.seed))
         if built is not None:
-            visual = validate_plot(built)
+            visual = validate_visual(built)
     steps = []
     for step in task.steps:
         if step.text_key not in step_text:

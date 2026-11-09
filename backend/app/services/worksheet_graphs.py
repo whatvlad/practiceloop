@@ -415,12 +415,40 @@ def plot2d(spec: dict[str, Any]) -> str:
     return canvas.tex() + _caption(spec["description"])
 
 
+def complex_plane(spec: dict[str, Any]) -> str:
+    from app.visuals.complex_plane import validate_visual
+
+    spec = validate_visual(spec)
+    x, y = spec["first"]
+    radius = spec.get("radius", 0.0)
+    margin = max(1.0, radius * 0.25)
+    canvas = Canvas(
+        (min(0.0, x - radius) - margin, max(0.0, x + radius) + margin),
+        (min(0.0, y - radius) - margin, max(0.0, y + radius) + margin),
+        equal=True,
+    )
+    canvas.axes(r"\mathrm{Re}", r"\mathrm{Im}")
+    canvas.dot(x, y)
+    if spec["mode"] == "circle":
+        canvas.stroke([
+            (x + radius * math.cos(2 * math.pi * i / 96),
+             y + radius * math.sin(2 * math.pi * i / 96))
+            for i in range(97)
+        ])
+        caption = "The centre and radius on the complex plane."
+    else:
+        canvas.stroke([(0.0, 0.0), (x, y)])
+        caption = "The modulus is the distance from the origin."
+    return canvas.tex() + _caption(caption)
+
+
 DRAWERS: dict[str, Callable[[dict[str, Any]], str]] = {
     "definite": definite,
     "indefinite": indefinite,
     "region2d": region2d,
     "solid3d": solid3d,
     "plot2d": plot2d,
+    "complex-plane": complex_plane,
 }
 
 

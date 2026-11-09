@@ -70,4 +70,16 @@ def _build(canonical: str) -> dict[str, Any] | None:
 def solution_payload(steps: Any, record: dict[str, object]) -> dict[str, Any]:
     """The worked solution as the API returns it: the steps, and the visual if any."""
     visual = build_visual(record)
-    return {"steps": list(steps), **({"visual": visual} if visual is not None else {})}
+    rendered = list(steps)
+    version = record.get("generator_version")
+    if version in {"local-modulus-practice-v1", "local-modulus-circle-v1"}:
+        from app.engine.algebra_practice.solution_rules import complex_rules
+
+        generator = engine._registry().get(str(version))
+        keys = {text: key for key, text in generator.step_text.items()}
+        rendered = [
+            {**step, **({"rules": rules} if rules else {})}
+            for step in rendered
+            for rules in (complex_rules(str(version), keys.get(step["say"], "")),)
+        ]
+    return {"steps": rendered, **({"visual": visual} if visual is not None else {})}

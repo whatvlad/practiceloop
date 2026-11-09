@@ -6,6 +6,7 @@ import { parseVisual } from '../visual/spec';
 import { AREAS, areaOf, isTopicSlug, listedArea, rememberTopics } from './topics';
 import { FEEDBACK_CODES } from './types';
 import { parseAnswerInput } from './answerInput';
+import type { ModulusMode } from '../components/ModulusSettings';
 import type { AreaSlug, AvailableArea, AvailableTopic, Catalogue, CheckOutcome, Difficulty, LearningStatistics, MatrixOptions, OmissionMetric, OpenedProblem, ProblemPage, ProblemShare, ProfileCounts, PublicProblem, ReportCategory, RevealedAnswer, RevealedSolution, PracticeTopic, TopicSlug, WorksheetCapacity } from './types';
 
 const base = (import.meta.env.VITE_API_BASE_URL ?? '/api').trim().replace(/\/+$/, '');
@@ -163,7 +164,8 @@ function publicProblem(value: unknown): PublicProblem {
     || !isTopicSlug(data.topic) || ![1, 2, 3, 4, 5].includes(data.difficulty as number)
     || typeof data.answerRevealed !== 'boolean' || typeof data.solutionRevealed !== 'boolean'
     || !Number.isSafeInteger(data.attemptCount) || (data.attemptCount as number) < 0
-    || (data.worksheetId !== undefined && data.worksheetId !== null && typeof data.worksheetId !== 'string')) throw new Error(text.service_error);
+    || (data.worksheetId !== undefined && data.worksheetId !== null && typeof data.worksheetId !== 'string')
+    || (data.modulusMode !== undefined && (data.topic !== 'complex-numbers' || !['expression', 'properties', 'geometry'].includes(data.modulusMode as string)))) throw new Error(text.service_error);
   const last = data.lastAttempt === null ? null : object(data.lastAttempt);
   if (last && typeof last.answer !== 'string') throw new Error(text.service_error);
   return { saved: true, id: data.id, topic: data.topic as TopicSlug, difficulty: data.difficulty as Difficulty,
@@ -171,7 +173,8 @@ function publicProblem(value: unknown): PublicProblem {
     solutionRevealed: data.solutionRevealed, attemptCount: data.attemptCount as number,
     lastResult: last ? verdict(last).result : null, lastFeedback: last ? verdict(last).feedback : null,
     lastAnswer: last ? last.answer as string : null, worksheetId: (data.worksheetId as string | null | undefined) ?? null,
-    ...(data.answerInput === undefined ? {} : { answerInput: parseAnswerInput(data.answerInput) }) };
+    ...(data.answerInput === undefined ? {} : { answerInput: parseAnswerInput(data.answerInput) }),
+    ...(data.modulusMode === undefined ? {} : { modulusMode: data.modulusMode as ModulusMode }) };
 }
 
 function cache(problem: PublicProblem): PublicProblem {
@@ -186,7 +189,16 @@ function solution(data: Record<string, unknown>): RevealedSolution {
   const steps = data.steps.map((value: unknown) => {
     const step = object(value);
     if (typeof step.say !== 'string' || typeof step.latex !== 'string') throw new Error(text.service_error);
-    return { say: step.say, latex: step.latex };
+    if (step.rules === undefined) return { say: step.say, latex: step.latex };
+    if (!Array.isArray(step.rules) || step.rules.length > 4) throw new Error(text.service_error);
+    const rules = step.rules.map(value => {
+      const rule = object(value);
+      if (typeof rule.title !== 'string' || rule.title.length > 120
+        || typeof rule.latex !== 'string' || rule.latex.length > 2000
+        || typeof rule.explanation !== 'string' || rule.explanation.length > 1000) throw new Error(text.service_error);
+      return { title: rule.title, latex: rule.latex, explanation: rule.explanation };
+    });
+    return { say: step.say, latex: step.latex, rules };
   });
   // A visual this build cannot read is left out; the steps never depend on it.
   const visual = parseVisual(data.visual);
@@ -431,10 +443,11 @@ export async function getCatalogue(): Promise<Catalogue> {
 }
 
 /** `area` picks the area mixed practice draws from; a topic carries its own area. */
-export function generateProblem(topic: PracticeTopic, difficulty: Difficulty, area: AreaSlug = 'mathematical-analysis', matrixOptions?: MatrixOptions): Promise<PublicProblem> {
+export function generateProblem(topic: PracticeTopic, difficulty: Difficulty, area: AreaSlug = 'mathematical-analysis', matrixOptions?: MatrixOptions, modulusMode?: ModulusMode): Promise<PublicProblem> {
   const mixed = topic === 'mixed';
   if ((!mixed && !isTopicSlug(topic)) || ![1, 2, 3, 4, 5].includes(difficulty)
-    || !AREAS.some(a => a.slug === area) || (matrixOptions && topic !== 'matrix-operations')) return Promise.reject(new Error(text.unsupported));
+    || !AREAS.some(a => a.slug === area) || (matrixOptions && topic !== 'matrix-operations')
+    || (modulusMode && (topic !== 'complex-numbers' || difficulty > 3 || !['expression', 'properties', 'geometry'].includes(modulusMode)))) return Promise.reject(new Error(text.unsupported));
   const drawFrom = mixed ? area : areaOf(topic);
   if (generating) return generating;
   const started = epoch;
@@ -442,9 +455,9 @@ export function generateProblem(topic: PracticeTopic, difficulty: Difficulty, ar
     const { bearer, saved } = await credentials();
     if (!saved && (mixed || !PREVIEW_TOPICS.some(t => t.slug === topic && t.availableDifficulties.includes(difficulty)))) throw new Error(text.unsupported);
     const operation = (mixed ? `generate:mixed:${drawFrom}:${difficulty}` : `generate:${topic}:${difficulty}`)
-      + (matrixOptions ? `:${matrixOptions.operation}:${matrixOptions.size}` : '');
+      + (matrixOptions ? `:${matrixOptions.operation}:${matrixOptions.size}` : '') + (modulusMode ? `:${modulusMode}` : '');
     const authorized = await authorize(started, saved, bearer);
-    const body = mixed ? { topic, area: drawFrom, difficulty } : { topic, difficulty, ...(matrixOptions ? { matrixOptions } : {}) };
+    const body = mixed ? { topic, area: drawFrom, difficulty } : { topic, difficulty, ...(matrixOptions ? { matrixOptions } : {}), ...(modulusMode ? { modulusMode } : {}) };
     const response = await request('/problems', body, authorized, saved, operation);
     const data = saved ? object(response.problem) : response;
     if (started !== epoch) throw new Error(text.expired);
@@ -455,7 +468,8 @@ export function generateProblem(topic: PracticeTopic, difficulty: Difficulty, ar
     const problem: PublicProblem = { saved, id: data.id, topic: data.topic as TopicSlug, difficulty,
       problemLatex: data.problemLatex, createdAt: data.createdAt, answerRevealed: false, solutionRevealed: false,
       lastResult: null, lastAnswer: null, ...(mixed ? { mixed: true } : {}),
-      ...(data.answerInput === undefined ? {} : { answerInput: parseAnswerInput(data.answerInput) }) };
+      ...(data.answerInput === undefined ? {} : { answerInput: parseAnswerInput(data.answerInput) }),
+      ...(modulusMode ? { modulusMode } : {}) };
     problems.unshift(problem);
     selection = { topic, difficulty, area: drawFrom };
     keys.delete(operation);

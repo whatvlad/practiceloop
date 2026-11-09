@@ -48,9 +48,9 @@ class StoredProblem(StoredModel):
     def valid_visual(cls, value: dict[str, Any] | None) -> dict[str, Any] | None:
         if value is None:
             return None
-        from app.visuals.plot2d import validate_plot
+        from app.visuals.complex_plane import validate_visual
 
-        return validate_plot(value)
+        return validate_visual(value)
 
     @classmethod
     def from_issued(cls, issued: Issued) -> StoredProblem:

@@ -94,6 +94,7 @@ export interface CheckOutcome {
 export type AttemptResult = CheckResult | null;
 
 export interface PublicProblem {
+  modulusMode?: 'expression' | 'properties' | 'geometry';
   answerInput?: AnswerInputSpec;
   attemptCount?: number;
   saved?: boolean;

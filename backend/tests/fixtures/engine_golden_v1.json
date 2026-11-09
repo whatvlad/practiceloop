@@ -28790,4 +28790,229 @@
       }
     }
   ]
+,
+  "local-modulus-practice-v1": [
+    {
+      "code": "LMEX-1-0000000000000000-62",
+      "statement": "Calculate \\(\\left|(-1 - i)+(-4 - 4 i)\\right|\\).",
+      "steps": [
+        [
+          "rewrite",
+          "\\left|(-1 - i)+(-4 - 4 i)\\right|"
+        ],
+        [
+          "arithmetic",
+          "(-1)+(-4)+\\left((-1)+(-4)\\right)i"
+        ],
+        [
+          "simplify",
+          "\\left|(-1 - i)+(-4 - 4 i)\\right|=\\left|-5 - 5 i\\right|"
+        ],
+        [
+          "identify",
+          "a=-5,\\quad b=-5"
+        ],
+        [
+          "formula",
+          "|a+bi|=\\sqrt{a^2+b^2}"
+        ],
+        [
+          "substitute",
+          "\\sqrt{(-5)^2+(-5)^2}=5 \\sqrt{2}"
+        ],
+        [
+          "result",
+          "5 \\sqrt{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "5 \\sqrt{2}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "expression"
+      }
+    },
+    {
+      "code": "LMEX-1-0001000000000001-84",
+      "statement": "Calculate \\(\\left|(1 - 4 i)(-2 + 4 i)\\right|\\).",
+      "steps": [
+        [
+          "rewrite",
+          "\\left|(1 - 4 i)(-2 + 4 i)\\right|"
+        ],
+        [
+          "arithmetic",
+          "(1)(-2)-(-4)(4)+\\left((1)(4)+(-4)(-2)\\right)i"
+        ],
+        [
+          "simplify",
+          "\\left|(1 - 4 i)(-2 + 4 i)\\right|=\\left|14 + 12 i\\right|"
+        ],
+        [
+          "identify",
+          "a=14,\\quad b=12"
+        ],
+        [
+          "formula",
+          "|a+bi|=\\sqrt{a^2+b^2}"
+        ],
+        [
+          "substitute",
+          "\\sqrt{(14)^2+(12)^2}=2 \\sqrt{85}"
+        ],
+        [
+          "result",
+          "2 \\sqrt{85}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2 \\sqrt{85}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "expression"
+      }
+    },
+    {
+      "code": "LMEX-1-0005000000000002-24",
+      "statement": "Calculate \\(\\left|\\frac{(-4 + i)^3}{-3 + 2 i}\\right|\\).",
+      "steps": [
+        [
+          "rewrite",
+          "\\left|\\frac{(-4 + i)^3}{-3 + 2 i}\\right|"
+        ],
+        [
+          "property",
+          "z=-4 + i,\\quad w=-3 + 2 i,\\quad \\left|\\frac{(-4 + i)^3}{-3 + 2 i}\\right|=\\frac{|z|^3}{|w|}"
+        ],
+        [
+          "components",
+          "|z|=\\sqrt{(-4)^2+(1)^2}=\\sqrt{17},\\quad |w|=\\sqrt{(-3)^2+(2)^2}=\\sqrt{13}"
+        ],
+        [
+          "evaluate",
+          "\\frac{|z|^3}{|w|}=\\frac{(\\sqrt{17})^3}{\\sqrt{13}}=\\frac{17 \\sqrt{221}}{13}"
+        ],
+        [
+          "result",
+          "\\frac{17 \\sqrt{221}}{13}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{17 \\sqrt{221}}{13}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "properties"
+      }
+    }
+  ],
+  "local-modulus-circle-v1": [
+    {
+      "code": "LMC-1-0000000000000000-59",
+      "statement": "Find the centre coordinates and radius of the locus: \\(\\left|z-\\left(3 i\\right)\\right|=1\\).",
+      "steps": [
+        [
+          "rewrite",
+          "\\left|z-\\left(3 i\\right)\\right|=1"
+        ],
+        [
+          "right",
+          "\\left|1\\right|=1"
+        ],
+        [
+          "factor",
+          "\\left|z-\\left(3 i\\right)\\right|=1"
+        ],
+        [
+          "distance",
+          "|z-z_0|=r"
+        ],
+        [
+          "coordinates",
+          "z_0=3 i,\\quad r=1"
+        ],
+        [
+          "result",
+          "\\begin{gathered}(x_0,y_0)=(0,3)\\\\r=1\\end{gathered}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(0,\\;3,\\;1\\right)",
+      "metadata": {
+        "difficulty": 1,
+        "template": "geometry"
+      }
+    },
+    {
+      "code": "LMC-1-0001000000000001-81",
+      "statement": "Find the centre coordinates and radius of the locus: \\(\\left|z-\\left(-4 + 2 i\\right)\\right|=\\left|3 + 4 i\\right|\\).",
+      "steps": [
+        [
+          "rewrite",
+          "\\left|z-\\left(-4 + 2 i\\right)\\right|=\\left|3 + 4 i\\right|"
+        ],
+        [
+          "right",
+          "\\left|3 + 4 i\\right|=5"
+        ],
+        [
+          "factor",
+          "\\left|z-\\left(-4 + 2 i\\right)\\right|=5"
+        ],
+        [
+          "distance",
+          "|z-z_0|=r"
+        ],
+        [
+          "coordinates",
+          "z_0=-4 + 2 i,\\quad r=5"
+        ],
+        [
+          "result",
+          "\\begin{gathered}(x_0,y_0)=(-4,2)\\\\r=5\\end{gathered}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(-4,\\;2,\\;5\\right)",
+      "metadata": {
+        "difficulty": 2,
+        "template": "geometry"
+      }
+    },
+    {
+      "code": "LMC-1-0002000000000002-06",
+      "statement": "Find the centre coordinates and radius of the locus: \\(\\left|3z-\\left(2 - 4 i\\right)\\right|=\\left|4 + 4 i\\right|\\).",
+      "steps": [
+        [
+          "rewrite",
+          "\\left|3z-\\left(2 - 4 i\\right)\\right|=\\left|4 + 4 i\\right|"
+        ],
+        [
+          "right",
+          "\\left|4 + 4 i\\right|=4 \\sqrt{2}"
+        ],
+        [
+          "factor",
+          "\\left|z-\\left(\\frac{2}{3} - \\frac{4 i}{3}\\right)\\right|=\\frac{4 \\sqrt{2}}{3}"
+        ],
+        [
+          "distance",
+          "|z-z_0|=r"
+        ],
+        [
+          "coordinates",
+          "z_0=\\frac{2}{3} - \\frac{4 i}{3},\\quad r=\\frac{4 \\sqrt{2}}{3}"
+        ],
+        [
+          "result",
+          "\\begin{gathered}(x_0,y_0)=(\\frac{2}{3},- \\frac{4}{3})\\\\r=\\frac{4 \\sqrt{2}}{3}\\end{gathered}"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{2}{3},\\;- \\frac{4}{3},\\;\\frac{4 \\sqrt{2}}{3}\\right)",
+      "metadata": {
+        "difficulty": 3,
+        "template": "geometry"
+      }
+    }
+  ]
 }

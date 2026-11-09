@@ -5,6 +5,12 @@ from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field, replace
 from functools import partial
 
+from app.engine.algebra_practice.modulus import (
+    CircleParameters,
+    LocalModulusCircle,
+    LocalModulusPractice,
+    ModulusPracticeParameters,
+)
 from app.engine.blocks.integral_forms.form import BOUNDS, METHODS
 from app.engine.generators.algebra import AlgebraParams, algebra_generators
 from app.engine.generators.algebra_expansion import (
@@ -112,6 +118,12 @@ def _rational(params: Drawn) -> bool:
 
 def _polynomial(params: Drawn) -> bool:
     return not _rational(params)
+
+
+def _modulus_practice_level(level: int, params: Drawn) -> bool:
+    return (
+        isinstance(params, CircleParameters | ModulusPracticeParameters) and params.level == level
+    )
 
 
 @dataclass(frozen=True, slots=True)
@@ -230,6 +242,21 @@ def topics() -> dict[str, Topic]:
             space_cm=space,
             served=True,
         )
+    modulus = declared["complex-numbers"]
+    declared["complex-numbers"] = replace(
+        modulus,
+        levels={
+            **modulus.levels,
+            **{
+                level: (
+                    *modulus.levels[level],
+                    Choice(LocalModulusPractice.version, partial(_modulus_practice_level, level)),
+                    Choice(LocalModulusCircle.version, partial(_modulus_practice_level, level)),
+                )
+                for level in (1, 2, 3)
+            },
+        },
+    )
     # #221: algebra30 60 adds a repeated or quadratic factor's constant at level 4.
     fractions = declared["partial-fractions"]
     declared["partial-fractions"] = replace(

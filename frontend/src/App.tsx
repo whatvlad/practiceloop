@@ -3,6 +3,7 @@ import { ApiStatusNotice } from './components/ApiStatusNotice';
 import { AppNav, Logo, PublicNav } from './components/AppNav';
 import { PracticeSidebar } from './components/PracticeSidebar';
 import { matrixOptionsFromSearch } from './components/MatrixSettings';
+import { modulusModeFromSearch } from './components/ModulusSettings';
 import { ButtonLink } from './components/Button';
 import { SiteFooter } from './components/SiteFooter';
 import { SkipLink } from './components/SkipLink';
@@ -159,7 +160,7 @@ export function App() {
         {pathname === '/dashboard' && (params.has('topic')
           ? <DashboardPage key={`${params.get('area')}:${params.get('topic')}`} initialArea={params.get('area') === 'algebra' ? 'algebra' : params.get('area') === 'probability-statistics' ? 'probability-statistics' : 'mathematical-analysis'} initialTopic={params.get('topic') ?? undefined} />
           : <CurriculumPage />)}
-        {pathname === '/practice' && (params.has('id') ? <PracticePage key={params.get('id')} id={params.get('id')} randomAccountId={params.get('mode') === 'random' ? account.id : undefined} matrixOptions={matrixOptionsFromSearch(params)} /> : <CurriculumPage />)}
+        {pathname === '/practice' && (params.has('id') ? <PracticePage key={params.get('id')} id={params.get('id')} randomAccountId={params.get('mode') === 'random' ? account.id : undefined} matrixOptions={matrixOptionsFromSearch(params)} modulusMode={modulusModeFromSearch(params)} /> : <CurriculumPage />)}
         </div></div>}
         {pathname === '/history' && <HistoryPage />}
         {pathname === '/profile' && <ProfilePage account={account} onLogOut={handleLogOut} onDeleted={handleDeleted} busy={auth.working} />}

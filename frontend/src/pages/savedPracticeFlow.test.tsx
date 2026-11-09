@@ -5,7 +5,8 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { DashboardPage } from './DashboardPage';
 import { PracticePage } from './PracticePage';
 import { matrixOptionsFromSearch } from '../components/MatrixSettings';
-import { configurePracticeAuth, generateProblem, getProblem, resetPractice } from '../data/practice';
+import { modulusModeFromSearch } from '../components/ModulusSettings';
+import { configurePracticeAuth, generateProblem, getProblem, resetPractice, revealSolution } from '../data/practice';
 import type { PublicProblem } from '../data/types';
 import type { AnswerInputSpec } from '../data/types';
 
@@ -27,6 +28,36 @@ const INTEGRALS = [
 let catalogue: unknown;
 const response = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status });
 const button = (label: string) => Array.from(element.querySelectorAll('button')).find(b => b.textContent?.includes(label))!;
+
+it('retains formula explanations provided with a revealed solution', async () => {
+  const original = fetchMock.getMockImplementation()!;
+  fetchMock.mockImplementation((url, options) => String(url).endsWith('/reveal-solution')
+    ? Promise.resolve(response({ steps: [{ say: 'Use the distance formula.', latex: '|z|', rules: [
+      { title: 'Modulus as distance', latex: '|z-z_0|=r', explanation: 'The locus is a circle.' },
+    ] }] })) : original(url, options));
+  const problem = await generateProblem('basic-integrals', 1);
+  const solution = await revealSolution(problem.id);
+  expect(solution.steps[0].rules?.[0].title).toBe('Modulus as distance');
+});
+
+it('generates and continues the chosen modulus exercise', async () => {
+  catalogue = { areas: [{ slug: 'algebra', name: 'Algebra', mixed: null }], items: [
+    { slug: 'complex-numbers', name: 'Complex numbers', area: 'algebra', availableDifficulties: [1, 2, 3, 4, 5] },
+  ] };
+  await act(async () => root.render(<DashboardPage initialArea="algebra" initialTopic="complex-numbers" />));
+  const select = [...element.querySelectorAll('label')].find(label => label.textContent?.startsWith('Exercise type'))!.querySelector('select')!;
+  await act(async () => { select.value = 'geometry'; select.dispatchEvent(new Event('change', { bubbles: true })); });
+  await act(async () => button('Generate problem').click());
+  expect(calls.filter(call => call.path === '/api/problems').at(-1)?.body).toMatchObject({ topic: 'complex-numbers', difficulty: 1, modulusMode: 'geometry' });
+  const params = new URLSearchParams(window.location.search);
+  expect(modulusModeFromSearch(params)).toBe('geometry');
+  // Opening from history has no settings in the URL; the server retains them.
+  await act(async () => root.render(<PracticePage id={params.get('id')} />));
+  expect(element.querySelector('[aria-label="Difficulty 1 of 3"]')).not.toBeNull();
+  await act(async () => button('Generate next problem').click());
+  expect(calls.filter(call => call.path === '/api/problems').at(-1)?.body).toMatchObject({ topic: 'complex-numbers', difficulty: 1, modulusMode: 'geometry' });
+  expect(modulusModeFromSearch(new URLSearchParams(window.location.search))).toBe('geometry');
+});
 
 it('generates and continues matrix practice with the chosen operation and size', async () => {
   catalogue = { areas: [{ slug: 'algebra', name: 'Algebra', mixed: null }], items: [

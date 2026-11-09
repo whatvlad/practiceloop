@@ -11,6 +11,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, ConfigDict, Field
 
 from app.api.practice import MatrixOptions
+from app.engine.algebra_practice.selection import modulus_selection
 from app.engine.codes import parse_code
 from app.engine.generators.catalogue import registry
 from app.engine.generators.complex_numbers import ComplexArgument, ComplexRoot, DeMoivre
@@ -127,8 +128,6 @@ def _registry():
     result.register(LocalSystemGenerator())
     result.register(LocalComplexGenerator())
     result.register(LocalModulusGenerator())
-    result.register(LocalModulusPractice())
-    result.register(LocalModulusCircle())
     result.register(LocalConversionGenerator())
     result.register(LocalConversionToPolarGenerator())
     result.register(LocalPolynomialGenerator())
@@ -352,15 +351,12 @@ def generate(body: Generate):
         ):
             raise HTTPException(status_code=422, detail="Choose one exercise type")
         mode = body.modulusMode
-        generator = _registry().get(
-            LocalModulusCircle.version
-            if mode == "geometry"
-            else LocalModulusPractice.version
-            if mode
-            else LocalModulusGenerator.version
-        )
-        seed = (body.level - 1 + (3 if mode == "properties" else 0)) * VARIATIONS
-        seed += secrets.randbelow(VARIATIONS)
+        if mode is None:
+            version = LocalModulusGenerator.version
+            seed = (body.level - 1) * VARIATIONS + secrets.randbelow(VARIATIONS)
+        else:
+            version, seed = modulus_selection(body.level, mode, secrets.randbelow(VARIATIONS))
+        generator = _registry().get(version)
         task = generator.build(generator.draw(seed))
         return {
             "code": task.code,

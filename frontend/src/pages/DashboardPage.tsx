@@ -3,6 +3,7 @@ import text from '../../../backend/app/content/en.json';
 import { Button, ButtonLink } from '../components/Button';
 import { DifficultyScale } from '../components/DifficultyScale';
 import { initialMatrixOptions, matrixOptionsQuery, matrixOptionsValid, MatrixSettings } from '../components/MatrixSettings';
+import { modulusModeQuery, type ModulusMode } from '../components/ModulusSettings';
 import { HistoryList } from '../components/HistoryRow';
 import { StatTile } from '../components/StatTile';
 import { generateProblem, getCatalogue, getLastSelection, getProfileCounts, listProblemPage } from '../data/api';
@@ -22,6 +23,7 @@ export function DashboardPage({ initialArea, initialTopic }: { initialArea?: Are
   const [topic, setTopic] = useState<PracticeTopic>(initialTopic ?? 'basic-integrals');
   const [difficulty, setDifficulty] = useState<Difficulty>(1);
   const [matrixOptions, setMatrixOptions] = useState(() => initialMatrixOptions(1));
+  const [modulusMode, setModulusMode] = useState<ModulusMode>('expression');
   const [busy, setBusy] = useState(false);
   const pending = useRef(false);
   const active = useRef(true);
@@ -33,7 +35,8 @@ export function DashboardPage({ initialArea, initialTopic }: { initialArea?: Are
   // Algebra's old server-side mixed pool still contains retired topics; the
   // workspace random selector draws only the learner's explicit choices.
   const mixed = area === 'algebra' ? null : areas.find(a => a.slug === area)?.mixed ?? null;
-  const levels = topic === 'mixed' ? mixed?.availableDifficulties ?? [] : topics.find(t => t.slug === topic)?.availableDifficulties ?? [];
+  const allLevels = topic === 'mixed' ? mixed?.availableDifficulties ?? [] : topics.find(t => t.slug === topic)?.availableDifficulties ?? [];
+  const levels = topic === 'complex-numbers' && modulusMode ? allLevels.filter(level => level <= 3) : allLevels;
   const offered: PracticeTopic[] = [...topics.filter(t => t.availableDifficulties.length > 0).map(t => t.slug), ...(mixed ? ['mixed' as const] : [])];
   const available = levels.includes(difficulty);
   const selectedMatrixOptions = matrixOptionsValid(difficulty, matrixOptions) ? matrixOptions : initialMatrixOptions(difficulty);
@@ -73,8 +76,9 @@ export function DashboardPage({ initialArea, initialTopic }: { initialArea?: Are
     setBusy(true);
     try {
       const options = topic === 'matrix-operations' ? selectedMatrixOptions : undefined;
-      const problem = options ? await generateProblem(topic, difficulty, area, options) : await generateProblem(topic, difficulty, area);
-      if (active.current) navigate(`/practice?id=${encodeURIComponent(problem.id)}${options ? matrixOptionsQuery(options) : ''}`);
+      const mode = topic === 'complex-numbers' ? modulusMode : undefined;
+      const problem = await generateProblem(topic, difficulty, area, options, mode);
+      if (active.current) navigate(`/practice?id=${encodeURIComponent(problem.id)}${options ? matrixOptionsQuery(options) : ''}${mode ? modulusModeQuery(mode) : ''}`);
     } catch (failure) {
       if (active.current) setError(failure instanceof Error ? failure.message : text.service_error);
     } finally {
@@ -112,6 +116,13 @@ export function DashboardPage({ initialArea, initialTopic }: { initialArea?: Are
           </div>
           <DifficultyScale selected={difficulty} onSelect={setDifficulty} labelledBy="difficulty-label" available={busy ? [] : levels} shown={levels} topic={topic} />
           {topic === 'matrix-operations' && <MatrixSettings level={difficulty} value={selectedMatrixOptions} onChange={setMatrixOptions} />}
+          {topic === 'complex-numbers' && <label className="pl-label">Exercise type
+            <select className="pl-input" value={modulusMode} onChange={event => setModulusMode(event.target.value as ModulusMode)}>
+              <option value="expression">Modulus of an expression</option>
+              <option value="properties">Modulus properties</option>
+              <option value="geometry">Modulus and geometry</option>
+            </select>
+          </label>}
           {topic === 'mixed' && mixed && available && (
             <p className="pl-small pl-muted" id="mixed-weights">
               Mixed practice picks one topic for each problem with fixed weights:{' '}

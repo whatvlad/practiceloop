@@ -10,6 +10,7 @@ import secrets
 from functools import cache
 from typing import Any
 
+from app.engine.algebra_practice.modulus import LocalModulusCircle, LocalModulusPractice
 from app.engine.catalogue import lookup
 from app.engine.catalogue import pool as pool
 from app.engine.codes import parse_code
@@ -76,12 +77,41 @@ def issue(
     *,
     recent: tuple[dict[str, object], ...] = (),
     matrix_options: dict[str, str] | None = None,
+    modulus_mode: str | None = None,
 ) -> Issued:
     """Pick rendered private data; even a cold symbolic cell runs no SymPy."""
     topic = ENGINE_TOPICS[slug]
     if type(level) is not int or level not in topic.levels:
         raise ValueError("Unknown topic level")
     complete = pool(slug, level)
+    if slug == "complex-numbers" and modulus_mode is None:
+        complete = tuple(
+            problem for problem in complete
+            if problem.generator_version
+            not in {LocalModulusCircle.version, LocalModulusPractice.version}
+        )
+    if modulus_mode is not None:
+        if (
+            slug != "complex-numbers"
+            or level not in (1, 2, 3)
+            or modulus_mode not in ("expression", "properties", "geometry")
+        ):
+            raise ValueError("Invalid modulus settings")
+        selected = []
+        for problem in complete:
+            code = parse_code(problem.code, _registry())
+            generator = _registry().get_code(code.prefix, code.version)
+            if generator.version == LocalModulusCircle.version:
+                matches = modulus_mode == "geometry"
+            elif generator.version == LocalModulusPractice.version:
+                matches = generator.draw(code.seed).mode == modulus_mode
+            else:
+                matches = False
+            if matches:
+                selected.append(problem)
+        complete = tuple(selected)
+        if not complete:
+            raise ValueError("No modulus problems match these settings")
     if matrix_options is not None:
         if slug != "matrix-operations" or not matrix_options_supported(level, matrix_options):
             raise ValueError("Invalid matrix settings")
@@ -131,6 +161,24 @@ def pooled(record: dict[str, object]) -> Issued:
 
 def is_engine_record(record: Any) -> bool:
     return isinstance(record, dict) and "code" in record
+
+
+def public_settings(record: Any) -> dict[str, str]:
+    """Recover learner-selected settings without exposing answer parameters."""
+    if not is_engine_record(record) or record.get("generator_version") not in {
+        LocalModulusPractice.version, LocalModulusCircle.version,
+    }:
+        return {}
+    code = parse_code(record["code"], _registry())
+    generator = _registry().get_code(code.prefix, code.version)
+    if generator.version != record["generator_version"]:
+        raise ValueError("Record version differs from its code")
+    mode = (
+        "geometry"
+        if generator.version == LocalModulusCircle.version
+        else generator.draw(code.seed).mode
+    )
+    return {"modulusMode": mode}
 
 
 def replay(record: dict[str, object]) -> Task:

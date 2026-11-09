@@ -146,6 +146,7 @@ class GenerateBody(BaseModel):
     # Only with "mixed": Mathematical Analysis when omitted; legacy selectors remain valid.
     area: str | None = Field(default=None, min_length=1, max_length=64)
     matrixOptions: MatrixOptions | None = None
+    modulusMode: Literal["expression", "properties", "geometry"] | None = None
 
 
 class AttemptBody(BaseModel):
@@ -280,6 +281,7 @@ def _public_problem(
         "difficulty": problem.difficulty,
         "problemLatex": problem.problem_latex,
         **engine.input_projection(problem.generator_data),
+        **engine.public_settings(problem.generator_data),
         "createdAt": _timestamp(problem.created_at),
         "answerRevealed": problem.answer_revealed,
         "solutionRevealed": problem.solution_revealed,
@@ -430,6 +432,10 @@ def generate(body: GenerateBody, user: User, key: IdempotencyKey = None) -> JSON
         idempotency.request_hash(body.model_dump(exclude_none=True)),
     )
     topic = body.topic
+    if body.modulusMode is not None and (
+        topic != "complex-numbers" or body.difficulty not in (1, 2, 3)
+    ):
+        raise _invalid()
     if body.matrixOptions is not None and (
         topic != "matrix-operations"
         or not engine.matrix_options_supported(body.difficulty, body.matrixOptions.model_dump())
@@ -462,6 +468,10 @@ def generate(body: GenerateBody, user: User, key: IdempotencyKey = None) -> JSON
                     body.difficulty,
                     recent=tuple(recent),
                     matrix_options=body.matrixOptions.model_dump(),
+                )
+            elif body.modulusMode:
+                issued = engine.issue(
+                    topic, body.difficulty, recent=tuple(recent), modulus_mode=body.modulusMode
                 )
             else:
                 issued = engine.issue(topic, body.difficulty, recent=tuple(recent))
