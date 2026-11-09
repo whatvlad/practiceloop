@@ -12,29 +12,21 @@ Browser ── HTTPS ──> mathloop.net                    (Cloudflare Pages)
                         └── http ──> 127.0.0.1:8000    (uvicorn, systemd: practiceloop-api)
 ```
 
-Until cutover, Pages uses `92-5-92-72.sslip.io`. Keep that host during the
-transition and follow [API hostname cutover](#api-hostname-cutover) for the
-existing VM. Bootstrap accepts an explicit API hostname for a fresh VM.
+Since 2026-11-09 the API runs on a fresh VM bootstrapped with
+`api.mathloop.net` (DNS only A record to the VM's public IP). The old VM and its
+`92-5-92-72.sslip.io` name are no longer used.
 
 ## On the VM
 
-The VM (audited 2026-10-20) is `VM.Standard.A1.Flex` with 1 OCPU (Ampere ARM)
-and 6 GB RAM, 45 GB disk, in `eu-frankfurt-1` (AD-1), inside the Always Free
-allowance (4 OCPUs / 24 GB). It runs Ubuntu 20.04 with Ubuntu Pro ESM (infra and
-apps) attached, so it still gets security updates; move to a newer LTS when
-convenient. Only 22, 80 and 443 are open in the Oracle security list. Caddy's
-admin API (2019) and uvicorn (8000) listen on localhost only; the image's rpcbind
-(111) listens on all addresses but is blocked by the security list.
-
-**Co-tenant (known risk, accepted 2026-10-20):** an unrelated app,
-`/home/ubuntu/korepetycje-telegram-crm` (Python on `127.0.0.1:8080`), runs on the
-same VM as `ubuntu` and is published through a Cloudflare quick tunnel
-(`cloudflared tunnel --url http://127.0.0.1:8080`, which also listens on 20241 for
-metrics). Both were started by hand, with no systemd unit. Because `ubuntu` has
-passwordless sudo, a compromise of that public app would give root on the VM and
-with it `api.env` (service-role key, database password). It also shares the one
-OCPU. Moving it to its own unprivileged user or its own VM removes the risk. Docker
-is installed (containerd on localhost 34179) but runs no containers.
+The VM (created 2026-11-09 on the project owner's own Oracle account) is
+`VM.Standard.A1.Flex` with 2 OCPUs (Ampere ARM) and 12 GB RAM, in
+`eu-frankfurt-1` (AD-3), running Ubuntu 24.04. That leaves half of the Always
+Free Ampere allowance (4 OCPUs / 24 GB) for a separate CI runner VM; never run
+CI on this VM. Its public IP is ephemeral, so a stop/start of the instance may
+change it: update the `api` A record and the `ORACLE_HOST` / `ORACLE_KNOWN_HOSTS`
+secrets if that happens. Only 22, 80 and 443 are open in the Oracle security
+list. Caddy's admin API (2019) and uvicorn (8000) listen on localhost only. No
+other apps run on it.
 
 | Path | What |
 |---|---|
@@ -191,9 +183,11 @@ env file, so an administrator must apply the following steps on the existing VM.
    Both deploy workflows give an Actions variable of the same name precedence.
    If present, remove the stale variable or set it to the same URL. Run Preview
    on main with `CANONICAL_REDIRECTS` off and verify `/api/health` through Pages.
-   If that fails, restore the old upstream value and rerun Preview. Keep both
-   Caddy names serving during migration. The workflow requires both until the
-   compatibility check is removed in a follow-up.
+   If that fails, restore the old upstream value and rerun Preview.
+
+This cutover was finished on 2026-11-09 by moving to a new VM instead (see the
+top of this page), so the steps above only matter for a VM that still serves an
+sslip.io name. Preview now checks only `api.mathloop.net`.
 
 ## Before adding Supabase credentials (human only)
 

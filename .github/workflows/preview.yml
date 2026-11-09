@@ -121,10 +121,10 @@ jobs:
           grep -q '<title>MathLoop</title>' "$RUNNER_TEMP/apex.html"
           [ "$(curl -fsS --max-time 15 -o "$RUNNER_TEMP/apex-health.json" -w '%{http_code}' "$SITE_URL/api/health")" = 200 ]
           jq -e '.status == "ok"' "$RUNNER_TEMP/apex-health.json" > /dev/null
-      - name: Verify both API names before switching the upstream
+      - name: Verify the API host before using it as the upstream
         if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != '' && env.API_ORIGIN == 'https://api.mathloop.net'
         run: |
-          for host in api.mathloop.net 92-5-92-72.sslip.io; do
+          for host in api.mathloop.net; do
             [ "$(curl -fsS --max-time 10 -o "$RUNNER_TEMP/oracle-health.json" -w '%{http_code}' "https://$host/health")" = 200 ]
             jq -e '.status == "ok"' "$RUNNER_TEMP/oracle-health.json" > /dev/null
           done
