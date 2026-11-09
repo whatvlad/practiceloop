@@ -45,11 +45,11 @@ describe('support notice', () => {
 describe('footer support link', () => {
   it('leads to our support page', () => {
     const html = renderToStaticMarkup(createElement(SiteFooter, { supportUrl: URL_ }));
-    expect(html).toMatch(/href="[^"]*\/support">Support<\/a>/);
+    expect(html).toMatch(/href="[^"]*\/support">Support us<\/a>/);
   });
 
   it('is absent until a page is configured', () => {
-    expect(renderToStaticMarkup(createElement(SiteFooter, { supportUrl: '' }))).not.toContain('Support</a>');
+    expect(renderToStaticMarkup(createElement(SiteFooter, { supportUrl: '' }))).not.toContain("Support us</a>");
   });
 });
 
