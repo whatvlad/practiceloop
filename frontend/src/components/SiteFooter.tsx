@@ -1,4 +1,4 @@
-import { FEEDBACK_HREF } from '../legal';
+import { FEEDBACK_PATH } from '../legal';
 import { Link } from '../router';
 import { Logo } from './AppNav';
 import { CookieSettingsLink } from './CookieSettingsLink';
@@ -15,7 +15,7 @@ export function SiteFooter() {
         <nav className="pl-footer-links" aria-label="Footer">
           <Link to="/privacy">Privacy</Link>
           <Link to="/terms">Terms</Link>
-          <a href={FEEDBACK_HREF}>Feedback</a>
+          <Link to={FEEDBACK_PATH}>Feedback</Link>
           <CookieSettingsLink />
         </nav>
       </div>

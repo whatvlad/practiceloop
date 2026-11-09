@@ -34,6 +34,11 @@ const PROCESSORS = [
     role: 'Runs the MathLoop API, which generates problems and checks answers.',
     where: 'EU (Frankfurt).',
   },
+  {
+    name: 'Resend',
+    role: 'Delivers messages from the feedback form to our support mailbox.',
+    where: 'United States, under Resend’s data processing terms.',
+  },
 ];
 
 const STORED = [
@@ -84,6 +89,15 @@ export function PrivacyPage() {
             answer is sent to the API to be checked and is not stored, and we do not create a profile of you. Like most web
             servers, the API writes a short technical log line for each request (address, path and status).
             We keep these logs only as long as we need them to run and secure the service.
+          </p>
+        </section>
+
+        <section aria-labelledby="privacy-feedback">
+          <h2 id="privacy-feedback" className="pl-h-lg">Feedback form</h2>
+          <p>
+            When you send the feedback form, your name, email address, topic, message and the page you came from are
+            emailed to our support mailbox through Resend, so we can read and answer it. We keep these emails only as long as
+            the conversation needs, and you can ask us to delete them.
           </p>
         </section>
 

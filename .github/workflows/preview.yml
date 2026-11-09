@@ -30,6 +30,8 @@ jobs:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       API_ORIGIN: ${{ vars.API_BASE_URL || secrets.API_BASE_URL }}
+      # Resend key for the feedback form (functions/api/feedback.ts); unset keeps the form on its mailbox fallback.
+      RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -88,6 +90,11 @@ jobs:
           else
             grep -A1 -x '/\*' frontend/dist/_headers | grep -q 'X-Robots-Tag: noindex'
           fi
+      # A Pages secret applies to deployments made after it is set, so it goes first.
+      - name: Give the feedback form its mail key
+        if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != '' && env.RESEND_API_KEY != ''
+        working-directory: frontend
+        run: printf '%s' "$RESEND_API_KEY" | npx --yes wrangler@4.147.0 pages secret put RESEND_API_KEY --project-name "$CLOUDFLARE_PROJECT"
       - name: Deploy to Cloudflare Pages
         if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != ''
         working-directory: frontend

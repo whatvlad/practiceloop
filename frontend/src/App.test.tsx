@@ -221,7 +221,7 @@ describe('routes and public pages (#38)', () => {
     await act(async () => { await new Promise(resolve => setTimeout(resolve)); });
     expect(window.location.pathname).toBe('/demo');
     expect(element.textContent).toContain('This is a demo problem');
-    expect(element.querySelector('main a[href^="mailto:"]')).not.toBeNull();
+    expect(element.querySelector('main a[href="/feedback"]')).not.toBeNull();
     expect(element.textContent).toContain('Check answer');
     expect(element.textContent).toContain('Sign in for more practice');
     expect(element.textContent).not.toContain('Share problem');
@@ -268,8 +268,16 @@ describe('routes and public pages (#38)', () => {
     const footer = element.querySelector('footer')!;
     expect(footer.querySelector('a[href="/privacy"]')).not.toBeNull();
     expect(footer.querySelector('a[href="/terms"]')).not.toBeNull();
-    expect(footer.querySelector('a[href^="mailto:"]')?.textContent).toBe('Feedback');
+    expect(footer.querySelector('a[href="/feedback"]')?.textContent).toBe('Feedback');
     expect(element.querySelectorAll('footer')).toHaveLength(1);
+  });
+
+  it.each([signedOut, signedIn])('opens the feedback form for guests and learners', async state => {
+    await renderAt('/feedback', state);
+    expect(element.querySelector('h1')?.textContent).toBe('Feedback');
+    expect(element.querySelector('form textarea[name="message"]')).not.toBeNull();
+    expect(document.title).toBe('Feedback · MathLoop');
+    expect(element.querySelector<HTMLInputElement>('input[name="email"]')?.value).toBe(state.account?.email ?? '');
   });
 
   it('sends the logo to the home page when signed in', async () => {

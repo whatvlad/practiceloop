@@ -11,6 +11,7 @@ import { startCookiebot } from './cookieConsent';
 import { type ApiHealth, authStore, checkApiHealth } from './data/api';
 import { rememberSharedReturn, sharedReturn, takeSharedReturn } from './data/sharedReturn';
 import { CurriculumPage } from './pages/CurriculumPage';
+import { FeedbackPage } from './pages/FeedbackPage';
 import { HomePage } from './pages/HomePage';
 import { HistoryPage } from './pages/HistoryPage';
 import { LandingPage } from './pages/LandingPage';
@@ -140,6 +141,13 @@ export function App() {
     if (shared) return <SharedProblemPage key={`${account?.id ?? auth.status}:${shared[1]}`} token={decodeURIComponent(shared[1])} code={null} signedIn={!!account} authLoading={auth.status === 'loading'} />;
     if (pathname === '/privacy') return <PrivacyPage />;
     if (pathname === '/terms') return <TermsPage />;
+    if (pathname === '/feedback') {
+      if (auth.status === 'loading') return <div className="pl-page" />;
+      return <div className="pl-page">
+        {account ? <AppNav current={pathname} initial={account.name.charAt(0).toUpperCase()} onLogOut={handleLogOut} busy={auth.working} /> : <PublicNav />}
+        <FeedbackPage key={account?.id ?? 'guest'} name={account?.name} email={account?.email} />
+      </div>;
+    }
     if (pathname === '/login') return <LoginPage onSignIn={handleSignIn} disabled={authDisabled} busy={auth.working} error={auth.error} />;
     if (pathname === '/demo' && auth.status !== 'loading' && !account) return <div className="pl-page"><PublicNav /><PracticePage id={null} demo /></div>;
     if (pathname === '/demo' || pathname === '/auth/callback' || (needsAccount && auth.status === 'loading')) {
