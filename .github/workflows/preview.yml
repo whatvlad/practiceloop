@@ -65,6 +65,8 @@ jobs:
           VITE_CF_WEB_ANALYTICS_TOKEN: ${{ vars.CF_WEB_ANALYTICS_TOKEN }}
           # Public Cookiebot domain group ID; unset keeps the banner off.
           VITE_COOKIEBOT_ID: ${{ vars.COOKIEBOT_ID }}
+          # Public Google OAuth web client ID; unset keeps the Supabase-hosted Google redirect.
+          VITE_GOOGLE_CLIENT_ID: ${{ vars.GOOGLE_CLIENT_ID }}
           # Launch switches (#39, docs/production/LAUNCH_RUNBOOK.md). Unset keeps the noindex preview.
           VITE_SITE_URL: ${{ vars.SITE_URL }}
           VITE_SITE_INDEXABLE: ${{ vars.SITE_INDEXABLE }}

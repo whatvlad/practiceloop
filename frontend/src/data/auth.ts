@@ -2,7 +2,7 @@ import type { Session, SupabaseClient } from '@supabase/supabase-js';
 import type { Account } from './types';
 
 export type AuthClient = Pick<SupabaseClient['auth'],
-  'getSession' | 'onAuthStateChange' | 'exchangeCodeForSession' | 'signInWithOAuth' | 'signOut'>;
+  'getSession' | 'onAuthStateChange' | 'exchangeCodeForSession' | 'signInWithOAuth' | 'signInWithIdToken' | 'signOut'>;
 
 export interface AuthSnapshot {
   status: 'loading' | 'authenticated' | 'unauthenticated';
@@ -15,13 +15,31 @@ export interface AuthCallback {
   isCallback: boolean;
   code: string | null;
   failed: boolean;
+  /** Google ID token from the direct Google redirect (fragment), and its state. */
+  idToken?: string | null;
+  state?: string | null;
+}
+
+/**
+ * Direct Google sign-in: the browser goes to Google with this site's own
+ * redirect URI, so Google's screen names this site rather than the Supabase
+ * project host. The returned ID token is handed to Supabase (signInWithIdToken).
+ */
+export interface GoogleRedirect {
+  /** Saves a fresh state and nonce, then navigates to Google. */
+  begin: () => Promise<void>;
+  /** The raw nonce saved for this state, or null; always forgets the saved pair. */
+  takeNonce: (state: string | null | undefined) => string | null;
 }
 
 interface AuthOptions {
   redirectTo: string;
   takeCallback: () => AuthCallback;
   onIdentityChange: (id: string | null) => void;
+  google?: GoogleRedirect | null;
 }
+
+type SessionResult = { data: { session: Session | null }; error: unknown };
 
 const INITIAL: AuthSnapshot = { status: 'loading', account: null, error: null, working: false };
 const RESTORE_ERROR = 'Could not restore your session. Please sign in again.';
@@ -34,7 +52,7 @@ export function createAuthStore(client: AuthClient | null, options: AuthOptions)
   let identity: string | null = null;
   let expiry: ReturnType<typeof setTimeout> | undefined;
   let callback: AuthCallback | undefined;
-  let exchange: ReturnType<AuthClient['exchangeCodeForSession']> | undefined;
+  let exchange: Promise<SessionResult> | undefined;
   const listeners = new Set<() => void>();
   const publish = (next: AuthSnapshot) => {
     snapshot = next;
@@ -88,13 +106,16 @@ export function createAuthStore(client: AuthClient | null, options: AuthOptions)
     });
     void (async () => {
       try {
-        if (currentCallback.failed || (currentCallback.isCallback && !currentCallback.code)) {
+        if (currentCallback.failed
+          || (currentCallback.isCallback && !currentCallback.code && !currentCallback.idToken)) {
           if (current === generation) accept(null, CALLBACK_ERROR);
           return;
         }
-        const result = currentCallback.code
-          ? await (exchange ??= client.exchangeCodeForSession(currentCallback.code))
-          : await client.getSession();
+        const result: SessionResult = currentCallback.idToken
+          ? await (exchange ??= idTokenSession(currentCallback.idToken, currentCallback.state))
+          : currentCallback.code
+            ? await (exchange ??= client.exchangeCodeForSession(currentCallback.code))
+            : await client.getSession();
         if (current !== generation) return;
         if (result.error) accept(null, currentCallback.isCallback ? CALLBACK_ERROR : RESTORE_ERROR);
         else accept(pendingEvent ? pendingEvent.session : result.data.session);
@@ -112,11 +133,22 @@ export function createAuthStore(client: AuthClient | null, options: AuthOptions)
     };
   }
 
+  async function idTokenSession(token: string, state: string | null | undefined): Promise<SessionResult> {
+    // A token without the state this browser saved is a forged or replayed login.
+    const nonce = options.google?.takeNonce(state) ?? null;
+    if (!nonce || !client) return { data: { session: null }, error: new Error('state') };
+    return client.signInWithIdToken({ provider: 'google', token, nonce });
+  }
+
   async function signIn(): Promise<void> {
     if (snapshot.working || snapshot.status === 'loading') return;
     if (!client) { accept(null, CONFIG_ERROR); return; }
     publish({ ...snapshot, error: null, working: true });
     try {
+      if (options.google) {
+        await options.google.begin();
+        return;
+      }
       const { error } = await client.signInWithOAuth({
         provider: 'google',
         options: { redirectTo: options.redirectTo, queryParams: { prompt: 'select_account' } },

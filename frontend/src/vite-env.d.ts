@@ -12,4 +12,6 @@ interface ImportMetaEnv {
   /** Cloudflare Web Analytics site token (public); unset keeps the beacon off. */
   readonly VITE_CF_WEB_ANALYTICS_TOKEN?: string;
   readonly VITE_COOKIEBOT_ID?: string;
+  /** Public Google OAuth web client ID; set, sign-in goes to Google directly (signInWithIdToken). */
+  readonly VITE_GOOGLE_CLIENT_ID?: string;
 }

@@ -43,6 +43,44 @@ non-HTTPS project origin or any key without `sb_publishable_` before building.
 never be passed to Vite. Missing configuration disables sign-in with a safe
 message, rather than falling back to a fabricated identity.
 
+## Direct Google sign-in (Google shows the site, not supabase.co)
+
+With the Supabase-hosted redirect, Google's account chooser says "to continue to
+`<project-ref>.supabase.co`", because Google names the redirect URI's host. When
+the public GitHub variable `GOOGLE_CLIENT_ID` (the same Web client ID that the
+Supabase Google provider uses) is set, the build gets `VITE_GOOGLE_CLIENT_ID` and
+the site goes to Google itself:
+
+1. `signIn` saves a random `state` and raw `nonce` in sessionStorage
+   (`mathloop.google-sign-in`, 10 minutes) and opens
+   `accounts.google.com/o/oauth2/v2/auth` with `response_type=id_token`,
+   `redirect_uri=<origin>/auth/callback`, `nonce=SHA-256(nonce)` (hex) and
+   `prompt=select_account`.
+2. Google returns to `/auth/callback#id_token=…&state=…`. The fragment never
+   reaches a server and is removed from the address bar at once.
+3. The saved pair is read once and deleted. A token whose `state` does not match
+   is rejected without calling Supabase (login CSRF/replay).
+4. `supabase.auth.signInWithIdToken({ provider: 'google', token, nonce })`
+   creates the normal Supabase session. Supabase checks the token signature, the
+   audience (the client ID listed in its Google provider) and the nonce hash. The
+   same Google account keeps the same Supabase user.
+
+Without the variable, or with a malformed value, sign-in keeps the old
+Supabase-hosted redirect, so the change is safe to deploy first.
+
+The human configures (Google Cloud → Google Auth Platform → Clients → the Web
+client): Authorized JavaScript origins and Authorized redirect URIs for every
+origin that serves the site, e.g. `https://mathloop.net` +
+`https://mathloop.net/auth/callback`, `https://mathloop.pages.dev` +
+`https://mathloop.pages.dev/auth/callback`, `http://localhost:5173` +
+`http://localhost:5173/auth/callback`. Keep the Supabase callback too (the
+fallback uses it). Branding: app name, logo, home/privacy/terms links on
+mathloop.net and the authorized domain `mathloop.net`; Google shows the name and
+logo only after brand verification. In Supabase → Authentication → Providers →
+Google, the client ID must be listed and "Skip nonce checks" must stay off.
+Then set the GitHub variable `GOOGLE_CLIENT_ID` and rerun Preview.
+Rollback: delete the variable and rerun Preview.
+
 ## Session behavior
 
 The SDK uses PKCE with persistent sessions and automatic refresh. The application

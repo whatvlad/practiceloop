@@ -5,6 +5,10 @@ User-facing releases. Known limitations of the current release are in
 
 ## Unreleased
 
+- **Google sign-in names MathLoop.** Once the `GOOGLE_CLIENT_ID` variable is
+  set, the site goes to Google itself, so Google's account chooser shows the
+  site's domain instead of the long Supabase address.
+
 - **Clearer header and footer.** The logo always leads to the home page. A larger
   footer with Privacy, Terms, Feedback and Cookie settings appears on every page,
   and the header, logo and its buttons are bigger.
