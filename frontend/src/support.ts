@@ -11,6 +11,8 @@ export const SUPPORT_SNOOZE_DAYS = 60;
 const SOLVED_KEY = 'mathloop:solved-count';
 const DISMISSED_KEY = 'mathloop:support-dismissed';
 const DAY_MS = 24 * 60 * 60 * 1000;
+/** Fired on window after each solved problem, so an open notice can appear without a reload. */
+export const SOLVED_EVENT = 'mathloop:solved';
 
 type Store = Pick<Storage, 'getItem' | 'setItem'>;
 
@@ -32,6 +34,7 @@ function write(store: Store | null, key: string, value: number): void {
 /** Counts one correctly solved problem on this device. */
 export function recordSolved(store: Store | null = browserStore()): void {
   write(store, SOLVED_KEY, readNumber(store, SOLVED_KEY) + 1);
+  if (typeof window !== 'undefined') window.dispatchEvent(new Event(SOLVED_EVENT));
 }
 
 /** True once enough problems are solved and the notice was not closed recently. */

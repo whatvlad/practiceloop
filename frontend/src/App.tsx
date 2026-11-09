@@ -174,7 +174,7 @@ export function App() {
         {pathname === '/history' && <HistoryPage />}
         {pathname === '/feedback' && <FeedbackPage name={account.name} email={account.email} />}
         {pathname === '/profile' && <ProfilePage account={account} onLogOut={handleLogOut} onDeleted={handleDeleted} busy={auth.working} />}
-        {pathname !== '/feedback' && <SupportNotice key={pathname} wrap={wrap} />}
+        {pathname !== '/feedback' && <SupportNotice />}
       </div>
     );
   }
