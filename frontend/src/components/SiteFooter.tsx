@@ -2,7 +2,7 @@ import { FEEDBACK_PATH } from '../legal';
 import { Link } from '../router';
 import { Logo } from './AppNav';
 import { CookieSettingsLink } from './CookieSettingsLink';
-import { SUPPORT_URL } from '../support';
+import { SUPPORT_PATH, SUPPORT_URL } from '../support';
 
 /** The footer on every page: legal pages, feedback, support and cookie settings. */
 export function SiteFooter({ supportUrl = SUPPORT_URL }: { supportUrl?: string }) {
@@ -17,7 +17,7 @@ export function SiteFooter({ supportUrl = SUPPORT_URL }: { supportUrl?: string }
           <Link to="/privacy">Privacy</Link>
           <Link to="/terms">Terms</Link>
           <Link to={FEEDBACK_PATH}>Feedback</Link>
-          {supportUrl && <a href={supportUrl} target="_blank" rel="noopener noreferrer">Support</a>}
+          {supportUrl && <Link to={SUPPORT_PATH}>Support</Link>}
           <CookieSettingsLink />
         </nav>
       </div>
