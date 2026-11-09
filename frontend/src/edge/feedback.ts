@@ -115,8 +115,13 @@ export async function handleFeedback(request: Request, env: FeedbackEnv, fetchIm
         text: lines.join('\n'),
       }),
     });
-    if (!sent.ok) return json(502, { error: 'The message could not be sent. Try again later.' });
-  } catch {
+    if (!sent.ok) {
+      // Shows in the Pages function log; Resend's body says why (for example a testing sender limited to the owner's address).
+      console.error('Resend rejected the feedback email', sent.status, (await sent.text().catch(() => '')).slice(0, 500));
+      return json(502, { error: 'The message could not be sent. Try again later.' });
+    }
+  } catch (failure) {
+    console.error('Resend request failed', failure instanceof Error ? failure.message : String(failure));
     return json(502, { error: 'The message could not be sent. Try again later.' });
   }
   return json(200, { ok: true });
