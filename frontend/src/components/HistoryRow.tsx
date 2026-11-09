@@ -6,7 +6,7 @@ import { DifficultyDots } from './DifficultyScale';
 import { CheckIcon, ChevronIcon, CrossIcon, DashIcon } from './icons';
 import { Tex } from './Tex';
 
-function AttemptStatus({ result }: { result: PublicProblem['lastResult'] }) {
+export function AttemptStatus({ result }: { result: PublicProblem['lastResult'] }) {
   if (result === 'correct')
     return (
       <span className="pl-status pl-status--correct">

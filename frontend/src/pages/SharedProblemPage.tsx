@@ -89,7 +89,7 @@ function Result({ found, shareRef, signedIn, authLoading, inactive }: { found: S
         <span className="pl-label">{permanent ? 'Problem from code' : 'Shared problem'}</span>
       </div>
       <ProblemStatement topic={topic} problemLatex={problemLatex} />
-      {inactive ? <p className="pl-h-lg" role="status">In develop</p> : <p className="pl-small pl-muted pl-m-0">Solve this problem with answer checking and a full solution. Your work is saved separately in your own history.</p>}
+      {inactive ? <p className="pl-h-lg" role="status">Coming soon</p> : <p className="pl-small pl-muted pl-m-0">Solve this problem with answer checking and a full solution. Your work is saved separately in your own history.</p>}
       {error && <p role="alert">{error}</p>}
       <div>
         {!inactive && (signedIn

@@ -6,8 +6,6 @@ import '@fontsource/geist/500.css';
 import '@fontsource/geist/600.css';
 import '@fontsource/geist-mono/400.css';
 import '@fontsource/geist-mono/500.css';
-import '@fontsource/instrument-serif/400.css';
-import '@fontsource/instrument-serif/400-italic.css';
 import 'katex/dist/katex.min.css';
 import './styles/tokens.css';
 import './styles/components.css';

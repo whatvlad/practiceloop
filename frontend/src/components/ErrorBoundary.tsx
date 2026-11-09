@@ -14,11 +14,11 @@ export class ErrorBoundary extends Component<{ children: ReactNode }, { failed: 
     return (
       <div className="pl-page pl-login">
         <main id="main" tabIndex={-1} className="pl-card pl-card--lg pl-stack pl-gap-5 pl-center pl-login-panel" role="alert">
-          <h1 className="pl-display-md">Something broke.</h1>
+          <h1 className="pl-display-md">Something broke</h1>
           <p className="pl-muted pl-m-0">{text.service_error}</p>
           <div>
             <a className="pl-btn pl-btn--primary" href={import.meta.env.BASE_URL}>
-              Reload PracticeLoop
+              Reload MathLoop
             </a>
           </div>
         </main>

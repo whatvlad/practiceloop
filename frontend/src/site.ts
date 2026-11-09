@@ -3,7 +3,7 @@
 // custom domain launches (#39) every page is noindex. No og:image yet: there is
 // no approved source logo or sharing image.
 
-export const SITE_NAME = 'PracticeLoop';
+export const SITE_NAME = 'MathLoop';
 const DESCRIPTION =
   'Practice mathematics with generated problems, checked answers, full solutions and a saved history.';
 
@@ -20,15 +20,18 @@ function page(title: string, description: string, indexable = false): PageMeta {
 
 const PAGES: Record<string, PageMeta> = {
   '/': page(SITE_NAME, DESCRIPTION, true),
-  '/privacy': page('Privacy', 'What PracticeLoop stores, why, who processes it and how to delete it.', true),
-  '/terms': page('Terms of Service', 'The rules for using PracticeLoop, a free mathematics practice beta.', true),
+  '/privacy': page('Privacy', 'What MathLoop stores, why, who processes it and how to delete it.', true),
+  '/feedback': page('Feedback', 'Report a problem or send an idea to the MathLoop team.'),
+  '/terms': page('Terms of Service', 'The rules for using MathLoop, a free mathematics practice beta.', true),
   '/login': page('Sign in', 'Sign in with Google to save problems, attempts and statistics.'),
-  '/dashboard': page('Dashboard', 'Your practice overview.'),
+  '/dashboard': page('Home', 'Your last problem, recent activity and topics.'),
+  '/random': page('Random practice', 'Mix topics and levels in one practice session.'),
+  '/algebra-random': page('Random algebra', 'Random algebra problems with per-topic levels and settings.'),
   '/demo': page('Demo problem', 'Try one generated mathematics problem without signing in.'),
   '/practice': page('Practice', 'Solve a generated mathematics problem.'),
   '/history': page('History', 'Every problem you have generated.'),
   '/profile': page('Profile', 'Your account, statistics and data.'),
-  '/shared': page('Shared problem', 'A mathematics problem shared from PracticeLoop.'),
+  '/shared': page('Shared problem', 'A mathematics problem shared from MathLoop.'),
   '/auth/callback': page('Signing in', 'Finishing Google sign-in.'),
 };
 const NOT_FOUND = page('Page not found', 'There is no page at this address.');

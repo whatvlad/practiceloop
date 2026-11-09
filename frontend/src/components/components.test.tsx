@@ -142,6 +142,6 @@ describe('ApiStatusNotice', () => {
     expect(renderToStaticMarkup(<ApiStatusNotice health={undefined} />)).toBe('');
     const html = renderToStaticMarkup(<ApiStatusNotice health="unreachable" />);
     expect(html).toContain('role="status"');
-    expect(html).toContain('reach the PracticeLoop server');
+    expect(html).toContain('reach the MathLoop server');
   });
 });

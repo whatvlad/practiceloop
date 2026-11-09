@@ -1,4 +1,4 @@
-/* PracticeLoop tokens. Mirrors docs/design/system/tokens.json; src/styles/tokens.test.ts fails on drift. */
+/* MathLoop tokens. Mirrors docs/design/system/tokens.json; src/styles/tokens.test.ts fails on drift. */
 :root,[data-theme="ink"]{
   --canvas:#000000;
   --surface:#0a0a0a;
@@ -9,9 +9,10 @@
   --ink:#ffffff;
   --ink-muted:#a3a3a3;
   --ink-subtle:#7e7e7e;
-  --action:#ffffff;
-  --action-hover:#d9d9d9;
-  --on-action:#000000;
+  --action:#2563eb;
+  --action-hover:#1d4ed8;
+  --on-action:#ffffff;
+  --accent:#6b9bff;
   --focus:#ffffff;
   --correct:#56b4e9;
   --correct-soft:#06202e;
@@ -32,9 +33,10 @@
   --ink:#f4f4f5;
   --ink-muted:#a1a1a6;
   --ink-subtle:#8c8c91;
-  --action:#ffffff;
-  --action-hover:#dcdcde;
-  --on-action:#0f0f10;
+  --action:#2563eb;
+  --action-hover:#1d4ed8;
+  --on-action:#ffffff;
+  --accent:#6b9bff;
   --focus:#ffffff;
   --correct:#56b4e9;
   --correct-soft:#0b2536;
@@ -55,9 +57,10 @@
   --ink:#0a0a0a;
   --ink-muted:#5c5a54;
   --ink-subtle:#66645d;
-  --action:#0a0a0a;
-  --action-hover:#2b2b2a;
+  --action:#2563eb;
+  --action-hover:#1d4ed8;
   --on-action:#ffffff;
+  --accent:#1d4ed8;
   --focus:#0a0a0a;
   --correct:#0066a3;
   --correct-soft:#e4f1fa;
@@ -83,7 +86,7 @@
   --radius-lg:16px;
   --radius-xl:28px;
   --radius-pill:999px;
-  --font-display:"Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --font-display:"Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-sans:"Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono:"Geist Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
   --font-math:"KaTeX_Main", "Latin Modern Math", "STIX Two Math", "Cambria Math", serif;

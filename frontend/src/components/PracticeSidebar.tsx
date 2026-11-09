@@ -1,84 +1,45 @@
-import { useRef, useState } from 'react';
-import { generateProblem, getCatalogue } from '../data/api';
+import { useEffect, useState } from 'react';
+import { getCatalogue } from '../data/api';
 import { algebraGroups } from '../data/algebraGroups';
-import { difficultyLabel } from '../data/difficultyLabels';
-import { eligibleRandomChoices, loadRandomMatrixOptions, loadRandomSelection, pickRandomChoice, saveRandomMatrixOptions, saveRandomSelection } from '../data/randomPractice';
-import { initialMatrixOptions, matrixOptionsValid, MatrixSettings } from './MatrixSettings';
-import type { RandomSelection } from '../data/randomPractice';
-import type { AvailableTopic, Catalogue, Difficulty } from '../data/types';
-import { Link, navigate } from '../router';
+import type { AvailableTopic, Catalogue } from '../data/types';
+import { Link, useLocation } from '../router';
 import { useLoad } from '../useLoad';
 
-/** The server catalogue remains the authority for available topics and levels. */
-export function PracticeSidebar({ preview, accountId = 'local-preview', onLocalRandom, onPreviewTopic }: { preview?: Catalogue; accountId?: string; onPreviewTopic?: (topic: string) => void; onLocalRandom?: () => void } = {}) {
+const LOCAL_PREVIEW_TOPICS = ['matrix-operations', 'determinants', 'inverse-matrices', 'matrix-rank', 'linear-systems', 'complex-arithmetic', 'complex-numbers', 'complex-polar-form', 'complex-conversion', 'polynomial-division', 'polynomial-roots', 'polynomial-operations', 'partial-fractions', 'fundamental-theorem-algebra'];
+
+/** The topic tree beside the workspace. The server catalogue remains the authority for available topics. */
+export function PracticeSidebar({ preview, onLocalRandom, onPreviewTopic }: { preview?: Catalogue; onPreviewTopic?: (topic: string) => void; onLocalRandom?: () => void } = {}) {
   const loaded = useLoad(getCatalogue);
+  const { pathname, params } = useLocation();
   const catalogue = preview ? { status: 'ready' as const, data: preview } : loaded;
   const topics = catalogue.status === 'ready' ? catalogue.data.topics : [];
-  const [randomMode, setRandomMode] = useState(false);
-  const [selection, setSelection] = useState<RandomSelection>(() => loadRandomSelection(accountId));
-  const [matrixOptions, setMatrixOptions] = useState(() => loadRandomMatrixOptions(accountId) ?? initialMatrixOptions(1));
-  const [busy, setBusy] = useState(false);
-  const pending = useRef(false);
-  const [error, setError] = useState('');
-  const choices = eligibleRandomChoices(selection, topics);
+  const current = pathname === '/dashboard' ? params.get('topic') : null;
 
-  function updateSelection(next: RandomSelection) {
-    setSelection(next);
-    saveRandomSelection(accountId, next);
-    setError('');
-  }
-  function toggle(slugs: string[], checked: boolean) {
-    const next = { ...selection };
-    for (const slug of slugs) {
-      if (checked) next[slug] ??= null;
-      else delete next[slug];
-    }
-    updateSelection(next);
-  }
   function topicRow(topic: AvailableTopic, title = topic.name) {
-    const checked = Object.hasOwn(selection, topic.slug);
     return <li key={topic.slug}>
-      {randomMode ? <>
-        <label><input type="checkbox" checked={checked} onChange={event => toggle([topic.slug], event.target.checked)} /> {title}</label>
-        {checked && <label className="pl-random-level">Level for {title}
-          <select value={selection[topic.slug] ?? ''} onChange={event => updateSelection({ ...selection, [topic.slug]: event.target.value ? Number(event.target.value) as Difficulty : null })}>
-            <option value="">Choose level</option>
-            {topic.availableDifficulties.map(level => <option key={level} value={level}>{difficultyLabel(topic.slug, level)}</option>)}
-          </select>
-        </label>}
-        {checked && topic.slug === 'matrix-operations' && selection[topic.slug] && <MatrixSettings
-          level={selection[topic.slug]!} value={matrixOptions}
-          onChange={value => { setMatrixOptions(value); saveRandomMatrixOptions(accountId, value); }} />}
-      </> : onPreviewTopic && ['matrix-operations', 'determinants', 'inverse-matrices', 'matrix-rank', 'linear-systems', 'complex-arithmetic', 'complex-numbers', 'complex-polar-form', 'complex-conversion', 'polynomial-division', 'polynomial-roots', 'polynomial-operations', 'partial-fractions', 'fundamental-theorem-algebra'].includes(topic.slug)
+      {onPreviewTopic && LOCAL_PREVIEW_TOPICS.includes(topic.slug)
         ? <button type="button" className="pl-sidebar-topic" onClick={() => onPreviewTopic(topic.slug)}>{title}</button>
         : preview && onPreviewTopic ? <span aria-disabled="true">{title} <small>Not available locally</small></span>
-        : <Link to={`/dashboard?area=${topic.area}&topic=${topic.slug}`}>{title}</Link>}
+        : <Link to={`/dashboard?area=${topic.area}&topic=${topic.slug}`} aria-current={current === topic.slug ? 'page' : undefined}>{title}</Link>}
     </li>;
   }
-  async function generate() {
-    if (!choices || pending.current || preview) return;
-    pending.current = true;
-    setBusy(true);
-    setError('');
-    try {
-      const choice = pickRandomChoice(choices);
-      let options;
-      if (choice.topic === 'matrix-operations') {
-        options = matrixOptionsValid(choice.difficulty, matrixOptions) ? matrixOptions : initialMatrixOptions(choice.difficulty);
-        saveRandomMatrixOptions(accountId, options);
-      }
-      const problem = options ? await generateProblem(choice.topic, choice.difficulty, choice.area, options)
-        : await generateProblem(choice.topic, choice.difficulty, choice.area);
-      navigate(`/practice?id=${encodeURIComponent(problem.id)}&mode=random`);
-    } catch (failure) {
-      setError(failure instanceof Error ? failure.message : 'Could not generate a problem.');
-    } finally { pending.current = false; setBusy(false); }
-  }
+  const randomCurrent = pathname === '/random';
+  // Phones show the tree only on request, so the page itself is the first thing on screen.
+  // The local preview has its own menu button, so its tree is never folded a second time.
+  const [open, setOpen] = useState(Boolean(preview));
+  const where = `${pathname}?${params.toString()}`;
+  useEffect(() => { if (!preview) setOpen(false); }, [where, preview]);
   return (
-    <aside className="pl-practice-sidebar" aria-label="Practice topics">
-      <p className="pl-label">Practice topics</p>
-      <button type="button" className="pl-btn pl-btn--secondary pl-random-toggle" aria-pressed={randomMode} onClick={() => onLocalRandom ? onLocalRandom() : setRandomMode(!randomMode)}>Random problems</button>
-      {!preview && <Link to="/algebra-random">Random algebra with settings</Link>}
+    <aside className={`pl-practice-sidebar${open ? ' is-open' : ''}`} aria-label="Practice topics">
+      <div className="pl-sidebar-head">
+        <p className="pl-label pl-m-0 pl-sidebar-title">Topics</p>
+        {!preview && <button type="button" className="pl-btn pl-btn--secondary pl-btn--sm pl-sidebar-toggle" aria-expanded={open} aria-controls="pl-sidebar-tree" onClick={() => setOpen(value => !value)}>{open ? 'Hide topics' : 'Topics'}</button>}
+        {onLocalRandom
+          ? <button type="button" className="pl-btn pl-btn--secondary pl-btn--sm pl-random-toggle" onClick={onLocalRandom}>Random problems</button>
+          : <Link className="pl-btn pl-btn--secondary pl-btn--sm pl-random-toggle" to="/random" aria-current={randomCurrent ? 'page' : undefined}>Random problems</Link>}
+      </div>
+      <div id="pl-sidebar-tree" className="pl-sidebar-tree">
+      {!preview && <Link className="pl-sidebar-extra" to="/algebra-random">Random algebra with settings</Link>}
       {catalogue.status === 'loading' && <p role="status">Loading topics…</p>}
       {catalogue.status === 'error' && <p role="alert">Topics could not be loaded.</p>}
       {catalogue.status === 'ready' && <>
@@ -86,32 +47,25 @@ export function PracticeSidebar({ preview, accountId = 'local-preview', onLocalR
           <summary>Algebra</summary>
           {algebraGroups.map(group => {
             const available = group.items.flatMap(item => topics.filter(topic => topic.slug === item.topic && topic.availableDifficulties.length > 0));
-            const selected = available.filter(topic => Object.hasOwn(selection, topic.slug));
-            return <details className="pl-practice-sidebar-group" key={group.title}>
+            const holdsCurrent = available.some(topic => topic.slug === current);
+            return <details className="pl-practice-sidebar-group" key={group.title} open={holdsCurrent || undefined}>
               <summary>{group.title}</summary>
-              {randomMode && available.length > 0 && <label className="pl-random-group"><input type="checkbox" checked={selected.length === available.length} onChange={event => toggle(available.map(topic => topic.slug), event.target.checked)} /> Select all in {group.title}</label>}
               <ul>{group.items.filter(item => !(preview && onLocalRandom && ['polynomial-operations', 'fundamental-theorem-algebra'].includes(item.topic ?? ''))).map(item => {
                 const topic = available.find(entry => entry.slug === item.topic);
-                return topic ? topicRow(topic, item.title) : <li key={item.title}><span>{item.title} <small>In develop</small></span></li>;
+                return topic ? topicRow(topic, item.title) : <li key={item.title}><span>{item.title} <small>Coming soon</small></span></li>;
               })}</ul>
             </details>;
           })}
         </details>
         {catalogue.data.areas.filter(area => area.slug !== 'algebra').map(area => {
           const available = topics.filter(topic => topic.area === area.slug && topic.availableDifficulties.length > 0);
-          return <details key={area.slug}>
+          return <details key={area.slug} open={available.some(topic => topic.slug === current) || undefined}>
             <summary>{area.name}</summary>
-            {randomMode && available.length > 0 && <label className="pl-random-group"><input type="checkbox" checked={available.every(topic => Object.hasOwn(selection, topic.slug))} onChange={event => toggle(available.map(topic => topic.slug), event.target.checked)} /> Select all in {area.name}</label>}
             <ul>{available.map(topic => topicRow(topic))}</ul>
           </details>;
         })}
-        {randomMode && <div className="pl-random-actions">
-          <p className="pl-small pl-muted">{Object.keys(selection).length} selected. Choose a level for every topic.</p>
-          <button type="button" className="pl-btn pl-btn--primary" onClick={() => void generate()} disabled={!choices || busy || !!preview}>{busy ? 'Generating…' : 'Generate random problem'}</button>
-          {preview && <p className="pl-small pl-muted">Generating requires a signed-in account.</p>}
-          {error && <p role="alert">{error}</p>}
-        </div>}
       </>}
+      </div>
     </aside>
   );
 }

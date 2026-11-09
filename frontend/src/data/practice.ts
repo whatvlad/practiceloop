@@ -27,6 +27,9 @@ let retryAfter = 0;
 
 export function configurePracticeAuth(provider: () => Promise<string | null>): void { accessToken = provider; }
 
+/** The signed-in session's access token for the feedback function, or null for a guest. */
+export function feedbackToken(): Promise<string | null> { return accessToken(); }
+
 export class NotFoundError extends Error {}
 
 export function resetPractice(): void {

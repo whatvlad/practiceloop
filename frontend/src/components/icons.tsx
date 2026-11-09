@@ -34,10 +34,10 @@ export const WarningIcon = (p: IconProps) => (
   </Icon>
 );
 
-/** The PracticeLoop mark: a ring with a gap and a centre point. */
+/** The MathLoop mark: an infinity loop, the practice cycle drawn as a mathematical sign. */
+export const LOOP_PATH = 'M12 12C10 9.2 8.6 7.8 6.8 7.8a4.2 4.2 0 0 0 0 8.4C8.6 16.2 10 14.8 12 12S15.4 7.8 17.2 7.8a4.2 4.2 0 0 1 0 8.4C15.4 16.2 14 14.8 12 12z';
 export const LoopMark = (p: IconProps) => (
   <Icon {...p}>
-    <path d="M20 12a8 8 0 1 1-2.34-5.66" strokeWidth="2.5" />
-    <circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none" />
+    <path d={LOOP_PATH} strokeWidth="2.4" />
   </Icon>
 );

@@ -2,7 +2,7 @@
 import { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
-import { DashboardPage } from './DashboardPage';
+import { TopicPage } from './TopicPage';
 import { PracticePage } from './PracticePage';
 import { LocalRandomPractice } from '../components/LocalRandomPractice';
 import { matrixOptionsFromSearch } from '../components/MatrixSettings';
@@ -55,7 +55,7 @@ it('generates and continues polar powers without a difficulty selector', async (
   catalogue = { areas: [{ slug: 'algebra', name: 'Algebra', mixed: null }], items: [
     { slug: 'complex-polar-form', name: 'Polar form', area: 'algebra', availableDifficulties: [1, 2, 3] },
   ] };
-  await act(async () => root.render(<DashboardPage initialArea="algebra" initialTopic="complex-polar-form" />));
+  await act(async () => root.render(<TopicPage initialArea="algebra" initialTopic="complex-polar-form" />));
   const select = [...element.querySelectorAll('label')].find(label => label.textContent?.startsWith('Exercise type'))!.querySelector('select')!;
   await act(async () => { select.value = 'power'; select.dispatchEvent(new Event('change', { bubbles: true })); });
   expect(element.textContent).not.toContain('Difficulty');
@@ -70,7 +70,7 @@ it('uses local polynomial root exercises', async () => {
   catalogue = { areas: [{ slug: 'algebra', name: 'Algebra', mixed: null }], items: [
     { slug: 'polynomial-roots', name: 'Roots and factors', area: 'algebra', availableDifficulties: [1, 2, 3] },
   ] };
-  await act(async () => root.render(<DashboardPage initialArea="algebra" initialTopic="polynomial-roots" />));
+  await act(async () => root.render(<TopicPage initialArea="algebra" initialTopic="polynomial-roots" />));
   await act(async () => button('Generate problem').click());
   expect(calls.filter(call => call.path === '/api/problems').at(-1)?.body).toMatchObject({ topic: 'polynomial-roots', exerciseMode: 'roots' });
 });
@@ -79,7 +79,7 @@ it('preserves complex conversion direction for the next saved problem', async ()
   catalogue = { areas: [{ slug: 'algebra', name: 'Algebra', mixed: null }], items: [
     { slug: 'complex-conversion', name: 'Converting complex forms', area: 'algebra', availableDifficulties: [1, 2, 3] },
   ] };
-  await act(async () => root.render(<DashboardPage initialArea="algebra" initialTopic="complex-conversion" />));
+  await act(async () => root.render(<TopicPage initialArea="algebra" initialTopic="complex-conversion" />));
   const select = [...element.querySelectorAll('label')].find(label => label.textContent?.startsWith('Exercise type'))!.querySelector('select')!;
   await act(async () => { select.value = 'exp-alg'; select.dispatchEvent(new Event('change', { bubbles: true })); });
   await act(async () => button('Generate problem').click());
@@ -93,7 +93,7 @@ it('preserves complex exercise mode for the next saved problem', async () => {
   catalogue = { areas: [{ slug: 'algebra', name: 'Algebra', mixed: null }], items: [
     { slug: 'complex-arithmetic', name: 'Complex arithmetic', area: 'algebra', availableDifficulties: [1, 2, 3] },
   ] };
-  await act(async () => root.render(<DashboardPage initialArea="algebra" initialTopic="complex-arithmetic" />));
+  await act(async () => root.render(<TopicPage initialArea="algebra" initialTopic="complex-arithmetic" />));
   const select = [...element.querySelectorAll('label')].find(label => label.textContent?.startsWith('Exercise type'))!.querySelector('select')!;
   await act(async () => { select.value = 'divide'; select.dispatchEvent(new Event('change', { bubbles: true })); });
   await act(async () => button('Generate problem').click());
@@ -107,7 +107,7 @@ it('preserves determinant size for the next saved problem', async () => {
   catalogue = { areas: [{ slug: 'algebra', name: 'Algebra', mixed: null }], items: [
     { slug: 'determinants', name: 'Determinants', area: 'algebra', availableDifficulties: [1, 2, 3] },
   ] };
-  await act(async () => root.render(<DashboardPage initialArea="algebra" initialTopic="determinants" />));
+  await act(async () => root.render(<TopicPage initialArea="algebra" initialTopic="determinants" />));
   const select = [...element.querySelectorAll('label')].find(label => label.textContent?.startsWith('Matrix size'))!.querySelector('select')!;
   await act(async () => { select.value = '4'; select.dispatchEvent(new Event('change', { bubbles: true })); });
   await act(async () => button('Generate problem').click());
@@ -121,7 +121,7 @@ it('generates and continues a custom matrix exercise', async () => {
   catalogue = { areas: [{ slug: 'algebra', name: 'Algebra', mixed: null }], items: [
     { slug: 'matrix-operations', name: 'Matrix operations', area: 'algebra', availableDifficulties: [1, 2, 3] },
   ] };
-  await act(async () => root.render(<DashboardPage initialArea="algebra" initialTopic="matrix-operations" />));
+  await act(async () => root.render(<TopicPage initialArea="algebra" initialTopic="matrix-operations" />));
   await act(async () => element.querySelector<HTMLInputElement>('input[type="checkbox"]')!.click());
   const select = (name: string) => [...element.querySelectorAll('label')].find(label => label.textContent?.startsWith(name))!.querySelector('select')!;
   await act(async () => { select('Operation').value = 'multiply'; select('Operation').dispatchEvent(new Event('change', { bubbles: true })); });
@@ -140,7 +140,7 @@ it('preserves rank dimensions when generating the next saved problem', async () 
   catalogue = { areas: [{ slug: 'algebra', name: 'Algebra', mixed: null }], items: [
     { slug: 'matrix-rank', name: 'Matrix rank', area: 'algebra', availableDifficulties: [1, 2, 3] },
   ] };
-  await act(async () => root.render(<DashboardPage initialArea="algebra" initialTopic="matrix-rank" />));
+  await act(async () => root.render(<TopicPage initialArea="algebra" initialTopic="matrix-rank" />));
   const select = (name: string) => [...element.querySelectorAll('label')].find(label => label.textContent?.startsWith(name))!.querySelector('select')!;
   await act(async () => { select('Rows').value = '3'; select('Rows').dispatchEvent(new Event('change', { bubbles: true })); });
   await act(async () => { select('Columns').value = '5'; select('Columns').dispatchEvent(new Event('change', { bubbles: true })); });
@@ -182,7 +182,7 @@ it('generates and continues the chosen modulus exercise', async () => {
   catalogue = { areas: [{ slug: 'algebra', name: 'Algebra', mixed: null }], items: [
     { slug: 'complex-numbers', name: 'Complex numbers', area: 'algebra', availableDifficulties: [1, 2, 3, 4, 5] },
   ] };
-  await act(async () => root.render(<DashboardPage initialArea="algebra" initialTopic="complex-numbers" />));
+  await act(async () => root.render(<TopicPage initialArea="algebra" initialTopic="complex-numbers" />));
   const select = [...element.querySelectorAll('label')].find(label => label.textContent?.startsWith('Exercise type'))!.querySelector('select')!;
   await act(async () => { select.value = 'geometry'; select.dispatchEvent(new Event('change', { bubbles: true })); });
   await act(async () => button('Generate problem').click());
@@ -201,7 +201,7 @@ it('generates and continues matrix practice with the chosen operation and size',
   catalogue = { areas: [{ slug: 'algebra', name: 'Algebra', mixed: null }], items: [
     { slug: 'matrix-operations', name: 'Matrix operations', area: 'algebra', availableDifficulties: [1, 2, 3] },
   ] };
-  await act(async () => root.render(<DashboardPage initialArea="algebra" initialTopic="matrix-operations" />));
+  await act(async () => root.render(<TopicPage initialArea="algebra" initialTopic="matrix-operations" />));
   const select = (name: string) => [...element.querySelectorAll('label')].find(label => label.textContent?.startsWith(name))!.querySelector('select')!;
   await act(async () => { select('Operation').value = 'multiply'; select('Operation').dispatchEvent(new Event('change', { bubbles: true })); });
   await act(async () => { select('Matrix size').value = '3x3'; select('Matrix size').dispatchEvent(new Event('change', { bubbles: true })); });
@@ -249,8 +249,8 @@ it('restores a probability topic in its own area after generation before catalog
     { slug: 'probability-statistics', name: 'Probability and Statistics', mixed: null },
   ], items: [...INTEGRALS, { slug: 'probability-events', name: 'Events and counting', area: 'probability-statistics', availableDifficulties: [1,2,3,4,5] }] };
   await generateProblem('probability-events', 1, 'probability-statistics');
-  await act(async () => root.render(<DashboardPage />));
-  expect(element.textContent).toContain('Selected topic: Events and counting');
+  await act(async () => root.render(<TopicPage />));
+  expect(element.querySelector('h1')?.textContent).toBe('Events and counting');
   expect(button('Generate problem').disabled).toBe(false);
 });
 
@@ -318,13 +318,13 @@ async function typeAnswer(value: string) {
 }
 
 it('starts practice for the topic selected from the curriculum', async () => {
-  await act(async () => root.render(<DashboardPage initialArea="mathematical-analysis" initialTopic="substitution" />));
+  await act(async () => root.render(<TopicPage initialArea="mathematical-analysis" initialTopic="substitution" />));
   await act(async () => button('Generate problem').click());
   expect(calls.find(call => call.path === '/api/problems')?.body).toMatchObject({ topic: 'substitution', difficulty: 1 });
 });
 
 it('runs selection → saved generation → invalid/correct check → explicit reveals → next through the real data boundary', async () => {
-  await act(async () => root.render(<DashboardPage />));
+  await act(async () => root.render(<TopicPage />));
   // Levels the topic lacks are hidden, not disabled: basic integrals has 1-2 here.
   expect(button('Advanced')).toBeUndefined();
   // Topics the catalogue does not offer are not shown, and one area needs no area picker.
@@ -359,13 +359,13 @@ it('runs selection → saved generation → invalid/correct check → explicit r
 
 it('uses topic-specific availability and retries a failed catalogue without generating a problem', async () => {
   fetchMock.mockResolvedValueOnce(response({}, 503));
-  await act(async () => root.render(<DashboardPage />));
+  await act(async () => root.render(<TopicPage />));
   expect(button('Generate problem').disabled).toBe(true);
   expect(element.querySelector('[role="alert"]')).not.toBeNull();
   await act(async () => button('Retry loading topics').click());
   expect(button('Generate problem').disabled).toBe(false);
   await act(async () => button('Easy').click());
-  await act(async () => root.render(<DashboardPage key="substitution" initialArea="mathematical-analysis" initialTopic="substitution" />));
+  await act(async () => root.render(<TopicPage key="substitution" initialArea="mathematical-analysis" initialTopic="substitution" />));
   // Substitution has only level 1 here: level 2 is hidden and the choice moves to 1.
   expect(button('Easy')).toBeUndefined();
   expect(button('1Basic').getAttribute('aria-pressed')).toBe('true');
@@ -376,7 +376,7 @@ it('uses topic-specific availability and retries a failed catalogue without gene
 });
 
 it('discards a check verdict after the answer changes while the request is pending', async () => {
-  await act(async () => root.render(<DashboardPage />));
+  await act(async () => root.render(<TopicPage />));
   await act(async () => button('Generate problem').click());
   await act(async () => root.render(<PracticePage id="problem-1" />));
   await typeAnswer('x^2/2+C');
@@ -424,7 +424,7 @@ it.each([
 });
 
 it('shares a saved problem by link and code and stops sharing it (#37)', async () => {
-  await act(async () => root.render(<DashboardPage />));
+  await act(async () => root.render(<TopicPage />));
   await act(async () => button('Generate problem').click());
   await act(async () => root.render(<PracticePage id="problem-1" />));
   expect(element.textContent).toContain('Your answers, results and solutions stay private');
@@ -444,8 +444,8 @@ it('uses the derivative topic selected from the tree', async () => {
     areas: [{ slug: 'mathematical-analysis', name: 'Mathematical Analysis', mixed: null }],
     items: [...INTEGRALS, { slug: 'derivatives', name: 'Derivatives', area: 'mathematical-analysis', availableDifficulties: [1, 2, 3] }],
   };
-  await act(async () => root.render(<DashboardPage initialArea="mathematical-analysis" initialTopic="derivatives" />));
-  expect(element.textContent).toContain('Selected topic: Derivatives');
+  await act(async () => root.render(<TopicPage initialArea="mathematical-analysis" initialTopic="derivatives" />));
+  expect(element.querySelector('h1')?.textContent).toBe('Derivatives');
   expect(button('Generate problem').disabled).toBe(false);
   expect(element.querySelectorAll('.pl-seg button')).toHaveLength(3);
   await act(async () => button('Medium').click());
@@ -458,7 +458,7 @@ it('sends Mathematical Analysis as the mixed-practice area', async () => {
     areas: [{ slug: 'mathematical-analysis', name: 'Mathematical Analysis', mixed: { availableDifficulties: [1, 2], weights: { 'basic-integrals': 1, substitution: 2 } } }],
     items: INTEGRALS,
   };
-  await act(async () => root.render(<DashboardPage initialArea="mathematical-analysis" initialTopic="mixed" />));
+  await act(async () => root.render(<TopicPage initialArea="mathematical-analysis" initialTopic="mixed" />));
   expect(element.querySelector('#mixed-weights')?.textContent).toContain('Basic integrals 33%, Substitution 67%');
   await act(async () => button('Generate problem').click());
   expect(calls.find(call => call.path === '/api/problems')?.body).toEqual({ topic: 'mixed', area: 'mathematical-analysis', difficulty: 1 });
