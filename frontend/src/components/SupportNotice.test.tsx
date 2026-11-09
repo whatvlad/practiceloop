@@ -19,7 +19,7 @@ it('appears on the same page once enough problems are solved, and closes', async
   await act(async () => root.render(<SupportNotice url="https://ko-fi.com/example" />));
   expect(element.textContent).toBe('');
   await act(async () => { for (let i = 0; i < SUPPORT_AFTER_SOLVED; i += 1) recordSolved(); });
-  expect(element.querySelector('a')?.getAttribute('href')).toBe('https://ko-fi.com/example');
+  expect(element.querySelector('a')?.getAttribute('href')).toMatch(/\/support$/);
   const close = Array.from(element.querySelectorAll('button')).find((b) => b.textContent === 'Not now');
   await act(async () => close?.click());
   expect(element.textContent).toBe('');

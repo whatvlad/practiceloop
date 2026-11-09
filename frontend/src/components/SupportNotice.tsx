@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { buttonClass } from './Button';
 import { CrossIcon } from './icons';
-import { SOLVED_EVENT, SUPPORT_URL, dismissSupportNotice, supportNoticeDue } from '../support';
+import { Link } from '../router';
+import { SOLVED_EVENT, SUPPORT_PATH, SUPPORT_URL, dismissSupportNotice, supportNoticeDue } from '../support';
 
 /** A small closable toast in the corner of app pages asking for voluntary support. */
 export function SupportNotice({ url = SUPPORT_URL }: { url?: string }) {
@@ -23,7 +24,7 @@ export function SupportNotice({ url = SUPPORT_URL }: { url?: string }) {
       <p className="pl-support-title">Enjoying MathLoop?</p>
       <p className="pl-small pl-muted pl-m-0">It is free and has no ads. If it helps you, you can support the project.</p>
       <div className="pl-support-actions">
-        <a className={buttonClass({ size: 'sm' })} href={url} target="_blank" rel="noopener noreferrer" onClick={close}>Support</a>
+        <Link className={buttonClass({ size: 'sm' })} to={SUPPORT_PATH} onClick={close}>Support</Link>
         <button type="button" className={buttonClass({ variant: 'ghost', size: 'sm' })} onClick={close}>Not now</button>
       </div>
     </aside>

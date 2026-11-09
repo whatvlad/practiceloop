@@ -22,6 +22,7 @@ import { PracticePage } from './pages/PracticePage';
 import { RandomPracticePage } from './pages/RandomPracticePage';
 import { TopicPage } from './pages/TopicPage';
 import { PrivacyPage } from './pages/PrivacyPage';
+import { SupportPage } from './pages/SupportPage';
 import { TermsPage } from './pages/TermsPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { SharedProblemPage } from './pages/SharedProblemPage';
@@ -143,6 +144,7 @@ export function App() {
     if (shared) return <SharedProblemPage key={`${account?.id ?? auth.status}:${shared[1]}`} token={decodeURIComponent(shared[1])} code={null} signedIn={!!account} authLoading={auth.status === 'loading'} />;
     if (pathname === '/privacy') return <PrivacyPage />;
     if (pathname === '/terms') return <TermsPage />;
+    if (pathname === '/support') return <SupportPage />;
     if (pathname === '/login') return <LoginPage onSignIn={handleSignIn} disabled={authDisabled} busy={auth.working} error={auth.error} />;
     if (pathname === '/demo' && auth.status !== 'loading' && !account) return <div className="pl-page"><PublicNav /><PracticePage id={null} demo /></div>;
     if (pathname === '/demo' || pathname === '/auth/callback' || (needsAccount && auth.status === 'loading')) {

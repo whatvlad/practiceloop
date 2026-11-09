@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { createElement } from 'react';
 import { SiteFooter } from './components/SiteFooter';
-import { SUPPORT_AFTER_SOLVED, SUPPORT_SNOOZE_DAYS, dismissSupportNotice, recordSolved, supportNoticeDue } from './support';
+import { supportPanelUrl, SUPPORT_AFTER_SOLVED, SUPPORT_SNOOZE_DAYS, dismissSupportNotice, recordSolved, supportNoticeDue } from './support';
 
 const URL_ = 'https://ko-fi.com/example';
 const DAY = 24 * 60 * 60 * 1000;
@@ -43,12 +43,21 @@ describe('support notice', () => {
 });
 
 describe('footer support link', () => {
-  it('opens the support page in a new tab', () => {
+  it('leads to our support page', () => {
     const html = renderToStaticMarkup(createElement(SiteFooter, { supportUrl: URL_ }));
-    expect(html).toContain(`href="${URL_}" target="_blank" rel="noopener noreferrer">Support</a>`);
+    expect(html).toMatch(/href="[^"]*\/support">Support<\/a>/);
   });
 
   it('is absent until a page is configured', () => {
     expect(renderToStaticMarkup(createElement(SiteFooter, { supportUrl: '' }))).not.toContain('Support</a>');
+  });
+});
+
+describe('Ko-fi panel', () => {
+  it('embeds only a plain ko-fi.com page', () => {
+    expect(supportPanelUrl('https://ko-fi.com/mathloop')).toBe('https://ko-fi.com/mathloop/?hidefeed=true&widget=true&embed=true&preview=true');
+    expect(supportPanelUrl('https://evil.example/mathloop')).toBeNull();
+    expect(supportPanelUrl('https://ko-fi.com/a/b')).toBeNull();
+    expect(supportPanelUrl('')).toBeNull();
   });
 });

@@ -5,6 +5,14 @@
 /** The external support page; empty hides every support link and the notice. */
 export const SUPPORT_URL = 'https://ko-fi.com/mathloop';
 export const SUPPORT_PROVIDER = 'Ko-fi';
+/** Our page on this site; the Ko-fi panel loads there only after a click. */
+export const SUPPORT_PATH = '/support';
+
+/** Ko-fi's embeddable donation panel for a ko-fi.com page URL, or null for anything else. */
+export function supportPanelUrl(url: string = SUPPORT_URL): string | null {
+  const match = /^https:\/\/ko-fi\.com\/([A-Za-z0-9_]+)$/.exec(url);
+  return match ? `https://ko-fi.com/${match[1]}/?hidefeed=true&widget=true&embed=true&preview=true` : null;
+}
 export const SUPPORT_AFTER_SOLVED = 3;
 export const SUPPORT_SNOOZE_DAYS = 60;
 

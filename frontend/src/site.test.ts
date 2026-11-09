@@ -88,7 +88,7 @@ describe('Pages headers (#38)', () => {
     const directive = (name: string) => csp.split('; ').find((part) => part.startsWith(`${name} `));
     expect(directive('default-src')).toBe("default-src 'self'");
     expect(directive('script-src')).toBe("script-src 'self' https://static.cloudflareinsights.com https://consent.cookiebot.com https://consentcdn.cookiebot.com");
-    expect(directive('frame-src')).toBe('frame-src https://consentcdn.cookiebot.com');
+    expect(directive('frame-src')).toBe('frame-src https://consentcdn.cookiebot.com https://ko-fi.com');
     expect(directive('object-src')).toBe("object-src 'none'");
     expect(directive('frame-ancestors')).toBe("frame-ancestors 'none'");
     expect(directive('base-uri')).toBe("base-uri 'self'");

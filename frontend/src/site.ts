@@ -21,6 +21,7 @@ function page(title: string, description: string, indexable = false): PageMeta {
 const PAGES: Record<string, PageMeta> = {
   '/': page(SITE_NAME, DESCRIPTION, true),
   '/privacy': page('Privacy', 'What MathLoop stores, why, who processes it and how to delete it.', true),
+  '/support': page('Support MathLoop', 'Support MathLoop, a free mathematics practice site, with a voluntary tip.'),
   '/feedback': page('Feedback', 'Report a problem or send an idea to the MathLoop team.'),
   '/terms': page('Terms of Service', 'The rules for using MathLoop, a free mathematics practice beta.', true),
   '/login': page('Sign in', 'Sign in with Google to save problems, attempts and statistics.'),

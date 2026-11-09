@@ -105,8 +105,10 @@ export function PrivacyPage() {
         {SUPPORT_URL && <section aria-labelledby="privacy-support">
           <h2 id="privacy-support" className="pl-h-lg">Supporting MathLoop</h2>
           <p>
-            MathLoop is free, and supporting it is voluntary and gives no extra features. The Support links open our page on{' '}
-            {SUPPORT_PROVIDER}, a separate service. Anything you send there, including your payment details, is handled by{' '}
+            MathLoop is free, and supporting it is voluntary and gives no extra features. Tips go through{' '}
+            {SUPPORT_PROVIDER}, a separate service. On our <Link to="/support">Support</Link> page its donation form loads
+            only after you choose to show it; from then on {SUPPORT_PROVIDER} and its payment providers may set their own
+            cookies in that form. Anything you send there, including your payment details, is handled by{' '}
             {SUPPORT_PROVIDER} and its payment providers under their own privacy policies; we do not receive your card or bank
             details. {SUPPORT_PROVIDER} tells us your name or nickname, any message you leave, and the amount, which we use
             only to thank you and keep our accounts.
