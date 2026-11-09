@@ -5,7 +5,7 @@ migration in order, RLS isolation, hosted-check SQL, API ownership queries
 (`pytest -m db`) and the end-to-end API flow, including its database outage.
 Uses Docker (`postgres:17`, as in CI) when it is installed, otherwise native
 PostgreSQL 17 binaries (`initdb`, `pg_ctl`, `psql`) found in --pg-bin,
-PRACTICELOOP_PG_BIN, .local/postgres/bin (here or in the main checkout),
+MATHLOOP_PG_BIN, .local/postgres/bin (here or in the main checkout),
 C:/Program Files/PostgreSQL/17/bin, the WSL setup or PATH. The database lives in a
 temporary folder and is removed afterwards.
 Needs the backend installed in this Python (README "Local setup"). On Windows,
@@ -96,7 +96,7 @@ class DockerDatabase:
     def __init__(self, docker: str, port: int) -> None:
         self.docker = docker
         self.port = port
-        self.container = f"practiceloop-test-{uuid.uuid4().hex[:10]}"
+        self.container = f"mathloop-test-{uuid.uuid4().hex[:10]}"
         self.stop_command = command_line(docker, "stop", self.container)
         self.start_command = command_line(docker, "start", self.container)
 
@@ -188,7 +188,7 @@ class NativeDatabase:
 
 
 def find_pg_bin(explicit: str | None) -> Path | None:
-    candidates = [Path(p) for p in (explicit, os.environ.get("PRACTICELOOP_PG_BIN")) if p]
+    candidates = [Path(p) for p in (explicit, os.environ.get("MATHLOOP_PG_BIN")) if p]
     candidates += [*PG_BIN_DIRS, main_checkout() / ".local/postgres/bin"]
     initdb = shutil.which("initdb")
     if initdb:
@@ -214,7 +214,7 @@ def disposable_database(pg_bin: str | None, native: bool) -> Iterator[Database]:
         raise SystemExit(
             "Neither Docker nor PostgreSQL 17 binaries found; see README 'Local database'"
         )
-    with tempfile.TemporaryDirectory(prefix="practiceloop-pg-") as folder:
+    with tempfile.TemporaryDirectory(prefix="mathloop-pg-") as folder:
         native_db = NativeDatabase(bin_dir, Path(folder), port)
         try:
             native_db.start()
@@ -281,7 +281,7 @@ def main() -> int:
         apply_ci_sql(database)
         url = f"postgresql://postgres:{PASSWORD}@127.0.0.1:{database.port}/postgres"
         if args.serve:
-            print(f"PRACTICELOOP_TEST_DATABASE_URL={url}\nCtrl+C stops and removes it")
+            print(f"MATHLOOP_TEST_DATABASE_URL={url}\nCtrl+C stops and removes it")
             try:
                 while True:
                     time.sleep(3600)
@@ -292,7 +292,7 @@ def main() -> int:
         backend = ROOT / "backend"
         # PYTHONPATH stands in for CI's `pip install -e .` (a WSL venv has no install).
         path = os.pathsep.join(p for p in (str(backend), os.environ.get("PYTHONPATH")) if p)
-        env = os.environ | {"PRACTICELOOP_TEST_DATABASE_URL": url, "PYTHONPATH": path}
+        env = os.environ | {"MATHLOOP_TEST_DATABASE_URL": url, "PYTHONPATH": path}
         run([sys.executable, "-m", "app.engine.catalogue"], cwd=backend, env=env)
         # addopts deselects db tests; a later -m in pytest_args still wins.
         run([sys.executable, "-m", "pytest", "-m", "db", *args.pytest_args], cwd=backend, env=env)

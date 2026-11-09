@@ -31,9 +31,9 @@ class Users:
 
 @pytest.fixture
 def url() -> str:
-    value = os.environ.get("PRACTICELOOP_TEST_DATABASE_URL")
+    value = os.environ.get("MATHLOOP_TEST_DATABASE_URL")
     if not value:
-        pytest.fail("PRACTICELOOP_TEST_DATABASE_URL is required for -m db")
+        pytest.fail("MATHLOOP_TEST_DATABASE_URL is required for -m db")
     return value
 
 

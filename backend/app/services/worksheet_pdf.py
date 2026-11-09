@@ -97,7 +97,7 @@ _PREAMBLE = r"""\documentclass[11pt]{article}
 \newcommand{\plfit}[2]{\resizebox{\ifdim\width>#1#1\else\width\fi}{!}{#2}}
 \newcommand{\plnumber}[1]{\makebox[2em][l]{\textbf{#1.}}}
 \begin{document}
-{\Large\bfseries PracticeLoop worksheet}\hfill %(date)s\par
+{\Large\bfseries MathLoop worksheet}\hfill %(date)s\par
 \vspace{0.6cm}
 Name:~\rule{7cm}{0.4pt}\hfill Date:~\rule{4cm}{0.4pt}\par
 \vspace{0.4cm}
@@ -249,7 +249,7 @@ def compile_pdf(tex: str, *, queue_seconds: float = QUEUE_SECONDS) -> bytes:
     if not COMPILE_SLOT.acquire(timeout=queue_seconds):
         raise TexBusy("A worksheet is already compiling")
     try:
-        directory = Path(tempfile.mkdtemp(prefix="practiceloop-tex-"))
+        directory = Path(tempfile.mkdtemp(prefix="mathloop-tex-"))
         try:
             return _run(tex, directory)
         finally:
@@ -259,4 +259,4 @@ def compile_pdf(tex: str, *, queue_seconds: float = QUEUE_SECONDS) -> bytes:
 
 
 def filename(day: date) -> str:
-    return f"practiceloop-worksheet-{day.isoformat()}.pdf"
+    return f"mathloop-worksheet-{day.isoformat()}.pdf"

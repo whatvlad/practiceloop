@@ -201,13 +201,13 @@ Docker:
    holds a `pgsql` folder; rename it to `postgres`). `.local/` is git-ignored and
    worktrees use the main checkout's copy. No admin rights or service needed.
    An installed PostgreSQL 17 in `C:\Program Files\PostgreSQL\17\bin`, a folder in
-   `PRACTICELOOP_PG_BIN` or `--pg-bin`, or `initdb` on `PATH` also work.
+   `MATHLOOP_PG_BIN` or `--pg-bin`, or `initdb` on `PATH` also work.
 
 3. Run `.\.venv\Scripts\python.exe scripts/test-db.py --sql-only`.
 
 On Linux or macOS, `python scripts/test-db.py` runs the whole job directly.
 Arguments after `--` are added to `pytest -m db` (and skip the end-to-end flow). `--serve`
-prints `PRACTICELOOP_TEST_DATABASE_URL` for running `pytest -m db` from another
+prints `MATHLOOP_TEST_DATABASE_URL` for running `pytest -m db` from another
 terminal until Ctrl+C. Never point these files at Supabase or shared data. Git history secret scan is also in CI;
 run Gitleaks locally with `gitleaks git . --config .gitleaks.toml --redact` if needed.
 No command should report success on skipped/missing tests. CI jobs are Frontend,
@@ -222,7 +222,7 @@ locally with the `pytest` command above, or run the CI workflow manually with
 `full_backend` enabled. Database isolation and Security keep their separate checks.
 Local runs cap randomised generator seed sweeps at 50 seeds per test to keep
 iterations short; hosted CI (where `CI` is set) always runs the full counts. Set
-`$env:PRACTICELOOP_SEEDS = "1000"` (PowerShell) or `PRACTICELOOP_SEEDS=1000` to
+`$env:MATHLOOP_SEEDS = "1000"` (PowerShell) or `MATHLOOP_SEEDS=1000` to
 run the full sweep locally (`backend/tests/seed_sweep.py`).
 Worksheet TeX is temporarily disabled in CI until the worksheet is reworked
 ([#181](https://github.com/whatvlad/practiceloop/issues/181)).

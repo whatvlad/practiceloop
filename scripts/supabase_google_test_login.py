@@ -14,8 +14,8 @@ from typing import Any
 
 ORIGIN = "http://localhost:5173"
 PAGE = b"""<!doctype html><html lang="en"><meta charset="utf-8">
-<meta name="referrer" content="no-referrer"><title>PracticeLoop isolation check</title>
-<h1>PracticeLoop test session</h1><p id="status">Receiving Google session...</p>
+<meta name="referrer" content="no-referrer"><title>MathLoop isolation check</title>
+<h1>MathLoop test session</h1><p id="status">Receiving Google session...</p>
 <script>
 const fragment = new URLSearchParams(location.hash.slice(1));
 history.replaceState(null, '', location.pathname);

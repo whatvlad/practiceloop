@@ -1,7 +1,7 @@
 """Worksheet routes (#116, ADR-007) against real Postgres as the RLS-bypassing service role.
 
 The PDF compile is stubbed here (the Database job has no TeX); tests/test_worksheet_tex.py
-compiles for real. Run with PRACTICELOOP_TEST_DATABASE_URL=... python -m pytest -m db
+compiles for real. Run with MATHLOOP_TEST_DATABASE_URL=... python -m pytest -m db
 """
 
 from __future__ import annotations
@@ -33,9 +33,9 @@ class Users:
 
 @pytest.fixture
 def url() -> str:
-    value = os.environ.get("PRACTICELOOP_TEST_DATABASE_URL")
+    value = os.environ.get("MATHLOOP_TEST_DATABASE_URL")
     if not value:
-        pytest.fail("PRACTICELOOP_TEST_DATABASE_URL is required for -m db")
+        pytest.fail("MATHLOOP_TEST_DATABASE_URL is required for -m db")
     return value
 
 
@@ -388,7 +388,7 @@ def test_pdf_download_renders_the_saved_worksheet_without_changing_flags(
     assert response.headers["Content-Type"] == "application/pdf"
     day = sheet["createdAt"][:10]
     assert response.headers["Content-Disposition"] == (
-        f'attachment; filename="practiceloop-worksheet-{day}.pdf"'
+        f'attachment; filename="mathloop-worksheet-{day}.pdf"'
     )
     assert response.content == b"%PDF-1.5 stub"
     tex = compiled.sources[-1]

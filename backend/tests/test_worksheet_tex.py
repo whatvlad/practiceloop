@@ -180,7 +180,7 @@ def test_graphs_of_every_visual_version_compile_beside_their_steps(tmp_path: Pat
 def test_labels_numbering_and_answers_on_their_own_last_page(tmp_path: Path) -> None:
     pages = text(compile_pdf(sample()), tmp_path)
     whole = "".join(pages[:-1])
-    assert "PracticeLoop worksheet" in pages[0] and "2026-10-22" in pages[0]
+    assert "MathLoop worksheet" in pages[0] and "2026-10-22" in pages[0]
     assert "Name:" in pages[0]
     assert whole.index("Substitution, level 3") < whole.index("Triple integrals, level 3")
     for number in ("1.", "2.", "3.", "4."):
