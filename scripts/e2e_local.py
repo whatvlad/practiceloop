@@ -8,7 +8,7 @@ covered here: that part is checked by hand on the deployed site.
 Never point it at Supabase or shared data: it inserts and deletes auth.users rows.
 
     cd backend
-    PRACTICELOOP_TEST_DATABASE_URL=postgresql://... \
+    MATHLOOP_TEST_DATABASE_URL=postgresql://... \
     python ../scripts/e2e_local.py --stop-db "<cmd>" --start-db "<cmd>"
 
 The database must already have supabase/tests/auth_fixture.sql and every
@@ -961,9 +961,9 @@ def main() -> int:
     parser.add_argument("--stop-db")
     parser.add_argument("--start-db")
     args = parser.parse_args()
-    url = os.environ.get("PRACTICELOOP_TEST_DATABASE_URL", "")
+    url = os.environ.get("MATHLOOP_TEST_DATABASE_URL", "")
     if not url:
-        raise SystemExit("PRACTICELOOP_TEST_DATABASE_URL must name a disposable database")
+        raise SystemExit("MATHLOOP_TEST_DATABASE_URL must name a disposable database")
     os.environ["DATABASE_URL"] = url
     alice, bob = uuid4(), uuid4()
     with psycopg.connect(url) as conn:

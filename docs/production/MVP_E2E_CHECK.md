@@ -13,7 +13,7 @@ local ES256 key. CI runs it in the Database isolation job; locally:
 ```sh
 cd backend
 pip install --no-deps -e .
-PRACTICELOOP_TEST_DATABASE_URL=postgresql://... python ../scripts/e2e_local.py \
+MATHLOOP_TEST_DATABASE_URL=postgresql://... python ../scripts/e2e_local.py \
   --stop-db "<command that stops Postgres>" --start-db "<command that starts it>"
 ```
 

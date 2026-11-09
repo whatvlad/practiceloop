@@ -54,7 +54,7 @@ from app.services.worksheet_pdf import (
 )
 from app.visuals.spec import build_visual
 
-logger = logging.getLogger("practiceloop.worksheets")
+logger = logging.getLogger("mathloop.worksheets")
 router = APIRouter(tags=["worksheets"])
 
 MAX_GROUPS = 8

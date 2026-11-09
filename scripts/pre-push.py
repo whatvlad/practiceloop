@@ -1,7 +1,7 @@
 """Run the Backend and Database CI checks that most often fail a first push.
 
 ruff check, ruff format --check and mypy (as in the Backend job), then the
-Database isolation job: `pytest -m db` against PRACTICELOOP_TEST_DATABASE_URL
+Database isolation job: `pytest -m db` against MATHLOOP_TEST_DATABASE_URL
 when it is set, otherwise scripts/test-db.py with a disposable PostgreSQL 17:
 in WSL on Windows (scripts/setup-wsl-tests.sh), Docker or native binaries
 elsewhere. Prints one line per step and
@@ -70,7 +70,7 @@ def main() -> int:
     ]
     skipped = ""
     if not args.no_db:
-        if os.environ.get("PRACTICELOOP_TEST_DATABASE_URL"):
+        if os.environ.get("MATHLOOP_TEST_DATABASE_URL"):
             db = [python, "-m", "pytest", "-m", "db", "-q", "-x", "--tb=short"]
             checks.append(("pytest -m db", db, BACKEND))
         elif command := database_command(python):

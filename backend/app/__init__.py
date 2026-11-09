@@ -1,1 +1,1 @@
-"""PracticeLoop backend."""
+"""MathLoop backend."""

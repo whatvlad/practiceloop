@@ -64,7 +64,8 @@ def test_a_served_engine_topic_takes_the_visual_of_its_entry(slug: str) -> None:
         if expected is None:
             assert spec == pooled(record).visual
             if spec is not None:
-                assert spec["version"] == 1 and spec["kind"] == "plot2d"
+                # Private per-generator figures: plots, and complex-plane points for algebra.
+                assert spec["version"] == 1 and spec["kind"] in {"plot2d", "complex-plane"}
         else:
             assert spec and spec["kind"] in {"indefinite", "definite", "region2d", "solid3d"}
 

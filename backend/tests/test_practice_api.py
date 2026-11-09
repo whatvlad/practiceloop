@@ -2,7 +2,7 @@
 
 Needs the disposable database CI's "Database isolation" job prepares (auth
 fixture plus every migration). Run with:
-PRACTICELOOP_TEST_DATABASE_URL=postgresql://... python -m pytest -m db
+MATHLOOP_TEST_DATABASE_URL=postgresql://... python -m pytest -m db
 Never point it at Supabase or shared data: the tests commit and then delete users.
 """
 
@@ -113,9 +113,9 @@ class Users:
 
 @pytest.fixture
 def url() -> str:
-    value = os.environ.get("PRACTICELOOP_TEST_DATABASE_URL")
+    value = os.environ.get("MATHLOOP_TEST_DATABASE_URL")
     if not value:
-        pytest.fail("PRACTICELOOP_TEST_DATABASE_URL is required for -m db")
+        pytest.fail("MATHLOOP_TEST_DATABASE_URL is required for -m db")
     return value
 
 

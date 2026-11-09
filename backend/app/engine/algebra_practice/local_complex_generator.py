@@ -52,6 +52,7 @@ class LocalComplexGenerator:
 
     def input_variables(self, params: ComplexParameters) -> dict[str, VariableDomain]:
         return {"i": "imaginary"}
+
     step_text = {
         "rewrite": "Write the original expression.",
         "standard": (

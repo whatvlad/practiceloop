@@ -2,7 +2,7 @@
 
 Needs the disposable database that CI's "Database isolation" job prepares
 (supabase/tests/auth_fixture.sql + migrations). Run with:
-PRACTICELOOP_TEST_DATABASE_URL=postgresql://... python -m pytest -m db
+MATHLOOP_TEST_DATABASE_URL=postgresql://... python -m pytest -m db
 Never point it at Supabase or shared data.
 """
 
@@ -49,9 +49,9 @@ def add_problem(conn: psycopg.Connection[Any], user: UUID, answer: str) -> UUID:
 
 @pytest.fixture
 def world() -> Iterator[World]:
-    url = os.environ.get("PRACTICELOOP_TEST_DATABASE_URL")
+    url = os.environ.get("MATHLOOP_TEST_DATABASE_URL")
     if not url:
-        pytest.fail("PRACTICELOOP_TEST_DATABASE_URL is required for -m db")
+        pytest.fail("MATHLOOP_TEST_DATABASE_URL is required for -m db")
     with psycopg.connect(url) as conn:
         alice, bob = uuid4(), uuid4()
         conn.execute("insert into auth.users(id) values (%s), (%s)", (alice, bob))

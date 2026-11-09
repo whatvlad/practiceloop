@@ -1,4 +1,4 @@
-"""PracticeLoop backend."""
+"""MathLoop backend."""
 
 import logging
 import os
@@ -23,7 +23,7 @@ from app.core.database import close_pool
 from app.core.errors import install_error_handlers
 from app.engine.catalogue import load as load_engine_catalogue
 
-logger = logging.getLogger("practiceloop.api")
+logger = logging.getLogger("mathloop.api")
 
 # JSON never needs to run or embed anything. The interactive docs load Swagger
 # from a CDN, so they only get the framing rules.
@@ -62,7 +62,7 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
     close_pool()
 
 
-app = FastAPI(title="PracticeLoop API", version="0.0.0", lifespan=lifespan)
+app = FastAPI(title="MathLoop API", version="0.0.0", lifespan=lifespan)
 app.include_router(preview_router)
 app.include_router(practice_router)
 app.include_router(codes_router)

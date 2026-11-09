@@ -61,7 +61,7 @@ conversation, including code and logs already read.
   file in the branch and start a fresh session (`/clear` in Claude Code, a new
   chat in Codex) for the next unit instead of continuing a long one.
 - Local generator sweeps are capped at 50 seeds by `backend/tests/seed_sweep.py`;
-  hosted CI (`CI` set) always runs the full counts. Set `PRACTICELOOP_SEEDS=1000`
+  hosted CI (`CI` set) always runs the full counts. Set `MATHLOOP_SEEDS=1000`
   only for a final local check.
 - Run the narrowest test and keep output short, for example
   `python -m pytest -q -x --tb=short tests/test_engine_<area>.py -k <family> 2>&1 | tail -40`.

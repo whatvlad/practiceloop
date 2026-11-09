@@ -119,9 +119,14 @@ class LocalModulusPractice:
     def solution_visual(self, p: ModulusPracticeParameters) -> dict[str, Any]:
         value = sp.expand_complex(self.value(p))
         return {
-            "kind": "complex-plane", "version": 1, "mode": "modulus",
+            "kind": "complex-plane",
+            "version": 1,
+            "mode": "modulus",
             "first": [float(sp.re(value)), float(sp.im(value))],
-            "second": None, "result": None, "power": None, "firstLabel": "value",
+            "second": None,
+            "result": None,
+            "power": None,
+            "firstLabel": "value",
         }
 
     def build(self, p: ModulusPracticeParameters) -> Task:
@@ -239,9 +244,14 @@ class LocalModulusCircle:
 
     def solution_visual(self, params: CircleParameters) -> dict[str, Any]:
         return {
-            "kind": "complex-plane", "version": 1, "mode": "circle",
+            "kind": "complex-plane",
+            "version": 1,
+            "mode": "circle",
             "first": [float(params.center_x), float(params.center_y)],
-            "second": None, "result": None, "power": None, "radius": float(params.radius),
+            "second": None,
+            "result": None,
+            "power": None,
+            "radius": float(params.radius),
         }
 
     @staticmethod

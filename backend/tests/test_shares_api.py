@@ -40,9 +40,9 @@ class Users:
 
 @pytest.fixture
 def url() -> str:
-    value = os.environ.get("PRACTICELOOP_TEST_DATABASE_URL")
+    value = os.environ.get("MATHLOOP_TEST_DATABASE_URL")
     if not value:
-        pytest.fail("PRACTICELOOP_TEST_DATABASE_URL is required for -m db")
+        pytest.fail("MATHLOOP_TEST_DATABASE_URL is required for -m db")
     return value
 
 
@@ -325,12 +325,14 @@ def test_copy_preserves_exact_trusted_content_for_every_topic(
     ).json()["problem"]
     created = share(client, source["id"])
     instructions = source.get("answerInput")
+    with psycopg.connect(url) as conn:
+        record = conn.execute(
+            "select generator_data from private.problem_solutions where problem_id = %s",
+            (source["id"],),
+        ).fetchone()[0]
+    # Practice settings such as squareSize or exerciseMode travel with the generator data.
+    settings = engine.public_settings(record)
     if "answerInput" in source:
-        with psycopg.connect(url) as conn:
-            record = conn.execute(
-                "select generator_data from private.problem_solutions where problem_id = %s",
-                (source["id"],),
-            ).fetchone()[0]
         contract = engine.input_contract(record)
         if contract is not None:
             assert instructions == contract.public()
@@ -368,6 +370,9 @@ def test_copy_preserves_exact_trusted_content_for_every_topic(
     if instructions is not None:
         expected_fields.add("answerInput")
         assert copied["answerInput"] == instructions
+    expected_fields.update(settings)
+    for field, value in settings.items():
+        assert copied[field] == source[field] == value
     assert set(copied) == expected_fields
     for field in ("topic", "difficulty", "problemLatex"):
         assert copied[field] == source[field]
