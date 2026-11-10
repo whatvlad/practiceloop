@@ -1,13 +1,13 @@
 # Analysis I sequences, limits and continuity (#236)
 
 This implementation checkpoint extends Functions and sequences and Limits and
-continuity with 78 independent generator versions: 61 from the first
-checkpoint (#256) and 17 sequence versions from #257. The two topic slugs,
+continuity with 86 independent generator versions: 61 from the first
+checkpoint (#256) and 25 sequence versions from #257. The two topic slugs,
 prior versions and permanent codes are preserved. The generator registry
 declares each prefix explicitly. The catalogue fixture retains every entry from
 the base commit, including the prior curriculum expansions.
 
-[The source index](analysis_pdf_source_index.json) records 79 matched
+[The source index](analysis_pdf_source_index.json) records 87 matched
 computational references, the additional generated variants and the remaining
 references that need separate coverage. Learner proof and sketch components
 remain routed to #244. #236 stays in progress until its function-limit and
@@ -15,8 +15,8 @@ asymptote parts (#258, #259) are delivered.
 
 ## Sequence references completed in #257
 
-Every pending sequence reference of AM1/24 to AM1/30 now has its own version
-(prefixes `SLAZ` and `SLBA` to `SLBP`):
+Every pending sequence reference of AM1/24 to AM1/30, and every exam form of
+those families, now has its own version (prefixes `SLAZ` and `SLBA` to `SLBX`):
 
 | Reference | Version | Generated form |
 |---|---|---|
@@ -37,6 +37,14 @@ Every pending sequence reference of AM1/24 to AM1/30 now has its own version
 | AM1/30/a | `rational-growth` | \((\pm an^2+b)/(cn+1)\to\pm\infty\) |
 | AM1/30/d | `radical-difference-growth` | \(\sqrt{pn^2+b}-mn\): limit \(0\), \(\infty\) or \(-\infty\) by the sign of \(p-m^2\) |
 | AM1/30/f | `inverse-trig-ratio` | \((a\arctan n-b)/\operatorname{arccot}(cn)\to\pm\infty\) |
+| exam first/A/2 | `root-exponential-sum` | \(\sqrt[n]{A^{n+c}+B^{n+1}}\to B\) by squeeze |
+| exam first/D/2 | `root-polynomial` | \(\sqrt[n]{an^d+cn+1}\to1\) by squeeze |
+| exam first/B/1 | `quartic-conjugate` | \(\sqrt{a^2n^4+bn^3+c}-an^2\to\infty\) |
+| exam main/A/3 | `conjugate-ratio` | \((\sqrt{n^2+p}-n)/(\sqrt{n^2+q}-n)\to p/q\) |
+| exam main/B/6 | `factorial-degree-ratio` | \((an+b)(n+1)!/(n^2(n!+c))\to a\) |
+| exam main/D/5 | `exponential-product-ratio` | \((A^n+1)(B^{n+1}+c)/((AB)^n+a)\to B\) |
+| exam resit/B/4 | `reciprocal-exponential-conjugate` | \(b/(A^n(\sqrt{A^{2n}+c}-A^n))\to 2b/c\) |
+| exam resit/C/2 | `product-radical` | \(c(\sqrt{(n+a)(n+b)}-n)\to c(a+b)/2\) |
 
 These are sequence computations with no geometric outcome, so they carry
 derivations and no plot. The tests check each against term tables, exact

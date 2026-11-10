@@ -616,3 +616,105 @@ def inverse_trig_ratio(a: int, b: int, c: int) -> Built:
         rf"{a}\arctan n-{b}\to{tex(top)}{'>' if top > 0 else '<'}0,"
         rf"\qquad\operatorname{{arccot}}({tex(c * N)})\to0^+.",
     )
+
+
+# #257: deduplicated exam forms of the sequence families.
+
+
+def root_exponential_sum(a: int, b: int, c: int) -> Built:
+    small, large = a + 1, a + b + 1
+    return sequence_limit(
+        rf"\sqrt[n]{{{small}^{{n+{c}}}+{large}^{{n+1}}}}",
+        large,
+        r"\text{Squeeze the radicand between multiples of the dominant power }" + rf"{large}^n.",
+        rf"{large}^{{n+1}}\le {small}^{{n+{c}}}+{large}^{{n+1}}\le"
+        rf"({small}^{{{c}}}+{large})\,{large}^n,\qquad"
+        rf"{large}\sqrt[n]{{{large}}}\le a_n\le{large}\sqrt[n]{{{small**c + large}}}\to{large}.",
+    )
+
+
+def root_polynomial(a: int, b: int, c: int) -> Built:
+    degree = b + 1
+    scale = "" if a == 1 else str(a)
+    return sequence_limit(
+        rf"\sqrt[n]{{{scale}n^{{{degree}}}+{c}n+1}}",
+        1,
+        rf"\text{{Squeeze the radicand between }}n^{{{degree}}}"
+        rf"\text{{ and }}{a + c + 1}n^{{{degree}}}.",
+        rf"\left(\sqrt[n]{{n}}\right)^{{{degree}}}\le a_n\le\sqrt[n]{{{a + c + 1}}}"
+        rf"\left(\sqrt[n]{{n}}\right)^{{{degree}}},\qquad\sqrt[n]{{n}}\to1.",
+    )
+
+
+def quartic_conjugate(a: int, b: int, c: int) -> Built:
+    lead = "" if a == 1 else str(a)
+    return sequence_limit(
+        r"\left(" + tex(sp.sqrt(a * a * N**4 + b * N**3 + c)) + rf"-{lead}n^2\right)",
+        sp.oo,
+        r"\text{Multiply and divide by the sum, then divide by }n^2.",
+        rf"a_n=\frac{{{b}n^3+{c}}}{{\sqrt{{{a * a}n^4+{b}n^3+{c}}}+{lead}n^2}}"
+        rf"=\frac{{{b}n+{c}/n^2}}{{\sqrt{{{a * a}+{b}/n+{c}/n^4}}+{a}}}\to\infty"
+        rf"\quad\text{{since the numerator grows like }}{b}n.",
+    )
+
+
+def conjugate_ratio(a: int, b: int, c: int) -> Built:
+    top, bottom = a + b, c
+    value = sp.Rational(top, bottom)
+    return sequence_limit(
+        rf"\frac{{\sqrt{{n^2+{top}}}-n}}{{\sqrt{{n^2+{bottom}}}-n}}",
+        value,
+        r"\text{Rationalize the numerator and the denominator separately.}",
+        rf"a_n=\frac{{{top}}}{{{bottom}}}\cdot\frac{{\sqrt{{n^2+{bottom}}}+n}}"
+        rf"{{\sqrt{{n^2+{top}}}+n}},\qquad\frac{{\sqrt{{n^2+{bottom}}}+n}}"
+        rf"{{\sqrt{{n^2+{top}}}+n}}\to1.",
+    )
+
+
+def factorial_degree_ratio(a: int, b: int, c: int) -> Built:
+    scale = "" if a == 1 else str(a)
+    return sequence_limit(
+        rf"\frac{{({scale}n+{b})(n+1)!}}{{n^2(n!+{c})}}",
+        a,
+        r"\text{Use }(n+1)!=(n+1)\,n!\text{ and divide by }n!.",
+        rf"a_n=\frac{{({scale}n+{b})(n+1)}}{{n^2(1+{c}/n!)}}"
+        rf"=\frac{{({a}+{b}/n)(1+1/n)}}{{1+{c}/n!}}\to{a}.",
+    )
+
+
+def exponential_product_ratio(a: int, b: int, c: int) -> Built:
+    first, second = a + 1, b + 1
+    return sequence_limit(
+        rf"\frac{{({first}^n+1)({second}^{{n+1}}+{c})}}{{{first * second}^n+{a}}}",
+        second,
+        rf"\text{{Divide the numerator and denominator by }}{first * second}^n"
+        rf"={first}^n\cdot{second}^n.",
+        rf"a_n=\frac{{(1+{first}^{{-n}})({second}+{c}\cdot{second}^{{-n}})}}"
+        rf"{{1+{a}\cdot{first * second}^{{-n}}}}\to{second}.",
+    )
+
+
+def reciprocal_exponential_conjugate(a: int, b: int, c: int) -> Built:
+    base = a + 1
+    value = sp.Rational(2 * b, c)
+    return sequence_limit(
+        rf"\frac{{{b}}}{{{base}^n\left(\sqrt{{{base * base}^n+{c}}}-{base}^n\right)}}",
+        value,
+        rf"\text{{Rationalize, using }}{base * base}^n=({base}^n)^2.",
+        rf"a_n=\frac{{{b}\left(\sqrt{{{base * base}^n+{c}}}+{base}^n\right)}}{{{c}\cdot{base}^n}}"
+        rf"=\frac{{{b}}}{{{c}}}\left(\sqrt{{1+{c}\cdot{base * base}^{{-n}}}}+1\right)"
+        rf"\to{tex(value)}.",
+    )
+
+
+def product_radical(a: int, b: int, c: int) -> Built:
+    value = sp.Rational(c * (a + b), 2)
+    scale = "" if c == 1 else str(c)
+    return sequence_limit(
+        rf"{scale}\left(\sqrt{{(n+{a})(n+{b})}}-n\right)",
+        value,
+        r"\text{Multiply and divide by the sum, then divide by }n.",
+        rf"a_n=\frac{{{scale}({a + b}n+{a * b})}}{{\sqrt{{(n+{a})(n+{b})}}+n}}"
+        rf"=\frac{{{scale}({a + b}+{a * b}/n)}}{{\sqrt{{(1+{a}/n)(1+{b}/n)}}+1}}"
+        rf"\to{tex(value)}.",
+    )

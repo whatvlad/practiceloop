@@ -31932,5 +31932,573 @@
         "difficulty": 3
       }
     }
+  ],
+  "analysis1-limits-root-exponential-sum-v1": [
+    {
+      "code": "SLBQ-1-0000000000000003-27",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\sqrt[n]{3^{n+5}+4^{n+1}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Squeeze the radicand between multiples of the dominant power }4^n."
+        ],
+        [
+          "calculation",
+          "4^{n+1}\\le 3^{n+5}+4^{n+1}\\le(3^{5}+4)\\,4^n,\\qquad4\\sqrt[n]{4}\\le a_n\\le4\\sqrt[n]{247}\\to4."
+        ],
+        [
+          "result",
+          "4"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "4",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLBQ-1-0000000000000200-06",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\sqrt[n]{6^{n+1}+11^{n+1}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Squeeze the radicand between multiples of the dominant power }11^n."
+        ],
+        [
+          "calculation",
+          "11^{n+1}\\le 6^{n+1}+11^{n+1}\\le(6^{1}+11)\\,11^n,\\qquad11\\sqrt[n]{11}\\le a_n\\le11\\sqrt[n]{17}\\to11."
+        ],
+        [
+          "result",
+          "11"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "11",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLBQ-1-0000000000000999-20",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\sqrt[n]{3^{n+5}+6^{n+1}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Squeeze the radicand between multiples of the dominant power }6^n."
+        ],
+        [
+          "calculation",
+          "6^{n+1}\\le 3^{n+5}+6^{n+1}\\le(3^{5}+6)\\,6^n,\\qquad6\\sqrt[n]{6}\\le a_n\\le6\\sqrt[n]{249}\\to6."
+        ],
+        [
+          "result",
+          "6"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "6",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-root-polynomial-v1": [
+    {
+      "code": "SLBR-1-0000000000000003-28",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\sqrt[n]{2n^{2}+5n+1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Squeeze the radicand between }n^{2}\\text{ and }8n^{2}."
+        ],
+        [
+          "calculation",
+          "\\left(\\sqrt[n]{n}\\right)^{2}\\le a_n\\le\\sqrt[n]{8}\\left(\\sqrt[n]{n}\\right)^{2},\\qquad\\sqrt[n]{n}\\to1."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "SLBR-1-0000000000000200-07",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\sqrt[n]{5n^{6}+1n+1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Squeeze the radicand between }n^{6}\\text{ and }7n^{6}."
+        ],
+        [
+          "calculation",
+          "\\left(\\sqrt[n]{n}\\right)^{6}\\le a_n\\le\\sqrt[n]{7}\\left(\\sqrt[n]{n}\\right)^{6},\\qquad\\sqrt[n]{n}\\to1."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "SLBR-1-0000000000000999-21",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\sqrt[n]{2n^{4}+5n+1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Squeeze the radicand between }n^{4}\\text{ and }8n^{4}."
+        ],
+        [
+          "calculation",
+          "\\left(\\sqrt[n]{n}\\right)^{4}\\le a_n\\le\\sqrt[n]{8}\\left(\\sqrt[n]{n}\\right)^{4},\\qquad\\sqrt[n]{n}\\to1."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-quartic-conjugate-v1": [
+    {
+      "code": "SLBS-1-0000000000000003-37",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(\\sqrt{4 n^{4} + n^{3} + 5}-2n^2\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Multiply and divide by the sum, then divide by }n^2."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{1n^3+5}{\\sqrt{4n^4+1n^3+5}+2n^2}=\\frac{1n+5/n^2}{\\sqrt{4+1/n+5/n^4}+2}\\to\\infty\\quad\\text{since the numerator grows like }1n."
+        ],
+        [
+          "result",
+          "\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\infty",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLBS-1-0000000000000200-16",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(\\sqrt{25 n^{4} + 5 n^{3} + 1}-5n^2\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Multiply and divide by the sum, then divide by }n^2."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{5n^3+1}{\\sqrt{25n^4+5n^3+1}+5n^2}=\\frac{5n+1/n^2}{\\sqrt{25+5/n+1/n^4}+5}\\to\\infty\\quad\\text{since the numerator grows like }5n."
+        ],
+        [
+          "result",
+          "\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\infty",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLBS-1-0000000000000999-30",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(\\sqrt{4 n^{4} + 3 n^{3} + 5}-2n^2\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Multiply and divide by the sum, then divide by }n^2."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{3n^3+5}{\\sqrt{4n^4+3n^3+5}+2n^2}=\\frac{3n+5/n^2}{\\sqrt{4+3/n+5/n^4}+2}\\to\\infty\\quad\\text{since the numerator grows like }3n."
+        ],
+        [
+          "result",
+          "\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\infty",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-conjugate-ratio-v1": [
+    {
+      "code": "SLBT-1-0000000000000003-36",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{\\sqrt{n^2+3}-n}{\\sqrt{n^2+5}-n}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Rationalize the numerator and the denominator separately.}"
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{3}{5}\\cdot\\frac{\\sqrt{n^2+5}+n}{\\sqrt{n^2+3}+n},\\qquad\\frac{\\sqrt{n^2+5}+n}{\\sqrt{n^2+3}+n}\\to1."
+        ],
+        [
+          "result",
+          "\\frac{3}{5}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{3}{5}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLBT-1-0000000000000200-15",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{\\sqrt{n^2+10}-n}{\\sqrt{n^2+1}-n}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Rationalize the numerator and the denominator separately.}"
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{10}{1}\\cdot\\frac{\\sqrt{n^2+1}+n}{\\sqrt{n^2+10}+n},\\qquad\\frac{\\sqrt{n^2+1}+n}{\\sqrt{n^2+10}+n}\\to1."
+        ],
+        [
+          "result",
+          "10"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "10",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLBT-1-0000000000000999-29",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{\\sqrt{n^2+5}-n}{\\sqrt{n^2+5}-n}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Rationalize the numerator and the denominator separately.}"
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{5}{5}\\cdot\\frac{\\sqrt{n^2+5}+n}{\\sqrt{n^2+5}+n},\\qquad\\frac{\\sqrt{n^2+5}+n}{\\sqrt{n^2+5}+n}\\to1."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-factorial-degree-ratio-v1": [
+    {
+      "code": "SLBU-1-0000000000000003-70",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{(2n+1)(n+1)!}{n^2(n!+5)}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use }(n+1)!=(n+1)\\,n!\\text{ and divide by }n!."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{(2n+1)(n+1)}{n^2(1+5/n!)}=\\frac{(2+1/n)(1+1/n)}{1+5/n!}\\to2."
+        ],
+        [
+          "result",
+          "2"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLBU-1-0000000000000200-49",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{(5n+5)(n+1)!}{n^2(n!+1)}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use }(n+1)!=(n+1)\\,n!\\text{ and divide by }n!."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{(5n+5)(n+1)}{n^2(1+1/n!)}=\\frac{(5+5/n)(1+1/n)}{1+1/n!}\\to5."
+        ],
+        [
+          "result",
+          "5"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "5",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLBU-1-0000000000000999-63",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{(2n+3)(n+1)!}{n^2(n!+5)}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use }(n+1)!=(n+1)\\,n!\\text{ and divide by }n!."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{(2n+3)(n+1)}{n^2(1+5/n!)}=\\frac{(2+3/n)(1+1/n)}{1+5/n!}\\to2."
+        ],
+        [
+          "result",
+          "2"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-exponential-product-ratio-v1": [
+    {
+      "code": "SLBV-1-0000000000000003-32",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{(3^n+1)(2^{n+1}+5)}{6^n+2}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Divide the numerator and denominator by }6^n=3^n\\cdot2^n."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{(1+3^{-n})(2+5\\cdot2^{-n})}{1+2\\cdot6^{-n}}\\to2."
+        ],
+        [
+          "result",
+          "2"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLBV-1-0000000000000200-11",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{(6^n+1)(6^{n+1}+1)}{36^n+5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Divide the numerator and denominator by }36^n=6^n\\cdot6^n."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{(1+6^{-n})(6+1\\cdot6^{-n})}{1+5\\cdot36^{-n}}\\to6."
+        ],
+        [
+          "result",
+          "6"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "6",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLBV-1-0000000000000999-25",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{(3^n+1)(4^{n+1}+5)}{12^n+2}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Divide the numerator and denominator by }12^n=3^n\\cdot4^n."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{(1+3^{-n})(4+5\\cdot4^{-n})}{1+2\\cdot12^{-n}}\\to4."
+        ],
+        [
+          "result",
+          "4"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "4",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-reciprocal-exponential-conjugate-v1": [
+    {
+      "code": "SLBW-1-0000000000000003-73",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{1}{3^n\\left(\\sqrt{9^n+5}-3^n\\right)}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Rationalize, using }9^n=(3^n)^2."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{1\\left(\\sqrt{9^n+5}+3^n\\right)}{5\\cdot3^n}=\\frac{1}{5}\\left(\\sqrt{1+5\\cdot9^{-n}}+1\\right)\\to\\frac{2}{5}."
+        ],
+        [
+          "result",
+          "\\frac{2}{5}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{2}{5}",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "SLBW-1-0000000000000200-52",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{5}{6^n\\left(\\sqrt{36^n+1}-6^n\\right)}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Rationalize, using }36^n=(6^n)^2."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{5\\left(\\sqrt{36^n+1}+6^n\\right)}{1\\cdot6^n}=\\frac{5}{1}\\left(\\sqrt{1+1\\cdot36^{-n}}+1\\right)\\to10."
+        ],
+        [
+          "result",
+          "10"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "10",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "SLBW-1-0000000000000999-66",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{3}{3^n\\left(\\sqrt{9^n+5}-3^n\\right)}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Rationalize, using }9^n=(3^n)^2."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{3\\left(\\sqrt{9^n+5}+3^n\\right)}{5\\cdot3^n}=\\frac{3}{5}\\left(\\sqrt{1+5\\cdot9^{-n}}+1\\right)\\to\\frac{6}{5}."
+        ],
+        [
+          "result",
+          "\\frac{6}{5}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{6}{5}",
+      "metadata": {
+        "difficulty": 5
+      }
+    }
+  ],
+  "analysis1-limits-product-radical-v1": [
+    {
+      "code": "SLBX-1-0000000000000003-24",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}5\\left(\\sqrt{(n+2)(n+1)}-n\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Multiply and divide by the sum, then divide by }n."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{5(3n+2)}{\\sqrt{(n+2)(n+1)}+n}=\\frac{5(3+2/n)}{\\sqrt{(1+2/n)(1+1/n)}+1}\\to\\frac{15}{2}."
+        ],
+        [
+          "result",
+          "\\frac{15}{2}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{15}{2}",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "SLBX-1-0000000000000200-03",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(\\sqrt{(n+5)(n+5)}-n\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Multiply and divide by the sum, then divide by }n."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{(10n+25)}{\\sqrt{(n+5)(n+5)}+n}=\\frac{(10+25/n)}{\\sqrt{(1+5/n)(1+5/n)}+1}\\to5."
+        ],
+        [
+          "result",
+          "5"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "5",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "SLBX-1-0000000000000999-17",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}5\\left(\\sqrt{(n+2)(n+3)}-n\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Multiply and divide by the sum, then divide by }n."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{5(5n+6)}{\\sqrt{(n+2)(n+3)}+n}=\\frac{5(5+6/n)}{\\sqrt{(1+2/n)(1+3/n)}+1}\\to\\frac{25}{2}."
+        ],
+        [
+          "result",
+          "\\frac{25}{2}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{25}{2}",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
   ]
 }

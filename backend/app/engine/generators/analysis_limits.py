@@ -150,6 +150,14 @@ SPECS = (
     (sequences.rational_growth, SEQUENCES, 2, "SLBN", LIMIT),
     (sequences.radical_difference_growth, SEQUENCES, 3, "SLBO", LIMIT),
     (sequences.inverse_trig_ratio, SEQUENCES, 3, "SLBP", LIMIT),
+    (sequences.root_exponential_sum, SEQUENCES, 4, "SLBQ", LIMIT),
+    (sequences.root_polynomial, SEQUENCES, 3, "SLBR", LIMIT),
+    (sequences.quartic_conjugate, SEQUENCES, 4, "SLBS", LIMIT),
+    (sequences.conjugate_ratio, SEQUENCES, 4, "SLBT", LIMIT),
+    (sequences.factorial_degree_ratio, SEQUENCES, 4, "SLBU", LIMIT),
+    (sequences.exponential_product_ratio, SEQUENCES, 4, "SLBV", LIMIT),
+    (sequences.reciprocal_exponential_conjugate, SEQUENCES, 5, "SLBW", LIMIT),
+    (sequences.product_radical, SEQUENCES, 3, "SLBX", LIMIT),
 )
 
 

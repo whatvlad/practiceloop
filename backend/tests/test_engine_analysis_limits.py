@@ -398,6 +398,46 @@ def reference_sequences(name, a, b, c):  # noqa: PLR0911, PLR0912
         value = (a * math.atan(n) - b) / math.atan(1 / (c * n))
         assert abs(value) > 10**5
         return sp.oo if value > 0 else -sp.oo
+    return reference_exam_sequences(name, a, b, c)
+
+
+def reference_exam_sequences(name, a, b, c):  # noqa: PLR0911
+    """#257 exam forms, evaluated far out with exact integers or 60-digit decimals."""
+    n = 10**7
+    with localcontext() as ctx:
+        ctx.prec = 60
+        if name == "root_exponential_sum":
+            k = 20_000
+            return math.exp(math.log((a + 1) ** (k + c) + (a + b + 1) ** (k + 1)) / k)
+        if name == "root_polynomial":
+            return math.exp(math.log(a * n ** (b + 1) + c * n + 1) / n)
+        if name == "quartic_conjugate":
+            k = Decimal(10**6)
+            value = (a * a * k**4 + b * k**3 + c).sqrt() - a * k * k
+            assert value > 10**4
+            return sp.oo
+        if name == "conjugate_ratio":
+            k = Decimal(10**6)
+            return float(((k * k + a + b).sqrt() - k) / ((k * k + c).sqrt() - k))
+        if name == "factorial_degree_ratio":
+            k = 20_000
+            exact = sp.Rational(
+                (a * k + b) * math.factorial(k + 1), k * k * (math.factorial(k) + c)
+            )
+            return float(exact)
+        if name == "exponential_product_ratio":
+            k = 200
+            exact = sp.Rational(
+                ((a + 1) ** k + 1) * ((b + 1) ** (k + 1) + c), ((a + 1) * (b + 1)) ** k + a
+            )
+            return float(exact)
+        if name == "reciprocal_exponential_conjugate":
+            ctx.prec = 200
+            power = Decimal(a + 1) ** 60
+            return float(b / (power * ((power * power + c).sqrt() - power)))
+        if name == "product_radical":
+            k = Decimal(n)
+            return float(c * (((k + a) * (k + b)).sqrt() - k))
     return None
 
 

@@ -22234,18 +22234,25 @@
       "family": "squeeze-sequence-limits",
       "interaction": "scalar",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-root-exponential-sum-v1"
+      ],
       "family_contracts": [
         "AM1/28"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "scalar",
-          "result": "sequence limit via squeeze, floor, nth roots or growing sums"
+          "result": "sequence limit via squeeze, floor, nth roots or growing sums",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-root-exponential-sum-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         },
         {
           "id": "learner-proof",
@@ -22324,18 +22331,25 @@
       "family": "sequence-limit-algebra",
       "interaction": "scalar",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-quartic-conjugate-v1"
+      ],
       "family_contracts": [
         "AM1/27"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "scalar",
-          "result": "sequence limit using algebra, factorial cancellation or conjugation"
+          "result": "sequence limit using algebra, factorial cancellation or conjugation",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-quartic-conjugate-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -22611,18 +22625,25 @@
       "family": "squeeze-sequence-limits",
       "interaction": "scalar",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-root-polynomial-v1"
+      ],
       "family_contracts": [
         "AM1/28"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "scalar",
-          "result": "sequence limit via squeeze, floor, nth roots or growing sums"
+          "result": "sequence limit via squeeze, floor, nth roots or growing sums",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-root-polynomial-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         },
         {
           "id": "learner-proof",
@@ -23230,18 +23251,25 @@
       "family": "sequence-limit-algebra",
       "interaction": "scalar",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-conjugate-ratio-v1"
+      ],
       "family_contracts": [
         "AM1/27"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "scalar",
-          "result": "sequence limit using algebra, factorial cancellation or conjugation"
+          "result": "sequence limit using algebra, factorial cancellation or conjugation",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-conjugate-ratio-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -23488,18 +23516,25 @@
       "family": "sequence-limit-algebra",
       "interaction": "scalar",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-factorial-degree-ratio-v1"
+      ],
       "family_contracts": [
         "AM1/27"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "scalar",
-          "result": "sequence limit using algebra, factorial cancellation or conjugation"
+          "result": "sequence limit using algebra, factorial cancellation or conjugation",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-factorial-degree-ratio-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -23815,18 +23850,25 @@
       "family": "sequence-limit-algebra",
       "interaction": "scalar",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-exponential-product-ratio-v1"
+      ],
       "family_contracts": [
         "AM1/27"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "scalar",
-          "result": "sequence limit using algebra, factorial cancellation or conjugation"
+          "result": "sequence limit using algebra, factorial cancellation or conjugation",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-exponential-product-ratio-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -24169,18 +24211,25 @@
       "family": "sequence-limit-algebra",
       "interaction": "scalar",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-reciprocal-exponential-conjugate-v1"
+      ],
       "family_contracts": [
         "AM1/27"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "scalar",
-          "result": "sequence limit using algebra, factorial cancellation or conjugation"
+          "result": "sequence limit using algebra, factorial cancellation or conjugation",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-reciprocal-exponential-conjugate-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -24301,18 +24350,25 @@
       "family": "sequence-limit-algebra",
       "interaction": "scalar",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-product-radical-v1"
+      ],
       "family_contracts": [
         "AM1/27"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "scalar",
-          "result": "sequence limit using algebra, factorial cancellation or conjugation"
+          "result": "sequence limit using algebra, factorial cancellation or conjugation",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-product-radical-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         },
         {
           "id": "learner-sketch",
@@ -25489,12 +25545,18 @@
       "verified_versions": [
         "analysis1-limits-arithmetic-sum-ratio-v1",
         "analysis1-limits-competing-exponentials-v1",
+        "analysis1-limits-conjugate-ratio-v1",
         "analysis1-limits-conjugate-sequence-v1",
+        "analysis1-limits-exponential-product-ratio-v1",
+        "analysis1-limits-factorial-degree-ratio-v1",
         "analysis1-limits-factorial-limit-v1",
         "analysis1-limits-product-leading-orders-v1",
+        "analysis1-limits-product-radical-v1",
+        "analysis1-limits-quartic-conjugate-v1",
         "analysis1-limits-radical-degree-v1",
         "analysis1-limits-rational-leading-v1",
         "analysis1-limits-rational-zero-v1",
+        "analysis1-limits-reciprocal-exponential-conjugate-v1",
         "analysis1-limits-scaled-conjugate-v1"
       ],
       "delivery": {
@@ -25517,6 +25579,8 @@
       ],
       "verified_versions": [
         "analysis1-limits-root-exponential-ratio-v1",
+        "analysis1-limits-root-exponential-sum-v1",
+        "analysis1-limits-root-polynomial-v1",
         "analysis1-limits-root-rational-sum-v1",
         "analysis1-limits-squeeze-floor-v1",
         "analysis1-limits-squeeze-oscillation-v1",
@@ -27346,8 +27410,8 @@
     "family_contracts": 146,
     "deferred_only_references": 30,
     "mixed_references": 146,
-    "verified_generator_deliveries": 159,
-    "verified_computational_components": 181
+    "verified_generator_deliveries": 167,
+    "verified_computational_components": 189
   },
   "deliveries": {
     "235": {
@@ -27462,6 +27526,7 @@
         "analysis1-limits-certified-root-v1",
         "analysis1-limits-competing-exponentials-v1",
         "analysis1-limits-conjugate-at-infinity-v1",
+        "analysis1-limits-conjugate-ratio-v1",
         "analysis1-limits-conjugate-sequence-v1",
         "analysis1-limits-continuity-free-parameter-v1",
         "analysis1-limits-continuity-reciprocal-v1",
@@ -27482,6 +27547,8 @@
         "analysis1-limits-exponential-dominance-v1",
         "analysis1-limits-exponential-pole-v1",
         "analysis1-limits-exponential-power-v1",
+        "analysis1-limits-exponential-product-ratio-v1",
+        "analysis1-limits-factorial-degree-ratio-v1",
         "analysis1-limits-factorial-limit-v1",
         "analysis1-limits-finite-heine-limit-v1",
         "analysis1-limits-heine-at-infinity-v1",
@@ -27505,6 +27572,8 @@
         "analysis1-limits-power-difference-v1",
         "analysis1-limits-product-leading-orders-v1",
         "analysis1-limits-product-of-powers-v1",
+        "analysis1-limits-product-radical-v1",
+        "analysis1-limits-quartic-conjugate-v1",
         "analysis1-limits-radical-asymptote-v1",
         "analysis1-limits-radical-cancellation-v1",
         "analysis1-limits-radical-degree-v1",
@@ -27514,9 +27583,12 @@
         "analysis1-limits-rational-leading-v1",
         "analysis1-limits-rational-pole-and-domain-v1",
         "analysis1-limits-rational-zero-v1",
+        "analysis1-limits-reciprocal-exponential-conjugate-v1",
         "analysis1-limits-reciprocal-power-v1",
         "analysis1-limits-removable-trigonometric-v1",
         "analysis1-limits-root-exponential-ratio-v1",
+        "analysis1-limits-root-exponential-sum-v1",
+        "analysis1-limits-root-polynomial-v1",
         "analysis1-limits-root-rational-sum-v1",
         "analysis1-limits-scaled-conjugate-v1",
         "analysis1-limits-squeeze-at-infinity-v1",
@@ -27528,7 +27600,7 @@
         "analysis1-limits-two-sided-absolute-v1",
         "analysis1-limits-unique-log-exponential-root-v1"
       ],
-      "source_references": 79,
+      "source_references": 87,
       "pending_source_references": [
         "AM1/32/a",
         "AM1/32/c",
@@ -27553,26 +27625,18 @@
         "AM1/36/g",
         "AM1/36/i",
         "AM1/38/c",
-        "AM1/exam/first/A/2",
         "AM1/exam/first/A/4",
-        "AM1/exam/first/B/1",
         "AM1/exam/first/B/4",
         "AM1/exam/first/C/1",
         "AM1/exam/first/C/4",
-        "AM1/exam/first/D/2",
         "AM1/exam/first/D/3",
-        "AM1/exam/main/A/3",
         "AM1/exam/main/B/1",
         "AM1/exam/main/B/3",
-        "AM1/exam/main/B/6",
-        "AM1/exam/main/D/5",
         "AM1/exam/main/D/6",
         "AM1/exam/resit/A/2",
-        "AM1/exam/resit/B/4",
-        "AM1/exam/resit/C/1",
-        "AM1/exam/resit/C/2"
+        "AM1/exam/resit/C/1"
       ],
-      "computational_components": 79,
+      "computational_components": 87,
       "family_contracts": 16,
       "additional_family_variants": [
         "analysis1-limits-certified-root-v1",
