@@ -639,7 +639,9 @@ def assert_answer(answer, expected):
 
 # Derivative versions (#260) share the provider; their oracles are in test_engine_derivatives.
 LIMIT_GENERATORS = [
-    g for g in generators() if not g.evaluate.__module__.endswith(("_derivatives", "_extrema"))
+    g
+    for g in generators()
+    if not g.evaluate.__module__.endswith(("_derivatives", "_extrema", "_convexity"))
 ]
 
 

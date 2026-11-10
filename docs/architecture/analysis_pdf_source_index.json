@@ -10185,18 +10185,25 @@
       "family": "polynomial-reconstruction",
       "interaction": "expression",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-polynomial-extrema-v1"
+      ],
       "family_contracts": [
         "AM1/51"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "expression",
-          "result": "minimum-degree polynomial meeting every stationary/inflection/value constraint"
+          "result": "minimum-degree polynomial meeting every stationary/inflection/value constraint",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-polynomial-extrema-v1"
+          ],
+          "verification": "backend/tests/test_engine_convexity.py"
         }
       ],
       "method": "polynomial-reconstruction-variant-a",
@@ -10212,18 +10219,25 @@
       "family": "polynomial-reconstruction",
       "interaction": "expression",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-polynomial-inflection-v1"
+      ],
       "family_contracts": [
         "AM1/51"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "expression",
-          "result": "minimum-degree polynomial meeting every stationary/inflection/value constraint"
+          "result": "minimum-degree polynomial meeting every stationary/inflection/value constraint",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-polynomial-inflection-v1"
+          ],
+          "verification": "backend/tests/test_engine_convexity.py"
         }
       ],
       "method": "polynomial-reconstruction-variant-b",
@@ -13713,18 +13727,25 @@
       "family": "convexity-inflections",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-convex-cubic-v1"
+      ],
       "family_contracts": [
         "AM1/69"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all convexity/concavity intervals and inflection points"
+          "result": "all convexity/concavity intervals and inflection points",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-convex-cubic-v1"
+          ],
+          "verification": "backend/tests/test_engine_convexity.py"
         }
       ],
       "method": "convexity-inflections-variant-a",
@@ -13740,18 +13761,25 @@
       "family": "convexity-inflections",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-convex-exponential-product-v1"
+      ],
       "family_contracts": [
         "AM1/69"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all convexity/concavity intervals and inflection points"
+          "result": "all convexity/concavity intervals and inflection points",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-convex-exponential-product-v1"
+          ],
+          "verification": "backend/tests/test_engine_convexity.py"
         }
       ],
       "method": "convexity-inflections-variant-b",
@@ -13767,18 +13795,25 @@
       "family": "convexity-inflections",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-convex-cubic-quotient-v1"
+      ],
       "family_contracts": [
         "AM1/69"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all convexity/concavity intervals and inflection points"
+          "result": "all convexity/concavity intervals and inflection points",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-convex-cubic-quotient-v1"
+          ],
+          "verification": "backend/tests/test_engine_convexity.py"
         }
       ],
       "method": "convexity-inflections-variant-c",
@@ -13794,18 +13829,25 @@
       "family": "convexity-inflections",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-convex-log-quadratic-v1"
+      ],
       "family_contracts": [
         "AM1/69"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all convexity/concavity intervals and inflection points"
+          "result": "all convexity/concavity intervals and inflection points",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-convex-log-quadratic-v1"
+          ],
+          "verification": "backend/tests/test_engine_convexity.py"
         }
       ],
       "method": "convexity-inflections-variant-d",
@@ -13821,18 +13863,25 @@
       "family": "convexity-inflections",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-convex-reciprocal-v1"
+      ],
       "family_contracts": [
         "AM1/69"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all convexity/concavity intervals and inflection points"
+          "result": "all convexity/concavity intervals and inflection points",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-convex-reciprocal-v1"
+          ],
+          "verification": "backend/tests/test_engine_convexity.py"
         }
       ],
       "method": "convexity-inflections-variant-e",
@@ -13848,18 +13897,25 @@
       "family": "convexity-inflections",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-convex-log-absolute-v1"
+      ],
       "family_contracts": [
         "AM1/69"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all convexity/concavity intervals and inflection points"
+          "result": "all convexity/concavity intervals and inflection points",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-convex-log-absolute-v1"
+          ],
+          "verification": "backend/tests/test_engine_convexity.py"
         }
       ],
       "method": "convexity-inflections-variant-f",
@@ -13875,18 +13931,25 @@
       "family": "convexity-inflections",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-convex-trig-v1"
+      ],
       "family_contracts": [
         "AM1/69"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all convexity/concavity intervals and inflection points"
+          "result": "all convexity/concavity intervals and inflection points",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-convex-trig-v1"
+          ],
+          "verification": "backend/tests/test_engine_convexity.py"
         }
       ],
       "method": "convexity-inflections-variant-g",
@@ -13902,18 +13965,25 @@
       "family": "convexity-inflections",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-convex-exponential-arctan-v1"
+      ],
       "family_contracts": [
         "AM1/69"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all convexity/concavity intervals and inflection points"
+          "result": "all convexity/concavity intervals and inflection points",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-convex-exponential-arctan-v1"
+          ],
+          "verification": "backend/tests/test_engine_convexity.py"
         }
       ],
       "method": "convexity-inflections-variant-h",
@@ -13929,18 +13999,25 @@
       "family": "convexity-inflections",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-convex-log-root-v1"
+      ],
       "family_contracts": [
         "AM1/69"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all convexity/concavity intervals and inflection points"
+          "result": "all convexity/concavity intervals and inflection points",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-convex-log-root-v1"
+          ],
+          "verification": "backend/tests/test_engine_convexity.py"
         }
       ],
       "method": "convexity-inflections-variant-i",
@@ -23902,18 +23979,25 @@
       "family": "convexity-inflections",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-convex-log-root-v1"
+      ],
       "family_contracts": [
         "AM1/69"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all convexity/concavity intervals and inflection points"
+          "result": "all convexity/concavity intervals and inflection points",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-convex-log-root-v1"
+          ],
+          "verification": "backend/tests/test_engine_convexity.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -24667,18 +24751,25 @@
       "family": "convexity-inflections",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-convex-reversed-exponential-v1"
+      ],
       "family_contracts": [
         "AM1/69"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all convexity/concavity intervals and inflection points"
+          "result": "all convexity/concavity intervals and inflection points",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-convex-reversed-exponential-v1"
+          ],
+          "verification": "backend/tests/test_engine_convexity.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -24910,18 +25001,25 @@
       "family": "monotonicity-convexity",
       "interaction": "real_set",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-increasing-convex-quadratic-exponential-v1"
+      ],
       "family_contracts": [
         "AM1/exam-family/monotonicity-convexity"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "real_set",
-          "result": "intersection of full monotonicity and convexity intervals"
+          "result": "intersection of full monotonicity and convexity intervals",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-increasing-convex-quadratic-exponential-v1"
+          ],
+          "verification": "backend/tests/test_engine_convexity.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -25104,18 +25202,25 @@
       "family": "monotonicity-convexity",
       "interaction": "real_set",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-increasing-convex-root-log-v1"
+      ],
       "family_contracts": [
         "AM1/exam-family/monotonicity-convexity"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "real_set",
-          "result": "intersection of full monotonicity and convexity intervals"
+          "result": "intersection of full monotonicity and convexity intervals",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-increasing-convex-root-log-v1"
+          ],
+          "verification": "backend/tests/test_engine_convexity.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -25325,18 +25430,25 @@
       "family": "monotonicity-convexity",
       "interaction": "real_set",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-decreasing-concave-quadratic-exponential-v1"
+      ],
       "family_contracts": [
         "AM1/exam-family/monotonicity-convexity"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "real_set",
-          "result": "intersection of full monotonicity and convexity intervals"
+          "result": "intersection of full monotonicity and convexity intervals",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-decreasing-concave-quadratic-exponential-v1"
+          ],
+          "verification": "backend/tests/test_engine_convexity.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -25561,18 +25673,25 @@
       "family": "monotonicity-convexity",
       "interaction": "real_set",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-increasing-concave-arccot-v1"
+      ],
       "family_contracts": [
         "AM1/exam-family/monotonicity-convexity"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "real_set",
-          "result": "intersection of full monotonicity and convexity intervals"
+          "result": "intersection of full monotonicity and convexity intervals",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-increasing-concave-arccot-v1"
+          ],
+          "verification": "backend/tests/test_engine_convexity.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -25719,7 +25838,7 @@
       "family": "polynomial-sign-reconstruction",
       "interaction": "expression",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
+      "status": "deferred-with-reason",
       "verified_versions": [],
       "family_contracts": [
         "AM1/exam-family/polynomial-sign-reconstruction"
@@ -25730,7 +25849,9 @@
           "id": "result",
           "issue": 237,
           "contract": "expression",
-          "result": "construct polynomial with exactly prescribed extrema and inflection points"
+          "result": "construct polynomial with exactly prescribed extrema and inflection points",
+          "status": "deferred-open-construction",
+          "deferral_reason": "Open construction: infinitely many polynomials have a strict local minimum only at -1, a strict local maximum only at 2 and an inflection only at 0, so an exact answer contract cannot check a free construction. The computational part of the family (lowest-degree polynomial from extremum and inflection data) is delivered by AM1/51 (polynomial-extrema, polynomial-inflection); a property-checking answer needs its own contract and is left to the proof/construction stage #244."
         },
         {
           "id": "learner-proof",
@@ -27207,7 +27328,16 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "analysis1-derivatives-polynomial-extrema-v1",
+        "analysis1-derivatives-polynomial-inflection-v1"
+      ],
+      "delivery": {
+        "issue": 237,
+        "status": "partial-computational-delivery",
+        "verification": "backend/tests/test_engine_convexity.py"
+      }
     },
     "AM1/52": {
       "family": "parts-antiderivatives",
@@ -27477,7 +27607,24 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "analysis1-derivatives-convex-cubic-quotient-v1",
+        "analysis1-derivatives-convex-cubic-v1",
+        "analysis1-derivatives-convex-exponential-arctan-v1",
+        "analysis1-derivatives-convex-exponential-product-v1",
+        "analysis1-derivatives-convex-log-absolute-v1",
+        "analysis1-derivatives-convex-log-quadratic-v1",
+        "analysis1-derivatives-convex-log-root-v1",
+        "analysis1-derivatives-convex-reciprocal-v1",
+        "analysis1-derivatives-convex-reversed-exponential-v1",
+        "analysis1-derivatives-convex-trig-v1"
+      ],
+      "delivery": {
+        "issue": 237,
+        "status": "partial-computational-delivery",
+        "verification": "backend/tests/test_engine_convexity.py"
+      }
     },
     "AM1/70": {
       "family": "taylor-lagrange-remainder",
@@ -28485,7 +28632,18 @@
       "issue": 237,
       "existing_coverage": "missing",
       "candidate_versions": [],
-      "gap": "Exam-only method or combined structure; no source-family delivery yet."
+      "gap": "Exam-only method or combined structure; no source-family delivery yet.",
+      "verified_versions": [
+        "analysis1-derivatives-decreasing-concave-quadratic-exponential-v1",
+        "analysis1-derivatives-increasing-concave-arccot-v1",
+        "analysis1-derivatives-increasing-convex-quadratic-exponential-v1",
+        "analysis1-derivatives-increasing-convex-root-log-v1"
+      ],
+      "delivery": {
+        "issue": 237,
+        "status": "partial-computational-delivery",
+        "verification": "backend/tests/test_engine_convexity.py"
+      }
     },
     "AM1/exam-family/substitution-then-parts": {
       "family": "substitution-then-parts",
@@ -28569,8 +28727,8 @@
     "family_contracts": 146,
     "deferred_only_references": 30,
     "mixed_references": 146,
-    "verified_generator_deliveries": 303,
-    "verified_computational_components": 325
+    "verified_generator_deliveries": 320,
+    "verified_computational_components": 342
   },
   "deliveries": {
     "235": {
@@ -28817,8 +28975,19 @@
         "analysis1-derivatives-constant-coefficients-v1",
         "analysis1-derivatives-constant-over-power-v1",
         "analysis1-derivatives-container-v1",
+        "analysis1-derivatives-convex-cubic-quotient-v1",
+        "analysis1-derivatives-convex-cubic-v1",
+        "analysis1-derivatives-convex-exponential-arctan-v1",
+        "analysis1-derivatives-convex-exponential-product-v1",
+        "analysis1-derivatives-convex-log-absolute-v1",
+        "analysis1-derivatives-convex-log-quadratic-v1",
+        "analysis1-derivatives-convex-log-root-v1",
+        "analysis1-derivatives-convex-reciprocal-v1",
+        "analysis1-derivatives-convex-reversed-exponential-v1",
+        "analysis1-derivatives-convex-trig-v1",
         "analysis1-derivatives-cosine-difference-v1",
         "analysis1-derivatives-cotangent-difference-v1",
+        "analysis1-derivatives-decreasing-concave-quadratic-exponential-v1",
         "analysis1-derivatives-definition-power-v1",
         "analysis1-derivatives-definition-reciprocal-v1",
         "analysis1-derivatives-definition-root-v1",
@@ -28857,6 +29026,9 @@
         "analysis1-derivatives-global-semicircle-root-v1",
         "analysis1-derivatives-global-sine-cubic-v1",
         "analysis1-derivatives-incircle-triangle-v1",
+        "analysis1-derivatives-increasing-concave-arccot-v1",
+        "analysis1-derivatives-increasing-convex-quadratic-exponential-v1",
+        "analysis1-derivatives-increasing-convex-root-log-v1",
         "analysis1-derivatives-inverse-trig-constant-v1",
         "analysis1-derivatives-log-arctan-root-v1",
         "analysis1-derivatives-log-constant-quotient-v1",
@@ -28883,6 +29055,8 @@
         "analysis1-derivatives-one-minus-power-v1",
         "analysis1-derivatives-parabola-rectangle-v1",
         "analysis1-derivatives-pipeline-v1",
+        "analysis1-derivatives-polynomial-extrema-v1",
+        "analysis1-derivatives-polynomial-inflection-v1",
         "analysis1-derivatives-power-log-zero-v1",
         "analysis1-derivatives-power-of-exponential-v1",
         "analysis1-derivatives-rational-quotient-v1",
@@ -28912,21 +29086,10 @@
         "analysis1-derivatives-trig-sum-v1",
         "analysis1-derivatives-variable-power-v1"
       ],
-      "source_references": 103,
-      "computational_components": 103,
+      "source_references": 120,
+      "computational_components": 120,
       "verification_scope": "local bounded mathematics, replay and Linux worker checks; hosted CI, deployment and live checks remain pending",
       "pending_source_references": [
-        "AM1/51/a",
-        "AM1/51/b",
-        "AM1/69/a",
-        "AM1/69/b",
-        "AM1/69/c",
-        "AM1/69/d",
-        "AM1/69/e",
-        "AM1/69/f",
-        "AM1/69/g",
-        "AM1/69/h",
-        "AM1/69/i",
         "AM1/70/a",
         "AM1/70/b",
         "AM1/70/c",
@@ -28943,15 +29106,11 @@
         "AM1/73/b",
         "AM1/73/c",
         "AM1/73/d",
-        "AM1/exam/second/C/2",
-        "AM1/exam/second/D/1",
-        "AM1/exam/main/D/2",
-        "AM1/exam/resit/A/3",
-        "AM1/exam/resit/B/3",
-        "AM1/exam/resit/C/3",
-        "AM1/exam/resit/D/4",
-        "AM1/exam/distinction/single/3"
-      ]
+        "AM1/exam/second/C/2"
+      ],
+      "deferred_source_references": {
+        "AM1/exam/distinction/single/3": "Open construction: infinitely many polynomials have a strict local minimum only at -1, a strict local maximum only at 2 and an inflection only at 0, so an exact answer contract cannot check a free construction. The computational part of the family (lowest-degree polynomial from extremum and inflection data) is delivered by AM1/51 (polynomial-extrema, polynomial-inflection); a property-checking answer needs its own contract and is left to the proof/construction stage #244."
+      }
     }
   }
 }

@@ -176,3 +176,44 @@ scans of the stated function: the sign of difference quotients on a grid for
 monotonicity, grid local extrema (plus the closed domain ends) for local
 extrema, a refined dense grid for global values, and a grid plus golden-section
 search of the stated objective for optimization.
+
+## Convexity and polynomial reconstruction (#263)
+
+Prefixes `DVDX` to `DVDZ` and `DVEA` to `DVEM` cover AM1/69, AM1/51 and the
+exam forms of the convexity and monotonicity-convexity families. Exam
+second/D/1 repeats AM1/69/i and names the same version.
+
+Convexity answers are three real sets: the union of open intervals of
+convexity, of concavity, and the finite set of inflection abscissas. The
+monotonicity-convexity exam tasks ask for one real set where both conditions
+hold. Reconstructed polynomials are formulas in \(x\); the leading coefficient
+is stated so the lowest-degree polynomial is unique.
+
+| Reference | Version | Generated form |
+|---|---|---|
+| AM1/69/a | `convex-cubic` | \(ax(x-b)(x-b-c)\) |
+| AM1/69/b | `convex-exponential-product` | \((x-b)e^{-ax}\) |
+| AM1/69/c | `convex-cubic-quotient` | \(x^3/(x^2+3c^2)\): three inflections |
+| AM1/69/d | `convex-log-quadratic` | \(a\ln(c^2+x^2)\) |
+| AM1/69/e | `convex-reciprocal` | \(a/(c^2-x^2)\): no inflection, the sign changes at poles |
+| AM1/69/f | `convex-log-absolute` | \(x-\frac b3x^3-2bk^3\ln|x|\) |
+| AM1/69/g | `convex-trig` | \(a(\sin bx+\frac18\sin2bx)\) on one period |
+| AM1/69/h | `convex-exponential-arctan` | \(e^{a\arctan x}\) |
+| AM1/69/i, exam second/D/1 | `convex-log-root` | \(a\ln(x/b)/\sqrt x\) |
+| exam main/D/2 | `convex-reversed-exponential` | \((c-x)e^{ax}\) |
+| exam resit/A/3 | `increasing-convex-quadratic-exponential` | \((x^2+2x-c)e^{-x}\) |
+| exam resit/B/3 | `increasing-convex-root-log` | \(a\sqrt x\ln(x/b)\) |
+| exam resit/C/3 | `decreasing-concave-quadratic-exponential` | \((x^2-6x+c)e^x\) |
+| exam resit/D/4 | `increasing-concave-arccot` | \(\frac{x^3}3+c^2\operatorname{arccot}\frac1x\) |
+| AM1/51/a | `polynomial-extrema` | cubic with given leading coefficient, minimum, maximum and \(p(0)\) |
+| AM1/51/b | `polynomial-inflection` | cubic with given leading coefficient through an inflection with value and slope |
+
+Exam distinction/single/3 (a polynomial with prescribed extrema and a single
+inflection, without a degree) is recorded as deferred in the source index: the
+conditions admit infinitely many polynomials and need a property-checking
+answer, which belongs to #244.
+
+`backend/tests/test_engine_convexity.py` compares the answers with the sign of
+numerical second (and first) differences of the stated function on a grid, with
+sign changes of \(f''\) inside the domain, and checks the polynomial conditions
+exactly.

@@ -12,8 +12,10 @@ from app.engine.answers.computational import (
     FormulaAnswer,
     LimitAnswer,
     OrderedAnswer,
+    RealSetAnswer,
 )
 from app.engine.codes import encode
+from app.engine.generators import _convexity as convexity
 from app.engine.generators import _derivatives as derivatives
 from app.engine.generators import _extrema as extrema
 from app.engine.generators import _function_limits as functions
@@ -102,11 +104,16 @@ GLOBAL = InputContract("tuple", components=(CONSTANT, CONSTANT), labels=extrema.
 DIMENSIONS = InputContract("tuple", components=(CONSTANT, CONSTANT), labels=extrema.DIMENSIONS)
 BOX = InputContract("tuple", components=(CONSTANT, CONSTANT), labels=extrema.BOX)
 ANGLE_RADIUS = InputContract("tuple", components=(CONSTANT, CONSTANT), labels=extrema.ANGLE_RADIUS)
+# #263: convexity and polynomial reconstruction.
+CONVEXITY = InputContract(
+    "tuple", components=(REAL_SET, REAL_SET, REAL_SET), labels=convexity.CONVEXITY
+)
 ANSWERS: dict[str, type[Answer]] = {
     "category": CategoryAnswer,
     "formula": FormulaAnswer,
     "limit_result": LimitAnswer,
     "tuple": OrderedAnswer,
+    "real_set": RealSetAnswer,
 }
 
 SEQUENCES = "functions-and-sequences"
@@ -338,6 +345,23 @@ SPECS = (
     (extrema.semicircle_rectangle, DERIVATIVES, 3, "DVDU", DIMENSIONS),
     (extrema.semicircle_waste, DERIVATIVES, 3, "DVDV", CONSTANT),
     (extrema.circle_square, DERIVATIVES, 3, "DVDW", DIMENSIONS),
+    # #263
+    (convexity.convex_cubic, DERIVATIVES, 2, "DVDX", CONVEXITY),
+    (convexity.convex_exponential_product, DERIVATIVES, 3, "DVDY", CONVEXITY),
+    (convexity.convex_cubic_quotient, DERIVATIVES, 4, "DVDZ", CONVEXITY),
+    (convexity.convex_log_quadratic, DERIVATIVES, 3, "DVEA", CONVEXITY),
+    (convexity.convex_reciprocal, DERIVATIVES, 3, "DVEB", CONVEXITY),
+    (convexity.convex_log_absolute, DERIVATIVES, 4, "DVEC", CONVEXITY),
+    (convexity.convex_trig, DERIVATIVES, 4, "DVED", CONVEXITY),
+    (convexity.convex_exponential_arctan, DERIVATIVES, 3, "DVEE", CONVEXITY),
+    (convexity.convex_log_root, DERIVATIVES, 4, "DVEF", CONVEXITY),
+    (convexity.convex_reversed_exponential, DERIVATIVES, 3, "DVEG", CONVEXITY),
+    (convexity.increasing_convex_quadratic_exponential, DERIVATIVES, 5, "DVEH", REAL_SET),
+    (convexity.increasing_convex_root_log, DERIVATIVES, 4, "DVEI", REAL_SET),
+    (convexity.decreasing_concave_quadratic_exponential, DERIVATIVES, 5, "DVEJ", REAL_SET),
+    (convexity.increasing_concave_arccot, DERIVATIVES, 5, "DVEK", REAL_SET),
+    (convexity.polynomial_extrema, DERIVATIVES, 3, "DVEL", LINE),
+    (convexity.polynomial_inflection, DERIVATIVES, 3, "DVEM", LINE),
 )
 
 
