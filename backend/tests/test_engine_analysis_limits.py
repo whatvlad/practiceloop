@@ -15,6 +15,7 @@ from app.engine.answers.computational import (
     CategoryAnswer,
     LimitAnswer,
     OrderedAnswer,
+    PeriodicSetAnswer,
     RealSetAnswer,
 )
 from app.engine.generators.analysis_limits import generators
@@ -35,7 +36,7 @@ def source(answer):
         return re.sub(r"\bE\b", "e", text)
     if isinstance(answer, OrderedAnswer):
         return "(" + ";".join(map(source, answer.components)) + ")"
-    return computational_source(answer)
+    return re.sub(r"\bE\b", "e", computational_source(answer))
 
 
 def different_source(answer):
@@ -48,6 +49,8 @@ def different_source(answer):
         return next(choice for choice in answer.choices if choice != answer.expected)
     if isinstance(answer, RealSetAnswer):
         return "R" if answer.expected == sp.S.EmptySet else "{}"
+    if isinstance(answer, PeriodicSetAnswer):
+        return "(" + sp.sstr(answer.period) + ";{0})"
     return "1" if answer.expected == 0 else "0"
 
 
@@ -516,6 +519,109 @@ def reference_functions(name, a, b, c):  # noqa: PLR0911, PLR0912
         if name == "sine_power_product":
             x = mpmath.mpf("1e-6")
             return float(mpmath.sin(a * x**5) / (mpmath.sin(b * x * x) * mpmath.sin(c * x**3)))
+    return reference_asymptotes(name, a, b, c)
+
+
+def slope_and_offset(f, far):
+    """Numerical slope and offset of f far out; None when either clearly diverges."""
+    slope = f(far) / far
+    return slope, f(far) - mpmath.nint(slope) * far
+
+
+def reference_asymptotes(name, a, b, c):  # noqa: PLR0911, PLR0912, PLR0915
+    """#259 oracles: the displayed functions at 50 digits near poles and far out."""
+    x = sp.Symbol("x", real=True)
+    dne = "does_not_exist"
+    with mpmath.workdps(50):
+        near, far = mpmath.mpf("1e-12"), mpmath.mpf("1e20")
+        if name == "radical_growth_asymptotes":
+
+            def f(x):
+                return (a * x * mpmath.sqrt(x) + b) / (x + c)
+
+            assert f(far) / far < 1e-6
+            assert f(far) > 1e8
+            return sp.S.EmptySet, 0, sp.oo
+        if name == "oscillatory_remainder":
+
+            def f(x):
+                return (a * x * x + c * x + b * mpmath.sin(x)) / x
+
+            assert abs(f(near) - (b + c)) < 1e-6
+            values = [slope_and_offset(f, end) for end in (-far, far)]
+            return sp.S.EmptySet, *(float(v) for pair in values for v in pair)
+        if name == "exponential_zero_denominator":
+
+            def f(x):
+                return b * mpmath.cos(c * x) / (mpmath.exp(a * x) - 1)
+
+            assert f(-near) < -1e9 < 1e9 < f(near)
+            k = 10**6
+            even, odd = f(-2 * mpmath.pi * k / c), f(-(2 * k + 1) * mpmath.pi / c)
+            assert abs(f(-far) / far) < 1e-10
+            assert abs(even + b) < 1e-6
+            assert abs(odd - b) < 1e-6
+            assert abs(f(mpmath.mpf(60))) < 1e-20
+            return sp.FiniteSet(0), 0, dne, 0, 0
+        if name == "trig_periodic_poles":
+
+            def f(x):
+                return (a * mpmath.sin(2 * x) + b * mpmath.cos(x)) / (mpmath.sin(x) - 1) + c
+
+            assert abs(f(mpmath.pi / 2 + near)) > 1e9
+            grid = [2 * mpmath.pi * k / 400 for k in range(400)]
+            poles = [p for p in grid if abs(mpmath.sin(p) - 1) < 1e-9]
+            assert len(poles) == 1
+            assert abs(poles[0] - mpmath.pi / 2) < 1e-30
+            k = 10**6
+            assert abs(f(2 * mpmath.pi * k) / (2 * mpmath.pi * k)) < 1e-5
+            assert abs(f(mpmath.pi / 2 + 2 * mpmath.pi * k + near)) / k > 1e3
+            return (2 * sp.pi, sp.FiniteSet(sp.pi / 2)), dne, dne, dne, dne
+        if name == "continuity_log_ratio":
+
+            def f(x):
+                return 1 / (mpmath.log(a * x * x) - mpmath.log(a * x * x + b))
+
+            tiny = mpmath.mpf("1e-100000")
+            sides = [f(-tiny), f(tiny)]
+            assert all(abs(side) < 1e-5 for side in sides)
+            assigned = c % 3 - 1
+            return 0, 0, "continuous" if assigned == 0 else "removable"
+        if name == "exp_join":
+            c = 1 + c % 2  # the generated join point
+            p = (mpmath.exp(a * near) - 1) / near
+            q = ((mpmath.exp(a * c) - 1) / c + b) / (c * c)
+            return float(p), float(q)
+        if name == "quartic_cubic_oblique":
+
+            def f(x):
+                return (a * x**4 - b * x**3) / (x**3 + c * x)
+
+            assert abs(f(near)) < 1e-6
+            values = [slope_and_offset(f, end) for end in (-far, far)]
+            return sp.S.EmptySet, *(float(v) for pair in values for v in pair)
+        if name == "radical_oblique_right":
+
+            def f(x):
+                return (x - c) * mpmath.sqrt(x - a - 2 * b) / mpmath.sqrt(x - a)
+
+            assert mpmath.sqrt(2 * b) > 0  # denominator bounded below on [a+2b, inf)
+            return sp.S.EmptySet, *(float(v) for v in slope_and_offset(f, far))
+        if name == "radical_quotient_right":
+
+            def f(x):
+                return b * mpmath.sqrt(x**3 - c**3) / mpmath.sqrt(x - c)
+
+            assert abs(f(c + near) - b * mpmath.sqrt(3) * c) < 1e-5
+            return sp.S.EmptySet, *(float(v) for v in slope_and_offset(f, far))
+        if name in {"rational_oblique_pole", "rational_oblique_pole_left"}:
+            sign = 1 if name == "rational_oblique_pole" else -1
+            numerator = x * (x - sign * b)
+            denominator = x - sign * (a + b)
+            quotient, remainder = sp.div(numerator, denominator, x)
+            assert remainder != 0
+            poles = sp.solveset(denominator, x, sp.S.Reals)
+            return sp.S.Reals - poles, poles, quotient, quotient
     return None
 
 
@@ -523,6 +629,8 @@ def assert_answer(answer, expected):
     if isinstance(answer, OrderedAnswer):
         for item, value in zip(answer.components, expected, strict=True):
             assert_answer(item, value)
+    elif isinstance(answer, PeriodicSetAnswer):
+        assert (answer.period, answer.base) == expected
     elif isinstance(expected, float):
         assert float(answer.expected) == pytest.approx(expected, rel=0.001, abs=0.0001)
     else:

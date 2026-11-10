@@ -34062,5 +34062,786 @@
         "difficulty": 3
       }
     }
+  ],
+  "analysis1-limits-radical-growth-asymptotes-v1": [
+    {
+      "code": "FLCG-1-0000000000000003-18",
+      "statement": "\\(\\text{The real domain is }[0,\\infty).\\text{ Give the vertical asymptote locations.}\\text{ At }+\\infty\\text{ give the slope }m=\\lim f(x)/x\\text{ and the offset }\\lim(f(x)-mx)\\text{; enter does\\_not\\_exist for the offset when }m\\text{ is not finite.}\\quad f(x)=\\frac{2x\\sqrt{x}+1}{x+5}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The denominator }x+5\\text{ is positive on the domain, so there is no pole.}"
+        ],
+        [
+          "calculation",
+          "\\frac{f(x)}{x}=\\frac{2x\\sqrt{x}+1}{x^2+5x}\\to0,\\qquadf(x)=\\frac{2\\sqrt{x}+1/x}{1+5/x}\\to\\infty.\\quad\\text{No asymptote at }+\\infty."
+        ],
+        [
+          "result",
+          "\\left(\\emptyset,\\;0,\\;\\infty\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\emptyset,\\;0,\\;\\infty\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLCG-1-0000000000000200-94",
+      "statement": "\\(\\text{The real domain is }[0,\\infty).\\text{ Give the vertical asymptote locations.}\\text{ At }+\\infty\\text{ give the slope }m=\\lim f(x)/x\\text{ and the offset }\\lim(f(x)-mx)\\text{; enter does\\_not\\_exist for the offset when }m\\text{ is not finite.}\\quad f(x)=\\frac{5x\\sqrt{x}+5}{x+1}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The denominator }x+1\\text{ is positive on the domain, so there is no pole.}"
+        ],
+        [
+          "calculation",
+          "\\frac{f(x)}{x}=\\frac{5x\\sqrt{x}+5}{x^2+1x}\\to0,\\qquadf(x)=\\frac{5\\sqrt{x}+5/x}{1+1/x}\\to\\infty.\\quad\\text{No asymptote at }+\\infty."
+        ],
+        [
+          "result",
+          "\\left(\\emptyset,\\;0,\\;\\infty\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\emptyset,\\;0,\\;\\infty\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLCG-1-0000000000000999-11",
+      "statement": "\\(\\text{The real domain is }[0,\\infty).\\text{ Give the vertical asymptote locations.}\\text{ At }+\\infty\\text{ give the slope }m=\\lim f(x)/x\\text{ and the offset }\\lim(f(x)-mx)\\text{; enter does\\_not\\_exist for the offset when }m\\text{ is not finite.}\\quad f(x)=\\frac{2x\\sqrt{x}+3}{x+5}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The denominator }x+5\\text{ is positive on the domain, so there is no pole.}"
+        ],
+        [
+          "calculation",
+          "\\frac{f(x)}{x}=\\frac{2x\\sqrt{x}+3}{x^2+5x}\\to0,\\qquadf(x)=\\frac{2\\sqrt{x}+3/x}{1+5/x}\\to\\infty.\\quad\\text{No asymptote at }+\\infty."
+        ],
+        [
+          "result",
+          "\\left(\\emptyset,\\;0,\\;\\infty\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\emptyset,\\;0,\\;\\infty\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-oscillatory-remainder-v1": [
+    {
+      "code": "FLCH-1-0000000000000003-00",
+      "statement": "\\(\\text{Give the vertical asymptote locations.}\\text{ At each end give the slope }m=\\lim f(x)/x\\text{ and the offset }\\lim(f(x)-mx)\\text{; enter does\\_not\\_exist for the offset when }m\\text{ is not finite.}\\quad f(x)=\\frac{2x^2+5x+\\sin x}{x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Near }0\\text{ use }\\sin x/x\\to1:\\ f(x)\\to6,\\text{ a finite limit, so }x=0\\text{ is not a vertical asymptote.}"
+        ],
+        [
+          "calculation",
+          "f(x)-2x=5+\\frac{\\sin x}{x}\\to5\\quad(x\\to\\pm\\infty),\\qquad\\left|\\frac{\\sin x}{x}\\right|\\le\\frac{1}{|x|}."
+        ],
+        [
+          "result",
+          "\\left(\\emptyset,\\;2,\\;5,\\;2,\\;5\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\emptyset,\\;2,\\;5,\\;2,\\;5\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLCH-1-0000000000000200-76",
+      "statement": "\\(\\text{Give the vertical asymptote locations.}\\text{ At each end give the slope }m=\\lim f(x)/x\\text{ and the offset }\\lim(f(x)-mx)\\text{; enter does\\_not\\_exist for the offset when }m\\text{ is not finite.}\\quad f(x)=\\frac{5x^2+1x+5\\sin x}{x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Near }0\\text{ use }\\sin x/x\\to1:\\ f(x)\\to6,\\text{ a finite limit, so }x=0\\text{ is not a vertical asymptote.}"
+        ],
+        [
+          "calculation",
+          "f(x)-5x=1+5\\frac{\\sin x}{x}\\to1\\quad(x\\to\\pm\\infty),\\qquad\\left|\\frac{\\sin x}{x}\\right|\\le\\frac{1}{|x|}."
+        ],
+        [
+          "result",
+          "\\left(\\emptyset,\\;5,\\;1,\\;5,\\;1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\emptyset,\\;5,\\;1,\\;5,\\;1\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLCH-1-0000000000000999-90",
+      "statement": "\\(\\text{Give the vertical asymptote locations.}\\text{ At each end give the slope }m=\\lim f(x)/x\\text{ and the offset }\\lim(f(x)-mx)\\text{; enter does\\_not\\_exist for the offset when }m\\text{ is not finite.}\\quad f(x)=\\frac{2x^2+5x+3\\sin x}{x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Near }0\\text{ use }\\sin x/x\\to1:\\ f(x)\\to8,\\text{ a finite limit, so }x=0\\text{ is not a vertical asymptote.}"
+        ],
+        [
+          "calculation",
+          "f(x)-2x=5+3\\frac{\\sin x}{x}\\to5\\quad(x\\to\\pm\\infty),\\qquad\\left|\\frac{\\sin x}{x}\\right|\\le\\frac{1}{|x|}."
+        ],
+        [
+          "result",
+          "\\left(\\emptyset,\\;2,\\;5,\\;2,\\;5\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\emptyset,\\;2,\\;5,\\;2,\\;5\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-exponential-zero-denominator-v1": [
+    {
+      "code": "FLCI-1-0000000000000003-85",
+      "statement": "\\(\\text{Give the vertical asymptote locations.}\\text{ At each end give the slope }m=\\lim f(x)/x\\text{ and the offset }\\lim(f(x)-mx)\\text{; enter does\\_not\\_exist for the offset when }m\\text{ is not finite.}\\quad f(x)=\\frac{\\cos 5x}{e^{2x}-1}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The denominator vanishes only at }0\\text{, where the numerator is }1\\ne0."
+        ],
+        [
+          "calculation",
+          "x\\to-\\infty:\\ f(x)+\\cos 5x\\to0\\text{, which oscillates, so }f(x)/x\\to0\\text{ and }\\lim f\\text{ does not exist.}\\quadx\\to+\\infty:\\ |f(x)|\\le\\frac{1}{e^{2x}-1}\\to0."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{0\\right\\},\\;0,\\;\\text{does not exist},\\;0,\\;0\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{0\\right\\},\\;0,\\;\\text{does not exist},\\;0,\\;0\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "FLCI-1-0000000000000200-64",
+      "statement": "\\(\\text{Give the vertical asymptote locations.}\\text{ At each end give the slope }m=\\lim f(x)/x\\text{ and the offset }\\lim(f(x)-mx)\\text{; enter does\\_not\\_exist for the offset when }m\\text{ is not finite.}\\quad f(x)=\\frac{5\\cos x}{e^{5x}-1}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The denominator vanishes only at }0\\text{, where the numerator is }5\\ne0."
+        ],
+        [
+          "calculation",
+          "x\\to-\\infty:\\ f(x)+5\\cos x\\to0\\text{, which oscillates, so }f(x)/x\\to0\\text{ and }\\lim f\\text{ does not exist.}\\quadx\\to+\\infty:\\ |f(x)|\\le\\frac{5}{e^{5x}-1}\\to0."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{0\\right\\},\\;0,\\;\\text{does not exist},\\;0,\\;0\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{0\\right\\},\\;0,\\;\\text{does not exist},\\;0,\\;0\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "FLCI-1-0000000000000999-78",
+      "statement": "\\(\\text{Give the vertical asymptote locations.}\\text{ At each end give the slope }m=\\lim f(x)/x\\text{ and the offset }\\lim(f(x)-mx)\\text{; enter does\\_not\\_exist for the offset when }m\\text{ is not finite.}\\quad f(x)=\\frac{3\\cos 5x}{e^{2x}-1}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The denominator vanishes only at }0\\text{, where the numerator is }3\\ne0."
+        ],
+        [
+          "calculation",
+          "x\\to-\\infty:\\ f(x)+3\\cos 5x\\to0\\text{, which oscillates, so }f(x)/x\\to0\\text{ and }\\lim f\\text{ does not exist.}\\quadx\\to+\\infty:\\ |f(x)|\\le\\frac{3}{e^{2x}-1}\\to0."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{0\\right\\},\\;0,\\;\\text{does not exist},\\;0,\\;0\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{0\\right\\},\\;0,\\;\\text{does not exist},\\;0,\\;0\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    }
+  ],
+  "analysis1-limits-trig-periodic-poles-v1": [
+    {
+      "code": "FLCJ-1-0000000000000003-63",
+      "statement": "\\(\\text{Give the vertical asymptote locations as a period and a base set in }[0,2\\pi).\\text{ At each end give the slope }m=\\lim f(x)/x\\text{ and the offset }\\lim(f(x)-mx)\\text{; enter does\\_not\\_exist for the offset when }m\\text{ is not finite.}\\quad f(x)=\\frac{2\\sin 2x+\\cos x}{\\sin x-1}+5.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The denominator vanishes at }x=\\pi/2+2k\\pi.\\text{ Put }x=\\pi/2+t\\text{ and expand both sides.}"
+        ],
+        [
+          "calculation",
+          "f=\\frac{-(5)t+O(t^3)}{-t^2/2+O(t^4)}+5\\sim\\frac{10}{t}\\to\\pm\\infty.\\quad\\text{The poles recur in every period, so }f(x)/x\\text{ has no limit at either end.}"
+        ],
+        [
+          "result",
+          "\\left(\\left\\{\\frac{\\pi}{2}\\right\\}+2 \\pi\\,k,\\quad k\\in\\mathbb{Z},\\;\\text{does not exist},\\;\\text{does not exist},\\;\\text{does not exist},\\;\\text{does not exist}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{\\frac{\\pi}{2}\\right\\}+2 \\pi\\,k,\\quad k\\in\\mathbb{Z},\\;\\text{does not exist},\\;\\text{does not exist},\\;\\text{does not exist},\\;\\text{does not exist}\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "FLCJ-1-0000000000000200-42",
+      "statement": "\\(\\text{Give the vertical asymptote locations as a period and a base set in }[0,2\\pi).\\text{ At each end give the slope }m=\\lim f(x)/x\\text{ and the offset }\\lim(f(x)-mx)\\text{; enter does\\_not\\_exist for the offset when }m\\text{ is not finite.}\\quad f(x)=\\frac{5\\sin 2x+5\\cos x}{\\sin x-1}+1.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The denominator vanishes at }x=\\pi/2+2k\\pi.\\text{ Put }x=\\pi/2+t\\text{ and expand both sides.}"
+        ],
+        [
+          "calculation",
+          "f=\\frac{-(15)t+O(t^3)}{-t^2/2+O(t^4)}+1\\sim\\frac{30}{t}\\to\\pm\\infty.\\quad\\text{The poles recur in every period, so }f(x)/x\\text{ has no limit at either end.}"
+        ],
+        [
+          "result",
+          "\\left(\\left\\{\\frac{\\pi}{2}\\right\\}+2 \\pi\\,k,\\quad k\\in\\mathbb{Z},\\;\\text{does not exist},\\;\\text{does not exist},\\;\\text{does not exist},\\;\\text{does not exist}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{\\frac{\\pi}{2}\\right\\}+2 \\pi\\,k,\\quad k\\in\\mathbb{Z},\\;\\text{does not exist},\\;\\text{does not exist},\\;\\text{does not exist},\\;\\text{does not exist}\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "FLCJ-1-0000000000000999-56",
+      "statement": "\\(\\text{Give the vertical asymptote locations as a period and a base set in }[0,2\\pi).\\text{ At each end give the slope }m=\\lim f(x)/x\\text{ and the offset }\\lim(f(x)-mx)\\text{; enter does\\_not\\_exist for the offset when }m\\text{ is not finite.}\\quad f(x)=\\frac{2\\sin 2x+3\\cos x}{\\sin x-1}+5.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The denominator vanishes at }x=\\pi/2+2k\\pi.\\text{ Put }x=\\pi/2+t\\text{ and expand both sides.}"
+        ],
+        [
+          "calculation",
+          "f=\\frac{-(7)t+O(t^3)}{-t^2/2+O(t^4)}+5\\sim\\frac{14}{t}\\to\\pm\\infty.\\quad\\text{The poles recur in every period, so }f(x)/x\\text{ has no limit at either end.}"
+        ],
+        [
+          "result",
+          "\\left(\\left\\{\\frac{\\pi}{2}\\right\\}+2 \\pi\\,k,\\quad k\\in\\mathbb{Z},\\;\\text{does not exist},\\;\\text{does not exist},\\;\\text{does not exist},\\;\\text{does not exist}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{\\frac{\\pi}{2}\\right\\}+2 \\pi\\,k,\\quad k\\in\\mathbb{Z},\\;\\text{does not exist},\\;\\text{does not exist},\\;\\text{does not exist},\\;\\text{does not exist}\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    }
+  ],
+  "analysis1-limits-continuity-log-ratio-v1": [
+    {
+      "code": "FLCK-1-0000000000000003-81",
+      "statement": "\\(\\text{The function is continuous for }x\\ne0.\\text{ Give the one-sided limits at }0\\text{ and classify }x=0:\\quad f(x)=\\begin{cases}\\dfrac{1}{\\log(2x^2)-\\log(2x^2+1)},&x\\ne0\\\\1,&x=0\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Combine the logarithms. The quotient inside is below }1\\text{ and tends to }0."
+        ],
+        [
+          "calculation",
+          "\\log\\frac{2x^2}{2x^2+1}\\to-\\infty\\ \\Rightarrow\\ f(x)\\to0\\text{ from both sides};\\quad f(0)=1\\ne0\\text{: removable.}"
+        ],
+        [
+          "result",
+          "\\left(0,\\;0,\\;\\text{removable}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(0,\\;0,\\;\\text{removable}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLCK-1-0000000000000200-60",
+      "statement": "\\(\\text{The function is continuous for }x\\ne0.\\text{ Give the one-sided limits at }0\\text{ and classify }x=0:\\quad f(x)=\\begin{cases}\\dfrac{1}{\\log(5x^2)-\\log(5x^2+5)},&x\\ne0\\\\0,&x=0\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Combine the logarithms. The quotient inside is below }1\\text{ and tends to }0."
+        ],
+        [
+          "calculation",
+          "\\log\\frac{5x^2}{5x^2+5}\\to-\\infty\\ \\Rightarrow\\ f(x)\\to0\\text{ from both sides};\\quad f(0)=0\\text{, so }f\\text{ is continuous.}"
+        ],
+        [
+          "result",
+          "\\left(0,\\;0,\\;\\text{continuous}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(0,\\;0,\\;\\text{continuous}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLCK-1-0000000000000999-74",
+      "statement": "\\(\\text{The function is continuous for }x\\ne0.\\text{ Give the one-sided limits at }0\\text{ and classify }x=0:\\quad f(x)=\\begin{cases}\\dfrac{1}{\\log(2x^2)-\\log(2x^2+3)},&x\\ne0\\\\1,&x=0\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Combine the logarithms. The quotient inside is below }1\\text{ and tends to }0."
+        ],
+        [
+          "calculation",
+          "\\log\\frac{2x^2}{2x^2+3}\\to-\\infty\\ \\Rightarrow\\ f(x)\\to0\\text{ from both sides};\\quad f(0)=1\\ne0\\text{: removable.}"
+        ],
+        [
+          "result",
+          "\\left(0,\\;0,\\;\\text{removable}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(0,\\;0,\\;\\text{removable}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-exp-join-v1": [
+    {
+      "code": "FLCL-1-0000000000000003-91",
+      "statement": "\\(\\text{Find the parameters }p,q\\text{ for continuity on }\\mathbb R:\\quad f(x)=\\begin{cases}x+p,&x\\le0\\\\\\dfrac{e^{2x}-1}{x},&0<x\\le2\\\\qx^2-1,&x>2\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Each branch is continuous on its interval. Match the limits at both joins.}"
+        ],
+        [
+          "calculation",
+          "\\lim_{x\\to0^+}\\frac{e^{2x}-1}{x}=2=p,\\qquadq\\cdot4-1=- \\frac{1}{2} + \\frac{e^{4}}{2}\\ \\Longrightarrow\\ q=\\frac{1}{8} + \\frac{e^{4}}{8}."
+        ],
+        [
+          "result",
+          "\\left(2,\\;\\frac{1}{8} + \\frac{e^{4}}{8}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(2,\\;\\frac{1}{8} + \\frac{e^{4}}{8}\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "FLCL-1-0000000000000200-70",
+      "statement": "\\(\\text{Find the parameters }p,q\\text{ for continuity on }\\mathbb R:\\quad f(x)=\\begin{cases}x+p,&x\\le0\\\\\\dfrac{e^{5x}-1}{x},&0<x\\le2\\\\qx^2-5,&x>2\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Each branch is continuous on its interval. Match the limits at both joins.}"
+        ],
+        [
+          "calculation",
+          "\\lim_{x\\to0^+}\\frac{e^{5x}-1}{x}=5=p,\\qquadq\\cdot4-5=- \\frac{1}{2} + \\frac{e^{10}}{2}\\ \\Longrightarrow\\ q=\\frac{9}{8} + \\frac{e^{10}}{8}."
+        ],
+        [
+          "result",
+          "\\left(5,\\;\\frac{9}{8} + \\frac{e^{10}}{8}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(5,\\;\\frac{9}{8} + \\frac{e^{10}}{8}\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "FLCL-1-0000000000000999-84",
+      "statement": "\\(\\text{Find the parameters }p,q\\text{ for continuity on }\\mathbb R:\\quad f(x)=\\begin{cases}x+p,&x\\le0\\\\\\dfrac{e^{2x}-1}{x},&0<x\\le2\\\\qx^2-3,&x>2\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Each branch is continuous on its interval. Match the limits at both joins.}"
+        ],
+        [
+          "calculation",
+          "\\lim_{x\\to0^+}\\frac{e^{2x}-1}{x}=2=p,\\qquadq\\cdot4-3=- \\frac{1}{2} + \\frac{e^{4}}{2}\\ \\Longrightarrow\\ q=\\frac{5}{8} + \\frac{e^{4}}{8}."
+        ],
+        [
+          "result",
+          "\\left(2,\\;\\frac{5}{8} + \\frac{e^{4}}{8}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(2,\\;\\frac{5}{8} + \\frac{e^{4}}{8}\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    }
+  ],
+  "analysis1-limits-quartic-cubic-oblique-v1": [
+    {
+      "code": "FLCM-1-0000000000000003-47",
+      "statement": "\\(\\text{Give the vertical asymptote locations.}\\text{ At each end give the slope }m=\\lim f(x)/x\\text{ and the offset }\\lim(f(x)-mx)\\text{; enter does\\_not\\_exist for the offset when }m\\text{ is not finite.}\\quad f(x)=\\frac{2x^4-1x^3}{x^3+5x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Cancel }x\\text{ on }x\\ne0:\\ f(x)=\\frac{2x^3-1x^2}{x^2+5}\\to0\\text{ at }0\\text{, so there is no vertical asymptote.}"
+        ],
+        [
+          "calculation",
+          "f(x)-(2 x - 1)=\\frac{5 - 10 x}{x^2+5}\\to0\\quad(x\\to\\pm\\infty)."
+        ],
+        [
+          "result",
+          "\\left(\\emptyset,\\;2,\\;-1,\\;2,\\;-1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\emptyset,\\;2,\\;-1,\\;2,\\;-1\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLCM-1-0000000000000200-26",
+      "statement": "\\(\\text{Give the vertical asymptote locations.}\\text{ At each end give the slope }m=\\lim f(x)/x\\text{ and the offset }\\lim(f(x)-mx)\\text{; enter does\\_not\\_exist for the offset when }m\\text{ is not finite.}\\quad f(x)=\\frac{5x^4-5x^3}{x^3+1x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Cancel }x\\text{ on }x\\ne0:\\ f(x)=\\frac{5x^3-5x^2}{x^2+1}\\to0\\text{ at }0\\text{, so there is no vertical asymptote.}"
+        ],
+        [
+          "calculation",
+          "f(x)-(5 x - 5)=\\frac{5 - 5 x}{x^2+1}\\to0\\quad(x\\to\\pm\\infty)."
+        ],
+        [
+          "result",
+          "\\left(\\emptyset,\\;5,\\;-5,\\;5,\\;-5\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\emptyset,\\;5,\\;-5,\\;5,\\;-5\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLCM-1-0000000000000999-40",
+      "statement": "\\(\\text{Give the vertical asymptote locations.}\\text{ At each end give the slope }m=\\lim f(x)/x\\text{ and the offset }\\lim(f(x)-mx)\\text{; enter does\\_not\\_exist for the offset when }m\\text{ is not finite.}\\quad f(x)=\\frac{2x^4-3x^3}{x^3+5x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Cancel }x\\text{ on }x\\ne0:\\ f(x)=\\frac{2x^3-3x^2}{x^2+5}\\to0\\text{ at }0\\text{, so there is no vertical asymptote.}"
+        ],
+        [
+          "calculation",
+          "f(x)-(2 x - 3)=\\frac{15 - 10 x}{x^2+5}\\to0\\quad(x\\to\\pm\\infty)."
+        ],
+        [
+          "result",
+          "\\left(\\emptyset,\\;2,\\;-3,\\;2,\\;-3\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\emptyset,\\;2,\\;-3,\\;2,\\;-3\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-radical-oblique-right-v1": [
+    {
+      "code": "FLCN-1-0000000000000003-80",
+      "statement": "\\(\\text{The real domain is }[4,\\infty).\\text{ Give the vertical asymptote locations.}\\text{ At }+\\infty\\text{ give the slope }m=\\lim f(x)/x\\text{ and the offset }\\lim(f(x)-mx)\\text{; enter does\\_not\\_exist for the offset when }m\\text{ is not finite.}\\quad f(x)=\\frac{(x-5)\\sqrt{x-4}}{\\sqrt{x-2}}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The denominator is at least }\\sqrt{2}\\text{ on the domain.}"
+        ],
+        [
+          "calculation",
+          "f(x)=(x-5)\\sqrt{1-\\frac{2}{x-2}},\\qquadf(x)-(x-5)=-\\frac{2(x-5)}{(x-2)\\left(1+\\sqrt{1-2/(x-2)}\\right)}\\to-1."
+        ],
+        [
+          "result",
+          "\\left(\\emptyset,\\;1,\\;-6\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\emptyset,\\;1,\\;-6\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "FLCN-1-0000000000000200-59",
+      "statement": "\\(\\text{The real domain is }[15,\\infty).\\text{ Give the vertical asymptote locations.}\\text{ At }+\\infty\\text{ give the slope }m=\\lim f(x)/x\\text{ and the offset }\\lim(f(x)-mx)\\text{; enter does\\_not\\_exist for the offset when }m\\text{ is not finite.}\\quad f(x)=\\frac{(x-1)\\sqrt{x-15}}{\\sqrt{x-5}}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The denominator is at least }\\sqrt{10}\\text{ on the domain.}"
+        ],
+        [
+          "calculation",
+          "f(x)=(x-1)\\sqrt{1-\\frac{10}{x-5}},\\qquadf(x)-(x-1)=-\\frac{10(x-1)}{(x-5)\\left(1+\\sqrt{1-10/(x-5)}\\right)}\\to-5."
+        ],
+        [
+          "result",
+          "\\left(\\emptyset,\\;1,\\;-6\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\emptyset,\\;1,\\;-6\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "FLCN-1-0000000000000999-73",
+      "statement": "\\(\\text{The real domain is }[8,\\infty).\\text{ Give the vertical asymptote locations.}\\text{ At }+\\infty\\text{ give the slope }m=\\lim f(x)/x\\text{ and the offset }\\lim(f(x)-mx)\\text{; enter does\\_not\\_exist for the offset when }m\\text{ is not finite.}\\quad f(x)=\\frac{(x-5)\\sqrt{x-8}}{\\sqrt{x-2}}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The denominator is at least }\\sqrt{6}\\text{ on the domain.}"
+        ],
+        [
+          "calculation",
+          "f(x)=(x-5)\\sqrt{1-\\frac{6}{x-2}},\\qquadf(x)-(x-5)=-\\frac{6(x-5)}{(x-2)\\left(1+\\sqrt{1-6/(x-2)}\\right)}\\to-3."
+        ],
+        [
+          "result",
+          "\\left(\\emptyset,\\;1,\\;-8\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\emptyset,\\;1,\\;-8\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    }
+  ],
+  "analysis1-limits-radical-quotient-right-v1": [
+    {
+      "code": "FLCO-1-0000000000000003-79",
+      "statement": "\\(\\text{The real domain is }(5,\\infty).\\text{ Give the vertical asymptote locations.}\\text{ At }+\\infty\\text{ give the slope }m=\\lim f(x)/x\\text{ and the offset }\\lim(f(x)-mx)\\text{; enter does\\_not\\_exist for the offset when }m\\text{ is not finite.}\\quad f(x)=\\frac{\\sqrt{x^3-125}}{\\sqrt{x-5}}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{For }x>5:\\ f(x)=\\sqrt{x^2+5x+25}\\to\\sqrt{75}\\ (x\\to5^+)\\text{, so no vertical asymptote.}"
+        ],
+        [
+          "calculation",
+          "f(x)-x=\\frac{(5x+25)}{\\sqrt{x^2+5x+25}+x}\\to\\frac{5}{2}."
+        ],
+        [
+          "result",
+          "\\left(\\emptyset,\\;1,\\;\\frac{5}{2}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\emptyset,\\;1,\\;\\frac{5}{2}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLCO-1-0000000000000200-58",
+      "statement": "\\(\\text{The real domain is }(1,\\infty).\\text{ Give the vertical asymptote locations.}\\text{ At }+\\infty\\text{ give the slope }m=\\lim f(x)/x\\text{ and the offset }\\lim(f(x)-mx)\\text{; enter does\\_not\\_exist for the offset when }m\\text{ is not finite.}\\quad f(x)=\\frac{5\\sqrt{x^3-1}}{\\sqrt{x-1}}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{For }x>1:\\ f(x)=5\\sqrt{x^2+1x+1}\\to5\\sqrt{3}\\ (x\\to1^+)\\text{, so no vertical asymptote.}"
+        ],
+        [
+          "calculation",
+          "f(x)-5x=\\frac{5(1x+1)}{\\sqrt{x^2+1x+1}+x}\\to\\frac{5}{2}."
+        ],
+        [
+          "result",
+          "\\left(\\emptyset,\\;5,\\;\\frac{5}{2}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\emptyset,\\;5,\\;\\frac{5}{2}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLCO-1-0000000000000999-72",
+      "statement": "\\(\\text{The real domain is }(5,\\infty).\\text{ Give the vertical asymptote locations.}\\text{ At }+\\infty\\text{ give the slope }m=\\lim f(x)/x\\text{ and the offset }\\lim(f(x)-mx)\\text{; enter does\\_not\\_exist for the offset when }m\\text{ is not finite.}\\quad f(x)=\\frac{3\\sqrt{x^3-125}}{\\sqrt{x-5}}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{For }x>5:\\ f(x)=3\\sqrt{x^2+5x+25}\\to3\\sqrt{75}\\ (x\\to5^+)\\text{, so no vertical asymptote.}"
+        ],
+        [
+          "calculation",
+          "f(x)-3x=\\frac{3(5x+25)}{\\sqrt{x^2+5x+25}+x}\\to\\frac{15}{2}."
+        ],
+        [
+          "result",
+          "\\left(\\emptyset,\\;3,\\;\\frac{15}{2}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\emptyset,\\;3,\\;\\frac{15}{2}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-rational-oblique-pole-v1": [
+    {
+      "code": "FLCP-1-0000000000000003-66",
+      "statement": "\\(\\text{Give the real domain, the vertical asymptote locations and both asymptotic}\\text{ line expressions at }-\\infty\\text{ and }+\\infty:\\quad f(x)=\\frac{x \\left(x - 1\\right)}{x - 3}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Divide the numerator by }x - 3.\\text{ The numerator does not vanish at }x=3."
+        ],
+        [
+          "calculation",
+          "f(x)=x + 2+\\frac{6}{x - 3},\\qquad\\text{the remainder tends to }0\\text{ at both ends and to }\\pm\\infty\\text{ at }3."
+        ],
+        [
+          "result",
+          "\\left(\\left(-\\infty, 3\\right) \\cup \\left(3, \\infty\\right),\\;\\left\\{3\\right\\},\\;x + 2,\\;x + 2\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(-\\infty, 3\\right) \\cup \\left(3, \\infty\\right),\\;\\left\\{3\\right\\},\\;x + 2,\\;x + 2\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLCP-1-0000000000000200-45",
+      "statement": "\\(\\text{Give the real domain, the vertical asymptote locations and both asymptotic}\\text{ line expressions at }-\\infty\\text{ and }+\\infty:\\quad f(x)=\\frac{x \\left(x - 5\\right)}{x - 10}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Divide the numerator by }x - 10.\\text{ The numerator does not vanish at }x=10."
+        ],
+        [
+          "calculation",
+          "f(x)=x + 5+\\frac{50}{x - 10},\\qquad\\text{the remainder tends to }0\\text{ at both ends and to }\\pm\\infty\\text{ at }10."
+        ],
+        [
+          "result",
+          "\\left(\\left(-\\infty, 10\\right) \\cup \\left(10, \\infty\\right),\\;\\left\\{10\\right\\},\\;x + 5,\\;x + 5\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(-\\infty, 10\\right) \\cup \\left(10, \\infty\\right),\\;\\left\\{10\\right\\},\\;x + 5,\\;x + 5\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLCP-1-0000000000000999-59",
+      "statement": "\\(\\text{Give the real domain, the vertical asymptote locations and both asymptotic}\\text{ line expressions at }-\\infty\\text{ and }+\\infty:\\quad f(x)=\\frac{x \\left(x - 3\\right)}{x - 5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Divide the numerator by }x - 5.\\text{ The numerator does not vanish at }x=5."
+        ],
+        [
+          "calculation",
+          "f(x)=x + 2+\\frac{10}{x - 5},\\qquad\\text{the remainder tends to }0\\text{ at both ends and to }\\pm\\infty\\text{ at }5."
+        ],
+        [
+          "result",
+          "\\left(\\left(-\\infty, 5\\right) \\cup \\left(5, \\infty\\right),\\;\\left\\{5\\right\\},\\;x + 2,\\;x + 2\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(-\\infty, 5\\right) \\cup \\left(5, \\infty\\right),\\;\\left\\{5\\right\\},\\;x + 2,\\;x + 2\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-rational-oblique-pole-left-v1": [
+    {
+      "code": "FLCQ-1-0000000000000003-44",
+      "statement": "\\(\\text{Give the real domain, the vertical asymptote locations and both asymptotic}\\text{ line expressions at }-\\infty\\text{ and }+\\infty:\\quad f(x)=\\frac{x \\left(x + 1\\right)}{x + 3}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Divide the numerator by }x + 3.\\text{ The numerator does not vanish at }x=-3."
+        ],
+        [
+          "calculation",
+          "f(x)=x - 2+\\frac{6}{x + 3},\\qquad\\text{the remainder tends to }0\\text{ at both ends and to }\\pm\\infty\\text{ at }-3."
+        ],
+        [
+          "result",
+          "\\left(\\left(-\\infty, -3\\right) \\cup \\left(-3, \\infty\\right),\\;\\left\\{-3\\right\\},\\;x - 2,\\;x - 2\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(-\\infty, -3\\right) \\cup \\left(-3, \\infty\\right),\\;\\left\\{-3\\right\\},\\;x - 2,\\;x - 2\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLCQ-1-0000000000000200-23",
+      "statement": "\\(\\text{Give the real domain, the vertical asymptote locations and both asymptotic}\\text{ line expressions at }-\\infty\\text{ and }+\\infty:\\quad f(x)=\\frac{x \\left(x + 5\\right)}{x + 10}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Divide the numerator by }x + 10.\\text{ The numerator does not vanish at }x=-10."
+        ],
+        [
+          "calculation",
+          "f(x)=x - 5+\\frac{50}{x + 10},\\qquad\\text{the remainder tends to }0\\text{ at both ends and to }\\pm\\infty\\text{ at }-10."
+        ],
+        [
+          "result",
+          "\\left(\\left(-\\infty, -10\\right) \\cup \\left(-10, \\infty\\right),\\;\\left\\{-10\\right\\},\\;x - 5,\\;x - 5\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(-\\infty, -10\\right) \\cup \\left(-10, \\infty\\right),\\;\\left\\{-10\\right\\},\\;x - 5,\\;x - 5\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLCQ-1-0000000000000999-37",
+      "statement": "\\(\\text{Give the real domain, the vertical asymptote locations and both asymptotic}\\text{ line expressions at }-\\infty\\text{ and }+\\infty:\\quad f(x)=\\frac{x \\left(x + 3\\right)}{x + 5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Divide the numerator by }x + 5.\\text{ The numerator does not vanish at }x=-5."
+        ],
+        [
+          "calculation",
+          "f(x)=x - 2+\\frac{10}{x + 5},\\qquad\\text{the remainder tends to }0\\text{ at both ends and to }\\pm\\infty\\text{ at }-5."
+        ],
+        [
+          "result",
+          "\\left(\\left(-\\infty, -5\\right) \\cup \\left(-5, \\infty\\right),\\;\\left\\{-5\\right\\},\\;x - 2,\\;x - 2\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(-\\infty, -5\\right) \\cup \\left(-5, \\infty\\right),\\;\\left\\{-5\\right\\},\\;x - 2,\\;x - 2\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
   ]
 }

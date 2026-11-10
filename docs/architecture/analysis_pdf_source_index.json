@@ -6582,18 +6582,25 @@
       "family": "all-asymptotes",
       "interaction": "ordered",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-radical-growth-asymptotes-v1"
+      ],
       "family_contracts": [
         "AM1/36"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "ordered",
-          "result": "all vertical/horizontal/oblique asymptotes by endpoint and direction"
+          "result": "all vertical/horizontal/oblique asymptotes by endpoint and direction",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-radical-growth-asymptotes-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "radical-at-infinity",
@@ -6643,18 +6650,25 @@
       "family": "all-asymptotes",
       "interaction": "ordered",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-oscillatory-remainder-v1"
+      ],
       "family_contracts": [
         "AM1/36"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "ordered",
-          "result": "all vertical/horizontal/oblique asymptotes by endpoint and direction"
+          "result": "all vertical/horizontal/oblique asymptotes by endpoint and direction",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-oscillatory-remainder-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "oscillatory-remainder",
@@ -6670,18 +6684,25 @@
       "family": "all-asymptotes",
       "interaction": "ordered",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-exponential-zero-denominator-v1"
+      ],
       "family_contracts": [
         "AM1/36"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "ordered",
-          "result": "all vertical/horizontal/oblique asymptotes by endpoint and direction"
+          "result": "all vertical/horizontal/oblique asymptotes by endpoint and direction",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-exponential-zero-denominator-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "exponential-zero-denominator",
@@ -6731,18 +6752,25 @@
       "family": "all-asymptotes",
       "interaction": "ordered",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-trig-periodic-poles-v1"
+      ],
       "family_contracts": [
         "AM1/36"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "ordered",
-          "result": "all vertical/horizontal/oblique asymptotes by endpoint and direction"
+          "result": "all vertical/horizontal/oblique asymptotes by endpoint and direction",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-trig-periodic-poles-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "trig-periodic-poles",
@@ -6934,18 +6962,25 @@
       "family": "discontinuity-classification",
       "interaction": "ordered",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-continuity-log-ratio-v1"
+      ],
       "family_contracts": [
         "AM1/38"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "ordered",
-          "result": "all discontinuity locations with left/right limits and classification"
+          "result": "all discontinuity locations with left/right limits and classification",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-continuity-log-ratio-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "discontinuity-classification-variant-c",
@@ -22604,18 +22639,25 @@
       "family": "parameter-continuity",
       "interaction": "ordered",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-exp-join-v1"
+      ],
       "family_contracts": [
         "AM1/37"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "ordered",
-          "result": "all continuity parameters at every join"
+          "result": "all continuity parameters at every join",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-exp-join-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -22813,18 +22855,25 @@
       "family": "all-asymptotes",
       "interaction": "ordered",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-quartic-cubic-oblique-v1"
+      ],
       "family_contracts": [
         "AM1/36"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "ordered",
-          "result": "all vertical/horizontal/oblique asymptotes by endpoint and direction"
+          "result": "all vertical/horizontal/oblique asymptotes by endpoint and direction",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-quartic-cubic-oblique-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -23523,18 +23572,25 @@
       "family": "all-asymptotes",
       "interaction": "ordered",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-radical-oblique-right-v1"
+      ],
       "family_contracts": [
         "AM1/36"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "ordered",
-          "result": "all vertical/horizontal/oblique asymptotes by endpoint and direction"
+          "result": "all vertical/horizontal/oblique asymptotes by endpoint and direction",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-radical-oblique-right-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -24039,18 +24095,25 @@
       "family": "all-asymptotes",
       "interaction": "ordered",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-radical-quotient-right-v1"
+      ],
       "family_contracts": [
         "AM1/36"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "ordered",
-          "result": "all vertical/horizontal/oblique asymptotes by endpoint and direction"
+          "result": "all vertical/horizontal/oblique asymptotes by endpoint and direction",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-radical-quotient-right-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -24102,8 +24165,9 @@
       "family": "real-domains + all-asymptotes",
       "interaction": "real_set + ordered",
       "issue": 236,
-      "status": "computational-component-verified-other-components-pending",
+      "status": "computational-result-mathematically-verified",
       "verified_versions": [
+        "analysis1-limits-rational-oblique-pole-v1",
         "elementary-domain-quadratic-rational-v1"
       ],
       "family_contracts": [
@@ -24127,7 +24191,12 @@
           "id": "result-2",
           "issue": 236,
           "contract": "ordered",
-          "result": "all vertical/horizontal/oblique asymptotes by endpoint and direction"
+          "result": "all vertical/horizontal/oblique asymptotes by endpoint and direction",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-rational-oblique-pole-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         },
         {
           "id": "learner-sketch",
@@ -24462,8 +24531,9 @@
       "family": "real-domains + all-asymptotes",
       "interaction": "real_set + ordered",
       "issue": 236,
-      "status": "computational-component-verified-other-components-pending",
+      "status": "computational-result-mathematically-verified",
       "verified_versions": [
+        "analysis1-limits-rational-oblique-pole-left-v1",
         "elementary-domain-quadratic-rational-v1"
       ],
       "family_contracts": [
@@ -24487,7 +24557,12 @@
           "id": "result-2",
           "issue": 236,
           "contract": "ordered",
-          "result": "all vertical/horizontal/oblique asymptotes by endpoint and direction"
+          "result": "all vertical/horizontal/oblique asymptotes by endpoint and direction",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-rational-oblique-pole-left-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -25624,7 +25699,7 @@
       ],
       "delivery": {
         "issue": 236,
-        "status": "partial-computational-delivery",
+        "status": "computational-delivery-complete",
         "verification": "backend/tests/test_engine_analysis_limits.py"
       }
     },
@@ -25652,7 +25727,7 @@
       ],
       "delivery": {
         "issue": 236,
-        "status": "partial-computational-delivery",
+        "status": "computational-delivery-complete",
         "verification": "backend/tests/test_engine_analysis_limits.py"
       }
     },
@@ -25677,7 +25752,7 @@
       ],
       "delivery": {
         "issue": 236,
-        "status": "partial-computational-delivery",
+        "status": "computational-delivery-complete",
         "verification": "backend/tests/test_engine_analysis_limits.py"
       }
     },
@@ -25715,7 +25790,7 @@
       ],
       "delivery": {
         "issue": 236,
-        "status": "partial-computational-delivery",
+        "status": "computational-delivery-complete",
         "verification": "backend/tests/test_engine_analysis_limits.py"
       }
     },
@@ -25743,7 +25818,7 @@
       ],
       "delivery": {
         "issue": 236,
-        "status": "partial-computational-delivery",
+        "status": "computational-delivery-complete",
         "verification": "backend/tests/test_engine_analysis_limits.py"
       }
     },
@@ -25771,7 +25846,7 @@
       ],
       "delivery": {
         "issue": 236,
-        "status": "partial-computational-delivery",
+        "status": "computational-delivery-complete",
         "verification": "backend/tests/test_engine_analysis_limits.py"
       }
     },
@@ -25797,7 +25872,7 @@
       ],
       "delivery": {
         "issue": 236,
-        "status": "partial-computational-delivery",
+        "status": "computational-delivery-complete",
         "verification": "backend/tests/test_engine_analysis_limits.py"
       }
     },
@@ -25823,7 +25898,7 @@
       ],
       "delivery": {
         "issue": 236,
-        "status": "partial-computational-delivery",
+        "status": "computational-delivery-complete",
         "verification": "backend/tests/test_engine_analysis_limits.py"
       }
     },
@@ -25858,7 +25933,7 @@
       ],
       "delivery": {
         "issue": 236,
-        "status": "partial-computational-delivery",
+        "status": "computational-delivery-complete",
         "verification": "backend/tests/test_engine_analysis_limits.py"
       }
     },
@@ -25885,7 +25960,7 @@
       ],
       "delivery": {
         "issue": 236,
-        "status": "partial-computational-delivery",
+        "status": "computational-delivery-complete",
         "verification": "backend/tests/test_engine_analysis_limits.py"
       }
     },
@@ -25908,7 +25983,7 @@
       ],
       "delivery": {
         "issue": 236,
-        "status": "partial-computational-delivery",
+        "status": "computational-delivery-complete",
         "verification": "backend/tests/test_engine_analysis_limits.py"
       }
     },
@@ -25947,7 +26022,7 @@
       ],
       "delivery": {
         "issue": 236,
-        "status": "partial-computational-delivery",
+        "status": "computational-delivery-complete",
         "verification": "backend/tests/test_engine_analysis_limits.py"
       }
     },
@@ -25969,13 +26044,22 @@
         "analysis1-limits-asymptote-inverse-trig-v1",
         "analysis1-limits-asymptote-rational-v1",
         "analysis1-limits-exponential-pole-v1",
+        "analysis1-limits-exponential-zero-denominator-v1",
         "analysis1-limits-high-order-pole-v1",
+        "analysis1-limits-oscillatory-remainder-v1",
+        "analysis1-limits-quartic-cubic-oblique-v1",
         "analysis1-limits-radical-asymptote-v1",
-        "analysis1-limits-rational-pole-and-domain-v1"
+        "analysis1-limits-radical-growth-asymptotes-v1",
+        "analysis1-limits-radical-oblique-right-v1",
+        "analysis1-limits-radical-quotient-right-v1",
+        "analysis1-limits-rational-oblique-pole-left-v1",
+        "analysis1-limits-rational-oblique-pole-v1",
+        "analysis1-limits-rational-pole-and-domain-v1",
+        "analysis1-limits-trig-periodic-poles-v1"
       ],
       "delivery": {
         "issue": 236,
-        "status": "partial-computational-delivery",
+        "status": "computational-delivery-complete",
         "verification": "backend/tests/test_engine_analysis_limits.py"
       }
     },
@@ -25996,11 +26080,12 @@
       "verified_versions": [
         "analysis1-limits-continuity-free-parameter-v1",
         "analysis1-limits-continuity-reciprocal-v1",
-        "analysis1-limits-continuity-sine-v1"
+        "analysis1-limits-continuity-sine-v1",
+        "analysis1-limits-exp-join-v1"
       ],
       "delivery": {
         "issue": 236,
-        "status": "partial-computational-delivery",
+        "status": "computational-delivery-complete",
         "verification": "backend/tests/test_engine_analysis_limits.py"
       }
     },
@@ -26017,13 +26102,14 @@
         "backend/app/engine/blocks/analysis_one.py"
       ],
       "verified_versions": [
+        "analysis1-limits-continuity-log-ratio-v1",
         "analysis1-limits-discontinuity-arctan-v1",
         "analysis1-limits-discontinuity-oscillatory-v1",
         "analysis1-limits-discontinuity-pole-and-hole-v1"
       ],
       "delivery": {
         "issue": 236,
-        "status": "partial-computational-delivery",
+        "status": "computational-delivery-complete",
         "verification": "backend/tests/test_engine_analysis_limits.py"
       }
     },
@@ -26047,7 +26133,7 @@
       ],
       "delivery": {
         "issue": 236,
-        "status": "partial-computational-delivery",
+        "status": "computational-delivery-complete",
         "verification": "backend/tests/test_engine_analysis_limits.py"
       }
     },
@@ -27586,8 +27672,8 @@
     "family_contracts": 146,
     "deferred_only_references": 30,
     "mixed_references": 146,
-    "verified_generator_deliveries": 189,
-    "verified_computational_components": 211
+    "verified_generator_deliveries": 200,
+    "verified_computational_components": 222
   },
   "deliveries": {
     "235": {
@@ -27686,7 +27772,7 @@
       ]
     },
     "236": {
-      "status": "implementation-checkpoint",
+      "status": "computational-delivery-complete",
       "base": "503452a782c9fe8121d5b9d0071cbbc830116991",
       "generator_versions": [
         "analysis1-limits-absolute-jump-v1",
@@ -27709,6 +27795,7 @@
         "analysis1-limits-conjugate-ratio-v1",
         "analysis1-limits-conjugate-sequence-v1",
         "analysis1-limits-continuity-free-parameter-v1",
+        "analysis1-limits-continuity-log-ratio-v1",
         "analysis1-limits-continuity-reciprocal-v1",
         "analysis1-limits-continuity-sine-v1",
         "analysis1-limits-cosine-ratio-half-pi-v1",
@@ -27724,11 +27811,13 @@
         "analysis1-limits-discontinuity-removable-v1",
         "analysis1-limits-divergent-oscillation-v1",
         "analysis1-limits-essential-exponential-v1",
+        "analysis1-limits-exp-join-v1",
         "analysis1-limits-exponential-difference-v1",
         "analysis1-limits-exponential-dominance-v1",
         "analysis1-limits-exponential-pole-v1",
         "analysis1-limits-exponential-power-v1",
         "analysis1-limits-exponential-product-ratio-v1",
+        "analysis1-limits-exponential-zero-denominator-v1",
         "analysis1-limits-factorial-degree-ratio-v1",
         "analysis1-limits-factorial-limit-v1",
         "analysis1-limits-finite-heine-limit-v1",
@@ -27755,21 +27844,28 @@
         "analysis1-limits-monotone-ratio-v1",
         "analysis1-limits-monotone-rational-v1",
         "analysis1-limits-negative-growing-power-v1",
+        "analysis1-limits-oscillatory-remainder-v1",
         "analysis1-limits-power-difference-quotient-v1",
         "analysis1-limits-power-difference-v1",
         "analysis1-limits-product-leading-orders-v1",
         "analysis1-limits-product-of-powers-v1",
         "analysis1-limits-product-radical-v1",
         "analysis1-limits-quartic-conjugate-v1",
+        "analysis1-limits-quartic-cubic-oblique-v1",
         "analysis1-limits-radical-asymptote-v1",
         "analysis1-limits-radical-cancellation-v1",
         "analysis1-limits-radical-degree-v1",
         "analysis1-limits-radical-difference-growth-v1",
+        "analysis1-limits-radical-growth-asymptotes-v1",
         "analysis1-limits-radical-linear-ratio-v1",
+        "analysis1-limits-radical-oblique-right-v1",
+        "analysis1-limits-radical-quotient-right-v1",
         "analysis1-limits-radical-quotient-zero-v1",
         "analysis1-limits-rational-cancellation-v1",
         "analysis1-limits-rational-growth-v1",
         "analysis1-limits-rational-leading-v1",
+        "analysis1-limits-rational-oblique-pole-left-v1",
+        "analysis1-limits-rational-oblique-pole-v1",
         "analysis1-limits-rational-pole-and-domain-v1",
         "analysis1-limits-rational-substitution-v1",
         "analysis1-limits-rational-zero-v1",
@@ -27795,24 +27891,13 @@
         "analysis1-limits-squeeze-sum-v1",
         "analysis1-limits-tangent-power-v1",
         "analysis1-limits-tangent-ratio-v1",
+        "analysis1-limits-trig-periodic-poles-v1",
         "analysis1-limits-two-sided-absolute-v1",
         "analysis1-limits-unique-log-exponential-root-v1"
       ],
-      "source_references": 109,
-      "pending_source_references": [
-        "AM1/36/d",
-        "AM1/36/f",
-        "AM1/36/g",
-        "AM1/36/i",
-        "AM1/38/c",
-        "AM1/exam/first/C/1",
-        "AM1/exam/first/D/3",
-        "AM1/exam/main/B/1",
-        "AM1/exam/main/D/6",
-        "AM1/exam/resit/A/2",
-        "AM1/exam/resit/C/1"
-      ],
-      "computational_components": 109,
+      "source_references": 120,
+      "pending_source_references": [],
+      "computational_components": 120,
       "family_contracts": 16,
       "additional_family_variants": [
         "analysis1-limits-certified-root-v1",
@@ -27823,7 +27908,7 @@
         "analysis1-limits-horizontal-asymptote-v1",
         "analysis1-limits-infinitesimal-log-v1"
       ],
-      "verification_scope": "local bounded mathematics and replay only; hosted CI, deployment, and the outstanding computational references remain pending"
+      "verification_scope": "local bounded mathematics, replay and Linux worker checks; hosted CI, deployment and live checks remain pending"
     }
   }
 }

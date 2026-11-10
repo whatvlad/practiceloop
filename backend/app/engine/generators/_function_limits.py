@@ -6,9 +6,11 @@ import sympy as sp
 
 from app.engine.answers.computational import (
     CategoryAnswer,
+    ComputationalAnswer,
     FormulaAnswer,
     LimitAnswer,
     OrderedAnswer,
+    PeriodicSetAnswer,
     RealSetAnswer,
 )
 from app.engine.blocks.analysis_one import X, bisect_exp
@@ -961,4 +963,194 @@ def sine_power_product(a: int, b: int, c: int) -> Built:
         value,
         r"\text{Replace each sine by its argument, }\sin u\sim u.",
         rf"f(x)\sim\frac{{{scaled(a)}x^5}}{{{scaled(b)}x^2\cdot{scaled(c)}x^3}}={tex(value)}.",
+    )
+
+
+# #259: asymptotes, parameter joins and discontinuities still pending for #236.
+
+ENDS = ("Vertical locations", "Left slope", "Left offset", "Right slope", "Right offset")
+RIGHT_END = ("Vertical locations", "Right slope", "Right offset")
+CONTINUITY_CLASSES = ("continuous", *DISCONTINUITY)
+CONTINUITY_AT = ("Left limit", "Right limit", "Classification")
+SLOPE_RULE = (
+    r"\text{ At each end give the slope }m=\lim f(x)/x\text{ and the offset }"
+    r"\lim(f(x)-mx)\text{; enter does\_not\_exist for the offset when }m"
+    r"\text{ is not finite.}"
+)
+
+
+def ends(vertical: object, *limits: object) -> tuple[ComputationalAnswer, ...]:
+    first: ComputationalAnswer = (
+        vertical if isinstance(vertical, PeriodicSetAnswer) else RealSetAnswer(vertical)
+    )
+    return (first, *(LimitAnswer(limit) for limit in limits))
+
+
+DOMAIN_START = r"\text{{The real domain is }}{}.\text{{ Give the vertical asymptote locations.}}"
+RIGHT_RULE = SLOPE_RULE.replace("At each end", r"At }+\infty\text{")
+
+
+def radical_growth_asymptotes(a: int, b: int, c: int) -> Built:
+    return finish(
+        r"\text{The real domain is }[0,\infty).\text{ Give the vertical asymptote locations.}"
+        + SLOPE_RULE.replace("At each end", "At }+\\infty\\text{")
+        + rf"\quad f(x)=\frac{{{scaled(a)}x\sqrt{{x}}+{b}}}{{x+{c}}}.",
+        OrderedAnswer(ends(sp.S.EmptySet, 0, sp.oo), RIGHT_END),
+        rf"\text{{The denominator }}x+{c}\text{{ is positive on the domain, so there is no pole.}}",
+        rf"\frac{{f(x)}}{{x}}=\frac{{{scaled(a)}x\sqrt{{x}}+{b}}}{{x^2+{c}x}}\to0,\qquad"
+        rf"f(x)=\frac{{{scaled(a)}\sqrt{{x}}+{b}/x}}{{1+{c}/x}}\to\infty."
+        r"\quad\text{No asymptote at }+\infty.",
+    )
+
+
+def oscillatory_remainder(a: int, b: int, c: int) -> Built:
+    return finish(
+        r"\text{Give the vertical asymptote locations.}"
+        + SLOPE_RULE
+        + rf"\quad f(x)=\frac{{{scaled(a)}x^2+{c}x+{scaled(b)}\sin x}}{{x}}.",
+        OrderedAnswer(ends(sp.S.EmptySet, a, c, a, c), ENDS),
+        rf"\text{{Near }}0\text{{ use }}\sin x/x\to1:\ f(x)\to{b + c},"
+        r"\text{ a finite limit, so }x=0\text{ is not a vertical asymptote.}",
+        rf"f(x)-{scaled(a)}x={c}+{scaled(b)}\frac{{\sin x}}{{x}}\to{c}\quad(x\to\pm\infty),"
+        rf"\qquad\left|\frac{{\sin x}}{{x}}\right|\le\frac{{1}}{{|x|}}.",
+    )
+
+
+def exponential_zero_denominator(a: int, b: int, c: int) -> Built:
+    return finish(
+        r"\text{Give the vertical asymptote locations.}"
+        + SLOPE_RULE
+        + rf"\quad f(x)=\frac{{{scaled(b)}\cos {scaled(c)}x}}{{e^{{{scaled(a)}x}}-1}}.",
+        OrderedAnswer(ends(sp.FiniteSet(0), 0, DNE, 0, 0), ENDS),
+        rf"\text{{The denominator vanishes only at }}0\text{{, where the numerator is }}{b}\ne0.",
+        rf"x\to-\infty:\ f(x)+{scaled(b)}\cos {scaled(c)}x\to0\text{{, which oscillates, so }}"
+        r"f(x)/x\to0\text{ and }\lim f\text{ does not exist.}\quad"
+        rf"x\to+\infty:\ |f(x)|\le\frac{{{b}}}{{e^{{{scaled(a)}x}}-1}}\to0.",
+    )
+
+
+def trig_periodic_poles(a: int, b: int, c: int) -> Built:
+    numerator = rf"{scaled(a)}\sin 2x+{scaled(b)}\cos x"
+    return finish(
+        r"\text{Give the vertical asymptote locations as a period and a base set in }"
+        r"[0,2\pi)." + SLOPE_RULE + rf"\quad f(x)=\frac{{{numerator}}}{{\sin x-1}}+{c}.",
+        OrderedAnswer(
+            ends(PeriodicSetAnswer(2 * sp.pi, sp.FiniteSet(sp.pi / 2)), DNE, DNE, DNE, DNE),
+            ENDS,
+        ),
+        r"\text{The denominator vanishes at }x=\pi/2+2k\pi."
+        r"\text{ Put }x=\pi/2+t\text{ and expand both sides.}",
+        rf"f=\frac{{-({2 * a + b})t+O(t^3)}}{{-t^2/2+O(t^4)}}+{c}"
+        rf"\sim\frac{{{2 * (2 * a + b)}}}{{t}}"
+        r"\to\pm\infty.\quad\text{The poles recur in every period, so }f(x)/x"
+        r"\text{ has no limit at either end.}",
+    )
+
+
+def continuity_log_ratio(a: int, b: int, c: int) -> Built:
+    value = c % 3 - 1
+    kind = "continuous" if value == 0 else "removable"
+    return finish(
+        r"\text{The function is continuous for }x\ne0.\text{ Give the one-sided limits at }0"
+        r"\text{ and classify }x=0:\quad f(x)=\begin{cases}"
+        rf"\dfrac{{1}}{{\log({scaled(a)}x^2)-\log({scaled(a)}x^2+{b})}},&x\ne0\\{value},&x=0"
+        r"\end{cases}.",
+        OrderedAnswer(
+            (LimitAnswer(0), LimitAnswer(0), CategoryAnswer(kind, CONTINUITY_CLASSES)),
+            CONTINUITY_AT,
+        ),
+        r"\text{Combine the logarithms. The quotient inside is below }1"
+        r"\text{ and tends to }0.",
+        rf"\log\frac{{{scaled(a)}x^2}}{{{scaled(a)}x^2+{b}}}\to-\infty\ \Rightarrow\ f(x)\to0"
+        rf"\text{{ from both sides}};\quad f(0)={value}"
+        + (r"\text{, so }f\text{ is continuous.}" if value == 0 else r"\ne0\text{: removable.}"),
+    )
+
+
+def exp_join(a: int, b: int, c: int) -> Built:
+    c = 1 + c % 2  # keep e^(ac) at most e^10 so the values stay readable
+    join = (sp.exp(a * c) - 1) / c
+    second = sp.simplify((join + b) / c**2)
+    return finish(
+        r"\text{Find the parameters }p,q\text{ for continuity on }\mathbb R:\quad "
+        rf"f(x)=\begin{{cases}}x+p,&x\le0\\\dfrac{{e^{{{scaled(a)}x}}-1}}{{x}},&0<x\le{c}\\"
+        rf"qx^2-{b},&x>{c}\end{{cases}}.",
+        OrderedAnswer((FormulaAnswer(a), FormulaAnswer(second)), JOINS),
+        r"\text{Each branch is continuous on its interval. Match the limits at both joins.}",
+        rf"\lim_{{x\to0^+}}\frac{{e^{{{scaled(a)}x}}-1}}{{x}}={a}=p,\qquad"
+        rf"q\cdot{c * c}-{b}={tex(join)}\ \Longrightarrow\ q={tex(second)}.",
+    )
+
+
+def quartic_cubic_oblique(a: int, b: int, c: int) -> Built:
+    return finish(
+        r"\text{Give the vertical asymptote locations.}"
+        + SLOPE_RULE
+        + rf"\quad f(x)=\frac{{{scaled(a)}x^4-{b}x^3}}{{x^3+{c}x}}.",
+        OrderedAnswer(ends(sp.S.EmptySet, a, -b, a, -b), ENDS),
+        rf"\text{{Cancel }}x\text{{ on }}x\ne0:\ f(x)=\frac{{{scaled(a)}x^3-{b}x^2}}{{x^2+{c}}}"
+        r"\to0\text{ at }0\text{, so there is no vertical asymptote.}",
+        rf"f(x)-({tex(a * X - b)})=\frac{{{tex(-a * c * X + b * c)}}}{{x^2+{c}}}\to0"
+        r"\quad(x\to\pm\infty).",
+    )
+
+
+def radical_oblique_right(a: int, b: int, c: int) -> Built:
+    low, high = a, a + 2 * b
+    return finish(
+        DOMAIN_START.format(rf"[{high},\infty)")
+        + RIGHT_RULE
+        + rf"\quad f(x)=\frac{{(x-{c})\sqrt{{x-{high}}}}}{{\sqrt{{x-{low}}}}}.",
+        OrderedAnswer(ends(sp.S.EmptySet, 1, -b - c), RIGHT_END),
+        rf"\text{{The denominator is at least }}\sqrt{{{high - low}}}\text{{ on the domain.}}",
+        rf"f(x)=(x-{c})\sqrt{{1-\frac{{{2 * b}}}{{x-{low}}}}},\qquad"
+        rf"f(x)-(x-{c})=-\frac{{{2 * b}(x-{c})}}"
+        rf"{{(x-{low})\left(1+\sqrt{{1-{2 * b}/(x-{low})}}\right)}}\to-{b}.",
+    )
+
+
+def radical_quotient_right(a: int, b: int, c: int) -> Built:
+    offset = sp.Rational(b * c, 2)
+    return finish(
+        DOMAIN_START.format(rf"({c},\infty)")
+        + RIGHT_RULE
+        + rf"\quad f(x)=\frac{{{scaled(b)}\sqrt{{x^3-{c**3}}}}}{{\sqrt{{x-{c}}}}}.",
+        OrderedAnswer(ends(sp.S.EmptySet, b, offset), RIGHT_END),
+        rf"\text{{For }}x>{c}:\ f(x)={scaled(b)}\sqrt{{x^2+{c}x+{c * c}}}"
+        rf"\to{scaled(b)}\sqrt{{{3 * c * c}}}\ (x\to{c}^+)\text{{, so no vertical asymptote.}}",
+        rf"f(x)-{scaled(b)}x=\frac{{{scaled(b)}({c}x+{c * c})}}{{\sqrt{{x^2+{c}x+{c * c}}}+x}}"
+        rf"\to{tex(offset)}.",
+    )
+
+
+def rational_oblique_pole(a: int, b: int, c: int) -> Built:
+    pole = a + b
+    expr = X * (X - b) / (X - pole)
+    return oblique_pole(expr, pole, X + a, pole * a)
+
+
+def rational_oblique_pole_left(a: int, b: int, c: int) -> Built:
+    pole = -(a + b)
+    expr = X * (X + b) / (X - pole)
+    return oblique_pole(expr, pole, X - a, -pole * a)
+
+
+def oblique_pole(expr: sp.Expr, pole: int, line: sp.Expr, remainder: int) -> Built:
+    return finish(
+        r"\text{Give the real domain, the vertical asymptote locations and both asymptotic}"
+        r"\text{ line expressions at }-\infty\text{ and }+\infty:\quad f(x)=" + tex(expr),
+        OrderedAnswer(
+            (
+                RealSetAnswer(sp.Complement(sp.S.Reals, sp.FiniteSet(pole))),
+                RealSetAnswer(sp.FiniteSet(pole)),
+                FormulaAnswer(line, REAL_X),
+                FormulaAnswer(line, REAL_X),
+            ),
+            DOMAIN_ASYMPTOTES,
+        ),
+        rf"\text{{Divide the numerator by }}{tex(X - pole)}."
+        rf"\text{{ The numerator does not vanish at }}x={pole}.",
+        rf"f(x)={tex(line)}+\frac{{{remainder}}}{{{tex(X - pole)}}},"
+        r"\qquad\text{the remainder tends to }0\text{ at both ends and to }\pm\infty"
+        rf"\text{{ at }}{pole}.",
     )

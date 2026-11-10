@@ -1,18 +1,15 @@
 # Analysis I sequences, limits and continuity (#236)
 
-This implementation checkpoint extends Functions and sequences and Limits and
-continuity with 108 independent generator versions: 61 from the first
-checkpoint (#256), 25 sequence versions from #257 and 22 function-limit
-versions from #258. The two topic slugs, prior versions and permanent codes
-are preserved. The generator registry declares each prefix explicitly. The
-catalogue fixture retains every entry from the base commit, including the prior
-curriculum expansions.
+This delivery extends Functions and sequences and Limits and continuity with 119 independent generator versions: 61 from the first
+checkpoint (#256), 25 sequence versions from #257, 22 function-limit versions
+from #258 and 11 asymptote and continuity versions from #259. The two topic
+slugs, prior versions and permanent codes are preserved. The generator registry
+declares each prefix explicitly. The catalogue fixture retains every entry from
+the base commit, including the prior curriculum expansions.
 
-[The source index](analysis_pdf_source_index.json) records 109 matched
-computational references, the additional generated variants and the remaining
-references that need separate coverage. Learner proof and sketch components
-remain routed to #244. #236 stays in progress until its asymptote and
-discontinuity part (#259) is delivered.
+[The source index](analysis_pdf_source_index.json) records 120 matched
+computational references and the additional generated variants. Learner proof
+and sketch components remain routed to #244.
 
 ## Sequence references completed in #257
 
@@ -89,6 +86,29 @@ asks for \(x\to0^+\) so the real cube root and the one-sided behaviour of
 50-digit arithmetic next to the limit point or far out, independently of the
 derivation.
 
+## Asymptote, continuity and discontinuity references completed in #259
+
+| Reference | Version | Generated form |
+|---|---|---|
+| AM1/36/d | `radical-growth-asymptotes` | \((ax\sqrt x+b)/(x+c)\) on \([0,\infty)\): slope \(0\), offset \(\infty\), no asymptote |
+| AM1/36/f | `oscillatory-remainder` | \((ax^2+cx+b\sin x)/x\): removable point, line \(ax+c\) at both ends |
+| AM1/36/g | `exponential-zero-denominator` | \(b\cos cx/(e^{ax}-1)\): pole at \(0\), no limit at \(-\infty\), \(y=0\) at \(+\infty\) |
+| AM1/36/i | `trig-periodic-poles` | \((a\sin2x+b\cos x)/(\sin x-1)+c\): poles \(\pi/2+2k\pi\), no end behaviour |
+| AM1/38/c | `continuity-log-ratio` | \(1/(\log ax^2-\log(ax^2+b))\) with an assigned \(f(0)\): continuous or removable |
+| exam first/C/1 | `exp-join` | \(x+p\), \((e^{ax}-1)/x\), \(qx^2-b\): \(p=a\) and \(q\) from the second join |
+| exam first/D/3 | `quartic-cubic-oblique` | \((ax^4-bx^3)/(x^3+cx)\): no pole, line \(ax-b\) |
+| exam main/B/1 | `radical-oblique-right` | \((x-c)\sqrt{x-a-2b}/\sqrt{x-a}\): line \(x-b-c\) at \(+\infty\) |
+| exam main/D/6 | `radical-quotient-right` | \(b\sqrt{x^3-c^3}/\sqrt{x-c}\): finite end point, line \(bx+bc/2\) |
+| exam resit/A/2 | `rational-oblique-pole` | \(x(x-b)/(x-a-b)\): domain, pole and line \(x+a\) |
+| exam resit/C/1 | `rational-oblique-pole-left` | \(x(x+b)/(x+a+b)\): domain, pole and line \(x-a\) |
+
+Where an end has no line, the answer uses the standard test: the slope
+\(m=\lim f(x)/x\) and the offset \(\lim(f(x)-mx)\) are entered as limits, so
+a missing asymptote is an infinite or nonexistent limit instead of a special
+word. Functions whose domain is bounded below ask only about \(+\infty\). Each
+version has a plot of the graph and its asymptotes or joins. The resit forms
+also complete the domain component delivered in #235.
+
 ## Parameters and levels
 
 Each version draws three independent integers in [1,5] from the existing
@@ -161,9 +181,9 @@ Plots accompany geometric outcomes such as one-sided jumps, discontinuities,
 asymptotes, joins and root brackets. A root plot shows the computed bracket
 separately from the residual curve.
 
-## Pending source work
+## Source coverage
 
-The source index lists the remaining numbered and exam references individually.
-They include periodic poles, additional radical and trigonometric limits,
-product and reciprocal power forms, and mixed exam contracts. A shared answer
-shape is insufficient evidence of coverage.
+Every computational reference of #236 now names at least one verified version
+in the source index (120 references, no pending computational components).
+Learner proof and sketch components stay deferred to #244. Hosted CI, the
+deployment and the live check of the parent Issue are still to be done.

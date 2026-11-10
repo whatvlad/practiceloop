@@ -400,6 +400,170 @@ def rational_pole_and_domain(a: int, b: int, c: int) -> dict[str, Any]:
     )
 
 
+def clipped(f: Callable[[float], float], bound: float) -> Callable[[float], float]:
+    """Keep plot ranges readable next to poles."""
+    return lambda x: max(-bound, min(bound, f(x)))
+
+
+def radical_growth_asymptotes(a: int, b: int, c: int) -> dict[str, Any]:
+    return plot(
+        "No asymptote at the right end",
+        "The curve keeps rising like a square root. Its slope tends to zero, its height does not.",
+        [path("Graph", 0, 40, lambda x: (a * x * math.sqrt(x) + b) / (x + c))],
+    )
+
+
+def oscillatory_remainder(a: int, b: int, c: int) -> dict[str, Any]:
+    def f(x: float) -> float:
+        return a * x + c + b * math.sin(x) / x
+
+    return plot(
+        "Oblique asymptote at both ends",
+        "The bounded remainder dies out, so the graph approaches one line on both sides.",
+        [
+            path("Left branch", -20, -0.05, f),
+            path("Right branch", 0.05, 20, f),
+            path("Oblique asymptote", -20, 20, lambda x: a * x + c),
+        ],
+        [point("Removable point", 0, b + c, included=False)],
+    )
+
+
+def exponential_zero_denominator(a: int, b: int, c: int) -> dict[str, Any]:
+    def f(x: float) -> float:
+        return b * math.cos(c * x) / math.expm1(a * x)
+
+    g = clipped(f, 4.0 * b)
+    return plot(
+        "Pole at zero and an oscillating left end",
+        "On the left the graph keeps oscillating and has no limit. On the right it approaches y=0.",
+        [
+            path("Left branch", -12, -0.05, g),
+            path("Right branch", 0.05, 6, g),
+            path("Horizontal asymptote", 0, 6, lambda _: 0.0),
+        ],
+    )
+
+
+def trig_periodic_poles(a: int, b: int, c: int) -> dict[str, Any]:
+    def f(x: float) -> float:
+        return (a * math.sin(2 * x) + b * math.cos(x)) / (math.sin(x) - 1) + c
+
+    pole = math.pi / 2
+    g = clipped(f, 30.0)
+    return plot(
+        "Poles in every period",
+        "Vertical asymptotes repeat every 2 pi. Between the poles the graph stays bounded.",
+        [
+            path("Left of the pole", pole - 2 * math.pi + 0.1, pole - 0.1, g),
+            path("Right of the pole", pole + 0.1, pole + 2 * math.pi - 0.1, g),
+        ],
+    )
+
+
+def continuity_log_ratio(a: int, b: int, c: int) -> dict[str, Any]:
+    def f(x: float) -> float:
+        return 1 / (math.log(a * x * x) - math.log(a * x * x + b))
+
+    value = c % 3 - 1
+    return plot(
+        "Limit at zero",
+        "Both branches approach 0 slowly. The filled marker shows the assigned value f(0).",
+        [path("Left branch", -3, -0.001, f), path("Right branch", 0.001, 3, f)],
+        [point("Limit", 0, 0, included=False), point("f(0)", 0, value, included=True)],
+    )
+
+
+def exp_join(a: int, b: int, c: int) -> dict[str, Any]:
+    c = 1 + c % 2
+    q = ((math.exp(a * c) - 1) / c + b) / (c * c)
+    return plot(
+        "Continuous exponential join",
+        "With the computed p and q the three branches meet at both joins.",
+        [
+            path("Left branch", -2, 0, lambda x: x + a),
+            path("Middle branch", 0.001, c, lambda x: math.expm1(a * x) / x),
+            path("Right branch", c, c + 1, lambda x: q * x * x - b),
+        ],
+        [
+            point("First join", 0, a, included=True),
+            point("Second join", c, math.expm1(a * c) / c, included=True),
+        ],
+    )
+
+
+def quartic_cubic_oblique(a: int, b: int, c: int) -> dict[str, Any]:
+    def f(x: float) -> float:
+        return (a * x**3 - b * x**2) / (x * x + c)
+
+    return plot(
+        "Oblique asymptote, no pole",
+        "After cancelling x the function is continuous. The graph approaches the line.",
+        [
+            path("Graph", -10, 10, f),
+            path("Oblique asymptote", -10, 10, lambda x: a * x - b),
+        ],
+        [point("Removable point", 0, 0, included=False)],
+    )
+
+
+def radical_oblique_right(a: int, b: int, c: int) -> dict[str, Any]:
+    start = a + 2 * b
+    return plot(
+        "Oblique asymptote at the right end",
+        "The domain starts at the marked point. The graph approaches the line from below.",
+        [
+            path(
+                "Graph",
+                start,
+                start + 30,
+                lambda x: (x - c) * math.sqrt(x - start) / math.sqrt(x - a),
+            ),
+            path("Oblique asymptote", start, start + 30, lambda x: x - b - c),
+        ],
+        [point("Domain start", start, 0, included=True)],
+    )
+
+
+def radical_quotient_right(a: int, b: int, c: int) -> dict[str, Any]:
+    return plot(
+        "Finite end point and an oblique asymptote",
+        "Near the excluded end point the values tend to a finite number, so there is no pole.",
+        [
+            path("Graph", c + 0.01, c + 20, lambda x: b * math.sqrt(x * x + c * x + c * c)),
+            path("Oblique asymptote", c, c + 20, lambda x: b * (x + c / 2)),
+        ],
+        [point("End point limit", c, b * math.sqrt(3) * c, included=False)],
+    )
+
+
+def oblique_pole_plot(pole: int, shift: int, sign: int, b: int) -> dict[str, Any]:
+    def f(x: float) -> float:
+        return x * (x - sign * b) / (x - pole)
+
+    def line(x: float) -> float:
+        return x + shift
+
+    g = clipped(f, 40.0 + abs(pole))
+    return plot(
+        "Domain and simple pole",
+        "The branches are separated by the excluded location and approach the oblique line.",
+        [
+            path("Left branch", pole - 8, pole - 0.3, g),
+            path("Right branch", pole + 0.3, pole + 8, g),
+            path("Oblique asymptote", pole - 8, pole + 8, line),
+        ],
+    )
+
+
+def rational_oblique_pole(a: int, b: int, c: int) -> dict[str, Any]:
+    return oblique_pole_plot(a + b, a, 1, b)
+
+
+def rational_oblique_pole_left(a: int, b: int, c: int) -> dict[str, Any]:
+    return oblique_pole_plot(-(a + b), -a, -1, b)
+
+
 def bounded_inverse_trig(a: int, b: int, c: int) -> dict[str, Any]:
     def f(x: float) -> float:
         return a * x * math.atan(b / x) + c
@@ -455,4 +619,15 @@ diagrams: dict[Callable[[int, int, int], Built], Callable[[int, int, int], dict[
     forms.rational_pole_and_domain: rational_pole_and_domain,
     forms.exponential_pole: exponential_pole,
     forms.bounded_inverse_trig: bounded_inverse_trig,
+    forms.radical_growth_asymptotes: radical_growth_asymptotes,
+    forms.oscillatory_remainder: oscillatory_remainder,
+    forms.exponential_zero_denominator: exponential_zero_denominator,
+    forms.trig_periodic_poles: trig_periodic_poles,
+    forms.continuity_log_ratio: continuity_log_ratio,
+    forms.exp_join: exp_join,
+    forms.quartic_cubic_oblique: quartic_cubic_oblique,
+    forms.radical_oblique_right: radical_oblique_right,
+    forms.radical_quotient_right: radical_quotient_right,
+    forms.rational_oblique_pole: rational_oblique_pole,
+    forms.rational_oblique_pole_left: rational_oblique_pole_left,
 }

@@ -60,6 +60,21 @@ TWO_DISCONTINUITIES = InputContract(
     "tuple", components=(DISCONTINUITY, DISCONTINUITY), labels=functions.TWO_LOCATIONS
 )
 ROOT = InputContract("tuple", components=(CONSTANT, CONSTANT), labels=functions.ROOT)
+# #259: asymptotes by the slope and offset limits at each end of the domain.
+REAL_SET = InputContract("real_set")
+ENDS = InputContract(
+    "tuple", components=(REAL_SET, LIMIT, LIMIT, LIMIT, LIMIT), labels=functions.ENDS
+)
+RIGHT_END = InputContract("tuple", components=(REAL_SET, LIMIT, LIMIT), labels=functions.RIGHT_END)
+PERIODIC = InputContract("tuple", components=(CONSTANT, REAL_SET), labels=("Period", "Base set"))
+PERIODIC_ENDS = InputContract(
+    "tuple", components=(PERIODIC, LIMIT, LIMIT, LIMIT, LIMIT), labels=functions.ENDS
+)
+CONTINUITY_AT = InputContract(
+    "tuple",
+    components=(LIMIT, LIMIT, InputContract("category", choices=functions.CONTINUITY_CLASSES)),
+    labels=functions.CONTINUITY_AT,
+)
 ANSWERS: dict[str, type[Answer]] = {
     "category": CategoryAnswer,
     "formula": FormulaAnswer,
@@ -180,6 +195,17 @@ SPECS = (
     (functions.log_difference_infinity, FUNCTIONS, 3, "FLCD", LIMIT),
     (functions.log_quadratic_at_point, FUNCTIONS, 3, "FLCE", LIMIT),
     (functions.sine_power_product, FUNCTIONS, 3, "FLCF", LIMIT),
+    (functions.radical_growth_asymptotes, FUNCTIONS, 4, "FLCG", RIGHT_END),
+    (functions.oscillatory_remainder, FUNCTIONS, 4, "FLCH", ENDS),
+    (functions.exponential_zero_denominator, FUNCTIONS, 5, "FLCI", ENDS),
+    (functions.trig_periodic_poles, FUNCTIONS, 5, "FLCJ", PERIODIC_ENDS),
+    (functions.continuity_log_ratio, FUNCTIONS, 4, "FLCK", CONTINUITY_AT),
+    (functions.exp_join, FUNCTIONS, 5, "FLCL", JOINS),
+    (functions.quartic_cubic_oblique, FUNCTIONS, 4, "FLCM", ENDS),
+    (functions.radical_oblique_right, FUNCTIONS, 5, "FLCN", RIGHT_END),
+    (functions.radical_quotient_right, FUNCTIONS, 4, "FLCO", RIGHT_END),
+    (functions.rational_oblique_pole, FUNCTIONS, 3, "FLCP", DOMAIN_ASYMPTOTES),
+    (functions.rational_oblique_pole_left, FUNCTIONS, 3, "FLCQ", DOMAIN_ASYMPTOTES),
 )
 
 

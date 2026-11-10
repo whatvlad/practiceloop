@@ -31,7 +31,10 @@ def test_source_components_link_exactly_the_delivered_versions_and_keep_deferral
             linked.update(component["verified_versions"])
         for component in row["components"]:
             if component["issue"] != 235:
-                assert component.get("status") != "implemented-mathematically-verified"
+                # Another Issue may deliver its own part of a mixed row (#259), never with
+                # the versions delivered here.
+                assert component["issue"] != 244 or "status" not in component
+                assert versions.isdisjoint(component.get("verified_versions", ()))
         if any(component["issue"] not in {235, 244} for component in row["components"]):
             assert row["coverage"] == "partial"
     # Two extra bounded variants extend a source family without claiming a PDF row.
