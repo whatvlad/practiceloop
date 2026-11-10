@@ -14,6 +14,7 @@ from app.engine.answers.computational import (
     OrderedAnswer,
 )
 from app.engine.codes import encode
+from app.engine.generators import _derivatives as derivatives
 from app.engine.generators import _function_limits as functions
 from app.engine.generators import _sequence_limits as sequences
 from app.engine.generators._elementary_common import Built
@@ -75,6 +76,23 @@ CONTINUITY_AT = InputContract(
     components=(LIMIT, LIMIT, InputContract("category", choices=functions.CONTINUITY_CLASSES)),
     labels=functions.CONTINUITY_AT,
 )
+# #260: derivatives with domains and tangent lines.
+LINE = InputContract("formula", symbols=derivatives.REAL_X)
+DERIVATIVE = LINE
+DERIVATIVE_DOMAIN = InputContract(
+    "tuple", components=(LINE, REAL_SET), labels=derivatives.DERIVATIVE_DOMAIN
+)
+DERIVATIVE_EXCLUDED = InputContract(
+    "tuple", components=(LINE, PERIODIC), labels=derivatives.DERIVATIVE_EXCLUDED
+)
+TANGENT_AT = InputContract("tuple", components=(CONSTANT, LINE), labels=derivatives.TANGENT_AT)
+TANGENT_FIND = InputContract("tuple", components=(CONSTANT, LINE), labels=derivatives.TANGENT_FIND)
+TANGENT_FULL = InputContract(
+    "tuple", components=(CONSTANT, CONSTANT, LINE), labels=derivatives.TANGENT_FULL
+)
+TWO_TANGENTS = InputContract(
+    "tuple", components=(TANGENT_FULL, TANGENT_FULL), labels=derivatives.TWO_TANGENTS
+)
 ANSWERS: dict[str, type[Answer]] = {
     "category": CategoryAnswer,
     "formula": FormulaAnswer,
@@ -84,6 +102,7 @@ ANSWERS: dict[str, type[Answer]] = {
 
 SEQUENCES = "functions-and-sequences"
 FUNCTIONS = "limits-and-continuity"
+DERIVATIVES = "differential-calculus"
 # Explicit prefixes are permanent and independent of the order of these entries.
 SPECS = (
     (sequences.bound_trigonometric, SEQUENCES, 2, "SLAA", BOUNDS),
@@ -206,6 +225,44 @@ SPECS = (
     (functions.radical_quotient_right, FUNCTIONS, 4, "FLCO", RIGHT_END),
     (functions.rational_oblique_pole, FUNCTIONS, 3, "FLCP", DOMAIN_ASYMPTOTES),
     (functions.rational_oblique_pole_left, FUNCTIONS, 3, "FLCQ", DOMAIN_ASYMPTOTES),
+    # #260
+    (derivatives.definition_power, DERIVATIVES, 1, "DVAA", DERIVATIVE),
+    (derivatives.definition_reciprocal, DERIVATIVES, 2, "DVAB", DERIVATIVE),
+    (derivatives.definition_root, DERIVATIVES, 2, "DVAC", DERIVATIVE),
+    (derivatives.definition_sine, DERIVATIVES, 3, "DVAD", DERIVATIVE),
+    (derivatives.trig_sum, DERIVATIVES, 2, "DVAE", DERIVATIVE_EXCLUDED),
+    (derivatives.exponential_quadratic, DERIVATIVES, 2, "DVAF", DERIVATIVE_DOMAIN),
+    (derivatives.rational_quotient, DERIVATIVES, 2, "DVAG", DERIVATIVE_DOMAIN),
+    (derivatives.exponential_square, DERIVATIVES, 3, "DVAH", DERIVATIVE_DOMAIN),
+    (derivatives.log_arctan_root, DERIVATIVES, 4, "DVAI", DERIVATIVE_DOMAIN),
+    (derivatives.exponential_arctan, DERIVATIVES, 3, "DVAJ", DERIVATIVE_DOMAIN),
+    (derivatives.log_cosine, DERIVATIVES, 3, "DVAK", DERIVATIVE_DOMAIN),
+    (derivatives.root_arccos, DERIVATIVES, 4, "DVAL", DERIVATIVE_DOMAIN),
+    (derivatives.constant_over_power, DERIVATIVES, 2, "DVAM", DERIVATIVE_DOMAIN),
+    (derivatives.exponential_trig_powers, DERIVATIVES, 4, "DVAN", DERIVATIVE_DOMAIN),
+    (derivatives.power_of_exponential, DERIVATIVES, 2, "DVAO", DERIVATIVE_DOMAIN),
+    (derivatives.variable_power, DERIVATIVES, 4, "DVAP", DERIVATIVE),
+    (derivatives.inverse_trig_constant, DERIVATIVES, 3, "DVAQ", DERIVATIVE_DOMAIN),
+    (derivatives.logarithm_constant, DERIVATIVES, 2, "DVAR", DERIVATIVE_DOMAIN),
+    (derivatives.log_constant_quotient, DERIVATIVES, 1, "DVAS", DERIVATIVE_DOMAIN),
+    (derivatives.constant_coefficients, DERIVATIVES, 1, "DVAT", DERIVATIVE_DOMAIN),
+    (derivatives.root_exponential_domain, DERIVATIVES, 4, "DVAU", DERIVATIVE_DOMAIN),
+    (derivatives.arcsine_shifted_square, DERIVATIVES, 4, "DVAV", DERIVATIVE_DOMAIN),
+    (derivatives.tangent_arctan, DERIVATIVES, 2, "DVAW", TANGENT_AT),
+    (derivatives.tangent_logarithm, DERIVATIVES, 2, "DVAX", TANGENT_AT),
+    (derivatives.tangent_tangent_square, DERIVATIVES, 3, "DVAY", TANGENT_AT),
+    (derivatives.tangent_root_exponential, DERIVATIVES, 3, "DVAZ", TANGENT_AT),
+    (derivatives.tangent_rational, DERIVATIVES, 3, "DVBA", TANGENT_AT),
+    (derivatives.tangent_exponential_level, DERIVATIVES, 3, "DVBB", TANGENT_FIND),
+    (derivatives.tangent_arctan_quotient, DERIVATIVES, 3, "DVBC", TANGENT_AT),
+    (derivatives.tangent_exponential_cubic, DERIVATIVES, 3, "DVBD", TANGENT_FIND),
+    (derivatives.tangent_parallel_quartic, DERIVATIVES, 3, "DVBE", TANGENT_FULL),
+    (derivatives.tangent_angle_root, DERIVATIVES, 3, "DVBF", TANGENT_FULL),
+    (derivatives.tangent_perpendicular_xlogx, DERIVATIVES, 4, "DVBG", TANGENT_FULL),
+    (derivatives.tangent_line_intersection, DERIVATIVES, 4, "DVBH", TANGENT_FULL),
+    (derivatives.tangent_axis_intersection, DERIVATIVES, 2, "DVBI", TANGENT_FULL),
+    (derivatives.tangent_horizontal, DERIVATIVES, 4, "DVBJ", TANGENT_FULL),
+    (derivatives.tangent_pair_perpendicular, DERIVATIVES, 5, "DVBK", TWO_TANGENTS),
 )
 
 
@@ -233,7 +290,8 @@ class AnalysisLimits:
 
     @property
     def family(self) -> str:
-        return "analysis1-limits-" + self.evaluate.__name__.replace("_", "-")
+        stem = "analysis1-derivatives-" if self.topic == DERIVATIVES else "analysis1-limits-"
+        return stem + self.evaluate.__name__.replace("_", "-")
 
     @property
     def version(self) -> str:

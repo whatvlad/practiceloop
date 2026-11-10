@@ -449,7 +449,7 @@ def answer_of(url: str, problem_id: str, *, wrong: bool = False) -> str:
     def scalar(value: Any) -> str:
         return str(value).replace("**", "^").replace("E", "e")
 
-    if str(data["generator_version"]).startswith("analysis1-limits-"):
+    if str(data["generator_version"]).startswith(("analysis1-limits-", "analysis1-derivatives-")):
         from test_engine_analysis_limits import different_source
         from test_engine_analysis_limits import source as limit_source
 

@@ -1,0 +1,80 @@
+# Analysis I differential calculus (#237)
+
+#237 extends Differential calculus with new immutable generator versions named
+`analysis1-derivatives-*`. They share the deterministic three-parameter provider
+of the [sequence and continuity expansion](ANALYSIS_LIMITS.md): each version
+draws integers \(a,b,c\in[1,5]\), declares a permanent prefix and adds itself to
+one level of the existing topic. Earlier versions, codes and mixed-practice
+weights are unchanged. Learner proof and sketch components stay deferred to
+#244.
+
+## Derivatives, domains and tangents (#260)
+
+Prefixes `DVAA` to `DVAZ` and `DVBA` to `DVBK` cover every computational
+reference of AM1/40 to AM1/43 and the exam forms of those families.
+
+| Reference | Version | Generated form and answer |
+|---|---|---|
+| AM1/40/a | `definition-power` | \(ax^{k}+cx\), derivative from the binomial difference quotient |
+| AM1/40/b | `definition-reciprocal` | \(a/(x-b)\) on \(x\ne b\) |
+| AM1/40/c | `definition-root` | \(a\sqrt{x+c}\) on \(x>-c\), conjugate quotient |
+| AM1/40/d | `definition-sine` | \(a\sin bx\), sum-to-product quotient |
+| AM1/41/a | `trig-sum` | \(a\sin x+b\cot x\): derivative and excluded points \(k\pi\) |
+| AM1/41/b | `exponential-quadratic` | \(e^{ax}(x^2+bx+c)\) on \(\mathbb R\) |
+| AM1/41/c | `rational-quotient` | \((x^2+a)/(x-b)\) on \(\mathbb R\setminus\{b\}\) |
+| AM1/41/d | `exponential-square` | \(e^{-ax}(bx+c)^2\) |
+| AM1/41/e | `log-arctan-root` | \(\ln(x^2+a+1)\arctan(b\sqrt x)\) differentiable on \((0,\infty)\); arctan replaces the source tangent so the domain stays decidable |
+| AM1/41/f | `exponential-arctan` | \(e^{a/x}\arctan(b-x)\) on \(x\ne0\) |
+| AM1/41/g | `log-cosine` | \(\ln(a\cos^2x+b)\) |
+| AM1/41/h | `root-arccos` | \(a\sqrt{\arccos(x^2/c^2)}\) on \((-c,c)\) |
+| AM1/41/i | `constant-over-power` | \(\sqrt a/(x^2+b)^c\) |
+| AM1/41/j | `exponential-trig-powers` | \((a+1)^{\sin^2x}/(b+1)^{\cos^2x}\) |
+| AM1/41/k | `power-of-exponential` | \((e^{-ax}+b)^{c+1}\) |
+| AM1/41/l | `variable-power` | \((\sin ax)^{bx}\) on \((0,\pi/a)\), logarithmic differentiation |
+| AM1/41/m | `inverse-trig-constant` | \((a(\arcsin\frac xc+\arccos\frac xc)+b)^2\): \(f'=0\) on \((-c,c)\) |
+| AM1/41/n | `logarithm-constant` | \(\ln ax+\ln(b/x)+cx\): \(f'=c\) on \((0,\infty)\) |
+| AM1/41/o | `log-constant-quotient` | \(\ln N/(x^2+c)\) with a constant numerator |
+| AM1/41/p | `constant-coefficients` | \(e^a\sin bx+\sqrt\pi\cos cx\) |
+| AM1/42/a | `tangent-arctan` | \(a\arctan(x/b)\) at \(x_0=b\) |
+| AM1/42/b | `tangent-logarithm` | \(\ln(x^2+b)\) at \(x_0=c-3\) |
+| AM1/42/c | `tangent-tangent-square` | \(a\tan^2bx\) at \(\pi/(4b)\) |
+| AM1/42/d | `tangent-root-exponential` | \(\sqrt{(a+1)^x+c}\) at \(x_0=b\) |
+| AM1/42/e | `tangent-rational` | \(ax/(b+x^2)\) at \(\sqrt c\) |
+| AM1/42/f | `tangent-exponential-level` | \(e^{a+b/x}\) at the point with ordinate \(1\) |
+| AM1/43/a | `tangent-parallel-quartic` | \(x^4-ax+b\) parallel to a given line |
+| AM1/43/b | `tangent-angle-root` | \(a\sqrt x\) at angle \(\pi/4\) or \(\pi/3\) |
+| AM1/43/c | `tangent-perpendicular-xlogx` | \(x\ln x\) perpendicular to \(x+my-c=0\) |
+| AM1/43/d | `tangent-line-intersection` | \(ax\arctan(b/x)\) where it meets \(4y=a\pi x\) |
+| AM1/43/e | `tangent-axis-intersection` | \(\sin ax-\cos bx+c\) at the \(y\)-axis |
+| exam first/A/3 | `tangent-arctan-quotient` | \(a\arctan x/x\) at \(\sqrt3\), \(1\) or \(1/\sqrt3\) |
+| exam first/B/2 | `root-exponential-domain` | \(e^{a\sqrt{2bx-x^2}}\) differentiable on \((0,2b)\) |
+| exam first/C/3 | `tangent-horizontal` | \((x-b)e^{-ax}\) parallel to a horizontal line |
+| exam first/D/1 | `arcsine-shifted-square` | \(a\arcsin(x^2-b-1)\) on two open intervals |
+| exam first/D/4 | `tangent-exponential-cubic` | \(e^{x^3-a}\) at the point with a given ordinate |
+| exam main/C/4 | `tangent-pair-perpendicular` | \(ax/(1+x^2)\): both tangents perpendicular to a line |
+
+## Answer policy
+
+A derivative is a formula in \(x\) checked as an identity on the stated
+domain (`DomainFormulaAnswer`); where the task asks for it, the domain is a
+separate real-set component, or a period and base set of excluded points.
+Tangents give the contact point coordinates that are not stated and the line
+as a formula in \(x\). The checker now decides continuity on a stated interval
+when the complement over \(\mathbb R\) is a periodic set it cannot simplify
+(for example \(\cot x\) on \((0,\pi)\)); the answer is unchanged otherwise.
+Before its symbolic steps it now evaluates the difference between the entered
+and the expected formula at a few rational points inside the domain, at 30
+digits. A clearly nonzero value certifies a wrong answer at once; equality is
+still only ever accepted symbolically. Without this, a wrong constant answer to
+a trigonometric derivative was either undecided or took over a minute and
+exceeded the math worker's limits.
+
+## Verification
+
+`backend/tests/test_engine_derivatives.py` rewrites every displayed function for
+mpmath and compares the generated derivative at sample points of its domain
+with 40-digit numerical differentiation. Tangent contact points are found
+independently (by root finding where the task fixes them by a condition), and
+each line is compared with \(f(x_0)+f'(x_0)(x-x_0)\). The same test parses and
+checks the exact answer and renders every distinct variant; goldens and
+worker tests cover replay.

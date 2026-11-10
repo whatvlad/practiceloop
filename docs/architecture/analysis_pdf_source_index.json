@@ -7245,18 +7245,25 @@
       "family": "derivative-definition",
       "interaction": "expression",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-definition-power-v1"
+      ],
       "family_contracts": [
         "AM1/40"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "expression",
-          "result": "derivative function from difference quotient, not just its value at a point"
+          "result": "derivative function from difference quotient, not just its value at a point",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-definition-power-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         },
         {
           "id": "learner-proof",
@@ -7278,18 +7285,25 @@
       "family": "derivative-definition",
       "interaction": "expression",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-definition-reciprocal-v1"
+      ],
       "family_contracts": [
         "AM1/40"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "expression",
-          "result": "derivative function from difference quotient, not just its value at a point"
+          "result": "derivative function from difference quotient, not just its value at a point",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-definition-reciprocal-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         },
         {
           "id": "learner-proof",
@@ -7311,18 +7325,25 @@
       "family": "derivative-definition",
       "interaction": "expression",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-definition-root-v1"
+      ],
       "family_contracts": [
         "AM1/40"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "expression",
-          "result": "derivative function from difference quotient, not just its value at a point"
+          "result": "derivative function from difference quotient, not just its value at a point",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-definition-root-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         },
         {
           "id": "learner-proof",
@@ -7344,18 +7365,25 @@
       "family": "derivative-definition",
       "interaction": "expression",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-definition-sine-v1"
+      ],
       "family_contracts": [
         "AM1/40"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "expression",
-          "result": "derivative function from difference quotient, not just its value at a point"
+          "result": "derivative function from difference quotient, not just its value at a point",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-definition-sine-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         },
         {
           "id": "learner-proof",
@@ -7377,18 +7405,25 @@
       "family": "derivative-rules-domains",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-trig-sum-v1"
+      ],
       "family_contracts": [
         "AM1/41"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "full derivative expression and differentiability domain"
+          "result": "full derivative expression and differentiability domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-trig-sum-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "trig-sum",
@@ -7404,18 +7439,25 @@
       "family": "derivative-rules-domains",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-exponential-quadratic-v1"
+      ],
       "family_contracts": [
         "AM1/41"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "full derivative expression and differentiability domain"
+          "result": "full derivative expression and differentiability domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-exponential-quadratic-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "exponential-product",
@@ -7431,18 +7473,25 @@
       "family": "derivative-rules-domains",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-rational-quotient-v1"
+      ],
       "family_contracts": [
         "AM1/41"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "full derivative expression and differentiability domain"
+          "result": "full derivative expression and differentiability domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-rational-quotient-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "rational-quotient",
@@ -7458,18 +7507,25 @@
       "family": "derivative-rules-domains",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-exponential-square-v1"
+      ],
       "family_contracts": [
         "AM1/41"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "full derivative expression and differentiability domain"
+          "result": "full derivative expression and differentiability domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-exponential-square-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "shifted-exponential-product",
@@ -7485,18 +7541,25 @@
       "family": "derivative-rules-domains",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-log-arctan-root-v1"
+      ],
       "family_contracts": [
         "AM1/41"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "full derivative expression and differentiability domain"
+          "result": "full derivative expression and differentiability domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-log-arctan-root-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "log-times-tangent-root",
@@ -7512,18 +7575,25 @@
       "family": "derivative-rules-domains",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-exponential-arctan-v1"
+      ],
       "family_contracts": [
         "AM1/41"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "full derivative expression and differentiability domain"
+          "result": "full derivative expression and differentiability domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-exponential-arctan-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "exponential-reciprocal-times-inverse-trig",
@@ -7539,18 +7609,25 @@
       "family": "derivative-rules-domains",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-log-cosine-v1"
+      ],
       "family_contracts": [
         "AM1/41"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "full derivative expression and differentiability domain"
+          "result": "full derivative expression and differentiability domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-log-cosine-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "log-cosine-square",
@@ -7566,18 +7643,25 @@
       "family": "derivative-rules-domains",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-root-arccos-v1"
+      ],
       "family_contracts": [
         "AM1/41"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "full derivative expression and differentiability domain"
+          "result": "full derivative expression and differentiability domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-root-arccos-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "inverse-trig-square-root",
@@ -7593,18 +7677,25 @@
       "family": "derivative-rules-domains",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-constant-over-power-v1"
+      ],
       "family_contracts": [
         "AM1/41"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "full derivative expression and differentiability domain"
+          "result": "full derivative expression and differentiability domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-constant-over-power-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "rational-negative-power",
@@ -7620,18 +7711,25 @@
       "family": "derivative-rules-domains",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-exponential-trig-powers-v1"
+      ],
       "family_contracts": [
         "AM1/41"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "full derivative expression and differentiability domain"
+          "result": "full derivative expression and differentiability domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-exponential-trig-powers-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "exponential-trig-quotient",
@@ -7647,18 +7745,25 @@
       "family": "derivative-rules-domains",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-power-of-exponential-v1"
+      ],
       "family_contracts": [
         "AM1/41"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "full derivative expression and differentiability domain"
+          "result": "full derivative expression and differentiability domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-power-of-exponential-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "exponential-cubic",
@@ -7674,18 +7779,25 @@
       "family": "derivative-rules-domains",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-variable-power-v1"
+      ],
       "family_contracts": [
         "AM1/41"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "full derivative expression and differentiability domain"
+          "result": "full derivative expression and differentiability domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-variable-power-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "variable-power-log-differentiation",
@@ -7701,18 +7813,25 @@
       "family": "derivative-rules-domains",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-inverse-trig-constant-v1"
+      ],
       "family_contracts": [
         "AM1/41"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "full derivative expression and differentiability domain"
+          "result": "full derivative expression and differentiability domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-inverse-trig-constant-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "inverse-trig-identity-square",
@@ -7728,18 +7847,25 @@
       "family": "derivative-rules-domains",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-logarithm-constant-v1"
+      ],
       "family_contracts": [
         "AM1/41"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "full derivative expression and differentiability domain"
+          "result": "full derivative expression and differentiability domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-logarithm-constant-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "log-product-rule",
@@ -7755,18 +7881,25 @@
       "family": "derivative-rules-domains",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-log-constant-quotient-v1"
+      ],
       "family_contracts": [
         "AM1/41"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "full derivative expression and differentiability domain"
+          "result": "full derivative expression and differentiability domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-log-constant-quotient-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "constant-over-quadratic",
@@ -7782,18 +7915,25 @@
       "family": "derivative-rules-domains",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-constant-coefficients-v1"
+      ],
       "family_contracts": [
         "AM1/41"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "full derivative expression and differentiability domain"
+          "result": "full derivative expression and differentiability domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-constant-coefficients-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "trig-plus-constant",
@@ -7809,18 +7949,25 @@
       "family": "tangent-at-point",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-tangent-arctan-v1"
+      ],
       "family_contracts": [
         "AM1/42"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "tangent equation and point of contact"
+          "result": "tangent equation and point of contact",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-tangent-arctan-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "tangent-at-point-variant-a",
@@ -7836,18 +7983,25 @@
       "family": "tangent-at-point",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-tangent-logarithm-v1"
+      ],
       "family_contracts": [
         "AM1/42"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "tangent equation and point of contact"
+          "result": "tangent equation and point of contact",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-tangent-logarithm-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "tangent-at-point-variant-b",
@@ -7863,18 +8017,25 @@
       "family": "tangent-at-point",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-tangent-tangent-square-v1"
+      ],
       "family_contracts": [
         "AM1/42"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "tangent equation and point of contact"
+          "result": "tangent equation and point of contact",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-tangent-tangent-square-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "tangent-at-point-variant-c",
@@ -7890,18 +8051,25 @@
       "family": "tangent-at-point",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-tangent-root-exponential-v1"
+      ],
       "family_contracts": [
         "AM1/42"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "tangent equation and point of contact"
+          "result": "tangent equation and point of contact",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-tangent-root-exponential-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "tangent-at-point-variant-d",
@@ -7917,18 +8085,25 @@
       "family": "tangent-at-point",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-tangent-rational-v1"
+      ],
       "family_contracts": [
         "AM1/42"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "tangent equation and point of contact"
+          "result": "tangent equation and point of contact",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-tangent-rational-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "tangent-at-point-variant-e",
@@ -7944,18 +8119,25 @@
       "family": "tangent-at-point",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-tangent-exponential-level-v1"
+      ],
       "family_contracts": [
         "AM1/42"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "tangent equation and point of contact"
+          "result": "tangent equation and point of contact",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-tangent-exponential-level-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "tangent-at-point-variant-f",
@@ -7971,18 +8153,25 @@
       "family": "tangent-geometric-conditions",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-tangent-parallel-quartic-v1"
+      ],
       "family_contracts": [
         "AM1/43"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all tangent equations and contact points satisfying geometry"
+          "result": "all tangent equations and contact points satisfying geometry",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-tangent-parallel-quartic-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "tangent-geometric-conditions-variant-a",
@@ -7998,18 +8187,25 @@
       "family": "tangent-geometric-conditions",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-tangent-angle-root-v1"
+      ],
       "family_contracts": [
         "AM1/43"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all tangent equations and contact points satisfying geometry"
+          "result": "all tangent equations and contact points satisfying geometry",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-tangent-angle-root-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "tangent-geometric-conditions-variant-b",
@@ -8025,18 +8221,25 @@
       "family": "tangent-geometric-conditions",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-tangent-perpendicular-xlogx-v1"
+      ],
       "family_contracts": [
         "AM1/43"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all tangent equations and contact points satisfying geometry"
+          "result": "all tangent equations and contact points satisfying geometry",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-tangent-perpendicular-xlogx-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "tangent-geometric-conditions-variant-c",
@@ -8052,18 +8255,25 @@
       "family": "tangent-geometric-conditions",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-tangent-line-intersection-v1"
+      ],
       "family_contracts": [
         "AM1/43"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all tangent equations and contact points satisfying geometry"
+          "result": "all tangent equations and contact points satisfying geometry",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-tangent-line-intersection-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "tangent-geometric-conditions-variant-d",
@@ -8079,18 +8289,25 @@
       "family": "tangent-geometric-conditions",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-tangent-axis-intersection-v1"
+      ],
       "family_contracts": [
         "AM1/43"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all tangent equations and contact points satisfying geometry"
+          "result": "all tangent equations and contact points satisfying geometry",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-tangent-axis-intersection-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "tangent-geometric-conditions-variant-e",
@@ -22436,18 +22653,25 @@
       "family": "tangent-at-point",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-tangent-arctan-quotient-v1"
+      ],
       "family_contracts": [
         "AM1/42"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "tangent equation and point of contact"
+          "result": "tangent equation and point of contact",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-tangent-arctan-quotient-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -22534,8 +22758,9 @@
       "family": "real-domains + derivative-rules-domains",
       "interaction": "real_set + ordered",
       "issue": 237,
-      "status": "computational-component-verified-other-components-pending",
+      "status": "computational-result-mathematically-verified",
       "verified_versions": [
+        "analysis1-derivatives-root-exponential-domain-v1",
         "elementary-domain-exponential-root-v1"
       ],
       "family_contracts": [
@@ -22559,7 +22784,12 @@
           "id": "result-2",
           "issue": 237,
           "contract": "ordered",
-          "result": "full derivative expression and differentiability domain"
+          "result": "full derivative expression and differentiability domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-root-exponential-domain-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -22709,18 +22939,25 @@
       "family": "tangent-geometric-conditions",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-tangent-horizontal-v1"
+      ],
       "family_contracts": [
         "AM1/43"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all tangent equations and contact points satisfying geometry"
+          "result": "all tangent equations and contact points satisfying geometry",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-tangent-horizontal-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -22772,8 +23009,9 @@
       "family": "inverse-trig-domains + derivative-rules-domains",
       "interaction": "real_set + ordered",
       "issue": 237,
-      "status": "computational-component-verified-other-components-pending",
+      "status": "computational-result-mathematically-verified",
       "verified_versions": [
+        "analysis1-derivatives-arcsine-shifted-square-v1",
         "elementary-domain-arcsin-square-v1"
       ],
       "family_contracts": [
@@ -22797,7 +23035,12 @@
           "id": "result-2",
           "issue": 237,
           "contract": "ordered",
-          "result": "full derivative expression and differentiability domain"
+          "result": "full derivative expression and differentiability domain",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-arcsine-shifted-square-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -22890,18 +23133,25 @@
       "family": "tangent-at-point",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-tangent-exponential-cubic-v1"
+      ],
       "family_contracts": [
         "AM1/42"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "tangent equation and point of contact"
+          "result": "tangent equation and point of contact",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-tangent-exponential-cubic-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -23851,18 +24101,25 @@
       "family": "tangent-geometric-conditions",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-tangent-pair-perpendicular-v1"
+      ],
       "family_contracts": [
         "AM1/43"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all tangent equations and contact points satisfying geometry"
+          "result": "all tangent equations and contact points satisfying geometry",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-tangent-pair-perpendicular-v1"
+          ],
+          "verification": "backend/tests/test_engine_derivatives.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -26150,7 +26407,18 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "analysis1-derivatives-definition-power-v1",
+        "analysis1-derivatives-definition-reciprocal-v1",
+        "analysis1-derivatives-definition-root-v1",
+        "analysis1-derivatives-definition-sine-v1"
+      ],
+      "delivery": {
+        "issue": 237,
+        "status": "partial-computational-delivery",
+        "verification": "backend/tests/test_engine_derivatives.py"
+      }
     },
     "AM1/41": {
       "family": "derivative-rules-domains",
@@ -26168,7 +26436,32 @@
         "backend/app/engine/blocks/analysis_one.py",
         "backend/app/engine/generators/differentiation.py",
         "backend/app/engine/blocks/differentiation/single.py"
-      ]
+      ],
+      "verified_versions": [
+        "analysis1-derivatives-arcsine-shifted-square-v1",
+        "analysis1-derivatives-constant-coefficients-v1",
+        "analysis1-derivatives-constant-over-power-v1",
+        "analysis1-derivatives-exponential-arctan-v1",
+        "analysis1-derivatives-exponential-quadratic-v1",
+        "analysis1-derivatives-exponential-square-v1",
+        "analysis1-derivatives-exponential-trig-powers-v1",
+        "analysis1-derivatives-inverse-trig-constant-v1",
+        "analysis1-derivatives-log-arctan-root-v1",
+        "analysis1-derivatives-log-constant-quotient-v1",
+        "analysis1-derivatives-log-cosine-v1",
+        "analysis1-derivatives-logarithm-constant-v1",
+        "analysis1-derivatives-power-of-exponential-v1",
+        "analysis1-derivatives-rational-quotient-v1",
+        "analysis1-derivatives-root-arccos-v1",
+        "analysis1-derivatives-root-exponential-domain-v1",
+        "analysis1-derivatives-trig-sum-v1",
+        "analysis1-derivatives-variable-power-v1"
+      ],
+      "delivery": {
+        "issue": 237,
+        "status": "partial-computational-delivery",
+        "verification": "backend/tests/test_engine_derivatives.py"
+      }
     },
     "AM1/42": {
       "family": "tangent-at-point",
@@ -26183,7 +26476,22 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "analysis1-derivatives-tangent-arctan-quotient-v1",
+        "analysis1-derivatives-tangent-arctan-v1",
+        "analysis1-derivatives-tangent-exponential-cubic-v1",
+        "analysis1-derivatives-tangent-exponential-level-v1",
+        "analysis1-derivatives-tangent-logarithm-v1",
+        "analysis1-derivatives-tangent-rational-v1",
+        "analysis1-derivatives-tangent-root-exponential-v1",
+        "analysis1-derivatives-tangent-tangent-square-v1"
+      ],
+      "delivery": {
+        "issue": 237,
+        "status": "partial-computational-delivery",
+        "verification": "backend/tests/test_engine_derivatives.py"
+      }
     },
     "AM1/43": {
       "family": "tangent-geometric-conditions",
@@ -26196,7 +26504,21 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "analysis1-derivatives-tangent-angle-root-v1",
+        "analysis1-derivatives-tangent-axis-intersection-v1",
+        "analysis1-derivatives-tangent-horizontal-v1",
+        "analysis1-derivatives-tangent-line-intersection-v1",
+        "analysis1-derivatives-tangent-pair-perpendicular-v1",
+        "analysis1-derivatives-tangent-parallel-quartic-v1",
+        "analysis1-derivatives-tangent-perpendicular-xlogx-v1"
+      ],
+      "delivery": {
+        "issue": 237,
+        "status": "partial-computational-delivery",
+        "verification": "backend/tests/test_engine_derivatives.py"
+      }
     },
     "AM1/44": {
       "family": "differential-error-propagation",
@@ -27672,8 +27994,8 @@
     "family_contracts": 146,
     "deferred_only_references": 30,
     "mixed_references": 146,
-    "verified_generator_deliveries": 200,
-    "verified_computational_components": 222
+    "verified_generator_deliveries": 237,
+    "verified_computational_components": 259
   },
   "deliveries": {
     "235": {
@@ -27909,6 +28231,154 @@
         "analysis1-limits-infinitesimal-log-v1"
       ],
       "verification_scope": "local bounded mathematics, replay and Linux worker checks; hosted CI, deployment and live checks remain pending"
+    },
+    "237": {
+      "status": "implementation-in-progress",
+      "generator_versions": [
+        "analysis1-derivatives-arcsine-shifted-square-v1",
+        "analysis1-derivatives-constant-coefficients-v1",
+        "analysis1-derivatives-constant-over-power-v1",
+        "analysis1-derivatives-definition-power-v1",
+        "analysis1-derivatives-definition-reciprocal-v1",
+        "analysis1-derivatives-definition-root-v1",
+        "analysis1-derivatives-definition-sine-v1",
+        "analysis1-derivatives-exponential-arctan-v1",
+        "analysis1-derivatives-exponential-quadratic-v1",
+        "analysis1-derivatives-exponential-square-v1",
+        "analysis1-derivatives-exponential-trig-powers-v1",
+        "analysis1-derivatives-inverse-trig-constant-v1",
+        "analysis1-derivatives-log-arctan-root-v1",
+        "analysis1-derivatives-log-constant-quotient-v1",
+        "analysis1-derivatives-log-cosine-v1",
+        "analysis1-derivatives-logarithm-constant-v1",
+        "analysis1-derivatives-power-of-exponential-v1",
+        "analysis1-derivatives-rational-quotient-v1",
+        "analysis1-derivatives-root-arccos-v1",
+        "analysis1-derivatives-root-exponential-domain-v1",
+        "analysis1-derivatives-tangent-angle-root-v1",
+        "analysis1-derivatives-tangent-arctan-quotient-v1",
+        "analysis1-derivatives-tangent-arctan-v1",
+        "analysis1-derivatives-tangent-axis-intersection-v1",
+        "analysis1-derivatives-tangent-exponential-cubic-v1",
+        "analysis1-derivatives-tangent-exponential-level-v1",
+        "analysis1-derivatives-tangent-horizontal-v1",
+        "analysis1-derivatives-tangent-line-intersection-v1",
+        "analysis1-derivatives-tangent-logarithm-v1",
+        "analysis1-derivatives-tangent-pair-perpendicular-v1",
+        "analysis1-derivatives-tangent-parallel-quartic-v1",
+        "analysis1-derivatives-tangent-perpendicular-xlogx-v1",
+        "analysis1-derivatives-tangent-rational-v1",
+        "analysis1-derivatives-tangent-root-exponential-v1",
+        "analysis1-derivatives-tangent-tangent-square-v1",
+        "analysis1-derivatives-trig-sum-v1",
+        "analysis1-derivatives-variable-power-v1"
+      ],
+      "source_references": 37,
+      "computational_components": 37,
+      "verification_scope": "local bounded mathematics, replay and Linux worker checks; hosted CI, deployment and live checks remain pending",
+      "pending_source_references": [
+        "AM1/44/a",
+        "AM1/44/b",
+        "AM1/44/c",
+        "AM1/44/d",
+        "AM1/45/a",
+        "AM1/45/b",
+        "AM1/45/c",
+        "AM1/45/d",
+        "AM1/45/e",
+        "AM1/45/f",
+        "AM1/45/g",
+        "AM1/45/h",
+        "AM1/45/i",
+        "AM1/45/j",
+        "AM1/45/k",
+        "AM1/45/l",
+        "AM1/45/m",
+        "AM1/45/n",
+        "AM1/45/o",
+        "AM1/46/a",
+        "AM1/46/b",
+        "AM1/46/c",
+        "AM1/46/d",
+        "AM1/46/e",
+        "AM1/46/f",
+        "AM1/46/g",
+        "AM1/46/h",
+        "AM1/46/i",
+        "AM1/47/a",
+        "AM1/47/b",
+        "AM1/47/c",
+        "AM1/47/d",
+        "AM1/47/e",
+        "AM1/47/f",
+        "AM1/47/g",
+        "AM1/47/h",
+        "AM1/47/i",
+        "AM1/48/a",
+        "AM1/48/b",
+        "AM1/48/c",
+        "AM1/48/d",
+        "AM1/48/e",
+        "AM1/48/f",
+        "AM1/48/g",
+        "AM1/48/h",
+        "AM1/49/a",
+        "AM1/49/b",
+        "AM1/49/c",
+        "AM1/49/d",
+        "AM1/49/e",
+        "AM1/51/a",
+        "AM1/51/b",
+        "AM1/69/a",
+        "AM1/69/b",
+        "AM1/69/c",
+        "AM1/69/d",
+        "AM1/69/e",
+        "AM1/69/f",
+        "AM1/69/g",
+        "AM1/69/h",
+        "AM1/69/i",
+        "AM1/70/a",
+        "AM1/70/b",
+        "AM1/70/c",
+        "AM1/70/d",
+        "AM1/71/a",
+        "AM1/71/b",
+        "AM1/71/c",
+        "AM1/71/d",
+        "AM1/72/a",
+        "AM1/72/b",
+        "AM1/72/c",
+        "AM1/72/d",
+        "AM1/73/a",
+        "AM1/73/b",
+        "AM1/73/c",
+        "AM1/73/d",
+        "AM1/exam/second/A/1",
+        "AM1/exam/second/A/2",
+        "AM1/exam/second/B/1",
+        "AM1/exam/second/B/2",
+        "AM1/exam/second/C/1",
+        "AM1/exam/second/C/2",
+        "AM1/exam/second/D/1",
+        "AM1/exam/second/D/2",
+        "AM1/exam/main/A/4",
+        "AM1/exam/main/A/5",
+        "AM1/exam/main/A/6",
+        "AM1/exam/main/B/5",
+        "AM1/exam/main/C/2",
+        "AM1/exam/main/C/6",
+        "AM1/exam/main/D/2",
+        "AM1/exam/resit/A/3",
+        "AM1/exam/resit/A/5",
+        "AM1/exam/resit/B/3",
+        "AM1/exam/resit/B/5",
+        "AM1/exam/resit/C/3",
+        "AM1/exam/resit/C/5",
+        "AM1/exam/resit/D/1",
+        "AM1/exam/resit/D/4",
+        "AM1/exam/distinction/single/3"
+      ]
     }
   }
 }

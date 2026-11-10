@@ -34843,5 +34843,2632 @@
         "difficulty": 3
       }
     }
+  ],
+  "analysis1-derivatives-definition-power-v1": [
+    {
+      "code": "DVAA-1-0000000000000003-68",
+      "statement": "\\(\\text{Using the definition (limit of the difference quotient), find }f'(x)\\text{ on the domain:}\\quad f(x)=2 x^{2} + 5 x.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Simplify }\\frac{f(x+h)-f(x)}{h}\\text{ before letting }h\\to0."
+        ],
+        [
+          "calculation",
+          "\\frac{2((x+h)^{2}-x^{2})+5h}{h}=2\\sum_{k=1}^{2}\\binom{2}{k}x^{2-k}h^{k-1}+5\\ \\xrightarrow[h\\to0]{}\\ 4 x + 5."
+        ],
+        [
+          "result",
+          "4 x + 5"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "4 x + 5",
+      "metadata": {
+        "difficulty": 1
+      }
+    },
+    {
+      "code": "DVAA-1-0000000000000200-47",
+      "statement": "\\(\\text{Using the definition (limit of the difference quotient), find }f'(x)\\text{ on the domain:}\\quad f(x)=5 x^{6} + x.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Simplify }\\frac{f(x+h)-f(x)}{h}\\text{ before letting }h\\to0."
+        ],
+        [
+          "calculation",
+          "\\frac{5((x+h)^{6}-x^{6})+1h}{h}=5\\sum_{k=1}^{6}\\binom{6}{k}x^{6-k}h^{k-1}+1\\ \\xrightarrow[h\\to0]{}\\ 30 x^{5} + 1."
+        ],
+        [
+          "result",
+          "30 x^{5} + 1"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "30 x^{5} + 1",
+      "metadata": {
+        "difficulty": 1
+      }
+    },
+    {
+      "code": "DVAA-1-0000000000000999-61",
+      "statement": "\\(\\text{Using the definition (limit of the difference quotient), find }f'(x)\\text{ on the domain:}\\quad f(x)=2 x^{4} + 5 x.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Simplify }\\frac{f(x+h)-f(x)}{h}\\text{ before letting }h\\to0."
+        ],
+        [
+          "calculation",
+          "\\frac{2((x+h)^{4}-x^{4})+5h}{h}=2\\sum_{k=1}^{4}\\binom{4}{k}x^{4-k}h^{k-1}+5\\ \\xrightarrow[h\\to0]{}\\ 8 x^{3} + 5."
+        ],
+        [
+          "result",
+          "8 x^{3} + 5"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "8 x^{3} + 5",
+      "metadata": {
+        "difficulty": 1
+      }
+    }
+  ],
+  "analysis1-derivatives-definition-reciprocal-v1": [
+    {
+      "code": "DVAB-1-0000000000000003-18",
+      "statement": "\\(\\text{Using the definition (limit of the difference quotient), find }f'(x)\\text{ on the domain:}\\quad f(x)=\\frac{2}{x-1}\\ (x\\ne1).\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Simplify }\\frac{f(x+h)-f(x)}{h}\\text{ before letting }h\\to0."
+        ],
+        [
+          "calculation",
+          "\\frac{1}{h}\\left(\\frac{2}{x+h-1}-\\frac{2}{x-1}\\right)=\\frac{-2}{(x+h-1)(x-1)}\\ \\xrightarrow[h\\to0]{}\\ - \\frac{2}{\\left(x - 1\\right)^{2}}."
+        ],
+        [
+          "result",
+          "- \\frac{2}{\\left(x - 1\\right)^{2}}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "- \\frac{2}{\\left(x - 1\\right)^{2}}",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVAB-1-0000000000000200-94",
+      "statement": "\\(\\text{Using the definition (limit of the difference quotient), find }f'(x)\\text{ on the domain:}\\quad f(x)=\\frac{5}{x-5}\\ (x\\ne5).\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Simplify }\\frac{f(x+h)-f(x)}{h}\\text{ before letting }h\\to0."
+        ],
+        [
+          "calculation",
+          "\\frac{1}{h}\\left(\\frac{5}{x+h-5}-\\frac{5}{x-5}\\right)=\\frac{-5}{(x+h-5)(x-5)}\\ \\xrightarrow[h\\to0]{}\\ - \\frac{5}{\\left(x - 5\\right)^{2}}."
+        ],
+        [
+          "result",
+          "- \\frac{5}{\\left(x - 5\\right)^{2}}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "- \\frac{5}{\\left(x - 5\\right)^{2}}",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVAB-1-0000000000000999-11",
+      "statement": "\\(\\text{Using the definition (limit of the difference quotient), find }f'(x)\\text{ on the domain:}\\quad f(x)=\\frac{2}{x-3}\\ (x\\ne3).\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Simplify }\\frac{f(x+h)-f(x)}{h}\\text{ before letting }h\\to0."
+        ],
+        [
+          "calculation",
+          "\\frac{1}{h}\\left(\\frac{2}{x+h-3}-\\frac{2}{x-3}\\right)=\\frac{-2}{(x+h-3)(x-3)}\\ \\xrightarrow[h\\to0]{}\\ - \\frac{2}{\\left(x - 3\\right)^{2}}."
+        ],
+        [
+          "result",
+          "- \\frac{2}{\\left(x - 3\\right)^{2}}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "- \\frac{2}{\\left(x - 3\\right)^{2}}",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-derivatives-definition-root-v1": [
+    {
+      "code": "DVAC-1-0000000000000003-09",
+      "statement": "\\(\\text{Using the definition (limit of the difference quotient), find }f'(x)\\text{ on the domain:}\\quad f(x)=2\\sqrt{x+5}\\ (x>-5).\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Simplify }\\frac{f(x+h)-f(x)}{h}\\text{ before letting }h\\to0."
+        ],
+        [
+          "calculation",
+          "\\frac{2(\\sqrt{x+h+5}-\\sqrt{x+5})}{h}=\\frac{2}{\\sqrt{x+h+5}+\\sqrt{x+5}}\\ \\xrightarrow[h\\to0]{}\\ \\frac{1}{\\sqrt{x + 5}}."
+        ],
+        [
+          "result",
+          "\\frac{1}{\\sqrt{x + 5}}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\frac{1}{\\sqrt{x + 5}}",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVAC-1-0000000000000200-85",
+      "statement": "\\(\\text{Using the definition (limit of the difference quotient), find }f'(x)\\text{ on the domain:}\\quad f(x)=5\\sqrt{x+1}\\ (x>-1).\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Simplify }\\frac{f(x+h)-f(x)}{h}\\text{ before letting }h\\to0."
+        ],
+        [
+          "calculation",
+          "\\frac{5(\\sqrt{x+h+1}-\\sqrt{x+1})}{h}=\\frac{5}{\\sqrt{x+h+1}+\\sqrt{x+1}}\\ \\xrightarrow[h\\to0]{}\\ \\frac{5}{2 \\sqrt{x + 1}}."
+        ],
+        [
+          "result",
+          "\\frac{5}{2 \\sqrt{x + 1}}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\frac{5}{2 \\sqrt{x + 1}}",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVAC-1-0000000000000999-02",
+      "statement": "\\(\\text{Using the definition (limit of the difference quotient), find }f'(x)\\text{ on the domain:}\\quad f(x)=2\\sqrt{x+5}\\ (x>-5).\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Simplify }\\frac{f(x+h)-f(x)}{h}\\text{ before letting }h\\to0."
+        ],
+        [
+          "calculation",
+          "\\frac{2(\\sqrt{x+h+5}-\\sqrt{x+5})}{h}=\\frac{2}{\\sqrt{x+h+5}+\\sqrt{x+5}}\\ \\xrightarrow[h\\to0]{}\\ \\frac{1}{\\sqrt{x + 5}}."
+        ],
+        [
+          "result",
+          "\\frac{1}{\\sqrt{x + 5}}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\frac{1}{\\sqrt{x + 5}}",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-derivatives-definition-sine-v1": [
+    {
+      "code": "DVAD-1-0000000000000003-83",
+      "statement": "\\(\\text{Using the definition (limit of the difference quotient), find }f'(x)\\text{ on the domain:}\\quad f(x)=2 \\sin{\\left(x \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Simplify }\\frac{f(x+h)-f(x)}{h}\\text{ before letting }h\\to0."
+        ],
+        [
+          "calculation",
+          "\\frac{2(\\sin(1x+1h)-\\sin x)}{h}=2\\cos\\left(x+\\tfrac{1h}{2}\\right)\\frac{2\\sin(1h/2)}{h}\\ \\xrightarrow[h\\to0]{}\\ 2 \\cos{\\left(x \\right)}."
+        ],
+        [
+          "result",
+          "2 \\cos{\\left(x \\right)}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "2 \\cos{\\left(x \\right)}",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVAD-1-0000000000000200-62",
+      "statement": "\\(\\text{Using the definition (limit of the difference quotient), find }f'(x)\\text{ on the domain:}\\quad f(x)=5 \\sin{\\left(5 x \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Simplify }\\frac{f(x+h)-f(x)}{h}\\text{ before letting }h\\to0."
+        ],
+        [
+          "calculation",
+          "\\frac{5(\\sin(5x+5h)-\\sin 5x)}{h}=5\\cos\\left(5x+\\tfrac{5h}{2}\\right)\\frac{2\\sin(5h/2)}{h}\\ \\xrightarrow[h\\to0]{}\\ 25 \\cos{\\left(5 x \\right)}."
+        ],
+        [
+          "result",
+          "25 \\cos{\\left(5 x \\right)}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "25 \\cos{\\left(5 x \\right)}",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVAD-1-0000000000000999-76",
+      "statement": "\\(\\text{Using the definition (limit of the difference quotient), find }f'(x)\\text{ on the domain:}\\quad f(x)=2 \\sin{\\left(3 x \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Simplify }\\frac{f(x+h)-f(x)}{h}\\text{ before letting }h\\to0."
+        ],
+        [
+          "calculation",
+          "\\frac{2(\\sin(3x+3h)-\\sin 3x)}{h}=2\\cos\\left(3x+\\tfrac{3h}{2}\\right)\\frac{2\\sin(3h/2)}{h}\\ \\xrightarrow[h\\to0]{}\\ 6 \\cos{\\left(3 x \\right)}."
+        ],
+        [
+          "result",
+          "6 \\cos{\\left(3 x \\right)}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "6 \\cos{\\left(3 x \\right)}",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-trig-sum-v1": [
+    {
+      "code": "DVAE-1-0000000000000003-44",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the excluded points of the domain, as a period and a base}\\text{ set in }[0,\\pi):\\quad f(x)=2 \\sin{\\left(x \\right)} + \\cot{\\left(x \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Differentiate term by term: }(\\sin x)'=\\cos x,\\ (\\cot x)'=-1/\\sin^2x."
+        ],
+        [
+          "calculation",
+          "f'(x)=2 \\cos{\\left(x \\right)} - \\cot^{2}{\\left(x \\right)} - 1,\\qquad \\sin x\\ne0\\iff x\\ne k\\pi."
+        ],
+        [
+          "result",
+          "\\left(2 \\cos{\\left(x \\right)} - \\cot^{2}{\\left(x \\right)} - 1,\\;\\left\\{0\\right\\}+\\pi\\,k,\\quad k\\in\\mathbb{Z}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(2 \\cos{\\left(x \\right)} - \\cot^{2}{\\left(x \\right)} - 1,\\;\\left\\{0\\right\\}+\\pi\\,k,\\quad k\\in\\mathbb{Z}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVAE-1-0000000000000200-23",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the excluded points of the domain, as a period and a base}\\text{ set in }[0,\\pi):\\quad f(x)=5 \\sin{\\left(x \\right)} + 5 \\cot{\\left(x \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Differentiate term by term: }(\\sin x)'=\\cos x,\\ (\\cot x)'=-1/\\sin^2x."
+        ],
+        [
+          "calculation",
+          "f'(x)=5 \\cos{\\left(x \\right)} - 5 \\cot^{2}{\\left(x \\right)} - 5,\\qquad \\sin x\\ne0\\iff x\\ne k\\pi."
+        ],
+        [
+          "result",
+          "\\left(5 \\cos{\\left(x \\right)} - 5 \\cot^{2}{\\left(x \\right)} - 5,\\;\\left\\{0\\right\\}+\\pi\\,k,\\quad k\\in\\mathbb{Z}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(5 \\cos{\\left(x \\right)} - 5 \\cot^{2}{\\left(x \\right)} - 5,\\;\\left\\{0\\right\\}+\\pi\\,k,\\quad k\\in\\mathbb{Z}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVAE-1-0000000000000999-37",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the excluded points of the domain, as a period and a base}\\text{ set in }[0,\\pi):\\quad f(x)=2 \\sin{\\left(x \\right)} + 3 \\cot{\\left(x \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Differentiate term by term: }(\\sin x)'=\\cos x,\\ (\\cot x)'=-1/\\sin^2x."
+        ],
+        [
+          "calculation",
+          "f'(x)=2 \\cos{\\left(x \\right)} - 3 \\cot^{2}{\\left(x \\right)} - 3,\\qquad \\sin x\\ne0\\iff x\\ne k\\pi."
+        ],
+        [
+          "result",
+          "\\left(2 \\cos{\\left(x \\right)} - 3 \\cot^{2}{\\left(x \\right)} - 3,\\;\\left\\{0\\right\\}+\\pi\\,k,\\quad k\\in\\mathbb{Z}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(2 \\cos{\\left(x \\right)} - 3 \\cot^{2}{\\left(x \\right)} - 3,\\;\\left\\{0\\right\\}+\\pi\\,k,\\quad k\\in\\mathbb{Z}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-derivatives-exponential-quadratic-v1": [
+    {
+      "code": "DVAF-1-0000000000000003-92",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=\\left(x^{2} + x + 5\\right) e^{2 x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Product rule with }(e^{ax})'=ae^{ax}."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\left(2 x + 1\\right) e^{2 x} + 2 \\left(x^{2} + x + 5\\right) e^{2 x},\\qquad x\\in\\mathbb{R}."
+        ],
+        [
+          "result",
+          "\\left(\\left(2 x + 1\\right) e^{2 x} + 2 \\left(x^{2} + x + 5\\right) e^{2 x},\\;\\mathbb{R}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(2 x + 1\\right) e^{2 x} + 2 \\left(x^{2} + x + 5\\right) e^{2 x},\\;\\mathbb{R}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVAF-1-0000000000000200-71",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=\\left(x^{2} + 5 x + 1\\right) e^{5 x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Product rule with }(e^{ax})'=ae^{ax}."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\left(2 x + 5\\right) e^{5 x} + 5 \\left(x^{2} + 5 x + 1\\right) e^{5 x},\\qquad x\\in\\mathbb{R}."
+        ],
+        [
+          "result",
+          "\\left(\\left(2 x + 5\\right) e^{5 x} + 5 \\left(x^{2} + 5 x + 1\\right) e^{5 x},\\;\\mathbb{R}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(2 x + 5\\right) e^{5 x} + 5 \\left(x^{2} + 5 x + 1\\right) e^{5 x},\\;\\mathbb{R}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVAF-1-0000000000000999-85",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=\\left(x^{2} + 3 x + 5\\right) e^{2 x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Product rule with }(e^{ax})'=ae^{ax}."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\left(2 x + 3\\right) e^{2 x} + 2 \\left(x^{2} + 3 x + 5\\right) e^{2 x},\\qquad x\\in\\mathbb{R}."
+        ],
+        [
+          "result",
+          "\\left(\\left(2 x + 3\\right) e^{2 x} + 2 \\left(x^{2} + 3 x + 5\\right) e^{2 x},\\;\\mathbb{R}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(2 x + 3\\right) e^{2 x} + 2 \\left(x^{2} + 3 x + 5\\right) e^{2 x},\\;\\mathbb{R}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-derivatives-rational-quotient-v1": [
+    {
+      "code": "DVAG-1-0000000000000003-29",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=\\frac{x^{2} + 2}{x - 1}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Quotient rule; the denominator vanishes only at }x=1."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{2 x}{x - 1} - \\frac{x^{2} + 2}{\\left(x - 1\\right)^{2}},\\qquad x\\in\\left(-\\infty, 1\\right) \\cup \\left(1, \\infty\\right)."
+        ],
+        [
+          "result",
+          "\\left(\\frac{2 x}{x - 1} - \\frac{x^{2} + 2}{\\left(x - 1\\right)^{2}},\\;\\left(-\\infty, 1\\right) \\cup \\left(1, \\infty\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{2 x}{x - 1} - \\frac{x^{2} + 2}{\\left(x - 1\\right)^{2}},\\;\\left(-\\infty, 1\\right) \\cup \\left(1, \\infty\\right)\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVAG-1-0000000000000200-08",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=\\frac{x^{2} + 5}{x - 5}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Quotient rule; the denominator vanishes only at }x=5."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{2 x}{x - 5} - \\frac{x^{2} + 5}{\\left(x - 5\\right)^{2}},\\qquad x\\in\\left(-\\infty, 5\\right) \\cup \\left(5, \\infty\\right)."
+        ],
+        [
+          "result",
+          "\\left(\\frac{2 x}{x - 5} - \\frac{x^{2} + 5}{\\left(x - 5\\right)^{2}},\\;\\left(-\\infty, 5\\right) \\cup \\left(5, \\infty\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{2 x}{x - 5} - \\frac{x^{2} + 5}{\\left(x - 5\\right)^{2}},\\;\\left(-\\infty, 5\\right) \\cup \\left(5, \\infty\\right)\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVAG-1-0000000000000999-22",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=\\frac{x^{2} + 2}{x - 3}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Quotient rule; the denominator vanishes only at }x=3."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{2 x}{x - 3} - \\frac{x^{2} + 2}{\\left(x - 3\\right)^{2}},\\qquad x\\in\\left(-\\infty, 3\\right) \\cup \\left(3, \\infty\\right)."
+        ],
+        [
+          "result",
+          "\\left(\\frac{2 x}{x - 3} - \\frac{x^{2} + 2}{\\left(x - 3\\right)^{2}},\\;\\left(-\\infty, 3\\right) \\cup \\left(3, \\infty\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{2 x}{x - 3} - \\frac{x^{2} + 2}{\\left(x - 3\\right)^{2}},\\;\\left(-\\infty, 3\\right) \\cup \\left(3, \\infty\\right)\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-derivatives-exponential-square-v1": [
+    {
+      "code": "DVAH-1-0000000000000003-25",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=\\left(x + 5\\right)^{2} e^{- 2 x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Product rule and the chain rule for the square.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=- 2 \\left(x + 5\\right)^{2} e^{- 2 x} + \\left(2 x + 10\\right) e^{- 2 x},\\qquad x\\in\\mathbb{R}."
+        ],
+        [
+          "result",
+          "\\left(- 2 \\left(x + 5\\right)^{2} e^{- 2 x} + \\left(2 x + 10\\right) e^{- 2 x},\\;\\mathbb{R}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- 2 \\left(x + 5\\right)^{2} e^{- 2 x} + \\left(2 x + 10\\right) e^{- 2 x},\\;\\mathbb{R}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVAH-1-0000000000000200-04",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=\\left(5 x + 1\\right)^{2} e^{- 5 x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Product rule and the chain rule for the square.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=- 5 \\left(5 x + 1\\right)^{2} e^{- 5 x} + \\left(50 x + 10\\right) e^{- 5 x},\\qquad x\\in\\mathbb{R}."
+        ],
+        [
+          "result",
+          "\\left(- 5 \\left(5 x + 1\\right)^{2} e^{- 5 x} + \\left(50 x + 10\\right) e^{- 5 x},\\;\\mathbb{R}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- 5 \\left(5 x + 1\\right)^{2} e^{- 5 x} + \\left(50 x + 10\\right) e^{- 5 x},\\;\\mathbb{R}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVAH-1-0000000000000999-18",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=\\left(3 x + 5\\right)^{2} e^{- 2 x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Product rule and the chain rule for the square.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=- 2 \\left(3 x + 5\\right)^{2} e^{- 2 x} + \\left(18 x + 30\\right) e^{- 2 x},\\qquad x\\in\\mathbb{R}."
+        ],
+        [
+          "result",
+          "\\left(- 2 \\left(3 x + 5\\right)^{2} e^{- 2 x} + \\left(18 x + 30\\right) e^{- 2 x},\\;\\mathbb{R}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- 2 \\left(3 x + 5\\right)^{2} e^{- 2 x} + \\left(18 x + 30\\right) e^{- 2 x},\\;\\mathbb{R}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-log-arctan-root-v1": [
+    {
+      "code": "DVAI-1-0000000000000003-84",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=\\log{\\left(x^{2} + 3 \\right)} \\operatorname{atan}{\\left(\\sqrt{x} \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The root is defined for }x\\ge0\\text{ but differentiable only for }x>0\\text{; at }0\\text{ the difference quotient is unbounded because }\\ln(a+1)>0."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{2 x \\operatorname{atan}{\\left(\\sqrt{x} \\right)}}{x^{2} + 3} + \\frac{\\log{\\left(x^{2} + 3 \\right)}}{2 \\sqrt{x} \\left(x + 1\\right)},\\qquad x\\in\\left(0, \\infty\\right)."
+        ],
+        [
+          "result",
+          "\\left(\\frac{2 x \\operatorname{atan}{\\left(\\sqrt{x} \\right)}}{x^{2} + 3} + \\frac{\\log{\\left(x^{2} + 3 \\right)}}{2 \\sqrt{x} \\left(x + 1\\right)},\\;\\left(0, \\infty\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{2 x \\operatorname{atan}{\\left(\\sqrt{x} \\right)}}{x^{2} + 3} + \\frac{\\log{\\left(x^{2} + 3 \\right)}}{2 \\sqrt{x} \\left(x + 1\\right)},\\;\\left(0, \\infty\\right)\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVAI-1-0000000000000200-63",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=\\log{\\left(x^{2} + 6 \\right)} \\operatorname{atan}{\\left(5 \\sqrt{x} \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The root is defined for }x\\ge0\\text{ but differentiable only for }x>0\\text{; at }0\\text{ the difference quotient is unbounded because }\\ln(a+1)>0."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{2 x \\operatorname{atan}{\\left(5 \\sqrt{x} \\right)}}{x^{2} + 6} + \\frac{5 \\log{\\left(x^{2} + 6 \\right)}}{2 \\sqrt{x} \\left(25 x + 1\\right)},\\qquad x\\in\\left(0, \\infty\\right)."
+        ],
+        [
+          "result",
+          "\\left(\\frac{2 x \\operatorname{atan}{\\left(5 \\sqrt{x} \\right)}}{x^{2} + 6} + \\frac{5 \\log{\\left(x^{2} + 6 \\right)}}{2 \\sqrt{x} \\left(25 x + 1\\right)},\\;\\left(0, \\infty\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{2 x \\operatorname{atan}{\\left(5 \\sqrt{x} \\right)}}{x^{2} + 6} + \\frac{5 \\log{\\left(x^{2} + 6 \\right)}}{2 \\sqrt{x} \\left(25 x + 1\\right)},\\;\\left(0, \\infty\\right)\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVAI-1-0000000000000999-77",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=\\log{\\left(x^{2} + 3 \\right)} \\operatorname{atan}{\\left(3 \\sqrt{x} \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The root is defined for }x\\ge0\\text{ but differentiable only for }x>0\\text{; at }0\\text{ the difference quotient is unbounded because }\\ln(a+1)>0."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{2 x \\operatorname{atan}{\\left(3 \\sqrt{x} \\right)}}{x^{2} + 3} + \\frac{3 \\log{\\left(x^{2} + 3 \\right)}}{2 \\sqrt{x} \\left(9 x + 1\\right)},\\qquad x\\in\\left(0, \\infty\\right)."
+        ],
+        [
+          "result",
+          "\\left(\\frac{2 x \\operatorname{atan}{\\left(3 \\sqrt{x} \\right)}}{x^{2} + 3} + \\frac{3 \\log{\\left(x^{2} + 3 \\right)}}{2 \\sqrt{x} \\left(9 x + 1\\right)},\\;\\left(0, \\infty\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{2 x \\operatorname{atan}{\\left(3 \\sqrt{x} \\right)}}{x^{2} + 3} + \\frac{3 \\log{\\left(x^{2} + 3 \\right)}}{2 \\sqrt{x} \\left(9 x + 1\\right)},\\;\\left(0, \\infty\\right)\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-exponential-arctan-v1": [
+    {
+      "code": "DVAJ-1-0000000000000003-70",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=- e^{\\frac{2}{x}} \\operatorname{atan}{\\left(x - 1 \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Product rule; }e^{a/x}\\text{ is defined and differentiable for }x\\ne0."
+        ],
+        [
+          "calculation",
+          "f'(x)=- \\frac{e^{\\frac{2}{x}}}{\\left(x - 1\\right)^{2} + 1} + \\frac{2 e^{\\frac{2}{x}} \\operatorname{atan}{\\left(x - 1 \\right)}}{x^{2}},\\qquad x\\in\\left(-\\infty, 0\\right) \\cup \\left(0, \\infty\\right)."
+        ],
+        [
+          "result",
+          "\\left(- \\frac{e^{\\frac{2}{x}}}{\\left(x - 1\\right)^{2} + 1} + \\frac{2 e^{\\frac{2}{x}} \\operatorname{atan}{\\left(x - 1 \\right)}}{x^{2}},\\;\\left(-\\infty, 0\\right) \\cup \\left(0, \\infty\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\frac{e^{\\frac{2}{x}}}{\\left(x - 1\\right)^{2} + 1} + \\frac{2 e^{\\frac{2}{x}} \\operatorname{atan}{\\left(x - 1 \\right)}}{x^{2}},\\;\\left(-\\infty, 0\\right) \\cup \\left(0, \\infty\\right)\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVAJ-1-0000000000000200-49",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=- e^{\\frac{5}{x}} \\operatorname{atan}{\\left(x - 5 \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Product rule; }e^{a/x}\\text{ is defined and differentiable for }x\\ne0."
+        ],
+        [
+          "calculation",
+          "f'(x)=- \\frac{e^{\\frac{5}{x}}}{\\left(x - 5\\right)^{2} + 1} + \\frac{5 e^{\\frac{5}{x}} \\operatorname{atan}{\\left(x - 5 \\right)}}{x^{2}},\\qquad x\\in\\left(-\\infty, 0\\right) \\cup \\left(0, \\infty\\right)."
+        ],
+        [
+          "result",
+          "\\left(- \\frac{e^{\\frac{5}{x}}}{\\left(x - 5\\right)^{2} + 1} + \\frac{5 e^{\\frac{5}{x}} \\operatorname{atan}{\\left(x - 5 \\right)}}{x^{2}},\\;\\left(-\\infty, 0\\right) \\cup \\left(0, \\infty\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\frac{e^{\\frac{5}{x}}}{\\left(x - 5\\right)^{2} + 1} + \\frac{5 e^{\\frac{5}{x}} \\operatorname{atan}{\\left(x - 5 \\right)}}{x^{2}},\\;\\left(-\\infty, 0\\right) \\cup \\left(0, \\infty\\right)\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVAJ-1-0000000000000999-63",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=- e^{\\frac{2}{x}} \\operatorname{atan}{\\left(x - 3 \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Product rule; }e^{a/x}\\text{ is defined and differentiable for }x\\ne0."
+        ],
+        [
+          "calculation",
+          "f'(x)=- \\frac{e^{\\frac{2}{x}}}{\\left(x - 3\\right)^{2} + 1} + \\frac{2 e^{\\frac{2}{x}} \\operatorname{atan}{\\left(x - 3 \\right)}}{x^{2}},\\qquad x\\in\\left(-\\infty, 0\\right) \\cup \\left(0, \\infty\\right)."
+        ],
+        [
+          "result",
+          "\\left(- \\frac{e^{\\frac{2}{x}}}{\\left(x - 3\\right)^{2} + 1} + \\frac{2 e^{\\frac{2}{x}} \\operatorname{atan}{\\left(x - 3 \\right)}}{x^{2}},\\;\\left(-\\infty, 0\\right) \\cup \\left(0, \\infty\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\frac{e^{\\frac{2}{x}}}{\\left(x - 3\\right)^{2} + 1} + \\frac{2 e^{\\frac{2}{x}} \\operatorname{atan}{\\left(x - 3 \\right)}}{x^{2}},\\;\\left(-\\infty, 0\\right) \\cup \\left(0, \\infty\\right)\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-log-cosine-v1": [
+    {
+      "code": "DVAK-1-0000000000000003-30",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=\\log{\\left(2 \\cos^{2}{\\left(x \\right)} + 1 \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The argument is at least }1>0\\text{, so the chain rule applies on }\\mathbb R."
+        ],
+        [
+          "calculation",
+          "f'(x)=- \\frac{4 \\sin{\\left(x \\right)} \\cos{\\left(x \\right)}}{2 \\cos^{2}{\\left(x \\right)} + 1},\\qquad x\\in\\mathbb{R}."
+        ],
+        [
+          "result",
+          "\\left(- \\frac{4 \\sin{\\left(x \\right)} \\cos{\\left(x \\right)}}{2 \\cos^{2}{\\left(x \\right)} + 1},\\;\\mathbb{R}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\frac{4 \\sin{\\left(x \\right)} \\cos{\\left(x \\right)}}{2 \\cos^{2}{\\left(x \\right)} + 1},\\;\\mathbb{R}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVAK-1-0000000000000200-09",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=\\log{\\left(5 \\cos^{2}{\\left(x \\right)} + 5 \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The argument is at least }5>0\\text{, so the chain rule applies on }\\mathbb R."
+        ],
+        [
+          "calculation",
+          "f'(x)=- \\frac{10 \\sin{\\left(x \\right)} \\cos{\\left(x \\right)}}{5 \\cos^{2}{\\left(x \\right)} + 5},\\qquad x\\in\\mathbb{R}."
+        ],
+        [
+          "result",
+          "\\left(- \\frac{10 \\sin{\\left(x \\right)} \\cos{\\left(x \\right)}}{5 \\cos^{2}{\\left(x \\right)} + 5},\\;\\mathbb{R}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\frac{10 \\sin{\\left(x \\right)} \\cos{\\left(x \\right)}}{5 \\cos^{2}{\\left(x \\right)} + 5},\\;\\mathbb{R}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVAK-1-0000000000000999-23",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=\\log{\\left(2 \\cos^{2}{\\left(x \\right)} + 3 \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The argument is at least }3>0\\text{, so the chain rule applies on }\\mathbb R."
+        ],
+        [
+          "calculation",
+          "f'(x)=- \\frac{4 \\sin{\\left(x \\right)} \\cos{\\left(x \\right)}}{2 \\cos^{2}{\\left(x \\right)} + 3},\\qquad x\\in\\mathbb{R}."
+        ],
+        [
+          "result",
+          "\\left(- \\frac{4 \\sin{\\left(x \\right)} \\cos{\\left(x \\right)}}{2 \\cos^{2}{\\left(x \\right)} + 3},\\;\\mathbb{R}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\frac{4 \\sin{\\left(x \\right)} \\cos{\\left(x \\right)}}{2 \\cos^{2}{\\left(x \\right)} + 3},\\;\\mathbb{R}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-root-arccos-v1": [
+    {
+      "code": "DVAL-1-0000000000000003-26",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=2 \\sqrt{\\operatorname{acos}{\\left(\\frac{x^{2}}{25} \\right)}}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The arccosine is differentiable for }x^2<25\\text{, where it is positive.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=- \\frac{2 x}{25 \\sqrt{1 - \\frac{x^{4}}{625}} \\sqrt{\\operatorname{acos}{\\left(\\frac{x^{2}}{25} \\right)}}},\\qquad x\\in\\left(-5, 5\\right)."
+        ],
+        [
+          "result",
+          "\\left(- \\frac{2 x}{25 \\sqrt{1 - \\frac{x^{4}}{625}} \\sqrt{\\operatorname{acos}{\\left(\\frac{x^{2}}{25} \\right)}}},\\;\\left(-5, 5\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\frac{2 x}{25 \\sqrt{1 - \\frac{x^{4}}{625}} \\sqrt{\\operatorname{acos}{\\left(\\frac{x^{2}}{25} \\right)}}},\\;\\left(-5, 5\\right)\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVAL-1-0000000000000200-05",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=5 \\sqrt{\\operatorname{acos}{\\left(x^{2} \\right)}}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The arccosine is differentiable for }x^2<1\\text{, where it is positive.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=- \\frac{5 x}{\\sqrt{1 - x^{4}} \\sqrt{\\operatorname{acos}{\\left(x^{2} \\right)}}},\\qquad x\\in\\left(-1, 1\\right)."
+        ],
+        [
+          "result",
+          "\\left(- \\frac{5 x}{\\sqrt{1 - x^{4}} \\sqrt{\\operatorname{acos}{\\left(x^{2} \\right)}}},\\;\\left(-1, 1\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\frac{5 x}{\\sqrt{1 - x^{4}} \\sqrt{\\operatorname{acos}{\\left(x^{2} \\right)}}},\\;\\left(-1, 1\\right)\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVAL-1-0000000000000999-19",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=2 \\sqrt{\\operatorname{acos}{\\left(\\frac{x^{2}}{25} \\right)}}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The arccosine is differentiable for }x^2<25\\text{, where it is positive.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=- \\frac{2 x}{25 \\sqrt{1 - \\frac{x^{4}}{625}} \\sqrt{\\operatorname{acos}{\\left(\\frac{x^{2}}{25} \\right)}}},\\qquad x\\in\\left(-5, 5\\right)."
+        ],
+        [
+          "result",
+          "\\left(- \\frac{2 x}{25 \\sqrt{1 - \\frac{x^{4}}{625}} \\sqrt{\\operatorname{acos}{\\left(\\frac{x^{2}}{25} \\right)}}},\\;\\left(-5, 5\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\frac{2 x}{25 \\sqrt{1 - \\frac{x^{4}}{625}} \\sqrt{\\operatorname{acos}{\\left(\\frac{x^{2}}{25} \\right)}}},\\;\\left(-5, 5\\right)\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-constant-over-power-v1": [
+    {
+      "code": "DVAM-1-0000000000000003-65",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=\\frac{\\sqrt{2}}{\\left(x^{2} + 1\\right)^{5}}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The numerator is a constant: use the chain rule.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=- \\frac{10 \\sqrt{2} x}{\\left(x^{2} + 1\\right)^{6}},\\qquad x\\in\\mathbb{R}."
+        ],
+        [
+          "result",
+          "\\left(- \\frac{10 \\sqrt{2} x}{\\left(x^{2} + 1\\right)^{6}},\\;\\mathbb{R}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\frac{10 \\sqrt{2} x}{\\left(x^{2} + 1\\right)^{6}},\\;\\mathbb{R}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVAM-1-0000000000000200-44",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=\\frac{\\sqrt{5}}{x^{2} + 5}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The numerator is a constant: use the chain rule.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=- \\frac{2 \\sqrt{5} x}{\\left(x^{2} + 5\\right)^{2}},\\qquad x\\in\\mathbb{R}."
+        ],
+        [
+          "result",
+          "\\left(- \\frac{2 \\sqrt{5} x}{\\left(x^{2} + 5\\right)^{2}},\\;\\mathbb{R}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\frac{2 \\sqrt{5} x}{\\left(x^{2} + 5\\right)^{2}},\\;\\mathbb{R}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVAM-1-0000000000000999-58",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=\\frac{\\sqrt{2}}{\\left(x^{2} + 3\\right)^{5}}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The numerator is a constant: use the chain rule.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=- \\frac{10 \\sqrt{2} x}{\\left(x^{2} + 3\\right)^{6}},\\qquad x\\in\\mathbb{R}."
+        ],
+        [
+          "result",
+          "\\left(- \\frac{10 \\sqrt{2} x}{\\left(x^{2} + 3\\right)^{6}},\\;\\mathbb{R}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\frac{10 \\sqrt{2} x}{\\left(x^{2} + 3\\right)^{6}},\\;\\mathbb{R}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-derivatives-exponential-trig-powers-v1": [
+    {
+      "code": "DVAN-1-0000000000000003-96",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=2^{- \\cos^{2}{\\left(x \\right)}} 3^{\\sin^{2}{\\left(x \\right)}}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use }(q^{u})'=q^{u}\\ln q\\cdot u'\\text{ for each power.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=2 \\cdot 2^{- \\cos^{2}{\\left(x \\right)}} 3^{\\sin^{2}{\\left(x \\right)}} \\log{\\left(2 \\right)} \\sin{\\left(x \\right)} \\cos{\\left(x \\right)} + 2 \\cdot 2^{- \\cos^{2}{\\left(x \\right)}} 3^{\\sin^{2}{\\left(x \\right)}} \\log{\\left(3 \\right)} \\sin{\\left(x \\right)} \\cos{\\left(x \\right)},\\qquad x\\in\\mathbb{R}."
+        ],
+        [
+          "result",
+          "\\left(2 \\cdot 2^{- \\cos^{2}{\\left(x \\right)}} 3^{\\sin^{2}{\\left(x \\right)}} \\log{\\left(2 \\right)} \\sin{\\left(x \\right)} \\cos{\\left(x \\right)} + 2 \\cdot 2^{- \\cos^{2}{\\left(x \\right)}} 3^{\\sin^{2}{\\left(x \\right)}} \\log{\\left(3 \\right)} \\sin{\\left(x \\right)} \\cos{\\left(x \\right)},\\;\\mathbb{R}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(2 \\cdot 2^{- \\cos^{2}{\\left(x \\right)}} 3^{\\sin^{2}{\\left(x \\right)}} \\log{\\left(2 \\right)} \\sin{\\left(x \\right)} \\cos{\\left(x \\right)} + 2 \\cdot 2^{- \\cos^{2}{\\left(x \\right)}} 3^{\\sin^{2}{\\left(x \\right)}} \\log{\\left(3 \\right)} \\sin{\\left(x \\right)} \\cos{\\left(x \\right)},\\;\\mathbb{R}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVAN-1-0000000000000200-75",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=6^{\\sin^{2}{\\left(x \\right)}} 6^{- \\cos^{2}{\\left(x \\right)}}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use }(q^{u})'=q^{u}\\ln q\\cdot u'\\text{ for each power.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=4 \\cdot 6^{\\sin^{2}{\\left(x \\right)}} 6^{- \\cos^{2}{\\left(x \\right)}} \\log{\\left(6 \\right)} \\sin{\\left(x \\right)} \\cos{\\left(x \\right)},\\qquad x\\in\\mathbb{R}."
+        ],
+        [
+          "result",
+          "\\left(4 \\cdot 6^{\\sin^{2}{\\left(x \\right)}} 6^{- \\cos^{2}{\\left(x \\right)}} \\log{\\left(6 \\right)} \\sin{\\left(x \\right)} \\cos{\\left(x \\right)},\\;\\mathbb{R}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(4 \\cdot 6^{\\sin^{2}{\\left(x \\right)}} 6^{- \\cos^{2}{\\left(x \\right)}} \\log{\\left(6 \\right)} \\sin{\\left(x \\right)} \\cos{\\left(x \\right)},\\;\\mathbb{R}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVAN-1-0000000000000999-89",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=3^{\\sin^{2}{\\left(x \\right)}} 4^{- \\cos^{2}{\\left(x \\right)}}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use }(q^{u})'=q^{u}\\ln q\\cdot u'\\text{ for each power.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=2 \\cdot 3^{\\sin^{2}{\\left(x \\right)}} 4^{- \\cos^{2}{\\left(x \\right)}} \\log{\\left(3 \\right)} \\sin{\\left(x \\right)} \\cos{\\left(x \\right)} + 2 \\cdot 3^{\\sin^{2}{\\left(x \\right)}} 4^{- \\cos^{2}{\\left(x \\right)}} \\log{\\left(4 \\right)} \\sin{\\left(x \\right)} \\cos{\\left(x \\right)},\\qquad x\\in\\mathbb{R}."
+        ],
+        [
+          "result",
+          "\\left(2 \\cdot 3^{\\sin^{2}{\\left(x \\right)}} 4^{- \\cos^{2}{\\left(x \\right)}} \\log{\\left(3 \\right)} \\sin{\\left(x \\right)} \\cos{\\left(x \\right)} + 2 \\cdot 3^{\\sin^{2}{\\left(x \\right)}} 4^{- \\cos^{2}{\\left(x \\right)}} \\log{\\left(4 \\right)} \\sin{\\left(x \\right)} \\cos{\\left(x \\right)},\\;\\mathbb{R}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(2 \\cdot 3^{\\sin^{2}{\\left(x \\right)}} 4^{- \\cos^{2}{\\left(x \\right)}} \\log{\\left(3 \\right)} \\sin{\\left(x \\right)} \\cos{\\left(x \\right)} + 2 \\cdot 3^{\\sin^{2}{\\left(x \\right)}} 4^{- \\cos^{2}{\\left(x \\right)}} \\log{\\left(4 \\right)} \\sin{\\left(x \\right)} \\cos{\\left(x \\right)},\\;\\mathbb{R}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-power-of-exponential-v1": [
+    {
+      "code": "DVAO-1-0000000000000003-46",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=\\left(1 + e^{- 2 x}\\right)^{6}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Chain rule.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=- 12 \\left(1 + e^{- 2 x}\\right)^{5} e^{- 2 x},\\qquad x\\in\\mathbb{R}."
+        ],
+        [
+          "result",
+          "\\left(- 12 \\left(1 + e^{- 2 x}\\right)^{5} e^{- 2 x},\\;\\mathbb{R}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- 12 \\left(1 + e^{- 2 x}\\right)^{5} e^{- 2 x},\\;\\mathbb{R}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVAO-1-0000000000000200-25",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=\\left(5 + e^{- 5 x}\\right)^{2}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Chain rule.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=- 10 \\left(5 + e^{- 5 x}\\right) e^{- 5 x},\\qquad x\\in\\mathbb{R}."
+        ],
+        [
+          "result",
+          "\\left(- 10 \\left(5 + e^{- 5 x}\\right) e^{- 5 x},\\;\\mathbb{R}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- 10 \\left(5 + e^{- 5 x}\\right) e^{- 5 x},\\;\\mathbb{R}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVAO-1-0000000000000999-39",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=\\left(3 + e^{- 2 x}\\right)^{6}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Chain rule.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=- 12 \\left(3 + e^{- 2 x}\\right)^{5} e^{- 2 x},\\qquad x\\in\\mathbb{R}."
+        ],
+        [
+          "result",
+          "\\left(- 12 \\left(3 + e^{- 2 x}\\right)^{5} e^{- 2 x},\\;\\mathbb{R}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- 12 \\left(3 + e^{- 2 x}\\right)^{5} e^{- 2 x},\\;\\mathbb{R}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-derivatives-variable-power-v1": [
+    {
+      "code": "DVAP-1-0000000000000003-91",
+      "statement": "\\(\\text{For }0<x<\\frac{\\pi}{2}\\text{ find }f'(x):\\quad f(x)=\\sin^{x}{\\left(2 x \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Logarithmic differentiation: }\\ln f=bx\\ln\\sin ax."
+        ],
+        [
+          "calculation",
+          "\\frac{f'}{f}=\\ln\\sin 2x+2x\\cot 2x,\\qquad f'(x)=\\left(\\frac{2 x \\cos{\\left(2 x \\right)}}{\\sin{\\left(2 x \\right)}} + \\log{\\left(\\sin{\\left(2 x \\right)} \\right)}\\right) e^{x \\log{\\left(\\sin{\\left(2 x \\right)} \\right)}}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{2 x \\cos{\\left(2 x \\right)}}{\\sin{\\left(2 x \\right)}} + \\log{\\left(\\sin{\\left(2 x \\right)} \\right)}\\right) e^{x \\log{\\left(\\sin{\\left(2 x \\right)} \\right)}}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\left(\\frac{2 x \\cos{\\left(2 x \\right)}}{\\sin{\\left(2 x \\right)}} + \\log{\\left(\\sin{\\left(2 x \\right)} \\right)}\\right) e^{x \\log{\\left(\\sin{\\left(2 x \\right)} \\right)}}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVAP-1-0000000000000200-70",
+      "statement": "\\(\\text{For }0<x<\\frac{\\pi}{5}\\text{ find }f'(x):\\quad f(x)=\\sin^{5 x}{\\left(5 x \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Logarithmic differentiation: }\\ln f=bx\\ln\\sin ax."
+        ],
+        [
+          "calculation",
+          "\\frac{f'}{f}=5\\ln\\sin 5x+25x\\cot 5x,\\qquad f'(x)=\\left(\\frac{25 x \\cos{\\left(5 x \\right)}}{\\sin{\\left(5 x \\right)}} + 5 \\log{\\left(\\sin{\\left(5 x \\right)} \\right)}\\right) e^{5 x \\log{\\left(\\sin{\\left(5 x \\right)} \\right)}}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{25 x \\cos{\\left(5 x \\right)}}{\\sin{\\left(5 x \\right)}} + 5 \\log{\\left(\\sin{\\left(5 x \\right)} \\right)}\\right) e^{5 x \\log{\\left(\\sin{\\left(5 x \\right)} \\right)}}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\left(\\frac{25 x \\cos{\\left(5 x \\right)}}{\\sin{\\left(5 x \\right)}} + 5 \\log{\\left(\\sin{\\left(5 x \\right)} \\right)}\\right) e^{5 x \\log{\\left(\\sin{\\left(5 x \\right)} \\right)}}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVAP-1-0000000000000999-84",
+      "statement": "\\(\\text{For }0<x<\\frac{\\pi}{2}\\text{ find }f'(x):\\quad f(x)=\\sin^{3 x}{\\left(2 x \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Logarithmic differentiation: }\\ln f=bx\\ln\\sin ax."
+        ],
+        [
+          "calculation",
+          "\\frac{f'}{f}=3\\ln\\sin 2x+6x\\cot 2x,\\qquad f'(x)=\\left(\\frac{6 x \\cos{\\left(2 x \\right)}}{\\sin{\\left(2 x \\right)}} + 3 \\log{\\left(\\sin{\\left(2 x \\right)} \\right)}\\right) e^{3 x \\log{\\left(\\sin{\\left(2 x \\right)} \\right)}}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{6 x \\cos{\\left(2 x \\right)}}{\\sin{\\left(2 x \\right)}} + 3 \\log{\\left(\\sin{\\left(2 x \\right)} \\right)}\\right) e^{3 x \\log{\\left(\\sin{\\left(2 x \\right)} \\right)}}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\left(\\frac{6 x \\cos{\\left(2 x \\right)}}{\\sin{\\left(2 x \\right)}} + 3 \\log{\\left(\\sin{\\left(2 x \\right)} \\right)}\\right) e^{3 x \\log{\\left(\\sin{\\left(2 x \\right)} \\right)}}",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-inverse-trig-constant-v1": [
+    {
+      "code": "DVAQ-1-0000000000000003-88",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=\\left(2\\left(\\arcsin\\frac{x}{5}+\\arccos\\frac{x}{5}\\right)+1\\right)^2.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Differentiate inside: }(\\arcsin u+\\arccos u)'=0\\text{ for }|u|<1."
+        ],
+        [
+          "calculation",
+          "\\arcsin u+\\arccos u=\\tfrac{\\pi}{2}\\ \\Rightarrow\\ f\\equiv\\left(\\tfrac{2\\pi}{2}+1\\right)^2,\\quad f'=0\\text{ on }(-5,5)."
+        ],
+        [
+          "result",
+          "\\left(0,\\;\\left(-5, 5\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(0,\\;\\left(-5, 5\\right)\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVAQ-1-0000000000000200-67",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=\\left(5\\left(\\arcsin\\frac{x}{1}+\\arccos\\frac{x}{1}\\right)+5\\right)^2.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Differentiate inside: }(\\arcsin u+\\arccos u)'=0\\text{ for }|u|<1."
+        ],
+        [
+          "calculation",
+          "\\arcsin u+\\arccos u=\\tfrac{\\pi}{2}\\ \\Rightarrow\\ f\\equiv\\left(\\tfrac{5\\pi}{2}+5\\right)^2,\\quad f'=0\\text{ on }(-1,1)."
+        ],
+        [
+          "result",
+          "\\left(0,\\;\\left(-1, 1\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(0,\\;\\left(-1, 1\\right)\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVAQ-1-0000000000000999-81",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=\\left(2\\left(\\arcsin\\frac{x}{5}+\\arccos\\frac{x}{5}\\right)+3\\right)^2.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Differentiate inside: }(\\arcsin u+\\arccos u)'=0\\text{ for }|u|<1."
+        ],
+        [
+          "calculation",
+          "\\arcsin u+\\arccos u=\\tfrac{\\pi}{2}\\ \\Rightarrow\\ f\\equiv\\left(\\tfrac{2\\pi}{2}+3\\right)^2,\\quad f'=0\\text{ on }(-5,5)."
+        ],
+        [
+          "result",
+          "\\left(0,\\;\\left(-5, 5\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(0,\\;\\left(-5, 5\\right)\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-logarithm-constant-v1": [
+    {
+      "code": "DVAR-1-0000000000000003-08",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=\\ln(2x)+\\ln\\frac{1}{x}+5x.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Both logarithms need }x>0.\\text{ Their sum is a constant.}"
+        ],
+        [
+          "calculation",
+          "\\ln(2x)+\\ln\\frac{1}{x}=\\ln2,\\qquad f'(x)=5."
+        ],
+        [
+          "result",
+          "\\left(5,\\;\\left(0, \\infty\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(5,\\;\\left(0, \\infty\\right)\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVAR-1-0000000000000200-84",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=\\ln(5x)+\\ln\\frac{5}{x}+x.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Both logarithms need }x>0.\\text{ Their sum is a constant.}"
+        ],
+        [
+          "calculation",
+          "\\ln(5x)+\\ln\\frac{5}{x}=\\ln25,\\qquad f'(x)=1."
+        ],
+        [
+          "result",
+          "\\left(1,\\;\\left(0, \\infty\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(1,\\;\\left(0, \\infty\\right)\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVAR-1-0000000000000999-01",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=\\ln(2x)+\\ln\\frac{3}{x}+5x.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Both logarithms need }x>0.\\text{ Their sum is a constant.}"
+        ],
+        [
+          "calculation",
+          "\\ln(2x)+\\ln\\frac{3}{x}=\\ln6,\\qquad f'(x)=5."
+        ],
+        [
+          "result",
+          "\\left(5,\\;\\left(0, \\infty\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(5,\\;\\left(0, \\infty\\right)\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-derivatives-log-constant-quotient-v1": [
+    {
+      "code": "DVAS-1-0000000000000003-39",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=\\frac{\\ln 2011}{x^2+5}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\ln 2011\\text{ is a constant factor.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=- \\frac{2 x \\log{\\left(2011 \\right)}}{\\left(x^{2} + 5\\right)^{2}},\\qquad x\\in\\mathbb{R}."
+        ],
+        [
+          "result",
+          "\\left(- \\frac{2 x \\log{\\left(2011 \\right)}}{\\left(x^{2} + 5\\right)^{2}},\\;\\mathbb{R}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\frac{2 x \\log{\\left(2011 \\right)}}{\\left(x^{2} + 5\\right)^{2}},\\;\\mathbb{R}\\right)",
+      "metadata": {
+        "difficulty": 1
+      }
+    },
+    {
+      "code": "DVAS-1-0000000000000200-18",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=\\frac{\\ln 2030}{x^2+1}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\ln 2030\\text{ is a constant factor.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=- \\frac{2 x \\log{\\left(2030 \\right)}}{\\left(x^{2} + 1\\right)^{2}},\\qquad x\\in\\mathbb{R}."
+        ],
+        [
+          "result",
+          "\\left(- \\frac{2 x \\log{\\left(2030 \\right)}}{\\left(x^{2} + 1\\right)^{2}},\\;\\mathbb{R}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\frac{2 x \\log{\\left(2030 \\right)}}{\\left(x^{2} + 1\\right)^{2}},\\;\\mathbb{R}\\right)",
+      "metadata": {
+        "difficulty": 1
+      }
+    },
+    {
+      "code": "DVAS-1-0000000000000999-32",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=\\frac{\\ln 2013}{x^2+5}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\ln 2013\\text{ is a constant factor.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=- \\frac{2 x \\log{\\left(2013 \\right)}}{\\left(x^{2} + 5\\right)^{2}},\\qquad x\\in\\mathbb{R}."
+        ],
+        [
+          "result",
+          "\\left(- \\frac{2 x \\log{\\left(2013 \\right)}}{\\left(x^{2} + 5\\right)^{2}},\\;\\mathbb{R}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\frac{2 x \\log{\\left(2013 \\right)}}{\\left(x^{2} + 5\\right)^{2}},\\;\\mathbb{R}\\right)",
+      "metadata": {
+        "difficulty": 1
+      }
+    }
+  ],
+  "analysis1-derivatives-constant-coefficients-v1": [
+    {
+      "code": "DVAT-1-0000000000000003-27",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=e^{2} \\sin{\\left(x \\right)} + \\sqrt{\\pi} \\cos{\\left(5 x \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "e^{a}\\text{ and }\\sqrt\\pi\\text{ are constant factors.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=- 5 \\sqrt{\\pi} \\sin{\\left(5 x \\right)} + e^{2} \\cos{\\left(x \\right)},\\qquad x\\in\\mathbb{R}."
+        ],
+        [
+          "result",
+          "\\left(- 5 \\sqrt{\\pi} \\sin{\\left(5 x \\right)} + e^{2} \\cos{\\left(x \\right)},\\;\\mathbb{R}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- 5 \\sqrt{\\pi} \\sin{\\left(5 x \\right)} + e^{2} \\cos{\\left(x \\right)},\\;\\mathbb{R}\\right)",
+      "metadata": {
+        "difficulty": 1
+      }
+    },
+    {
+      "code": "DVAT-1-0000000000000200-06",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=e^{5} \\sin{\\left(5 x \\right)} + \\sqrt{\\pi} \\cos{\\left(x \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "e^{a}\\text{ and }\\sqrt\\pi\\text{ are constant factors.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=- \\sqrt{\\pi} \\sin{\\left(x \\right)} + 5 e^{5} \\cos{\\left(5 x \\right)},\\qquad x\\in\\mathbb{R}."
+        ],
+        [
+          "result",
+          "\\left(- \\sqrt{\\pi} \\sin{\\left(x \\right)} + 5 e^{5} \\cos{\\left(5 x \\right)},\\;\\mathbb{R}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\sqrt{\\pi} \\sin{\\left(x \\right)} + 5 e^{5} \\cos{\\left(5 x \\right)},\\;\\mathbb{R}\\right)",
+      "metadata": {
+        "difficulty": 1
+      }
+    },
+    {
+      "code": "DVAT-1-0000000000000999-20",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=e^{2} \\sin{\\left(3 x \\right)} + \\sqrt{\\pi} \\cos{\\left(5 x \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "e^{a}\\text{ and }\\sqrt\\pi\\text{ are constant factors.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=- 5 \\sqrt{\\pi} \\sin{\\left(5 x \\right)} + 3 e^{2} \\cos{\\left(3 x \\right)},\\qquad x\\in\\mathbb{R}."
+        ],
+        [
+          "result",
+          "\\left(- 5 \\sqrt{\\pi} \\sin{\\left(5 x \\right)} + 3 e^{2} \\cos{\\left(3 x \\right)},\\;\\mathbb{R}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- 5 \\sqrt{\\pi} \\sin{\\left(5 x \\right)} + 3 e^{2} \\cos{\\left(3 x \\right)},\\;\\mathbb{R}\\right)",
+      "metadata": {
+        "difficulty": 1
+      }
+    }
+  ],
+  "analysis1-derivatives-root-exponential-domain-v1": [
+    {
+      "code": "DVAU-1-0000000000000003-66",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=e^{2 \\sqrt{- x^{2} + 2 x}}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The radicand is nonnegative on }[0,2]\\text{ and the root is}\\text{ differentiable only where it is positive.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{2 \\left(1 - x\\right) e^{2 \\sqrt{- x^{2} + 2 x}}}{\\sqrt{- x^{2} + 2 x}},\\qquad x\\in\\left(0, 2\\right)."
+        ],
+        [
+          "result",
+          "\\left(\\frac{2 \\left(1 - x\\right) e^{2 \\sqrt{- x^{2} + 2 x}}}{\\sqrt{- x^{2} + 2 x}},\\;\\left(0, 2\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{2 \\left(1 - x\\right) e^{2 \\sqrt{- x^{2} + 2 x}}}{\\sqrt{- x^{2} + 2 x}},\\;\\left(0, 2\\right)\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVAU-1-0000000000000200-45",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=e^{5 \\sqrt{- x^{2} + 10 x}}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The radicand is nonnegative on }[0,10]\\text{ and the root is}\\text{ differentiable only where it is positive.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{5 \\left(5 - x\\right) e^{5 \\sqrt{- x^{2} + 10 x}}}{\\sqrt{- x^{2} + 10 x}},\\qquad x\\in\\left(0, 10\\right)."
+        ],
+        [
+          "result",
+          "\\left(\\frac{5 \\left(5 - x\\right) e^{5 \\sqrt{- x^{2} + 10 x}}}{\\sqrt{- x^{2} + 10 x}},\\;\\left(0, 10\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{5 \\left(5 - x\\right) e^{5 \\sqrt{- x^{2} + 10 x}}}{\\sqrt{- x^{2} + 10 x}},\\;\\left(0, 10\\right)\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVAU-1-0000000000000999-59",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=e^{2 \\sqrt{- x^{2} + 6 x}}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The radicand is nonnegative on }[0,6]\\text{ and the root is}\\text{ differentiable only where it is positive.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{2 \\left(3 - x\\right) e^{2 \\sqrt{- x^{2} + 6 x}}}{\\sqrt{- x^{2} + 6 x}},\\qquad x\\in\\left(0, 6\\right)."
+        ],
+        [
+          "result",
+          "\\left(\\frac{2 \\left(3 - x\\right) e^{2 \\sqrt{- x^{2} + 6 x}}}{\\sqrt{- x^{2} + 6 x}},\\;\\left(0, 6\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{2 \\left(3 - x\\right) e^{2 \\sqrt{- x^{2} + 6 x}}}{\\sqrt{- x^{2} + 6 x}},\\;\\left(0, 6\\right)\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-arcsine-shifted-square-v1": [
+    {
+      "code": "DVAV-1-0000000000000003-10",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=2 \\operatorname{asin}{\\left(x^{2} - 2 \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The arcsine is differentiable for }|x^2-2|<1."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{4 x}{\\sqrt{1 - \\left(x^{2} - 2\\right)^{2}}},\\qquad x\\in\\left(- \\sqrt{3}, -1\\right) \\cup \\left(1, \\sqrt{3}\\right)."
+        ],
+        [
+          "result",
+          "\\left(\\frac{4 x}{\\sqrt{1 - \\left(x^{2} - 2\\right)^{2}}},\\;\\left(- \\sqrt{3}, -1\\right) \\cup \\left(1, \\sqrt{3}\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{4 x}{\\sqrt{1 - \\left(x^{2} - 2\\right)^{2}}},\\;\\left(- \\sqrt{3}, -1\\right) \\cup \\left(1, \\sqrt{3}\\right)\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVAV-1-0000000000000200-86",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=5 \\operatorname{asin}{\\left(x^{2} - 6 \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The arcsine is differentiable for }|x^2-6|<1."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{10 x}{\\sqrt{1 - \\left(x^{2} - 6\\right)^{2}}},\\qquad x\\in\\left(- \\sqrt{7}, - \\sqrt{5}\\right) \\cup \\left(\\sqrt{5}, \\sqrt{7}\\right)."
+        ],
+        [
+          "result",
+          "\\left(\\frac{10 x}{\\sqrt{1 - \\left(x^{2} - 6\\right)^{2}}},\\;\\left(- \\sqrt{7}, - \\sqrt{5}\\right) \\cup \\left(\\sqrt{5}, \\sqrt{7}\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{10 x}{\\sqrt{1 - \\left(x^{2} - 6\\right)^{2}}},\\;\\left(- \\sqrt{7}, - \\sqrt{5}\\right) \\cup \\left(\\sqrt{5}, \\sqrt{7}\\right)\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVAV-1-0000000000000999-03",
+      "statement": "\\(\\text{Find }f'(x)\\text{ and the largest set on which }f\\text{ is differentiable:}\\quad f(x)=2 \\operatorname{asin}{\\left(x^{2} - 4 \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The arcsine is differentiable for }|x^2-4|<1."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{4 x}{\\sqrt{1 - \\left(x^{2} - 4\\right)^{2}}},\\qquad x\\in\\left(- \\sqrt{5}, - \\sqrt{3}\\right) \\cup \\left(\\sqrt{3}, \\sqrt{5}\\right)."
+        ],
+        [
+          "result",
+          "\\left(\\frac{4 x}{\\sqrt{1 - \\left(x^{2} - 4\\right)^{2}}},\\;\\left(- \\sqrt{5}, - \\sqrt{3}\\right) \\cup \\left(\\sqrt{3}, \\sqrt{5}\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{4 x}{\\sqrt{1 - \\left(x^{2} - 4\\right)^{2}}},\\;\\left(- \\sqrt{5}, - \\sqrt{3}\\right) \\cup \\left(\\sqrt{3}, \\sqrt{5}\\right)\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-tangent-arctan-v1": [
+    {
+      "code": "DVAW-1-0000000000000003-44",
+      "statement": "\\(\\text{Find the ordinate of the point and the tangent line at }x_0=1:\\quad f(x)=2 \\operatorname{atan}{\\left(x \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Tangent: }y=f(x_0)+f'(x_0)(x-x_0)."
+        ],
+        [
+          "calculation",
+          "f(1)=\\frac{\\pi}{2},\\quad f'(1)=1,\\qquad y=x - 1 + \\frac{\\pi}{2}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{\\pi}{2},\\;x - 1 + \\frac{\\pi}{2}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{\\pi}{2},\\;x - 1 + \\frac{\\pi}{2}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVAW-1-0000000000000200-23",
+      "statement": "\\(\\text{Find the ordinate of the point and the tangent line at }x_0=5:\\quad f(x)=5 \\operatorname{atan}{\\left(\\frac{x}{5} \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Tangent: }y=f(x_0)+f'(x_0)(x-x_0)."
+        ],
+        [
+          "calculation",
+          "f(5)=\\frac{5 \\pi}{4},\\quad f'(5)=\\frac{1}{2},\\qquad y=\\frac{x}{2} - \\frac{5}{2} + \\frac{5 \\pi}{4}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{5 \\pi}{4},\\;\\frac{x}{2} - \\frac{5}{2} + \\frac{5 \\pi}{4}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{5 \\pi}{4},\\;\\frac{x}{2} - \\frac{5}{2} + \\frac{5 \\pi}{4}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVAW-1-0000000000000999-37",
+      "statement": "\\(\\text{Find the ordinate of the point and the tangent line at }x_0=3:\\quad f(x)=2 \\operatorname{atan}{\\left(\\frac{x}{3} \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Tangent: }y=f(x_0)+f'(x_0)(x-x_0)."
+        ],
+        [
+          "calculation",
+          "f(3)=\\frac{\\pi}{2},\\quad f'(3)=\\frac{1}{3},\\qquad y=\\frac{x}{3} - 1 + \\frac{\\pi}{2}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{\\pi}{2},\\;\\frac{x}{3} - 1 + \\frac{\\pi}{2}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{\\pi}{2},\\;\\frac{x}{3} - 1 + \\frac{\\pi}{2}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-derivatives-tangent-logarithm-v1": [
+    {
+      "code": "DVAX-1-0000000000000003-57",
+      "statement": "\\(\\text{Find the ordinate of the point and the tangent line at }x_0=2:\\quad f(x)=\\log{\\left(x^{2} + 1 \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "(\\ln u)'=u'/u."
+        ],
+        [
+          "calculation",
+          "f(2)=\\log{\\left(5 \\right)},\\quad f'(2)=\\frac{4}{5},\\qquad y=\\frac{4 x}{5} - \\frac{8}{5} + \\log{\\left(5 \\right)}."
+        ],
+        [
+          "result",
+          "\\left(\\log{\\left(5 \\right)},\\;\\frac{4 x}{5} - \\frac{8}{5} + \\log{\\left(5 \\right)}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\log{\\left(5 \\right)},\\;\\frac{4 x}{5} - \\frac{8}{5} + \\log{\\left(5 \\right)}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVAX-1-0000000000000200-36",
+      "statement": "\\(\\text{Find the ordinate of the point and the tangent line at }x_0=-2:\\quad f(x)=\\log{\\left(x^{2} + 5 \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "(\\ln u)'=u'/u."
+        ],
+        [
+          "calculation",
+          "f(-2)=\\log{\\left(9 \\right)},\\quad f'(-2)=- \\frac{4}{9},\\qquad y=- \\frac{4 x}{9} - \\frac{8}{9} + 2 \\log{\\left(3 \\right)}."
+        ],
+        [
+          "result",
+          "\\left(\\log{\\left(9 \\right)},\\;- \\frac{4 x}{9} - \\frac{8}{9} + 2 \\log{\\left(3 \\right)}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\log{\\left(9 \\right)},\\;- \\frac{4 x}{9} - \\frac{8}{9} + 2 \\log{\\left(3 \\right)}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVAX-1-0000000000000999-50",
+      "statement": "\\(\\text{Find the ordinate of the point and the tangent line at }x_0=2:\\quad f(x)=\\log{\\left(x^{2} + 3 \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "(\\ln u)'=u'/u."
+        ],
+        [
+          "calculation",
+          "f(2)=\\log{\\left(7 \\right)},\\quad f'(2)=\\frac{4}{7},\\qquad y=\\frac{4 x}{7} - \\frac{8}{7} + \\log{\\left(7 \\right)}."
+        ],
+        [
+          "result",
+          "\\left(\\log{\\left(7 \\right)},\\;\\frac{4 x}{7} - \\frac{8}{7} + \\log{\\left(7 \\right)}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\log{\\left(7 \\right)},\\;\\frac{4 x}{7} - \\frac{8}{7} + \\log{\\left(7 \\right)}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-derivatives-tangent-tangent-square-v1": [
+    {
+      "code": "DVAY-1-0000000000000003-82",
+      "statement": "\\(\\text{Find the ordinate of the point and the tangent line at }x_0=\\frac{\\pi}{4}:\\quad f(x)=2 \\tan^{2}{\\left(x \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "(\\tan^2u)'=2\\tan u\\,(1+\\tan^2u)\\,u'."
+        ],
+        [
+          "calculation",
+          "f(\\frac{\\pi}{4})=2,\\quad f'(\\frac{\\pi}{4})=8,\\qquad y=8 x - 2 \\pi + 2."
+        ],
+        [
+          "result",
+          "\\left(2,\\;8 x - 2 \\pi + 2\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(2,\\;8 x - 2 \\pi + 2\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVAY-1-0000000000000200-61",
+      "statement": "\\(\\text{Find the ordinate of the point and the tangent line at }x_0=\\frac{\\pi}{20}:\\quad f(x)=5 \\tan^{2}{\\left(5 x \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "(\\tan^2u)'=2\\tan u\\,(1+\\tan^2u)\\,u'."
+        ],
+        [
+          "calculation",
+          "f(\\frac{\\pi}{20})=5,\\quad f'(\\frac{\\pi}{20})=100,\\qquad y=100 x - 5 \\pi + 5."
+        ],
+        [
+          "result",
+          "\\left(5,\\;100 x - 5 \\pi + 5\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(5,\\;100 x - 5 \\pi + 5\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVAY-1-0000000000000999-75",
+      "statement": "\\(\\text{Find the ordinate of the point and the tangent line at }x_0=\\frac{\\pi}{12}:\\quad f(x)=2 \\tan^{2}{\\left(3 x \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "(\\tan^2u)'=2\\tan u\\,(1+\\tan^2u)\\,u'."
+        ],
+        [
+          "calculation",
+          "f(\\frac{\\pi}{12})=2,\\quad f'(\\frac{\\pi}{12})=24,\\qquad y=24 x - 2 \\pi + 2."
+        ],
+        [
+          "result",
+          "\\left(2,\\;24 x - 2 \\pi + 2\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(2,\\;24 x - 2 \\pi + 2\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-tangent-root-exponential-v1": [
+    {
+      "code": "DVAZ-1-0000000000000003-28",
+      "statement": "\\(\\text{Find the ordinate of the point and the tangent line at }x_0=1:\\quad f(x)=\\sqrt{3^{x} + 5}.\\)",
+      "steps": [
+        [
+          "method",
+          "(\\sqrt u)'=u'/(2\\sqrt u),\\ (q^x)'=q^x\\ln q."
+        ],
+        [
+          "calculation",
+          "f(1)=2 \\sqrt{2},\\quad f'(1)=\\frac{3 \\sqrt{2} \\log{\\left(3 \\right)}}{8},\\qquad y=\\frac{3 \\sqrt{2} x \\log{\\left(3 \\right)}}{8} - \\frac{3 \\sqrt{2} \\log{\\left(3 \\right)}}{8} + 2 \\sqrt{2}."
+        ],
+        [
+          "result",
+          "\\left(2 \\sqrt{2},\\;\\frac{3 \\sqrt{2} x \\log{\\left(3 \\right)}}{8} - \\frac{3 \\sqrt{2} \\log{\\left(3 \\right)}}{8} + 2 \\sqrt{2}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(2 \\sqrt{2},\\;\\frac{3 \\sqrt{2} x \\log{\\left(3 \\right)}}{8} - \\frac{3 \\sqrt{2} \\log{\\left(3 \\right)}}{8} + 2 \\sqrt{2}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVAZ-1-0000000000000200-07",
+      "statement": "\\(\\text{Find the ordinate of the point and the tangent line at }x_0=5:\\quad f(x)=\\sqrt{6^{x} + 1}.\\)",
+      "steps": [
+        [
+          "method",
+          "(\\sqrt u)'=u'/(2\\sqrt u),\\ (q^x)'=q^x\\ln q."
+        ],
+        [
+          "calculation",
+          "f(5)=\\sqrt{7777},\\quad f'(5)=\\frac{3888 \\sqrt{7777} \\log{\\left(6 \\right)}}{7777},\\qquad y=\\frac{3888 \\sqrt{7777} x \\log{\\left(6 \\right)}}{7777} - \\frac{19440 \\sqrt{7777} \\log{\\left(6 \\right)}}{7777} + \\sqrt{7777}."
+        ],
+        [
+          "result",
+          "\\left(\\sqrt{7777},\\;\\frac{3888 \\sqrt{7777} x \\log{\\left(6 \\right)}}{7777} - \\frac{19440 \\sqrt{7777} \\log{\\left(6 \\right)}}{7777} + \\sqrt{7777}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\sqrt{7777},\\;\\frac{3888 \\sqrt{7777} x \\log{\\left(6 \\right)}}{7777} - \\frac{19440 \\sqrt{7777} \\log{\\left(6 \\right)}}{7777} + \\sqrt{7777}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVAZ-1-0000000000000999-21",
+      "statement": "\\(\\text{Find the ordinate of the point and the tangent line at }x_0=3:\\quad f(x)=\\sqrt{3^{x} + 5}.\\)",
+      "steps": [
+        [
+          "method",
+          "(\\sqrt u)'=u'/(2\\sqrt u),\\ (q^x)'=q^x\\ln q."
+        ],
+        [
+          "calculation",
+          "f(3)=4 \\sqrt{2},\\quad f'(3)=\\frac{27 \\sqrt{2} \\log{\\left(3 \\right)}}{16},\\qquad y=\\frac{27 \\sqrt{2} x \\log{\\left(3 \\right)}}{16} - \\frac{81 \\sqrt{2} \\log{\\left(3 \\right)}}{16} + 4 \\sqrt{2}."
+        ],
+        [
+          "result",
+          "\\left(4 \\sqrt{2},\\;\\frac{27 \\sqrt{2} x \\log{\\left(3 \\right)}}{16} - \\frac{81 \\sqrt{2} \\log{\\left(3 \\right)}}{16} + 4 \\sqrt{2}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(4 \\sqrt{2},\\;\\frac{27 \\sqrt{2} x \\log{\\left(3 \\right)}}{16} - \\frac{81 \\sqrt{2} \\log{\\left(3 \\right)}}{16} + 4 \\sqrt{2}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-tangent-rational-v1": [
+    {
+      "code": "DVBA-1-0000000000000003-07",
+      "statement": "\\(\\text{Find the ordinate of the point and the tangent line at }x_0=\\sqrt{5}:\\quad f(x)=\\frac{2 x}{x^{2} + 1}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Quotient rule.}"
+        ],
+        [
+          "calculation",
+          "f(\\sqrt{5})=\\frac{\\sqrt{5}}{3},\\quad f'(\\sqrt{5})=- \\frac{2}{9},\\qquad y=- \\frac{2 x}{9} + \\frac{5 \\sqrt{5}}{9}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{\\sqrt{5}}{3},\\;- \\frac{2 x}{9} + \\frac{5 \\sqrt{5}}{9}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{\\sqrt{5}}{3},\\;- \\frac{2 x}{9} + \\frac{5 \\sqrt{5}}{9}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVBA-1-0000000000000200-83",
+      "statement": "\\(\\text{Find the ordinate of the point and the tangent line at }x_0=1:\\quad f(x)=\\frac{5 x}{x^{2} + 5}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Quotient rule.}"
+        ],
+        [
+          "calculation",
+          "f(1)=\\frac{5}{6},\\quad f'(1)=\\frac{5}{9},\\qquad y=\\frac{5 x}{9} + \\frac{5}{18}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{5}{6},\\;\\frac{5 x}{9} + \\frac{5}{18}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{5}{6},\\;\\frac{5 x}{9} + \\frac{5}{18}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVBA-1-0000000000000999-00",
+      "statement": "\\(\\text{Find the ordinate of the point and the tangent line at }x_0=\\sqrt{5}:\\quad f(x)=\\frac{2 x}{x^{2} + 3}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Quotient rule.}"
+        ],
+        [
+          "calculation",
+          "f(\\sqrt{5})=\\frac{\\sqrt{5}}{4},\\quad f'(\\sqrt{5})=- \\frac{1}{16},\\qquad y=- \\frac{x}{16} + \\frac{5 \\sqrt{5}}{16}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{\\sqrt{5}}{4},\\;- \\frac{x}{16} + \\frac{5 \\sqrt{5}}{16}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{\\sqrt{5}}{4},\\;- \\frac{x}{16} + \\frac{5 \\sqrt{5}}{16}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-tangent-exponential-level-v1": [
+    {
+      "code": "DVBB-1-0000000000000003-62",
+      "statement": "\\(\\text{Find }x_0\\text{ with }f(x_0)=1\\text{ and the tangent at }(x_0,1):\\quad f(x)=e^{2 + \\frac{1}{x}}.\\)",
+      "steps": [
+        [
+          "method",
+          "e^{u}=1\\iff u=0."
+        ],
+        [
+          "calculation",
+          "2+\\frac{1}{x_0}=0\\Rightarrow x_0=- \\frac{1}{2},\\quad f'(x_0)=-4,\\qquad y=- 4 x - 1."
+        ],
+        [
+          "result",
+          "\\left(- \\frac{1}{2},\\;- 4 x - 1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\frac{1}{2},\\;- 4 x - 1\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVBB-1-0000000000000200-41",
+      "statement": "\\(\\text{Find }x_0\\text{ with }f(x_0)=1\\text{ and the tangent at }(x_0,1):\\quad f(x)=e^{5 + \\frac{5}{x}}.\\)",
+      "steps": [
+        [
+          "method",
+          "e^{u}=1\\iff u=0."
+        ],
+        [
+          "calculation",
+          "5+\\frac{5}{x_0}=0\\Rightarrow x_0=-1,\\quad f'(x_0)=-5,\\qquad y=- 5 x - 4."
+        ],
+        [
+          "result",
+          "\\left(-1,\\;- 5 x - 4\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(-1,\\;- 5 x - 4\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVBB-1-0000000000000999-55",
+      "statement": "\\(\\text{Find }x_0\\text{ with }f(x_0)=1\\text{ and the tangent at }(x_0,1):\\quad f(x)=e^{2 + \\frac{3}{x}}.\\)",
+      "steps": [
+        [
+          "method",
+          "e^{u}=1\\iff u=0."
+        ],
+        [
+          "calculation",
+          "2+\\frac{3}{x_0}=0\\Rightarrow x_0=- \\frac{3}{2},\\quad f'(x_0)=- \\frac{4}{3},\\qquad y=- \\frac{4 x}{3} - 1."
+        ],
+        [
+          "result",
+          "\\left(- \\frac{3}{2},\\;- \\frac{4 x}{3} - 1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\frac{3}{2},\\;- \\frac{4 x}{3} - 1\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-tangent-arctan-quotient-v1": [
+    {
+      "code": "DVBC-1-0000000000000003-92",
+      "statement": "\\(\\text{Find the ordinate of the point and the tangent line at }x_0=\\frac{\\sqrt{3}}{3}:\\quad f(x)=\\frac{2 \\operatorname{atan}{\\left(x \\right)}}{x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Quotient rule with }(\\arctan x)'=1/(1+x^2)."
+        ],
+        [
+          "calculation",
+          "f(\\frac{\\sqrt{3}}{3})=\\frac{\\sqrt{3} \\pi}{3},\\quad f'(\\frac{\\sqrt{3}}{3})=- \\pi + \\frac{3 \\sqrt{3}}{2},\\qquad y=- \\pi x + \\frac{3 \\sqrt{3} x}{2} - \\frac{3}{2} + \\frac{2 \\sqrt{3} \\pi}{3}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{\\sqrt{3} \\pi}{3},\\;- \\pi x + \\frac{3 \\sqrt{3} x}{2} - \\frac{3}{2} + \\frac{2 \\sqrt{3} \\pi}{3}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{\\sqrt{3} \\pi}{3},\\;- \\pi x + \\frac{3 \\sqrt{3} x}{2} - \\frac{3}{2} + \\frac{2 \\sqrt{3} \\pi}{3}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVBC-1-0000000000000200-71",
+      "statement": "\\(\\text{Find the ordinate of the point and the tangent line at }x_0=1:\\quad f(x)=\\frac{5 \\operatorname{atan}{\\left(x \\right)}}{x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Quotient rule with }(\\arctan x)'=1/(1+x^2)."
+        ],
+        [
+          "calculation",
+          "f(1)=\\frac{5 \\pi}{4},\\quad f'(1)=\\frac{5}{2} - \\frac{5 \\pi}{4},\\qquad y=- \\frac{5 \\pi x}{4} + \\frac{5 x}{2} - \\frac{5}{2} + \\frac{5 \\pi}{2}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{5 \\pi}{4},\\;- \\frac{5 \\pi x}{4} + \\frac{5 x}{2} - \\frac{5}{2} + \\frac{5 \\pi}{2}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{5 \\pi}{4},\\;- \\frac{5 \\pi x}{4} + \\frac{5 x}{2} - \\frac{5}{2} + \\frac{5 \\pi}{2}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVBC-1-0000000000000999-85",
+      "statement": "\\(\\text{Find the ordinate of the point and the tangent line at }x_0=\\frac{\\sqrt{3}}{3}:\\quad f(x)=\\frac{2 \\operatorname{atan}{\\left(x \\right)}}{x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Quotient rule with }(\\arctan x)'=1/(1+x^2)."
+        ],
+        [
+          "calculation",
+          "f(\\frac{\\sqrt{3}}{3})=\\frac{\\sqrt{3} \\pi}{3},\\quad f'(\\frac{\\sqrt{3}}{3})=- \\pi + \\frac{3 \\sqrt{3}}{2},\\qquad y=- \\pi x + \\frac{3 \\sqrt{3} x}{2} - \\frac{3}{2} + \\frac{2 \\sqrt{3} \\pi}{3}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{\\sqrt{3} \\pi}{3},\\;- \\pi x + \\frac{3 \\sqrt{3} x}{2} - \\frac{3}{2} + \\frac{2 \\sqrt{3} \\pi}{3}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{\\sqrt{3} \\pi}{3},\\;- \\pi x + \\frac{3 \\sqrt{3} x}{2} - \\frac{3}{2} + \\frac{2 \\sqrt{3} \\pi}{3}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-tangent-exponential-cubic-v1": [
+    {
+      "code": "DVBD-1-0000000000000003-90",
+      "statement": "\\(\\text{Find }x_0\\text{ and the tangent line at the point }(x_0,e^{6}):\\quad f(x)=e^{x^{3} - 2}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The exponential is injective: compare exponents.}"
+        ],
+        [
+          "calculation",
+          "x_0^3-2=6\\Rightarrow x_0=2,\\quad f'(x_0)=12 e^{6},\\qquad y=12 x e^{6} - 23 e^{6}."
+        ],
+        [
+          "result",
+          "\\left(2,\\;12 x e^{6} - 23 e^{6}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(2,\\;12 x e^{6} - 23 e^{6}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVBD-1-0000000000000200-69",
+      "statement": "\\(\\text{Find }x_0\\text{ and the tangent line at the point }(x_0,e^{22}):\\quad f(x)=e^{x^{3} - 5}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The exponential is injective: compare exponents.}"
+        ],
+        [
+          "calculation",
+          "x_0^3-5=22\\Rightarrow x_0=3,\\quad f'(x_0)=27 e^{22},\\qquad y=27 x e^{22} - 80 e^{22}."
+        ],
+        [
+          "result",
+          "\\left(3,\\;27 x e^{22} - 80 e^{22}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(3,\\;27 x e^{22} - 80 e^{22}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVBD-1-0000000000000999-83",
+      "statement": "\\(\\text{Find }x_0\\text{ and the tangent line at the point }(x_0,e^{-1}):\\quad f(x)=e^{x^{3} - 2}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The exponential is injective: compare exponents.}"
+        ],
+        [
+          "calculation",
+          "x_0^3-2=-1\\Rightarrow x_0=1,\\quad f'(x_0)=\\frac{3}{e},\\qquad y=\\frac{3 x}{e} - \\frac{2}{e}."
+        ],
+        [
+          "result",
+          "\\left(1,\\;\\frac{3 x}{e} - \\frac{2}{e}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(1,\\;\\frac{3 x}{e} - \\frac{2}{e}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-tangent-parallel-quartic-v1": [
+    {
+      "code": "DVBE-1-0000000000000003-33",
+      "statement": "\\(\\text{Find the point of contact and the tangent line \\text{ parallel to }y=30 x + 5:}\\quad f(x)=x^{4} - 2 x + 1.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Parallel lines have equal slopes; }4x^3\\text{ is strictly increasing.}"
+        ],
+        [
+          "calculation",
+          "4x_0^3-2=30\\Rightarrow x_0=2,\\quad y_0=13,\\qquad y=30 x - 47."
+        ],
+        [
+          "result",
+          "\\left(2,\\;13,\\;30 x - 47\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(2,\\;13,\\;30 x - 47\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVBE-1-0000000000000200-12",
+      "statement": "\\(\\text{Find the point of contact and the tangent line \\text{ parallel to }y=27 x + 1:}\\quad f(x)=x^{4} - 5 x + 5.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Parallel lines have equal slopes; }4x^3\\text{ is strictly increasing.}"
+        ],
+        [
+          "calculation",
+          "4x_0^3-5=27\\Rightarrow x_0=2,\\quad y_0=11,\\qquad y=27 x - 43."
+        ],
+        [
+          "result",
+          "\\left(2,\\;11,\\;27 x - 43\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(2,\\;11,\\;27 x - 43\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVBE-1-0000000000000999-26",
+      "statement": "\\(\\text{Find the point of contact and the tangent line \\text{ parallel to }y=30 x + 5:}\\quad f(x)=x^{4} - 2 x + 3.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Parallel lines have equal slopes; }4x^3\\text{ is strictly increasing.}"
+        ],
+        [
+          "calculation",
+          "4x_0^3-2=30\\Rightarrow x_0=2,\\quad y_0=15,\\qquad y=30 x - 45."
+        ],
+        [
+          "result",
+          "\\left(2,\\;15,\\;30 x - 45\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(2,\\;15,\\;30 x - 45\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-tangent-angle-root-v1": [
+    {
+      "code": "DVBF-1-0000000000000003-09",
+      "statement": "\\(\\text{Find the point of contact and the tangent line \\text{ making the angle }\\pi/4\\text{ with the }x\\text{-axis}:}\\quad f(x)=2 \\sqrt{x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The slope is }\\tan(\\pi/4)=1."
+        ],
+        [
+          "calculation",
+          "\\frac{2}{2\\sqrt{x_0}}=1\\Rightarrow x_0=1,\\quad y_0=2,\\qquad y=x + 1."
+        ],
+        [
+          "result",
+          "\\left(1,\\;2,\\;x + 1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(1,\\;2,\\;x + 1\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVBF-1-0000000000000200-85",
+      "statement": "\\(\\text{Find the point of contact and the tangent line \\text{ making the angle }\\pi/4\\text{ with the }x\\text{-axis}:}\\quad f(x)=5 \\sqrt{x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The slope is }\\tan(\\pi/4)=1."
+        ],
+        [
+          "calculation",
+          "\\frac{5}{2\\sqrt{x_0}}=1\\Rightarrow x_0=\\frac{25}{4},\\quad y_0=\\frac{25}{2},\\qquad y=x + \\frac{25}{4}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{25}{4},\\;\\frac{25}{2},\\;x + \\frac{25}{4}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{25}{4},\\;\\frac{25}{2},\\;x + \\frac{25}{4}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVBF-1-0000000000000999-02",
+      "statement": "\\(\\text{Find the point of contact and the tangent line \\text{ making the angle }\\pi/4\\text{ with the }x\\text{-axis}:}\\quad f(x)=2 \\sqrt{x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The slope is }\\tan(\\pi/4)=1."
+        ],
+        [
+          "calculation",
+          "\\frac{2}{2\\sqrt{x_0}}=1\\Rightarrow x_0=1,\\quad y_0=2,\\qquad y=x + 1."
+        ],
+        [
+          "result",
+          "\\left(1,\\;2,\\;x + 1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(1,\\;2,\\;x + 1\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-tangent-perpendicular-xlogx-v1": [
+    {
+      "code": "DVBG-1-0000000000000003-53",
+      "statement": "\\(\\text{Find the point of contact and the tangent line \\text{ perpendicular to }x+3y-5=0:}\\quad f(x)=x \\log{\\left(x \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The given line has slope }-1/3\\text{, so the tangent has slope }3."
+        ],
+        [
+          "calculation",
+          "\\ln x_0+1=3\\Rightarrow x_0=e^{2},\\quad y_0=2 e^{2},\\qquad y=3 x - e^{2}."
+        ],
+        [
+          "result",
+          "\\left(e^{2},\\;2 e^{2},\\;3 x - e^{2}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(e^{2},\\;2 e^{2},\\;3 x - e^{2}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVBG-1-0000000000000200-32",
+      "statement": "\\(\\text{Find the point of contact and the tangent line \\text{ perpendicular to }x+6y-1=0:}\\quad f(x)=x \\log{\\left(x \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The given line has slope }-1/6\\text{, so the tangent has slope }6."
+        ],
+        [
+          "calculation",
+          "\\ln x_0+1=6\\Rightarrow x_0=e^{5},\\quad y_0=5 e^{5},\\qquad y=6 x - e^{5}."
+        ],
+        [
+          "result",
+          "\\left(e^{5},\\;5 e^{5},\\;6 x - e^{5}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(e^{5},\\;5 e^{5},\\;6 x - e^{5}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVBG-1-0000000000000999-46",
+      "statement": "\\(\\text{Find the point of contact and the tangent line \\text{ perpendicular to }x+3y-5=0:}\\quad f(x)=x \\log{\\left(x \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The given line has slope }-1/3\\text{, so the tangent has slope }3."
+        ],
+        [
+          "calculation",
+          "\\ln x_0+1=3\\Rightarrow x_0=e^{2},\\quad y_0=2 e^{2},\\qquad y=3 x - e^{2}."
+        ],
+        [
+          "result",
+          "\\left(e^{2},\\;2 e^{2},\\;3 x - e^{2}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(e^{2},\\;2 e^{2},\\;3 x - e^{2}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-tangent-line-intersection-v1": [
+    {
+      "code": "DVBH-1-0000000000000003-24",
+      "statement": "\\(\\text{Find the point of contact and the tangent line \\text{ at its intersection with }4y=2\\pi x:}\\quad f(x)=2x\\arctan\\frac{1}{x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{For }x\\ne0\\text{ the equation reduces to }\\arctan(b/x)=\\pi/4."
+        ],
+        [
+          "calculation",
+          "\\arctan\\frac{1}{x_0}=\\frac{\\pi}{4}\\Rightarrow x_0=1,\\quad y_0=\\frac{\\pi}{2},\\qquad y=- x + \\frac{\\pi x}{2} + 1."
+        ],
+        [
+          "result",
+          "\\left(1,\\;\\frac{\\pi}{2},\\;- x + \\frac{\\pi x}{2} + 1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(1,\\;\\frac{\\pi}{2},\\;- x + \\frac{\\pi x}{2} + 1\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVBH-1-0000000000000200-03",
+      "statement": "\\(\\text{Find the point of contact and the tangent line \\text{ at its intersection with }4y=5\\pi x:}\\quad f(x)=5x\\arctan\\frac{5}{x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{For }x\\ne0\\text{ the equation reduces to }\\arctan(b/x)=\\pi/4."
+        ],
+        [
+          "calculation",
+          "\\arctan\\frac{5}{x_0}=\\frac{\\pi}{4}\\Rightarrow x_0=5,\\quad y_0=\\frac{25 \\pi}{4},\\qquad y=- \\frac{5 x}{2} + \\frac{5 \\pi x}{4} + \\frac{25}{2}."
+        ],
+        [
+          "result",
+          "\\left(5,\\;\\frac{25 \\pi}{4},\\;- \\frac{5 x}{2} + \\frac{5 \\pi x}{4} + \\frac{25}{2}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(5,\\;\\frac{25 \\pi}{4},\\;- \\frac{5 x}{2} + \\frac{5 \\pi x}{4} + \\frac{25}{2}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVBH-1-0000000000000999-17",
+      "statement": "\\(\\text{Find the point of contact and the tangent line \\text{ at its intersection with }4y=2\\pi x:}\\quad f(x)=2x\\arctan\\frac{3}{x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{For }x\\ne0\\text{ the equation reduces to }\\arctan(b/x)=\\pi/4."
+        ],
+        [
+          "calculation",
+          "\\arctan\\frac{3}{x_0}=\\frac{\\pi}{4}\\Rightarrow x_0=3,\\quad y_0=\\frac{3 \\pi}{2},\\qquad y=- x + \\frac{\\pi x}{2} + 3."
+        ],
+        [
+          "result",
+          "\\left(3,\\;\\frac{3 \\pi}{2},\\;- x + \\frac{\\pi x}{2} + 3\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(3,\\;\\frac{3 \\pi}{2},\\;- x + \\frac{\\pi x}{2} + 3\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-tangent-axis-intersection-v1": [
+    {
+      "code": "DVBI-1-0000000000000003-49",
+      "statement": "\\(\\text{Find the point of contact and the tangent line \\text{ at its intersection with the }y\\text{-axis}:}\\quad f(x)=\\sin{\\left(2 x \\right)} - \\cos{\\left(x \\right)} + 5.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The }y\\text{-axis is }x=0."
+        ],
+        [
+          "calculation",
+          "x_0=0,\\quad y_0=4,\\qquad y=2 x + 4."
+        ],
+        [
+          "result",
+          "\\left(0,\\;4,\\;2 x + 4\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(0,\\;4,\\;2 x + 4\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVBI-1-0000000000000200-28",
+      "statement": "\\(\\text{Find the point of contact and the tangent line \\text{ at its intersection with the }y\\text{-axis}:}\\quad f(x)=\\sin{\\left(5 x \\right)} - \\cos{\\left(5 x \\right)} + 1.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The }y\\text{-axis is }x=0."
+        ],
+        [
+          "calculation",
+          "x_0=0,\\quad y_0=0,\\qquad y=5 x."
+        ],
+        [
+          "result",
+          "\\left(0,\\;0,\\;5 x\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(0,\\;0,\\;5 x\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVBI-1-0000000000000999-42",
+      "statement": "\\(\\text{Find the point of contact and the tangent line \\text{ at its intersection with the }y\\text{-axis}:}\\quad f(x)=\\sin{\\left(2 x \\right)} - \\cos{\\left(3 x \\right)} + 5.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The }y\\text{-axis is }x=0."
+        ],
+        [
+          "calculation",
+          "x_0=0,\\quad y_0=4,\\qquad y=2 x + 4."
+        ],
+        [
+          "result",
+          "\\left(0,\\;4,\\;2 x + 4\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(0,\\;4,\\;2 x + 4\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-derivatives-tangent-horizontal-v1": [
+    {
+      "code": "DVBJ-1-0000000000000003-12",
+      "statement": "\\(\\text{Find the point of contact and the tangent line \\text{ parallel to the line }y=e^{5}:}\\quad f(x)=\\left(x - 1\\right) e^{- 2 x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{A horizontal tangent needs }f'(x_0)=0."
+        ],
+        [
+          "calculation",
+          "f'(x)=e^{-2x}(1-2(x-1))=0\\Rightarrow x_0=\\frac{3}{2},\\quad y_0=\\frac{1}{2 e^{3}},\\qquad y=\\frac{1}{2 e^{3}}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{3}{2},\\;\\frac{1}{2 e^{3}},\\;\\frac{1}{2 e^{3}}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{3}{2},\\;\\frac{1}{2 e^{3}},\\;\\frac{1}{2 e^{3}}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVBJ-1-0000000000000200-88",
+      "statement": "\\(\\text{Find the point of contact and the tangent line \\text{ parallel to the line }y=e^{1}:}\\quad f(x)=\\left(x - 5\\right) e^{- 5 x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{A horizontal tangent needs }f'(x_0)=0."
+        ],
+        [
+          "calculation",
+          "f'(x)=e^{-5x}(1-5(x-5))=0\\Rightarrow x_0=\\frac{26}{5},\\quad y_0=\\frac{1}{5 e^{26}},\\qquad y=\\frac{1}{5 e^{26}}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{26}{5},\\;\\frac{1}{5 e^{26}},\\;\\frac{1}{5 e^{26}}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{26}{5},\\;\\frac{1}{5 e^{26}},\\;\\frac{1}{5 e^{26}}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVBJ-1-0000000000000999-05",
+      "statement": "\\(\\text{Find the point of contact and the tangent line \\text{ parallel to the line }y=e^{5}:}\\quad f(x)=\\left(x - 3\\right) e^{- 2 x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{A horizontal tangent needs }f'(x_0)=0."
+        ],
+        [
+          "calculation",
+          "f'(x)=e^{-2x}(1-2(x-3))=0\\Rightarrow x_0=\\frac{7}{2},\\quad y_0=\\frac{1}{2 e^{7}},\\qquad y=\\frac{1}{2 e^{7}}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{7}{2},\\;\\frac{1}{2 e^{7}},\\;\\frac{1}{2 e^{7}}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{7}{2},\\;\\frac{1}{2 e^{7}},\\;\\frac{1}{2 e^{7}}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-tangent-pair-perpendicular-v1": [
+    {
+      "code": "DVBK-1-0000000000000003-45",
+      "statement": "\\(\\text{Find every tangent line perpendicular to the given line, ordered by the}\\text{ abscissa of contact:}\\quad 9x+4y-5=0,\\quad f(x)=\\frac{2 x}{x^{2} + 1}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The given line has slope }-\\frac{9}{4}\\text{, so the tangents have slope }\\frac{4}{9}."
+        ],
+        [
+          "calculation",
+          "\\frac{2(1-x^2)}{(1+x^2)^2}=\\frac{4}{9}\\iff x^2=\\frac{1}{2}\\ (\\text{the other root in }x^2\\text{ is negative}),\\qquad x_0=\\pm\\frac{\\sqrt{2}}{2}."
+        ],
+        [
+          "result",
+          "\\left(\\left(- \\frac{\\sqrt{2}}{2},\\;- \\frac{2 \\sqrt{2}}{3},\\;\\frac{4 x}{9} - \\frac{4 \\sqrt{2}}{9}\\right),\\;\\left(\\frac{\\sqrt{2}}{2},\\;\\frac{2 \\sqrt{2}}{3},\\;\\frac{4 x}{9} + \\frac{4 \\sqrt{2}}{9}\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(- \\frac{\\sqrt{2}}{2},\\;- \\frac{2 \\sqrt{2}}{3},\\;\\frac{4 x}{9} - \\frac{4 \\sqrt{2}}{9}\\right),\\;\\left(\\frac{\\sqrt{2}}{2},\\;\\frac{2 \\sqrt{2}}{3},\\;\\frac{4 x}{9} + \\frac{4 \\sqrt{2}}{9}\\right)\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "DVBK-1-0000000000000200-24",
+      "statement": "\\(\\text{Find every tangent line perpendicular to the given line, ordered by the}\\text{ abscissa of contact:}\\quad 49x+150y-1=0,\\quad f(x)=\\frac{5 x}{x^{2} + 1}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The given line has slope }-\\frac{49}{150}\\text{, so the tangents have slope }\\frac{150}{49}."
+        ],
+        [
+          "calculation",
+          "\\frac{5(1-x^2)}{(1+x^2)^2}=\\frac{150}{49}\\iff x^2=\\frac{1}{6}\\ (\\text{the other root in }x^2\\text{ is negative}),\\qquad x_0=\\pm\\frac{\\sqrt{6}}{6}."
+        ],
+        [
+          "result",
+          "\\left(\\left(- \\frac{\\sqrt{6}}{6},\\;- \\frac{5 \\sqrt{6}}{7},\\;\\frac{150 x}{49} - \\frac{10 \\sqrt{6}}{49}\\right),\\;\\left(\\frac{\\sqrt{6}}{6},\\;\\frac{5 \\sqrt{6}}{7},\\;\\frac{150 x}{49} + \\frac{10 \\sqrt{6}}{49}\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(- \\frac{\\sqrt{6}}{6},\\;- \\frac{5 \\sqrt{6}}{7},\\;\\frac{150 x}{49} - \\frac{10 \\sqrt{6}}{49}\\right),\\;\\left(\\frac{\\sqrt{6}}{6},\\;\\frac{5 \\sqrt{6}}{7},\\;\\frac{150 x}{49} + \\frac{10 \\sqrt{6}}{49}\\right)\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "DVBK-1-0000000000000999-38",
+      "statement": "\\(\\text{Find every tangent line perpendicular to the given line, ordered by the}\\text{ abscissa of contact:}\\quad 25x+24y-5=0,\\quad f(x)=\\frac{2 x}{x^{2} + 1}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The given line has slope }-\\frac{25}{24}\\text{, so the tangents have slope }\\frac{24}{25}."
+        ],
+        [
+          "calculation",
+          "\\frac{2(1-x^2)}{(1+x^2)^2}=\\frac{24}{25}\\iff x^2=\\frac{1}{4}\\ (\\text{the other root in }x^2\\text{ is negative}),\\qquad x_0=\\pm\\frac{1}{2}."
+        ],
+        [
+          "result",
+          "\\left(\\left(- \\frac{1}{2},\\;- \\frac{4}{5},\\;\\frac{24 x}{25} - \\frac{8}{25}\\right),\\;\\left(\\frac{1}{2},\\;\\frac{4}{5},\\;\\frac{24 x}{25} + \\frac{8}{25}\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(- \\frac{1}{2},\\;- \\frac{4}{5},\\;\\frac{24 x}{25} - \\frac{8}{25}\\right),\\;\\left(\\frac{1}{2},\\;\\frac{4}{5},\\;\\frac{24 x}{25} + \\frac{8}{25}\\right)\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    }
   ]
 }

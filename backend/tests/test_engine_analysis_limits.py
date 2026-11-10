@@ -637,7 +637,11 @@ def assert_answer(answer, expected):
         assert answer.expected == expected
 
 
-@pytest.mark.parametrize("generator", generators(), ids=lambda g: g.prefix)
+# Derivative versions (#260) share the provider; their oracles are in test_engine_derivatives.
+LIMIT_GENERATORS = [g for g in generators() if g.topic != "differential-calculus"]
+
+
+@pytest.mark.parametrize("generator", LIMIT_GENERATORS, ids=lambda g: g.prefix)
 def test_thousand_seeds_match_independent_results(generator):
     variants = set()
     registered = registry()
