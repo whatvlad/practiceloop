@@ -6,6 +6,7 @@ import sys
 from decimal import Decimal, localcontext
 from functools import cache
 
+import mpmath
 import pytest
 import sympy as sp
 from test_engine_elementary import source as computational_source
@@ -438,6 +439,83 @@ def reference_exam_sequences(name, a, b, c):  # noqa: PLR0911
         if name == "product_radical":
             k = Decimal(n)
             return float(c * (((k + a) * (k + b)).sqrt() - k))
+    return reference_functions(name, a, b, c)
+
+
+def signed_infinity(value):
+    assert abs(value) > 10**5
+    return sp.oo if value > 0 else -sp.oo
+
+
+def reference_functions(name, a, b, c):  # noqa: PLR0911, PLR0912
+    """#258 oracles: 50-digit evaluation of the displayed function next to the point."""
+    with mpmath.workdps(50):
+        t, big = mpmath.mpf("1e-15"), mpmath.mpf("1e15")
+        if name == "rational_substitution":
+            return float((c * c - a) / mpmath.mpf(c * c - b * c + b * b))
+        if name == "radical_quotient_zero":
+            return float((a * t + b * mpmath.sqrt(t)) / (c * mpmath.sqrt(t)))
+        if name == "power_difference_quotient":
+            low, high = a + 1, a + b + 1
+            x = c + t
+            return float((x**low - c**low) / (x**high - c**high))
+        if name == "leading_power_quotient":
+            k = b + 1
+            x = big
+            return float((a * x**3 + 1) ** k / ((x + 1) ** (k + 2) * (c * x * x + 1) ** (k - 1)))
+        if name == "conjugate_minus_infinity":
+            x = -big
+            return float(mpmath.sqrt(a * a * x * x + (b - 3) * x + c) + a * x)
+        if name == "tangent_ratio":
+            tan2 = mpmath.tan(mpmath.pi / 2 - t) ** 2
+            return float((a * tan2 + b) / (c * tan2 + b + c))
+        if name == "radical_linear_ratio":
+            return float((mpmath.sqrt(a * a * big**2 + big) + b) / (c * big + 1))
+        if name == "cancelling_reciprocals":
+            m = b + 1
+            return float(sum(c * (1 / (1 - x) - m / (1 - x**m)) for x in (1 - t, 1 + t)) / 2)
+        if name == "bounded_inverse_trig":
+            sides = [a * x * mpmath.atan(b / x) + c for x in (-t, t)]
+            assert all(abs(side - c) < 1e-10 for side in sides)
+            return c, c, c
+        if name == "squeeze_arctan":
+            return float(a * t * t * mpmath.atan(b / t) + c)
+        if name == "sine_product_square":
+            return float(mpmath.sin(a * t) * mpmath.sin(b * t) / (c * t * t))
+        if name == "sine_radical":
+            x = c * c + t
+            return float(mpmath.sin(a * (x - c * c)) / (mpmath.sqrt(x) - c))
+        if name == "arctan_at_infinity":
+            value = a * big ** (1 + c % 2) * mpmath.atan(b / big)
+            return float(value) if c % 2 == 0 else signed_infinity(value)
+        if name == "cosine_ratio_half_pi":
+            top, bottom = 2 * a - 1, 2 * b - 1
+            bottom += 2 if top == bottom else 0
+            x = mpmath.pi / 2 + t
+            return float(c * mpmath.cos(top * x) / mpmath.cos(bottom * x))
+        if name == "log_cube_root":
+            x = t**2  # x^(-1/3) grows slowly
+            power = mpmath.mpf(1 + c % 3) / 3
+            value = mpmath.log(1 + a * mpmath.cbrt(x)) / (b * x**power)
+            return float(value) if c % 3 == 0 else signed_infinity(value)
+        if name == "log_near_one":
+            x = -c + t
+            return float(mpmath.log(a * x * x - a * c * c + 1) / (b * (x + c)))
+        if name == "tangent_power":
+            return float((1 + a * mpmath.tan(b * t)) ** mpmath.cot(c * t))
+        if name == "root_difference":
+            return float((mpmath.root(1 + a * t, c + 1) - mpmath.root(1 - b * t, c + 2)) / t)
+        if name == "sine_quadratic_ratio":
+            x = c + t
+            return float(mpmath.sin(b * x * x - b * c * c) / ((x - c) * (x - c + a)))
+        if name == "log_difference_infinity":
+            return float(a * big * (mpmath.log(c * big + b) - mpmath.log(c * big)))
+        if name == "log_quadratic_at_point":
+            x = c + t
+            return float(mpmath.log(x * x - b * x - (c * c - b * c - 1)) / (x - c))
+        if name == "sine_power_product":
+            x = mpmath.mpf("1e-6")
+            return float(mpmath.sin(a * x**5) / (mpmath.sin(b * x * x) * mpmath.sin(c * x**3)))
     return None
 
 

@@ -400,6 +400,21 @@ def rational_pole_and_domain(a: int, b: int, c: int) -> dict[str, Any]:
     )
 
 
+def bounded_inverse_trig(a: int, b: int, c: int) -> dict[str, Any]:
+    def f(x: float) -> float:
+        return a * x * math.atan(b / x) + c
+
+    return plot(
+        "Equal one-sided limits",
+        "Both branches approach the same open point. The arctangent factor stays bounded.",
+        [
+            path("Left branch", -3, -0.01, f),
+            path("Right branch", 0.01, 3, f),
+        ],
+        [point("Limit", 0, c, included=False)],
+    )
+
+
 def exponential_pole(a: int, b: int, c: int) -> dict[str, Any]:
     def f(x: float) -> float:
         return float(b / (1 - float(a + 1) ** (c - x)))
@@ -439,4 +454,5 @@ diagrams: dict[Callable[[int, int, int], Built], Callable[[int, int, int], dict[
     forms.unique_log_exponential_root: unique_log_exponential_root,
     forms.rational_pole_and_domain: rational_pole_and_domain,
     forms.exponential_pole: exponential_pole,
+    forms.bounded_inverse_trig: bounded_inverse_trig,
 }

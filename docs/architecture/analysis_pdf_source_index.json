@@ -5408,18 +5408,25 @@
       "family": "function-limit-algebra",
       "interaction": "scalar",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-rational-substitution-v1"
+      ],
       "family_contracts": [
         "AM1/32"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "scalar",
-          "result": "finite function limit using cancellation/conjugation/leading terms"
+          "result": "finite function limit using cancellation/conjugation/leading terms",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-rational-substitution-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "function-limit-algebra-variant-a",
@@ -5469,18 +5476,25 @@
       "family": "function-limit-algebra",
       "interaction": "scalar",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-radical-quotient-zero-v1"
+      ],
       "family_contracts": [
         "AM1/32"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "scalar",
-          "result": "finite function limit using cancellation/conjugation/leading terms"
+          "result": "finite function limit using cancellation/conjugation/leading terms",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-radical-quotient-zero-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "function-limit-algebra-variant-c",
@@ -5496,18 +5510,25 @@
       "family": "function-limit-algebra",
       "interaction": "scalar",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-power-difference-quotient-v1"
+      ],
       "family_contracts": [
         "AM1/32"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "scalar",
-          "result": "finite function limit using cancellation/conjugation/leading terms"
+          "result": "finite function limit using cancellation/conjugation/leading terms",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-power-difference-quotient-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "function-limit-algebra-variant-d",
@@ -5523,18 +5544,25 @@
       "family": "function-limit-algebra",
       "interaction": "scalar",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-leading-power-quotient-v1"
+      ],
       "family_contracts": [
         "AM1/32"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "scalar",
-          "result": "finite function limit using cancellation/conjugation/leading terms"
+          "result": "finite function limit using cancellation/conjugation/leading terms",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-leading-power-quotient-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "function-limit-algebra-variant-e",
@@ -5584,18 +5612,25 @@
       "family": "function-limit-algebra",
       "interaction": "scalar",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-conjugate-minus-infinity-v1"
+      ],
       "family_contracts": [
         "AM1/32"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "scalar",
-          "result": "finite function limit using cancellation/conjugation/leading terms"
+          "result": "finite function limit using cancellation/conjugation/leading terms",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-conjugate-minus-infinity-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "function-limit-algebra-variant-g",
@@ -5645,18 +5680,25 @@
       "family": "function-limit-algebra",
       "interaction": "scalar",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-tangent-ratio-v1"
+      ],
       "family_contracts": [
         "AM1/32"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "scalar",
-          "result": "finite function limit using cancellation/conjugation/leading terms"
+          "result": "finite function limit using cancellation/conjugation/leading terms",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-tangent-ratio-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "function-limit-algebra-variant-i",
@@ -5706,18 +5748,25 @@
       "family": "function-limit-algebra",
       "interaction": "scalar",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-radical-linear-ratio-v1"
+      ],
       "family_contracts": [
         "AM1/32"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "scalar",
-          "result": "finite function limit using cancellation/conjugation/leading terms"
+          "result": "finite function limit using cancellation/conjugation/leading terms",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-radical-linear-ratio-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "function-limit-algebra-variant-k",
@@ -5733,18 +5782,25 @@
       "family": "function-limit-algebra",
       "interaction": "scalar",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-cancelling-reciprocals-v1"
+      ],
       "family_contracts": [
         "AM1/32"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "scalar",
-          "result": "finite function limit using cancellation/conjugation/leading terms"
+          "result": "finite function limit using cancellation/conjugation/leading terms",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-cancelling-reciprocals-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "function-limit-algebra-variant-l",
@@ -5862,18 +5918,25 @@
       "family": "one-sided-nonexistent-limits",
       "interaction": "ordered",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-bounded-inverse-trig-v1"
+      ],
       "family_contracts": [
         "AM1/33"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "ordered",
-          "result": "both one-sided limits and existence classification"
+          "result": "both one-sided limits and existence classification",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-bounded-inverse-trig-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "bounded-inverse-trig",
@@ -5929,18 +5992,25 @@
       "family": "squeeze-function-limits",
       "interaction": "scalar",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-squeeze-arctan-v1"
+      ],
       "family_contracts": [
         "AM1/34"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "scalar",
-          "result": "oscillatory function limit with exact squeeze bounds"
+          "result": "oscillatory function limit with exact squeeze bounds",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-squeeze-arctan-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         },
         {
           "id": "learner-proof",
@@ -6002,18 +6072,25 @@
       "family": "standard-infinitesimals",
       "interaction": "scalar",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-sine-product-square-v1"
+      ],
       "family_contracts": [
         "AM1/35"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "scalar",
-          "result": "standard infinitesimal, inverse-trig, logarithmic or power limit"
+          "result": "standard infinitesimal, inverse-trig, logarithmic or power limit",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-sine-product-square-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "standard-infinitesimals-variant-a",
@@ -6029,18 +6106,25 @@
       "family": "standard-infinitesimals",
       "interaction": "scalar",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-sine-radical-v1"
+      ],
       "family_contracts": [
         "AM1/35"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "scalar",
-          "result": "standard infinitesimal, inverse-trig, logarithmic or power limit"
+          "result": "standard infinitesimal, inverse-trig, logarithmic or power limit",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-sine-radical-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "standard-infinitesimals-variant-b",
@@ -6090,18 +6174,25 @@
       "family": "standard-infinitesimals",
       "interaction": "scalar",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-arctan-at-infinity-v1"
+      ],
       "family_contracts": [
         "AM1/35"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "scalar",
-          "result": "standard infinitesimal, inverse-trig, logarithmic or power limit"
+          "result": "standard infinitesimal, inverse-trig, logarithmic or power limit",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-arctan-at-infinity-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "standard-infinitesimals-variant-d",
@@ -6117,18 +6208,25 @@
       "family": "standard-infinitesimals",
       "interaction": "scalar",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-cosine-ratio-half-pi-v1"
+      ],
       "family_contracts": [
         "AM1/35"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "scalar",
-          "result": "standard infinitesimal, inverse-trig, logarithmic or power limit"
+          "result": "standard infinitesimal, inverse-trig, logarithmic or power limit",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-cosine-ratio-half-pi-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "standard-infinitesimals-variant-e",
@@ -6178,18 +6276,25 @@
       "family": "standard-infinitesimals",
       "interaction": "scalar",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-log-cube-root-v1"
+      ],
       "family_contracts": [
         "AM1/35"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "scalar",
-          "result": "standard infinitesimal, inverse-trig, logarithmic or power limit"
+          "result": "standard infinitesimal, inverse-trig, logarithmic or power limit",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-log-cube-root-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "standard-infinitesimals-variant-g",
@@ -6205,18 +6310,25 @@
       "family": "standard-infinitesimals",
       "interaction": "scalar",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-log-near-one-v1"
+      ],
       "family_contracts": [
         "AM1/35"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "scalar",
-          "result": "standard infinitesimal, inverse-trig, logarithmic or power limit"
+          "result": "standard infinitesimal, inverse-trig, logarithmic or power limit",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-log-near-one-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "standard-infinitesimals-variant-h",
@@ -6300,18 +6412,25 @@
       "family": "standard-infinitesimals",
       "interaction": "scalar",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-tangent-power-v1"
+      ],
       "family_contracts": [
         "AM1/35"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "scalar",
-          "result": "standard infinitesimal, inverse-trig, logarithmic or power limit"
+          "result": "standard infinitesimal, inverse-trig, logarithmic or power limit",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-tangent-power-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "standard-infinitesimals-variant-k",
@@ -6327,18 +6446,25 @@
       "family": "standard-infinitesimals",
       "interaction": "scalar",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-root-difference-v1"
+      ],
       "family_contracts": [
         "AM1/35"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "scalar",
-          "result": "standard infinitesimal, inverse-trig, logarithmic or power limit"
+          "result": "standard infinitesimal, inverse-trig, logarithmic or power limit",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-root-difference-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "standard-infinitesimals-variant-l",
@@ -22303,18 +22429,25 @@
       "family": "standard-infinitesimals",
       "interaction": "scalar",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-sine-quadratic-ratio-v1"
+      ],
       "family_contracts": [
         "AM1/35"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "scalar",
-          "result": "standard infinitesimal, inverse-trig, logarithmic or power limit"
+          "result": "standard infinitesimal, inverse-trig, logarithmic or power limit",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-sine-quadratic-ratio-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -22436,18 +22569,25 @@
       "family": "standard-infinitesimals",
       "interaction": "scalar",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-log-difference-infinity-v1"
+      ],
       "family_contracts": [
         "AM1/35"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "scalar",
-          "result": "standard infinitesimal, inverse-trig, logarithmic or power limit"
+          "result": "standard infinitesimal, inverse-trig, logarithmic or power limit",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-log-difference-infinity-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -22555,18 +22695,25 @@
       "family": "standard-infinitesimals",
       "interaction": "scalar",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-log-quadratic-at-point-v1"
+      ],
       "family_contracts": [
         "AM1/35"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "scalar",
-          "result": "standard infinitesimal, inverse-trig, logarithmic or power limit"
+          "result": "standard infinitesimal, inverse-trig, logarithmic or power limit",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-log-quadratic-at-point-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -23432,18 +23579,25 @@
       "family": "standard-infinitesimals",
       "interaction": "scalar",
       "issue": 236,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-limits-sine-power-product-v1"
+      ],
       "family_contracts": [
         "AM1/35"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 236,
           "contract": "scalar",
-          "result": "standard infinitesimal, inverse-trig, logarithmic or power limit"
+          "result": "standard infinitesimal, inverse-trig, logarithmic or power limit",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-limits-sine-power-product-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -25689,10 +25843,18 @@
         "backend/app/engine/blocks/analysis_one.py"
       ],
       "verified_versions": [
+        "analysis1-limits-cancelling-reciprocals-v1",
+        "analysis1-limits-conjugate-minus-infinity-v1",
         "analysis1-limits-exponential-dominance-v1",
+        "analysis1-limits-leading-power-quotient-v1",
+        "analysis1-limits-power-difference-quotient-v1",
         "analysis1-limits-radical-cancellation-v1",
+        "analysis1-limits-radical-linear-ratio-v1",
+        "analysis1-limits-radical-quotient-zero-v1",
         "analysis1-limits-rational-cancellation-v1",
-        "analysis1-limits-removable-trigonometric-v1"
+        "analysis1-limits-rational-substitution-v1",
+        "analysis1-limits-removable-trigonometric-v1",
+        "analysis1-limits-tangent-ratio-v1"
       ],
       "delivery": {
         "issue": 236,
@@ -25717,6 +25879,7 @@
       ],
       "verified_versions": [
         "analysis1-limits-absolute-jump-v1",
+        "analysis1-limits-bounded-inverse-trig-v1",
         "analysis1-limits-essential-exponential-v1",
         "analysis1-limits-two-sided-absolute-v1"
       ],
@@ -25739,6 +25902,7 @@
         "backend/app/engine/blocks/analysis_one.py"
       ],
       "verified_versions": [
+        "analysis1-limits-squeeze-arctan-v1",
         "analysis1-limits-squeeze-at-infinity-v1",
         "analysis1-limits-squeeze-function-v1"
       ],
@@ -25764,10 +25928,22 @@
         "backend/app/engine/blocks/analysis_one.py"
       ],
       "verified_versions": [
+        "analysis1-limits-arctan-at-infinity-v1",
+        "analysis1-limits-cosine-ratio-half-pi-v1",
         "analysis1-limits-infinitesimal-exp-sin-v1",
         "analysis1-limits-infinitesimal-inverse-trig-v1",
         "analysis1-limits-infinitesimal-power-v1",
-        "analysis1-limits-power-difference-v1"
+        "analysis1-limits-log-cube-root-v1",
+        "analysis1-limits-log-difference-infinity-v1",
+        "analysis1-limits-log-near-one-v1",
+        "analysis1-limits-log-quadratic-at-point-v1",
+        "analysis1-limits-power-difference-v1",
+        "analysis1-limits-root-difference-v1",
+        "analysis1-limits-sine-power-product-v1",
+        "analysis1-limits-sine-product-square-v1",
+        "analysis1-limits-sine-quadratic-ratio-v1",
+        "analysis1-limits-sine-radical-v1",
+        "analysis1-limits-tangent-power-v1"
       ],
       "delivery": {
         "issue": 236,
@@ -27410,8 +27586,8 @@
     "family_contracts": 146,
     "deferred_only_references": 30,
     "mixed_references": 146,
-    "verified_generator_deliveries": 167,
-    "verified_computational_components": 189
+    "verified_generator_deliveries": 189,
+    "verified_computational_components": 211
   },
   "deliveries": {
     "235": {
@@ -27514,6 +27690,7 @@
       "base": "503452a782c9fe8121d5b9d0071cbbc830116991",
       "generator_versions": [
         "analysis1-limits-absolute-jump-v1",
+        "analysis1-limits-arctan-at-infinity-v1",
         "analysis1-limits-arithmetic-sum-ratio-v1",
         "analysis1-limits-asymptote-inverse-trig-v1",
         "analysis1-limits-asymptote-rational-v1",
@@ -27522,15 +27699,19 @@
         "analysis1-limits-bound-radical-v1",
         "analysis1-limits-bound-root-exponential-v1",
         "analysis1-limits-bound-trigonometric-v1",
+        "analysis1-limits-bounded-inverse-trig-v1",
+        "analysis1-limits-cancelling-reciprocals-v1",
         "analysis1-limits-certified-cubic-v1",
         "analysis1-limits-certified-root-v1",
         "analysis1-limits-competing-exponentials-v1",
         "analysis1-limits-conjugate-at-infinity-v1",
+        "analysis1-limits-conjugate-minus-infinity-v1",
         "analysis1-limits-conjugate-ratio-v1",
         "analysis1-limits-conjugate-sequence-v1",
         "analysis1-limits-continuity-free-parameter-v1",
         "analysis1-limits-continuity-reciprocal-v1",
         "analysis1-limits-continuity-sine-v1",
+        "analysis1-limits-cosine-ratio-half-pi-v1",
         "analysis1-limits-definition-exponential-v1",
         "analysis1-limits-definition-growth-v1",
         "analysis1-limits-definition-pole-v1",
@@ -27561,6 +27742,11 @@
         "analysis1-limits-infinitesimal-log-v1",
         "analysis1-limits-infinitesimal-power-v1",
         "analysis1-limits-inverse-trig-ratio-v1",
+        "analysis1-limits-leading-power-quotient-v1",
+        "analysis1-limits-log-cube-root-v1",
+        "analysis1-limits-log-difference-infinity-v1",
+        "analysis1-limits-log-near-one-v1",
+        "analysis1-limits-log-quadratic-at-point-v1",
         "analysis1-limits-logarithmic-power-v1",
         "analysis1-limits-monotone-conjugate-v1",
         "analysis1-limits-monotone-exponential-difference-v1",
@@ -27569,6 +27755,7 @@
         "analysis1-limits-monotone-ratio-v1",
         "analysis1-limits-monotone-rational-v1",
         "analysis1-limits-negative-growing-power-v1",
+        "analysis1-limits-power-difference-quotient-v1",
         "analysis1-limits-power-difference-v1",
         "analysis1-limits-product-leading-orders-v1",
         "analysis1-limits-product-of-powers-v1",
@@ -27578,65 +27765,54 @@
         "analysis1-limits-radical-cancellation-v1",
         "analysis1-limits-radical-degree-v1",
         "analysis1-limits-radical-difference-growth-v1",
+        "analysis1-limits-radical-linear-ratio-v1",
+        "analysis1-limits-radical-quotient-zero-v1",
         "analysis1-limits-rational-cancellation-v1",
         "analysis1-limits-rational-growth-v1",
         "analysis1-limits-rational-leading-v1",
         "analysis1-limits-rational-pole-and-domain-v1",
+        "analysis1-limits-rational-substitution-v1",
         "analysis1-limits-rational-zero-v1",
         "analysis1-limits-reciprocal-exponential-conjugate-v1",
         "analysis1-limits-reciprocal-power-v1",
         "analysis1-limits-removable-trigonometric-v1",
+        "analysis1-limits-root-difference-v1",
         "analysis1-limits-root-exponential-ratio-v1",
         "analysis1-limits-root-exponential-sum-v1",
         "analysis1-limits-root-polynomial-v1",
         "analysis1-limits-root-rational-sum-v1",
         "analysis1-limits-scaled-conjugate-v1",
+        "analysis1-limits-sine-power-product-v1",
+        "analysis1-limits-sine-product-square-v1",
+        "analysis1-limits-sine-quadratic-ratio-v1",
+        "analysis1-limits-sine-radical-v1",
+        "analysis1-limits-squeeze-arctan-v1",
         "analysis1-limits-squeeze-at-infinity-v1",
         "analysis1-limits-squeeze-floor-v1",
         "analysis1-limits-squeeze-function-v1",
         "analysis1-limits-squeeze-oscillation-v1",
         "analysis1-limits-squeeze-root-v1",
         "analysis1-limits-squeeze-sum-v1",
+        "analysis1-limits-tangent-power-v1",
+        "analysis1-limits-tangent-ratio-v1",
         "analysis1-limits-two-sided-absolute-v1",
         "analysis1-limits-unique-log-exponential-root-v1"
       ],
-      "source_references": 87,
+      "source_references": 109,
       "pending_source_references": [
-        "AM1/32/a",
-        "AM1/32/c",
-        "AM1/32/d",
-        "AM1/32/e",
-        "AM1/32/g",
-        "AM1/32/i",
-        "AM1/32/k",
-        "AM1/32/l",
-        "AM1/33/d",
-        "AM1/34/b",
-        "AM1/35/a",
-        "AM1/35/b",
-        "AM1/35/d",
-        "AM1/35/e",
-        "AM1/35/g",
-        "AM1/35/h",
-        "AM1/35/k",
-        "AM1/35/l",
         "AM1/36/d",
         "AM1/36/f",
         "AM1/36/g",
         "AM1/36/i",
         "AM1/38/c",
-        "AM1/exam/first/A/4",
-        "AM1/exam/first/B/4",
         "AM1/exam/first/C/1",
-        "AM1/exam/first/C/4",
         "AM1/exam/first/D/3",
         "AM1/exam/main/B/1",
-        "AM1/exam/main/B/3",
         "AM1/exam/main/D/6",
         "AM1/exam/resit/A/2",
         "AM1/exam/resit/C/1"
       ],
-      "computational_components": 87,
+      "computational_components": 109,
       "family_contracts": 16,
       "additional_family_variants": [
         "analysis1-limits-certified-root-v1",

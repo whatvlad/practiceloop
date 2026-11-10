@@ -279,7 +279,7 @@ def bracket(left: Fraction, right: Fraction) -> str:
 
 
 def function_limit(
-    expr: sp.Expr,
+    expr: sp.Expr | str,
     at: object,
     expected: object,
     method: str,
@@ -287,9 +287,11 @@ def function_limit(
     *,
     direction: str = "",
 ) -> Built:
+    """Ask for a limit; a string is a ready display, already grouped where needed."""
     side = "^" + direction if direction else ""
+    shown = expr if isinstance(expr, str) else tex(expr)
     return finish(
-        r"\text{Evaluate:}\quad \lim_{x\to " + tex(at) + side + "}" + tex(expr),
+        r"\text{Evaluate:}\quad \lim_{x\to " + tex(at) + side + "}" + shown,
         LimitAnswer(expected),
         method,
         derivation,
@@ -647,4 +649,316 @@ def exponential_pole(a: int, b: int, c: int) -> Built:
         r"\quad\text{The numerator there is nonzero.}",
         rf"x\to-\infty:\quad {base}^x\to0,\ f(x)\to0."
         rf"\quad x\to+\infty:\quad f(x)=\frac{{{b}}}{{1-{base}^{{{c}-x}}}}\to {b}.",
+    )
+
+
+# #258: the remaining function-limit source references of #236.
+
+
+def scaled(k: int) -> str:
+    return "" if k == 1 else str(k)
+
+
+def rational_substitution(a: int, b: int, c: int) -> Built:
+    expr = (X**2 - a) / (X**2 - b * X + b * b)
+    value = sp.Rational(c * c - a, c * c - b * c + b * b)
+    return function_limit(
+        expr,
+        c,
+        value,
+        r"\text{The denominator }x^2-" + scaled(b) + rf"x+{b * b}"
+        r"\text{ has negative discriminant, so the quotient is continuous. Substitute.}",
+        rf"\frac{{{c}^2-{a}}}{{{c}^2-{b}\cdot{c}+{b * b}}}={tex(value)}.",
+    )
+
+
+def radical_quotient_zero(a: int, b: int, c: int) -> Built:
+    value = sp.Rational(b, c)
+    return function_limit(
+        rf"\frac{{{scaled(a)}x+{b}\sqrt{{x}}}}{{{scaled(c)}\sqrt{{x}}}}",
+        0,
+        value,
+        r"\text{For }x>0\text{ cancel the common factor }\sqrt{x}.",
+        rf"f(x)=\frac{{{scaled(a)}\sqrt{{x}}+{b}}}{{{c}}}\to{tex(value)}.",
+        direction="+",
+    )
+
+
+def power_difference_quotient(a: int, b: int, c: int) -> Built:
+    low, high = a + 1, a + b + 1
+    expr = (X**low - c**low) / (X**high - c**high)
+    value = sp.Rational(low, high * c ** (high - low))
+    return function_limit(
+        expr,
+        c,
+        value,
+        rf"\text{{Factor }}x^k-{c}^k=(x-{c})(x^{{k-1}}+{c}x^{{k-2}}+\dots+{c}^{{k-1}})"
+        r"\text{ in both and cancel }x-" + str(c) + ".",
+        rf"f(x)=\frac{{x^{{{low - 1}}}+\dots+{c}^{{{low - 1}}}}}"
+        rf"{{x^{{{high - 1}}}+\dots+{c}^{{{high - 1}}}}}"
+        rf"\to\frac{{{low}\cdot{c}^{{{low - 1}}}}}{{{high}\cdot{c}^{{{high - 1}}}}}={tex(value)}.",
+    )
+
+
+def leading_power_quotient(a: int, b: int, c: int) -> Built:
+    power = b + 1
+    expr = (a * X**3 + 1) ** power / ((X + 1) ** (power + 2) * (c * X**2 + 1) ** (power - 1))
+    value = sp.Rational(a**power, c ** (power - 1))
+    return function_limit(
+        expr,
+        sp.oo,
+        value,
+        rf"\text{{Both sides have degree }}{3 * power}."
+        r"\text{ Divide every factor by its power of }x.",
+        rf"f(x)=\frac{{({a}+x^{{-3}})^{{{power}}}}}"
+        rf"{{(1+x^{{-1}})^{{{power + 2}}}({c}+x^{{-2}})^{{{power - 1}}}}}"
+        rf"\to\frac{{{a}^{{{power}}}}}{{{c}^{{{power - 1}}}}}={tex(value)}.",
+    )
+
+
+def conjugate_minus_infinity(a: int, b: int, c: int) -> Built:
+    slope = b - 3
+    radicand = a * a * X**2 + slope * X + c
+    value = sp.Rational(-slope, 2 * a)
+    return function_limit(
+        rf"\left(\sqrt{{{tex(radicand)}}}+{scaled(a)}x\right)",
+        -sp.oo,
+        value,
+        r"\text{Rationalize. For }x<0,\ \sqrt{x^2}=-x.",
+        rf"f(x)=\frac{{{tex(slope * X + c)}}}{{\sqrt{{{tex(radicand)}}}-{scaled(a)}x}}"
+        rf"=\frac{{{tex(slope + c / X)}}}{{-\sqrt{{{tex(a * a + slope / X + c / X**2)}}}-{a}}}"
+        rf"\to{tex(value)}.",
+    )
+
+
+def tangent_ratio(a: int, b: int, c: int) -> Built:
+    tan2 = sp.tan(X) ** 2
+    value = sp.Rational(a, c)
+    return function_limit(
+        (a * tan2 + b) / (c * tan2 + b + c),
+        sp.pi / 2,
+        value,
+        r"\text{As }x\to\pi/2^-,\ \tan^2x\to\infty.\text{ Divide by }\tan^2x.",
+        rf"f(x)=\frac{{{a}+{b}/\tan^2x}}{{{c}+{b + c}/\tan^2x}}\to{tex(value)}.",
+        direction="-",
+    )
+
+
+def radical_linear_ratio(a: int, b: int, c: int) -> Built:
+    value = sp.Rational(a, c)
+    radicand = tex(a * a * X**2 + X)
+    return function_limit(
+        rf"\frac{{\sqrt{{{radicand}}}+{b}}}{{{tex(c * X + 1)}}}",
+        sp.oo,
+        value,
+        r"\text{Divide the numerator and denominator by }x>0.",
+        rf"f(x)=\frac{{\sqrt{{{a * a}+1/x}}+{b}/x}}{{{c}+1/x}}\to{tex(value)}.",
+    )
+
+
+def cancelling_reciprocals(a: int, b: int, c: int) -> Built:
+    power = b + 1
+    value = sp.Rational(c * (1 - power), 2)
+    return function_limit(
+        rf"{scaled(c)}\left(\frac{{1}}{{1-x}}-\frac{{{power}}}{{1-x^{{{power}}}}}\right)",
+        1,
+        value,
+        rf"\text{{Use the common denominator }}1-x^{{{power}}}"
+        rf"=(1-x)(1+x+\dots+x^{{{power - 1}}}).",
+        rf"\frac{{1}}{{1-x}}-\frac{{{power}}}{{1-x^{{{power}}}}}"
+        rf"=\frac{{\sum_{{k=0}}^{{{power - 1}}}(x^k-1)}}{{1-x^{{{power}}}}}"
+        rf"=-\frac{{\sum_{{k=1}}^{{{power - 1}}}(1+x+\dots+x^{{k-1}})}}"
+        rf"{{1+x+\dots+x^{{{power - 1}}}}}\to-\frac{{1+2+\dots+{power - 1}}}{{{power}}}"
+        rf"=-\frac{{{power - 1}}}{{2}}.",
+    )
+
+
+def bounded_inverse_trig(a: int, b: int, c: int) -> Built:
+    return finish(
+        r"\text{Give both one-sided limits and the two-sided limit at }x=0:\quad "
+        rf"f(x)={scaled(a)}x\arctan\frac{{{b}}}{{x}}+{c}.",
+        OrderedAnswer((LimitAnswer(c), LimitAnswer(c), LimitAnswer(c)), SIDES),
+        r"\text{The arctangent is bounded: }|\arctan u|<\pi/2.",
+        rf"|f(x)-{c}|\le\frac{{{a}\pi}}{{2}}|x|\to0\text{{ from both sides,}}"
+        rf"\quad\arctan\frac{{{b}}}{{x}}\to\mp\frac{{\pi}}{{2}}\text{{ only changes the sign}}.",
+    )
+
+
+def squeeze_arctan(a: int, b: int, c: int) -> Built:
+    return function_limit(
+        rf"\left({scaled(a)}x^2\arctan\frac{{{b}}}{{x}}+{c}\right)",
+        0,
+        c,
+        r"\text{Squeeze with }|\arctan u|<\pi/2.",
+        rf"{c}-\frac{{{a}\pi}}{{2}}x^2\le f(x)\le{c}+\frac{{{a}\pi}}{{2}}x^2,"
+        rf"\qquad\text{{both bounds tend to }}{c}.",
+    )
+
+
+def sine_product_square(a: int, b: int, c: int) -> Built:
+    value = sp.Rational(a * b, c)
+    return function_limit(
+        sp.sin(a * X) * sp.sin(b * X) / (c * X**2),
+        0,
+        value,
+        r"\text{Use }\sin u\sim u\text{ for each factor.}",
+        rf"f(x)=\frac{{{a * b}}}{{{c}}}\cdot\frac{{\sin {scaled(a)}x}}{{{scaled(a)}x}}"
+        rf"\cdot\frac{{\sin {scaled(b)}x}}{{{scaled(b)}x}}\to{tex(value)}.",
+    )
+
+
+def sine_radical(a: int, b: int, c: int) -> Built:
+    point = c * c
+    return function_limit(
+        rf"\frac{{\sin\left({scaled(a)}(x-{point})\right)}}{{\sqrt{{x}}-{c}}}",
+        point,
+        2 * a * c,
+        rf"\text{{Write }}x-{point}=(\sqrt{{x}}-{c})(\sqrt{{x}}+{c})"
+        r"\text{ and use }\sin u\sim u.",
+        rf"f(x)=\frac{{\sin\left({scaled(a)}(x-{point})\right)}}{{{scaled(a)}(x-{point})}}"
+        rf"\cdot{scaled(a)}(\sqrt{{x}}+{c})\to{a}\cdot{2 * c}={2 * a * c}.",
+    )
+
+
+def arctan_at_infinity(a: int, b: int, c: int) -> Built:
+    power = 1 + c % 2
+    expected = a * b if power == 1 else sp.oo
+    shown = "x" if power == 1 else "x^2"
+    tail = rf"={a * b}" if power == 1 else rf"={a * b}x\to\infty"
+    return function_limit(
+        rf"{scaled(a)}{shown}\arctan\frac{{{b}}}{{x}}",
+        sp.oo,
+        expected,
+        r"\text{Use }\arctan u\sim u\text{ with }u=" + rf"{b}/x\to0^+.",
+        rf"f(x)={scaled(a)}{shown}\cdot\frac{{{b}}}{{x}}\cdot\frac{{\arctan({b}/x)}}{{{b}/x}},"
+        rf"\qquad {scaled(a)}{shown}\cdot\frac{{{b}}}{{x}}{tail}.",
+    )
+
+
+def cosine_ratio_half_pi(a: int, b: int, c: int) -> Built:
+    top, bottom = 2 * a - 1, 2 * b - 1
+    if top == bottom:
+        bottom += 2
+    sign = (-1) ** ((top - bottom) // 2)
+    value = sp.Rational(sign * c * top, bottom)
+    t = sp.Symbol("t")
+    return function_limit(
+        c * sp.cos(top * X) / sp.cos(bottom * X),
+        sp.pi / 2,
+        value,
+        r"\text{Put }x=\pi/2+t.\text{ For odd }k,\ \cos(k\pi/2+kt)=-\sin(k\pi/2)\sin kt.",
+        rf"f=\frac{{{scaled(c)}\sin({top}\pi/2)\,{tex(sp.sin(top * t))}}}"
+        rf"{{\sin({bottom}\pi/2)\,{tex(sp.sin(bottom * t))}}}"
+        rf"\to\frac{{{c}\cdot({(-1) ** ((top - 1) // 2)})\cdot{top}}}"
+        rf"{{({(-1) ** ((bottom - 1) // 2)})\cdot{bottom}}}={tex(value)}.",
+    )
+
+
+def log_cube_root(a: int, b: int, c: int) -> Built:
+    power = 1 + c % 3
+    denominator = {1: r"\sqrt[3]{x}", 2: r"\sqrt[3]{x^2}", 3: "x"}[power]
+    expected = sp.Rational(a, b) if power == 1 else sp.oo
+    tail = (
+        rf"\to\frac{{{a}}}{{{b}}}"
+        if power == 1
+        else rf"\sim\frac{{{a}}}{{{b}}}x^{{-{power - 1}/3}}\to+\infty"
+    )
+    return function_limit(
+        rf"\frac{{\log\left(1+{scaled(a)}\sqrt[3]{{x}}\right)}}{{{scaled(b)}{denominator}}}",
+        0,
+        expected,
+        r"\text{Use }\log(1+u)\sim u\text{ with }u=" + scaled(a) + r"\sqrt[3]{x}\to0^+.",
+        rf"f(x)=\frac{{\log(1+u)}}{{u}}\cdot\frac{{{scaled(a)}\sqrt[3]{{x}}}}"
+        rf"{{{scaled(b)}{denominator}}}{tail}.",
+        direction="+",
+    )
+
+
+def log_near_one(a: int, b: int, c: int) -> Built:
+    expr = sp.log(a * X**2 - a * c * c + 1) / (b * (X + c))
+    value = sp.Rational(-2 * a * c, b)
+    return function_limit(
+        expr,
+        -c,
+        value,
+        rf"\text{{Use }}\log(1+u)\sim u\text{{ with }}u={scaled(a)}(x^2-{c * c})\to0.",
+        rf"f(x)=\frac{{\log(1+u)}}{{u}}\cdot\frac{{{scaled(a)}(x-{c})(x+{c})}}{{{b}(x+{c})}}"
+        rf"\to\frac{{{a}\cdot(-{2 * c})}}{{{b}}}={tex(value)}.",
+    )
+
+
+def tangent_power(a: int, b: int, c: int) -> Built:
+    expr = (1 + a * sp.tan(b * X)) ** sp.cot(c * X)
+    value = sp.exp(sp.Rational(a * b, c))
+    return function_limit(
+        expr,
+        0,
+        value,
+        r"\text{Take logarithms and use }\log(1+u)\sim u,\ \tan u\sim u.",
+        rf"\log f(x)=\frac{{\log\left(1+{scaled(a)}\tan {scaled(b)}x\right)}}{{\tan {scaled(c)}x}}"
+        rf"\sim\frac{{{a * b}x}}{{{c}x}}\to{tex(sp.Rational(a * b, c))}.",
+    )
+
+
+def root_difference(a: int, b: int, c: int) -> Built:
+    first, second = c + 1, c + 2
+    value = sp.Rational(a, first) + sp.Rational(b, second)
+    return function_limit(
+        rf"\frac{{\sqrt[{first}]{{1+{scaled(a)}x}}-\sqrt[{second}]{{1-{scaled(b)}x}}}}{{x}}",
+        0,
+        value,
+        r"\text{Use }(1+u)^r-1\sim ru\text{ on each root after adding and subtracting }1.",
+        rf"\frac{{(1+{a}x)^{{1/{first}}}-1}}{{x}}\to\frac{{{a}}}{{{first}}},\qquad"
+        rf"\frac{{1-(1-{b}x)^{{1/{second}}}}}{{x}}\to\frac{{{b}}}{{{second}}},"
+        rf"\qquad f(x)\to{tex(value)}.",
+    )
+
+
+def sine_quadratic_ratio(a: int, b: int, c: int) -> Built:
+    denominator = sp.expand((X - c) * (X - c + a))
+    value = sp.Rational(2 * b * c, a)
+    return function_limit(
+        rf"\frac{{\sin\left({tex(b * X**2 - b * c * c)}\right)}}{{{tex(denominator)}}}",
+        c,
+        value,
+        r"\text{Use }\sin u\sim u\text{ and factor both polynomials.}",
+        rf"f(x)\sim\frac{{{scaled(b)}(x-{c})(x+{c})}}{{(x-{c})\,({tex(X - c + a)})}}"
+        rf"=\frac{{{scaled(b)}(x+{c})}}{{{tex(X - c + a)}}}\to{tex(value)}.",
+    )
+
+
+def log_difference_infinity(a: int, b: int, c: int) -> Built:
+    value = sp.Rational(a * b, c)
+    return function_limit(
+        rf"{scaled(a)}x\left(\log({tex(c * X + b)})-\log({tex(c * X)})\right)",
+        sp.oo,
+        value,
+        r"\text{Combine the logarithms and use }\log(1+u)\sim u.",
+        rf"f(x)={scaled(a)}x\log\left(1+\frac{{{b}}}{{{scaled(c)}x}}\right)"
+        rf"\sim{scaled(a)}x\cdot\frac{{{b}}}{{{scaled(c)}x}}\to{tex(value)}.",
+    )
+
+
+def log_quadratic_at_point(a: int, b: int, c: int) -> Built:
+    shift = c * c - b * c - 1
+    expr = sp.log(X**2 - b * X - shift) / (X - c)
+    return function_limit(
+        expr,
+        c,
+        2 * c - b,
+        rf"\text{{The argument equals }}1+(x-{c})({tex(X + c - b)})."
+        r"\text{ Use }\log(1+u)\sim u.",
+        rf"f(x)\sim\frac{{(x-{c})({tex(X + c - b)})}}{{x-{c}}}\to{2 * c - b}.",
+    )
+
+
+def sine_power_product(a: int, b: int, c: int) -> Built:
+    expr = sp.sin(a * X**5) / (sp.sin(b * X**2) * sp.sin(c * X**3))
+    value = sp.Rational(a, b * c)
+    return function_limit(
+        expr,
+        0,
+        value,
+        r"\text{Replace each sine by its argument, }\sin u\sim u.",
+        rf"f(x)\sim\frac{{{scaled(a)}x^5}}{{{scaled(b)}x^2\cdot{scaled(c)}x^3}}={tex(value)}.",
     )

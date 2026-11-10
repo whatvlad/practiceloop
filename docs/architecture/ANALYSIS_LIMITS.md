@@ -1,17 +1,18 @@
 # Analysis I sequences, limits and continuity (#236)
 
 This implementation checkpoint extends Functions and sequences and Limits and
-continuity with 86 independent generator versions: 61 from the first
-checkpoint (#256) and 25 sequence versions from #257. The two topic slugs,
-prior versions and permanent codes are preserved. The generator registry
-declares each prefix explicitly. The catalogue fixture retains every entry from
-the base commit, including the prior curriculum expansions.
+continuity with 108 independent generator versions: 61 from the first
+checkpoint (#256), 25 sequence versions from #257 and 22 function-limit
+versions from #258. The two topic slugs, prior versions and permanent codes
+are preserved. The generator registry declares each prefix explicitly. The
+catalogue fixture retains every entry from the base commit, including the prior
+curriculum expansions.
 
-[The source index](analysis_pdf_source_index.json) records 87 matched
+[The source index](analysis_pdf_source_index.json) records 109 matched
 computational references, the additional generated variants and the remaining
 references that need separate coverage. Learner proof and sketch components
-remain routed to #244. #236 stays in progress until its function-limit and
-asymptote parts (#258, #259) are delivered.
+remain routed to #244. #236 stays in progress until its asymptote and
+discontinuity part (#259) is delivered.
 
 ## Sequence references completed in #257
 
@@ -50,6 +51,43 @@ These are sequence computations with no geometric outcome, so they carry
 derivations and no plot. The tests check each against term tables, exact
 rational arithmetic or high-precision values far out in the sequence, not
 against the construction.
+
+## Function-limit references completed in #258
+
+The pending references of AM1/32 to AM1/35 and the exam forms of those
+families have their own versions (prefixes `FLBK` to `FLBZ` and `FLCA` to
+`FLCF`):
+
+| Reference | Version | Generated form |
+|---|---|---|
+| AM1/32/a | `rational-substitution` | \((x^2-a)/(x^2-bx+b^2)\) at \(x=c\), continuous quotient |
+| AM1/32/c | `radical-quotient-zero` | \((ax+b\sqrt x)/(c\sqrt x)\to b/c\) as \(x\to0^+\) |
+| AM1/32/d | `power-difference-quotient` | \((x^p-c^p)/(x^q-c^q)\to p/(qc^{q-p})\) |
+| AM1/32/e | `leading-power-quotient` | \((ax^3+1)^k/((x+1)^{k+2}(cx^2+1)^{k-1})\to a^k/c^{k-1}\) |
+| AM1/32/g | `conjugate-minus-infinity` | \(\sqrt{a^2x^2+sx+c}+ax\to-s/(2a)\) as \(x\to-\infty\) |
+| AM1/32/i | `tangent-ratio` | \((a\tan^2x+b)/(c\tan^2x+b+c)\to a/c\) as \(x\to\pi/2^-\) |
+| AM1/32/k | `radical-linear-ratio` | \((\sqrt{a^2x^2+x}+b)/(cx+1)\to a/c\) |
+| AM1/32/l | `cancelling-reciprocals` | \(c(1/(1-x)-m/(1-x^m))\to c(1-m)/2\) |
+| AM1/33/d | `bounded-inverse-trig` | \(ax\arctan(b/x)+c\): equal one-sided limits, with a plot |
+| AM1/34/b | `squeeze-arctan` | \(ax^2\arctan(b/x)+c\to c\) by squeeze |
+| AM1/35/a | `sine-product-square` | \(\sin ax\sin bx/(cx^2)\to ab/c\) |
+| AM1/35/b | `sine-radical` | \(\sin(a(x-c^2))/(\sqrt x-c)\to2ac\) |
+| AM1/35/d | `arctan-at-infinity` | \(ax^k\arctan(b/x)\): \(ab\) for \(k=1\), \(\infty\) for \(k=2\) |
+| AM1/35/e | `cosine-ratio-half-pi` | \(c\cos px/\cos qx\) at \(\pi/2\) for odd \(p\ne q\) |
+| AM1/35/g | `log-cube-root` | \(\log(1+a\sqrt[3]x)/(bx^{m/3})\) as \(x\to0^+\): \(a/b\) or \(\infty\) |
+| AM1/35/h | `log-near-one` | \(\log(ax^2-ac^2+1)/(b(x+c))\to-2ac/b\) at \(-c\) |
+| AM1/35/k | `tangent-power` | \((1+a\tan bx)^{\cot cx}\to e^{ab/c}\) |
+| AM1/35/l | `root-difference` | \((\sqrt[p]{1+ax}-\sqrt[q]{1-bx})/x\to a/p+b/q\) |
+| exam first/A/4 | `sine-quadratic-ratio` | \(\sin(b(x^2-c^2))/((x-c)(x-c+a))\to2bc/a\) |
+| exam first/B/4 | `log-difference-infinity` | \(ax(\log(cx+b)-\log cx)\to ab/c\) |
+| exam first/C/4 | `log-quadratic-at-point` | \(\log(1+(x-c)(x+c-b))/(x-c)\to2c-b\) |
+| exam main/B/3 | `sine-power-product` | \(\sin ax^5/(\sin bx^2\sin cx^3)\to a/(bc)\) |
+
+The source writes the cube-root logarithm limit two-sided; the generated form
+asks for \(x\to0^+\) so the real cube root and the one-sided behaviour of
+\(x^{-1/3}\) stay unambiguous. The tests evaluate each displayed function with
+50-digit arithmetic next to the limit point or far out, independently of the
+derivation.
 
 ## Parameters and levels
 

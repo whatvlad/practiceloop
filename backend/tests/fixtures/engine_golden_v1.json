@@ -32500,5 +32500,1567 @@
         "difficulty": 3
       }
     }
+  ],
+  "analysis1-limits-rational-substitution-v1": [
+    {
+      "code": "FLBK-1-0000000000000003-71",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 5}\\frac{x^{2} - 2}{x^{2} - x + 1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The denominator }x^2-x+1\\text{ has negative discriminant, so the quotient is continuous. Substitute.}"
+        ],
+        [
+          "calculation",
+          "\\frac{5^2-2}{5^2-1\\cdot5+1}=\\frac{23}{21}."
+        ],
+        [
+          "result",
+          "\\frac{23}{21}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{23}{21}",
+      "metadata": {
+        "difficulty": 1
+      }
+    },
+    {
+      "code": "FLBK-1-0000000000000200-50",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 1}\\frac{x^{2} - 5}{x^{2} - 5 x + 25}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The denominator }x^2-5x+25\\text{ has negative discriminant, so the quotient is continuous. Substitute.}"
+        ],
+        [
+          "calculation",
+          "\\frac{1^2-5}{1^2-5\\cdot1+25}=- \\frac{4}{21}."
+        ],
+        [
+          "result",
+          "- \\frac{4}{21}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "- \\frac{4}{21}",
+      "metadata": {
+        "difficulty": 1
+      }
+    },
+    {
+      "code": "FLBK-1-0000000000000999-64",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 5}\\frac{x^{2} - 2}{x^{2} - 3 x + 9}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The denominator }x^2-3x+9\\text{ has negative discriminant, so the quotient is continuous. Substitute.}"
+        ],
+        [
+          "calculation",
+          "\\frac{5^2-2}{5^2-3\\cdot5+9}=\\frac{23}{19}."
+        ],
+        [
+          "result",
+          "\\frac{23}{19}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{23}{19}",
+      "metadata": {
+        "difficulty": 1
+      }
+    }
+  ],
+  "analysis1-limits-radical-quotient-zero-v1": [
+    {
+      "code": "FLBL-1-0000000000000003-58",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0^+}\\frac{2x+1\\sqrt{x}}{5\\sqrt{x}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{For }x>0\\text{ cancel the common factor }\\sqrt{x}."
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{2\\sqrt{x}+1}{5}\\to\\frac{1}{5}."
+        ],
+        [
+          "result",
+          "\\frac{1}{5}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{1}{5}",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "FLBL-1-0000000000000200-37",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0^+}\\frac{5x+5\\sqrt{x}}{\\sqrt{x}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{For }x>0\\text{ cancel the common factor }\\sqrt{x}."
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{5\\sqrt{x}+5}{1}\\to5."
+        ],
+        [
+          "result",
+          "5"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "5",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "FLBL-1-0000000000000999-51",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0^+}\\frac{2x+3\\sqrt{x}}{5\\sqrt{x}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{For }x>0\\text{ cancel the common factor }\\sqrt{x}."
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{2\\sqrt{x}+3}{5}\\to\\frac{3}{5}."
+        ],
+        [
+          "result",
+          "\\frac{3}{5}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{3}{5}",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-limits-power-difference-quotient-v1": [
+    {
+      "code": "FLBM-1-0000000000000003-32",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 5}\\frac{x^{3} - 125}{x^{4} - 625}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Factor }x^k-5^k=(x-5)(x^{k-1}+5x^{k-2}+\\dots+5^{k-1})\\text{ in both and cancel }x-5."
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{x^{2}+\\dots+5^{2}}{x^{3}+\\dots+5^{3}}\\to\\frac{3\\cdot5^{2}}{4\\cdot5^{3}}=\\frac{3}{20}."
+        ],
+        [
+          "result",
+          "\\frac{3}{20}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{3}{20}",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLBM-1-0000000000000200-11",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 1}\\frac{x^{6} - 1}{x^{11} - 1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Factor }x^k-1^k=(x-1)(x^{k-1}+1x^{k-2}+\\dots+1^{k-1})\\text{ in both and cancel }x-1."
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{x^{5}+\\dots+1^{5}}{x^{10}+\\dots+1^{10}}\\to\\frac{6\\cdot1^{5}}{11\\cdot1^{10}}=\\frac{6}{11}."
+        ],
+        [
+          "result",
+          "\\frac{6}{11}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{6}{11}",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLBM-1-0000000000000999-25",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 5}\\frac{x^{3} - 125}{x^{6} - 15625}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Factor }x^k-5^k=(x-5)(x^{k-1}+5x^{k-2}+\\dots+5^{k-1})\\text{ in both and cancel }x-5."
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{x^{2}+\\dots+5^{2}}{x^{5}+\\dots+5^{5}}\\to\\frac{3\\cdot5^{2}}{6\\cdot5^{5}}=\\frac{1}{250}."
+        ],
+        [
+          "result",
+          "\\frac{1}{250}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{1}{250}",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-leading-power-quotient-v1": [
+    {
+      "code": "FLBN-1-0000000000000003-92",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\infty}\\frac{\\left(2 x^{3} + 1\\right)^{2}}{\\left(x + 1\\right)^{4} \\left(5 x^{2} + 1\\right)}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Both sides have degree }6.\\text{ Divide every factor by its power of }x."
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{(2+x^{-3})^{2}}{(1+x^{-1})^{4}(5+x^{-2})^{1}}\\to\\frac{2^{2}}{5^{1}}=\\frac{4}{5}."
+        ],
+        [
+          "result",
+          "\\frac{4}{5}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{4}{5}",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLBN-1-0000000000000200-71",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\infty}\\frac{\\left(5 x^{3} + 1\\right)^{6}}{\\left(x + 1\\right)^{8} \\left(x^{2} + 1\\right)^{5}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Both sides have degree }18.\\text{ Divide every factor by its power of }x."
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{(5+x^{-3})^{6}}{(1+x^{-1})^{8}(1+x^{-2})^{5}}\\to\\frac{5^{6}}{1^{5}}=15625."
+        ],
+        [
+          "result",
+          "15625"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "15625",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLBN-1-0000000000000999-85",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\infty}\\frac{\\left(2 x^{3} + 1\\right)^{4}}{\\left(x + 1\\right)^{6} \\left(5 x^{2} + 1\\right)^{3}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Both sides have degree }12.\\text{ Divide every factor by its power of }x."
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{(2+x^{-3})^{4}}{(1+x^{-1})^{6}(5+x^{-2})^{3}}\\to\\frac{2^{4}}{5^{3}}=\\frac{16}{125}."
+        ],
+        [
+          "result",
+          "\\frac{16}{125}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{16}{125}",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-conjugate-minus-infinity-v1": [
+    {
+      "code": "FLBO-1-0000000000000003-09",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to -\\infty}\\left(\\sqrt{4 x^{2} - 2 x + 5}+2x\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Rationalize. For }x<0,\\ \\sqrt{x^2}=-x."
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{5 - 2 x}{\\sqrt{4 x^{2} - 2 x + 5}-2x}=\\frac{-2 + \\frac{5}{x}}{-\\sqrt{4 - \\frac{2}{x} + \\frac{5}{x^{2}}}-2}\\to\\frac{1}{2}."
+        ],
+        [
+          "result",
+          "\\frac{1}{2}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{1}{2}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLBO-1-0000000000000200-85",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to -\\infty}\\left(\\sqrt{25 x^{2} + 2 x + 1}+5x\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Rationalize. For }x<0,\\ \\sqrt{x^2}=-x."
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{2 x + 1}{\\sqrt{25 x^{2} + 2 x + 1}-5x}=\\frac{2 + \\frac{1}{x}}{-\\sqrt{25 + \\frac{2}{x} + \\frac{1}{x^{2}}}-5}\\to- \\frac{1}{5}."
+        ],
+        [
+          "result",
+          "- \\frac{1}{5}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "- \\frac{1}{5}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLBO-1-0000000000000999-02",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to -\\infty}\\left(\\sqrt{4 x^{2} + 5}+2x\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Rationalize. For }x<0,\\ \\sqrt{x^2}=-x."
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{5}{\\sqrt{4 x^{2} + 5}-2x}=\\frac{\\frac{5}{x}}{-\\sqrt{4 + \\frac{5}{x^{2}}}-2}\\to0."
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-tangent-ratio-v1": [
+    {
+      "code": "FLBP-1-0000000000000003-28",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\frac{\\pi}{2}^-}\\frac{2 \\tan^{2}{\\left(x \\right)} + 1}{5 \\tan^{2}{\\left(x \\right)} + 6}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{As }x\\to\\pi/2^-,\\ \\tan^2x\\to\\infty.\\text{ Divide by }\\tan^2x."
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{2+1/\\tan^2x}{5+6/\\tan^2x}\\to\\frac{2}{5}."
+        ],
+        [
+          "result",
+          "\\frac{2}{5}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{2}{5}",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "FLBP-1-0000000000000200-07",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\frac{\\pi}{2}^-}\\frac{5 \\tan^{2}{\\left(x \\right)} + 5}{\\tan^{2}{\\left(x \\right)} + 6}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{As }x\\to\\pi/2^-,\\ \\tan^2x\\to\\infty.\\text{ Divide by }\\tan^2x."
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{5+5/\\tan^2x}{1+6/\\tan^2x}\\to5."
+        ],
+        [
+          "result",
+          "5"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "5",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "FLBP-1-0000000000000999-21",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\frac{\\pi}{2}^-}\\frac{2 \\tan^{2}{\\left(x \\right)} + 3}{5 \\tan^{2}{\\left(x \\right)} + 8}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{As }x\\to\\pi/2^-,\\ \\tan^2x\\to\\infty.\\text{ Divide by }\\tan^2x."
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{2+3/\\tan^2x}{5+8/\\tan^2x}\\to\\frac{2}{5}."
+        ],
+        [
+          "result",
+          "\\frac{2}{5}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{2}{5}",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-limits-radical-linear-ratio-v1": [
+    {
+      "code": "FLBQ-1-0000000000000003-21",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\infty}\\frac{\\sqrt{4 x^{2} + x}+1}{5 x + 1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Divide the numerator and denominator by }x>0."
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{\\sqrt{4+1/x}+1/x}{5+1/x}\\to\\frac{2}{5}."
+        ],
+        [
+          "result",
+          "\\frac{2}{5}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{2}{5}",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "FLBQ-1-0000000000000200-00",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\infty}\\frac{\\sqrt{25 x^{2} + x}+5}{x + 1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Divide the numerator and denominator by }x>0."
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{\\sqrt{25+1/x}+5/x}{1+1/x}\\to5."
+        ],
+        [
+          "result",
+          "5"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "5",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "FLBQ-1-0000000000000999-14",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\infty}\\frac{\\sqrt{4 x^{2} + x}+3}{5 x + 1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Divide the numerator and denominator by }x>0."
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{\\sqrt{4+1/x}+3/x}{5+1/x}\\to\\frac{2}{5}."
+        ],
+        [
+          "result",
+          "\\frac{2}{5}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{2}{5}",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-limits-cancelling-reciprocals-v1": [
+    {
+      "code": "FLBR-1-0000000000000003-45",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 1}5\\left(\\frac{1}{1-x}-\\frac{2}{1-x^{2}}\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use the common denominator }1-x^{2}=(1-x)(1+x+\\dots+x^{1})."
+        ],
+        [
+          "calculation",
+          "\\frac{1}{1-x}-\\frac{2}{1-x^{2}}=\\frac{\\sum_{k=0}^{1}(x^k-1)}{1-x^{2}}=-\\frac{\\sum_{k=1}^{1}(1+x+\\dots+x^{k-1})}{1+x+\\dots+x^{1}}\\to-\\frac{1+2+\\dots+1}{2}=-\\frac{1}{2}."
+        ],
+        [
+          "result",
+          "- \\frac{5}{2}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "- \\frac{5}{2}",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLBR-1-0000000000000200-24",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 1}\\left(\\frac{1}{1-x}-\\frac{6}{1-x^{6}}\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use the common denominator }1-x^{6}=(1-x)(1+x+\\dots+x^{5})."
+        ],
+        [
+          "calculation",
+          "\\frac{1}{1-x}-\\frac{6}{1-x^{6}}=\\frac{\\sum_{k=0}^{5}(x^k-1)}{1-x^{6}}=-\\frac{\\sum_{k=1}^{5}(1+x+\\dots+x^{k-1})}{1+x+\\dots+x^{5}}\\to-\\frac{1+2+\\dots+5}{6}=-\\frac{5}{2}."
+        ],
+        [
+          "result",
+          "- \\frac{5}{2}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "- \\frac{5}{2}",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLBR-1-0000000000000999-38",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 1}5\\left(\\frac{1}{1-x}-\\frac{4}{1-x^{4}}\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use the common denominator }1-x^{4}=(1-x)(1+x+\\dots+x^{3})."
+        ],
+        [
+          "calculation",
+          "\\frac{1}{1-x}-\\frac{4}{1-x^{4}}=\\frac{\\sum_{k=0}^{3}(x^k-1)}{1-x^{4}}=-\\frac{\\sum_{k=1}^{3}(1+x+\\dots+x^{k-1})}{1+x+\\dots+x^{3}}\\to-\\frac{1+2+\\dots+3}{4}=-\\frac{3}{2}."
+        ],
+        [
+          "result",
+          "- \\frac{15}{2}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "- \\frac{15}{2}",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-bounded-inverse-trig-v1": [
+    {
+      "code": "FLBS-1-0000000000000003-12",
+      "statement": "\\(\\text{Give both one-sided limits and the two-sided limit at }x=0:\\quad f(x)=2x\\arctan\\frac{1}{x}+5.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The arctangent is bounded: }|\\arctan u|<\\pi/2."
+        ],
+        [
+          "calculation",
+          "|f(x)-5|\\le\\frac{2\\pi}{2}|x|\\to0\\text{ from both sides,}\\quad\\arctan\\frac{1}{x}\\to\\mp\\frac{\\pi}{2}\\text{ only changes the sign}."
+        ],
+        [
+          "result",
+          "\\left(5,\\;5,\\;5\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(5,\\;5,\\;5\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLBS-1-0000000000000200-88",
+      "statement": "\\(\\text{Give both one-sided limits and the two-sided limit at }x=0:\\quad f(x)=5x\\arctan\\frac{5}{x}+1.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The arctangent is bounded: }|\\arctan u|<\\pi/2."
+        ],
+        [
+          "calculation",
+          "|f(x)-1|\\le\\frac{5\\pi}{2}|x|\\to0\\text{ from both sides,}\\quad\\arctan\\frac{5}{x}\\to\\mp\\frac{\\pi}{2}\\text{ only changes the sign}."
+        ],
+        [
+          "result",
+          "\\left(1,\\;1,\\;1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(1,\\;1,\\;1\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLBS-1-0000000000000999-05",
+      "statement": "\\(\\text{Give both one-sided limits and the two-sided limit at }x=0:\\quad f(x)=2x\\arctan\\frac{3}{x}+5.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The arctangent is bounded: }|\\arctan u|<\\pi/2."
+        ],
+        [
+          "calculation",
+          "|f(x)-5|\\le\\frac{2\\pi}{2}|x|\\to0\\text{ from both sides,}\\quad\\arctan\\frac{3}{x}\\to\\mp\\frac{\\pi}{2}\\text{ only changes the sign}."
+        ],
+        [
+          "result",
+          "\\left(5,\\;5,\\;5\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(5,\\;5,\\;5\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-squeeze-arctan-v1": [
+    {
+      "code": "FLBT-1-0000000000000003-96",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0}\\left(2x^2\\arctan\\frac{1}{x}+5\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Squeeze with }|\\arctan u|<\\pi/2."
+        ],
+        [
+          "calculation",
+          "5-\\frac{2\\pi}{2}x^2\\le f(x)\\le5+\\frac{2\\pi}{2}x^2,\\qquad\\text{both bounds tend to }5."
+        ],
+        [
+          "result",
+          "5"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "5",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLBT-1-0000000000000200-75",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0}\\left(5x^2\\arctan\\frac{5}{x}+1\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Squeeze with }|\\arctan u|<\\pi/2."
+        ],
+        [
+          "calculation",
+          "1-\\frac{5\\pi}{2}x^2\\le f(x)\\le1+\\frac{5\\pi}{2}x^2,\\qquad\\text{both bounds tend to }1."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLBT-1-0000000000000999-89",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0}\\left(2x^2\\arctan\\frac{3}{x}+5\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Squeeze with }|\\arctan u|<\\pi/2."
+        ],
+        [
+          "calculation",
+          "5-\\frac{2\\pi}{2}x^2\\le f(x)\\le5+\\frac{2\\pi}{2}x^2,\\qquad\\text{both bounds tend to }5."
+        ],
+        [
+          "result",
+          "5"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "5",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-sine-product-square-v1": [
+    {
+      "code": "FLBU-1-0000000000000003-66",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0}\\frac{\\sin{\\left(x \\right)} \\sin{\\left(2 x \\right)}}{5 x^{2}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use }\\sin u\\sim u\\text{ for each factor.}"
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{2}{5}\\cdot\\frac{\\sin 2x}{2x}\\cdot\\frac{\\sin x}{x}\\to\\frac{2}{5}."
+        ],
+        [
+          "result",
+          "\\frac{2}{5}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{2}{5}",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "FLBU-1-0000000000000200-45",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0}\\frac{\\sin^{2}{\\left(5 x \\right)}}{x^{2}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use }\\sin u\\sim u\\text{ for each factor.}"
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{25}{1}\\cdot\\frac{\\sin 5x}{5x}\\cdot\\frac{\\sin 5x}{5x}\\to25."
+        ],
+        [
+          "result",
+          "25"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "25",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "FLBU-1-0000000000000999-59",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0}\\frac{\\sin{\\left(2 x \\right)} \\sin{\\left(3 x \\right)}}{5 x^{2}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use }\\sin u\\sim u\\text{ for each factor.}"
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{6}{5}\\cdot\\frac{\\sin 2x}{2x}\\cdot\\frac{\\sin 3x}{3x}\\to\\frac{6}{5}."
+        ],
+        [
+          "result",
+          "\\frac{6}{5}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{6}{5}",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-limits-sine-radical-v1": [
+    {
+      "code": "FLBV-1-0000000000000003-75",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 25}\\frac{\\sin\\left(2(x-25)\\right)}{\\sqrt{x}-5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Write }x-25=(\\sqrt{x}-5)(\\sqrt{x}+5)\\text{ and use }\\sin u\\sim u."
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{\\sin\\left(2(x-25)\\right)}{2(x-25)}\\cdot2(\\sqrt{x}+5)\\to2\\cdot10=20."
+        ],
+        [
+          "result",
+          "20"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "20",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLBV-1-0000000000000200-54",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 1}\\frac{\\sin\\left(5(x-1)\\right)}{\\sqrt{x}-1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Write }x-1=(\\sqrt{x}-1)(\\sqrt{x}+1)\\text{ and use }\\sin u\\sim u."
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{\\sin\\left(5(x-1)\\right)}{5(x-1)}\\cdot5(\\sqrt{x}+1)\\to5\\cdot2=10."
+        ],
+        [
+          "result",
+          "10"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "10",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLBV-1-0000000000000999-68",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 25}\\frac{\\sin\\left(2(x-25)\\right)}{\\sqrt{x}-5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Write }x-25=(\\sqrt{x}-5)(\\sqrt{x}+5)\\text{ and use }\\sin u\\sim u."
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{\\sin\\left(2(x-25)\\right)}{2(x-25)}\\cdot2(\\sqrt{x}+5)\\to2\\cdot10=20."
+        ],
+        [
+          "result",
+          "20"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "20",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-arctan-at-infinity-v1": [
+    {
+      "code": "FLBW-1-0000000000000003-91",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\infty}2x^2\\arctan\\frac{1}{x}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use }\\arctan u\\sim u\\text{ with }u=1/x\\to0^+."
+        ],
+        [
+          "calculation",
+          "f(x)=2x^2\\cdot\\frac{1}{x}\\cdot\\frac{\\arctan(1/x)}{1/x},\\qquad 2x^2\\cdot\\frac{1}{x}=2x\\to\\infty."
+        ],
+        [
+          "result",
+          "\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\infty",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLBW-1-0000000000000200-70",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\infty}5x^2\\arctan\\frac{5}{x}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use }\\arctan u\\sim u\\text{ with }u=5/x\\to0^+."
+        ],
+        [
+          "calculation",
+          "f(x)=5x^2\\cdot\\frac{5}{x}\\cdot\\frac{\\arctan(5/x)}{5/x},\\qquad 5x^2\\cdot\\frac{5}{x}=25x\\to\\infty."
+        ],
+        [
+          "result",
+          "\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\infty",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLBW-1-0000000000000999-84",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\infty}2x^2\\arctan\\frac{3}{x}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use }\\arctan u\\sim u\\text{ with }u=3/x\\to0^+."
+        ],
+        [
+          "calculation",
+          "f(x)=2x^2\\cdot\\frac{3}{x}\\cdot\\frac{\\arctan(3/x)}{3/x},\\qquad 2x^2\\cdot\\frac{3}{x}=6x\\to\\infty."
+        ],
+        [
+          "result",
+          "\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\infty",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-cosine-ratio-half-pi-v1": [
+    {
+      "code": "FLBX-1-0000000000000003-63",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\frac{\\pi}{2}}\\frac{5 \\cos{\\left(3 x \\right)}}{\\cos{\\left(x \\right)}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Put }x=\\pi/2+t.\\text{ For odd }k,\\ \\cos(k\\pi/2+kt)=-\\sin(k\\pi/2)\\sin kt."
+        ],
+        [
+          "calculation",
+          "f=\\frac{5\\sin(3\\pi/2)\\,\\sin{\\left(3 t \\right)}}{\\sin(1\\pi/2)\\,\\sin{\\left(t \\right)}}\\to\\frac{5\\cdot(-1)\\cdot3}{(1)\\cdot1}=-15."
+        ],
+        [
+          "result",
+          "-15"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "-15",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLBX-1-0000000000000200-42",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\frac{\\pi}{2}}\\frac{\\cos{\\left(9 x \\right)}}{\\cos{\\left(11 x \\right)}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Put }x=\\pi/2+t.\\text{ For odd }k,\\ \\cos(k\\pi/2+kt)=-\\sin(k\\pi/2)\\sin kt."
+        ],
+        [
+          "calculation",
+          "f=\\frac{\\sin(9\\pi/2)\\,\\sin{\\left(9 t \\right)}}{\\sin(11\\pi/2)\\,\\sin{\\left(11 t \\right)}}\\to\\frac{1\\cdot(1)\\cdot9}{(-1)\\cdot11}=- \\frac{9}{11}."
+        ],
+        [
+          "result",
+          "- \\frac{9}{11}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "- \\frac{9}{11}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLBX-1-0000000000000999-56",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\frac{\\pi}{2}}\\frac{5 \\cos{\\left(3 x \\right)}}{\\cos{\\left(5 x \\right)}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Put }x=\\pi/2+t.\\text{ For odd }k,\\ \\cos(k\\pi/2+kt)=-\\sin(k\\pi/2)\\sin kt."
+        ],
+        [
+          "calculation",
+          "f=\\frac{5\\sin(3\\pi/2)\\,\\sin{\\left(3 t \\right)}}{\\sin(5\\pi/2)\\,\\sin{\\left(5 t \\right)}}\\to\\frac{5\\cdot(-1)\\cdot3}{(1)\\cdot5}=-3."
+        ],
+        [
+          "result",
+          "-3"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "-3",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-log-cube-root-v1": [
+    {
+      "code": "FLBY-1-0000000000000003-49",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0^+}\\frac{\\log\\left(1+2\\sqrt[3]{x}\\right)}{x}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use }\\log(1+u)\\sim u\\text{ with }u=2\\sqrt[3]{x}\\to0^+."
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{\\log(1+u)}{u}\\cdot\\frac{2\\sqrt[3]{x}}{x}\\sim\\frac{2}{1}x^{-2/3}\\to+\\infty."
+        ],
+        [
+          "result",
+          "\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\infty",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLBY-1-0000000000000200-28",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0^+}\\frac{\\log\\left(1+5\\sqrt[3]{x}\\right)}{5\\sqrt[3]{x^2}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use }\\log(1+u)\\sim u\\text{ with }u=5\\sqrt[3]{x}\\to0^+."
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{\\log(1+u)}{u}\\cdot\\frac{5\\sqrt[3]{x}}{5\\sqrt[3]{x^2}}\\sim\\frac{5}{5}x^{-1/3}\\to+\\infty."
+        ],
+        [
+          "result",
+          "\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\infty",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLBY-1-0000000000000999-42",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0^+}\\frac{\\log\\left(1+2\\sqrt[3]{x}\\right)}{3x}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use }\\log(1+u)\\sim u\\text{ with }u=2\\sqrt[3]{x}\\to0^+."
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{\\log(1+u)}{u}\\cdot\\frac{2\\sqrt[3]{x}}{3x}\\sim\\frac{2}{3}x^{-2/3}\\to+\\infty."
+        ],
+        [
+          "result",
+          "\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\infty",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-log-near-one-v1": [
+    {
+      "code": "FLBZ-1-0000000000000003-83",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to -5}\\frac{\\log{\\left(2 x^{2} - 49 \\right)}}{x + 5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use }\\log(1+u)\\sim u\\text{ with }u=2(x^2-25)\\to0."
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{\\log(1+u)}{u}\\cdot\\frac{2(x-5)(x+5)}{1(x+5)}\\to\\frac{2\\cdot(-10)}{1}=-20."
+        ],
+        [
+          "result",
+          "-20"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "-20",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLBZ-1-0000000000000200-62",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to -1}\\frac{\\log{\\left(5 x^{2} - 4 \\right)}}{5 x + 5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use }\\log(1+u)\\sim u\\text{ with }u=5(x^2-1)\\to0."
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{\\log(1+u)}{u}\\cdot\\frac{5(x-1)(x+1)}{5(x+1)}\\to\\frac{5\\cdot(-2)}{5}=-2."
+        ],
+        [
+          "result",
+          "-2"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "-2",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLBZ-1-0000000000000999-76",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to -5}\\frac{\\log{\\left(2 x^{2} - 49 \\right)}}{3 x + 15}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use }\\log(1+u)\\sim u\\text{ with }u=2(x^2-25)\\to0."
+        ],
+        [
+          "calculation",
+          "f(x)=\\frac{\\log(1+u)}{u}\\cdot\\frac{2(x-5)(x+5)}{3(x+5)}\\to\\frac{2\\cdot(-10)}{3}=- \\frac{20}{3}."
+        ],
+        [
+          "result",
+          "- \\frac{20}{3}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "- \\frac{20}{3}",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-tangent-power-v1": [
+    {
+      "code": "FLCA-1-0000000000000003-52",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0}\\left(2 \\tan{\\left(x \\right)} + 1\\right)^{\\cot{\\left(5 x \\right)}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Take logarithms and use }\\log(1+u)\\sim u,\\ \\tan u\\sim u."
+        ],
+        [
+          "calculation",
+          "\\log f(x)=\\frac{\\log\\left(1+2\\tan x\\right)}{\\tan 5x}\\sim\\frac{2x}{5x}\\to\\frac{2}{5}."
+        ],
+        [
+          "result",
+          "e^{\\frac{2}{5}}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "e^{\\frac{2}{5}}",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "FLCA-1-0000000000000200-31",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0}\\left(5 \\tan{\\left(5 x \\right)} + 1\\right)^{\\cot{\\left(x \\right)}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Take logarithms and use }\\log(1+u)\\sim u,\\ \\tan u\\sim u."
+        ],
+        [
+          "calculation",
+          "\\log f(x)=\\frac{\\log\\left(1+5\\tan 5x\\right)}{\\tan x}\\sim\\frac{25x}{1x}\\to25."
+        ],
+        [
+          "result",
+          "e^{25}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "e^{25}",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "FLCA-1-0000000000000999-45",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0}\\left(2 \\tan{\\left(3 x \\right)} + 1\\right)^{\\cot{\\left(5 x \\right)}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Take logarithms and use }\\log(1+u)\\sim u,\\ \\tan u\\sim u."
+        ],
+        [
+          "calculation",
+          "\\log f(x)=\\frac{\\log\\left(1+2\\tan 3x\\right)}{\\tan 5x}\\sim\\frac{6x}{5x}\\to\\frac{6}{5}."
+        ],
+        [
+          "result",
+          "e^{\\frac{6}{5}}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "e^{\\frac{6}{5}}",
+      "metadata": {
+        "difficulty": 5
+      }
+    }
+  ],
+  "analysis1-limits-root-difference-v1": [
+    {
+      "code": "FLCB-1-0000000000000003-18",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0}\\frac{\\sqrt[6]{1+2x}-\\sqrt[7]{1-x}}{x}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use }(1+u)^r-1\\sim ru\\text{ on each root after adding and subtracting }1."
+        ],
+        [
+          "calculation",
+          "\\frac{(1+2x)^{1/6}-1}{x}\\to\\frac{2}{6},\\qquad\\frac{1-(1-1x)^{1/7}}{x}\\to\\frac{1}{7},\\qquad f(x)\\to\\frac{10}{21}."
+        ],
+        [
+          "result",
+          "\\frac{10}{21}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{10}{21}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLCB-1-0000000000000200-94",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0}\\frac{\\sqrt[2]{1+5x}-\\sqrt[3]{1-5x}}{x}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use }(1+u)^r-1\\sim ru\\text{ on each root after adding and subtracting }1."
+        ],
+        [
+          "calculation",
+          "\\frac{(1+5x)^{1/2}-1}{x}\\to\\frac{5}{2},\\qquad\\frac{1-(1-5x)^{1/3}}{x}\\to\\frac{5}{3},\\qquad f(x)\\to\\frac{25}{6}."
+        ],
+        [
+          "result",
+          "\\frac{25}{6}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{25}{6}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLCB-1-0000000000000999-11",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0}\\frac{\\sqrt[6]{1+2x}-\\sqrt[7]{1-3x}}{x}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use }(1+u)^r-1\\sim ru\\text{ on each root after adding and subtracting }1."
+        ],
+        [
+          "calculation",
+          "\\frac{(1+2x)^{1/6}-1}{x}\\to\\frac{2}{6},\\qquad\\frac{1-(1-3x)^{1/7}}{x}\\to\\frac{3}{7},\\qquad f(x)\\to\\frac{16}{21}."
+        ],
+        [
+          "result",
+          "\\frac{16}{21}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{16}{21}",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-sine-quadratic-ratio-v1": [
+    {
+      "code": "FLCC-1-0000000000000003-53",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 5}\\frac{\\sin\\left(x^{2} - 25\\right)}{x^{2} - 8 x + 15}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use }\\sin u\\sim u\\text{ and factor both polynomials.}"
+        ],
+        [
+          "calculation",
+          "f(x)\\sim\\frac{(x-5)(x+5)}{(x-5)\\,(x - 3)}=\\frac{(x+5)}{x - 3}\\to5."
+        ],
+        [
+          "result",
+          "5"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "5",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLCC-1-0000000000000200-32",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 1}\\frac{\\sin\\left(5 x^{2} - 5\\right)}{x^{2} + 3 x - 4}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use }\\sin u\\sim u\\text{ and factor both polynomials.}"
+        ],
+        [
+          "calculation",
+          "f(x)\\sim\\frac{5(x-1)(x+1)}{(x-1)\\,(x + 4)}=\\frac{5(x+1)}{x + 4}\\to2."
+        ],
+        [
+          "result",
+          "2"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "FLCC-1-0000000000000999-46",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 5}\\frac{\\sin\\left(3 x^{2} - 75\\right)}{x^{2} - 8 x + 15}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use }\\sin u\\sim u\\text{ and factor both polynomials.}"
+        ],
+        [
+          "calculation",
+          "f(x)\\sim\\frac{3(x-5)(x+5)}{(x-5)\\,(x - 3)}=\\frac{3(x+5)}{x - 3}\\to15."
+        ],
+        [
+          "result",
+          "15"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "15",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-log-difference-infinity-v1": [
+    {
+      "code": "FLCD-1-0000000000000003-91",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\infty}2x\\left(\\log(5 x + 1)-\\log(5 x)\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Combine the logarithms and use }\\log(1+u)\\sim u."
+        ],
+        [
+          "calculation",
+          "f(x)=2x\\log\\left(1+\\frac{1}{5x}\\right)\\sim2x\\cdot\\frac{1}{5x}\\to\\frac{2}{5}."
+        ],
+        [
+          "result",
+          "\\frac{2}{5}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{2}{5}",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLCD-1-0000000000000200-70",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\infty}5x\\left(\\log(x + 5)-\\log(x)\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Combine the logarithms and use }\\log(1+u)\\sim u."
+        ],
+        [
+          "calculation",
+          "f(x)=5x\\log\\left(1+\\frac{5}{x}\\right)\\sim5x\\cdot\\frac{5}{x}\\to25."
+        ],
+        [
+          "result",
+          "25"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "25",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLCD-1-0000000000000999-84",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\infty}2x\\left(\\log(5 x + 3)-\\log(5 x)\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Combine the logarithms and use }\\log(1+u)\\sim u."
+        ],
+        [
+          "calculation",
+          "f(x)=2x\\log\\left(1+\\frac{3}{5x}\\right)\\sim2x\\cdot\\frac{3}{5x}\\to\\frac{6}{5}."
+        ],
+        [
+          "result",
+          "\\frac{6}{5}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{6}{5}",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-log-quadratic-at-point-v1": [
+    {
+      "code": "FLCE-1-0000000000000003-02",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 5}\\frac{\\log{\\left(x^{2} - x - 19 \\right)}}{x - 5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The argument equals }1+(x-5)(x + 4).\\text{ Use }\\log(1+u)\\sim u."
+        ],
+        [
+          "calculation",
+          "f(x)\\sim\\frac{(x-5)(x + 4)}{x-5}\\to9."
+        ],
+        [
+          "result",
+          "9"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "9",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLCE-1-0000000000000200-78",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 1}\\frac{\\log{\\left(x^{2} - 5 x + 5 \\right)}}{x - 1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The argument equals }1+(x-1)(x - 4).\\text{ Use }\\log(1+u)\\sim u."
+        ],
+        [
+          "calculation",
+          "f(x)\\sim\\frac{(x-1)(x - 4)}{x-1}\\to-3."
+        ],
+        [
+          "result",
+          "-3"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "-3",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLCE-1-0000000000000999-92",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 5}\\frac{\\log{\\left(x^{2} - 3 x - 9 \\right)}}{x - 5}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The argument equals }1+(x-5)(x + 2).\\text{ Use }\\log(1+u)\\sim u."
+        ],
+        [
+          "calculation",
+          "f(x)\\sim\\frac{(x-5)(x + 2)}{x-5}\\to7."
+        ],
+        [
+          "result",
+          "7"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "7",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-sine-power-product-v1": [
+    {
+      "code": "FLCF-1-0000000000000003-37",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0}\\frac{\\sin{\\left(2 x^{5} \\right)}}{\\sin{\\left(x^{2} \\right)} \\sin{\\left(5 x^{3} \\right)}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Replace each sine by its argument, }\\sin u\\sim u."
+        ],
+        [
+          "calculation",
+          "f(x)\\sim\\frac{2x^5}{x^2\\cdot5x^3}=\\frac{2}{5}."
+        ],
+        [
+          "result",
+          "\\frac{2}{5}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{2}{5}",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLCF-1-0000000000000200-16",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0}\\frac{\\sin{\\left(5 x^{5} \\right)}}{\\sin{\\left(5 x^{2} \\right)} \\sin{\\left(x^{3} \\right)}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Replace each sine by its argument, }\\sin u\\sim u."
+        ],
+        [
+          "calculation",
+          "f(x)\\sim\\frac{5x^5}{5x^2\\cdotx^3}=1."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "FLCF-1-0000000000000999-30",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0}\\frac{\\sin{\\left(2 x^{5} \\right)}}{\\sin{\\left(3 x^{2} \\right)} \\sin{\\left(5 x^{3} \\right)}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Replace each sine by its argument, }\\sin u\\sim u."
+        ],
+        [
+          "calculation",
+          "f(x)\\sim\\frac{2x^5}{3x^2\\cdot5x^3}=\\frac{2}{15}."
+        ],
+        [
+          "result",
+          "\\frac{2}{15}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{2}{15}",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
   ]
 }
