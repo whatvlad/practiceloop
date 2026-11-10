@@ -14,6 +14,10 @@ import { App } from './App';
 import { startWebAnalytics } from './analytics';
 import { cookiebotEnabled, startCookiebot, whenStatisticsAllowed } from './cookieConsent';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { startTheme } from './theme';
+
+// public/theme.js already set the theme before the first paint; this keeps it in step with the system.
+startTheme();
 
 const path = () => window.location.pathname.slice(import.meta.env.BASE_URL.length - 1);
 // The banner loads before the app renders, so it is in place before anything else

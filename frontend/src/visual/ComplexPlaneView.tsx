@@ -2,8 +2,13 @@ import { useId, useState } from 'react';
 import { Axes } from './Axes';
 import { format, linear } from './plot';
 import type { ComplexPlaneSpec } from './spec';
+import { useTheme, type Theme } from '../theme';
 
-const COLORS = ['#65adff', '#ffb65c', '#65df91'];
+// Light-theme versions are darkened to stay readable on the paper canvas.
+const PALETTE: Record<Theme, readonly string[]> = {
+  dark: ['#65adff', '#ffb65c', '#65df91'],
+  light: ['#006be4', '#a65c00', '#1a7f3f'],
+};
 type Point = readonly [number, number];
 
 export function ComplexPlaneView({ spec }: { spec: ComplexPlaneSpec }) {
@@ -12,6 +17,7 @@ export function ComplexPlaneView({ spec }: { spec: ComplexPlaneSpec }) {
 
 function CircleView({ spec }: { spec: ComplexPlaneSpec }) {
   const id = useId().replace(/:/g, '');
+  const COLORS = PALETTE[useTheme()];
   const [x, y] = spec.first; const radius = spec.radius!;
   const extent = Math.max(1, Math.abs(x) + radius, Math.abs(y) + radius) * 1.25;
   const sx = linear([-extent * 350 / 270, extent * 350 / 270], [25, 375]);
@@ -21,10 +27,10 @@ function CircleView({ spec }: { spec: ComplexPlaneSpec }) {
     <figcaption id={`${id}-title`} className="pl-label">Modulus as distance</figcaption>
     <div className="pl-vis-plot"><svg viewBox="0 0 400 320" width="100%" role="img" aria-label={`Complex plane: circle with centre (${label(x)}, ${label(y)}) and radius ${label(radius)}.`}>
       <Axes sx={sx} sy={sy} id={id} />
-      <circle data-locus cx={sx(x)} cy={sy(y)} r={sx(x + radius) - sx(x)} fill="none" stroke="#65adff" strokeWidth="2.5" />
-      <line x1={sx(x)} y1={sy(y)} x2={sx(x + radius)} y2={sy(y)} stroke="#ffb65c" strokeWidth="2" />
-      <circle cx={sx(x)} cy={sy(y)} r="4" fill="#ffb65c" />
-      <text x={sx(x) + 7} y={sy(y) - 7} fill="#ffb65c" fontSize="13">Centre</text>
+      <circle data-locus cx={sx(x)} cy={sy(y)} r={sx(x + radius) - sx(x)} fill="none" stroke={COLORS[0]} strokeWidth="2.5" />
+      <line x1={sx(x)} y1={sy(y)} x2={sx(x + radius)} y2={sy(y)} stroke={COLORS[1]} strokeWidth="2" />
+      <circle cx={sx(x)} cy={sy(y)} r="4" fill={COLORS[1]} />
+      <text x={sx(x) + 7} y={sy(y) - 7} fill={COLORS[1]} fontSize="13">Centre</text>
       <text x="375" y="312" textAnchor="end" fontSize="12" fill="currentColor">Re</text><text x="9" y="18" fontSize="12" fill="currentColor">Im</text>
     </svg></div>
     <p className="pl-small">Centre: ({label(x)}, {label(y)}). Radius: {label(radius)}.</p>
@@ -37,6 +43,7 @@ function ComplexNumberView({ spec }: { spec: ComplexPlaneSpec }) {
   const [showParts, setShowParts] = useState(true);
   const [showAngle, setShowAngle] = useState(true);
   const [showInputs, setShowInputs] = useState(true);
+  const COLORS = PALETTE[useTheme()];
   const firstName = spec.firstLabel ?? 'z';
   const [a, b] = spec.first;
   const radius = Math.hypot(a, b), argument = Math.atan2(b, a);

@@ -1,5 +1,6 @@
 import { useId, useState } from 'react';
-import { productColors } from '../data/matrixColors';
+import { productColors as paletteFor } from '../data/matrixColors';
+import { useTheme } from '../theme';
 import { Tex } from './Tex';
 
 /** Select an entry of AB to see the matching row, column and scalar products. */
@@ -7,6 +8,7 @@ export function MatrixProductDiagram({ matrices }: { matrices: [number[][], numb
   const [row, setRow] = useState(0);
   const [column, setColumn] = useState(0);
   const id = useId().replace(/:/g, '');
+  const productColors = paletteFor(useTheme());
   const [a, b] = matrices;
   const activeRow = Math.min(row, a.length - 1), activeColumn = Math.min(column, b[0].length - 1);
   const value = (i: number, j: number) => a[i].reduce((sum, n, k) => sum + n * b[k][j], 0);
