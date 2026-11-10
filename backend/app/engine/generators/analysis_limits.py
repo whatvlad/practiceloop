@@ -7,6 +7,7 @@ from typing import Any
 
 from pydantic import Field
 
+from app.engine.answers.antiderivative import AntiderivativeAnswer
 from app.engine.answers.computational import (
     CategoryAnswer,
     FormulaAnswer,
@@ -15,6 +16,7 @@ from app.engine.answers.computational import (
     RealSetAnswer,
 )
 from app.engine.codes import encode
+from app.engine.generators import _antiderivatives as antiderivatives
 from app.engine.generators import _convexity as convexity
 from app.engine.generators import _derivatives as derivatives
 from app.engine.generators import _extrema as extrema
@@ -123,6 +125,10 @@ ANSWERS: dict[str, type[Answer]] = {
 SEQUENCES = "functions-and-sequences"
 FUNCTIONS = "limits-and-continuity"
 DERIVATIVES = "differential-calculus"
+BASIC = "basic-integrals"
+PARTS = "integration-by-parts"
+# Antiderivatives are not a computational kind: they carry no public input contract.
+PRIMITIVE = None
 # Explicit prefixes are permanent and independent of the order of these entries.
 SPECS = (
     (sequences.bound_trigonometric, SEQUENCES, 2, "SLAA", BOUNDS),
@@ -384,6 +390,46 @@ SPECS = (
     (taylor.approximate_cube_root, DERIVATIVES, 5, "DVFB", APPROXIMATION),
     (taylor.approximate_logarithm, DERIVATIVES, 4, "DVFC", APPROXIMATION),
     (taylor.approximate_sine, DERIVATIVES, 4, "DVFD", APPROXIMATION),
+    # #265
+    (antiderivatives.sum_of_powers, BASIC, 1, "INAA", PRIMITIVE),
+    (antiderivatives.conjugate_quotient, BASIC, 2, "INAB", PRIMITIVE),
+    (antiderivatives.polynomial_division, BASIC, 2, "INAC", PRIMITIVE),
+    (antiderivatives.double_angle_quotient, BASIC, 3, "INAD", LINE),
+    (antiderivatives.root_powers, BASIC, 2, "INAE", PRIMITIVE),
+    (antiderivatives.exponential_product, BASIC, 2, "INAF", PRIMITIVE),
+    (antiderivatives.linear_exponential, PARTS, 1, "INAG", PRIMITIVE),
+    (antiderivatives.square_exponential, PARTS, 2, "INAH", PRIMITIVE),
+    (antiderivatives.root_arctan, PARTS, 3, "INAI", PRIMITIVE),
+    (antiderivatives.secant_square, PARTS, 2, "INAJ", LINE),
+    (antiderivatives.square_sine, PARTS, 2, "INAK", PRIMITIVE),
+    (antiderivatives.arccos_over_root, PARTS, 3, "INAL", PRIMITIVE),
+    (antiderivatives.logarithm, PARTS, 1, "INAM", PRIMITIVE),
+    (antiderivatives.arccos_scaled, PARTS, 2, "INAN", PRIMITIVE),
+    (antiderivatives.exponential_sine, PARTS, 3, "INAO", PRIMITIVE),
+    (antiderivatives.sine_sine, PARTS, 2, "INAP", PRIMITIVE),
+    (antiderivatives.sine_cosine, PARTS, 2, "INAQ", PRIMITIVE),
+    (antiderivatives.cosine_cosine, PARTS, 2, "INAR", PRIMITIVE),
+    (antiderivatives.sine_square, PARTS, 1, "INAS", PRIMITIVE),
+    (antiderivatives.cosine_fourth, PARTS, 3, "INAT", PRIMITIVE),
+    (antiderivatives.logarithm_quadratic, PARTS, 3, "INAU", PRIMITIVE),
+    (antiderivatives.linear_sine_exponential, PARTS, 3, "INAV", PRIMITIVE),
+    (antiderivatives.arccot_linear, PARTS, 2, "INAW", PRIMITIVE),
+    (antiderivatives.cosine_root, BASIC, 3, "INAX", PRIMITIVE),
+    (antiderivatives.root_over_x, BASIC, 4, "INAY", PRIMITIVE),
+    (antiderivatives.cosine_over_root_sine, BASIC, 3, "INAZ", PRIMITIVE),
+    (antiderivatives.sine_of_quadratic, BASIC, 2, "INBA", PRIMITIVE),
+    (antiderivatives.reciprocal_cosh, BASIC, 4, "INBB", PRIMITIVE),
+    (antiderivatives.linear_power, BASIC, 2, "INBC", PRIMITIVE),
+    (antiderivatives.fifth_root, BASIC, 3, "INBD", PRIMITIVE),
+    (antiderivatives.reciprocal_root_sum, BASIC, 3, "INBE", PRIMITIVE),
+    (antiderivatives.logarithm_power, BASIC, 2, "INBF", PRIMITIVE),
+    (antiderivatives.exponential_arctan, BASIC, 3, "INBG", PRIMITIVE),
+    (antiderivatives.sine_over_cosine, BASIC, 3, "INBH", PRIMITIVE),
+    (antiderivatives.cubic_exponential, BASIC, 4, "INBI", PRIMITIVE),
+    (antiderivatives.root_over_linear, BASIC, 3, "INBJ", PRIMITIVE),
+    (antiderivatives.logarithm_arctan, BASIC, 4, "INBK", PRIMITIVE),
+    (antiderivatives.sine_cosine_arctan, BASIC, 5, "INBL", PRIMITIVE),
+    (antiderivatives.root_quotient_value, BASIC, 4, "INBM", LINE),
 )
 
 
@@ -404,14 +450,19 @@ class AnalysisLimits:
     topic: str
     difficulty: int
     prefix: str
-    contract: InputContract
+    contract: InputContract | None
     code_version = 1
     params = LimitParams
     requires: tuple[str, ...] = ()
 
     @property
     def family(self) -> str:
-        stem = "analysis1-derivatives-" if self.topic == DERIVATIVES else "analysis1-limits-"
+        if self.evaluate.__module__.endswith("_antiderivatives"):
+            stem = "analysis1-integrals-"
+        elif self.topic == DERIVATIVES:
+            stem = "analysis1-derivatives-"
+        else:
+            stem = "analysis1-limits-"
         return stem + self.evaluate.__name__.replace("_", "-")
 
     @property
@@ -420,6 +471,8 @@ class AnalysisLimits:
 
     @property
     def answer(self) -> type[Answer]:
+        if self.contract is None:
+            return AntiderivativeAnswer
         return ANSWERS[self.contract.kind]
 
     @property

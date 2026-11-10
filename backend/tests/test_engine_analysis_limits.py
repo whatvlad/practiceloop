@@ -11,6 +11,7 @@ import pytest
 import sympy as sp
 from test_engine_elementary import source as computational_source
 
+from app.engine.answers.antiderivative import AntiderivativeAnswer
 from app.engine.answers.computational import (
     CategoryAnswer,
     LimitAnswer,
@@ -27,6 +28,9 @@ from app.services import math_worker
 
 
 def source(answer):
+    if isinstance(answer, AntiderivativeAnswer):
+        text = sp.sstr(answer.primitive).replace("**", "^")
+        return re.sub(r"\bE\b", "e", text) + " + C"
     if isinstance(answer, LimitAnswer):
         if answer.expected == sp.oo:
             return "inf"
@@ -40,6 +44,8 @@ def source(answer):
 
 
 def different_source(answer):
+    if isinstance(answer, AntiderivativeAnswer):
+        return "x^2 + C"
     if isinstance(answer, LimitAnswer):
         return "-inf" if answer.expected == sp.oo else "inf"
     if isinstance(answer, OrderedAnswer):
@@ -641,7 +647,9 @@ def assert_answer(answer, expected):
 LIMIT_GENERATORS = [
     g
     for g in generators()
-    if not g.evaluate.__module__.endswith(("_derivatives", "_extrema", "_convexity", "_taylor"))
+    if not g.evaluate.__module__.endswith(
+        ("_derivatives", "_extrema", "_convexity", "_taylor", "_antiderivatives")
+    )
 ]
 
 
