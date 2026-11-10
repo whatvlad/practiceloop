@@ -116,3 +116,63 @@ AM1/45/l), so they name the same version.
 The error tests compare each answer with half the change of the stated
 quantity over a small symmetric step, and the limits with 50-digit values next
 to the limit point.
+
+## Monotonicity, extrema and optimization (#262)
+
+Prefixes `DVCJ` to `DVCZ` and `DVDA` to `DVDW` cover AM1/46 to AM1/49 and the
+exam forms of those families.
+
+Monotonicity answers are two real sets: the union of the open intervals of
+strict increase and of strict decrease, with `{}` for none. Local extrema are
+four finite sets: minimum points, minimum values, maximum points, maximum
+values. Global extrema give the least and the greatest value. Optimization
+tasks give the requested dimensions or quantity.
+
+| Reference | Version | Generated form |
+|---|---|---|
+| AM1/46/a | `monotone-cubic` | cubic with \(f'=3(x-p)(x-q)\) |
+| AM1/46/b | `monotone-trig-difference` | \(a(\sin bx-\cos bx)\) on \([0,2\pi/b]\) |
+| AM1/46/c | `monotone-linear-reciprocal` | \(ax+b/x\) |
+| AM1/46/d | `monotone-cubic-over-quadratic` | \(x^3/(c-x^2)\) |
+| AM1/46/e | `monotone-root-quotient` | \(\sqrt{x^2-c^2}/(ax)\) |
+| AM1/46/f | `monotone-exponential-product` | \((x-b)e^{-ax}\) |
+| AM1/46/g | `monotone-log-square` | \(x\ln^2(x/b)\) |
+| AM1/46/h | `monotone-log-quotient` | \(ax/\ln(x/b)\) |
+| AM1/46/i | `monotone-exponential-difference` | \(c\,A^{x+1}-A^{2x}\) |
+| exam second/B/1 | `monotone-reciprocal-log` | \(a/x+b\ln x\) |
+| exam main/B/5 | `monotone-power-log` | \(ax^k\ln x\) |
+| AM1/47/a | `extrema-cubic` | \(x^3-ax^2+c\) |
+| AM1/47/b | `extrema-linear-reciprocal` | \(ax+b/x\) |
+| AM1/47/c | `extrema-exponential-quotient` | \(A^x/(bx)\) |
+| AM1/47/d | `extrema-shifted-exponential` | \((x+b)e^{-ax}\) |
+| AM1/47/e | `extrema-rational` | \((x+b)/(x^2+1)\) |
+| AM1/47/f | `extrema-absolute-quadratic` | \(|(x-p)(x-q)|\): corner minima |
+| AM1/47/g | `extrema-x-log` | \(ax\ln(x/b)\) |
+| AM1/47/h | `extrema-root-cubic` | \(a\sqrt{3c^2x-x^3}\): minima at the closed domain ends |
+| AM1/47/i | `extrema-arctan-log` | \(a\arctan x-b\ln(1+x^2)\) |
+| exam second/C/1 | `extrema-none` | \(a(\arctan x-x)-bx^3\): strictly decreasing, no extrema |
+| exam main/C/2 | `extrema-exponential-shift` | \((x-b)e^{ax}\) |
+| AM1/48/a | `global-cubic` | cubic on a closed interval |
+| AM1/48/b | `global-reciprocal-quadratic` | \(1/((x-b)^2+c)\) |
+| AM1/48/c | `global-root-difference` | \(\sqrt{a+x}-\sqrt{b-x}\) on its natural domain |
+| AM1/48/d | `global-absolute-exponential` | \((x-k)^2e^{|x|}\), not differentiable at \(0\) |
+| AM1/48/e | `global-absolute-parabola` | \(1-|k^2-x^2|\) |
+| AM1/48/f | `global-sine-cubic` | \(\sin^3x-m\sin x\) via \(u=\sin x\) |
+| AM1/48/g | `global-semicircle-root` | \(a\sqrt{c^2-(x-b)^2}\) |
+| AM1/48/h | `global-cosine-quotient` | \(\cos x/(p+q\sin x)\) on \(\mathbb R\) |
+| exam second/A/2 | `global-rational-interval` | \(ax/(x^2-cx+c^2)\) on \([0,2c]\) |
+| exam main/A/4 | `global-root-product` | \(x\sqrt{r^2-x^2}\) on \([-3a,4a]\) |
+| AM1/49/a | `fenced-plots` | three plots, least total fence |
+| AM1/49/b | `pipeline` | sea and land pipe, cost ratio \(2\) or \(3\) |
+| AM1/49/c | `container` | square-based box of least cost |
+| AM1/49/d | `incircle-triangle` | isosceles triangle of fixed area, largest incircle |
+| AM1/49/e | `parabola-rectangle` | rectangle under \(a(k^2-x^2)\) |
+| exam second/B/2 | `semicircle-rectangle` | largest rectangle in a half-disc |
+| exam resit/A/5 | `semicircle-waste` | material lost cutting that rectangle |
+| exam resit/C/5 | `circle-square` | least-waste rectangle from a disc |
+
+`backend/tests/test_engine_extrema.py` checks every variant against numerical
+scans of the stated function: the sign of difference quotients on a grid for
+monotonicity, grid local extrema (plus the closed domain ends) for local
+extrema, a refined dense grid for global values, and a grid plus golden-section
+search of the stated objective for optimization.

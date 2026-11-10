@@ -8969,18 +8969,25 @@
       "family": "monotonicity-intervals",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-monotone-cubic-v1"
+      ],
       "family_contracts": [
         "AM1/46"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all intervals of increase/decrease with domain breaks"
+          "result": "all intervals of increase/decrease with domain breaks",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-monotone-cubic-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "monotonicity-intervals-variant-a",
@@ -8996,18 +9003,25 @@
       "family": "monotonicity-intervals",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-monotone-trig-difference-v1"
+      ],
       "family_contracts": [
         "AM1/46"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all intervals of increase/decrease with domain breaks"
+          "result": "all intervals of increase/decrease with domain breaks",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-monotone-trig-difference-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "monotonicity-intervals-variant-b",
@@ -9023,18 +9037,25 @@
       "family": "monotonicity-intervals",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-monotone-linear-reciprocal-v1"
+      ],
       "family_contracts": [
         "AM1/46"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all intervals of increase/decrease with domain breaks"
+          "result": "all intervals of increase/decrease with domain breaks",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-monotone-linear-reciprocal-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "monotonicity-intervals-variant-c",
@@ -9050,18 +9071,25 @@
       "family": "monotonicity-intervals",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-monotone-cubic-over-quadratic-v1"
+      ],
       "family_contracts": [
         "AM1/46"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all intervals of increase/decrease with domain breaks"
+          "result": "all intervals of increase/decrease with domain breaks",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-monotone-cubic-over-quadratic-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "monotonicity-intervals-variant-d",
@@ -9077,18 +9105,25 @@
       "family": "monotonicity-intervals",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-monotone-root-quotient-v1"
+      ],
       "family_contracts": [
         "AM1/46"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all intervals of increase/decrease with domain breaks"
+          "result": "all intervals of increase/decrease with domain breaks",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-monotone-root-quotient-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "monotonicity-intervals-variant-e",
@@ -9104,18 +9139,25 @@
       "family": "monotonicity-intervals",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-monotone-exponential-product-v1"
+      ],
       "family_contracts": [
         "AM1/46"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all intervals of increase/decrease with domain breaks"
+          "result": "all intervals of increase/decrease with domain breaks",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-monotone-exponential-product-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "monotonicity-intervals-variant-f",
@@ -9131,18 +9173,25 @@
       "family": "monotonicity-intervals",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-monotone-log-square-v1"
+      ],
       "family_contracts": [
         "AM1/46"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all intervals of increase/decrease with domain breaks"
+          "result": "all intervals of increase/decrease with domain breaks",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-monotone-log-square-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "monotonicity-intervals-variant-g",
@@ -9158,18 +9207,25 @@
       "family": "monotonicity-intervals",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-monotone-log-quotient-v1"
+      ],
       "family_contracts": [
         "AM1/46"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all intervals of increase/decrease with domain breaks"
+          "result": "all intervals of increase/decrease with domain breaks",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-monotone-log-quotient-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "monotonicity-intervals-variant-h",
@@ -9185,18 +9241,25 @@
       "family": "monotonicity-intervals",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-monotone-exponential-difference-v1"
+      ],
       "family_contracts": [
         "AM1/46"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all intervals of increase/decrease with domain breaks"
+          "result": "all intervals of increase/decrease with domain breaks",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-monotone-exponential-difference-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "monotonicity-intervals-variant-i",
@@ -9212,18 +9275,25 @@
       "family": "local-extrema",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-extrema-cubic-v1"
+      ],
       "family_contracts": [
         "AM1/47"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all local extrema with locations, values and classifications"
+          "result": "all local extrema with locations, values and classifications",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-extrema-cubic-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "local-extrema-variant-a",
@@ -9239,18 +9309,25 @@
       "family": "local-extrema",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-extrema-linear-reciprocal-v1"
+      ],
       "family_contracts": [
         "AM1/47"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all local extrema with locations, values and classifications"
+          "result": "all local extrema with locations, values and classifications",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-extrema-linear-reciprocal-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "local-extrema-variant-b",
@@ -9266,18 +9343,25 @@
       "family": "local-extrema",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-extrema-exponential-quotient-v1"
+      ],
       "family_contracts": [
         "AM1/47"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all local extrema with locations, values and classifications"
+          "result": "all local extrema with locations, values and classifications",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-extrema-exponential-quotient-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "local-extrema-variant-c",
@@ -9293,18 +9377,25 @@
       "family": "local-extrema",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-extrema-shifted-exponential-v1"
+      ],
       "family_contracts": [
         "AM1/47"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all local extrema with locations, values and classifications"
+          "result": "all local extrema with locations, values and classifications",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-extrema-shifted-exponential-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "local-extrema-variant-d",
@@ -9320,18 +9411,25 @@
       "family": "local-extrema",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-extrema-rational-v1"
+      ],
       "family_contracts": [
         "AM1/47"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all local extrema with locations, values and classifications"
+          "result": "all local extrema with locations, values and classifications",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-extrema-rational-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "local-extrema-variant-e",
@@ -9347,18 +9445,25 @@
       "family": "local-extrema",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-extrema-absolute-quadratic-v1"
+      ],
       "family_contracts": [
         "AM1/47"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all local extrema with locations, values and classifications"
+          "result": "all local extrema with locations, values and classifications",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-extrema-absolute-quadratic-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "local-extrema-variant-f",
@@ -9374,18 +9479,25 @@
       "family": "local-extrema",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-extrema-x-log-v1"
+      ],
       "family_contracts": [
         "AM1/47"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all local extrema with locations, values and classifications"
+          "result": "all local extrema with locations, values and classifications",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-extrema-x-log-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "local-extrema-variant-g",
@@ -9401,18 +9513,25 @@
       "family": "local-extrema",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-extrema-root-cubic-v1"
+      ],
       "family_contracts": [
         "AM1/47"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all local extrema with locations, values and classifications"
+          "result": "all local extrema with locations, values and classifications",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-extrema-root-cubic-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "local-extrema-variant-h",
@@ -9428,18 +9547,25 @@
       "family": "local-extrema",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-extrema-arctan-log-v1"
+      ],
       "family_contracts": [
         "AM1/47"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all local extrema with locations, values and classifications"
+          "result": "all local extrema with locations, values and classifications",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-extrema-arctan-log-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "local-extrema-variant-i",
@@ -9455,18 +9581,25 @@
       "family": "global-extrema",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-global-cubic-v1"
+      ],
       "family_contracts": [
         "AM1/48"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "global extrema and all attaining points, or unattained bounds"
+          "result": "global extrema and all attaining points, or unattained bounds",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-global-cubic-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "global-extrema-variant-a",
@@ -9482,18 +9615,25 @@
       "family": "global-extrema",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-global-reciprocal-quadratic-v1"
+      ],
       "family_contracts": [
         "AM1/48"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "global extrema and all attaining points, or unattained bounds"
+          "result": "global extrema and all attaining points, or unattained bounds",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-global-reciprocal-quadratic-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "global-extrema-variant-b",
@@ -9509,18 +9649,25 @@
       "family": "global-extrema",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-global-root-difference-v1"
+      ],
       "family_contracts": [
         "AM1/48"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "global extrema and all attaining points, or unattained bounds"
+          "result": "global extrema and all attaining points, or unattained bounds",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-global-root-difference-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "global-extrema-variant-c",
@@ -9536,18 +9683,25 @@
       "family": "global-extrema",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-global-absolute-exponential-v1"
+      ],
       "family_contracts": [
         "AM1/48"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "global extrema and all attaining points, or unattained bounds"
+          "result": "global extrema and all attaining points, or unattained bounds",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-global-absolute-exponential-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "global-extrema-variant-d",
@@ -9563,18 +9717,25 @@
       "family": "global-extrema",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-global-absolute-parabola-v1"
+      ],
       "family_contracts": [
         "AM1/48"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "global extrema and all attaining points, or unattained bounds"
+          "result": "global extrema and all attaining points, or unattained bounds",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-global-absolute-parabola-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "global-extrema-variant-e",
@@ -9590,18 +9751,25 @@
       "family": "global-extrema",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-global-sine-cubic-v1"
+      ],
       "family_contracts": [
         "AM1/48"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "global extrema and all attaining points, or unattained bounds"
+          "result": "global extrema and all attaining points, or unattained bounds",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-global-sine-cubic-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "global-extrema-variant-f",
@@ -9617,18 +9785,25 @@
       "family": "global-extrema",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-global-semicircle-root-v1"
+      ],
       "family_contracts": [
         "AM1/48"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "global extrema and all attaining points, or unattained bounds"
+          "result": "global extrema and all attaining points, or unattained bounds",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-global-semicircle-root-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "global-extrema-variant-g",
@@ -9644,18 +9819,25 @@
       "family": "global-extrema",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-global-cosine-quotient-v1"
+      ],
       "family_contracts": [
         "AM1/48"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "global extrema and all attaining points, or unattained bounds"
+          "result": "global extrema and all attaining points, or unattained bounds",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-global-cosine-quotient-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "global-extrema-variant-h",
@@ -9671,18 +9853,25 @@
       "family": "optimization",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-fenced-plots-v1"
+      ],
       "family_contracts": [
         "AM1/49"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "optimal geometry and objective with feasibility/boundary comparison"
+          "result": "optimal geometry and objective with feasibility/boundary comparison",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-fenced-plots-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "partitioned-fence",
@@ -9698,18 +9887,25 @@
       "family": "optimization",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-pipeline-v1"
+      ],
       "family_contracts": [
         "AM1/49"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "optimal geometry and objective with feasibility/boundary comparison"
+          "result": "optimal geometry and objective with feasibility/boundary comparison",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-pipeline-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "offshore-pipeline",
@@ -9725,18 +9921,25 @@
       "family": "optimization",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-container-v1"
+      ],
       "family_contracts": [
         "AM1/49"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "optimal geometry and objective with feasibility/boundary comparison"
+          "result": "optimal geometry and objective with feasibility/boundary comparison",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-container-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "weighted-container",
@@ -9752,18 +9955,25 @@
       "family": "optimization",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-incircle-triangle-v1"
+      ],
       "family_contracts": [
         "AM1/49"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "optimal geometry and objective with feasibility/boundary comparison"
+          "result": "optimal geometry and objective with feasibility/boundary comparison",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-incircle-triangle-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "triangle-incircle",
@@ -9779,18 +9989,25 @@
       "family": "optimization",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-parabola-rectangle-v1"
+      ],
       "family_contracts": [
         "AM1/49"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "optimal geometry and objective with feasibility/boundary comparison"
+          "result": "optimal geometry and objective with feasibility/boundary comparison",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-parabola-rectangle-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "inscribed-parabolic-rectangle",
@@ -23336,18 +23553,25 @@
       "family": "global-extrema",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-global-rational-interval-v1"
+      ],
       "family_contracts": [
         "AM1/48"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "global extrema and all attaining points, or unattained bounds"
+          "result": "global extrema and all attaining points, or unattained bounds",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-global-rational-interval-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -23420,18 +23644,25 @@
       "family": "monotonicity-intervals",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-monotone-reciprocal-log-v1"
+      ],
       "family_contracts": [
         "AM1/46"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all intervals of increase/decrease with domain breaks"
+          "result": "all intervals of increase/decrease with domain breaks",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-monotone-reciprocal-log-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -23448,18 +23679,25 @@
       "family": "optimization",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-semicircle-rectangle-v1"
+      ],
       "family_contracts": [
         "AM1/49"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "optimal geometry and objective with feasibility/boundary comparison"
+          "result": "optimal geometry and objective with feasibility/boundary comparison",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-semicircle-rectangle-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -23539,18 +23777,25 @@
       "family": "local-extrema",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-extrema-none-v1"
+      ],
       "family_contracts": [
         "AM1/47"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all local extrema with locations, values and classifications"
+          "result": "all local extrema with locations, values and classifications",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-extrema-none-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -23879,18 +24124,25 @@
       "family": "global-extrema",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-global-root-product-v1"
+      ],
       "family_contracts": [
         "AM1/48"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "global extrema and all attaining points, or unattained bounds"
+          "result": "global extrema and all attaining points, or unattained bounds",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-global-root-product-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -24109,18 +24361,25 @@
       "family": "monotonicity-intervals",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-monotone-power-log-v1"
+      ],
       "family_contracts": [
         "AM1/46"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all intervals of increase/decrease with domain breaks"
+          "result": "all intervals of increase/decrease with domain breaks",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-monotone-power-log-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -24200,18 +24459,25 @@
       "family": "local-extrema",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-extrema-exponential-shift-v1"
+      ],
       "family_contracts": [
         "AM1/47"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all local extrema with locations, values and classifications"
+          "result": "all local extrema with locations, values and classifications",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-extrema-exponential-shift-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -24706,18 +24972,25 @@
       "family": "optimization",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-semicircle-waste-v1"
+      ],
       "family_contracts": [
         "AM1/49"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "optimal geometry and objective with feasibility/boundary comparison"
+          "result": "optimal geometry and objective with feasibility/boundary comparison",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-semicircle-waste-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -25114,18 +25387,25 @@
       "family": "optimization",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-circle-square-v1"
+      ],
       "family_contracts": [
         "AM1/49"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "optimal geometry and objective with feasibility/boundary comparison"
+          "result": "optimal geometry and objective with feasibility/boundary comparison",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-circle-square-v1"
+          ],
+          "verification": "backend/tests/test_engine_extrema.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -26782,7 +27062,25 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "analysis1-derivatives-monotone-cubic-over-quadratic-v1",
+        "analysis1-derivatives-monotone-cubic-v1",
+        "analysis1-derivatives-monotone-exponential-difference-v1",
+        "analysis1-derivatives-monotone-exponential-product-v1",
+        "analysis1-derivatives-monotone-linear-reciprocal-v1",
+        "analysis1-derivatives-monotone-log-quotient-v1",
+        "analysis1-derivatives-monotone-log-square-v1",
+        "analysis1-derivatives-monotone-power-log-v1",
+        "analysis1-derivatives-monotone-reciprocal-log-v1",
+        "analysis1-derivatives-monotone-root-quotient-v1",
+        "analysis1-derivatives-monotone-trig-difference-v1"
+      ],
+      "delivery": {
+        "issue": 237,
+        "status": "partial-computational-delivery",
+        "verification": "backend/tests/test_engine_extrema.py"
+      }
     },
     "AM1/47": {
       "family": "local-extrema",
@@ -26797,7 +27095,25 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "analysis1-derivatives-extrema-absolute-quadratic-v1",
+        "analysis1-derivatives-extrema-arctan-log-v1",
+        "analysis1-derivatives-extrema-cubic-v1",
+        "analysis1-derivatives-extrema-exponential-quotient-v1",
+        "analysis1-derivatives-extrema-exponential-shift-v1",
+        "analysis1-derivatives-extrema-linear-reciprocal-v1",
+        "analysis1-derivatives-extrema-none-v1",
+        "analysis1-derivatives-extrema-rational-v1",
+        "analysis1-derivatives-extrema-root-cubic-v1",
+        "analysis1-derivatives-extrema-shifted-exponential-v1",
+        "analysis1-derivatives-extrema-x-log-v1"
+      ],
+      "delivery": {
+        "issue": 237,
+        "status": "partial-computational-delivery",
+        "verification": "backend/tests/test_engine_extrema.py"
+      }
     },
     "AM1/48": {
       "family": "global-extrema",
@@ -26812,7 +27128,24 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "analysis1-derivatives-global-absolute-exponential-v1",
+        "analysis1-derivatives-global-absolute-parabola-v1",
+        "analysis1-derivatives-global-cosine-quotient-v1",
+        "analysis1-derivatives-global-cubic-v1",
+        "analysis1-derivatives-global-rational-interval-v1",
+        "analysis1-derivatives-global-reciprocal-quadratic-v1",
+        "analysis1-derivatives-global-root-difference-v1",
+        "analysis1-derivatives-global-root-product-v1",
+        "analysis1-derivatives-global-semicircle-root-v1",
+        "analysis1-derivatives-global-sine-cubic-v1"
+      ],
+      "delivery": {
+        "issue": 237,
+        "status": "partial-computational-delivery",
+        "verification": "backend/tests/test_engine_extrema.py"
+      }
     },
     "AM1/49": {
       "family": "optimization",
@@ -26828,7 +27161,22 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "analysis1-derivatives-circle-square-v1",
+        "analysis1-derivatives-container-v1",
+        "analysis1-derivatives-fenced-plots-v1",
+        "analysis1-derivatives-incircle-triangle-v1",
+        "analysis1-derivatives-parabola-rectangle-v1",
+        "analysis1-derivatives-pipeline-v1",
+        "analysis1-derivatives-semicircle-rectangle-v1",
+        "analysis1-derivatives-semicircle-waste-v1"
+      ],
+      "delivery": {
+        "issue": 237,
+        "status": "partial-computational-delivery",
+        "verification": "backend/tests/test_engine_extrema.py"
+      }
     },
     "AM1/50": {
       "family": "elementary-antiderivatives",
@@ -28221,8 +28569,8 @@
     "family_contracts": 146,
     "deferred_only_references": 30,
     "mixed_references": 146,
-    "verified_generator_deliveries": 263,
-    "verified_computational_components": 285
+    "verified_generator_deliveries": 303,
+    "verified_computational_components": 325
   },
   "deliveries": {
     "235": {
@@ -28465,8 +28813,10 @@
         "analysis1-derivatives-arcsine-shifted-square-v1",
         "analysis1-derivatives-arctan-difference-v1",
         "analysis1-derivatives-arctan-power-v1",
+        "analysis1-derivatives-circle-square-v1",
         "analysis1-derivatives-constant-coefficients-v1",
         "analysis1-derivatives-constant-over-power-v1",
+        "analysis1-derivatives-container-v1",
         "analysis1-derivatives-cosine-difference-v1",
         "analysis1-derivatives-cotangent-difference-v1",
         "analysis1-derivatives-definition-power-v1",
@@ -28484,6 +28834,29 @@
         "analysis1-derivatives-exponential-quadratic-v1",
         "analysis1-derivatives-exponential-square-v1",
         "analysis1-derivatives-exponential-trig-powers-v1",
+        "analysis1-derivatives-extrema-absolute-quadratic-v1",
+        "analysis1-derivatives-extrema-arctan-log-v1",
+        "analysis1-derivatives-extrema-cubic-v1",
+        "analysis1-derivatives-extrema-exponential-quotient-v1",
+        "analysis1-derivatives-extrema-exponential-shift-v1",
+        "analysis1-derivatives-extrema-linear-reciprocal-v1",
+        "analysis1-derivatives-extrema-none-v1",
+        "analysis1-derivatives-extrema-rational-v1",
+        "analysis1-derivatives-extrema-root-cubic-v1",
+        "analysis1-derivatives-extrema-shifted-exponential-v1",
+        "analysis1-derivatives-extrema-x-log-v1",
+        "analysis1-derivatives-fenced-plots-v1",
+        "analysis1-derivatives-global-absolute-exponential-v1",
+        "analysis1-derivatives-global-absolute-parabola-v1",
+        "analysis1-derivatives-global-cosine-quotient-v1",
+        "analysis1-derivatives-global-cubic-v1",
+        "analysis1-derivatives-global-rational-interval-v1",
+        "analysis1-derivatives-global-reciprocal-quadratic-v1",
+        "analysis1-derivatives-global-root-difference-v1",
+        "analysis1-derivatives-global-root-product-v1",
+        "analysis1-derivatives-global-semicircle-root-v1",
+        "analysis1-derivatives-global-sine-cubic-v1",
+        "analysis1-derivatives-incircle-triangle-v1",
         "analysis1-derivatives-inverse-trig-constant-v1",
         "analysis1-derivatives-log-arctan-root-v1",
         "analysis1-derivatives-log-constant-quotient-v1",
@@ -28496,13 +28869,28 @@
         "analysis1-derivatives-log-sine-ratio-v1",
         "analysis1-derivatives-log-tangent-product-v1",
         "analysis1-derivatives-logarithm-constant-v1",
+        "analysis1-derivatives-monotone-cubic-over-quadratic-v1",
+        "analysis1-derivatives-monotone-cubic-v1",
+        "analysis1-derivatives-monotone-exponential-difference-v1",
+        "analysis1-derivatives-monotone-exponential-product-v1",
+        "analysis1-derivatives-monotone-linear-reciprocal-v1",
+        "analysis1-derivatives-monotone-log-quotient-v1",
+        "analysis1-derivatives-monotone-log-square-v1",
+        "analysis1-derivatives-monotone-power-log-v1",
+        "analysis1-derivatives-monotone-reciprocal-log-v1",
+        "analysis1-derivatives-monotone-root-quotient-v1",
+        "analysis1-derivatives-monotone-trig-difference-v1",
         "analysis1-derivatives-one-minus-power-v1",
+        "analysis1-derivatives-parabola-rectangle-v1",
+        "analysis1-derivatives-pipeline-v1",
         "analysis1-derivatives-power-log-zero-v1",
         "analysis1-derivatives-power-of-exponential-v1",
         "analysis1-derivatives-rational-quotient-v1",
         "analysis1-derivatives-root-arccos-v1",
         "analysis1-derivatives-root-arccot-v1",
         "analysis1-derivatives-root-exponential-domain-v1",
+        "analysis1-derivatives-semicircle-rectangle-v1",
+        "analysis1-derivatives-semicircle-waste-v1",
         "analysis1-derivatives-tangent-angle-root-v1",
         "analysis1-derivatives-tangent-arctan-quotient-v1",
         "analysis1-derivatives-tangent-arctan-v1",
@@ -28524,41 +28912,10 @@
         "analysis1-derivatives-trig-sum-v1",
         "analysis1-derivatives-variable-power-v1"
       ],
-      "source_references": 63,
-      "computational_components": 63,
+      "source_references": 103,
+      "computational_components": 103,
       "verification_scope": "local bounded mathematics, replay and Linux worker checks; hosted CI, deployment and live checks remain pending",
       "pending_source_references": [
-        "AM1/46/a",
-        "AM1/46/b",
-        "AM1/46/c",
-        "AM1/46/d",
-        "AM1/46/e",
-        "AM1/46/f",
-        "AM1/46/g",
-        "AM1/46/h",
-        "AM1/46/i",
-        "AM1/47/a",
-        "AM1/47/b",
-        "AM1/47/c",
-        "AM1/47/d",
-        "AM1/47/e",
-        "AM1/47/f",
-        "AM1/47/g",
-        "AM1/47/h",
-        "AM1/47/i",
-        "AM1/48/a",
-        "AM1/48/b",
-        "AM1/48/c",
-        "AM1/48/d",
-        "AM1/48/e",
-        "AM1/48/f",
-        "AM1/48/g",
-        "AM1/48/h",
-        "AM1/49/a",
-        "AM1/49/b",
-        "AM1/49/c",
-        "AM1/49/d",
-        "AM1/49/e",
         "AM1/51/a",
         "AM1/51/b",
         "AM1/69/a",
@@ -28586,21 +28943,12 @@
         "AM1/73/b",
         "AM1/73/c",
         "AM1/73/d",
-        "AM1/exam/second/A/2",
-        "AM1/exam/second/B/1",
-        "AM1/exam/second/B/2",
-        "AM1/exam/second/C/1",
         "AM1/exam/second/C/2",
         "AM1/exam/second/D/1",
-        "AM1/exam/main/A/4",
-        "AM1/exam/main/B/5",
-        "AM1/exam/main/C/2",
         "AM1/exam/main/D/2",
         "AM1/exam/resit/A/3",
-        "AM1/exam/resit/A/5",
         "AM1/exam/resit/B/3",
         "AM1/exam/resit/C/3",
-        "AM1/exam/resit/C/5",
         "AM1/exam/resit/D/4",
         "AM1/exam/distinction/single/3"
       ]

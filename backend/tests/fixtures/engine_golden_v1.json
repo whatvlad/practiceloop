@@ -39174,5 +39174,2845 @@
         "difficulty": 3
       }
     }
+  ],
+  "analysis1-derivatives-monotone-cubic-v1": [
+    {
+      "code": "DVCJ-1-0000000000000003-87",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=x^{3} - 9 x^{2} + 24 x.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Factor the derivative and read its sign.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=3(x-2)(x-4)."
+        ],
+        [
+          "result",
+          "\\left(\\left(-\\infty, 2\\right) \\cup \\left(4, \\infty\\right),\\;\\left(2, 4\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(-\\infty, 2\\right) \\cup \\left(4, \\infty\\right),\\;\\left(2, 4\\right)\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVCJ-1-0000000000000200-66",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=x^{3} - 30 x^{2} + 225 x.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Factor the derivative and read its sign.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=3(x-5)(x-15)."
+        ],
+        [
+          "result",
+          "\\left(\\left(-\\infty, 5\\right) \\cup \\left(15, \\infty\\right),\\;\\left(5, 15\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(-\\infty, 5\\right) \\cup \\left(15, \\infty\\right),\\;\\left(5, 15\\right)\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVCJ-1-0000000000000999-80",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=x^{3} - 15 x^{2} + 48 x.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Factor the derivative and read its sign.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=3(x-2)(x-8)."
+        ],
+        [
+          "result",
+          "\\left(\\left(-\\infty, 2\\right) \\cup \\left(8, \\infty\\right),\\;\\left(2, 8\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(-\\infty, 2\\right) \\cup \\left(8, \\infty\\right),\\;\\left(2, 8\\right)\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-derivatives-monotone-trig-difference-v1": [
+    {
+      "code": "DVCK-1-0000000000000003-80",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=2(\\sin x-\\cos x),\\ 0\\le x\\le2 \\pi.\\)",
+      "steps": [
+        [
+          "method",
+          "\\cos u+\\sin u=\\sqrt2\\sin(u+\\pi/4)."
+        ],
+        [
+          "calculation",
+          "f'(x)=2\\sqrt2\\sin(x+\\pi/4)."
+        ],
+        [
+          "result",
+          "\\left(\\left(0, \\frac{3 \\pi}{4}\\right) \\cup \\left(\\frac{7 \\pi}{4}, 2 \\pi\\right),\\;\\left(\\frac{3 \\pi}{4}, \\frac{7 \\pi}{4}\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(0, \\frac{3 \\pi}{4}\\right) \\cup \\left(\\frac{7 \\pi}{4}, 2 \\pi\\right),\\;\\left(\\frac{3 \\pi}{4}, \\frac{7 \\pi}{4}\\right)\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVCK-1-0000000000000200-59",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=5(\\sin 5x-\\cos 5x),\\ 0\\le x\\le\\frac{2 \\pi}{5}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\cos u+\\sin u=\\sqrt2\\sin(u+\\pi/4)."
+        ],
+        [
+          "calculation",
+          "f'(x)=25\\sqrt2\\sin(5x+\\pi/4)."
+        ],
+        [
+          "result",
+          "\\left(\\left(0, \\frac{3 \\pi}{20}\\right) \\cup \\left(\\frac{7 \\pi}{20}, \\frac{2 \\pi}{5}\\right),\\;\\left(\\frac{3 \\pi}{20}, \\frac{7 \\pi}{20}\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(0, \\frac{3 \\pi}{20}\\right) \\cup \\left(\\frac{7 \\pi}{20}, \\frac{2 \\pi}{5}\\right),\\;\\left(\\frac{3 \\pi}{20}, \\frac{7 \\pi}{20}\\right)\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVCK-1-0000000000000999-73",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=2(\\sin 3x-\\cos 3x),\\ 0\\le x\\le\\frac{2 \\pi}{3}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\cos u+\\sin u=\\sqrt2\\sin(u+\\pi/4)."
+        ],
+        [
+          "calculation",
+          "f'(x)=6\\sqrt2\\sin(3x+\\pi/4)."
+        ],
+        [
+          "result",
+          "\\left(\\left(0, \\frac{\\pi}{4}\\right) \\cup \\left(\\frac{7 \\pi}{12}, \\frac{2 \\pi}{3}\\right),\\;\\left(\\frac{\\pi}{4}, \\frac{7 \\pi}{12}\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(0, \\frac{\\pi}{4}\\right) \\cup \\left(\\frac{7 \\pi}{12}, \\frac{2 \\pi}{3}\\right),\\;\\left(\\frac{\\pi}{4}, \\frac{7 \\pi}{12}\\right)\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-monotone-linear-reciprocal-v1": [
+    {
+      "code": "DVCL-1-0000000000000003-90",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=2x+\\frac{1}{x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain excludes }0."
+        ],
+        [
+          "calculation",
+          "f'(x)=2-\\frac{1}{x^2}=\\frac{2x^2-1}{x^2},\\quad x^2=\\frac{1}{2}."
+        ],
+        [
+          "result",
+          "\\left(\\left(-\\infty, - \\frac{\\sqrt{2}}{2}\\right) \\cup \\left(\\frac{\\sqrt{2}}{2}, \\infty\\right),\\;\\left(- \\frac{\\sqrt{2}}{2}, 0\\right) \\cup \\left(0, \\frac{\\sqrt{2}}{2}\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(-\\infty, - \\frac{\\sqrt{2}}{2}\\right) \\cup \\left(\\frac{\\sqrt{2}}{2}, \\infty\\right),\\;\\left(- \\frac{\\sqrt{2}}{2}, 0\\right) \\cup \\left(0, \\frac{\\sqrt{2}}{2}\\right)\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVCL-1-0000000000000200-69",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=5x+\\frac{5}{x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain excludes }0."
+        ],
+        [
+          "calculation",
+          "f'(x)=5-\\frac{5}{x^2}=\\frac{5x^2-5}{x^2},\\quad x^2=1."
+        ],
+        [
+          "result",
+          "\\left(\\left(-\\infty, -1\\right) \\cup \\left(1, \\infty\\right),\\;\\left(-1, 0\\right) \\cup \\left(0, 1\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(-\\infty, -1\\right) \\cup \\left(1, \\infty\\right),\\;\\left(-1, 0\\right) \\cup \\left(0, 1\\right)\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVCL-1-0000000000000999-83",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=2x+\\frac{3}{x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain excludes }0."
+        ],
+        [
+          "calculation",
+          "f'(x)=2-\\frac{3}{x^2}=\\frac{2x^2-3}{x^2},\\quad x^2=\\frac{3}{2}."
+        ],
+        [
+          "result",
+          "\\left(\\left(-\\infty, - \\frac{\\sqrt{6}}{2}\\right) \\cup \\left(\\frac{\\sqrt{6}}{2}, \\infty\\right),\\;\\left(- \\frac{\\sqrt{6}}{2}, 0\\right) \\cup \\left(0, \\frac{\\sqrt{6}}{2}\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(-\\infty, - \\frac{\\sqrt{6}}{2}\\right) \\cup \\left(\\frac{\\sqrt{6}}{2}, \\infty\\right),\\;\\left(- \\frac{\\sqrt{6}}{2}, 0\\right) \\cup \\left(0, \\frac{\\sqrt{6}}{2}\\right)\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-derivatives-monotone-cubic-over-quadratic-v1": [
+    {
+      "code": "DVCM-1-0000000000000003-10",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=\\frac{x^3}{5-x^2}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain excludes }x=\\pm\\sqrt{5}."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{x^2(15-x^2)}{(5-x^2)^2}\\ge0\\iff x^2\\le15."
+        ],
+        [
+          "result",
+          "\\left(\\left(- \\sqrt{15}, - \\sqrt{5}\\right) \\cup \\left(- \\sqrt{5}, \\sqrt{5}\\right) \\cup \\left(\\sqrt{5}, \\sqrt{15}\\right),\\;\\left(-\\infty, - \\sqrt{15}\\right) \\cup \\left(\\sqrt{15}, \\infty\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(- \\sqrt{15}, - \\sqrt{5}\\right) \\cup \\left(- \\sqrt{5}, \\sqrt{5}\\right) \\cup \\left(\\sqrt{5}, \\sqrt{15}\\right),\\;\\left(-\\infty, - \\sqrt{15}\\right) \\cup \\left(\\sqrt{15}, \\infty\\right)\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVCM-1-0000000000000200-86",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=\\frac{x^3}{1-x^2}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain excludes }x=\\pm1."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{x^2(3-x^2)}{(1-x^2)^2}\\ge0\\iff x^2\\le3."
+        ],
+        [
+          "result",
+          "\\left(\\left(- \\sqrt{3}, -1\\right) \\cup \\left(-1, 1\\right) \\cup \\left(1, \\sqrt{3}\\right),\\;\\left(-\\infty, - \\sqrt{3}\\right) \\cup \\left(\\sqrt{3}, \\infty\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(- \\sqrt{3}, -1\\right) \\cup \\left(-1, 1\\right) \\cup \\left(1, \\sqrt{3}\\right),\\;\\left(-\\infty, - \\sqrt{3}\\right) \\cup \\left(\\sqrt{3}, \\infty\\right)\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVCM-1-0000000000000999-03",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=\\frac{x^3}{5-x^2}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain excludes }x=\\pm\\sqrt{5}."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{x^2(15-x^2)}{(5-x^2)^2}\\ge0\\iff x^2\\le15."
+        ],
+        [
+          "result",
+          "\\left(\\left(- \\sqrt{15}, - \\sqrt{5}\\right) \\cup \\left(- \\sqrt{5}, \\sqrt{5}\\right) \\cup \\left(\\sqrt{5}, \\sqrt{15}\\right),\\;\\left(-\\infty, - \\sqrt{15}\\right) \\cup \\left(\\sqrt{15}, \\infty\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(- \\sqrt{15}, - \\sqrt{5}\\right) \\cup \\left(- \\sqrt{5}, \\sqrt{5}\\right) \\cup \\left(\\sqrt{5}, \\sqrt{15}\\right),\\;\\left(-\\infty, - \\sqrt{15}\\right) \\cup \\left(\\sqrt{15}, \\infty\\right)\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-monotone-root-quotient-v1": [
+    {
+      "code": "DVCN-1-0000000000000003-28",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=\\frac{\\sqrt{x^2-25}}{2x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain is }|x|\\ge5."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{25}{2x^2\\sqrt{x^2-25}}>0."
+        ],
+        [
+          "result",
+          "\\left(\\left(-\\infty, -5\\right) \\cup \\left(5, \\infty\\right),\\;\\emptyset\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(-\\infty, -5\\right) \\cup \\left(5, \\infty\\right),\\;\\emptyset\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVCN-1-0000000000000200-07",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=\\frac{\\sqrt{x^2-1}}{5x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain is }|x|\\ge1."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{1}{5x^2\\sqrt{x^2-1}}>0."
+        ],
+        [
+          "result",
+          "\\left(\\left(-\\infty, -1\\right) \\cup \\left(1, \\infty\\right),\\;\\emptyset\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(-\\infty, -1\\right) \\cup \\left(1, \\infty\\right),\\;\\emptyset\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVCN-1-0000000000000999-21",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=\\frac{\\sqrt{x^2-25}}{2x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain is }|x|\\ge5."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{25}{2x^2\\sqrt{x^2-25}}>0."
+        ],
+        [
+          "result",
+          "\\left(\\left(-\\infty, -5\\right) \\cup \\left(5, \\infty\\right),\\;\\emptyset\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(-\\infty, -5\\right) \\cup \\left(5, \\infty\\right),\\;\\emptyset\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-monotone-exponential-product-v1": [
+    {
+      "code": "DVCO-1-0000000000000003-68",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=\\left(x - 1\\right) e^{- 2 x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Product rule.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=e^{-2x}\\left(1-2(x-1)\\right)."
+        ],
+        [
+          "result",
+          "\\left(\\left(-\\infty, \\frac{3}{2}\\right),\\;\\left(\\frac{3}{2}, \\infty\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(-\\infty, \\frac{3}{2}\\right),\\;\\left(\\frac{3}{2}, \\infty\\right)\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVCO-1-0000000000000200-47",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=\\left(x - 5\\right) e^{- 5 x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Product rule.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=e^{-5x}\\left(1-5(x-5)\\right)."
+        ],
+        [
+          "result",
+          "\\left(\\left(-\\infty, \\frac{26}{5}\\right),\\;\\left(\\frac{26}{5}, \\infty\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(-\\infty, \\frac{26}{5}\\right),\\;\\left(\\frac{26}{5}, \\infty\\right)\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVCO-1-0000000000000999-61",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=\\left(x - 3\\right) e^{- 2 x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Product rule.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=e^{-2x}\\left(1-2(x-3)\\right)."
+        ],
+        [
+          "result",
+          "\\left(\\left(-\\infty, \\frac{7}{2}\\right),\\;\\left(\\frac{7}{2}, \\infty\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(-\\infty, \\frac{7}{2}\\right),\\;\\left(\\frac{7}{2}, \\infty\\right)\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-derivatives-monotone-log-square-v1": [
+    {
+      "code": "DVCP-1-0000000000000003-75",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=x\\ln^2x.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain is }x>0."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\ln u\\,(\\ln u+2),\\quad u=x/1."
+        ],
+        [
+          "result",
+          "\\left(\\left(0, e^{-2}\\right) \\cup \\left(1, \\infty\\right),\\;\\left(e^{-2}, 1\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(0, e^{-2}\\right) \\cup \\left(1, \\infty\\right),\\;\\left(e^{-2}, 1\\right)\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVCP-1-0000000000000200-54",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=x\\ln^2\\frac{x}{5}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain is }x>0."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\ln u\\,(\\ln u+2),\\quad u=x/5."
+        ],
+        [
+          "result",
+          "\\left(\\left(0, \\frac{5}{e^{2}}\\right) \\cup \\left(5, \\infty\\right),\\;\\left(\\frac{5}{e^{2}}, 5\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(0, \\frac{5}{e^{2}}\\right) \\cup \\left(5, \\infty\\right),\\;\\left(\\frac{5}{e^{2}}, 5\\right)\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVCP-1-0000000000000999-68",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=x\\ln^2\\frac{x}{3}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain is }x>0."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\ln u\\,(\\ln u+2),\\quad u=x/3."
+        ],
+        [
+          "result",
+          "\\left(\\left(0, \\frac{3}{e^{2}}\\right) \\cup \\left(3, \\infty\\right),\\;\\left(\\frac{3}{e^{2}}, 3\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(0, \\frac{3}{e^{2}}\\right) \\cup \\left(3, \\infty\\right),\\;\\left(\\frac{3}{e^{2}}, 3\\right)\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-monotone-log-quotient-v1": [
+    {
+      "code": "DVCQ-1-0000000000000003-28",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=\\frac{2x}{\\ln x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain is }x>0,\\ x\\ne1."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{2(\\ln u-1)}{\\ln^2u},\\quad u=x/1."
+        ],
+        [
+          "result",
+          "\\left(\\left(e, \\infty\\right),\\;\\left(0, 1\\right) \\cup \\left(1, e\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(e, \\infty\\right),\\;\\left(0, 1\\right) \\cup \\left(1, e\\right)\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVCQ-1-0000000000000200-07",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=\\frac{5x}{\\ln \\frac{x}{5}}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain is }x>0,\\ x\\ne5."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{5(\\ln u-1)}{\\ln^2u},\\quad u=x/5."
+        ],
+        [
+          "result",
+          "\\left(\\left(5 e, \\infty\\right),\\;\\left(0, 5\\right) \\cup \\left(5, 5 e\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(5 e, \\infty\\right),\\;\\left(0, 5\\right) \\cup \\left(5, 5 e\\right)\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVCQ-1-0000000000000999-21",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=\\frac{2x}{\\ln \\frac{x}{3}}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain is }x>0,\\ x\\ne3."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{2(\\ln u-1)}{\\ln^2u},\\quad u=x/3."
+        ],
+        [
+          "result",
+          "\\left(\\left(3 e, \\infty\\right),\\;\\left(0, 3\\right) \\cup \\left(3, 3 e\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(3 e, \\infty\\right),\\;\\left(0, 3\\right) \\cup \\left(3, 3 e\\right)\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-monotone-exponential-difference-v1": [
+    {
+      "code": "DVCR-1-0000000000000003-07",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=5\\cdot3^{x+1}-9^{x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Write }9^x=(3^x)^2."
+        ],
+        [
+          "calculation",
+          "f'(x)=3^x\\ln3\\left(15-2\\cdot3^x\\right),\\quad x_0=\\frac{\\log{\\left(\\frac{15}{2} \\right)}}{\\log{\\left(3 \\right)}}."
+        ],
+        [
+          "result",
+          "\\left(\\left(-\\infty, \\frac{\\log{\\left(\\frac{15}{2} \\right)}}{\\log{\\left(3 \\right)}}\\right),\\;\\left(\\frac{\\log{\\left(\\frac{15}{2} \\right)}}{\\log{\\left(3 \\right)}}, \\infty\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(-\\infty, \\frac{\\log{\\left(\\frac{15}{2} \\right)}}{\\log{\\left(3 \\right)}}\\right),\\;\\left(\\frac{\\log{\\left(\\frac{15}{2} \\right)}}{\\log{\\left(3 \\right)}}, \\infty\\right)\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVCR-1-0000000000000200-83",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=\\cdot6^{x+1}-36^{x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Write }36^x=(6^x)^2."
+        ],
+        [
+          "calculation",
+          "f'(x)=6^x\\ln6\\left(6-2\\cdot6^x\\right),\\quad x_0=\\frac{\\log{\\left(3 \\right)}}{\\log{\\left(6 \\right)}}."
+        ],
+        [
+          "result",
+          "\\left(\\left(-\\infty, \\frac{\\log{\\left(3 \\right)}}{\\log{\\left(6 \\right)}}\\right),\\;\\left(\\frac{\\log{\\left(3 \\right)}}{\\log{\\left(6 \\right)}}, \\infty\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(-\\infty, \\frac{\\log{\\left(3 \\right)}}{\\log{\\left(6 \\right)}}\\right),\\;\\left(\\frac{\\log{\\left(3 \\right)}}{\\log{\\left(6 \\right)}}, \\infty\\right)\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVCR-1-0000000000000999-00",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=5\\cdot3^{x+1}-9^{x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Write }9^x=(3^x)^2."
+        ],
+        [
+          "calculation",
+          "f'(x)=3^x\\ln3\\left(15-2\\cdot3^x\\right),\\quad x_0=\\frac{\\log{\\left(\\frac{15}{2} \\right)}}{\\log{\\left(3 \\right)}}."
+        ],
+        [
+          "result",
+          "\\left(\\left(-\\infty, \\frac{\\log{\\left(\\frac{15}{2} \\right)}}{\\log{\\left(3 \\right)}}\\right),\\;\\left(\\frac{\\log{\\left(\\frac{15}{2} \\right)}}{\\log{\\left(3 \\right)}}, \\infty\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(-\\infty, \\frac{\\log{\\left(\\frac{15}{2} \\right)}}{\\log{\\left(3 \\right)}}\\right),\\;\\left(\\frac{\\log{\\left(\\frac{15}{2} \\right)}}{\\log{\\left(3 \\right)}}, \\infty\\right)\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-monotone-reciprocal-log-v1": [
+    {
+      "code": "DVCS-1-0000000000000003-73",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=\\frac{2}{x}+\\ln x.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain is }x>0."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{1x-2}{x^2}."
+        ],
+        [
+          "result",
+          "\\left(\\left(2, \\infty\\right),\\;\\left(0, 2\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(2, \\infty\\right),\\;\\left(0, 2\\right)\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVCS-1-0000000000000200-52",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=\\frac{5}{x}+5\\ln x.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain is }x>0."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{5x-5}{x^2}."
+        ],
+        [
+          "result",
+          "\\left(\\left(1, \\infty\\right),\\;\\left(0, 1\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(1, \\infty\\right),\\;\\left(0, 1\\right)\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVCS-1-0000000000000999-66",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=\\frac{2}{x}+3\\ln x.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain is }x>0."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{3x-2}{x^2}."
+        ],
+        [
+          "result",
+          "\\left(\\left(\\frac{2}{3}, \\infty\\right),\\;\\left(0, \\frac{2}{3}\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(\\frac{2}{3}, \\infty\\right),\\;\\left(0, \\frac{2}{3}\\right)\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-derivatives-monotone-power-log-v1": [
+    {
+      "code": "DVCT-1-0000000000000003-00",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=2x^{2}\\ln x.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain is }x>0."
+        ],
+        [
+          "calculation",
+          "f'(x)=2x^{1}(2\\ln x+1)."
+        ],
+        [
+          "result",
+          "\\left(\\left(e^{- \\frac{1}{2}}, \\infty\\right),\\;\\left(0, e^{- \\frac{1}{2}}\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(e^{- \\frac{1}{2}}, \\infty\\right),\\;\\left(0, e^{- \\frac{1}{2}}\\right)\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVCT-1-0000000000000200-76",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=5x^{6}\\ln x.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain is }x>0."
+        ],
+        [
+          "calculation",
+          "f'(x)=5x^{5}(6\\ln x+1)."
+        ],
+        [
+          "result",
+          "\\left(\\left(e^{- \\frac{1}{6}}, \\infty\\right),\\;\\left(0, e^{- \\frac{1}{6}}\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(e^{- \\frac{1}{6}}, \\infty\\right),\\;\\left(0, e^{- \\frac{1}{6}}\\right)\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVCT-1-0000000000000999-90",
+      "statement": "\\(\\text{Give the union of the open intervals on which }f\\text{ is strictly increasing,}\\text{ and the same for strictly decreasing (use }\\{\\}\\text{ for none):}\\quad f(x)=2x^{4}\\ln x.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain is }x>0."
+        ],
+        [
+          "calculation",
+          "f'(x)=2x^{3}(4\\ln x+1)."
+        ],
+        [
+          "result",
+          "\\left(\\left(e^{- \\frac{1}{4}}, \\infty\\right),\\;\\left(0, e^{- \\frac{1}{4}}\\right)\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left(e^{- \\frac{1}{4}}, \\infty\\right),\\;\\left(0, e^{- \\frac{1}{4}}\\right)\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-extrema-cubic-v1": [
+    {
+      "code": "DVCU-1-0000000000000003-28",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=x^{3} - 2 x^{2} + 5.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Critical points from }f'=0\\text{; the sign of }f'\\text{ changes there.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=x(3x-4)."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{\\frac{4}{3}\\right\\},\\;\\left\\{\\frac{103}{27}\\right\\},\\;\\left\\{0\\right\\},\\;\\left\\{5\\right\\}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{\\frac{4}{3}\\right\\},\\;\\left\\{\\frac{103}{27}\\right\\},\\;\\left\\{0\\right\\},\\;\\left\\{5\\right\\}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVCU-1-0000000000000200-07",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=x^{3} - 5 x^{2} + 1.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Critical points from }f'=0\\text{; the sign of }f'\\text{ changes there.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=x(3x-10)."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{\\frac{10}{3}\\right\\},\\;\\left\\{- \\frac{473}{27}\\right\\},\\;\\left\\{0\\right\\},\\;\\left\\{1\\right\\}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{\\frac{10}{3}\\right\\},\\;\\left\\{- \\frac{473}{27}\\right\\},\\;\\left\\{0\\right\\},\\;\\left\\{1\\right\\}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVCU-1-0000000000000999-21",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=x^{3} - 2 x^{2} + 5.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Critical points from }f'=0\\text{; the sign of }f'\\text{ changes there.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=x(3x-4)."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{\\frac{4}{3}\\right\\},\\;\\left\\{\\frac{103}{27}\\right\\},\\;\\left\\{0\\right\\},\\;\\left\\{5\\right\\}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{\\frac{4}{3}\\right\\},\\;\\left\\{\\frac{103}{27}\\right\\},\\;\\left\\{0\\right\\},\\;\\left\\{5\\right\\}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-derivatives-extrema-linear-reciprocal-v1": [
+    {
+      "code": "DVCV-1-0000000000000003-11",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=2x+\\frac{1}{x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain excludes }0."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{2x^2-1}{x^2}."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{\\frac{\\sqrt{2}}{2}\\right\\},\\;\\left\\{2 \\sqrt{2}\\right\\},\\;\\left\\{- \\frac{\\sqrt{2}}{2}\\right\\},\\;\\left\\{- 2 \\sqrt{2}\\right\\}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{\\frac{\\sqrt{2}}{2}\\right\\},\\;\\left\\{2 \\sqrt{2}\\right\\},\\;\\left\\{- \\frac{\\sqrt{2}}{2}\\right\\},\\;\\left\\{- 2 \\sqrt{2}\\right\\}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVCV-1-0000000000000200-87",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=5x+\\frac{5}{x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain excludes }0."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{5x^2-5}{x^2}."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{1\\right\\},\\;\\left\\{10\\right\\},\\;\\left\\{-1\\right\\},\\;\\left\\{-10\\right\\}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{1\\right\\},\\;\\left\\{10\\right\\},\\;\\left\\{-1\\right\\},\\;\\left\\{-10\\right\\}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVCV-1-0000000000000999-04",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=2x+\\frac{3}{x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain excludes }0."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{2x^2-3}{x^2}."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{\\frac{\\sqrt{6}}{2}\\right\\},\\;\\left\\{2 \\sqrt{6}\\right\\},\\;\\left\\{- \\frac{\\sqrt{6}}{2}\\right\\},\\;\\left\\{- 2 \\sqrt{6}\\right\\}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{\\frac{\\sqrt{6}}{2}\\right\\},\\;\\left\\{2 \\sqrt{6}\\right\\},\\;\\left\\{- \\frac{\\sqrt{6}}{2}\\right\\},\\;\\left\\{- 2 \\sqrt{6}\\right\\}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-derivatives-extrema-exponential-quotient-v1": [
+    {
+      "code": "DVCW-1-0000000000000003-26",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=\\frac{3^x}{x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{For }x<0\\text{ the function is negative and decreasing.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{3^x(x\\ln3-1)}{1x^2}."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{\\frac{1}{\\log{\\left(3 \\right)}}\\right\\},\\;\\left\\{e \\log{\\left(3 \\right)}\\right\\},\\;\\emptyset,\\;\\emptyset\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{\\frac{1}{\\log{\\left(3 \\right)}}\\right\\},\\;\\left\\{e \\log{\\left(3 \\right)}\\right\\},\\;\\emptyset,\\;\\emptyset\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVCW-1-0000000000000200-05",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=\\frac{6^x}{5x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{For }x<0\\text{ the function is negative and decreasing.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{6^x(x\\ln6-1)}{5x^2}."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{\\frac{1}{\\log{\\left(6 \\right)}}\\right\\},\\;\\left\\{\\frac{e \\log{\\left(6 \\right)}}{5}\\right\\},\\;\\emptyset,\\;\\emptyset\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{\\frac{1}{\\log{\\left(6 \\right)}}\\right\\},\\;\\left\\{\\frac{e \\log{\\left(6 \\right)}}{5}\\right\\},\\;\\emptyset,\\;\\emptyset\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVCW-1-0000000000000999-19",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=\\frac{3^x}{3x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{For }x<0\\text{ the function is negative and decreasing.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{3^x(x\\ln3-1)}{3x^2}."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{\\frac{1}{\\log{\\left(3 \\right)}}\\right\\},\\;\\left\\{\\frac{e \\log{\\left(3 \\right)}}{3}\\right\\},\\;\\emptyset,\\;\\emptyset\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{\\frac{1}{\\log{\\left(3 \\right)}}\\right\\},\\;\\left\\{\\frac{e \\log{\\left(3 \\right)}}{3}\\right\\},\\;\\emptyset,\\;\\emptyset\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-extrema-shifted-exponential-v1": [
+    {
+      "code": "DVCX-1-0000000000000003-51",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=\\left(x + 1\\right) e^{- 2 x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Product rule.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=e^{-2x}(1-2(x+1))."
+        ],
+        [
+          "result",
+          "\\left(\\emptyset,\\;\\emptyset,\\;\\left\\{- \\frac{1}{2}\\right\\},\\;\\left\\{\\frac{e}{2}\\right\\}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\emptyset,\\;\\emptyset,\\;\\left\\{- \\frac{1}{2}\\right\\},\\;\\left\\{\\frac{e}{2}\\right\\}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVCX-1-0000000000000200-30",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=\\left(x + 5\\right) e^{- 5 x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Product rule.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=e^{-5x}(1-5(x+5))."
+        ],
+        [
+          "result",
+          "\\left(\\emptyset,\\;\\emptyset,\\;\\left\\{- \\frac{24}{5}\\right\\},\\;\\left\\{\\frac{e^{24}}{5}\\right\\}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\emptyset,\\;\\emptyset,\\;\\left\\{- \\frac{24}{5}\\right\\},\\;\\left\\{\\frac{e^{24}}{5}\\right\\}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVCX-1-0000000000000999-44",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=\\left(x + 3\\right) e^{- 2 x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Product rule.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=e^{-2x}(1-2(x+3))."
+        ],
+        [
+          "result",
+          "\\left(\\emptyset,\\;\\emptyset,\\;\\left\\{- \\frac{5}{2}\\right\\},\\;\\left\\{\\frac{e^{5}}{2}\\right\\}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\emptyset,\\;\\emptyset,\\;\\left\\{- \\frac{5}{2}\\right\\},\\;\\left\\{\\frac{e^{5}}{2}\\right\\}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-derivatives-extrema-rational-v1": [
+    {
+      "code": "DVCY-1-0000000000000003-13",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=\\frac{x + 1}{x^{2} + 1}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Quotient rule.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{1-2x-x^2}{(x^2+1)^2},\\quad x=-1\\pm\\sqrt{2}."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{- \\sqrt{2} - 1\\right\\},\\;\\left\\{\\frac{1 - \\sqrt{2}}{2}\\right\\},\\;\\left\\{-1 + \\sqrt{2}\\right\\},\\;\\left\\{\\frac{1 + \\sqrt{2}}{2}\\right\\}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{- \\sqrt{2} - 1\\right\\},\\;\\left\\{\\frac{1 - \\sqrt{2}}{2}\\right\\},\\;\\left\\{-1 + \\sqrt{2}\\right\\},\\;\\left\\{\\frac{1 + \\sqrt{2}}{2}\\right\\}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVCY-1-0000000000000200-89",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=\\frac{x + 5}{x^{2} + 1}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Quotient rule.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{1-10x-x^2}{(x^2+1)^2},\\quad x=-5\\pm\\sqrt{26}."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{- \\sqrt{26} - 5\\right\\},\\;\\left\\{\\frac{5 - \\sqrt{26}}{2}\\right\\},\\;\\left\\{-5 + \\sqrt{26}\\right\\},\\;\\left\\{\\frac{5 + \\sqrt{26}}{2}\\right\\}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{- \\sqrt{26} - 5\\right\\},\\;\\left\\{\\frac{5 - \\sqrt{26}}{2}\\right\\},\\;\\left\\{-5 + \\sqrt{26}\\right\\},\\;\\left\\{\\frac{5 + \\sqrt{26}}{2}\\right\\}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVCY-1-0000000000000999-06",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=\\frac{x + 3}{x^{2} + 1}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Quotient rule.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{1-6x-x^2}{(x^2+1)^2},\\quad x=-3\\pm\\sqrt{10}."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{- \\sqrt{10} - 3\\right\\},\\;\\left\\{\\frac{3 - \\sqrt{10}}{2}\\right\\},\\;\\left\\{-3 + \\sqrt{10}\\right\\},\\;\\left\\{\\frac{3 + \\sqrt{10}}{2}\\right\\}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{- \\sqrt{10} - 3\\right\\},\\;\\left\\{\\frac{3 - \\sqrt{10}}{2}\\right\\},\\;\\left\\{-3 + \\sqrt{10}\\right\\},\\;\\left\\{\\frac{3 + \\sqrt{10}}{2}\\right\\}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-extrema-absolute-quadratic-v1": [
+    {
+      "code": "DVCZ-1-0000000000000003-92",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=\\left|x^{2} - 4 x - 12\\right|.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The zeros of the quadratic are corners where }|\\cdot|\\text{ attains }0."
+        ],
+        [
+          "calculation",
+          "|x^{2} - 4 x - 12|=|(x--2)(x-6)|,\\ \\text{vertex at }2."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{-2, 6\\right\\},\\;\\left\\{0\\right\\},\\;\\left\\{2\\right\\},\\;\\left\\{16\\right\\}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{-2, 6\\right\\},\\;\\left\\{0\\right\\},\\;\\left\\{2\\right\\},\\;\\left\\{16\\right\\}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVCZ-1-0000000000000200-71",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=\\left|x^{2} - x - 30\\right|.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The zeros of the quadratic are corners where }|\\cdot|\\text{ attains }0."
+        ],
+        [
+          "calculation",
+          "|x^{2} - x - 30|=|(x--5)(x-6)|,\\ \\text{vertex at }\\frac{1}{2}."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{-5, 6\\right\\},\\;\\left\\{0\\right\\},\\;\\left\\{\\frac{1}{2}\\right\\},\\;\\left\\{\\frac{121}{4}\\right\\}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{-5, 6\\right\\},\\;\\left\\{0\\right\\},\\;\\left\\{\\frac{1}{2}\\right\\},\\;\\left\\{\\frac{121}{4}\\right\\}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVCZ-1-0000000000000999-85",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=\\left|x^{2} - 6 x - 16\\right|.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The zeros of the quadratic are corners where }|\\cdot|\\text{ attains }0."
+        ],
+        [
+          "calculation",
+          "|x^{2} - 6 x - 16|=|(x--2)(x-8)|,\\ \\text{vertex at }3."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{-2, 8\\right\\},\\;\\left\\{0\\right\\},\\;\\left\\{3\\right\\},\\;\\left\\{25\\right\\}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{-2, 8\\right\\},\\;\\left\\{0\\right\\},\\;\\left\\{3\\right\\},\\;\\left\\{25\\right\\}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-extrema-x-log-v1": [
+    {
+      "code": "DVDA-1-0000000000000003-45",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=2x\\ln x.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain is }x>0."
+        ],
+        [
+          "calculation",
+          "f'(x)=2(\\ln(x/1)+1)=0\\iff x=e^{-1}."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{e^{-1}\\right\\},\\;\\left\\{- \\frac{2}{e}\\right\\},\\;\\emptyset,\\;\\emptyset\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{e^{-1}\\right\\},\\;\\left\\{- \\frac{2}{e}\\right\\},\\;\\emptyset,\\;\\emptyset\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVDA-1-0000000000000200-24",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=5x\\ln \\frac{x}{5}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain is }x>0."
+        ],
+        [
+          "calculation",
+          "f'(x)=5(\\ln(x/5)+1)=0\\iff x=\\frac{5}{e}."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{\\frac{5}{e}\\right\\},\\;\\left\\{- \\frac{25}{e}\\right\\},\\;\\emptyset,\\;\\emptyset\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{\\frac{5}{e}\\right\\},\\;\\left\\{- \\frac{25}{e}\\right\\},\\;\\emptyset,\\;\\emptyset\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVDA-1-0000000000000999-38",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=2x\\ln \\frac{x}{3}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain is }x>0."
+        ],
+        [
+          "calculation",
+          "f'(x)=2(\\ln(x/3)+1)=0\\iff x=\\frac{3}{e}."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{\\frac{3}{e}\\right\\},\\;\\left\\{- \\frac{6}{e}\\right\\},\\;\\emptyset,\\;\\emptyset\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{\\frac{3}{e}\\right\\},\\;\\left\\{- \\frac{6}{e}\\right\\},\\;\\emptyset,\\;\\emptyset\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-derivatives-extrema-root-cubic-v1": [
+    {
+      "code": "DVDB-1-0000000000000003-11",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=2\\sqrt{75x-x^3}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain is }x\\le-5 \\sqrt{3}\\text{ or }0\\le x\\le5 \\sqrt{3}\\text{; the function vanishes at the three boundary points.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{2(75-3x^2)}{2\\sqrt{75x-x^3}}\\ \\Rightarrow\\ x=5."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{0, - 5 \\sqrt{3}, 5 \\sqrt{3}\\right\\},\\;\\left\\{0\\right\\},\\;\\left\\{5\\right\\},\\;\\left\\{10 \\sqrt{10}\\right\\}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{0, - 5 \\sqrt{3}, 5 \\sqrt{3}\\right\\},\\;\\left\\{0\\right\\},\\;\\left\\{5\\right\\},\\;\\left\\{10 \\sqrt{10}\\right\\}\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "DVDB-1-0000000000000200-87",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=5\\sqrt{3x-x^3}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain is }x\\le-\\sqrt{3}\\text{ or }0\\le x\\le\\sqrt{3}\\text{; the function vanishes at the three boundary points.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{5(3-3x^2)}{2\\sqrt{3x-x^3}}\\ \\Rightarrow\\ x=1."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{0, - \\sqrt{3}, \\sqrt{3}\\right\\},\\;\\left\\{0\\right\\},\\;\\left\\{1\\right\\},\\;\\left\\{5 \\sqrt{2}\\right\\}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{0, - \\sqrt{3}, \\sqrt{3}\\right\\},\\;\\left\\{0\\right\\},\\;\\left\\{1\\right\\},\\;\\left\\{5 \\sqrt{2}\\right\\}\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "DVDB-1-0000000000000999-04",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=2\\sqrt{75x-x^3}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain is }x\\le-5 \\sqrt{3}\\text{ or }0\\le x\\le5 \\sqrt{3}\\text{; the function vanishes at the three boundary points.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{2(75-3x^2)}{2\\sqrt{75x-x^3}}\\ \\Rightarrow\\ x=5."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{0, - 5 \\sqrt{3}, 5 \\sqrt{3}\\right\\},\\;\\left\\{0\\right\\},\\;\\left\\{5\\right\\},\\;\\left\\{10 \\sqrt{10}\\right\\}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{0, - 5 \\sqrt{3}, 5 \\sqrt{3}\\right\\},\\;\\left\\{0\\right\\},\\;\\left\\{5\\right\\},\\;\\left\\{10 \\sqrt{10}\\right\\}\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    }
+  ],
+  "analysis1-derivatives-extrema-arctan-log-v1": [
+    {
+      "code": "DVDC-1-0000000000000003-13",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=2\\arctan x-\\ln(1+x^2).\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Differentiate both terms over the common denominator }1+x^2."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{2-2x}{1+x^2}."
+        ],
+        [
+          "result",
+          "\\left(\\emptyset,\\;\\emptyset,\\;\\left\\{1\\right\\},\\;\\left\\{- \\log{\\left(2 \\right)} + \\frac{\\pi}{2}\\right\\}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\emptyset,\\;\\emptyset,\\;\\left\\{1\\right\\},\\;\\left\\{- \\log{\\left(2 \\right)} + \\frac{\\pi}{2}\\right\\}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVDC-1-0000000000000200-89",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=5\\arctan x-5\\ln(1+x^2).\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Differentiate both terms over the common denominator }1+x^2."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{5-10x}{1+x^2}."
+        ],
+        [
+          "result",
+          "\\left(\\emptyset,\\;\\emptyset,\\;\\left\\{\\frac{1}{2}\\right\\},\\;\\left\\{- 5 \\log{\\left(\\frac{5}{4} \\right)} + 5 \\operatorname{atan}{\\left(\\frac{1}{2} \\right)}\\right\\}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\emptyset,\\;\\emptyset,\\;\\left\\{\\frac{1}{2}\\right\\},\\;\\left\\{- 5 \\log{\\left(\\frac{5}{4} \\right)} + 5 \\operatorname{atan}{\\left(\\frac{1}{2} \\right)}\\right\\}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVDC-1-0000000000000999-06",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=2\\arctan x-3\\ln(1+x^2).\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Differentiate both terms over the common denominator }1+x^2."
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{2-6x}{1+x^2}."
+        ],
+        [
+          "result",
+          "\\left(\\emptyset,\\;\\emptyset,\\;\\left\\{\\frac{1}{3}\\right\\},\\;\\left\\{- 3 \\log{\\left(\\frac{10}{9} \\right)} + 2 \\operatorname{atan}{\\left(\\frac{1}{3} \\right)}\\right\\}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\emptyset,\\;\\emptyset,\\;\\left\\{\\frac{1}{3}\\right\\},\\;\\left\\{- 3 \\log{\\left(\\frac{10}{9} \\right)} + 2 \\operatorname{atan}{\\left(\\frac{1}{3} \\right)}\\right\\}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-extrema-none-v1": [
+    {
+      "code": "DVDD-1-0000000000000003-69",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=2(\\arctan x-x)-x^3.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Show that the derivative never changes sign.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=-\\frac{2x^2}{1+x^2}-3x^2\\le0,\\ =0\\text{ only at }0\\text{: strictly decreasing, no extrema.}"
+        ],
+        [
+          "result",
+          "\\left(\\emptyset,\\;\\emptyset,\\;\\emptyset,\\;\\emptyset\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\emptyset,\\;\\emptyset,\\;\\emptyset,\\;\\emptyset\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVDD-1-0000000000000200-48",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=5(\\arctan x-x)-5x^3.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Show that the derivative never changes sign.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=-\\frac{5x^2}{1+x^2}-15x^2\\le0,\\ =0\\text{ only at }0\\text{: strictly decreasing, no extrema.}"
+        ],
+        [
+          "result",
+          "\\left(\\emptyset,\\;\\emptyset,\\;\\emptyset,\\;\\emptyset\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\emptyset,\\;\\emptyset,\\;\\emptyset,\\;\\emptyset\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVDD-1-0000000000000999-62",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=2(\\arctan x-x)-3x^3.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Show that the derivative never changes sign.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=-\\frac{2x^2}{1+x^2}-9x^2\\le0,\\ =0\\text{ only at }0\\text{: strictly decreasing, no extrema.}"
+        ],
+        [
+          "result",
+          "\\left(\\emptyset,\\;\\emptyset,\\;\\emptyset,\\;\\emptyset\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\emptyset,\\;\\emptyset,\\;\\emptyset,\\;\\emptyset\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-extrema-exponential-shift-v1": [
+    {
+      "code": "DVDE-1-0000000000000003-29",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=\\left(x - 1\\right) e^{2 x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Product rule.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=e^{2x}(1+2(x-1))."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{\\frac{1}{2}\\right\\},\\;\\left\\{- \\frac{e}{2}\\right\\},\\;\\emptyset,\\;\\emptyset\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{\\frac{1}{2}\\right\\},\\;\\left\\{- \\frac{e}{2}\\right\\},\\;\\emptyset,\\;\\emptyset\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVDE-1-0000000000000200-08",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=\\left(x - 5\\right) e^{5 x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Product rule.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=e^{5x}(1+5(x-5))."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{\\frac{24}{5}\\right\\},\\;\\left\\{- \\frac{e^{24}}{5}\\right\\},\\;\\emptyset,\\;\\emptyset\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{\\frac{24}{5}\\right\\},\\;\\left\\{- \\frac{e^{24}}{5}\\right\\},\\;\\emptyset,\\;\\emptyset\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVDE-1-0000000000000999-22",
+      "statement": "\\(\\text{Give the local minimum points and their values, then the local maximum}\\text{ points and their values, as sets (}\\{\\}\\text{ for none):}\\quad f(x)=\\left(x - 3\\right) e^{2 x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Product rule.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=e^{2x}(1+2(x-3))."
+        ],
+        [
+          "result",
+          "\\left(\\left\\{\\frac{5}{2}\\right\\},\\;\\left\\{- \\frac{e^{5}}{2}\\right\\},\\;\\emptyset,\\;\\emptyset\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\left\\{\\frac{5}{2}\\right\\},\\;\\left\\{- \\frac{e^{5}}{2}\\right\\},\\;\\emptyset,\\;\\emptyset\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-derivatives-global-cubic-v1": [
+    {
+      "code": "DVDF-1-0000000000000003-85",
+      "statement": "\\(\\text{Give the least and the greatest value:}\\quad f(x)=2 x^{3} - 15 x^{2} + 36 x,\\ x\\in[1,5].\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Compare the values at the critical points and the endpoints.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=6(x-2)(x-3)."
+        ],
+        [
+          "result",
+          "\\left(23,\\;55\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(23,\\;55\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVDF-1-0000000000000200-64",
+      "statement": "\\(\\text{Give the least and the greatest value:}\\quad f(x)=2 x^{3} - 33 x^{2} + 180 x,\\ x\\in[4,8].\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Compare the values at the critical points and the endpoints.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=6(x-5)(x-6)."
+        ],
+        [
+          "result",
+          "\\left(320,\\;352\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(320,\\;352\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVDF-1-0000000000000999-78",
+      "statement": "\\(\\text{Give the least and the greatest value:}\\quad f(x)=2 x^{3} - 15 x^{2} + 36 x,\\ x\\in[1,5].\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Compare the values at the critical points and the endpoints.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=6(x-2)(x-3)."
+        ],
+        [
+          "result",
+          "\\left(23,\\;55\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(23,\\;55\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-derivatives-global-reciprocal-quadratic-v1": [
+    {
+      "code": "DVDG-1-0000000000000003-42",
+      "statement": "\\(\\text{Give the least and the greatest value:}\\quad f(x)=\\frac{1}{\\left(x - 1\\right)^{2} + 5},\\ x\\in[-2,2].\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The denominator is smallest at }x=1\\text{ and largest at the far end.}"
+        ],
+        [
+          "calculation",
+          "f(x)\\le f(1)=\\tfrac1{5},\\qquad f(-2)=\\tfrac1{14}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{1}{14},\\;\\frac{1}{5}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{1}{14},\\;\\frac{1}{5}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVDG-1-0000000000000200-21",
+      "statement": "\\(\\text{Give the least and the greatest value:}\\quad f(x)=\\frac{1}{\\left(x - 5\\right)^{2} + 1},\\ x\\in[2,6].\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The denominator is smallest at }x=5\\text{ and largest at the far end.}"
+        ],
+        [
+          "calculation",
+          "f(x)\\le f(5)=\\tfrac1{1},\\qquad f(2)=\\tfrac1{10}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{1}{10},\\;1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{1}{10},\\;1\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVDG-1-0000000000000999-35",
+      "statement": "\\(\\text{Give the least and the greatest value:}\\quad f(x)=\\frac{1}{\\left(x - 3\\right)^{2} + 5},\\ x\\in[0,4].\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The denominator is smallest at }x=3\\text{ and largest at the far end.}"
+        ],
+        [
+          "calculation",
+          "f(x)\\le f(3)=\\tfrac1{5},\\qquad f(0)=\\tfrac1{14}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{1}{14},\\;\\frac{1}{5}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{1}{14},\\;\\frac{1}{5}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-derivatives-global-root-difference-v1": [
+    {
+      "code": "DVDH-1-0000000000000003-12",
+      "statement": "\\(\\text{Give the least and the greatest value:}\\quad f(x)=\\sqrt{2+x}-\\sqrt{1-x}\\ \\text{on its natural domain}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain is }[-2,1]\\text{ and }f\\text{ is increasing.}"
+        ],
+        [
+          "calculation",
+          "f(-2)=-\\sqrt{3},\\qquad f(1)=\\sqrt{3}."
+        ],
+        [
+          "result",
+          "\\left(- \\sqrt{3},\\;\\sqrt{3}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\sqrt{3},\\;\\sqrt{3}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVDH-1-0000000000000200-88",
+      "statement": "\\(\\text{Give the least and the greatest value:}\\quad f(x)=\\sqrt{5+x}-\\sqrt{5-x}\\ \\text{on its natural domain}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain is }[-5,5]\\text{ and }f\\text{ is increasing.}"
+        ],
+        [
+          "calculation",
+          "f(-5)=-\\sqrt{10},\\qquad f(5)=\\sqrt{10}."
+        ],
+        [
+          "result",
+          "\\left(- \\sqrt{10},\\;\\sqrt{10}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\sqrt{10},\\;\\sqrt{10}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVDH-1-0000000000000999-05",
+      "statement": "\\(\\text{Give the least and the greatest value:}\\quad f(x)=\\sqrt{2+x}-\\sqrt{3-x}\\ \\text{on its natural domain}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain is }[-2,3]\\text{ and }f\\text{ is increasing.}"
+        ],
+        [
+          "calculation",
+          "f(-2)=-\\sqrt{5},\\qquad f(3)=\\sqrt{5}."
+        ],
+        [
+          "result",
+          "\\left(- \\sqrt{5},\\;\\sqrt{5}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\sqrt{5},\\;\\sqrt{5}\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-derivatives-global-absolute-exponential-v1": [
+    {
+      "code": "DVDI-1-0000000000000003-51",
+      "statement": "\\(\\text{Give the least and the greatest value:}\\quad f(x)=(x-2)^2e^{|x|},\\ x\\in[-1,3].\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Treat }x<0\\text{ and }x\\ge0\\text{ separately; }f\\text{ is not differentiable at }0."
+        ],
+        [
+          "calculation",
+          "x<0:\\ f'=e^{-x}(x-2)(4-x)<0;\\quad x\\ge0:\\ f'=e^x(x-2)(x-0).\\quad\\text{Compare }f(-1),f(0),f(0),f(2),f(3)."
+        ],
+        [
+          "result",
+          "\\left(0,\\;9 e\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(0,\\;9 e\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "DVDI-1-0000000000000200-30",
+      "statement": "\\(\\text{Give the least and the greatest value:}\\quad f(x)=(x-6)^2e^{|x|},\\ x\\in[-1,7].\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Treat }x<0\\text{ and }x\\ge0\\text{ separately; }f\\text{ is not differentiable at }0."
+        ],
+        [
+          "calculation",
+          "x<0:\\ f'=e^{-x}(x-6)(8-x)<0;\\quad x\\ge0:\\ f'=e^x(x-6)(x-4).\\quad\\text{Compare }f(-1),f(0),f(4),f(6),f(7)."
+        ],
+        [
+          "result",
+          "\\left(0,\\;e^{7}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(0,\\;e^{7}\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "DVDI-1-0000000000000999-44",
+      "statement": "\\(\\text{Give the least and the greatest value:}\\quad f(x)=(x-4)^2e^{|x|},\\ x\\in[-1,5].\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Treat }x<0\\text{ and }x\\ge0\\text{ separately; }f\\text{ is not differentiable at }0."
+        ],
+        [
+          "calculation",
+          "x<0:\\ f'=e^{-x}(x-4)(6-x)<0;\\quad x\\ge0:\\ f'=e^x(x-4)(x-2).\\quad\\text{Compare }f(-1),f(0),f(2),f(4),f(5)."
+        ],
+        [
+          "result",
+          "\\left(0,\\;e^{5}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(0,\\;e^{5}\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    }
+  ],
+  "analysis1-derivatives-global-absolute-parabola-v1": [
+    {
+      "code": "DVDJ-1-0000000000000003-14",
+      "statement": "\\(\\text{Give the least and the greatest value:}\\quad f(x)=1-\\left|36-x^2\\right|,\\ x\\in[-8,1].\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Corners at }x=\\pm6\\text{; the inner parabola has its vertex at }0."
+        ],
+        [
+          "calculation",
+          "f(-8)=-27,\\ f(-6)=1,\\ f(0)=-35,\\ f(1)=-34."
+        ],
+        [
+          "result",
+          "\\left(-35,\\;1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(-35,\\;1\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVDJ-1-0000000000000200-90",
+      "statement": "\\(\\text{Give the least and the greatest value:}\\quad f(x)=1-\\left|4-x^2\\right|,\\ x\\in[-4,1].\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Corners at }x=\\pm2\\text{; the inner parabola has its vertex at }0."
+        ],
+        [
+          "calculation",
+          "f(-4)=-11,\\ f(-2)=1,\\ f(0)=-3,\\ f(1)=-2."
+        ],
+        [
+          "result",
+          "\\left(-11,\\;1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(-11,\\;1\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVDJ-1-0000000000000999-07",
+      "statement": "\\(\\text{Give the least and the greatest value:}\\quad f(x)=1-\\left|36-x^2\\right|,\\ x\\in[-8,1].\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Corners at }x=\\pm6\\text{; the inner parabola has its vertex at }0."
+        ],
+        [
+          "calculation",
+          "f(-8)=-27,\\ f(-6)=1,\\ f(0)=-35,\\ f(1)=-34."
+        ],
+        [
+          "result",
+          "\\left(-35,\\;1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(-35,\\;1\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-global-sine-cubic-v1": [
+    {
+      "code": "DVDK-1-0000000000000003-59",
+      "statement": "\\(\\text{Give the least and the greatest value:}\\quad f(x)=\\sin^3x-5\\sin x,\\ x\\in\\left[-\\tfrac{\\pi}{2},\\tfrac{\\pi}{2}\\right].\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Put }u=\\sin x\\in[-1,1];\\ g(u)=u^3-5u\\text{ is decreasing.}"
+        ],
+        [
+          "calculation",
+          "g'(u)=3u^2-5<0,\\qquad g(1)=-4,\\ g(-1)=4."
+        ],
+        [
+          "result",
+          "\\left(-4,\\;4\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(-4,\\;4\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVDK-1-0000000000000200-38",
+      "statement": "\\(\\text{Give the least and the greatest value:}\\quad f(x)=\\sin^3x-8\\sin x,\\ x\\in\\left[-\\tfrac{\\pi}{2},\\tfrac{\\pi}{2}\\right].\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Put }u=\\sin x\\in[-1,1];\\ g(u)=u^3-8u\\text{ is decreasing.}"
+        ],
+        [
+          "calculation",
+          "g'(u)=3u^2-8<0,\\qquad g(1)=-7,\\ g(-1)=7."
+        ],
+        [
+          "result",
+          "\\left(-7,\\;7\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(-7,\\;7\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVDK-1-0000000000000999-52",
+      "statement": "\\(\\text{Give the least and the greatest value:}\\quad f(x)=\\sin^3x-5\\sin x,\\ x\\in\\left[-\\tfrac{\\pi}{2},\\tfrac{\\pi}{2}\\right].\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Put }u=\\sin x\\in[-1,1];\\ g(u)=u^3-5u\\text{ is decreasing.}"
+        ],
+        [
+          "calculation",
+          "g'(u)=3u^2-5<0,\\qquad g(1)=-4,\\ g(-1)=4."
+        ],
+        [
+          "result",
+          "\\left(-4,\\;4\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(-4,\\;4\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-global-semicircle-root-v1": [
+    {
+      "code": "DVDL-1-0000000000000003-72",
+      "statement": "\\(\\text{Give the least and the greatest value:}\\quad f(x)=2\\sqrt{25-(x-1)^2}\\ \\text{on its natural domain}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain is }[-4,6]."
+        ],
+        [
+          "calculation",
+          "f(1)=10,\\qquad f(-4)=f(6)=0."
+        ],
+        [
+          "result",
+          "\\left(0,\\;10\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(0,\\;10\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVDL-1-0000000000000200-51",
+      "statement": "\\(\\text{Give the least and the greatest value:}\\quad f(x)=5\\sqrt{1-(x-5)^2}\\ \\text{on its natural domain}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain is }[4,6]."
+        ],
+        [
+          "calculation",
+          "f(5)=5,\\qquad f(4)=f(6)=0."
+        ],
+        [
+          "result",
+          "\\left(0,\\;5\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(0,\\;5\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVDL-1-0000000000000999-65",
+      "statement": "\\(\\text{Give the least and the greatest value:}\\quad f(x)=2\\sqrt{25-(x-3)^2}\\ \\text{on its natural domain}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The domain is }[-2,8]."
+        ],
+        [
+          "calculation",
+          "f(3)=10,\\qquad f(-2)=f(8)=0."
+        ],
+        [
+          "result",
+          "\\left(0,\\;10\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(0,\\;10\\right)",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-derivatives-global-cosine-quotient-v1": [
+    {
+      "code": "DVDM-1-0000000000000003-81",
+      "statement": "\\(\\text{Give the least and the greatest value:}\\quad f(x)=\\frac{\\cos x}{5+3\\sin x}\\ \\text{on }\\mathbb R.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The function is }2\\pi\\text{-periodic; critical points from }f'=0."
+        ],
+        [
+          "calculation",
+          "f'(x)=-\\frac{5\\sin x+3}{(5+3\\sin x)^2}=0\\iff\\sin x=-\\tfrac{3}{5}."
+        ],
+        [
+          "result",
+          "\\left(- \\frac{1}{4},\\;\\frac{1}{4}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\frac{1}{4},\\;\\frac{1}{4}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVDM-1-0000000000000200-60",
+      "statement": "\\(\\text{Give the least and the greatest value:}\\quad f(x)=\\frac{\\cos x}{17+8\\sin x}\\ \\text{on }\\mathbb R.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The function is }2\\pi\\text{-periodic; critical points from }f'=0."
+        ],
+        [
+          "calculation",
+          "f'(x)=-\\frac{17\\sin x+8}{(17+8\\sin x)^2}=0\\iff\\sin x=-\\tfrac{8}{17}."
+        ],
+        [
+          "result",
+          "\\left(- \\frac{1}{15},\\;\\frac{1}{15}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\frac{1}{15},\\;\\frac{1}{15}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVDM-1-0000000000000999-74",
+      "statement": "\\(\\text{Give the least and the greatest value:}\\quad f(x)=\\frac{\\cos x}{5+3\\sin x}\\ \\text{on }\\mathbb R.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The function is }2\\pi\\text{-periodic; critical points from }f'=0."
+        ],
+        [
+          "calculation",
+          "f'(x)=-\\frac{5\\sin x+3}{(5+3\\sin x)^2}=0\\iff\\sin x=-\\tfrac{3}{5}."
+        ],
+        [
+          "result",
+          "\\left(- \\frac{1}{4},\\;\\frac{1}{4}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\frac{1}{4},\\;\\frac{1}{4}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-global-rational-interval-v1": [
+    {
+      "code": "DVDN-1-0000000000000003-28",
+      "statement": "\\(\\text{Give the least and the greatest value:}\\quad f(x)=\\frac{2x}{x^2-5x+25},\\ x\\in[0,10].\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Quotient rule; the denominator is positive.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{2(25-x^2)}{(x^2-5x+25)^2},\\quad f(5)=\\frac{2}{5},\\ f(0)=0,\\ f(10)=\\frac{4}{15}."
+        ],
+        [
+          "result",
+          "\\left(0,\\;\\frac{2}{5}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(0,\\;\\frac{2}{5}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVDN-1-0000000000000200-07",
+      "statement": "\\(\\text{Give the least and the greatest value:}\\quad f(x)=\\frac{5x}{x^2-x+1},\\ x\\in[0,2].\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Quotient rule; the denominator is positive.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{5(1-x^2)}{(x^2-1x+1)^2},\\quad f(1)=5,\\ f(0)=0,\\ f(2)=\\frac{10}{3}."
+        ],
+        [
+          "result",
+          "\\left(0,\\;5\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(0,\\;5\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVDN-1-0000000000000999-21",
+      "statement": "\\(\\text{Give the least and the greatest value:}\\quad f(x)=\\frac{2x}{x^2-5x+25},\\ x\\in[0,10].\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Quotient rule; the denominator is positive.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{2(25-x^2)}{(x^2-5x+25)^2},\\quad f(5)=\\frac{2}{5},\\ f(0)=0,\\ f(10)=\\frac{4}{15}."
+        ],
+        [
+          "result",
+          "\\left(0,\\;\\frac{2}{5}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(0,\\;\\frac{2}{5}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-global-root-product-v1": [
+    {
+      "code": "DVDO-1-0000000000000003-44",
+      "statement": "\\(\\text{Give the least and the greatest value:}\\quad f(x)=x\\sqrt{100-x^2},\\ x\\in[-6,8].\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Critical points }x=\\pm r/\\sqrt2\\text{; only the positive one lies inside.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{100-2x^2}{\\sqrt{100-x^2}},\\ f\\left(\\tfrac{10}{\\sqrt2}\\right)=50,\\ f(-6)=-48,\\ f(8)=48."
+        ],
+        [
+          "result",
+          "\\left(-48,\\;50\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(-48,\\;50\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVDO-1-0000000000000200-23",
+      "statement": "\\(\\text{Give the least and the greatest value:}\\quad f(x)=x\\sqrt{625-x^2},\\ x\\in[-15,20].\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Critical points }x=\\pm r/\\sqrt2\\text{; only the positive one lies inside.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{625-2x^2}{\\sqrt{625-x^2}},\\ f\\left(\\tfrac{25}{\\sqrt2}\\right)=\\frac{625}{2},\\ f(-15)=-300,\\ f(20)=300."
+        ],
+        [
+          "result",
+          "\\left(-300,\\;\\frac{625}{2}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(-300,\\;\\frac{625}{2}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVDO-1-0000000000000999-37",
+      "statement": "\\(\\text{Give the least and the greatest value:}\\quad f(x)=x\\sqrt{100-x^2},\\ x\\in[-6,8].\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Critical points }x=\\pm r/\\sqrt2\\text{; only the positive one lies inside.}"
+        ],
+        [
+          "calculation",
+          "f'(x)=\\frac{100-2x^2}{\\sqrt{100-x^2}},\\ f\\left(\\tfrac{10}{\\sqrt2}\\right)=50,\\ f(-6)=-48,\\ f(8)=48."
+        ],
+        [
+          "result",
+          "\\left(-48,\\;50\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(-48,\\;50\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-fenced-plots-v1": [
+    {
+      "code": "DVDP-1-0000000000000003-37",
+      "statement": "\\(\\text{A rectangle is split by a full-height fence into a left plot of }300\\text{ m}^2\\text{ and a right strip, which a horizontal fence splits into }100\\text{ m}^2\\text{ and }500\\text{ m}^2.\\text{ Find the width and height (m) that}\\text{ minimise the total fence length.}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{With height }y\\text{ the width is }T/y\\text{; the right strip has width }(B+C)/y."
+        ],
+        [
+          "calculation",
+          "L(y)=2\\cdot\\frac{900}{y}+3y+\\frac{600}{y},\\quad L'(y)=0\\iff y^2=800."
+        ],
+        [
+          "result",
+          "\\left(\\frac{45 \\sqrt{2}}{2},\\;20 \\sqrt{2}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{45 \\sqrt{2}}{2},\\;20 \\sqrt{2}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVDP-1-0000000000000200-16",
+      "statement": "\\(\\text{A rectangle is split by a full-height fence into a left plot of }600\\text{ m}^2\\text{ and a right strip, which a horizontal fence splits into }500\\text{ m}^2\\text{ and }100\\text{ m}^2.\\text{ Find the width and height (m) that}\\text{ minimise the total fence length.}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{With height }y\\text{ the width is }T/y\\text{; the right strip has width }(B+C)/y."
+        ],
+        [
+          "calculation",
+          "L(y)=2\\cdot\\frac{1200}{y}+3y+\\frac{600}{y},\\quad L'(y)=0\\iff y^2=1000."
+        ],
+        [
+          "result",
+          "\\left(12 \\sqrt{10},\\;10 \\sqrt{10}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(12 \\sqrt{10},\\;10 \\sqrt{10}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVDP-1-0000000000000999-30",
+      "statement": "\\(\\text{A rectangle is split by a full-height fence into a left plot of }300\\text{ m}^2\\text{ and a right strip, which a horizontal fence splits into }300\\text{ m}^2\\text{ and }500\\text{ m}^2.\\text{ Find the width and height (m) that}\\text{ minimise the total fence length.}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{With height }y\\text{ the width is }T/y\\text{; the right strip has width }(B+C)/y."
+        ],
+        [
+          "calculation",
+          "L(y)=2\\cdot\\frac{1100}{y}+3y+\\frac{800}{y},\\quad L'(y)=0\\iff y^2=1000."
+        ],
+        [
+          "result",
+          "\\left(11 \\sqrt{10},\\;10 \\sqrt{10}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(11 \\sqrt{10},\\;10 \\sqrt{10}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-pipeline-v1": [
+    {
+      "code": "DVDQ-1-0000000000000003-77",
+      "statement": "\\(\\text{A platform lies }8\\text{ km from a straight coast; a refinery is on the}\\text{ coast }12\\text{ km from the nearest coastal point. A km of pipe costs }3\\text{ times more under sea than on land. How far from the nearest point should}\\text{ the pipe reach the coast (km)?}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Minimise }k\\sqrt{d^2+x^2}+(s-x)\\text{ for }0\\le x\\le s."
+        ],
+        [
+          "calculation",
+          "\\frac{3x}{\\sqrt{64+x^2}}=1\\iff x=2 \\sqrt{2}<12."
+        ],
+        [
+          "result",
+          "2 \\sqrt{2}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "2 \\sqrt{2}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVDQ-1-0000000000000200-56",
+      "statement": "\\(\\text{A platform lies }14\\text{ km from a straight coast; a refinery is on the}\\text{ coast }34\\text{ km from the nearest coastal point. A km of pipe costs }3\\text{ times more under sea than on land. How far from the nearest point should}\\text{ the pipe reach the coast (km)?}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Minimise }k\\sqrt{d^2+x^2}+(s-x)\\text{ for }0\\le x\\le s."
+        ],
+        [
+          "calculation",
+          "\\frac{3x}{\\sqrt{196+x^2}}=1\\iff x=\\frac{7 \\sqrt{2}}{2}<34."
+        ],
+        [
+          "result",
+          "\\frac{7 \\sqrt{2}}{2}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\frac{7 \\sqrt{2}}{2}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVDQ-1-0000000000000999-70",
+      "statement": "\\(\\text{A platform lies }8\\text{ km from a straight coast; a refinery is on the}\\text{ coast }20\\text{ km from the nearest coastal point. A km of pipe costs }3\\text{ times more under sea than on land. How far from the nearest point should}\\text{ the pipe reach the coast (km)?}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Minimise }k\\sqrt{d^2+x^2}+(s-x)\\text{ for }0\\le x\\le s."
+        ],
+        [
+          "calculation",
+          "\\frac{3x}{\\sqrt{64+x^2}}=1\\iff x=2 \\sqrt{2}<20."
+        ],
+        [
+          "result",
+          "2 \\sqrt{2}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "2 \\sqrt{2}",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-container-v1": [
+    {
+      "code": "DVDR-1-0000000000000003-16",
+      "statement": "\\(\\text{A box with a square base holds }\\frac{9}{8}\\text{ m}^3.\\text{ Base and lid cost }20\\text{ per m}^2\\text{, the four walls }60\\text{ per m}^2.\\text{ Find the base side and height (m) of least cost.}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Express the cost with the base side }s\\text{ alone.}"
+        ],
+        [
+          "calculation",
+          "K(s)=40s^2+\\frac{240\\cdot\\frac{9}{8}}{s},\\quad K'(s)=0\\iff s^3=\\frac{27}{8}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{3}{2},\\;\\frac{1}{2}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{3}{2},\\;\\frac{1}{2}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVDR-1-0000000000000200-92",
+      "statement": "\\(\\text{A box with a square base holds }81\\text{ m}^3.\\text{ Base and lid cost }60\\text{ per m}^2\\text{, the four walls }20\\text{ per m}^2.\\text{ Find the base side and height (m) of least cost.}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Express the cost with the base side }s\\text{ alone.}"
+        ],
+        [
+          "calculation",
+          "K(s)=120s^2+\\frac{80\\cdot81}{s},\\quad K'(s)=0\\iff s^3=27."
+        ],
+        [
+          "result",
+          "\\left(3,\\;9\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(3,\\;9\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVDR-1-0000000000000999-09",
+      "statement": "\\(\\text{A box with a square base holds }\\frac{9}{4}\\text{ m}^3.\\text{ Base and lid cost }40\\text{ per m}^2\\text{, the four walls }60\\text{ per m}^2.\\text{ Find the base side and height (m) of least cost.}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Express the cost with the base side }s\\text{ alone.}"
+        ],
+        [
+          "calculation",
+          "K(s)=80s^2+\\frac{240\\cdot\\frac{9}{4}}{s},\\quad K'(s)=0\\iff s^3=\\frac{27}{8}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{3}{2},\\;1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{3}{2},\\;1\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-incircle-triangle-v1": [
+    {
+      "code": "DVDS-1-0000000000000003-59",
+      "statement": "\\(\\text{Among isosceles triangles of area }6 \\sqrt{3}\\text{, find the apex angle that}\\text{ maximises the inscribed circle, and its radius.}\\)",
+      "steps": [
+        [
+          "method",
+          "r=P/p\\text{ with fixed area }P\\text{; minimise the half-perimeter }p(\\alpha)."
+        ],
+        [
+          "calculation",
+          "p(\\alpha)\\text{ is least at }\\alpha=\\pi/3\\text{ (equilateral)},\\quad r=\\sqrt{\\frac{P}{3\\sqrt3}}=\\sqrt{2}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{\\pi}{3},\\;\\sqrt{2}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{\\pi}{3},\\;\\sqrt{2}\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "DVDS-1-0000000000000200-38",
+      "statement": "\\(\\text{Among isosceles triangles of area }15 \\sqrt{3}\\text{, find the apex angle that}\\text{ maximises the inscribed circle, and its radius.}\\)",
+      "steps": [
+        [
+          "method",
+          "r=P/p\\text{ with fixed area }P\\text{; minimise the half-perimeter }p(\\alpha)."
+        ],
+        [
+          "calculation",
+          "p(\\alpha)\\text{ is least at }\\alpha=\\pi/3\\text{ (equilateral)},\\quad r=\\sqrt{\\frac{P}{3\\sqrt3}}=\\sqrt{5}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{\\pi}{3},\\;\\sqrt{5}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{\\pi}{3},\\;\\sqrt{5}\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "DVDS-1-0000000000000999-52",
+      "statement": "\\(\\text{Among isosceles triangles of area }6 \\sqrt{3}\\text{, find the apex angle that}\\text{ maximises the inscribed circle, and its radius.}\\)",
+      "steps": [
+        [
+          "method",
+          "r=P/p\\text{ with fixed area }P\\text{; minimise the half-perimeter }p(\\alpha)."
+        ],
+        [
+          "calculation",
+          "p(\\alpha)\\text{ is least at }\\alpha=\\pi/3\\text{ (equilateral)},\\quad r=\\sqrt{\\frac{P}{3\\sqrt3}}=\\sqrt{2}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{\\pi}{3},\\;\\sqrt{2}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{\\pi}{3},\\;\\sqrt{2}\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    }
+  ],
+  "analysis1-derivatives-parabola-rectangle-v1": [
+    {
+      "code": "DVDT-1-0000000000000003-09",
+      "statement": "\\(\\text{A rectangle has its base on the }x\\text{-axis and its top corners on }y=72 - 2 x^{2}.\\text{ Find the width and height of greatest area.}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Area }2x\\,y(x)\\text{ for }0<x<6."
+        ],
+        [
+          "calculation",
+          "A(x)=4x(36-x^2),\\quad A'(x)=0\\iff x=2 \\sqrt{3}."
+        ],
+        [
+          "result",
+          "\\left(4 \\sqrt{3},\\;48\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(4 \\sqrt{3},\\;48\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVDT-1-0000000000000200-85",
+      "statement": "\\(\\text{A rectangle has its base on the }x\\text{-axis and its top corners on }y=20 - 5 x^{2}.\\text{ Find the width and height of greatest area.}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Area }2x\\,y(x)\\text{ for }0<x<2."
+        ],
+        [
+          "calculation",
+          "A(x)=10x(4-x^2),\\quad A'(x)=0\\iff x=\\frac{2 \\sqrt{3}}{3}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{4 \\sqrt{3}}{3},\\;\\frac{40}{3}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{4 \\sqrt{3}}{3},\\;\\frac{40}{3}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVDT-1-0000000000000999-02",
+      "statement": "\\(\\text{A rectangle has its base on the }x\\text{-axis and its top corners on }y=72 - 2 x^{2}.\\text{ Find the width and height of greatest area.}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Area }2x\\,y(x)\\text{ for }0<x<6."
+        ],
+        [
+          "calculation",
+          "A(x)=4x(36-x^2),\\quad A'(x)=0\\iff x=2 \\sqrt{3}."
+        ],
+        [
+          "result",
+          "\\left(4 \\sqrt{3},\\;48\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(4 \\sqrt{3},\\;48\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-semicircle-rectangle-v1": [
+    {
+      "code": "DVDU-1-0000000000000003-72",
+      "statement": "\\(\\text{Find the width and height of the largest rectangle inscribed in a half-disc of}\\text{ radius }3\\text{ with one side on the diameter.}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{With half-width }x\\text{ the height is }\\sqrt{R^2-x^2}."
+        ],
+        [
+          "calculation",
+          "A(x)=2x\\sqrt{9-x^2},\\quad A'(x)=0\\iff x=\\tfrac{3}{\\sqrt2}."
+        ],
+        [
+          "result",
+          "\\left(3 \\sqrt{2},\\;\\frac{3 \\sqrt{2}}{2}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(3 \\sqrt{2},\\;\\frac{3 \\sqrt{2}}{2}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVDU-1-0000000000000200-51",
+      "statement": "\\(\\text{Find the width and height of the largest rectangle inscribed in a half-disc of}\\text{ radius }6\\text{ with one side on the diameter.}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{With half-width }x\\text{ the height is }\\sqrt{R^2-x^2}."
+        ],
+        [
+          "calculation",
+          "A(x)=2x\\sqrt{36-x^2},\\quad A'(x)=0\\iff x=\\tfrac{6}{\\sqrt2}."
+        ],
+        [
+          "result",
+          "\\left(6 \\sqrt{2},\\;3 \\sqrt{2}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(6 \\sqrt{2},\\;3 \\sqrt{2}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVDU-1-0000000000000999-65",
+      "statement": "\\(\\text{Find the width and height of the largest rectangle inscribed in a half-disc of}\\text{ radius }3\\text{ with one side on the diameter.}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{With half-width }x\\text{ the height is }\\sqrt{R^2-x^2}."
+        ],
+        [
+          "calculation",
+          "A(x)=2x\\sqrt{9-x^2},\\quad A'(x)=0\\iff x=\\tfrac{3}{\\sqrt2}."
+        ],
+        [
+          "result",
+          "\\left(3 \\sqrt{2},\\;\\frac{3 \\sqrt{2}}{2}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(3 \\sqrt{2},\\;\\frac{3 \\sqrt{2}}{2}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-semicircle-waste-v1": [
+    {
+      "code": "DVDV-1-0000000000000003-93",
+      "statement": "\\(\\text{The largest rectangle is cut from a half-disc of radius }3\\text{ with one side on the diameter. How much material is lost?}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The largest rectangle has area }R^2."
+        ],
+        [
+          "calculation",
+          "\\tfrac{\\pi}{2}\\cdot9-9=-9 + \\frac{9 \\pi}{2}."
+        ],
+        [
+          "result",
+          "-9 + \\frac{9 \\pi}{2}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "-9 + \\frac{9 \\pi}{2}",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVDV-1-0000000000000200-72",
+      "statement": "\\(\\text{The largest rectangle is cut from a half-disc of radius }6\\text{ with one side on the diameter. How much material is lost?}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The largest rectangle has area }R^2."
+        ],
+        [
+          "calculation",
+          "\\tfrac{\\pi}{2}\\cdot36-36=-36 + 18 \\pi."
+        ],
+        [
+          "result",
+          "-36 + 18 \\pi"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "-36 + 18 \\pi",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVDV-1-0000000000000999-86",
+      "statement": "\\(\\text{The largest rectangle is cut from a half-disc of radius }3\\text{ with one side on the diameter. How much material is lost?}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The largest rectangle has area }R^2."
+        ],
+        [
+          "calculation",
+          "\\tfrac{\\pi}{2}\\cdot9-9=-9 + \\frac{9 \\pi}{2}."
+        ],
+        [
+          "result",
+          "-9 + \\frac{9 \\pi}{2}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "-9 + \\frac{9 \\pi}{2}",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-circle-square-v1": [
+    {
+      "code": "DVDW-1-0000000000000003-34",
+      "statement": "\\(\\text{A rectangle is cut from a disc of radius }3\\text{ with the least waste.}\\text{ Find its width and height.}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The diagonal is the diameter: maximise }xy\\text{ with }x^2+y^2=4R^2."
+        ],
+        [
+          "calculation",
+          "xy\\le\\tfrac{x^2+y^2}{2}=18,\\ \\text{equality for }x=y=3 \\sqrt{2}."
+        ],
+        [
+          "result",
+          "\\left(3 \\sqrt{2},\\;3 \\sqrt{2}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(3 \\sqrt{2},\\;3 \\sqrt{2}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVDW-1-0000000000000200-13",
+      "statement": "\\(\\text{A rectangle is cut from a disc of radius }6\\text{ with the least waste.}\\text{ Find its width and height.}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The diagonal is the diameter: maximise }xy\\text{ with }x^2+y^2=4R^2."
+        ],
+        [
+          "calculation",
+          "xy\\le\\tfrac{x^2+y^2}{2}=72,\\ \\text{equality for }x=y=6 \\sqrt{2}."
+        ],
+        [
+          "result",
+          "\\left(6 \\sqrt{2},\\;6 \\sqrt{2}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(6 \\sqrt{2},\\;6 \\sqrt{2}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVDW-1-0000000000000999-27",
+      "statement": "\\(\\text{A rectangle is cut from a disc of radius }3\\text{ with the least waste.}\\text{ Find its width and height.}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The diagonal is the diameter: maximise }xy\\text{ with }x^2+y^2=4R^2."
+        ],
+        [
+          "calculation",
+          "xy\\le\\tfrac{x^2+y^2}{2}=18,\\ \\text{equality for }x=y=3 \\sqrt{2}."
+        ],
+        [
+          "result",
+          "\\left(3 \\sqrt{2},\\;3 \\sqrt{2}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(3 \\sqrt{2},\\;3 \\sqrt{2}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
   ]
 }

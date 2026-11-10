@@ -15,6 +15,7 @@ from app.engine.answers.computational import (
 )
 from app.engine.codes import encode
 from app.engine.generators import _derivatives as derivatives
+from app.engine.generators import _extrema as extrema
 from app.engine.generators import _function_limits as functions
 from app.engine.generators import _lhopital as lhopital
 from app.engine.generators import _sequence_limits as sequences
@@ -94,6 +95,13 @@ TANGENT_FULL = InputContract(
 TWO_TANGENTS = InputContract(
     "tuple", components=(TANGENT_FULL, TANGENT_FULL), labels=derivatives.TWO_TANGENTS
 )
+# #262: monotonicity, extrema and optimization.
+MONOTONIC = InputContract("tuple", components=(REAL_SET, REAL_SET), labels=extrema.MONOTONIC)
+EXTREMA = InputContract("tuple", components=(REAL_SET,) * 4, labels=extrema.EXTREMA)
+GLOBAL = InputContract("tuple", components=(CONSTANT, CONSTANT), labels=extrema.GLOBAL)
+DIMENSIONS = InputContract("tuple", components=(CONSTANT, CONSTANT), labels=extrema.DIMENSIONS)
+BOX = InputContract("tuple", components=(CONSTANT, CONSTANT), labels=extrema.BOX)
+ANGLE_RADIUS = InputContract("tuple", components=(CONSTANT, CONSTANT), labels=extrema.ANGLE_RADIUS)
 ANSWERS: dict[str, type[Answer]] = {
     "category": CategoryAnswer,
     "formula": FormulaAnswer,
@@ -289,6 +297,47 @@ SPECS = (
     (lhopital.tangent_log, DERIVATIVES, 3, "DVCG", LIMIT),
     (lhopital.log_tangent_product, DERIVATIVES, 3, "DVCH", LIMIT),
     (lhopital.differentiable_join, DERIVATIVES, 3, "DVCI", JOINS),
+    # #262
+    (extrema.monotone_cubic, DERIVATIVES, 2, "DVCJ", MONOTONIC),
+    (extrema.monotone_trig_difference, DERIVATIVES, 3, "DVCK", MONOTONIC),
+    (extrema.monotone_linear_reciprocal, DERIVATIVES, 2, "DVCL", MONOTONIC),
+    (extrema.monotone_cubic_over_quadratic, DERIVATIVES, 4, "DVCM", MONOTONIC),
+    (extrema.monotone_root_quotient, DERIVATIVES, 3, "DVCN", MONOTONIC),
+    (extrema.monotone_exponential_product, DERIVATIVES, 2, "DVCO", MONOTONIC),
+    (extrema.monotone_log_square, DERIVATIVES, 4, "DVCP", MONOTONIC),
+    (extrema.monotone_log_quotient, DERIVATIVES, 3, "DVCQ", MONOTONIC),
+    (extrema.monotone_exponential_difference, DERIVATIVES, 4, "DVCR", MONOTONIC),
+    (extrema.monotone_reciprocal_log, DERIVATIVES, 2, "DVCS", MONOTONIC),
+    (extrema.monotone_power_log, DERIVATIVES, 3, "DVCT", MONOTONIC),
+    (extrema.extrema_cubic, DERIVATIVES, 2, "DVCU", EXTREMA),
+    (extrema.extrema_linear_reciprocal, DERIVATIVES, 2, "DVCV", EXTREMA),
+    (extrema.extrema_exponential_quotient, DERIVATIVES, 3, "DVCW", EXTREMA),
+    (extrema.extrema_shifted_exponential, DERIVATIVES, 2, "DVCX", EXTREMA),
+    (extrema.extrema_rational, DERIVATIVES, 4, "DVCY", EXTREMA),
+    (extrema.extrema_absolute_quadratic, DERIVATIVES, 4, "DVCZ", EXTREMA),
+    (extrema.extrema_x_log, DERIVATIVES, 2, "DVDA", EXTREMA),
+    (extrema.extrema_root_cubic, DERIVATIVES, 5, "DVDB", EXTREMA),
+    (extrema.extrema_arctan_log, DERIVATIVES, 3, "DVDC", EXTREMA),
+    (extrema.extrema_none, DERIVATIVES, 3, "DVDD", EXTREMA),
+    (extrema.extrema_exponential_shift, DERIVATIVES, 2, "DVDE", EXTREMA),
+    (extrema.global_cubic, DERIVATIVES, 2, "DVDF", GLOBAL),
+    (extrema.global_reciprocal_quadratic, DERIVATIVES, 2, "DVDG", GLOBAL),
+    (extrema.global_root_difference, DERIVATIVES, 2, "DVDH", GLOBAL),
+    (extrema.global_absolute_exponential, DERIVATIVES, 5, "DVDI", GLOBAL),
+    (extrema.global_absolute_parabola, DERIVATIVES, 4, "DVDJ", GLOBAL),
+    (extrema.global_sine_cubic, DERIVATIVES, 3, "DVDK", GLOBAL),
+    (extrema.global_semicircle_root, DERIVATIVES, 2, "DVDL", GLOBAL),
+    (extrema.global_cosine_quotient, DERIVATIVES, 4, "DVDM", GLOBAL),
+    (extrema.global_rational_interval, DERIVATIVES, 3, "DVDN", GLOBAL),
+    (extrema.global_root_product, DERIVATIVES, 3, "DVDO", GLOBAL),
+    (extrema.fenced_plots, DERIVATIVES, 4, "DVDP", DIMENSIONS),
+    (extrema.pipeline, DERIVATIVES, 4, "DVDQ", CONSTANT),
+    (extrema.container, DERIVATIVES, 4, "DVDR", BOX),
+    (extrema.incircle_triangle, DERIVATIVES, 5, "DVDS", ANGLE_RADIUS),
+    (extrema.parabola_rectangle, DERIVATIVES, 3, "DVDT", DIMENSIONS),
+    (extrema.semicircle_rectangle, DERIVATIVES, 3, "DVDU", DIMENSIONS),
+    (extrema.semicircle_waste, DERIVATIVES, 3, "DVDV", CONSTANT),
+    (extrema.circle_square, DERIVATIVES, 3, "DVDW", DIMENSIONS),
 )
 
 
