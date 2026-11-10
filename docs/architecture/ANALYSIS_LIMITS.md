@@ -1,15 +1,47 @@
 # Analysis I sequences, limits and continuity (#236)
 
 This implementation checkpoint extends Functions and sequences and Limits and
-continuity with 61 independent generator versions. The two topic slugs, mixed
-practice weights, prior versions and permanent codes are preserved. The generator
-registry declares each prefix explicitly. The catalogue fixture retains every
-entry from the base commit, including the prior curriculum expansions.
+continuity with 78 independent generator versions: 61 from the first
+checkpoint (#256) and 17 sequence versions from #257. The two topic slugs,
+prior versions and permanent codes are preserved. The generator registry
+declares each prefix explicitly. The catalogue fixture retains every entry from
+the base commit, including the prior curriculum expansions.
 
-[The source index](analysis_pdf_source_index.json) records 62 matched
+[The source index](analysis_pdf_source_index.json) records 79 matched
 computational references, the additional generated variants and the remaining
 references that need separate coverage. Learner proof and sketch components
-remain routed to #244. This checkpoint leaves #236 in progress.
+remain routed to #244. #236 stays in progress until its function-limit and
+asymptote parts (#258, #259) are delivered.
+
+## Sequence references completed in #257
+
+Every pending sequence reference of AM1/24 to AM1/30 now has its own version
+(prefixes `SLAZ` and `SLBA` to `SLBP`):
+
+| Reference | Version | Generated form |
+|---|---|---|
+| AM1/24/b | `bound-root-exponential` | \(\sqrt[n]{p^n-q}\), \(1\le q<p\): sharp bounds \(p-q\) and \(p\) |
+| AM1/24/e | `bound-geometric-sum` | \(\sum_{k\le n} c/(p^k+bk)\): least term and geometric comparison bound |
+| AM1/25/a | `monotone-exponential-difference` | \(B^n-sA^n\): first index of strict increase |
+| AM1/25/b | `monotone-rational` | \(bn/(n^2+K)\): first index of strict decrease, \(n(n+1)>K\) |
+| AM1/25/f | `monotone-conjugate` | \(c(\sqrt{(n+b)^2+a}-n)\): decreasing from \(n=1\) |
+| AM1/26/b | `definition-root` | \(a+c/\sqrt{n+b}\): epsilon index |
+| AM1/26/c | `definition-exponential` | \(cp^n-b\to\infty\): threshold index |
+| AM1/27/d | `product-leading-orders` | \((an+1)^2(bn+1)^4/(cn^2+1)^3\) |
+| AM1/27/f | `competing-exponentials` | \((B^{n+1}-A^{n+2})/(cB^n-A^n)\), denominator never zero |
+| AM1/27/i | `radical-degree` | \((an\sqrt n+b)/\sqrt{cn^3+1}\) |
+| AM1/28/d | `root-rational-sum` | \(\sqrt[n]{a/n+b/n^2+c/n^3}\) by squeeze |
+| AM1/29/c | `negative-growing-power` | \(((n+a+b)/(n+a))^{a-cn}\to e^{-bc}\) |
+| AM1/29/d | `product-of-powers` | product of a vanishing and an unbounded power, \(e^{1/a+c/(a+b)}\) |
+| AM1/29/f | `reciprocal-power` | \((an/(an+b))^{cn}\to e^{-bc/a}\) |
+| AM1/30/a | `rational-growth` | \((\pm an^2+b)/(cn+1)\to\pm\infty\) |
+| AM1/30/d | `radical-difference-growth` | \(\sqrt{pn^2+b}-mn\): limit \(0\), \(\infty\) or \(-\infty\) by the sign of \(p-m^2\) |
+| AM1/30/f | `inverse-trig-ratio` | \((a\arctan n-b)/\operatorname{arccot}(cn)\to\pm\infty\) |
+
+These are sequence computations with no geometric outcome, so they carry
+derivations and no plot. The tests check each against term tables, exact
+rational arithmetic or high-precision values far out in the sequence, not
+against the construction.
 
 ## Parameters and levels
 

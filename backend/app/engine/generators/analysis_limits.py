@@ -132,6 +132,24 @@ SPECS = (
     (functions.unique_log_exponential_root, FUNCTIONS, 4, "FLBH", CONSTANT),
     (functions.rational_pole_and_domain, FUNCTIONS, 4, "FLBI", DOMAIN_ASYMPTOTES),
     (functions.exponential_pole, FUNCTIONS, 4, "FLBJ", ASYMPTOTES),
+    # #257
+    (sequences.bound_root_exponential, SEQUENCES, 3, "SLAZ", BOUNDS),
+    (sequences.bound_geometric_sum, SEQUENCES, 4, "SLBA", BOUNDS),
+    (sequences.monotone_exponential_difference, SEQUENCES, 4, "SLBB", TAIL),
+    (sequences.monotone_rational, SEQUENCES, 3, "SLBC", TAIL),
+    (sequences.monotone_conjugate, SEQUENCES, 3, "SLBD", TAIL),
+    (sequences.definition_root, SEQUENCES, 2, "SLBE", LIMIT),
+    (sequences.definition_exponential, SEQUENCES, 2, "SLBF", LIMIT),
+    (sequences.product_leading_orders, SEQUENCES, 4, "SLBG", LIMIT),
+    (sequences.competing_exponentials, SEQUENCES, 4, "SLBH", LIMIT),
+    (sequences.radical_degree, SEQUENCES, 3, "SLBI", LIMIT),
+    (sequences.root_rational_sum, SEQUENCES, 4, "SLBJ", LIMIT),
+    (sequences.negative_growing_power, SEQUENCES, 4, "SLBK", LIMIT),
+    (sequences.product_of_powers, SEQUENCES, 5, "SLBL", LIMIT),
+    (sequences.reciprocal_power, SEQUENCES, 3, "SLBM", LIMIT),
+    (sequences.rational_growth, SEQUENCES, 2, "SLBN", LIMIT),
+    (sequences.radical_difference_growth, SEQUENCES, 3, "SLBO", LIMIT),
+    (sequences.inverse_trig_ratio, SEQUENCES, 3, "SLBP", LIMIT),
 )
 
 

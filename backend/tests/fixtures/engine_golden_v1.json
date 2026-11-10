@@ -28789,8 +28789,7 @@
         "difficulty": 4
       }
     }
-  ]
-,
+  ],
   "local-modulus-practice-v1": [
     {
       "code": "LMEX-1-0000000000000000-62",
@@ -30724,6 +30723,1213 @@
       "metadata": {
         "difficulty": 1,
         "template": "local-system"
+      }
+    }
+  ],
+  "analysis1-limits-bound-root-exponential-v1": [
+    {
+      "code": "SLAZ-1-0000000000000003-92",
+      "statement": "\\(\\text{Classify boundedness and give the greatest lower bound and least upper bound:}\\quad a_n=\\left(3^{n} - 1\\right)^{\\frac{1}{n}},\\quad n\\ge1.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Compare the radicand with }2^n\\text{ and }3^n."
+        ],
+        [
+          "calculation",
+          "3^n-2^n=1\\sum_{k=0}^{n-1}3^{n-1-k}\\cdot2^k\\ge1,\\quad\\text{so}\\quad 2^n\\le 3^n-1<3^n\\quad\\text{and}\\quad 2\\le a_n<3.\\quad a_1=2,\\quad a_n=3\\left(1-1/3^n\\right)^{1/n}\\to3."
+        ],
+        [
+          "result",
+          "\\left(\\text{both},\\;2,\\;3\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{both},\\;2,\\;3\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "SLAZ-1-0000000000000200-71",
+      "statement": "\\(\\text{Classify boundedness and give the greatest lower bound and least upper bound:}\\quad a_n=\\left(6^{n} - 5\\right)^{\\frac{1}{n}},\\quad n\\ge1.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Compare the radicand with }1^n\\text{ and }6^n."
+        ],
+        [
+          "calculation",
+          "6^n-1^n=5\\sum_{k=0}^{n-1}6^{n-1-k}\\cdot1^k\\ge5,\\quad\\text{so}\\quad 1^n\\le 6^n-5<6^n\\quad\\text{and}\\quad 1\\le a_n<6.\\quad a_1=1,\\quad a_n=6\\left(1-5/6^n\\right)^{1/n}\\to6."
+        ],
+        [
+          "result",
+          "\\left(\\text{both},\\;1,\\;6\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{both},\\;1,\\;6\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "SLAZ-1-0000000000000999-85",
+      "statement": "\\(\\text{Classify boundedness and give the greatest lower bound and least upper bound:}\\quad a_n=\\left(3^{n} - 1\\right)^{\\frac{1}{n}},\\quad n\\ge1.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Compare the radicand with }2^n\\text{ and }3^n."
+        ],
+        [
+          "calculation",
+          "3^n-2^n=1\\sum_{k=0}^{n-1}3^{n-1-k}\\cdot2^k\\ge1,\\quad\\text{so}\\quad 2^n\\le 3^n-1<3^n\\quad\\text{and}\\quad 2\\le a_n<3.\\quad a_1=2,\\quad a_n=3\\left(1-1/3^n\\right)^{1/n}\\to3."
+        ],
+        [
+          "result",
+          "\\left(\\text{both},\\;2,\\;3\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{both},\\;2,\\;3\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-bound-geometric-sum-v1": [
+    {
+      "code": "SLBA-1-0000000000000003-56",
+      "statement": "\\(\\text{Classify boundedness. Give the greatest lower bound and the upper bound from}\\text{ comparison with the geometric series }\\sum_{k\\ge1}5 \\cdot 3^{- k}:\\quad a_n=\\sum_{k=1}^{n} \\frac{5}{3^{k} + k},\\quad n\\ge1.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The summands are positive, so the partial sums increase.}"
+        ],
+        [
+          "calculation",
+          "a_n\\ge a_1=\\frac{5}{4},\\qquad \\frac{5}{3^k+1k}<\\frac{5}{3^k}\\ \\Rightarrow\\ a_n<\\sum_{k=1}^\\infty\\frac{5}{3^k}=\\frac{5}{2}."
+        ],
+        [
+          "result",
+          "\\left(\\text{both},\\;\\frac{5}{4},\\;\\frac{5}{2}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{both},\\;\\frac{5}{4},\\;\\frac{5}{2}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLBA-1-0000000000000200-35",
+      "statement": "\\(\\text{Classify boundedness. Give the greatest lower bound and the upper bound from}\\text{ comparison with the geometric series }\\sum_{k\\ge1}6^{- k}:\\quad a_n=\\sum_{k=1}^{n} \\frac{1}{6^{k} + 5 k},\\quad n\\ge1.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The summands are positive, so the partial sums increase.}"
+        ],
+        [
+          "calculation",
+          "a_n\\ge a_1=\\frac{1}{11},\\qquad \\frac{1}{6^k+5k}<\\frac{1}{6^k}\\ \\Rightarrow\\ a_n<\\sum_{k=1}^\\infty\\frac{1}{6^k}=\\frac{1}{5}."
+        ],
+        [
+          "result",
+          "\\left(\\text{both},\\;\\frac{1}{11},\\;\\frac{1}{5}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{both},\\;\\frac{1}{11},\\;\\frac{1}{5}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLBA-1-0000000000000999-49",
+      "statement": "\\(\\text{Classify boundedness. Give the greatest lower bound and the upper bound from}\\text{ comparison with the geometric series }\\sum_{k\\ge1}5 \\cdot 3^{- k}:\\quad a_n=\\sum_{k=1}^{n} \\frac{5}{3^{k} + 3 k},\\quad n\\ge1.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The summands are positive, so the partial sums increase.}"
+        ],
+        [
+          "calculation",
+          "a_n\\ge a_1=\\frac{5}{6},\\qquad \\frac{5}{3^k+3k}<\\frac{5}{3^k}\\ \\Rightarrow\\ a_n<\\sum_{k=1}^\\infty\\frac{5}{3^k}=\\frac{5}{2}."
+        ],
+        [
+          "result",
+          "\\left(\\text{both},\\;\\frac{5}{6},\\;\\frac{5}{2}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{both},\\;\\frac{5}{6},\\;\\frac{5}{2}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-monotone-exponential-difference-v1": [
+    {
+      "code": "SLBB-1-0000000000000003-38",
+      "statement": "\\(\\text{Give the eventual strict direction and the least }N\\ge1\\text{ for which it holds at every step }n\\ge N:\\quad a_n=4^n-5\\cdot3^n\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Compare consecutive terms. The ratio of the bases exceeds }1."
+        ],
+        [
+          "calculation",
+          "a_{n+1}-a_n=3\\cdot4^n-10\\cdot3^n>0\\iff\\left(\\frac{4}{3}\\right)^n>\\frac{10}{3}.\\quad\\text{The left side increases with }n,\\quad N=5."
+        ],
+        [
+          "result",
+          "\\left(\\text{increasing},\\;5\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{increasing},\\;5\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLBB-1-0000000000000200-17",
+      "statement": "\\(\\text{Give the eventual strict direction and the least }N\\ge1\\text{ for which it holds at every step }n\\ge N:\\quad a_n=9^n-5\\cdot6^n\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Compare consecutive terms. The ratio of the bases exceeds }1."
+        ],
+        [
+          "calculation",
+          "a_{n+1}-a_n=8\\cdot9^n-25\\cdot6^n>0\\iff\\left(\\frac{9}{6}\\right)^n>\\frac{25}{8}.\\quad\\text{The left side increases with }n,\\quad N=3."
+        ],
+        [
+          "result",
+          "\\left(\\text{increasing},\\;3\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{increasing},\\;3\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLBB-1-0000000000000999-31",
+      "statement": "\\(\\text{Give the eventual strict direction and the least }N\\ge1\\text{ for which it holds at every step }n\\ge N:\\quad a_n=5^n-15\\cdot3^n\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Compare consecutive terms. The ratio of the bases exceeds }1."
+        ],
+        [
+          "calculation",
+          "a_{n+1}-a_n=4\\cdot5^n-30\\cdot3^n>0\\iff\\left(\\frac{5}{3}\\right)^n>\\frac{15}{2}.\\quad\\text{The left side increases with }n,\\quad N=4."
+        ],
+        [
+          "result",
+          "\\left(\\text{increasing},\\;4\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{increasing},\\;4\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-monotone-rational-v1": [
+    {
+      "code": "SLBC-1-0000000000000003-42",
+      "statement": "\\(\\text{Give the eventual strict direction and the least }N\\ge1\\text{ for which it holds at every step }n\\ge N:\\quad a_n=\\frac{n}{n^{2} + 70}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Bring the difference of consecutive terms to a common denominator.}"
+        ],
+        [
+          "calculation",
+          "a_{n+1}-a_n=\\frac{1\\left(70-n(n+1)\\right)}{(n^2+70)((n+1)^2+70)}<0\\iff n(n+1)>70,\\qquad N=8."
+        ],
+        [
+          "result",
+          "\\left(\\text{decreasing},\\;8\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{decreasing},\\;8\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "SLBC-1-0000000000000200-21",
+      "statement": "\\(\\text{Give the eventual strict direction and the least }N\\ge1\\text{ for which it holds at every step }n\\ge N:\\quad a_n=\\frac{5 n}{n^{2} + 30}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Bring the difference of consecutive terms to a common denominator.}"
+        ],
+        [
+          "calculation",
+          "a_{n+1}-a_n=\\frac{5\\left(30-n(n+1)\\right)}{(n^2+30)((n+1)^2+30)}<0\\iff n(n+1)>30,\\qquad N=6."
+        ],
+        [
+          "result",
+          "\\left(\\text{decreasing},\\;6\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{decreasing},\\;6\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "SLBC-1-0000000000000999-35",
+      "statement": "\\(\\text{Give the eventual strict direction and the least }N\\ge1\\text{ for which it holds at every step }n\\ge N:\\quad a_n=\\frac{3 n}{n^{2} + 70}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Bring the difference of consecutive terms to a common denominator.}"
+        ],
+        [
+          "calculation",
+          "a_{n+1}-a_n=\\frac{3\\left(70-n(n+1)\\right)}{(n^2+70)((n+1)^2+70)}<0\\iff n(n+1)>70,\\qquad N=8."
+        ],
+        [
+          "result",
+          "\\left(\\text{decreasing},\\;8\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{decreasing},\\;8\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-monotone-conjugate-v1": [
+    {
+      "code": "SLBD-1-0000000000000003-79",
+      "statement": "\\(\\text{Give the eventual strict direction and the least }N\\ge1\\text{ for which it holds at every step }n\\ge N:\\quad a_n=5\\left(\\sqrt{n^{2} + 2 n + 3}-n\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Write the radicand as }(n+1)^2+2\\text{ and rationalize.}"
+        ],
+        [
+          "calculation",
+          "a_n=5+\\frac{10}{\\sqrt{(n+1)^2+2}+n+1}.\\quad\\text{The positive denominator strictly increases, so }N=1."
+        ],
+        [
+          "result",
+          "\\left(\\text{decreasing},\\;1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{decreasing},\\;1\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "SLBD-1-0000000000000200-58",
+      "statement": "\\(\\text{Give the eventual strict direction and the least }N\\ge1\\text{ for which it holds at every step }n\\ge N:\\quad a_n=\\left(\\sqrt{n^{2} + 10 n + 30}-n\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Write the radicand as }(n+5)^2+5\\text{ and rationalize.}"
+        ],
+        [
+          "calculation",
+          "a_n=5+\\frac{5}{\\sqrt{(n+5)^2+5}+n+5}.\\quad\\text{The positive denominator strictly increases, so }N=1."
+        ],
+        [
+          "result",
+          "\\left(\\text{decreasing},\\;1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{decreasing},\\;1\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "SLBD-1-0000000000000999-72",
+      "statement": "\\(\\text{Give the eventual strict direction and the least }N\\ge1\\text{ for which it holds at every step }n\\ge N:\\quad a_n=5\\left(\\sqrt{n^{2} + 6 n + 11}-n\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Write the radicand as }(n+3)^2+2\\text{ and rationalize.}"
+        ],
+        [
+          "calculation",
+          "a_n=15+\\frac{10}{\\sqrt{(n+3)^2+2}+n+3}.\\quad\\text{The positive denominator strictly increases, so }N=1."
+        ],
+        [
+          "result",
+          "\\left(\\text{decreasing},\\;1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\text{decreasing},\\;1\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-definition-root-v1": [
+    {
+      "code": "SLBE-1-0000000000000003-41",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(2 + \\frac{5}{\\sqrt{n + 1}}\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use the definition with an arbitrary }\\varepsilon>0."
+        ],
+        [
+          "calculation",
+          "|a_n-2|=\\frac{5}{\\sqrt{n+1}}<\\varepsilon\\quad\\text{if }n>\\frac{25}{\\varepsilon^2}-1."
+        ],
+        [
+          "result",
+          "2"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "SLBE-1-0000000000000200-20",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(5 + \\frac{1}{\\sqrt{n + 5}}\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use the definition with an arbitrary }\\varepsilon>0."
+        ],
+        [
+          "calculation",
+          "|a_n-5|=\\frac{1}{\\sqrt{n+5}}<\\varepsilon\\quad\\text{if }n>\\frac{1}{\\varepsilon^2}-5."
+        ],
+        [
+          "result",
+          "5"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "5",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "SLBE-1-0000000000000999-34",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(2 + \\frac{5}{\\sqrt{n + 3}}\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Use the definition with an arbitrary }\\varepsilon>0."
+        ],
+        [
+          "calculation",
+          "|a_n-2|=\\frac{5}{\\sqrt{n+3}}<\\varepsilon\\quad\\text{if }n>\\frac{25}{\\varepsilon^2}-3."
+        ],
+        [
+          "result",
+          "2"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-limits-definition-exponential-v1": [
+    {
+      "code": "SLBF-1-0000000000000003-31",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(5 \\cdot 3^{n} - 1\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{For every real threshold }M\\text{ choose an index after which }a_n>M."
+        ],
+        [
+          "calculation",
+          "a_n>M\\iff 3^n>\\frac{M+1}{5}\\quad\\text{if }n>\\log_{3}\\max\\left(1,\\frac{M+1}{5}\\right)."
+        ],
+        [
+          "result",
+          "\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\infty",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "SLBF-1-0000000000000200-10",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(6^{n} - 5\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{For every real threshold }M\\text{ choose an index after which }a_n>M."
+        ],
+        [
+          "calculation",
+          "a_n>M\\iff 6^n>M+5\\quad\\text{if }n>\\log_{6}\\max\\left(1,M+5\\right)."
+        ],
+        [
+          "result",
+          "\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\infty",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "SLBF-1-0000000000000999-24",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(5 \\cdot 3^{n} - 3\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{For every real threshold }M\\text{ choose an index after which }a_n>M."
+        ],
+        [
+          "calculation",
+          "a_n>M\\iff 3^n>\\frac{M+3}{5}\\quad\\text{if }n>\\log_{3}\\max\\left(1,\\frac{M+3}{5}\\right)."
+        ],
+        [
+          "result",
+          "\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\infty",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-limits-product-leading-orders-v1": [
+    {
+      "code": "SLBG-1-0000000000000003-35",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{\\left(n + 1\\right)^{4} \\left(2 n + 1\\right)^{2}}{\\left(5 n^{2} + 1\\right)^{3}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Both sides have degree }6.\\text{ Divide every factor by its power of }n."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{(2+1/n)^2(1+1/n)^4}{(5+1/n^2)^3}\\to\\frac{2^2\\cdot1^4}{5^3}=\\frac{4}{125}."
+        ],
+        [
+          "result",
+          "\\frac{4}{125}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{4}{125}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLBG-1-0000000000000200-14",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{\\left(5 n + 1\\right)^{6}}{\\left(n^{2} + 1\\right)^{3}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Both sides have degree }6.\\text{ Divide every factor by its power of }n."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{(5+1/n)^2(5+1/n)^4}{(1+1/n^2)^3}\\to\\frac{5^2\\cdot5^4}{1^3}=15625."
+        ],
+        [
+          "result",
+          "15625"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "15625",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLBG-1-0000000000000999-28",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{\\left(2 n + 1\\right)^{2} \\left(3 n + 1\\right)^{4}}{\\left(5 n^{2} + 1\\right)^{3}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Both sides have degree }6.\\text{ Divide every factor by its power of }n."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{(2+1/n)^2(3+1/n)^4}{(5+1/n^2)^3}\\to\\frac{2^2\\cdot3^4}{5^3}=\\frac{324}{125}."
+        ],
+        [
+          "result",
+          "\\frac{324}{125}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{324}{125}",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-competing-exponentials-v1": [
+    {
+      "code": "SLBH-1-0000000000000003-36",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{- 3^{n + 2} + 4^{n + 1}}{- 3^{n} + 5 \\cdot 4^{n}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Divide the numerator and denominator by the dominant power }4^n."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{4-9\\left(\\frac{3}{4}\\right)^n}{5-\\left(\\frac{3}{4}\\right)^n}\\to\\frac{4}{5},\\qquad\\left(\\frac{3}{4}\\right)^n\\to0."
+        ],
+        [
+          "result",
+          "\\frac{4}{5}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{4}{5}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLBH-1-0000000000000200-15",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{11^{n + 1} - 6^{n + 2}}{11^{n} - 6^{n}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Divide the numerator and denominator by the dominant power }11^n."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{11-36\\left(\\frac{6}{11}\\right)^n}{1-\\left(\\frac{6}{11}\\right)^n}\\to11,\\qquad\\left(\\frac{6}{11}\\right)^n\\to0."
+        ],
+        [
+          "result",
+          "11"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "11",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLBH-1-0000000000000999-29",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{- 3^{n + 2} + 6^{n + 1}}{- 3^{n} + 5 \\cdot 6^{n}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Divide the numerator and denominator by the dominant power }6^n."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{6-9\\left(\\frac{3}{6}\\right)^n}{5-\\left(\\frac{3}{6}\\right)^n}\\to\\frac{6}{5},\\qquad\\left(\\frac{3}{6}\\right)^n\\to0."
+        ],
+        [
+          "result",
+          "\\frac{6}{5}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{6}{5}",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-radical-degree-v1": [
+    {
+      "code": "SLBI-1-0000000000000003-95",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{2n\\sqrt{n}+1}{\\sqrt{5 n^{3} + 1}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Divide the numerator and denominator by }n^{3/2}."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{2+1/n^{3/2}}{\\sqrt{5+1/n^3}}\\to\\frac{2 \\sqrt{5}}{5}."
+        ],
+        [
+          "result",
+          "\\frac{2 \\sqrt{5}}{5}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{2 \\sqrt{5}}{5}",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "SLBI-1-0000000000000200-74",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{5n\\sqrt{n}+5}{\\sqrt{n^{3} + 1}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Divide the numerator and denominator by }n^{3/2}."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{5+5/n^{3/2}}{\\sqrt{1+1/n^3}}\\to5."
+        ],
+        [
+          "result",
+          "5"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "5",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "SLBI-1-0000000000000999-88",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{2n\\sqrt{n}+3}{\\sqrt{5 n^{3} + 1}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Divide the numerator and denominator by }n^{3/2}."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{2+3/n^{3/2}}{\\sqrt{5+1/n^3}}\\to\\frac{2 \\sqrt{5}}{5}."
+        ],
+        [
+          "result",
+          "\\frac{2 \\sqrt{5}}{5}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{2 \\sqrt{5}}{5}",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-root-rational-sum-v1": [
+    {
+      "code": "SLBJ-1-0000000000000003-72",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(\\frac{2}{n} + \\frac{1}{n^{2}} + \\frac{5}{n^{3}}\\right)^{\\frac{1}{n}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Bound the positive radicand by multiples of }1/n."
+        ],
+        [
+          "calculation",
+          "\\frac{\\sqrt[n]{2}}{\\sqrt[n]{n}}\\le a_n\\le\\frac{\\sqrt[n]{8}}{\\sqrt[n]{n}},\\qquad\\sqrt[n]{d}\\to1\\ (d>0),\\quad\\sqrt[n]{n}\\to1."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLBJ-1-0000000000000200-51",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(\\frac{5}{n} + \\frac{5}{n^{2}} + \\frac{1}{n^{3}}\\right)^{\\frac{1}{n}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Bound the positive radicand by multiples of }1/n."
+        ],
+        [
+          "calculation",
+          "\\frac{\\sqrt[n]{5}}{\\sqrt[n]{n}}\\le a_n\\le\\frac{\\sqrt[n]{11}}{\\sqrt[n]{n}},\\qquad\\sqrt[n]{d}\\to1\\ (d>0),\\quad\\sqrt[n]{n}\\to1."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLBJ-1-0000000000000999-65",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(\\frac{2}{n} + \\frac{3}{n^{2}} + \\frac{5}{n^{3}}\\right)^{\\frac{1}{n}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Bound the positive radicand by multiples of }1/n."
+        ],
+        [
+          "calculation",
+          "\\frac{\\sqrt[n]{2}}{\\sqrt[n]{n}}\\le a_n\\le\\frac{\\sqrt[n]{10}}{\\sqrt[n]{n}},\\qquad\\sqrt[n]{d}\\to1\\ (d>0),\\quad\\sqrt[n]{n}\\to1."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-negative-growing-power-v1": [
+    {
+      "code": "SLBK-1-0000000000000003-50",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(\\frac{n + 3}{n + 2}\\right)^{2 - 5 n}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Take logarithms. The base is }1+u_n\\text{ with }u_n\\to0."
+        ],
+        [
+          "calculation",
+          "\\log a_n=(2-5n)\\log(1+u_n),\\quad u_n=\\frac{1}{n+2},\\quad (2-5n)u_n\\to-5,\\quad\\frac{\\log(1+u_n)}{u_n}\\to1."
+        ],
+        [
+          "result",
+          "e^{-5}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "e^{-5}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLBK-1-0000000000000200-29",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(\\frac{n + 10}{n + 5}\\right)^{5 - n}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Take logarithms. The base is }1+u_n\\text{ with }u_n\\to0."
+        ],
+        [
+          "calculation",
+          "\\log a_n=(5-1n)\\log(1+u_n),\\quad u_n=\\frac{5}{n+5},\\quad (5-1n)u_n\\to-5,\\quad\\frac{\\log(1+u_n)}{u_n}\\to1."
+        ],
+        [
+          "result",
+          "e^{-5}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "e^{-5}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "SLBK-1-0000000000000999-43",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(\\frac{n + 5}{n + 2}\\right)^{2 - 5 n}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Take logarithms. The base is }1+u_n\\text{ with }u_n\\to0."
+        ],
+        [
+          "calculation",
+          "\\log a_n=(2-5n)\\log(1+u_n),\\quad u_n=\\frac{3}{n+2},\\quad (2-5n)u_n\\to-15,\\quad\\frac{\\log(1+u_n)}{u_n}\\to1."
+        ],
+        [
+          "result",
+          "e^{-15}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "e^{-15}",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-limits-product-of-powers-v1": [
+    {
+      "code": "SLBL-1-0000000000000003-73",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(\\frac{2 n + 1}{3 n}\\right)^{n} \\left(\\frac{3 n + 5}{2 n}\\right)^{n}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Separately the factors tend to }0\\text{ and }\\infty.\\text{ Multiply the bases first.}"
+        ],
+        [
+          "calculation",
+          "a_n=\\left(1+\\frac{1}{2n}\\right)^n\\left(1+\\frac{5}{3n}\\right)^n\\to e^{1/2}e^{5/3}."
+        ],
+        [
+          "result",
+          "e^{\\frac{13}{6}}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "e^{\\frac{13}{6}}",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "SLBL-1-0000000000000200-52",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(\\frac{5 n + 1}{10 n}\\right)^{n} \\left(\\frac{10 n + 1}{5 n}\\right)^{n}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Separately the factors tend to }0\\text{ and }\\infty.\\text{ Multiply the bases first.}"
+        ],
+        [
+          "calculation",
+          "a_n=\\left(1+\\frac{1}{5n}\\right)^n\\left(1+\\frac{1}{10n}\\right)^n\\to e^{1/5}e^{1/10}."
+        ],
+        [
+          "result",
+          "e^{\\frac{3}{10}}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "e^{\\frac{3}{10}}",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "SLBL-1-0000000000000999-66",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(\\frac{2 n + 1}{5 n}\\right)^{n} \\left(\\frac{5 n + 5}{2 n}\\right)^{n}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Separately the factors tend to }0\\text{ and }\\infty.\\text{ Multiply the bases first.}"
+        ],
+        [
+          "calculation",
+          "a_n=\\left(1+\\frac{1}{2n}\\right)^n\\left(1+\\frac{5}{5n}\\right)^n\\to e^{1/2}e^{5/5}."
+        ],
+        [
+          "result",
+          "e^{\\frac{3}{2}}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "e^{\\frac{3}{2}}",
+      "metadata": {
+        "difficulty": 5
+      }
+    }
+  ],
+  "analysis1-limits-reciprocal-power-v1": [
+    {
+      "code": "SLBM-1-0000000000000003-90",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(\\frac{2 n}{2 n + 1}\\right)^{5 n}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Invert the base and use }(1+1/m)^m\\to e."
+        ],
+        [
+          "calculation",
+          "a_n=\\left(1+\\frac{1}{2n}\\right)^{-5n}=\\left(1+\\frac{1}{2n}\\right)^{2n/1}^{-5/2},\\qquad\\left(1+\\frac{1}{2n}\\right)^{2n/1}\\to e."
+        ],
+        [
+          "result",
+          "e^{- \\frac{5}{2}}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "e^{- \\frac{5}{2}}",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "SLBM-1-0000000000000200-69",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(\\frac{5 n}{5 n + 5}\\right)^{n}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Invert the base and use }(1+1/m)^m\\to e."
+        ],
+        [
+          "calculation",
+          "a_n=\\left(1+\\frac{5}{5n}\\right)^{-1n}=\\left(1+\\frac{5}{5n}\\right)^{5n/5}^{-5/5},\\qquad\\left(1+\\frac{5}{5n}\\right)^{5n/5}\\to e."
+        ],
+        [
+          "result",
+          "e^{-1}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "e^{-1}",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "SLBM-1-0000000000000999-83",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(\\frac{2 n}{2 n + 3}\\right)^{5 n}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Invert the base and use }(1+1/m)^m\\to e."
+        ],
+        [
+          "calculation",
+          "a_n=\\left(1+\\frac{3}{2n}\\right)^{-5n}=\\left(1+\\frac{3}{2n}\\right)^{2n/3}^{-15/2},\\qquad\\left(1+\\frac{3}{2n}\\right)^{2n/3}\\to e."
+        ],
+        [
+          "result",
+          "e^{- \\frac{15}{2}}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "e^{- \\frac{15}{2}}",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-rational-growth-v1": [
+    {
+      "code": "SLBN-1-0000000000000003-13",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{2 n^{2} + 1}{5 n + 1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The numerator has the higher degree. Divide by }n."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{2 n+1/n}{5+1/n},\\quad\\text{the numerator tends to }+\\infty\\text{ and the denominator to }5."
+        ],
+        [
+          "result",
+          "\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\infty",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "SLBN-1-0000000000000200-89",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{5 - 5 n^{2}}{n + 1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The numerator has the higher degree. Divide by }n."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{- 5 n+5/n}{1+1/n},\\quad\\text{the numerator tends to }-\\infty\\text{ and the denominator to }1."
+        ],
+        [
+          "result",
+          "-\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "-\\infty",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "SLBN-1-0000000000000999-06",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{2 n^{2} + 3}{5 n + 1}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The numerator has the higher degree. Divide by }n."
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{2 n+3/n}{5+1/n},\\quad\\text{the numerator tends to }+\\infty\\text{ and the denominator to }5."
+        ],
+        [
+          "result",
+          "\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\infty",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-limits-radical-difference-growth-v1": [
+    {
+      "code": "SLBO-1-0000000000000003-03",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(\\sqrt{35 n^{2} + 1}-6 n\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Multiply and divide by the sum of the radical and }6 n\\text{, then compare degrees.}"
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{1 - n^{2}}{\\sqrt{35n^2+1}+6n}=\\frac{- n + \\frac{1}{n}}{\\sqrt{35+1/n^2}+6}\\to-\\infty."
+        ],
+        [
+          "result",
+          "-\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "-\\infty",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "SLBO-1-0000000000000200-79",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(\\sqrt{6 n^{2} + 5}-2 n\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Multiply and divide by the sum of the radical and }2 n\\text{, then compare degrees.}"
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{2 n^{2} + 5}{\\sqrt{6n^2+5}+2n}=\\frac{2 n + \\frac{5}{n}}{\\sqrt{6+5/n^2}+2}\\to\\infty."
+        ],
+        [
+          "result",
+          "\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\infty",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "SLBO-1-0000000000000999-93",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\left(\\sqrt{35 n^{2} + 3}-6 n\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Multiply and divide by the sum of the radical and }6 n\\text{, then compare degrees.}"
+        ],
+        [
+          "calculation",
+          "a_n=\\frac{3 - n^{2}}{\\sqrt{35n^2+3}+6n}=\\frac{- n + \\frac{3}{n}}{\\sqrt{35+3/n^2}+6}\\to-\\infty."
+        ],
+        [
+          "result",
+          "-\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "-\\infty",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-limits-inverse-trig-ratio-v1": [
+    {
+      "code": "SLBP-1-0000000000000003-52",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{2\\arctan n-1}{\\operatorname{arccot}(5 n)}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Find the limits of the numerator and of the positive denominator separately.}"
+        ],
+        [
+          "calculation",
+          "2\\arctan n-1\\to-1 + \\pi>0,\\qquad\\operatorname{arccot}(5 n)\\to0^+."
+        ],
+        [
+          "result",
+          "\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\infty",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "SLBP-1-0000000000000200-31",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{5\\arctan n-5}{\\operatorname{arccot}(n)}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Find the limits of the numerator and of the positive denominator separately.}"
+        ],
+        [
+          "calculation",
+          "5\\arctan n-5\\to-5 + \\frac{5 \\pi}{2}>0,\\qquad\\operatorname{arccot}(n)\\to0^+."
+        ],
+        [
+          "result",
+          "\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\infty",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "SLBP-1-0000000000000999-45",
+      "statement": "\\(\\text{Evaluate for positive integer }n:\\quad \\lim_{n\\to\\infty}\\frac{2\\arctan n-3}{\\operatorname{arccot}(5 n)}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Find the limits of the numerator and of the positive denominator separately.}"
+        ],
+        [
+          "calculation",
+          "2\\arctan n-3\\to-3 + \\pi>0,\\qquad\\operatorname{arccot}(5 n)\\to0^+."
+        ],
+        [
+          "result",
+          "\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\infty",
+      "metadata": {
+        "difficulty": 3
       }
     }
   ]

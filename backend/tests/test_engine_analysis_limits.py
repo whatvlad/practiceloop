@@ -312,7 +312,93 @@ def reference(name, a, b, c):
         f = b * (a + 1) ** x / ((a + 1) ** x - (a + 1) ** c)
         values = [sp.limit(f, x, at) for at in (-sp.oo, sp.oo)]
         return sp.FiniteSet(c), *values
+    reference_257 = reference_sequences(name, a, b, c)
+    if reference_257 is not None:
+        return reference_257
     raise AssertionError(name)
+
+
+def last_failure(values, fails):
+    """Index after the last consecutive pair that breaks the claimed direction."""
+    return 1 + max(
+        (k for k, (x, y) in enumerate(zip(values, values[1:], strict=False), 1) if fails(x, y)),
+        default=0,
+    )
+
+
+def reference_sequences(name, a, b, c):  # noqa: PLR0911, PLR0912
+    """#257 oracles: term tables, exact arithmetic and far-out numerical values."""
+    n = 10**7
+    if name == "bound_root_exponential":
+        with localcontext() as ctx:
+            ctx.prec = 120
+            shift = 1 + (b - 1) % a
+            values = [(Decimal(a + 1) ** k - shift) ** (Decimal(1) / k) for k in range(1, 80)]
+        assert all(value < a + 1 for value in values)
+        assert min(values) == values[0]
+        assert a + 1 - values[-1] < Decimal("1e-20")
+        return "both", int(values[0]), a + 1
+    if name == "bound_geometric_sum":
+        terms = [sp.Rational(c, (a + 1) ** k + b * k) for k in range(1, 40)]
+        sums = [sum(terms[:k]) for k in range(1, 40)]
+        assert sums == sorted(sums)
+        tail = sp.Rational(c, a) / (a + 1) ** 39  # geometric bound on the omitted terms
+        assert sums[-1] + tail < sp.Rational(c, a)
+        return "both", sums[0], sp.Rational(c, a)
+    if name == "monotone_exponential_difference":
+        large = a + 1 + (b + 1) // 2
+        values = [large**k - b * c * (a + 1) ** k for k in range(1, 60)]
+        return "increasing", last_failure(values, lambda x, y: y <= x)
+    if name == "monotone_rational":
+        values = [sp.Rational(b * k, k * k + a * c * (a + c)) for k in range(1, 60)]
+        return "decreasing", last_failure(values, lambda x, y: y >= x)
+    if name == "monotone_conjugate":
+        with localcontext() as ctx:
+            ctx.prec = 50
+            values = [
+                c * ((Decimal(k * k + 2 * b * k + b * b + a)).sqrt() - k) for k in range(1, 300)
+            ]
+        return "decreasing", last_failure(values, lambda x, y: y >= x)
+    if name == "definition_root":
+        return a + c / math.sqrt(n * n + b)
+    if name == "definition_exponential":
+        assert c * (a + 1) ** 60 - b > 10**18
+        return sp.oo
+    if name == "product_leading_orders":
+        return (a * n + 1) ** 2 * (b * n + 1) ** 4 / (c * n * n + 1) ** 3
+    if name == "competing_exponentials":
+        small, large = a + 1, a + b + 1
+        k = 300
+        exact = sp.Rational(large ** (k + 1) - small ** (k + 2), c * large**k - small**k)
+        return float(exact)
+    if name == "radical_degree":
+        return (a * n * math.sqrt(n) + b) / math.sqrt(c * n**3 + 1)
+    if name == "root_rational_sum":
+        return math.exp(math.log(a / n + b / n**2 + c / n**3) / n)
+    if name == "negative_growing_power":
+        return math.exp((a - c * n) * math.log1p(b / (n + a)))
+    if name == "product_of_powers":
+        return math.exp(n * (math.log1p(1 / (a * n)) + math.log1p(c / ((a + b) * n))))
+    if name == "reciprocal_power":
+        return math.exp(-c * n * math.log1p(b / (a * n)))
+    if name == "rational_growth":
+        sign = 1 if (a + b + c) % 2 == 0 else -1
+        value = (sign * a * n * n + b) / (c * n + 1)
+        assert abs(value) > 10**5
+        return sp.oo if value > 0 else -sp.oo
+    if name == "radical_difference_growth":
+        with localcontext() as ctx:
+            ctx.prec = 60
+            value = (Decimal((c + 1) ** 2 + a - 3) * n * n + b).sqrt() - (c + 1) * n
+        if abs(value) < Decimal("1e-5"):
+            return 0
+        assert abs(value) > 10**5
+        return sp.oo if value > 0 else -sp.oo
+    if name == "inverse_trig_ratio":
+        value = (a * math.atan(n) - b) / math.atan(1 / (c * n))
+        assert abs(value) > 10**5
+        return sp.oo if value > 0 else -sp.oo
+    return None
 
 
 def assert_answer(answer, expected):
