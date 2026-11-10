@@ -641,7 +641,7 @@ def assert_answer(answer, expected):
 LIMIT_GENERATORS = [
     g
     for g in generators()
-    if not g.evaluate.__module__.endswith(("_derivatives", "_extrema", "_convexity"))
+    if not g.evaluate.__module__.endswith(("_derivatives", "_extrema", "_convexity", "_taylor"))
 ]
 
 

@@ -217,3 +217,40 @@ answer, which belongs to #244.
 numerical second (and first) differences of the stated function on a grid, with
 sign changes of \(f''\) inside the domain, and checks the polynomial conditions
 exactly.
+
+## Taylor formulas, error bounds and certified approximations (#264)
+
+Prefixes `DVEN` to `DVEZ` and `DVFA` to `DVFD` cover AM1/70 to AM1/73 and exam
+second/C/2.
+
+A Taylor or Maclaurin task states the order \(n\) and asks for \(T_{n-1}(x)\)
+and \(f^{(n)}(x)\); the remainder is then \(f^{(n)}(\xi)(x-x_0)^n/n!\). Hyperbolic
+derivatives are entered with `exp`. An error-bound task fixes the method
+(\(\max|f^{(n)}|\cdot|x|^n/n!\) over the stated interval), so the certified bound is a
+single exact number. An approximation task asks for the least order \(n\) whose
+Lagrange bound meets the accuracy, and the exact value of \(T_{n-1}\) at the point.
+
+| Reference | Version | Generated form |
+|---|---|---|
+| AM1/70/a | `taylor-cubic` | \(ax^3+bx\) at \(-c\), \(n=4\) (remainder zero) |
+| AM1/70/b | `taylor-reciprocal-power` | \(x^{-k}\) at \(b\), \(n=2\) |
+| AM1/70/c | `taylor-sine-at-pi` | \(\sin bx\) at \(\pi\), \(n=3\) |
+| AM1/70/d | `taylor-exponential` | \(e^{-ax}\) at \(0\), \(n=3\) to \(5\) |
+| AM1/71/a | `maclaurin-sine` | \(\sin(x/m)\) |
+| AM1/71/b | `maclaurin-cosh` | \(\cosh ax\) |
+| AM1/71/c | `maclaurin-cosine` | \(\cos ax\) |
+| AM1/71/d | `maclaurin-exponential-product` | \(x/e^{ax}\) |
+| AM1/72/a | `error-tangent` | \(\tan x\approx x\), \(|x|\le\pi/(6(b+1))\), \(n=3\) |
+| AM1/72/b | `error-cosine-square` | \(\cos^2x\approx1-x^2\), \(n=4\) |
+| AM1/72/c | `error-square-root` | \(\sqrt{1+x}\) to second order, \(n=3\) |
+| AM1/72/d | `error-logarithm` | \(\ln(1-x)\) to third order, \(n=4\) |
+| exam second/C/2 | `error-inverse-root` | \(1/\sqrt{x+1}\) to second order, \(n=3\) |
+| AM1/73/a | `approximate-reciprocal-e` | \(e^{-1/a}\) |
+| AM1/73/b | `approximate-cube-root` | \(\sqrt[3]{1-a/1000}\) |
+| AM1/73/c | `approximate-logarithm` | \(\ln(1+a/20)\) |
+| AM1/73/d | `approximate-sine` | \(\sin(a/10)\) |
+
+`backend/tests/test_engine_taylor.py` compares the polynomials with
+`mpmath.taylor`, the derivatives with numerical differentiation, the bounds with
+a sampled maximum of \(|f^{(n)}|\), and finds the least order of each
+approximation by brute force, also checking the true error.

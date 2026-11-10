@@ -43150,5 +43150,1212 @@
         "difficulty": 3
       }
     }
+  ],
+  "analysis1-derivatives-taylor-cubic-v1": [
+    {
+      "code": "DVEN-1-0000000000000003-29",
+      "statement": "\\(\\text{Write the Taylor formula of order }n=4\\text{ at }x_0=-5\\text{ with the Lagrange remainder }R_n=\\frac{f^{(n)}(\\xi)}{n!}(x-x_0)^n\\text{, }\\xi\\text{ between }x_0\\text{ and }x.\\text{ Give }T_{n-1}(x)\\text{ and }f^{(n)}(x):\\quad f(x)=2 x^{3} + x.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Evaluate }f^{(k)}(x_0)\\text{ for }k<n\\text{ and differentiate }n\\text{ times.}"
+        ],
+        [
+          "calculation",
+          "T_{3}(x)=2 x^{3} + x,\\qquad f^{(4)}(x)=0,\\qquad R_{4}(x)=\\frac{f^{(4)}(\\xi)}{4!}\\left(x + 5\\right)^{4}."
+        ],
+        [
+          "result",
+          "\\left(2 x^{3} + x,\\;0\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(2 x^{3} + x,\\;0\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVEN-1-0000000000000200-08",
+      "statement": "\\(\\text{Write the Taylor formula of order }n=4\\text{ at }x_0=-1\\text{ with the Lagrange remainder }R_n=\\frac{f^{(n)}(\\xi)}{n!}(x-x_0)^n\\text{, }\\xi\\text{ between }x_0\\text{ and }x.\\text{ Give }T_{n-1}(x)\\text{ and }f^{(n)}(x):\\quad f(x)=5 x^{3} + 5 x.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Evaluate }f^{(k)}(x_0)\\text{ for }k<n\\text{ and differentiate }n\\text{ times.}"
+        ],
+        [
+          "calculation",
+          "T_{3}(x)=5 x^{3} + 5 x,\\qquad f^{(4)}(x)=0,\\qquad R_{4}(x)=\\frac{f^{(4)}(\\xi)}{4!}\\left(x + 1\\right)^{4}."
+        ],
+        [
+          "result",
+          "\\left(5 x^{3} + 5 x,\\;0\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(5 x^{3} + 5 x,\\;0\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVEN-1-0000000000000999-22",
+      "statement": "\\(\\text{Write the Taylor formula of order }n=4\\text{ at }x_0=-5\\text{ with the Lagrange remainder }R_n=\\frac{f^{(n)}(\\xi)}{n!}(x-x_0)^n\\text{, }\\xi\\text{ between }x_0\\text{ and }x.\\text{ Give }T_{n-1}(x)\\text{ and }f^{(n)}(x):\\quad f(x)=2 x^{3} + 3 x.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Evaluate }f^{(k)}(x_0)\\text{ for }k<n\\text{ and differentiate }n\\text{ times.}"
+        ],
+        [
+          "calculation",
+          "T_{3}(x)=2 x^{3} + 3 x,\\qquad f^{(4)}(x)=0,\\qquad R_{4}(x)=\\frac{f^{(4)}(\\xi)}{4!}\\left(x + 5\\right)^{4}."
+        ],
+        [
+          "result",
+          "\\left(2 x^{3} + 3 x,\\;0\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(2 x^{3} + 3 x,\\;0\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-taylor-reciprocal-power-v1": [
+    {
+      "code": "DVEO-1-0000000000000003-89",
+      "statement": "\\(\\text{Write the Taylor formula of order }n=2\\text{ at }x_0=1\\text{ with the Lagrange remainder }R_n=\\frac{f^{(n)}(\\xi)}{n!}(x-x_0)^n\\text{, }\\xi\\text{ between }x_0\\text{ and }x.\\text{ Give }T_{n-1}(x)\\text{ and }f^{(n)}(x):\\quad f(x)=\\frac{1}{x^{3}}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Evaluate }f^{(k)}(x_0)\\text{ for }k<n\\text{ and differentiate }n\\text{ times.}"
+        ],
+        [
+          "calculation",
+          "T_{1}(x)=4 - 3 x,\\qquad f^{(2)}(x)=\\frac{12}{x^{5}},\\qquad R_{2}(x)=\\frac{f^{(2)}(\\xi)}{2!}\\left(x - 1\\right)^{2}."
+        ],
+        [
+          "result",
+          "\\left(4 - 3 x,\\;\\frac{12}{x^{5}}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(4 - 3 x,\\;\\frac{12}{x^{5}}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVEO-1-0000000000000200-68",
+      "statement": "\\(\\text{Write the Taylor formula of order }n=2\\text{ at }x_0=5\\text{ with the Lagrange remainder }R_n=\\frac{f^{(n)}(\\xi)}{n!}(x-x_0)^n\\text{, }\\xi\\text{ between }x_0\\text{ and }x.\\text{ Give }T_{n-1}(x)\\text{ and }f^{(n)}(x):\\quad f(x)=\\frac{1}{x^{3}}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Evaluate }f^{(k)}(x_0)\\text{ for }k<n\\text{ and differentiate }n\\text{ times.}"
+        ],
+        [
+          "calculation",
+          "T_{1}(x)=\\frac{4}{125} - \\frac{3 x}{625},\\qquad f^{(2)}(x)=\\frac{12}{x^{5}},\\qquad R_{2}(x)=\\frac{f^{(2)}(\\xi)}{2!}\\left(x - 5\\right)^{2}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{4}{125} - \\frac{3 x}{625},\\;\\frac{12}{x^{5}}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{4}{125} - \\frac{3 x}{625},\\;\\frac{12}{x^{5}}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVEO-1-0000000000000999-82",
+      "statement": "\\(\\text{Write the Taylor formula of order }n=2\\text{ at }x_0=3\\text{ with the Lagrange remainder }R_n=\\frac{f^{(n)}(\\xi)}{n!}(x-x_0)^n\\text{, }\\xi\\text{ between }x_0\\text{ and }x.\\text{ Give }T_{n-1}(x)\\text{ and }f^{(n)}(x):\\quad f(x)=\\frac{1}{x^{3}}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Evaluate }f^{(k)}(x_0)\\text{ for }k<n\\text{ and differentiate }n\\text{ times.}"
+        ],
+        [
+          "calculation",
+          "T_{1}(x)=\\frac{4}{27} - \\frac{x}{27},\\qquad f^{(2)}(x)=\\frac{12}{x^{5}},\\qquad R_{2}(x)=\\frac{f^{(2)}(\\xi)}{2!}\\left(x - 3\\right)^{2}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{4}{27} - \\frac{x}{27},\\;\\frac{12}{x^{5}}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{4}{27} - \\frac{x}{27},\\;\\frac{12}{x^{5}}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-taylor-sine-at-pi-v1": [
+    {
+      "code": "DVEP-1-0000000000000003-22",
+      "statement": "\\(\\text{Write the Taylor formula of order }n=3\\text{ at }x_0=\\pi\\text{ with the Lagrange remainder }R_n=\\frac{f^{(n)}(\\xi)}{n!}(x-x_0)^n\\text{, }\\xi\\text{ between }x_0\\text{ and }x.\\text{ Give }T_{n-1}(x)\\text{ and }f^{(n)}(x):\\quad f(x)=\\sin{\\left(x \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Evaluate }f^{(k)}(x_0)\\text{ for }k<n\\text{ and differentiate }n\\text{ times.}"
+        ],
+        [
+          "calculation",
+          "T_{2}(x)=\\pi - x,\\qquad f^{(3)}(x)=- \\cos{\\left(x \\right)},\\qquad R_{3}(x)=\\frac{f^{(3)}(\\xi)}{3!}\\left(x - \\pi\\right)^{3}."
+        ],
+        [
+          "result",
+          "\\left(\\pi - x,\\;- \\cos{\\left(x \\right)}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\pi - x,\\;- \\cos{\\left(x \\right)}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVEP-1-0000000000000200-01",
+      "statement": "\\(\\text{Write the Taylor formula of order }n=3\\text{ at }x_0=\\pi\\text{ with the Lagrange remainder }R_n=\\frac{f^{(n)}(\\xi)}{n!}(x-x_0)^n\\text{, }\\xi\\text{ between }x_0\\text{ and }x.\\text{ Give }T_{n-1}(x)\\text{ and }f^{(n)}(x):\\quad f(x)=\\sin{\\left(5 x \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Evaluate }f^{(k)}(x_0)\\text{ for }k<n\\text{ and differentiate }n\\text{ times.}"
+        ],
+        [
+          "calculation",
+          "T_{2}(x)=- 5 x + 5 \\pi,\\qquad f^{(3)}(x)=- 125 \\cos{\\left(5 x \\right)},\\qquad R_{3}(x)=\\frac{f^{(3)}(\\xi)}{3!}\\left(x - \\pi\\right)^{3}."
+        ],
+        [
+          "result",
+          "\\left(- 5 x + 5 \\pi,\\;- 125 \\cos{\\left(5 x \\right)}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- 5 x + 5 \\pi,\\;- 125 \\cos{\\left(5 x \\right)}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVEP-1-0000000000000999-15",
+      "statement": "\\(\\text{Write the Taylor formula of order }n=3\\text{ at }x_0=\\pi\\text{ with the Lagrange remainder }R_n=\\frac{f^{(n)}(\\xi)}{n!}(x-x_0)^n\\text{, }\\xi\\text{ between }x_0\\text{ and }x.\\text{ Give }T_{n-1}(x)\\text{ and }f^{(n)}(x):\\quad f(x)=\\sin{\\left(3 x \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Evaluate }f^{(k)}(x_0)\\text{ for }k<n\\text{ and differentiate }n\\text{ times.}"
+        ],
+        [
+          "calculation",
+          "T_{2}(x)=- 3 x + 3 \\pi,\\qquad f^{(3)}(x)=- 27 \\cos{\\left(3 x \\right)},\\qquad R_{3}(x)=\\frac{f^{(3)}(\\xi)}{3!}\\left(x - \\pi\\right)^{3}."
+        ],
+        [
+          "result",
+          "\\left(- 3 x + 3 \\pi,\\;- 27 \\cos{\\left(3 x \\right)}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- 3 x + 3 \\pi,\\;- 27 \\cos{\\left(3 x \\right)}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-taylor-exponential-v1": [
+    {
+      "code": "DVEQ-1-0000000000000003-12",
+      "statement": "\\(\\text{Write the Taylor formula of order }n=5\\text{ at }x_0=0\\text{ with the Lagrange remainder }R_n=\\frac{f^{(n)}(\\xi)}{n!}(x-x_0)^n\\text{, }\\xi\\text{ between }x_0\\text{ and }x.\\text{ Give }T_{n-1}(x)\\text{ and }f^{(n)}(x):\\quad f(x)=e^{- 2 x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Evaluate }f^{(k)}(x_0)\\text{ for }k<n\\text{ and differentiate }n\\text{ times.}"
+        ],
+        [
+          "calculation",
+          "T_{4}(x)=\\frac{2 x^{4}}{3} - \\frac{4 x^{3}}{3} + 2 x^{2} - 2 x + 1,\\qquad f^{(5)}(x)=- 32 e^{- 2 x},\\qquad R_{5}(x)=\\frac{f^{(5)}(\\xi)}{5!}x^{5}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{2 x^{4}}{3} - \\frac{4 x^{3}}{3} + 2 x^{2} - 2 x + 1,\\;- 32 e^{- 2 x}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{2 x^{4}}{3} - \\frac{4 x^{3}}{3} + 2 x^{2} - 2 x + 1,\\;- 32 e^{- 2 x}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVEQ-1-0000000000000200-88",
+      "statement": "\\(\\text{Write the Taylor formula of order }n=4\\text{ at }x_0=0\\text{ with the Lagrange remainder }R_n=\\frac{f^{(n)}(\\xi)}{n!}(x-x_0)^n\\text{, }\\xi\\text{ between }x_0\\text{ and }x.\\text{ Give }T_{n-1}(x)\\text{ and }f^{(n)}(x):\\quad f(x)=e^{- 5 x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Evaluate }f^{(k)}(x_0)\\text{ for }k<n\\text{ and differentiate }n\\text{ times.}"
+        ],
+        [
+          "calculation",
+          "T_{3}(x)=- \\frac{125 x^{3}}{6} + \\frac{25 x^{2}}{2} - 5 x + 1,\\qquad f^{(4)}(x)=625 e^{- 5 x},\\qquad R_{4}(x)=\\frac{f^{(4)}(\\xi)}{4!}x^{4}."
+        ],
+        [
+          "result",
+          "\\left(- \\frac{125 x^{3}}{6} + \\frac{25 x^{2}}{2} - 5 x + 1,\\;625 e^{- 5 x}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\frac{125 x^{3}}{6} + \\frac{25 x^{2}}{2} - 5 x + 1,\\;625 e^{- 5 x}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVEQ-1-0000000000000999-05",
+      "statement": "\\(\\text{Write the Taylor formula of order }n=5\\text{ at }x_0=0\\text{ with the Lagrange remainder }R_n=\\frac{f^{(n)}(\\xi)}{n!}(x-x_0)^n\\text{, }\\xi\\text{ between }x_0\\text{ and }x.\\text{ Give }T_{n-1}(x)\\text{ and }f^{(n)}(x):\\quad f(x)=e^{- 2 x}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Evaluate }f^{(k)}(x_0)\\text{ for }k<n\\text{ and differentiate }n\\text{ times.}"
+        ],
+        [
+          "calculation",
+          "T_{4}(x)=\\frac{2 x^{4}}{3} - \\frac{4 x^{3}}{3} + 2 x^{2} - 2 x + 1,\\qquad f^{(5)}(x)=- 32 e^{- 2 x},\\qquad R_{5}(x)=\\frac{f^{(5)}(\\xi)}{5!}x^{5}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{2 x^{4}}{3} - \\frac{4 x^{3}}{3} + 2 x^{2} - 2 x + 1,\\;- 32 e^{- 2 x}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{2 x^{4}}{3} - \\frac{4 x^{3}}{3} + 2 x^{2} - 2 x + 1,\\;- 32 e^{- 2 x}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-maclaurin-sine-v1": [
+    {
+      "code": "DVER-1-0000000000000003-52",
+      "statement": "\\(\\text{Write the Maclaurin formula of order }n=5\\text{ at }x_0=0\\text{ with the Lagrange remainder }R_n=\\frac{f^{(n)}(\\xi)}{n!}(x-x_0)^n\\text{, }\\xi\\text{ between }x_0\\text{ and }x.\\text{ Give }T_{n-1}(x)\\text{ and }f^{(n)}(x):\\quad f(x)=\\sin{\\left(\\frac{x}{2} \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Evaluate }f^{(k)}(x_0)\\text{ for }k<n\\text{ and differentiate }n\\text{ times.}"
+        ],
+        [
+          "calculation",
+          "T_{4}(x)=- \\frac{x^{3}}{48} + \\frac{x}{2},\\qquad f^{(5)}(x)=\\frac{\\cos{\\left(\\frac{x}{2} \\right)}}{32},\\qquad R_{5}(x)=\\frac{f^{(5)}(\\xi)}{5!}x^{5}."
+        ],
+        [
+          "result",
+          "\\left(- \\frac{x^{3}}{48} + \\frac{x}{2},\\;\\frac{\\cos{\\left(\\frac{x}{2} \\right)}}{32}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\frac{x^{3}}{48} + \\frac{x}{2},\\;\\frac{\\cos{\\left(\\frac{x}{2} \\right)}}{32}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVER-1-0000000000000200-31",
+      "statement": "\\(\\text{Write the Maclaurin formula of order }n=4\\text{ at }x_0=0\\text{ with the Lagrange remainder }R_n=\\frac{f^{(n)}(\\xi)}{n!}(x-x_0)^n\\text{, }\\xi\\text{ between }x_0\\text{ and }x.\\text{ Give }T_{n-1}(x)\\text{ and }f^{(n)}(x):\\quad f(x)=\\sin{\\left(\\frac{x}{6} \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Evaluate }f^{(k)}(x_0)\\text{ for }k<n\\text{ and differentiate }n\\text{ times.}"
+        ],
+        [
+          "calculation",
+          "T_{3}(x)=- \\frac{x^{3}}{1296} + \\frac{x}{6},\\qquad f^{(4)}(x)=\\frac{\\sin{\\left(\\frac{x}{6} \\right)}}{1296},\\qquad R_{4}(x)=\\frac{f^{(4)}(\\xi)}{4!}x^{4}."
+        ],
+        [
+          "result",
+          "\\left(- \\frac{x^{3}}{1296} + \\frac{x}{6},\\;\\frac{\\sin{\\left(\\frac{x}{6} \\right)}}{1296}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\frac{x^{3}}{1296} + \\frac{x}{6},\\;\\frac{\\sin{\\left(\\frac{x}{6} \\right)}}{1296}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVER-1-0000000000000999-45",
+      "statement": "\\(\\text{Write the Maclaurin formula of order }n=5\\text{ at }x_0=0\\text{ with the Lagrange remainder }R_n=\\frac{f^{(n)}(\\xi)}{n!}(x-x_0)^n\\text{, }\\xi\\text{ between }x_0\\text{ and }x.\\text{ Give }T_{n-1}(x)\\text{ and }f^{(n)}(x):\\quad f(x)=\\sin{\\left(\\frac{x}{4} \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Evaluate }f^{(k)}(x_0)\\text{ for }k<n\\text{ and differentiate }n\\text{ times.}"
+        ],
+        [
+          "calculation",
+          "T_{4}(x)=- \\frac{x^{3}}{384} + \\frac{x}{4},\\qquad f^{(5)}(x)=\\frac{\\cos{\\left(\\frac{x}{4} \\right)}}{1024},\\qquad R_{5}(x)=\\frac{f^{(5)}(\\xi)}{5!}x^{5}."
+        ],
+        [
+          "result",
+          "\\left(- \\frac{x^{3}}{384} + \\frac{x}{4},\\;\\frac{\\cos{\\left(\\frac{x}{4} \\right)}}{1024}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\frac{x^{3}}{384} + \\frac{x}{4},\\;\\frac{\\cos{\\left(\\frac{x}{4} \\right)}}{1024}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-maclaurin-cosh-v1": [
+    {
+      "code": "DVES-1-0000000000000003-74",
+      "statement": "\\(\\text{Write the Maclaurin formula of order }n=5\\text{ at }x_0=0\\text{ with the Lagrange remainder }R_n=\\frac{f^{(n)}(\\xi)}{n!}(x-x_0)^n\\text{, }\\xi\\text{ between }x_0\\text{ and }x.\\text{ Give }T_{n-1}(x)\\text{ and }f^{(n)}(x):\\quad f(x)=\\cosh{\\left(2 x \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Evaluate }f^{(k)}(x_0)\\text{ for }k<n\\text{ and differentiate }n\\text{ times.}"
+        ],
+        [
+          "calculation",
+          "T_{4}(x)=\\frac{2 x^{4}}{3} + 2 x^{2} + 1,\\qquad f^{(5)}(x)=16 e^{2 x} - 16 e^{- 2 x},\\qquad R_{5}(x)=\\frac{f^{(5)}(\\xi)}{5!}x^{5}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{2 x^{4}}{3} + 2 x^{2} + 1,\\;16 e^{2 x} - 16 e^{- 2 x}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{2 x^{4}}{3} + 2 x^{2} + 1,\\;16 e^{2 x} - 16 e^{- 2 x}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVES-1-0000000000000200-53",
+      "statement": "\\(\\text{Write the Maclaurin formula of order }n=4\\text{ at }x_0=0\\text{ with the Lagrange remainder }R_n=\\frac{f^{(n)}(\\xi)}{n!}(x-x_0)^n\\text{, }\\xi\\text{ between }x_0\\text{ and }x.\\text{ Give }T_{n-1}(x)\\text{ and }f^{(n)}(x):\\quad f(x)=\\cosh{\\left(5 x \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Evaluate }f^{(k)}(x_0)\\text{ for }k<n\\text{ and differentiate }n\\text{ times.}"
+        ],
+        [
+          "calculation",
+          "T_{3}(x)=\\frac{25 x^{2}}{2} + 1,\\qquad f^{(4)}(x)=\\frac{625 e^{5 x}}{2} + \\frac{625 e^{- 5 x}}{2},\\qquad R_{4}(x)=\\frac{f^{(4)}(\\xi)}{4!}x^{4}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{25 x^{2}}{2} + 1,\\;\\frac{625 e^{5 x}}{2} + \\frac{625 e^{- 5 x}}{2}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{25 x^{2}}{2} + 1,\\;\\frac{625 e^{5 x}}{2} + \\frac{625 e^{- 5 x}}{2}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVES-1-0000000000000999-67",
+      "statement": "\\(\\text{Write the Maclaurin formula of order }n=5\\text{ at }x_0=0\\text{ with the Lagrange remainder }R_n=\\frac{f^{(n)}(\\xi)}{n!}(x-x_0)^n\\text{, }\\xi\\text{ between }x_0\\text{ and }x.\\text{ Give }T_{n-1}(x)\\text{ and }f^{(n)}(x):\\quad f(x)=\\cosh{\\left(2 x \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Evaluate }f^{(k)}(x_0)\\text{ for }k<n\\text{ and differentiate }n\\text{ times.}"
+        ],
+        [
+          "calculation",
+          "T_{4}(x)=\\frac{2 x^{4}}{3} + 2 x^{2} + 1,\\qquad f^{(5)}(x)=16 e^{2 x} - 16 e^{- 2 x},\\qquad R_{5}(x)=\\frac{f^{(5)}(\\xi)}{5!}x^{5}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{2 x^{4}}{3} + 2 x^{2} + 1,\\;16 e^{2 x} - 16 e^{- 2 x}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{2 x^{4}}{3} + 2 x^{2} + 1,\\;16 e^{2 x} - 16 e^{- 2 x}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-maclaurin-cosine-v1": [
+    {
+      "code": "DVET-1-0000000000000003-03",
+      "statement": "\\(\\text{Write the Maclaurin formula of order }n=5\\text{ at }x_0=0\\text{ with the Lagrange remainder }R_n=\\frac{f^{(n)}(\\xi)}{n!}(x-x_0)^n\\text{, }\\xi\\text{ between }x_0\\text{ and }x.\\text{ Give }T_{n-1}(x)\\text{ and }f^{(n)}(x):\\quad f(x)=\\cos{\\left(2 x \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Evaluate }f^{(k)}(x_0)\\text{ for }k<n\\text{ and differentiate }n\\text{ times.}"
+        ],
+        [
+          "calculation",
+          "T_{4}(x)=\\frac{2 x^{4}}{3} - 2 x^{2} + 1,\\qquad f^{(5)}(x)=- 32 \\sin{\\left(2 x \\right)},\\qquad R_{5}(x)=\\frac{f^{(5)}(\\xi)}{5!}x^{5}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{2 x^{4}}{3} - 2 x^{2} + 1,\\;- 32 \\sin{\\left(2 x \\right)}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{2 x^{4}}{3} - 2 x^{2} + 1,\\;- 32 \\sin{\\left(2 x \\right)}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVET-1-0000000000000200-79",
+      "statement": "\\(\\text{Write the Maclaurin formula of order }n=4\\text{ at }x_0=0\\text{ with the Lagrange remainder }R_n=\\frac{f^{(n)}(\\xi)}{n!}(x-x_0)^n\\text{, }\\xi\\text{ between }x_0\\text{ and }x.\\text{ Give }T_{n-1}(x)\\text{ and }f^{(n)}(x):\\quad f(x)=\\cos{\\left(5 x \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Evaluate }f^{(k)}(x_0)\\text{ for }k<n\\text{ and differentiate }n\\text{ times.}"
+        ],
+        [
+          "calculation",
+          "T_{3}(x)=1 - \\frac{25 x^{2}}{2},\\qquad f^{(4)}(x)=625 \\cos{\\left(5 x \\right)},\\qquad R_{4}(x)=\\frac{f^{(4)}(\\xi)}{4!}x^{4}."
+        ],
+        [
+          "result",
+          "\\left(1 - \\frac{25 x^{2}}{2},\\;625 \\cos{\\left(5 x \\right)}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(1 - \\frac{25 x^{2}}{2},\\;625 \\cos{\\left(5 x \\right)}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVET-1-0000000000000999-93",
+      "statement": "\\(\\text{Write the Maclaurin formula of order }n=5\\text{ at }x_0=0\\text{ with the Lagrange remainder }R_n=\\frac{f^{(n)}(\\xi)}{n!}(x-x_0)^n\\text{, }\\xi\\text{ between }x_0\\text{ and }x.\\text{ Give }T_{n-1}(x)\\text{ and }f^{(n)}(x):\\quad f(x)=\\cos{\\left(2 x \\right)}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Evaluate }f^{(k)}(x_0)\\text{ for }k<n\\text{ and differentiate }n\\text{ times.}"
+        ],
+        [
+          "calculation",
+          "T_{4}(x)=\\frac{2 x^{4}}{3} - 2 x^{2} + 1,\\qquad f^{(5)}(x)=- 32 \\sin{\\left(2 x \\right)},\\qquad R_{5}(x)=\\frac{f^{(5)}(\\xi)}{5!}x^{5}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{2 x^{4}}{3} - 2 x^{2} + 1,\\;- 32 \\sin{\\left(2 x \\right)}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{2 x^{4}}{3} - 2 x^{2} + 1,\\;- 32 \\sin{\\left(2 x \\right)}\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-maclaurin-exponential-product-v1": [
+    {
+      "code": "DVEU-1-0000000000000003-27",
+      "statement": "\\(\\text{Write the Maclaurin formula of order }n=5\\text{ at }x_0=0\\text{ with the Lagrange remainder }R_n=\\frac{f^{(n)}(\\xi)}{n!}(x-x_0)^n\\text{, }\\xi\\text{ between }x_0\\text{ and }x.\\text{ Give }T_{n-1}(x)\\text{ and }f^{(n)}(x):\\quad f(x)=\\frac{x}{e^{2x}}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Evaluate }f^{(k)}(x_0)\\text{ for }k<n\\text{ and differentiate }n\\text{ times.}"
+        ],
+        [
+          "calculation",
+          "T_{4}(x)=- \\frac{4 x^{4}}{3} + 2 x^{3} - 2 x^{2} + x,\\qquad f^{(5)}(x)=16 \\left(5 - 2 x\\right) e^{- 2 x},\\qquad R_{5}(x)=\\frac{f^{(5)}(\\xi)}{5!}x^{5}."
+        ],
+        [
+          "result",
+          "\\left(- \\frac{4 x^{4}}{3} + 2 x^{3} - 2 x^{2} + x,\\;16 \\left(5 - 2 x\\right) e^{- 2 x}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\frac{4 x^{4}}{3} + 2 x^{3} - 2 x^{2} + x,\\;16 \\left(5 - 2 x\\right) e^{- 2 x}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVEU-1-0000000000000200-06",
+      "statement": "\\(\\text{Write the Maclaurin formula of order }n=4\\text{ at }x_0=0\\text{ with the Lagrange remainder }R_n=\\frac{f^{(n)}(\\xi)}{n!}(x-x_0)^n\\text{, }\\xi\\text{ between }x_0\\text{ and }x.\\text{ Give }T_{n-1}(x)\\text{ and }f^{(n)}(x):\\quad f(x)=\\frac{x}{e^{5x}}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Evaluate }f^{(k)}(x_0)\\text{ for }k<n\\text{ and differentiate }n\\text{ times.}"
+        ],
+        [
+          "calculation",
+          "T_{3}(x)=\\frac{25 x^{3}}{2} - 5 x^{2} + x,\\qquad f^{(4)}(x)=125 \\left(5 x - 4\\right) e^{- 5 x},\\qquad R_{4}(x)=\\frac{f^{(4)}(\\xi)}{4!}x^{4}."
+        ],
+        [
+          "result",
+          "\\left(\\frac{25 x^{3}}{2} - 5 x^{2} + x,\\;125 \\left(5 x - 4\\right) e^{- 5 x}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(\\frac{25 x^{3}}{2} - 5 x^{2} + x,\\;125 \\left(5 x - 4\\right) e^{- 5 x}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVEU-1-0000000000000999-20",
+      "statement": "\\(\\text{Write the Maclaurin formula of order }n=5\\text{ at }x_0=0\\text{ with the Lagrange remainder }R_n=\\frac{f^{(n)}(\\xi)}{n!}(x-x_0)^n\\text{, }\\xi\\text{ between }x_0\\text{ and }x.\\text{ Give }T_{n-1}(x)\\text{ and }f^{(n)}(x):\\quad f(x)=\\frac{x}{e^{2x}}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Evaluate }f^{(k)}(x_0)\\text{ for }k<n\\text{ and differentiate }n\\text{ times.}"
+        ],
+        [
+          "calculation",
+          "T_{4}(x)=- \\frac{4 x^{4}}{3} + 2 x^{3} - 2 x^{2} + x,\\qquad f^{(5)}(x)=16 \\left(5 - 2 x\\right) e^{- 2 x},\\qquad R_{5}(x)=\\frac{f^{(5)}(\\xi)}{5!}x^{5}."
+        ],
+        [
+          "result",
+          "\\left(- \\frac{4 x^{4}}{3} + 2 x^{3} - 2 x^{2} + x,\\;16 \\left(5 - 2 x\\right) e^{- 2 x}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- \\frac{4 x^{4}}{3} + 2 x^{3} - 2 x^{2} + x,\\;16 \\left(5 - 2 x\\right) e^{- 2 x}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-error-tangent-v1": [
+    {
+      "code": "DVEV-1-0000000000000003-17",
+      "statement": "\\(\\text{Bound the error of }\\tan x\\approx x\\text{ for }|x|\\le\\frac{\\pi}{12}\\text{ by }\\max|f^{(3)}|\\cdot\\frac{|x|^3}{3!}\\text{, the maximum taken over}\\text{ the interval. Give this bound exactly.}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The approximation is the Taylor polynomial }T_{2}\\text{ at }0."
+        ],
+        [
+          "calculation",
+          "f^{(3)}(x)=6 \\tan^{4}{\\left(x \\right)} + 8 \\tan^{2}{\\left(x \\right)} + 2,\\ \\text{largest at }x=\\pm\\frac{\\pi}{12};\\qquad\\text{bound}=\\frac{\\pi^{3} \\left(40 - 23 \\sqrt{3}\\right)}{648}."
+        ],
+        [
+          "result",
+          "\\frac{\\pi^{3} \\left(40 - 23 \\sqrt{3}\\right)}{648}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\frac{\\pi^{3} \\left(40 - 23 \\sqrt{3}\\right)}{648}",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "DVEV-1-0000000000000200-93",
+      "statement": "\\(\\text{Bound the error of }\\tan x\\approx x\\text{ for }|x|\\le\\frac{\\pi}{36}\\text{ by }\\max|f^{(3)}|\\cdot\\frac{|x|^3}{3!}\\text{, the maximum taken over}\\text{ the interval. Give this bound exactly.}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The approximation is the Taylor polynomial }T_{2}\\text{ at }0."
+        ],
+        [
+          "calculation",
+          "f^{(3)}(x)=6 \\tan^{4}{\\left(x \\right)} + 8 \\tan^{2}{\\left(x \\right)} + 2,\\ \\text{largest at }x=\\pm\\frac{\\pi}{36};\\qquad\\text{bound}=\\frac{\\pi^{3} \\left(3 \\tan^{4}{\\left(\\frac{\\pi}{36} \\right)} + 4 \\tan^{2}{\\left(\\frac{\\pi}{36} \\right)} + 1\\right)}{139968}."
+        ],
+        [
+          "result",
+          "\\frac{\\pi^{3} \\left(3 \\tan^{4}{\\left(\\frac{\\pi}{36} \\right)} + 4 \\tan^{2}{\\left(\\frac{\\pi}{36} \\right)} + 1\\right)}{139968}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\frac{\\pi^{3} \\left(3 \\tan^{4}{\\left(\\frac{\\pi}{36} \\right)} + 4 \\tan^{2}{\\left(\\frac{\\pi}{36} \\right)} + 1\\right)}{139968}",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "DVEV-1-0000000000000999-10",
+      "statement": "\\(\\text{Bound the error of }\\tan x\\approx x\\text{ for }|x|\\le\\frac{\\pi}{24}\\text{ by }\\max|f^{(3)}|\\cdot\\frac{|x|^3}{3!}\\text{, the maximum taken over}\\text{ the interval. Give this bound exactly.}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The approximation is the Taylor polynomial }T_{2}\\text{ at }0."
+        ],
+        [
+          "calculation",
+          "f^{(3)}(x)=6 \\tan^{4}{\\left(x \\right)} + 8 \\tan^{2}{\\left(x \\right)} + 2,\\ \\text{largest at }x=\\pm\\frac{\\pi}{24};\\qquad\\text{bound}=- \\frac{29 \\sqrt{6} \\pi^{3}}{1152} - \\frac{451 \\sqrt{2} \\pi^{3}}{10368} + \\frac{23 \\sqrt{3} \\pi^{3}}{648} + \\frac{5 \\pi^{3}}{81}."
+        ],
+        [
+          "result",
+          "- \\frac{29 \\sqrt{6} \\pi^{3}}{1152} - \\frac{451 \\sqrt{2} \\pi^{3}}{10368} + \\frac{23 \\sqrt{3} \\pi^{3}}{648} + \\frac{5 \\pi^{3}}{81}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "- \\frac{29 \\sqrt{6} \\pi^{3}}{1152} - \\frac{451 \\sqrt{2} \\pi^{3}}{10368} + \\frac{23 \\sqrt{3} \\pi^{3}}{648} + \\frac{5 \\pi^{3}}{81}",
+      "metadata": {
+        "difficulty": 5
+      }
+    }
+  ],
+  "analysis1-derivatives-error-cosine-square-v1": [
+    {
+      "code": "DVEW-1-0000000000000003-69",
+      "statement": "\\(\\text{Bound the error of }\\cos^2x\\approx1-x^2\\text{ for }|x|\\le\\frac{1}{10}\\text{ by }\\max|f^{(4)}|\\cdot\\frac{|x|^4}{4!}\\text{, the maximum taken over}\\text{ the interval. Give this bound exactly.}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The approximation is the Taylor polynomial }T_{3}\\text{ at }0."
+        ],
+        [
+          "calculation",
+          "f^{(4)}(x)=8\\cos 2x,\\ \\text{largest at }x=0;\\qquad\\text{bound}=\\frac{1}{30000}."
+        ],
+        [
+          "result",
+          "\\frac{1}{30000}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\frac{1}{30000}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVEW-1-0000000000000200-48",
+      "statement": "\\(\\text{Bound the error of }\\cos^2x\\approx1-x^2\\text{ for }|x|\\le\\frac{1}{2}\\text{ by }\\max|f^{(4)}|\\cdot\\frac{|x|^4}{4!}\\text{, the maximum taken over}\\text{ the interval. Give this bound exactly.}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The approximation is the Taylor polynomial }T_{3}\\text{ at }0."
+        ],
+        [
+          "calculation",
+          "f^{(4)}(x)=8\\cos 2x,\\ \\text{largest at }x=0;\\qquad\\text{bound}=\\frac{1}{48}."
+        ],
+        [
+          "result",
+          "\\frac{1}{48}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\frac{1}{48}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVEW-1-0000000000000999-62",
+      "statement": "\\(\\text{Bound the error of }\\cos^2x\\approx1-x^2\\text{ for }|x|\\le\\frac{3}{10}\\text{ by }\\max|f^{(4)}|\\cdot\\frac{|x|^4}{4!}\\text{, the maximum taken over}\\text{ the interval. Give this bound exactly.}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The approximation is the Taylor polynomial }T_{3}\\text{ at }0."
+        ],
+        [
+          "calculation",
+          "f^{(4)}(x)=8\\cos 2x,\\ \\text{largest at }x=0;\\qquad\\text{bound}=\\frac{27}{10000}."
+        ],
+        [
+          "result",
+          "\\frac{27}{10000}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\frac{27}{10000}",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-error-square-root-v1": [
+    {
+      "code": "DVEX-1-0000000000000003-91",
+      "statement": "\\(\\text{Bound the error of }\\sqrt{1+x}\\approx1+\\frac x2-\\frac{x^2}8\\text{ for }|x|\\le\\frac{1}{20}\\text{ by }\\max|f^{(3)}|\\cdot\\frac{|x|^3}{3!}\\text{, the maximum taken over}\\text{ the interval. Give this bound exactly.}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The approximation is the Taylor polynomial }T_{2}\\text{ at }0."
+        ],
+        [
+          "calculation",
+          "f^{(3)}(x)=\\tfrac38(1+x)^{-5/2},\\ \\text{largest at }x=-\\frac{1}{20};\\qquad\\text{bound}=\\frac{\\sqrt{95}}{1097440}."
+        ],
+        [
+          "result",
+          "\\frac{\\sqrt{95}}{1097440}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\frac{\\sqrt{95}}{1097440}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVEX-1-0000000000000200-70",
+      "statement": "\\(\\text{Bound the error of }\\sqrt{1+x}\\approx1+\\frac x2-\\frac{x^2}8\\text{ for }|x|\\le\\frac{1}{4}\\text{ by }\\max|f^{(3)}|\\cdot\\frac{|x|^3}{3!}\\text{, the maximum taken over}\\text{ the interval. Give this bound exactly.}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The approximation is the Taylor polynomial }T_{2}\\text{ at }0."
+        ],
+        [
+          "calculation",
+          "f^{(3)}(x)=\\tfrac38(1+x)^{-5/2},\\ \\text{largest at }x=-\\frac{1}{4};\\qquad\\text{bound}=\\frac{\\sqrt{3}}{864}."
+        ],
+        [
+          "result",
+          "\\frac{\\sqrt{3}}{864}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\frac{\\sqrt{3}}{864}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVEX-1-0000000000000999-84",
+      "statement": "\\(\\text{Bound the error of }\\sqrt{1+x}\\approx1+\\frac x2-\\frac{x^2}8\\text{ for }|x|\\le\\frac{3}{20}\\text{ by }\\max|f^{(3)}|\\cdot\\frac{|x|^3}{3!}\\text{, the maximum taken over}\\text{ the interval. Give this bound exactly.}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The approximation is the Taylor polynomial }T_{2}\\text{ at }0."
+        ],
+        [
+          "calculation",
+          "f^{(3)}(x)=\\tfrac38(1+x)^{-5/2},\\ \\text{largest at }x=-\\frac{3}{20};\\qquad\\text{bound}=\\frac{27 \\sqrt{85}}{786080}."
+        ],
+        [
+          "result",
+          "\\frac{27 \\sqrt{85}}{786080}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\frac{27 \\sqrt{85}}{786080}",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-error-logarithm-v1": [
+    {
+      "code": "DVEY-1-0000000000000003-61",
+      "statement": "\\(\\text{Bound the error of }\\ln(1-x)\\approx-x-\\frac{x^2}2-\\frac{x^3}3\\text{ for }|x|\\le\\frac{1}{20}\\text{ by }\\max|f^{(4)}|\\cdot\\frac{|x|^4}{4!}\\text{, the maximum taken over}\\text{ the interval. Give this bound exactly.}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The approximation is the Taylor polynomial }T_{3}\\text{ at }0."
+        ],
+        [
+          "calculation",
+          "f^{(4)}(x)=-\\frac{6}{(1-x)^4},\\ \\text{largest at }x=\\frac{1}{20};\\qquad\\text{bound}=\\frac{1}{521284}."
+        ],
+        [
+          "result",
+          "\\frac{1}{521284}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\frac{1}{521284}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVEY-1-0000000000000200-40",
+      "statement": "\\(\\text{Bound the error of }\\ln(1-x)\\approx-x-\\frac{x^2}2-\\frac{x^3}3\\text{ for }|x|\\le\\frac{1}{4}\\text{ by }\\max|f^{(4)}|\\cdot\\frac{|x|^4}{4!}\\text{, the maximum taken over}\\text{ the interval. Give this bound exactly.}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The approximation is the Taylor polynomial }T_{3}\\text{ at }0."
+        ],
+        [
+          "calculation",
+          "f^{(4)}(x)=-\\frac{6}{(1-x)^4},\\ \\text{largest at }x=\\frac{1}{4};\\qquad\\text{bound}=\\frac{1}{324}."
+        ],
+        [
+          "result",
+          "\\frac{1}{324}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\frac{1}{324}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVEY-1-0000000000000999-54",
+      "statement": "\\(\\text{Bound the error of }\\ln(1-x)\\approx-x-\\frac{x^2}2-\\frac{x^3}3\\text{ for }|x|\\le\\frac{3}{20}\\text{ by }\\max|f^{(4)}|\\cdot\\frac{|x|^4}{4!}\\text{, the maximum taken over}\\text{ the interval. Give this bound exactly.}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The approximation is the Taylor polynomial }T_{3}\\text{ at }0."
+        ],
+        [
+          "calculation",
+          "f^{(4)}(x)=-\\frac{6}{(1-x)^4},\\ \\text{largest at }x=\\frac{3}{20};\\qquad\\text{bound}=\\frac{81}{334084}."
+        ],
+        [
+          "result",
+          "\\frac{81}{334084}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\frac{81}{334084}",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-error-inverse-root-v1": [
+    {
+      "code": "DVEZ-1-0000000000000003-21",
+      "statement": "\\(\\text{Bound the error of }\\frac1{\\sqrt{x+1}}\\approx1-\\frac x2+\\frac{3x^2}8\\text{ for }|x|\\le\\frac{1}{20}\\text{ by }\\max|f^{(3)}|\\cdot\\frac{|x|^3}{3!}\\text{, the maximum taken over}\\text{ the interval. Give this bound exactly.}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The approximation is the Taylor polynomial }T_{2}\\text{ at }0."
+        ],
+        [
+          "calculation",
+          "f^{(3)}(x)=-\\tfrac{15}8(1+x)^{-7/2},\\ \\text{largest at }x=-\\frac{1}{20};\\qquad\\text{bound}=\\frac{5 \\sqrt{95}}{1042568}."
+        ],
+        [
+          "result",
+          "\\frac{5 \\sqrt{95}}{1042568}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\frac{5 \\sqrt{95}}{1042568}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVEZ-1-0000000000000200-00",
+      "statement": "\\(\\text{Bound the error of }\\frac1{\\sqrt{x+1}}\\approx1-\\frac x2+\\frac{3x^2}8\\text{ for }|x|\\le\\frac{1}{4}\\text{ by }\\max|f^{(3)}|\\cdot\\frac{|x|^3}{3!}\\text{, the maximum taken over}\\text{ the interval. Give this bound exactly.}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The approximation is the Taylor polynomial }T_{2}\\text{ at }0."
+        ],
+        [
+          "calculation",
+          "f^{(3)}(x)=-\\tfrac{15}8(1+x)^{-7/2},\\ \\text{largest at }x=-\\frac{1}{4};\\qquad\\text{bound}=\\frac{5 \\sqrt{3}}{648}."
+        ],
+        [
+          "result",
+          "\\frac{5 \\sqrt{3}}{648}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\frac{5 \\sqrt{3}}{648}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVEZ-1-0000000000000999-14",
+      "statement": "\\(\\text{Bound the error of }\\frac1{\\sqrt{x+1}}\\approx1-\\frac x2+\\frac{3x^2}8\\text{ for }|x|\\le\\frac{3}{20}\\text{ by }\\max|f^{(3)}|\\cdot\\frac{|x|^3}{3!}\\text{, the maximum taken over}\\text{ the interval. Give this bound exactly.}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{The approximation is the Taylor polynomial }T_{2}\\text{ at }0."
+        ],
+        [
+          "calculation",
+          "f^{(3)}(x)=-\\tfrac{15}8(1+x)^{-7/2},\\ \\text{largest at }x=-\\frac{3}{20};\\qquad\\text{bound}=\\frac{135 \\sqrt{85}}{668168}."
+        ],
+        [
+          "result",
+          "\\frac{135 \\sqrt{85}}{668168}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\frac{135 \\sqrt{85}}{668168}",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-approximate-reciprocal-e-v1": [
+    {
+      "code": "DVFA-1-0000000000000003-12",
+      "statement": "\\(\\text{Approximate }e^{- \\frac{1}{2}}\\text{ with }T_{n-1}\\text{ of }f(x)=e^{x}\\text{ at }0\\text{, evaluated at }x=- \\frac{1}{2}.\\text{ Take the least }n\\text{ for which }\\max|f^{(n)}|\\,\\frac{|x|^n}{n!}\\le\\frac{1}{10000}\\text{ (maximum over the interval between }0\\text{ and }x\\text{). Give }n\\text{ and the exact value of }T_{n-1}(x).\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Increase }n\\text{ until the Lagrange bound meets the accuracy.}"
+        ],
+        [
+          "calculation",
+          "n=6,\\qquad T_{5}(- \\frac{1}{2})=\\frac{2329}{3840}."
+        ],
+        [
+          "result",
+          "\\left(6,\\;\\frac{2329}{3840}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(6,\\;\\frac{2329}{3840}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVFA-1-0000000000000200-88",
+      "statement": "\\(\\text{Approximate }e^{- \\frac{1}{5}}\\text{ with }T_{n-1}\\text{ of }f(x)=e^{x}\\text{ at }0\\text{, evaluated at }x=- \\frac{1}{5}.\\text{ Take the least }n\\text{ for which }\\max|f^{(n)}|\\,\\frac{|x|^n}{n!}\\le\\frac{1}{100000}\\text{ (maximum over the interval between }0\\text{ and }x\\text{). Give }n\\text{ and the exact value of }T_{n-1}(x).\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Increase }n\\text{ until the Lagrange bound meets the accuracy.}"
+        ],
+        [
+          "calculation",
+          "n=5,\\qquad T_{4}(- \\frac{1}{5})=\\frac{12281}{15000}."
+        ],
+        [
+          "result",
+          "\\left(5,\\;\\frac{12281}{15000}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(5,\\;\\frac{12281}{15000}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVFA-1-0000000000000999-05",
+      "statement": "\\(\\text{Approximate }e^{- \\frac{1}{2}}\\text{ with }T_{n-1}\\text{ of }f(x)=e^{x}\\text{ at }0\\text{, evaluated at }x=- \\frac{1}{2}.\\text{ Take the least }n\\text{ for which }\\max|f^{(n)}|\\,\\frac{|x|^n}{n!}\\le\\frac{1}{1000}\\text{ (maximum over the interval between }0\\text{ and }x\\text{). Give }n\\text{ and the exact value of }T_{n-1}(x).\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Increase }n\\text{ until the Lagrange bound meets the accuracy.}"
+        ],
+        [
+          "calculation",
+          "n=5,\\qquad T_{4}(- \\frac{1}{2})=\\frac{233}{384}."
+        ],
+        [
+          "result",
+          "\\left(5,\\;\\frac{233}{384}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(5,\\;\\frac{233}{384}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-approximate-cube-root-v1": [
+    {
+      "code": "DVFB-1-0000000000000003-27",
+      "statement": "\\(\\text{Approximate }\\sqrt[3]{\\frac{499}{500}}\\text{ with }T_{n-1}\\text{ of }f(x)=\\sqrt[3]{x + 1}\\text{ at }0\\text{, evaluated at }x=- \\frac{1}{500}.\\text{ Take the least }n\\text{ for which }\\max|f^{(n)}|\\,\\frac{|x|^n}{n!}\\le\\frac{1}{10000}\\text{ (maximum over the interval between }0\\text{ and }x\\text{). Give }n\\text{ and the exact value of }T_{n-1}(x).\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Increase }n\\text{ until the Lagrange bound meets the accuracy.}"
+        ],
+        [
+          "calculation",
+          "n=2,\\qquad T_{1}(- \\frac{1}{500})=\\frac{1499}{1500}."
+        ],
+        [
+          "result",
+          "\\left(2,\\;\\frac{1499}{1500}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(2,\\;\\frac{1499}{1500}\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "DVFB-1-0000000000000200-06",
+      "statement": "\\(\\text{Approximate }\\sqrt[3]{\\frac{199}{200}}\\text{ with }T_{n-1}\\text{ of }f(x)=\\sqrt[3]{x + 1}\\text{ at }0\\text{, evaluated at }x=- \\frac{1}{200}.\\text{ Take the least }n\\text{ for which }\\max|f^{(n)}|\\,\\frac{|x|^n}{n!}\\le\\frac{1}{100000}\\text{ (maximum over the interval between }0\\text{ and }x\\text{). Give }n\\text{ and the exact value of }T_{n-1}(x).\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Increase }n\\text{ until the Lagrange bound meets the accuracy.}"
+        ],
+        [
+          "calculation",
+          "n=2,\\qquad T_{1}(- \\frac{1}{200})=\\frac{599}{600}."
+        ],
+        [
+          "result",
+          "\\left(2,\\;\\frac{599}{600}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(2,\\;\\frac{599}{600}\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "DVFB-1-0000000000000999-20",
+      "statement": "\\(\\text{Approximate }\\sqrt[3]{\\frac{499}{500}}\\text{ with }T_{n-1}\\text{ of }f(x)=\\sqrt[3]{x + 1}\\text{ at }0\\text{, evaluated at }x=- \\frac{1}{500}.\\text{ Take the least }n\\text{ for which }\\max|f^{(n)}|\\,\\frac{|x|^n}{n!}\\le\\frac{1}{1000}\\text{ (maximum over the interval between }0\\text{ and }x\\text{). Give }n\\text{ and the exact value of }T_{n-1}(x).\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Increase }n\\text{ until the Lagrange bound meets the accuracy.}"
+        ],
+        [
+          "calculation",
+          "n=1,\\qquad T_{0}(- \\frac{1}{500})=1."
+        ],
+        [
+          "result",
+          "\\left(1,\\;1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(1,\\;1\\right)",
+      "metadata": {
+        "difficulty": 5
+      }
+    }
+  ],
+  "analysis1-derivatives-approximate-logarithm-v1": [
+    {
+      "code": "DVFC-1-0000000000000003-81",
+      "statement": "\\(\\text{Approximate }\\ln \\frac{11}{10}\\text{ with }T_{n-1}\\text{ of }f(x)=\\log{\\left(x + 1 \\right)}\\text{ at }0\\text{, evaluated at }x=\\frac{1}{10}.\\text{ Take the least }n\\text{ for which }\\max|f^{(n)}|\\,\\frac{|x|^n}{n!}\\le\\frac{1}{10000}\\text{ (maximum over the interval between }0\\text{ and }x\\text{). Give }n\\text{ and the exact value of }T_{n-1}(x).\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Increase }n\\text{ until the Lagrange bound meets the accuracy.}"
+        ],
+        [
+          "calculation",
+          "n=4,\\qquad T_{3}(\\frac{1}{10})=\\frac{143}{1500}."
+        ],
+        [
+          "result",
+          "\\left(4,\\;\\frac{143}{1500}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(4,\\;\\frac{143}{1500}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVFC-1-0000000000000200-60",
+      "statement": "\\(\\text{Approximate }\\ln \\frac{5}{4}\\text{ with }T_{n-1}\\text{ of }f(x)=\\log{\\left(x + 1 \\right)}\\text{ at }0\\text{, evaluated at }x=\\frac{1}{4}.\\text{ Take the least }n\\text{ for which }\\max|f^{(n)}|\\,\\frac{|x|^n}{n!}\\le\\frac{1}{100000}\\text{ (maximum over the interval between }0\\text{ and }x\\text{). Give }n\\text{ and the exact value of }T_{n-1}(x).\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Increase }n\\text{ until the Lagrange bound meets the accuracy.}"
+        ],
+        [
+          "calculation",
+          "n=7,\\qquad T_{6}(\\frac{1}{4})=\\frac{27419}{122880}."
+        ],
+        [
+          "result",
+          "\\left(7,\\;\\frac{27419}{122880}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(7,\\;\\frac{27419}{122880}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVFC-1-0000000000000999-74",
+      "statement": "\\(\\text{Approximate }\\ln \\frac{11}{10}\\text{ with }T_{n-1}\\text{ of }f(x)=\\log{\\left(x + 1 \\right)}\\text{ at }0\\text{, evaluated at }x=\\frac{1}{10}.\\text{ Take the least }n\\text{ for which }\\max|f^{(n)}|\\,\\frac{|x|^n}{n!}\\le\\frac{1}{1000}\\text{ (maximum over the interval between }0\\text{ and }x\\text{). Give }n\\text{ and the exact value of }T_{n-1}(x).\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Increase }n\\text{ until the Lagrange bound meets the accuracy.}"
+        ],
+        [
+          "calculation",
+          "n=3,\\qquad T_{2}(\\frac{1}{10})=\\frac{19}{200}."
+        ],
+        [
+          "result",
+          "\\left(3,\\;\\frac{19}{200}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(3,\\;\\frac{19}{200}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-approximate-sine-v1": [
+    {
+      "code": "DVFD-1-0000000000000003-23",
+      "statement": "\\(\\text{Approximate }\\sin \\frac{1}{5}\\text{ with }T_{n-1}\\text{ of }f(x)=\\sin{\\left(x \\right)}\\text{ at }0\\text{, evaluated at }x=\\frac{1}{5}.\\text{ Take the least }n\\text{ for which }\\max|f^{(n)}|\\,\\frac{|x|^n}{n!}\\le\\frac{1}{100000}\\text{ (maximum over the interval between }0\\text{ and }x\\text{). Give }n\\text{ and the exact value of }T_{n-1}(x).\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Increase }n\\text{ until the Lagrange bound meets the accuracy.}"
+        ],
+        [
+          "calculation",
+          "n=5,\\qquad T_{4}(\\frac{1}{5})=\\frac{149}{750}."
+        ],
+        [
+          "result",
+          "\\left(5,\\;\\frac{149}{750}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(5,\\;\\frac{149}{750}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVFD-1-0000000000000200-02",
+      "statement": "\\(\\text{Approximate }\\sin \\frac{1}{2}\\text{ with }T_{n-1}\\text{ of }f(x)=\\sin{\\left(x \\right)}\\text{ at }0\\text{, evaluated at }x=\\frac{1}{2}.\\text{ Take the least }n\\text{ for which }\\max|f^{(n)}|\\,\\frac{|x|^n}{n!}\\le\\frac{1}{1000000}\\text{ (maximum over the interval between }0\\text{ and }x\\text{). Give }n\\text{ and the exact value of }T_{n-1}(x).\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Increase }n\\text{ until the Lagrange bound meets the accuracy.}"
+        ],
+        [
+          "calculation",
+          "n=8,\\qquad T_{7}(\\frac{1}{2})=\\frac{309287}{645120}."
+        ],
+        [
+          "result",
+          "\\left(8,\\;\\frac{309287}{645120}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(8,\\;\\frac{309287}{645120}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVFD-1-0000000000000999-16",
+      "statement": "\\(\\text{Approximate }\\sin \\frac{1}{5}\\text{ with }T_{n-1}\\text{ of }f(x)=\\sin{\\left(x \\right)}\\text{ at }0\\text{, evaluated at }x=\\frac{1}{5}.\\text{ Take the least }n\\text{ for which }\\max|f^{(n)}|\\,\\frac{|x|^n}{n!}\\le\\frac{1}{10000}\\text{ (maximum over the interval between }0\\text{ and }x\\text{). Give }n\\text{ and the exact value of }T_{n-1}(x).\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Increase }n\\text{ until the Lagrange bound meets the accuracy.}"
+        ],
+        [
+          "calculation",
+          "n=4,\\qquad T_{3}(\\frac{1}{5})=\\frac{149}{750}."
+        ],
+        [
+          "result",
+          "\\left(4,\\;\\frac{149}{750}\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(4,\\;\\frac{149}{750}\\right)",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
   ]
 }

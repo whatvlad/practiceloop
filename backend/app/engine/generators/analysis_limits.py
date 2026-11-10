@@ -21,6 +21,7 @@ from app.engine.generators import _extrema as extrema
 from app.engine.generators import _function_limits as functions
 from app.engine.generators import _lhopital as lhopital
 from app.engine.generators import _sequence_limits as sequences
+from app.engine.generators import _taylor as taylor
 from app.engine.generators._elementary_common import Built
 from app.engine.models import Answer, Drawn, Task
 from app.engine.prng import DeterministicRNG
@@ -108,6 +109,9 @@ ANGLE_RADIUS = InputContract("tuple", components=(CONSTANT, CONSTANT), labels=ex
 CONVEXITY = InputContract(
     "tuple", components=(REAL_SET, REAL_SET, REAL_SET), labels=convexity.CONVEXITY
 )
+# #264: Taylor formulas, error bounds and certified approximations.
+TAYLOR = InputContract("tuple", components=(LINE, LINE), labels=taylor.TAYLOR)
+APPROXIMATION = InputContract("tuple", components=(CONSTANT, CONSTANT), labels=taylor.APPROXIMATION)
 ANSWERS: dict[str, type[Answer]] = {
     "category": CategoryAnswer,
     "formula": FormulaAnswer,
@@ -362,6 +366,24 @@ SPECS = (
     (convexity.increasing_concave_arccot, DERIVATIVES, 5, "DVEK", REAL_SET),
     (convexity.polynomial_extrema, DERIVATIVES, 3, "DVEL", LINE),
     (convexity.polynomial_inflection, DERIVATIVES, 3, "DVEM", LINE),
+    # #264
+    (taylor.taylor_cubic, DERIVATIVES, 3, "DVEN", TAYLOR),
+    (taylor.taylor_reciprocal_power, DERIVATIVES, 3, "DVEO", TAYLOR),
+    (taylor.taylor_sine_at_pi, DERIVATIVES, 4, "DVEP", TAYLOR),
+    (taylor.taylor_exponential, DERIVATIVES, 3, "DVEQ", TAYLOR),
+    (taylor.maclaurin_sine, DERIVATIVES, 3, "DVER", TAYLOR),
+    (taylor.maclaurin_cosh, DERIVATIVES, 3, "DVES", TAYLOR),
+    (taylor.maclaurin_cosine, DERIVATIVES, 3, "DVET", TAYLOR),
+    (taylor.maclaurin_exponential_product, DERIVATIVES, 4, "DVEU", TAYLOR),
+    (taylor.error_tangent, DERIVATIVES, 5, "DVEV", CONSTANT),
+    (taylor.error_cosine_square, DERIVATIVES, 4, "DVEW", CONSTANT),
+    (taylor.error_square_root, DERIVATIVES, 4, "DVEX", CONSTANT),
+    (taylor.error_logarithm, DERIVATIVES, 4, "DVEY", CONSTANT),
+    (taylor.error_inverse_root, DERIVATIVES, 4, "DVEZ", CONSTANT),
+    (taylor.approximate_reciprocal_e, DERIVATIVES, 4, "DVFA", APPROXIMATION),
+    (taylor.approximate_cube_root, DERIVATIVES, 5, "DVFB", APPROXIMATION),
+    (taylor.approximate_logarithm, DERIVATIVES, 4, "DVFC", APPROXIMATION),
+    (taylor.approximate_sine, DERIVATIVES, 4, "DVFD", APPROXIMATION),
 )
 
 

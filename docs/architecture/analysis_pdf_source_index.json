@@ -14033,18 +14033,25 @@
       "family": "taylor-lagrange-remainder",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-taylor-cubic-v1"
+      ],
       "family_contracts": [
         "AM1/70"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "Taylor polynomial plus Lagrange remainder and intermediate-point constraints"
+          "result": "Taylor polynomial plus Lagrange remainder and intermediate-point constraints",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-taylor-cubic-v1"
+          ],
+          "verification": "backend/tests/test_engine_taylor.py"
         }
       ],
       "method": "taylor-lagrange-remainder-variant-a",
@@ -14060,18 +14067,25 @@
       "family": "taylor-lagrange-remainder",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-taylor-reciprocal-power-v1"
+      ],
       "family_contracts": [
         "AM1/70"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "Taylor polynomial plus Lagrange remainder and intermediate-point constraints"
+          "result": "Taylor polynomial plus Lagrange remainder and intermediate-point constraints",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-taylor-reciprocal-power-v1"
+          ],
+          "verification": "backend/tests/test_engine_taylor.py"
         }
       ],
       "method": "taylor-lagrange-remainder-variant-b",
@@ -14087,18 +14101,25 @@
       "family": "taylor-lagrange-remainder",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-taylor-sine-at-pi-v1"
+      ],
       "family_contracts": [
         "AM1/70"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "Taylor polynomial plus Lagrange remainder and intermediate-point constraints"
+          "result": "Taylor polynomial plus Lagrange remainder and intermediate-point constraints",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-taylor-sine-at-pi-v1"
+          ],
+          "verification": "backend/tests/test_engine_taylor.py"
         }
       ],
       "method": "taylor-lagrange-remainder-variant-c",
@@ -14114,18 +14135,25 @@
       "family": "taylor-lagrange-remainder",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-taylor-exponential-v1"
+      ],
       "family_contracts": [
         "AM1/70"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "Taylor polynomial plus Lagrange remainder and intermediate-point constraints"
+          "result": "Taylor polynomial plus Lagrange remainder and intermediate-point constraints",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-taylor-exponential-v1"
+          ],
+          "verification": "backend/tests/test_engine_taylor.py"
         }
       ],
       "method": "taylor-lagrange-remainder-variant-d",
@@ -14141,18 +14169,25 @@
       "family": "maclaurin-lagrange-remainder",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-maclaurin-sine-v1"
+      ],
       "family_contracts": [
         "AM1/71"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "Maclaurin polynomial plus nth Lagrange remainder"
+          "result": "Maclaurin polynomial plus nth Lagrange remainder",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-maclaurin-sine-v1"
+          ],
+          "verification": "backend/tests/test_engine_taylor.py"
         }
       ],
       "method": "maclaurin-lagrange-remainder-variant-a",
@@ -14168,18 +14203,25 @@
       "family": "maclaurin-lagrange-remainder",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-maclaurin-cosh-v1"
+      ],
       "family_contracts": [
         "AM1/71"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "Maclaurin polynomial plus nth Lagrange remainder"
+          "result": "Maclaurin polynomial plus nth Lagrange remainder",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-maclaurin-cosh-v1"
+          ],
+          "verification": "backend/tests/test_engine_taylor.py"
         }
       ],
       "method": "maclaurin-lagrange-remainder-variant-b",
@@ -14195,18 +14237,25 @@
       "family": "maclaurin-lagrange-remainder",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-maclaurin-cosine-v1"
+      ],
       "family_contracts": [
         "AM1/71"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "Maclaurin polynomial plus nth Lagrange remainder"
+          "result": "Maclaurin polynomial plus nth Lagrange remainder",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-maclaurin-cosine-v1"
+          ],
+          "verification": "backend/tests/test_engine_taylor.py"
         }
       ],
       "method": "maclaurin-lagrange-remainder-variant-c",
@@ -14222,18 +14271,25 @@
       "family": "maclaurin-lagrange-remainder",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-maclaurin-exponential-product-v1"
+      ],
       "family_contracts": [
         "AM1/71"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "Maclaurin polynomial plus nth Lagrange remainder"
+          "result": "Maclaurin polynomial plus nth Lagrange remainder",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-maclaurin-exponential-product-v1"
+          ],
+          "verification": "backend/tests/test_engine_taylor.py"
         }
       ],
       "method": "maclaurin-lagrange-remainder-variant-d",
@@ -14249,18 +14305,25 @@
       "family": "certified-approximation-error",
       "interaction": "certificate",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-error-tangent-v1"
+      ],
       "family_contracts": [
         "AM1/72"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "certificate",
-          "result": "uniform exact absolute-error bound over the stated interval"
+          "result": "uniform exact absolute-error bound over the stated interval",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-error-tangent-v1"
+          ],
+          "verification": "backend/tests/test_engine_taylor.py"
         }
       ],
       "method": "certified-approximation-error-variant-a",
@@ -14276,18 +14339,25 @@
       "family": "certified-approximation-error",
       "interaction": "certificate",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-error-cosine-square-v1"
+      ],
       "family_contracts": [
         "AM1/72"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "certificate",
-          "result": "uniform exact absolute-error bound over the stated interval"
+          "result": "uniform exact absolute-error bound over the stated interval",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-error-cosine-square-v1"
+          ],
+          "verification": "backend/tests/test_engine_taylor.py"
         }
       ],
       "method": "certified-approximation-error-variant-b",
@@ -14303,18 +14373,25 @@
       "family": "certified-approximation-error",
       "interaction": "certificate",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-error-square-root-v1"
+      ],
       "family_contracts": [
         "AM1/72"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "certificate",
-          "result": "uniform exact absolute-error bound over the stated interval"
+          "result": "uniform exact absolute-error bound over the stated interval",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-error-square-root-v1"
+          ],
+          "verification": "backend/tests/test_engine_taylor.py"
         }
       ],
       "method": "certified-approximation-error-variant-c",
@@ -14330,18 +14407,25 @@
       "family": "certified-approximation-error",
       "interaction": "certificate",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-error-logarithm-v1"
+      ],
       "family_contracts": [
         "AM1/72"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "certificate",
-          "result": "uniform exact absolute-error bound over the stated interval"
+          "result": "uniform exact absolute-error bound over the stated interval",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-error-logarithm-v1"
+          ],
+          "verification": "backend/tests/test_engine_taylor.py"
         }
       ],
       "method": "certified-approximation-error-variant-d",
@@ -14357,18 +14441,25 @@
       "family": "certified-approximation",
       "interaction": "certificate",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-approximate-reciprocal-e-v1"
+      ],
       "family_contracts": [
         "AM1/73"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "certificate",
-          "result": "computed approximation with certified requested accuracy"
+          "result": "computed approximation with certified requested accuracy",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-approximate-reciprocal-e-v1"
+          ],
+          "verification": "backend/tests/test_engine_taylor.py"
         }
       ],
       "method": "certified-approximation-variant-a",
@@ -14384,18 +14475,25 @@
       "family": "certified-approximation",
       "interaction": "certificate",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-approximate-cube-root-v1"
+      ],
       "family_contracts": [
         "AM1/73"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "certificate",
-          "result": "computed approximation with certified requested accuracy"
+          "result": "computed approximation with certified requested accuracy",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-approximate-cube-root-v1"
+          ],
+          "verification": "backend/tests/test_engine_taylor.py"
         }
       ],
       "method": "certified-approximation-variant-b",
@@ -14411,18 +14509,25 @@
       "family": "certified-approximation",
       "interaction": "certificate",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-approximate-logarithm-v1"
+      ],
       "family_contracts": [
         "AM1/73"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "certificate",
-          "result": "computed approximation with certified requested accuracy"
+          "result": "computed approximation with certified requested accuracy",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-approximate-logarithm-v1"
+          ],
+          "verification": "backend/tests/test_engine_taylor.py"
         }
       ],
       "method": "certified-approximation-variant-c",
@@ -14438,18 +14543,25 @@
       "family": "certified-approximation",
       "interaction": "certificate",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-approximate-sine-v1"
+      ],
       "family_contracts": [
         "AM1/73"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "certificate",
-          "result": "computed approximation with certified requested accuracy"
+          "result": "computed approximation with certified requested accuracy",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-approximate-sine-v1"
+          ],
+          "verification": "backend/tests/test_engine_taylor.py"
         }
       ],
       "method": "certified-approximation-variant-d",
@@ -23889,18 +24001,25 @@
       "family": "certified-approximation-error",
       "interaction": "certificate",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-error-inverse-root-v1"
+      ],
       "family_contracts": [
         "AM1/72"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "certificate",
-          "result": "uniform exact absolute-error bound over the stated interval"
+          "result": "uniform exact absolute-error bound over the stated interval",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-error-inverse-root-v1"
+          ],
+          "verification": "backend/tests/test_engine_taylor.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -26999,7 +27118,7 @@
       ],
       "delivery": {
         "issue": 237,
-        "status": "partial-computational-delivery",
+        "status": "computational-delivery-complete",
         "verification": "backend/tests/test_engine_derivatives.py"
       }
     },
@@ -27042,7 +27161,7 @@
       ],
       "delivery": {
         "issue": 237,
-        "status": "partial-computational-delivery",
+        "status": "computational-delivery-complete",
         "verification": "backend/tests/test_engine_derivatives.py"
       }
     },
@@ -27072,7 +27191,7 @@
       ],
       "delivery": {
         "issue": 237,
-        "status": "partial-computational-delivery",
+        "status": "computational-delivery-complete",
         "verification": "backend/tests/test_engine_derivatives.py"
       }
     },
@@ -27099,7 +27218,7 @@
       ],
       "delivery": {
         "issue": 237,
-        "status": "partial-computational-delivery",
+        "status": "computational-delivery-complete",
         "verification": "backend/tests/test_engine_derivatives.py"
       }
     },
@@ -27125,7 +27244,7 @@
       ],
       "delivery": {
         "issue": 237,
-        "status": "partial-computational-delivery",
+        "status": "computational-delivery-complete",
         "verification": "backend/tests/test_engine_analysis_limits.py"
       }
     },
@@ -27166,7 +27285,7 @@
       ],
       "delivery": {
         "issue": 237,
-        "status": "partial-computational-delivery",
+        "status": "computational-delivery-complete",
         "verification": "backend/tests/test_engine_analysis_limits.py"
       }
     },
@@ -27199,7 +27318,7 @@
       ],
       "delivery": {
         "issue": 237,
-        "status": "partial-computational-delivery",
+        "status": "computational-delivery-complete",
         "verification": "backend/tests/test_engine_extrema.py"
       }
     },
@@ -27232,7 +27351,7 @@
       ],
       "delivery": {
         "issue": 237,
-        "status": "partial-computational-delivery",
+        "status": "computational-delivery-complete",
         "verification": "backend/tests/test_engine_extrema.py"
       }
     },
@@ -27264,7 +27383,7 @@
       ],
       "delivery": {
         "issue": 237,
-        "status": "partial-computational-delivery",
+        "status": "computational-delivery-complete",
         "verification": "backend/tests/test_engine_extrema.py"
       }
     },
@@ -27295,7 +27414,7 @@
       ],
       "delivery": {
         "issue": 237,
-        "status": "partial-computational-delivery",
+        "status": "computational-delivery-complete",
         "verification": "backend/tests/test_engine_extrema.py"
       }
     },
@@ -27335,7 +27454,7 @@
       ],
       "delivery": {
         "issue": 237,
-        "status": "partial-computational-delivery",
+        "status": "computational-delivery-complete",
         "verification": "backend/tests/test_engine_convexity.py"
       }
     },
@@ -27622,7 +27741,7 @@
       ],
       "delivery": {
         "issue": 237,
-        "status": "partial-computational-delivery",
+        "status": "computational-delivery-complete",
         "verification": "backend/tests/test_engine_convexity.py"
       }
     },
@@ -27637,7 +27756,18 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "analysis1-derivatives-taylor-cubic-v1",
+        "analysis1-derivatives-taylor-exponential-v1",
+        "analysis1-derivatives-taylor-reciprocal-power-v1",
+        "analysis1-derivatives-taylor-sine-at-pi-v1"
+      ],
+      "delivery": {
+        "issue": 237,
+        "status": "computational-delivery-complete",
+        "verification": "backend/tests/test_engine_taylor.py"
+      }
     },
     "AM1/71": {
       "family": "maclaurin-lagrange-remainder",
@@ -27650,7 +27780,18 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "analysis1-derivatives-maclaurin-cosh-v1",
+        "analysis1-derivatives-maclaurin-cosine-v1",
+        "analysis1-derivatives-maclaurin-exponential-product-v1",
+        "analysis1-derivatives-maclaurin-sine-v1"
+      ],
+      "delivery": {
+        "issue": 237,
+        "status": "computational-delivery-complete",
+        "verification": "backend/tests/test_engine_taylor.py"
+      }
     },
     "AM1/72": {
       "family": "certified-approximation-error",
@@ -27663,7 +27804,19 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "analysis1-derivatives-error-cosine-square-v1",
+        "analysis1-derivatives-error-inverse-root-v1",
+        "analysis1-derivatives-error-logarithm-v1",
+        "analysis1-derivatives-error-square-root-v1",
+        "analysis1-derivatives-error-tangent-v1"
+      ],
+      "delivery": {
+        "issue": 237,
+        "status": "computational-delivery-complete",
+        "verification": "backend/tests/test_engine_taylor.py"
+      }
     },
     "AM1/73": {
       "family": "certified-approximation",
@@ -27676,7 +27829,18 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "analysis1-derivatives-approximate-cube-root-v1",
+        "analysis1-derivatives-approximate-logarithm-v1",
+        "analysis1-derivatives-approximate-reciprocal-e-v1",
+        "analysis1-derivatives-approximate-sine-v1"
+      ],
+      "delivery": {
+        "issue": 237,
+        "status": "computational-delivery-complete",
+        "verification": "backend/tests/test_engine_taylor.py"
+      }
     },
     "AM2A/1.1": {
       "family": "improper-definition",
@@ -28621,7 +28785,7 @@
       ],
       "delivery": {
         "issue": 237,
-        "status": "partial-computational-delivery",
+        "status": "computational-delivery-complete",
         "verification": "backend/tests/test_engine_analysis_limits.py"
       }
     },
@@ -28641,7 +28805,7 @@
       ],
       "delivery": {
         "issue": 237,
-        "status": "partial-computational-delivery",
+        "status": "computational-delivery-complete",
         "verification": "backend/tests/test_engine_convexity.py"
       }
     },
@@ -28727,8 +28891,8 @@
     "family_contracts": 146,
     "deferred_only_references": 30,
     "mixed_references": 146,
-    "verified_generator_deliveries": 320,
-    "verified_computational_components": 342
+    "verified_generator_deliveries": 337,
+    "verified_computational_components": 359
   },
   "deliveries": {
     "235": {
@@ -28966,8 +29130,12 @@
       "verification_scope": "local bounded mathematics, replay and Linux worker checks; hosted CI, deployment and live checks remain pending"
     },
     "237": {
-      "status": "implementation-in-progress",
+      "status": "computational-delivery-complete",
       "generator_versions": [
+        "analysis1-derivatives-approximate-cube-root-v1",
+        "analysis1-derivatives-approximate-logarithm-v1",
+        "analysis1-derivatives-approximate-reciprocal-e-v1",
+        "analysis1-derivatives-approximate-sine-v1",
         "analysis1-derivatives-arcsine-shifted-square-v1",
         "analysis1-derivatives-arctan-difference-v1",
         "analysis1-derivatives-arctan-power-v1",
@@ -28995,8 +29163,13 @@
         "analysis1-derivatives-differentiable-join-v1",
         "analysis1-derivatives-double-root-quotient-v1",
         "analysis1-derivatives-error-average-speed-v1",
+        "analysis1-derivatives-error-cosine-square-v1",
         "analysis1-derivatives-error-fall-depth-v1",
+        "analysis1-derivatives-error-inverse-root-v1",
+        "analysis1-derivatives-error-logarithm-v1",
         "analysis1-derivatives-error-sphere-volume-v1",
+        "analysis1-derivatives-error-square-root-v1",
+        "analysis1-derivatives-error-tangent-v1",
         "analysis1-derivatives-error-triangle-area-v1",
         "analysis1-derivatives-exponential-arctan-v1",
         "analysis1-derivatives-exponential-cosh-v1",
@@ -29041,6 +29214,10 @@
         "analysis1-derivatives-log-sine-ratio-v1",
         "analysis1-derivatives-log-tangent-product-v1",
         "analysis1-derivatives-logarithm-constant-v1",
+        "analysis1-derivatives-maclaurin-cosh-v1",
+        "analysis1-derivatives-maclaurin-cosine-v1",
+        "analysis1-derivatives-maclaurin-exponential-product-v1",
+        "analysis1-derivatives-maclaurin-sine-v1",
         "analysis1-derivatives-monotone-cubic-over-quadratic-v1",
         "analysis1-derivatives-monotone-cubic-v1",
         "analysis1-derivatives-monotone-exponential-difference-v1",
@@ -29083,31 +29260,17 @@
         "analysis1-derivatives-tangent-rational-v1",
         "analysis1-derivatives-tangent-root-exponential-v1",
         "analysis1-derivatives-tangent-tangent-square-v1",
+        "analysis1-derivatives-taylor-cubic-v1",
+        "analysis1-derivatives-taylor-exponential-v1",
+        "analysis1-derivatives-taylor-reciprocal-power-v1",
+        "analysis1-derivatives-taylor-sine-at-pi-v1",
         "analysis1-derivatives-trig-sum-v1",
         "analysis1-derivatives-variable-power-v1"
       ],
-      "source_references": 120,
-      "computational_components": 120,
+      "source_references": 137,
+      "computational_components": 137,
       "verification_scope": "local bounded mathematics, replay and Linux worker checks; hosted CI, deployment and live checks remain pending",
-      "pending_source_references": [
-        "AM1/70/a",
-        "AM1/70/b",
-        "AM1/70/c",
-        "AM1/70/d",
-        "AM1/71/a",
-        "AM1/71/b",
-        "AM1/71/c",
-        "AM1/71/d",
-        "AM1/72/a",
-        "AM1/72/b",
-        "AM1/72/c",
-        "AM1/72/d",
-        "AM1/73/a",
-        "AM1/73/b",
-        "AM1/73/c",
-        "AM1/73/d",
-        "AM1/exam/second/C/2"
-      ],
+      "pending_source_references": [],
       "deferred_source_references": {
         "AM1/exam/distinction/single/3": "Open construction: infinitely many polynomials have a strict local minimum only at -1, a strict local maximum only at 2 and an inflection only at 0, so an exact answer contract cannot check a free construction. The computational part of the family (lowest-degree polynomial from extremum and inflection data) is delivered by AM1/51 (polynomial-extrema, polynomial-inflection); a property-checking answer needs its own contract and is left to the proof/construction stage #244."
       }
