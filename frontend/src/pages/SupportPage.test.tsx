@@ -25,5 +25,5 @@ it('loads the Ko-fi panel only after the visitor asks for it', async () => {
 
 it('shows no form without a support page', async () => {
   await act(async () => root.render(<SupportPage url="" />));
-  expect(element.querySelector('button, iframe')).toBeNull();
+  expect(element.querySelector('main button, main iframe')).toBeNull();
 });

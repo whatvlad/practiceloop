@@ -1,6 +1,7 @@
 import { Link } from '../router';
 import { Button, ButtonLink } from './Button';
 import { LoopMark } from './icons';
+import { ThemeToggle } from './ThemeToggle';
 
 export function Logo({ to = '/' }: { to?: string }) {
   return (
@@ -37,6 +38,7 @@ export function AppNav({ current, initial, onLogOut, busy = false }: AppNavProps
         ))}
       </nav>
       <div className="pl-row pl-nav-account">
+        <ThemeToggle />
         <Button variant="ghost" size="sm" onClick={onLogOut} disabled={busy} aria-busy={busy}>
           {busy ? 'Logging out…' : 'Log out'}
         </Button>
@@ -54,6 +56,7 @@ export function PublicNav({ landing = false }: { landing?: boolean }) {
     <header className="pl-nav pl-nav--bare">
       <Logo />
       <div className="pl-row">
+        <ThemeToggle />
         {landing ? (
           <a className="pl-btn pl-btn--ghost pl-btn--sm pl-nav-secondary" href="#how">
             How it works

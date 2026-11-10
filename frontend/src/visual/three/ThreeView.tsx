@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useTheme } from '../../theme';
 import {
   AmbientLight,
   BufferAttribute,
@@ -95,6 +96,8 @@ export default function ThreeView({ scene: data, label, onUnavailable }: { scene
   const host = useRef<HTMLDivElement>(null);
   const reset = useRef<() => void>(() => {});
   const [available] = useState(hasWebGL);
+  // The scene reads its colors from the theme tokens, so a theme switch redraws it.
+  const theme = useTheme();
 
   useEffect(() => {
     if (!available) onUnavailable?.();
@@ -237,7 +240,7 @@ export default function ThreeView({ scene: data, label, onUnavailable }: { scene
       renderer.dispose();
       renderer.domElement.remove();
     };
-  }, [available, data, label, onUnavailable]);
+  }, [available, data, label, onUnavailable, theme]);
 
   if (!available) return null;
   return (

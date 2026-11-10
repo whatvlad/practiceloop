@@ -142,7 +142,7 @@ export function PrivacyPage() {
               ? 'MathLoop itself sets no cookies. Our Cookiebot consent banner stores your choice in a cookie, so it does not ask again on every visit.'
               : 'MathLoop sets no cookies.'}{' '}
             When you sign in, your session is kept in your browser’s local storage so you stay signed in; logging out
-            removes it. Local storage also keeps a count of the problems you solved on this device and when you last closed the support notice, so it does not keep asking. Fonts are served from this website, not from a third party.
+            removes it. Local storage also keeps a count of the problems you solved on this device, when you last closed the support notice, so it does not keep asking, and whether you chose the light or the dark theme. Fonts are served from this website, not from a third party.
           </p>
           {consentBanner && <Button variant="secondary" size="sm" onClick={() => openCookieSettings()}>Change cookie settings</Button>}
         </section>

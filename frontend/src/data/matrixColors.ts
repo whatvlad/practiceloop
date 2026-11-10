@@ -1,20 +1,43 @@
-// The same matrix position keeps the same color across the original operands.
-export const productColors = ['#5fa8ff', '#ffab4d', '#65df91', '#d99bff', '#ff829d'];
-const colors = [
-  '#5fa8ff', '#65df91', '#ffab4d', '#d99bff', '#ff829d',
-  '#32a7af', '#b99b1b', '#9b7fea', '#d97846', '#629535',
-  '#779deb', '#ba6e9c', '#478f9c', '#c28563', '#8e9b38',
-  '#8e78b9', '#c96950', '#4b9a80', '#b98d35', '#8492c0',
-  '#ca7594', '#559db9', '#a687bb', '#b88343', '#718d50',
-];
+import type { Theme } from '../theme';
 
-export function colorMatrixEntries(latex: string, product = false): string {
+// The same matrix position keeps the same color across the original operands.
+// Light-theme colors are the same hues, darkened to at least 4.5:1 on the paper canvas.
+const PRODUCT: Record<Theme, readonly string[]> = {
+  dark: ['#5fa8ff', '#ffab4d', '#65df91', '#d99bff', '#ff829d'],
+  light: ['#0069e6', '#ab5a00', '#1a7f3f', '#8a3fd1', '#c8264f'],
+};
+const ENTRIES: Record<Theme, readonly string[]> = {
+  dark: [
+    '#5fa8ff', '#65df91', '#ffab4d', '#d99bff', '#ff829d',
+    '#32a7af', '#b99b1b', '#9b7fea', '#d97846', '#629535',
+    '#779deb', '#ba6e9c', '#478f9c', '#c28563', '#8e9b38',
+    '#8e78b9', '#c96950', '#4b9a80', '#b98d35', '#8492c0',
+    '#ca7594', '#559db9', '#a687bb', '#b88343', '#718d50',
+  ],
+  light: [
+    '#0069e6', '#1a7f3f', '#ab5a00', '#8a3fd1', '#c8264f',
+    '#247a7f', '#816c13', '#7953e3', '#b15424', '#517b2c',
+    '#2e68e0', '#a95186', '#3b7782', '#9d603e', '#6a742a',
+    '#7c62ae', '#b45137', '#3b7965', '#8b6a28', '#5a6daa',
+    '#b84770', '#3b778e', '#885ea4', '#916735', '#5f7643',
+  ],
+};
+/** Row-operation highlights: the modified row and the reference row. */
+export const ROW_COLORS: Record<Theme, { target: string; reference: string }> = {
+  dark: { target: '#65df91', reference: '#5fa8ff' },
+  light: { target: '#1a7f3f', reference: '#0069e6' },
+};
+
+export const productColors = (theme: Theme = 'dark') => PRODUCT[theme];
+
+export function colorMatrixEntries(latex: string, product = false, theme: Theme = 'dark'): string {
+  const colors = ENTRIES[theme], products = PRODUCT[theme];
   let matrixIndex = 0;
   return latex.replace(/\\begin\{(p|b)matrix\}([\s\S]*?)\\end\{\1matrix\}/g, (_whole, kind: string, body: string) => {
     const operand = matrixIndex++;
     const rows = body.split(String.raw`\\`);
     const colored = rows.map((row, i) => row.split('&').map((cell, j) =>
-      String.raw`\color{${product ? productColors[operand === 0 ? j : i] : colors[(i * 5 + j) % colors.length]}}{${cell}}`).join('&'));
+      String.raw`\color{${product ? products[operand === 0 ? j : i] : colors[(i * 5 + j) % colors.length]}}{${cell}}`).join('&'));
     return String.raw`\begin{${kind}matrix}${colored.join(String.raw`\\`)}\end{${kind}matrix}`;
   });
 }
