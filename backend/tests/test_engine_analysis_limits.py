@@ -622,7 +622,7 @@ def reference_asymptotes(name, a, b, c):  # noqa: PLR0911, PLR0912, PLR0915
             assert remainder != 0
             poles = sp.solveset(denominator, x, sp.S.Reals)
             return sp.S.Reals - poles, poles, quotient, quotient
-    return None
+    return reference_lhopital(name, a, b, c)
 
 
 def assert_answer(answer, expected):
@@ -638,7 +638,7 @@ def assert_answer(answer, expected):
 
 
 # Derivative versions (#260) share the provider; their oracles are in test_engine_derivatives.
-LIMIT_GENERATORS = [g for g in generators() if g.topic != "differential-calculus"]
+LIMIT_GENERATORS = [g for g in generators() if not g.evaluate.__module__.endswith("_derivatives")]
 
 
 @pytest.mark.parametrize("generator", LIMIT_GENERATORS, ids=lambda g: g.prefix)
@@ -678,3 +678,95 @@ def test_actual_worker_accepts_exact_answer_and_rejects_wrong_answer(generator):
     record = {"generator_version": generator.version, "code": task.code}
     assert math_worker.check_answer(source(task.answer), record).result == "correct"
     assert math_worker.check_answer(different_source(task.answer), record).result == "incorrect"
+
+
+def reference_lhopital(name, a, b, c):  # noqa: PLR0911, PLR0912
+    """#261 oracles: errors from finite differences, limits at 50 digits near the point."""
+    with mpmath.workdps(50):
+        t, big = mpmath.mpf("1e-12"), mpmath.mpf("1e12")
+
+        def spread(f, x, step):
+            """Half the change of f over x +- step: the differential estimate, independently."""
+            return abs(f(x + step) - f(x - step)) / 2
+
+        if name == "error_triangle_area":
+            angle = (mpmath.pi / 3, mpmath.pi / 4, mpmath.pi / 6)[b % 3]
+            side = 50 * (a + 1)
+            return float(spread(lambda x: side * side * mpmath.sin(x) / 2, angle, c / 100))
+        if name == "error_sphere_volume":
+            d = 2 * (a + 2)
+            return float(spread(lambda x: mpmath.pi * x**3 / 6, d, mpmath.mpf(b) / 10**6) * 10**4)
+        if name == "error_fall_depth":
+            time = mpmath.mpf(30 + 2 * a + b) / 10
+            step = mpmath.mpf(1) / (10 if c % 2 else 20)
+            return float(spread(lambda x: mpmath.mpf("9.8") * x * x / 2, time, step))
+        if name == "error_average_speed":
+            distance = 100 * (1 + a % 2)
+            time = mpmath.mpf(1000 + 50 * b + 10 * c) / 100 * (1 + a % 2)
+            return float(spread(lambda x: distance / x, time, mpmath.mpf(1) / 10**8) * 10**6)
+        if name == "log_exponential_growth":
+            return float(mpmath.log((a + 1) ** big + b) / (c * big))
+        if name == "log_sine_ratio":
+            x = a + t
+            return float(mpmath.log(mpmath.sin(mpmath.pi * x / (2 * a))) / (b * mpmath.log(x / a)))
+        if name == "arctan_difference":
+            power = 2 + c % 2
+            x = mpmath.mpf("1e-8")
+            return float((a * x - mpmath.atan(a * x)) / x**power)
+        if name == "double_root_quotient":
+            n, x = b + 2, 1 + mpmath.mpf("1e-15")
+            return float((x ** (2 * n) - 2 * n * x + 2 * n - 1) / (x**n - n * x + n - 1))
+        if name == "log_cosine_ratio":
+            bb = b if a != b else a + 1
+            return float(mpmath.log(mpmath.cos(a * t)) / mpmath.log(mpmath.cos(bb * t)))
+        if name == "root_arccot":
+            power = mpmath.sqrt(big) if c % 2 else big
+            return float(a * power * mpmath.acot(b * big))
+        if name == "power_log_zero":
+            return float(a * t**b * mpmath.log(t))
+        if name == "tangent_half_angle":
+            x = b * mpmath.pi - t
+            return float(a * (b * mpmath.pi - x) * mpmath.tan(x / (2 * b)))
+        if name == "cosine_difference":
+            k = 2 * a + (c % 3 - 1)
+            x = mpmath.mpf("1e-6")
+            value = a / (1 - mpmath.cos(x)) - k / x**2
+            return float(value) if k == 2 * a else signed_infinity(value)
+        if name == "cotangent_difference":
+            k = a + (c % 3 - 1)
+            x = -t
+            value = a / x - k * mpmath.cot(x)
+            return float(value) if k == a else signed_infinity(value)
+        if name == "log_reciprocal_sum":
+            x = 1 + t
+            return float(a * (1 / mpmath.log(x) + 1 / (1 - x)))
+        if name == "log_power_zero":
+            x = mpmath.mpf("1e-40")
+            return float((-a * mpmath.log(x)) ** (b * x))
+        if name == "arctan_power":
+            return float((2 / mpmath.pi * mpmath.atan(a * big)) ** (b * big))
+        if name == "log_exponent_power":
+            x = mpmath.mpf("1e-30")
+            return float((1 + a * x) ** (b * mpmath.log(x)))
+        if name == "tangent_cosine_power":
+            x = mpmath.pi / 2 - mpmath.mpf("1e-30")
+            return float((a * mpmath.tan(x)) ** (b * mpmath.cos(x)))
+        if name == "exponential_cosh":
+            x = mpmath.mpf("1e-10")
+            return float((mpmath.exp(a * x) + mpmath.exp(-a * x) - 2) / (b * x * x))
+        if name == "one_minus_power":
+            x = 1 - mpmath.mpf("1e-30")
+            return float((a * (1 - x)) ** mpmath.sin(b * mpmath.pi * x))
+        if name == "tangent_log":
+            x = mpmath.mpf("1e-30")
+            return float(mpmath.tan(a * x) * mpmath.log(x))
+        if name == "log_tangent_product":
+            x = mpmath.mpf("1e-30")
+            return float(a * x * mpmath.log(mpmath.tan(b * x)))
+        if name == "differentiable_join":
+            # q from continuity at 0, p from matching one-sided difference quotients.
+            left = lambda x: mpmath.exp(a * x) + b * x  # noqa: E731
+            q = left(0)
+            p = (left(0) - left(-t)) / t
+            return float(p), float(q)
+    return None

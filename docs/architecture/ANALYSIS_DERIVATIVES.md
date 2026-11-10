@@ -78,3 +78,41 @@ independently (by root finding where the task fixes them by a condition), and
 each line is compared with \(f(x_0)+f'(x_0)(x-x_0)\). The same test parses and
 checks the exact answer and renders every distinct variant; goldens and
 worker tests cover replay.
+
+## Differentials, L'Hopital limits and differentiability joins (#261)
+
+Prefixes `DVBL` to `DVBZ` and `DVCA` to `DVCI` cover AM1/44, AM1/45, the
+differentiability-parameter exam family and the exam L'Hopital forms. Two exam
+references repeat a numbered task exactly (second/A/1 is AM1/45/c, main/C/6 is
+AM1/45/l), so they name the same version.
+
+| Reference | Version | Generated form and answer |
+|---|---|---|
+| AM1/44/a | `error-triangle-area` | area \(\tfrac12b^2\sin\alpha\), error \(\tfrac12b^2\cos\alpha\,\Delta\alpha\) |
+| AM1/44/b | `error-sphere-volume` | \(V=\pi d^3/6\), error \(\tfrac\pi2d^2\Delta d\) |
+| AM1/44/c | `error-fall-depth` | \(h=gt^2/2\), error \(gt\Delta t\) |
+| AM1/44/d | `error-average-speed` | \(v=s/t\), error \(s\Delta t/t^2\) |
+| AM1/45/a | `log-exponential-growth` | \(\ln((a+1)^x+b)/(cx)\to\ln(a+1)/c\) |
+| AM1/45/b | `log-sine-ratio` | \(\ln\sin\frac{\pi x}{2a}/(b\ln\frac xa)\to0\) at \(a\) |
+| AM1/45/c, exam second/A/1 | `arctan-difference` | \((ax-\arctan ax)/x^k\): \(0\) or \(a^3/3\) |
+| AM1/45/d | `double-root-quotient` | \((x^{2n}-2nx+2n-1)/(x^n-nx+n-1)\to2(2n-1)/(n-1)\) |
+| AM1/45/e | `log-cosine-ratio` | \(\ln\cos ax/\ln\cos bx\to a^2/b^2\) |
+| AM1/45/f | `root-arccot` | \(ax^p\operatorname{arccot}bx\): \(0\) for \(p=\tfrac12\), \(a/b\) for \(p=1\) |
+| AM1/45/g | `power-log-zero` | \(ax^b\ln x\to0\) |
+| AM1/45/h | `tangent-half-angle` | \(a(b\pi-x)\tan\frac{x}{2b}\to2ab\) |
+| AM1/45/i | `cosine-difference` | \(\frac{a}{1-\cos x}-\frac{k}{x^2}\): \(a/6\) or \(\pm\infty\) |
+| AM1/45/j | `cotangent-difference` | \(\frac ax-k\cot x\) as \(x\to0^-\): \(0\) or \(\pm\infty\) |
+| AM1/45/k | `log-reciprocal-sum` | \(a(\frac1{\ln x}+\frac1{1-x})\to a/2\) |
+| AM1/45/l, exam main/C/6 | `log-power-zero` | \((-a\ln x)^{bx}\to1\) |
+| AM1/45/m | `arctan-power` | \((\frac2\pi\arctan ax)^{bx}\to e^{-2b/(a\pi)}\) |
+| AM1/45/n | `log-exponent-power` | \((1+ax)^{b\ln x}\to1\) |
+| AM1/45/o | `tangent-cosine-power` | \((a\tan x)^{b\cos x}\to1\) at \(\pi/2^-\) |
+| exam second/D/2 | `exponential-cosh` | \((e^{ax}+e^{-ax}-2)/(bx^2)\to a^2/b\) |
+| exam main/A/5 | `one-minus-power` | \((a(1-x))^{\sin b\pi x}\to1\) at \(1^-\) |
+| exam resit/B/5 | `tangent-log` | \(\tan(ax)\ln x\to0\) |
+| exam resit/D/1 | `log-tangent-product` | \(ax\ln\tan bx\to0\) |
+| exam main/A/6 | `differentiable-join` | \(e^{ax}+bx\) and \(x^2+px+q\): \(q=1\), \(p=a+b\) |
+
+The error tests compare each answer with half the change of the stated
+quantity over a small symmetric step, and the limits with 50-digit values next
+to the limit point.

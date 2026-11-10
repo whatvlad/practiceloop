@@ -6,6 +6,7 @@ from typing import Any
 
 from app.engine.blocks.analysis_one import bisect_exp
 from app.engine.generators import _function_limits as forms
+from app.engine.generators import _lhopital
 from app.engine.generators._elementary_common import Built
 
 Path = dict[str, Any]
@@ -564,6 +565,20 @@ def rational_oblique_pole_left(a: int, b: int, c: int) -> dict[str, Any]:
     return oblique_pole_plot(-(a + b), -a, -1, b)
 
 
+def differentiable_join(a: int, b: int, c: int) -> dict[str, Any]:
+    p = a + b
+    return plot(
+        "Smooth join at zero",
+        "With q = 1 and the computed p both branches pass through (0, 1) with the same slope.",
+        [
+            path("Left branch", -2, 0, lambda x: math.exp(a * x) + b * x),
+            path("Right branch", 0, 1.5, lambda x: x * x + p * x + 1),
+            path("Common tangent", -1, 1, lambda x: 1 + p * x),
+        ],
+        [point("Join", 0, 1, included=True)],
+    )
+
+
 def bounded_inverse_trig(a: int, b: int, c: int) -> dict[str, Any]:
     def f(x: float) -> float:
         return a * x * math.atan(b / x) + c
@@ -630,4 +645,5 @@ diagrams: dict[Callable[[int, int, int], Built], Callable[[int, int, int], dict[
     forms.radical_quotient_right: radical_quotient_right,
     forms.rational_oblique_pole: rational_oblique_pole,
     forms.rational_oblique_pole_left: rational_oblique_pole_left,
+    _lhopital.differentiable_join: differentiable_join,
 }

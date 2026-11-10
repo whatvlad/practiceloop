@@ -37470,5 +37470,1709 @@
         "difficulty": 5
       }
     }
+  ],
+  "analysis1-derivatives-error-triangle-area-v1": [
+    {
+      "code": "DVBL-1-0000000000000003-95",
+      "statement": "\\(\\text{An isosceles triangle has legs }150\\text{ m. The apex angle is measured as }\\pi/4\\text{ with absolute error }\\frac{1}{20}\\text{ rad. Estimate the absolute error of}\\text{ the area with the differential (in m}^2\\text{).}\\)",
+      "steps": [
+        [
+          "method",
+          "P(\\alpha)=\\tfrac12 b^2\\sin\\alpha,\\qquad \\Delta P\\approx|P'(\\alpha)|\\,\\Delta\\alpha."
+        ],
+        [
+          "calculation",
+          "\\Delta P\\approx\\tfrac12\\cdot150^2\\cos(\\pi/4)\\cdot\\frac{1}{20}=\\frac{1125 \\sqrt{2}}{4}."
+        ],
+        [
+          "result",
+          "\\frac{1125 \\sqrt{2}}{4}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\frac{1125 \\sqrt{2}}{4}",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVBL-1-0000000000000200-74",
+      "statement": "\\(\\text{An isosceles triangle has legs }300\\text{ m. The apex angle is measured as }\\pi/6\\text{ with absolute error }\\frac{1}{100}\\text{ rad. Estimate the absolute error of}\\text{ the area with the differential (in m}^2\\text{).}\\)",
+      "steps": [
+        [
+          "method",
+          "P(\\alpha)=\\tfrac12 b^2\\sin\\alpha,\\qquad \\Delta P\\approx|P'(\\alpha)|\\,\\Delta\\alpha."
+        ],
+        [
+          "calculation",
+          "\\Delta P\\approx\\tfrac12\\cdot300^2\\cos(\\pi/6)\\cdot\\frac{1}{100}=225 \\sqrt{3}."
+        ],
+        [
+          "result",
+          "225 \\sqrt{3}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "225 \\sqrt{3}",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVBL-1-0000000000000999-88",
+      "statement": "\\(\\text{An isosceles triangle has legs }150\\text{ m. The apex angle is measured as }\\pi/3\\text{ with absolute error }\\frac{1}{20}\\text{ rad. Estimate the absolute error of}\\text{ the area with the differential (in m}^2\\text{).}\\)",
+      "steps": [
+        [
+          "method",
+          "P(\\alpha)=\\tfrac12 b^2\\sin\\alpha,\\qquad \\Delta P\\approx|P'(\\alpha)|\\,\\Delta\\alpha."
+        ],
+        [
+          "calculation",
+          "\\Delta P\\approx\\tfrac12\\cdot150^2\\cos(\\pi/3)\\cdot\\frac{1}{20}=\\frac{1125}{4}."
+        ],
+        [
+          "result",
+          "\\frac{1125}{4}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\frac{1125}{4}",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-error-sphere-volume-v1": [
+    {
+      "code": "DVBM-1-0000000000000003-29",
+      "statement": "\\(\\text{The diameter of a ball is measured as }8\\text{ mm with absolute error }\\frac{1}{100}\\text{ mm. Estimate the absolute error of its volume (in mm}^3\\text{).}\\)",
+      "steps": [
+        [
+          "method",
+          "V(d)=\\tfrac{\\pi}{6}d^3,\\qquad \\Delta V\\approx\\tfrac{\\pi}{2}d^2\\,\\Delta d."
+        ],
+        [
+          "calculation",
+          "\\Delta V\\approx\\tfrac{\\pi}{2}\\cdot8^2\\cdot\\frac{1}{100}=\\frac{8 \\pi}{25}."
+        ],
+        [
+          "result",
+          "\\frac{8 \\pi}{25}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\frac{8 \\pi}{25}",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVBM-1-0000000000000200-08",
+      "statement": "\\(\\text{The diameter of a ball is measured as }14\\text{ mm with absolute error }\\frac{1}{20}\\text{ mm. Estimate the absolute error of its volume (in mm}^3\\text{).}\\)",
+      "steps": [
+        [
+          "method",
+          "V(d)=\\tfrac{\\pi}{6}d^3,\\qquad \\Delta V\\approx\\tfrac{\\pi}{2}d^2\\,\\Delta d."
+        ],
+        [
+          "calculation",
+          "\\Delta V\\approx\\tfrac{\\pi}{2}\\cdot14^2\\cdot\\frac{1}{20}=\\frac{49 \\pi}{10}."
+        ],
+        [
+          "result",
+          "\\frac{49 \\pi}{10}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\frac{49 \\pi}{10}",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVBM-1-0000000000000999-22",
+      "statement": "\\(\\text{The diameter of a ball is measured as }8\\text{ mm with absolute error }\\frac{3}{100}\\text{ mm. Estimate the absolute error of its volume (in mm}^3\\text{).}\\)",
+      "steps": [
+        [
+          "method",
+          "V(d)=\\tfrac{\\pi}{6}d^3,\\qquad \\Delta V\\approx\\tfrac{\\pi}{2}d^2\\,\\Delta d."
+        ],
+        [
+          "calculation",
+          "\\Delta V\\approx\\tfrac{\\pi}{2}\\cdot8^2\\cdot\\frac{3}{100}=\\frac{24 \\pi}{25}."
+        ],
+        [
+          "result",
+          "\\frac{24 \\pi}{25}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\frac{24 \\pi}{25}",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-derivatives-error-fall-depth-v1": [
+    {
+      "code": "DVBN-1-0000000000000003-61",
+      "statement": "\\(\\text{A stone falls freely for }\\frac{7}{2}\\text{ s, measured with absolute error }\\frac{1}{10}\\text{ s. With }g=\\frac{49}{5}\\text{ m/s}^2\\text{ estimate the absolute}\\text{ error of the depth }h=gt^2/2\\text{ (in m).}\\)",
+      "steps": [
+        [
+          "method",
+          "\\Delta h\\approx g\\,t\\,\\Delta t."
+        ],
+        [
+          "calculation",
+          "\\Delta h\\approx\\frac{49}{5}\\cdot\\frac{7}{2}\\cdot\\frac{1}{10}=\\frac{343}{100}."
+        ],
+        [
+          "result",
+          "\\frac{343}{100}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\frac{343}{100}",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVBN-1-0000000000000200-40",
+      "statement": "\\(\\text{A stone falls freely for }\\frac{9}{2}\\text{ s, measured with absolute error }\\frac{1}{10}\\text{ s. With }g=\\frac{49}{5}\\text{ m/s}^2\\text{ estimate the absolute}\\text{ error of the depth }h=gt^2/2\\text{ (in m).}\\)",
+      "steps": [
+        [
+          "method",
+          "\\Delta h\\approx g\\,t\\,\\Delta t."
+        ],
+        [
+          "calculation",
+          "\\Delta h\\approx\\frac{49}{5}\\cdot\\frac{9}{2}\\cdot\\frac{1}{10}=\\frac{441}{100}."
+        ],
+        [
+          "result",
+          "\\frac{441}{100}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\frac{441}{100}",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVBN-1-0000000000000999-54",
+      "statement": "\\(\\text{A stone falls freely for }\\frac{37}{10}\\text{ s, measured with absolute error }\\frac{1}{10}\\text{ s. With }g=\\frac{49}{5}\\text{ m/s}^2\\text{ estimate the absolute}\\text{ error of the depth }h=gt^2/2\\text{ (in m).}\\)",
+      "steps": [
+        [
+          "method",
+          "\\Delta h\\approx g\\,t\\,\\Delta t."
+        ],
+        [
+          "calculation",
+          "\\Delta h\\approx\\frac{49}{5}\\cdot\\frac{37}{10}\\cdot\\frac{1}{10}=\\frac{1813}{500}."
+        ],
+        [
+          "result",
+          "\\frac{1813}{500}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\frac{1813}{500}",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-derivatives-error-average-speed-v1": [
+    {
+      "code": "DVBO-1-0000000000000003-69",
+      "statement": "\\(\\text{A runner covers }100\\text{ m in }11\\text{ s, timed with absolute}\\text{ error }\\frac{1}{100}\\text{ s. Estimate the absolute error of the average speed}\\text{ (in m/s).}\\)",
+      "steps": [
+        [
+          "method",
+          "v(t)=s/t,\\qquad \\Delta v\\approx\\frac{s}{t^2}\\,\\Delta t."
+        ],
+        [
+          "calculation",
+          "\\Delta v\\approx\\frac{100}{(11)^2}\\cdot\\frac{1}{100}=\\frac{1}{121}."
+        ],
+        [
+          "result",
+          "\\frac{1}{121}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\frac{1}{121}",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVBO-1-0000000000000200-48",
+      "statement": "\\(\\text{A runner covers }200\\text{ m in }\\frac{126}{5}\\text{ s, timed with absolute}\\text{ error }\\frac{1}{100}\\text{ s. Estimate the absolute error of the average speed}\\text{ (in m/s).}\\)",
+      "steps": [
+        [
+          "method",
+          "v(t)=s/t,\\qquad \\Delta v\\approx\\frac{s}{t^2}\\,\\Delta t."
+        ],
+        [
+          "calculation",
+          "\\Delta v\\approx\\frac{200}{(\\frac{126}{5})^2}\\cdot\\frac{1}{100}=\\frac{25}{7938}."
+        ],
+        [
+          "result",
+          "\\frac{25}{7938}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\frac{25}{7938}",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVBO-1-0000000000000999-62",
+      "statement": "\\(\\text{A runner covers }100\\text{ m in }12\\text{ s, timed with absolute}\\text{ error }\\frac{1}{100}\\text{ s. Estimate the absolute error of the average speed}\\text{ (in m/s).}\\)",
+      "steps": [
+        [
+          "method",
+          "v(t)=s/t,\\qquad \\Delta v\\approx\\frac{s}{t^2}\\,\\Delta t."
+        ],
+        [
+          "calculation",
+          "\\Delta v\\approx\\frac{100}{(12)^2}\\cdot\\frac{1}{100}=\\frac{1}{144}."
+        ],
+        [
+          "result",
+          "\\frac{1}{144}"
+        ]
+      ],
+      "answer_kind": "formula",
+      "answer_latex": "\\frac{1}{144}",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-log-exponential-growth-v1": [
+    {
+      "code": "DVBP-1-0000000000000003-61",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\infty}\\frac{\\log{\\left(3^{x} + 1 \\right)}}{5 x}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{3^x\\ln3/(3^x+1)}{5}\\to\\frac{\\ln3}{5}."
+        ],
+        [
+          "result",
+          "\\frac{\\log{\\left(3 \\right)}}{5}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{\\log{\\left(3 \\right)}}{5}",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVBP-1-0000000000000200-40",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\infty}\\frac{\\log{\\left(6^{x} + 5 \\right)}}{x}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{6^x\\ln6/(6^x+5)}{1}\\to\\frac{\\ln6}{1}."
+        ],
+        [
+          "result",
+          "\\log{\\left(6 \\right)}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\log{\\left(6 \\right)}",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVBP-1-0000000000000999-54",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\infty}\\frac{\\log{\\left(3^{x} + 3 \\right)}}{5 x}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{3^x\\ln3/(3^x+3)}{5}\\to\\frac{\\ln3}{5}."
+        ],
+        [
+          "result",
+          "\\frac{\\log{\\left(3 \\right)}}{5}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{\\log{\\left(3 \\right)}}{5}",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-derivatives-log-sine-ratio-v1": [
+    {
+      "code": "DVBQ-1-0000000000000003-07",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 2}\\frac{\\ln\\sin\\frac{\\pi x}{4}}{\\ln\\frac{x}{2}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{\\frac{\\pi}{4}\\cot\\frac{\\pi x}{4}}{1/x}\\to\\frac{\\frac{\\pi}{4}\\cdot0}{1/2}=0."
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVBQ-1-0000000000000200-83",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 5}\\frac{\\ln\\sin\\frac{\\pi x}{10}}{5\\ln\\frac{x}{5}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{\\frac{\\pi}{10}\\cot\\frac{\\pi x}{10}}{5/x}\\to\\frac{\\frac{\\pi}{10}\\cdot0}{5/5}=0."
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVBQ-1-0000000000000999-00",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 2}\\frac{\\ln\\sin\\frac{\\pi x}{4}}{3\\ln\\frac{x}{2}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{\\frac{\\pi}{4}\\cot\\frac{\\pi x}{4}}{3/x}\\to\\frac{\\frac{\\pi}{4}\\cdot0}{3/2}=0."
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-arctan-difference-v1": [
+    {
+      "code": "DVBR-1-0000000000000003-74",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0}\\frac{2 x - \\operatorname{atan}{\\left(2 x \\right)}}{x^{3}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{2-\\frac{2}{1+4x^2}}{3x^{2}}=\\frac{8x^2}{3x^{2}(1+4x^2)}\\to\\frac{8}{3}."
+        ],
+        [
+          "result",
+          "\\frac{8}{3}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{8}{3}",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVBR-1-0000000000000200-53",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0}\\frac{5 x - \\operatorname{atan}{\\left(5 x \\right)}}{x^{3}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{5-\\frac{5}{1+25x^2}}{3x^{2}}=\\frac{125x^2}{3x^{2}(1+25x^2)}\\to\\frac{125}{3}."
+        ],
+        [
+          "result",
+          "\\frac{125}{3}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{125}{3}",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVBR-1-0000000000000999-67",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0}\\frac{2 x - \\operatorname{atan}{\\left(2 x \\right)}}{x^{3}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{2-\\frac{2}{1+4x^2}}{3x^{2}}=\\frac{8x^2}{3x^{2}(1+4x^2)}\\to\\frac{8}{3}."
+        ],
+        [
+          "result",
+          "\\frac{8}{3}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{8}{3}",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-double-root-quotient-v1": [
+    {
+      "code": "DVBS-1-0000000000000003-03",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 1}\\frac{x^{6} - 6 x + 5}{x^{3} - 3 x + 2}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\text{Two applications: }\\frac{6(5)x^{4}}{3(2)x^{1}}\\to5."
+        ],
+        [
+          "result",
+          "5"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "5",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVBS-1-0000000000000200-79",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 1}\\frac{x^{14} - 14 x + 13}{x^{7} - 7 x + 6}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\text{Two applications: }\\frac{14(13)x^{12}}{7(6)x^{5}}\\to\\frac{13}{3}."
+        ],
+        [
+          "result",
+          "\\frac{13}{3}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{13}{3}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVBS-1-0000000000000999-93",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 1}\\frac{x^{10} - 10 x + 9}{x^{5} - 5 x + 4}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\text{Two applications: }\\frac{10(9)x^{8}}{5(4)x^{3}}\\to\\frac{9}{2}."
+        ],
+        [
+          "result",
+          "\\frac{9}{2}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{9}{2}",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-log-cosine-ratio-v1": [
+    {
+      "code": "DVBT-1-0000000000000003-27",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0}\\frac{\\log{\\left(\\cos{\\left(2 x \\right)} \\right)}}{\\log{\\left(\\cos{\\left(x \\right)} \\right)}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{-2\\tan 2x}{-1\\tan x}\\to\\frac{2\\cdot2}{1\\cdot1}=4."
+        ],
+        [
+          "result",
+          "4"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "4",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVBT-1-0000000000000200-06",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0}\\frac{\\log{\\left(\\cos{\\left(5 x \\right)} \\right)}}{\\log{\\left(\\cos{\\left(6 x \\right)} \\right)}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{-5\\tan 5x}{-6\\tan 6x}\\to\\frac{5\\cdot5}{6\\cdot6}=\\frac{25}{36}."
+        ],
+        [
+          "result",
+          "\\frac{25}{36}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{25}{36}",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVBT-1-0000000000000999-20",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0}\\frac{\\log{\\left(\\cos{\\left(2 x \\right)} \\right)}}{\\log{\\left(\\cos{\\left(3 x \\right)} \\right)}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{-2\\tan 2x}{-3\\tan 3x}\\to\\frac{2\\cdot2}{3\\cdot3}=\\frac{4}{9}."
+        ],
+        [
+          "result",
+          "\\frac{4}{9}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{4}{9}",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-root-arccot-v1": [
+    {
+      "code": "DVBU-1-0000000000000003-70",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\infty}2\\sqrt{x}\\operatorname{arccot}(x)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{\\operatorname{arccot}(x)}{1/(2\\sqrt{x})}:\\quad\\frac{-1/(1+1x^2)}{(\\cdot)'}\\to0."
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVBU-1-0000000000000200-49",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\infty}5\\sqrt{x}\\operatorname{arccot}(5x)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{\\operatorname{arccot}(5x)}{1/(5\\sqrt{x})}:\\quad\\frac{-5/(1+25x^2)}{(\\cdot)'}\\to0."
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVBU-1-0000000000000999-63",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\infty}2\\sqrt{x}\\operatorname{arccot}(3x)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{\\operatorname{arccot}(3x)}{1/(2\\sqrt{x})}:\\quad\\frac{-3/(1+9x^2)}{(\\cdot)'}\\to0."
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-power-log-zero-v1": [
+    {
+      "code": "DVBV-1-0000000000000003-86",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0^+}2 x \\log{\\left(x \\right)}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{\\ln x}{x^{-1}/2}:\\quad\\frac{1/x}{-1x^{-2}/2}=-\\frac{2x^{1}}{1}\\to0."
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVBV-1-0000000000000200-65",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0^+}5 x^{5} \\log{\\left(x \\right)}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{\\ln x}{x^{-5}/5}:\\quad\\frac{1/x}{-5x^{-6}/5}=-\\frac{5x^{5}}{5}\\to0."
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVBV-1-0000000000000999-79",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0^+}2 x^{3} \\log{\\left(x \\right)}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{\\ln x}{x^{-3}/2}:\\quad\\frac{1/x}{-3x^{-4}/2}=-\\frac{2x^{3}}{3}\\to0."
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-derivatives-tangent-half-angle-v1": [
+    {
+      "code": "DVBW-1-0000000000000003-70",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\pi^-}2(\\pi-x)\\tan\\frac{x}{2}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{2(\\pi-x)}{\\cot\\frac{x}{2}}:\\quad\\frac{-2}{-\\frac{1}{2}\\csc^2\\frac{x}{2}}\\to4."
+        ],
+        [
+          "result",
+          "4"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "4",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVBW-1-0000000000000200-49",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 5 \\pi^-}5(5\\pi-x)\\tan\\frac{x}{10}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{5(5\\pi-x)}{\\cot\\frac{x}{10}}:\\quad\\frac{-5}{-\\frac{1}{10}\\csc^2\\frac{x}{10}}\\to50."
+        ],
+        [
+          "result",
+          "50"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "50",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVBW-1-0000000000000999-63",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 3 \\pi^-}2(3\\pi-x)\\tan\\frac{x}{6}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{2(3\\pi-x)}{\\cot\\frac{x}{6}}:\\quad\\frac{-2}{-\\frac{1}{6}\\csc^2\\frac{x}{6}}\\to12."
+        ],
+        [
+          "result",
+          "12"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "12",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-cosine-difference-v1": [
+    {
+      "code": "DVBX-1-0000000000000003-28",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0^+}\\left(\\frac{2}{1-\\cos x}-\\frac{5}{x^2}\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{2x^2-5(1-\\cos x)}{x^2(1-\\cos x)},\\quad1-\\cos x=\\tfrac{x^2}{2}-\\tfrac{x^4}{24}+\\dots\\ \\Rightarrow\\ \\frac{(- \\frac{1}{2})x^2+\\tfrac{5}{24}x^4}{x^4/2}\\to-\\infty."
+        ],
+        [
+          "result",
+          "-\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "-\\infty",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVBX-1-0000000000000200-07",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0^+}\\left(\\frac{5}{1-\\cos x}-\\frac{10}{x^2}\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{5x^2-10(1-\\cos x)}{x^2(1-\\cos x)},\\quad1-\\cos x=\\tfrac{x^2}{2}-\\tfrac{x^4}{24}+\\dots\\ \\Rightarrow\\ \\frac{(0)x^2+\\tfrac{10}{24}x^4}{x^4/2}\\to\\frac{5}{6}."
+        ],
+        [
+          "result",
+          "\\frac{5}{6}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{5}{6}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVBX-1-0000000000000999-21",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0^+}\\left(\\frac{2}{1-\\cos x}-\\frac{5}{x^2}\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{2x^2-5(1-\\cos x)}{x^2(1-\\cos x)},\\quad1-\\cos x=\\tfrac{x^2}{2}-\\tfrac{x^4}{24}+\\dots\\ \\Rightarrow\\ \\frac{(- \\frac{1}{2})x^2+\\tfrac{5}{24}x^4}{x^4/2}\\to-\\infty."
+        ],
+        [
+          "result",
+          "-\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "-\\infty",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-cotangent-difference-v1": [
+    {
+      "code": "DVBY-1-0000000000000003-88",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0^-}\\left(\\frac{2}{x}-3\\cot x\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{2\\sin x-3x\\cos x}{x\\sin x},\\quad\\text{numerator}\\sim-1x,\\ \\text{denominator}\\sim x^2,\\ x\\to0^-."
+        ],
+        [
+          "result",
+          "\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\infty",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVBY-1-0000000000000200-67",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0^-}\\left(\\frac{5}{x}-5\\cot x\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{5\\sin x-5x\\cos x}{x\\sin x},\\quad\\text{numerator}\\sim0x,\\ \\text{denominator}\\sim x^2,\\ x\\to0^-."
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVBY-1-0000000000000999-81",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0^-}\\left(\\frac{2}{x}-3\\cot x\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{2\\sin x-3x\\cos x}{x\\sin x},\\quad\\text{numerator}\\sim-1x,\\ \\text{denominator}\\sim x^2,\\ x\\to0^-."
+        ],
+        [
+          "result",
+          "\\infty"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\infty",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-log-reciprocal-sum-v1": [
+    {
+      "code": "DVBZ-1-0000000000000003-26",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 1}2\\left(\\frac{1}{\\ln x}+\\frac{1}{1-x}\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{1-x+\\ln x}{(1-x)\\ln x}:\\ \\frac{-1+1/x}{-\\ln x+(1-x)/x}=\\frac{1-x}{-x\\ln x+1-x}:\\ \\frac{-1}{-\\ln x-2}\\to\\frac12."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVBZ-1-0000000000000200-05",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 1}5\\left(\\frac{1}{\\ln x}+\\frac{1}{1-x}\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{1-x+\\ln x}{(1-x)\\ln x}:\\ \\frac{-1+1/x}{-\\ln x+(1-x)/x}=\\frac{1-x}{-x\\ln x+1-x}:\\ \\frac{-1}{-\\ln x-2}\\to\\frac12."
+        ],
+        [
+          "result",
+          "\\frac{5}{2}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{5}{2}",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVBZ-1-0000000000000999-19",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 1}2\\left(\\frac{1}{\\ln x}+\\frac{1}{1-x}\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{1-x+\\ln x}{(1-x)\\ln x}:\\ \\frac{-1+1/x}{-\\ln x+(1-x)/x}=\\frac{1-x}{-x\\ln x+1-x}:\\ \\frac{-1}{-\\ln x-2}\\to\\frac12."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-log-power-zero-v1": [
+    {
+      "code": "DVCA-1-0000000000000003-46",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0^+}\\left(-2\\ln x\\right)^{x}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\ln f=1x\\ln(-2\\ln x)=\\frac{1\\ln(-2\\ln x)}{1/x}:\\ \\frac{1/(x\\ln x)}{-1/x^2}=-\\frac{x}{\\ln x}\\to0,\\quad f\\to e^0=1."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVCA-1-0000000000000200-25",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0^+}\\left(-5\\ln x\\right)^{5x}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\ln f=5x\\ln(-5\\ln x)=\\frac{5\\ln(-5\\ln x)}{1/x}:\\ \\frac{1/(x\\ln x)}{-1/x^2}=-\\frac{x}{\\ln x}\\to0,\\quad f\\to e^0=1."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVCA-1-0000000000000999-39",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0^+}\\left(-2\\ln x\\right)^{3x}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\ln f=3x\\ln(-2\\ln x)=\\frac{3\\ln(-2\\ln x)}{1/x}:\\ \\frac{1/(x\\ln x)}{-1/x^2}=-\\frac{x}{\\ln x}\\to0,\\quad f\\to e^0=1."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-arctan-power-v1": [
+    {
+      "code": "DVCB-1-0000000000000003-90",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\infty}\\left(\\frac{2}{\\pi}\\arctan 2x\\right)^{x}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\ln f=\\frac{1\\ln(\\frac{2}{\\pi}\\arctan 2x)}{1/x}:\\ \\frac{1\\cdot\\frac{2}{(1+4x^2)\\arctan 2x}}{-1/x^2}\\to-\\frac{2}{2\\pi}."
+        ],
+        [
+          "result",
+          "e^{- \\frac{1}{\\pi}}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "e^{- \\frac{1}{\\pi}}",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "DVCB-1-0000000000000200-69",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\infty}\\left(\\frac{2}{\\pi}\\arctan 5x\\right)^{5x}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\ln f=\\frac{5\\ln(\\frac{2}{\\pi}\\arctan 5x)}{1/x}:\\ \\frac{5\\cdot\\frac{5}{(1+25x^2)\\arctan 5x}}{-1/x^2}\\to-\\frac{10}{5\\pi}."
+        ],
+        [
+          "result",
+          "e^{- \\frac{2}{\\pi}}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "e^{- \\frac{2}{\\pi}}",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "DVCB-1-0000000000000999-83",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\infty}\\left(\\frac{2}{\\pi}\\arctan 2x\\right)^{3x}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\ln f=\\frac{3\\ln(\\frac{2}{\\pi}\\arctan 2x)}{1/x}:\\ \\frac{3\\cdot\\frac{2}{(1+4x^2)\\arctan 2x}}{-1/x^2}\\to-\\frac{6}{2\\pi}."
+        ],
+        [
+          "result",
+          "e^{- \\frac{3}{\\pi}}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "e^{- \\frac{3}{\\pi}}",
+      "metadata": {
+        "difficulty": 5
+      }
+    }
+  ],
+  "analysis1-derivatives-log-exponent-power-v1": [
+    {
+      "code": "DVCC-1-0000000000000003-90",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0^+}(1+2x)^{\\ln x}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\ln f=1\\ln x\\ln(1+2x)\\sim2x\\ln x\\to0,\\quad f\\to1."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVCC-1-0000000000000200-69",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0^+}(1+5x)^{5\\ln x}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\ln f=5\\ln x\\ln(1+5x)\\sim25x\\ln x\\to0,\\quad f\\to1."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVCC-1-0000000000000999-83",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0^+}(1+2x)^{3\\ln x}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\ln f=3\\ln x\\ln(1+2x)\\sim6x\\ln x\\to0,\\quad f\\to1."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-tangent-cosine-power-v1": [
+    {
+      "code": "DVCD-1-0000000000000003-67",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\frac{\\pi}{2}^-}\\left(2\\tan x\\right)^{\\cos x}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\ln f=\\frac{1\\ln(2\\tan x)}{\\sec x}:\\ \\frac{1\\sec^2x/\\tan x}{\\sec x\\tan x}=1\\frac{\\cos x}{\\sin^2x}\\to0."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVCD-1-0000000000000200-46",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\frac{\\pi}{2}^-}\\left(5\\tan x\\right)^{5\\cos x}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\ln f=\\frac{5\\ln(5\\tan x)}{\\sec x}:\\ \\frac{5\\sec^2x/\\tan x}{\\sec x\\tan x}=5\\frac{\\cos x}{\\sin^2x}\\to0."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 4
+      }
+    },
+    {
+      "code": "DVCD-1-0000000000000999-60",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to \\frac{\\pi}{2}^-}\\left(2\\tan x\\right)^{3\\cos x}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\ln f=\\frac{3\\ln(2\\tan x)}{\\sec x}:\\ \\frac{3\\sec^2x/\\tan x}{\\sec x\\tan x}=3\\frac{\\cos x}{\\sin^2x}\\to0."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 4
+      }
+    }
+  ],
+  "analysis1-derivatives-exponential-cosh-v1": [
+    {
+      "code": "DVCE-1-0000000000000003-93",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0}\\frac{e^{2 x} - 2 + e^{- 2 x}}{x^{2}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\text{Twice: }\\frac{4(e^{2x}+e^{-2x})}{2}\\to4."
+        ],
+        [
+          "result",
+          "4"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "4",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVCE-1-0000000000000200-72",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0}\\frac{e^{5 x} - 2 + e^{- 5 x}}{5 x^{2}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\text{Twice: }\\frac{25(e^{5x}+e^{-5x})}{10}\\to5."
+        ],
+        [
+          "result",
+          "5"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "5",
+      "metadata": {
+        "difficulty": 2
+      }
+    },
+    {
+      "code": "DVCE-1-0000000000000999-86",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0}\\frac{e^{2 x} - 2 + e^{- 2 x}}{3 x^{2}}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\text{Twice: }\\frac{4(e^{2x}+e^{-2x})}{6}\\to\\frac{4}{3}."
+        ],
+        [
+          "result",
+          "\\frac{4}{3}"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "\\frac{4}{3}",
+      "metadata": {
+        "difficulty": 2
+      }
+    }
+  ],
+  "analysis1-derivatives-one-minus-power-v1": [
+    {
+      "code": "DVCF-1-0000000000000003-46",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 1^-}\\left(2(1-x)\\right)^{\\sin \\pi x}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\ln f=\\frac{\\ln(2(1-x))}{1/\\sin(1\\pi x)}:\\ \\sin(b\\pi x)\\sim\\pm b\\pi(1-x),\\ (1-x)\\ln(1-x)\\to0,\\quad f\\to1."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "DVCF-1-0000000000000200-25",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 1^-}\\left(5(1-x)\\right)^{\\sin 5\\pi x}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\ln f=\\frac{\\ln(5(1-x))}{1/\\sin(5\\pi x)}:\\ \\sin(b\\pi x)\\sim\\pm b\\pi(1-x),\\ (1-x)\\ln(1-x)\\to0,\\quad f\\to1."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 5
+      }
+    },
+    {
+      "code": "DVCF-1-0000000000000999-39",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 1^-}\\left(2(1-x)\\right)^{\\sin 3\\pi x}\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\ln f=\\frac{\\ln(2(1-x))}{1/\\sin(3\\pi x)}:\\ \\sin(b\\pi x)\\sim\\pm b\\pi(1-x),\\ (1-x)\\ln(1-x)\\to0,\\quad f\\to1."
+        ],
+        [
+          "result",
+          "1"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 5
+      }
+    }
+  ],
+  "analysis1-derivatives-tangent-log-v1": [
+    {
+      "code": "DVCG-1-0000000000000003-51",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0^+}\\tan(2x)\\,\\ln x\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{\\ln x}{\\cot 2x}:\\ \\frac{1/x}{-2\\csc^2 2x}=-\\frac{\\sin^2 2x}{2x}\\to0."
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVCG-1-0000000000000200-30",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0^+}\\tan(5x)\\,\\ln x\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{\\ln x}{\\cot 5x}:\\ \\frac{1/x}{-5\\csc^2 5x}=-\\frac{\\sin^2 5x}{5x}\\to0."
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVCG-1-0000000000000999-44",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0^+}\\tan(2x)\\,\\ln x\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{\\ln x}{\\cot 2x}:\\ \\frac{1/x}{-2\\csc^2 2x}=-\\frac{\\sin^2 2x}{2x}\\to0."
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-log-tangent-product-v1": [
+    {
+      "code": "DVCH-1-0000000000000003-71",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0^+}2x\\ln\\left(\\tan x\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{\\ln\\tan x}{1/(2x)}:\\ \\frac{1/(\\sin x\\cos x)}{-1/(2x^2)}\\to0."
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVCH-1-0000000000000200-50",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0^+}5x\\ln\\left(\\tan 5x\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{\\ln\\tan 5x}{1/(5x)}:\\ \\frac{5/(\\sin 5x\\cos 5x)}{-1/(5x^2)}\\to0."
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVCH-1-0000000000000999-64",
+      "statement": "\\(\\text{Evaluate:}\\quad \\lim_{x\\to 0^+}2x\\ln\\left(\\tan 3x\\right)\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Check the indeterminate form, then apply L'Hopital's rule (repeatedly if needed).}"
+        ],
+        [
+          "calculation",
+          "\\frac{\\ln\\tan 3x}{1/(2x)}:\\ \\frac{3/(\\sin 3x\\cos 3x)}{-1/(2x^2)}\\to0."
+        ],
+        [
+          "result",
+          "0"
+        ]
+      ],
+      "answer_kind": "limit_result",
+      "answer_latex": "0",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
+  ],
+  "analysis1-derivatives-differentiable-join-v1": [
+    {
+      "code": "DVCI-1-0000000000000003-00",
+      "statement": "\\(\\text{Find }p,q\\text{ so that }f\\text{ is differentiable at }0:\\quad f(x)=\\begin{cases}e^{2x}+x,&x\\le0\\\\x^2+px+q,&x>0\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Continuity matches the values at }0\\text{; differentiability matches the}\\text{ one-sided derivatives.}"
+        ],
+        [
+          "calculation",
+          "f(0^-)=1=q,\\qquad f'_-(0)=2+1=f'_+(0)=p."
+        ],
+        [
+          "result",
+          "\\left(3,\\;1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(3,\\;1\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVCI-1-0000000000000200-76",
+      "statement": "\\(\\text{Find }p,q\\text{ so that }f\\text{ is differentiable at }0:\\quad f(x)=\\begin{cases}e^{5x}+5x,&x\\le0\\\\x^2+px+q,&x>0\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Continuity matches the values at }0\\text{; differentiability matches the}\\text{ one-sided derivatives.}"
+        ],
+        [
+          "calculation",
+          "f(0^-)=1=q,\\qquad f'_-(0)=5+5=f'_+(0)=p."
+        ],
+        [
+          "result",
+          "\\left(10,\\;1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(10,\\;1\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    },
+    {
+      "code": "DVCI-1-0000000000000999-90",
+      "statement": "\\(\\text{Find }p,q\\text{ so that }f\\text{ is differentiable at }0:\\quad f(x)=\\begin{cases}e^{2x}+3x,&x\\le0\\\\x^2+px+q,&x>0\\end{cases}.\\)",
+      "steps": [
+        [
+          "method",
+          "\\text{Continuity matches the values at }0\\text{; differentiability matches the}\\text{ one-sided derivatives.}"
+        ],
+        [
+          "calculation",
+          "f(0^-)=1=q,\\qquad f'_-(0)=2+3=f'_+(0)=p."
+        ],
+        [
+          "result",
+          "\\left(5,\\;1\\right)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(5,\\;1\\right)",
+      "metadata": {
+        "difficulty": 3
+      }
+    }
   ]
 }

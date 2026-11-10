@@ -12,7 +12,7 @@ from app.engine.generators.catalogue import registry
 from app.engine.rendering import render
 from app.math_input import parse_answer_input
 
-DERIVATIVES = [g for g in generators() if g.topic == "differential-calculus"]
+DERIVATIVES = [g for g in generators() if g.evaluate.__module__.endswith("_derivatives")]
 X = sp.Symbol("x", real=True)
 mp = mpmath
 

@@ -8323,18 +8323,25 @@
       "family": "differential-error-propagation",
       "interaction": "certificate",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-error-triangle-area-v1"
+      ],
       "family_contracts": [
         "AM1/44"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "certificate",
-          "result": "first-order propagated absolute error with stated units"
+          "result": "first-order propagated absolute error with stated units",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-error-triangle-area-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "differential-error-propagation-variant-a",
@@ -8350,18 +8357,25 @@
       "family": "differential-error-propagation",
       "interaction": "certificate",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-error-sphere-volume-v1"
+      ],
       "family_contracts": [
         "AM1/44"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "certificate",
-          "result": "first-order propagated absolute error with stated units"
+          "result": "first-order propagated absolute error with stated units",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-error-sphere-volume-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "differential-error-propagation-variant-b",
@@ -8377,18 +8391,25 @@
       "family": "differential-error-propagation",
       "interaction": "certificate",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-error-fall-depth-v1"
+      ],
       "family_contracts": [
         "AM1/44"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "certificate",
-          "result": "first-order propagated absolute error with stated units"
+          "result": "first-order propagated absolute error with stated units",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-error-fall-depth-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "differential-error-propagation-variant-c",
@@ -8404,18 +8425,25 @@
       "family": "differential-error-propagation",
       "interaction": "certificate",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-error-average-speed-v1"
+      ],
       "family_contracts": [
         "AM1/44"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "certificate",
-          "result": "first-order propagated absolute error with stated units"
+          "result": "first-order propagated absolute error with stated units",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-error-average-speed-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "differential-error-propagation-variant-d",
@@ -8431,18 +8459,25 @@
       "family": "lhopital-forms",
       "interaction": "limit_result",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-log-exponential-growth-v1"
+      ],
       "family_contracts": [
         "AM1/45"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "limit_result",
-          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses"
+          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-log-exponential-growth-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "lhopital-forms-variant-a",
@@ -8458,18 +8493,25 @@
       "family": "lhopital-forms",
       "interaction": "limit_result",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-log-sine-ratio-v1"
+      ],
       "family_contracts": [
         "AM1/45"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "limit_result",
-          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses"
+          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-log-sine-ratio-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "lhopital-forms-variant-b",
@@ -8485,18 +8527,25 @@
       "family": "lhopital-forms",
       "interaction": "limit_result",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-arctan-difference-v1"
+      ],
       "family_contracts": [
         "AM1/45"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "limit_result",
-          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses"
+          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-arctan-difference-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "lhopital-forms-variant-c",
@@ -8512,18 +8561,25 @@
       "family": "lhopital-forms",
       "interaction": "limit_result",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-double-root-quotient-v1"
+      ],
       "family_contracts": [
         "AM1/45"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "limit_result",
-          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses"
+          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-double-root-quotient-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "lhopital-forms-variant-d",
@@ -8539,18 +8595,25 @@
       "family": "lhopital-forms",
       "interaction": "limit_result",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-log-cosine-ratio-v1"
+      ],
       "family_contracts": [
         "AM1/45"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "limit_result",
-          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses"
+          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-log-cosine-ratio-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "lhopital-forms-variant-e",
@@ -8566,18 +8629,25 @@
       "family": "lhopital-forms",
       "interaction": "limit_result",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-root-arccot-v1"
+      ],
       "family_contracts": [
         "AM1/45"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "limit_result",
-          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses"
+          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-root-arccot-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "lhopital-forms-variant-f",
@@ -8593,18 +8663,25 @@
       "family": "lhopital-forms",
       "interaction": "limit_result",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-power-log-zero-v1"
+      ],
       "family_contracts": [
         "AM1/45"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "limit_result",
-          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses"
+          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-power-log-zero-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "lhopital-forms-variant-g",
@@ -8620,18 +8697,25 @@
       "family": "lhopital-forms",
       "interaction": "limit_result",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-tangent-half-angle-v1"
+      ],
       "family_contracts": [
         "AM1/45"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "limit_result",
-          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses"
+          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-tangent-half-angle-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "lhopital-forms-variant-h",
@@ -8647,18 +8731,25 @@
       "family": "lhopital-forms",
       "interaction": "limit_result",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-cosine-difference-v1"
+      ],
       "family_contracts": [
         "AM1/45"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "limit_result",
-          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses"
+          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-cosine-difference-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "lhopital-forms-variant-i",
@@ -8674,18 +8765,25 @@
       "family": "lhopital-forms",
       "interaction": "limit_result",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-cotangent-difference-v1"
+      ],
       "family_contracts": [
         "AM1/45"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "limit_result",
-          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses"
+          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-cotangent-difference-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "lhopital-forms-variant-j",
@@ -8701,18 +8799,25 @@
       "family": "lhopital-forms",
       "interaction": "limit_result",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-log-reciprocal-sum-v1"
+      ],
       "family_contracts": [
         "AM1/45"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "limit_result",
-          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses"
+          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-log-reciprocal-sum-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "lhopital-forms-variant-k",
@@ -8728,18 +8833,25 @@
       "family": "lhopital-forms",
       "interaction": "limit_result",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-log-power-zero-v1"
+      ],
       "family_contracts": [
         "AM1/45"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "limit_result",
-          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses"
+          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-log-power-zero-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "lhopital-forms-variant-l",
@@ -8755,18 +8867,25 @@
       "family": "lhopital-forms",
       "interaction": "limit_result",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-arctan-power-v1"
+      ],
       "family_contracts": [
         "AM1/45"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "limit_result",
-          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses"
+          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-arctan-power-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "lhopital-forms-variant-m",
@@ -8782,18 +8901,25 @@
       "family": "lhopital-forms",
       "interaction": "limit_result",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-log-exponent-power-v1"
+      ],
       "family_contracts": [
         "AM1/45"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "limit_result",
-          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses"
+          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-log-exponent-power-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "lhopital-forms-variant-n",
@@ -8809,18 +8935,25 @@
       "family": "lhopital-forms",
       "interaction": "limit_result",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-tangent-cosine-power-v1"
+      ],
       "family_contracts": [
         "AM1/45"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "limit_result",
-          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses"
+          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-tangent-cosine-power-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "lhopital-forms-variant-o",
@@ -23168,18 +23301,25 @@
       "family": "lhopital-forms",
       "interaction": "limit_result",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-arctan-difference-v1"
+      ],
       "family_contracts": [
         "AM1/45"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "limit_result",
-          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses"
+          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-arctan-difference-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -23545,18 +23685,25 @@
       "family": "lhopital-forms",
       "interaction": "limit_result",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-exponential-cosh-v1"
+      ],
       "family_contracts": [
         "AM1/45"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "limit_result",
-          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses"
+          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-exponential-cosh-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -23760,18 +23907,25 @@
       "family": "lhopital-forms",
       "interaction": "limit_result",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-one-minus-power-v1"
+      ],
       "family_contracts": [
         "AM1/45"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "limit_result",
-          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses"
+          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-one-minus-power-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -23788,18 +23942,25 @@
       "family": "differentiability-parameters",
       "interaction": "ordered",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-differentiable-join-v1"
+      ],
       "family_contracts": [
         "AM1/exam-family/differentiability-parameters"
       ],
-      "coverage": "missing",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "ordered",
-          "result": "all join parameters making a piecewise function differentiable"
+          "result": "all join parameters making a piecewise function differentiable",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-differentiable-join-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         },
         {
           "id": "learner-sketch",
@@ -24171,18 +24332,25 @@
       "family": "lhopital-forms",
       "interaction": "limit_result",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-log-power-zero-v1"
+      ],
       "family_contracts": [
         "AM1/45"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "limit_result",
-          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses"
+          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-log-power-zero-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -24726,18 +24894,25 @@
       "family": "lhopital-forms",
       "interaction": "limit_result",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-tangent-log-v1"
+      ],
       "family_contracts": [
         "AM1/45"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "limit_result",
-          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses"
+          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-tangent-log-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -24995,18 +25170,25 @@
       "family": "lhopital-forms",
       "interaction": "limit_result",
       "issue": 237,
-      "status": "source-reconciled-delivery-pending",
-      "verified_versions": [],
+      "status": "computational-result-mathematically-verified",
+      "verified_versions": [
+        "analysis1-derivatives-log-tangent-product-v1"
+      ],
       "family_contracts": [
         "AM1/45"
       ],
-      "coverage": "partial",
+      "coverage": "verified-computational-family",
       "components": [
         {
           "id": "result",
           "issue": 237,
           "contract": "limit_result",
-          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses"
+          "result": "finite, infinite or nonexistent lHopital limit with valid hypotheses",
+          "status": "implemented-mathematically-verified",
+          "verified_versions": [
+            "analysis1-derivatives-log-tangent-product-v1"
+          ],
+          "verification": "backend/tests/test_engine_analysis_limits.py"
         }
       ],
       "method": "exam-method-deduplicated",
@@ -26533,7 +26715,18 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "analysis1-derivatives-error-average-speed-v1",
+        "analysis1-derivatives-error-fall-depth-v1",
+        "analysis1-derivatives-error-sphere-volume-v1",
+        "analysis1-derivatives-error-triangle-area-v1"
+      ],
+      "delivery": {
+        "issue": 237,
+        "status": "partial-computational-delivery",
+        "verification": "backend/tests/test_engine_analysis_limits.py"
+      }
     },
     "AM1/45": {
       "family": "lhopital-forms",
@@ -26548,7 +26741,33 @@
       "source_evidence": [
         "backend/app/engine/generators/analysis_one.py",
         "backend/app/engine/blocks/analysis_one.py"
-      ]
+      ],
+      "verified_versions": [
+        "analysis1-derivatives-arctan-difference-v1",
+        "analysis1-derivatives-arctan-power-v1",
+        "analysis1-derivatives-cosine-difference-v1",
+        "analysis1-derivatives-cotangent-difference-v1",
+        "analysis1-derivatives-double-root-quotient-v1",
+        "analysis1-derivatives-exponential-cosh-v1",
+        "analysis1-derivatives-log-cosine-ratio-v1",
+        "analysis1-derivatives-log-exponent-power-v1",
+        "analysis1-derivatives-log-exponential-growth-v1",
+        "analysis1-derivatives-log-power-zero-v1",
+        "analysis1-derivatives-log-reciprocal-sum-v1",
+        "analysis1-derivatives-log-sine-ratio-v1",
+        "analysis1-derivatives-log-tangent-product-v1",
+        "analysis1-derivatives-one-minus-power-v1",
+        "analysis1-derivatives-power-log-zero-v1",
+        "analysis1-derivatives-root-arccot-v1",
+        "analysis1-derivatives-tangent-cosine-power-v1",
+        "analysis1-derivatives-tangent-half-angle-v1",
+        "analysis1-derivatives-tangent-log-v1"
+      ],
+      "delivery": {
+        "issue": 237,
+        "status": "partial-computational-delivery",
+        "verification": "backend/tests/test_engine_analysis_limits.py"
+      }
     },
     "AM1/46": {
       "family": "monotonicity-intervals",
@@ -27901,7 +28120,15 @@
       "issue": 237,
       "existing_coverage": "missing",
       "candidate_versions": [],
-      "gap": "Exam-only method or combined structure; no source-family delivery yet."
+      "gap": "Exam-only method or combined structure; no source-family delivery yet.",
+      "verified_versions": [
+        "analysis1-derivatives-differentiable-join-v1"
+      ],
+      "delivery": {
+        "issue": 237,
+        "status": "partial-computational-delivery",
+        "verification": "backend/tests/test_engine_analysis_limits.py"
+      }
     },
     "AM1/exam-family/monotonicity-convexity": {
       "family": "monotonicity-convexity",
@@ -27994,8 +28221,8 @@
     "family_contracts": 146,
     "deferred_only_references": 30,
     "mixed_references": 146,
-    "verified_generator_deliveries": 237,
-    "verified_computational_components": 259
+    "verified_generator_deliveries": 263,
+    "verified_computational_components": 285
   },
   "deliveries": {
     "235": {
@@ -28236,33 +28463,57 @@
       "status": "implementation-in-progress",
       "generator_versions": [
         "analysis1-derivatives-arcsine-shifted-square-v1",
+        "analysis1-derivatives-arctan-difference-v1",
+        "analysis1-derivatives-arctan-power-v1",
         "analysis1-derivatives-constant-coefficients-v1",
         "analysis1-derivatives-constant-over-power-v1",
+        "analysis1-derivatives-cosine-difference-v1",
+        "analysis1-derivatives-cotangent-difference-v1",
         "analysis1-derivatives-definition-power-v1",
         "analysis1-derivatives-definition-reciprocal-v1",
         "analysis1-derivatives-definition-root-v1",
         "analysis1-derivatives-definition-sine-v1",
+        "analysis1-derivatives-differentiable-join-v1",
+        "analysis1-derivatives-double-root-quotient-v1",
+        "analysis1-derivatives-error-average-speed-v1",
+        "analysis1-derivatives-error-fall-depth-v1",
+        "analysis1-derivatives-error-sphere-volume-v1",
+        "analysis1-derivatives-error-triangle-area-v1",
         "analysis1-derivatives-exponential-arctan-v1",
+        "analysis1-derivatives-exponential-cosh-v1",
         "analysis1-derivatives-exponential-quadratic-v1",
         "analysis1-derivatives-exponential-square-v1",
         "analysis1-derivatives-exponential-trig-powers-v1",
         "analysis1-derivatives-inverse-trig-constant-v1",
         "analysis1-derivatives-log-arctan-root-v1",
         "analysis1-derivatives-log-constant-quotient-v1",
+        "analysis1-derivatives-log-cosine-ratio-v1",
         "analysis1-derivatives-log-cosine-v1",
+        "analysis1-derivatives-log-exponent-power-v1",
+        "analysis1-derivatives-log-exponential-growth-v1",
+        "analysis1-derivatives-log-power-zero-v1",
+        "analysis1-derivatives-log-reciprocal-sum-v1",
+        "analysis1-derivatives-log-sine-ratio-v1",
+        "analysis1-derivatives-log-tangent-product-v1",
         "analysis1-derivatives-logarithm-constant-v1",
+        "analysis1-derivatives-one-minus-power-v1",
+        "analysis1-derivatives-power-log-zero-v1",
         "analysis1-derivatives-power-of-exponential-v1",
         "analysis1-derivatives-rational-quotient-v1",
         "analysis1-derivatives-root-arccos-v1",
+        "analysis1-derivatives-root-arccot-v1",
         "analysis1-derivatives-root-exponential-domain-v1",
         "analysis1-derivatives-tangent-angle-root-v1",
         "analysis1-derivatives-tangent-arctan-quotient-v1",
         "analysis1-derivatives-tangent-arctan-v1",
         "analysis1-derivatives-tangent-axis-intersection-v1",
+        "analysis1-derivatives-tangent-cosine-power-v1",
         "analysis1-derivatives-tangent-exponential-cubic-v1",
         "analysis1-derivatives-tangent-exponential-level-v1",
+        "analysis1-derivatives-tangent-half-angle-v1",
         "analysis1-derivatives-tangent-horizontal-v1",
         "analysis1-derivatives-tangent-line-intersection-v1",
+        "analysis1-derivatives-tangent-log-v1",
         "analysis1-derivatives-tangent-logarithm-v1",
         "analysis1-derivatives-tangent-pair-perpendicular-v1",
         "analysis1-derivatives-tangent-parallel-quartic-v1",
@@ -28273,29 +28524,10 @@
         "analysis1-derivatives-trig-sum-v1",
         "analysis1-derivatives-variable-power-v1"
       ],
-      "source_references": 37,
-      "computational_components": 37,
+      "source_references": 63,
+      "computational_components": 63,
       "verification_scope": "local bounded mathematics, replay and Linux worker checks; hosted CI, deployment and live checks remain pending",
       "pending_source_references": [
-        "AM1/44/a",
-        "AM1/44/b",
-        "AM1/44/c",
-        "AM1/44/d",
-        "AM1/45/a",
-        "AM1/45/b",
-        "AM1/45/c",
-        "AM1/45/d",
-        "AM1/45/e",
-        "AM1/45/f",
-        "AM1/45/g",
-        "AM1/45/h",
-        "AM1/45/i",
-        "AM1/45/j",
-        "AM1/45/k",
-        "AM1/45/l",
-        "AM1/45/m",
-        "AM1/45/n",
-        "AM1/45/o",
         "AM1/46/a",
         "AM1/46/b",
         "AM1/46/c",
@@ -28354,28 +28586,21 @@
         "AM1/73/b",
         "AM1/73/c",
         "AM1/73/d",
-        "AM1/exam/second/A/1",
         "AM1/exam/second/A/2",
         "AM1/exam/second/B/1",
         "AM1/exam/second/B/2",
         "AM1/exam/second/C/1",
         "AM1/exam/second/C/2",
         "AM1/exam/second/D/1",
-        "AM1/exam/second/D/2",
         "AM1/exam/main/A/4",
-        "AM1/exam/main/A/5",
-        "AM1/exam/main/A/6",
         "AM1/exam/main/B/5",
         "AM1/exam/main/C/2",
-        "AM1/exam/main/C/6",
         "AM1/exam/main/D/2",
         "AM1/exam/resit/A/3",
         "AM1/exam/resit/A/5",
         "AM1/exam/resit/B/3",
-        "AM1/exam/resit/B/5",
         "AM1/exam/resit/C/3",
         "AM1/exam/resit/C/5",
-        "AM1/exam/resit/D/1",
         "AM1/exam/resit/D/4",
         "AM1/exam/distinction/single/3"
       ]

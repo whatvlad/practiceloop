@@ -16,6 +16,7 @@ from app.engine.answers.computational import (
 from app.engine.codes import encode
 from app.engine.generators import _derivatives as derivatives
 from app.engine.generators import _function_limits as functions
+from app.engine.generators import _lhopital as lhopital
 from app.engine.generators import _sequence_limits as sequences
 from app.engine.generators._elementary_common import Built
 from app.engine.models import Answer, Drawn, Task
@@ -263,6 +264,31 @@ SPECS = (
     (derivatives.tangent_axis_intersection, DERIVATIVES, 2, "DVBI", TANGENT_FULL),
     (derivatives.tangent_horizontal, DERIVATIVES, 4, "DVBJ", TANGENT_FULL),
     (derivatives.tangent_pair_perpendicular, DERIVATIVES, 5, "DVBK", TWO_TANGENTS),
+    # #261
+    (lhopital.error_triangle_area, DERIVATIVES, 3, "DVBL", CONSTANT),
+    (lhopital.error_sphere_volume, DERIVATIVES, 2, "DVBM", CONSTANT),
+    (lhopital.error_fall_depth, DERIVATIVES, 2, "DVBN", CONSTANT),
+    (lhopital.error_average_speed, DERIVATIVES, 3, "DVBO", CONSTANT),
+    (lhopital.log_exponential_growth, DERIVATIVES, 2, "DVBP", LIMIT),
+    (lhopital.log_sine_ratio, DERIVATIVES, 3, "DVBQ", LIMIT),
+    (lhopital.arctan_difference, DERIVATIVES, 3, "DVBR", LIMIT),
+    (lhopital.double_root_quotient, DERIVATIVES, 4, "DVBS", LIMIT),
+    (lhopital.log_cosine_ratio, DERIVATIVES, 3, "DVBT", LIMIT),
+    (lhopital.root_arccot, DERIVATIVES, 3, "DVBU", LIMIT),
+    (lhopital.power_log_zero, DERIVATIVES, 2, "DVBV", LIMIT),
+    (lhopital.tangent_half_angle, DERIVATIVES, 3, "DVBW", LIMIT),
+    (lhopital.cosine_difference, DERIVATIVES, 4, "DVBX", LIMIT),
+    (lhopital.cotangent_difference, DERIVATIVES, 4, "DVBY", LIMIT),
+    (lhopital.log_reciprocal_sum, DERIVATIVES, 4, "DVBZ", LIMIT),
+    (lhopital.log_power_zero, DERIVATIVES, 4, "DVCA", LIMIT),
+    (lhopital.arctan_power, DERIVATIVES, 5, "DVCB", LIMIT),
+    (lhopital.log_exponent_power, DERIVATIVES, 4, "DVCC", LIMIT),
+    (lhopital.tangent_cosine_power, DERIVATIVES, 4, "DVCD", LIMIT),
+    (lhopital.exponential_cosh, DERIVATIVES, 2, "DVCE", LIMIT),
+    (lhopital.one_minus_power, DERIVATIVES, 5, "DVCF", LIMIT),
+    (lhopital.tangent_log, DERIVATIVES, 3, "DVCG", LIMIT),
+    (lhopital.log_tangent_product, DERIVATIVES, 3, "DVCH", LIMIT),
+    (lhopital.differentiable_join, DERIVATIVES, 3, "DVCI", JOINS),
 )
 
 
