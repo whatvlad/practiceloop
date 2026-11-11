@@ -30726,5 +30726,1587 @@
         "template": "local-system"
       }
     }
+  ],
+  "vector-area-practice-v1": [
+    {
+      "code": "VAP-1-0000000000000000-83",
+      "statement": "Find the area of the triangle with adjacent edge vectors: \\(u=(-2,0,0),\\ v=(0,0,-1)\\).",
+      "steps": [
+        [
+          "cross",
+          "\\vec u\\times \\vec v=(0,-2,0)"
+        ],
+        [
+          "area",
+          "S=\\frac{1}{2}|\\vec u\\times \\vec v|=1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 1,
+        "template": "triangle-area"
+      }
+    },
+    {
+      "code": "VAP-1-0001000000000000-88",
+      "statement": "Find the area of the parallelogram spanned by: \\(u=(-2,0,0),\\ v=(0,0,-1)\\).",
+      "steps": [
+        [
+          "cross",
+          "\\vec u\\times \\vec v=(0,-2,0)"
+        ],
+        [
+          "area",
+          "S=|\\vec u\\times \\vec v|=2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 1,
+        "template": "parallelogram-area"
+      }
+    },
+    {
+      "code": "VAP-1-0000000000000001-03",
+      "statement": "Find the area of the triangle with adjacent edge vectors: \\(u=(0,2,0),\\ v=(0,0,-2)\\).",
+      "steps": [
+        [
+          "cross",
+          "\\vec u\\times \\vec v=(-4,0,0)"
+        ],
+        [
+          "area",
+          "S=\\frac{1}{2}|\\vec u\\times \\vec v|=2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 1,
+        "template": "triangle-area"
+      }
+    },
+    {
+      "code": "VAP-1-0001000000000001-08",
+      "statement": "Find the area of the parallelogram spanned by: \\(u=(0,2,0),\\ v=(0,0,-2)\\).",
+      "steps": [
+        [
+          "cross",
+          "\\vec u\\times \\vec v=(-4,0,0)"
+        ],
+        [
+          "area",
+          "S=|\\vec u\\times \\vec v|=4"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "4",
+      "metadata": {
+        "difficulty": 1,
+        "template": "parallelogram-area"
+      }
+    },
+    {
+      "code": "VAP-1-0002000000000000-93",
+      "statement": "Find the area of the triangle ABC: \\(A=(1,0,0),\\ B=(1,-1,0),\\ C=(1,-2,-1)\\).",
+      "steps": [
+        [
+          "edges",
+          "\\vec{AB}=(0,-1,0),\\quad \\vec{AC}=(0,-2,-1)"
+        ],
+        [
+          "cross",
+          "\\vec{AB}\\times \\vec{AC}=(1,0,0)"
+        ],
+        [
+          "area",
+          "S=\\frac{1}{2}|\\vec{AB}\\times \\vec{AC}|=\\frac{1}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{2}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "triangle-area"
+      }
+    },
+    {
+      "code": "VAP-1-0003000000000000-01",
+      "statement": "Find the area of the parallelogram spanned by AB and AC: \\(A=(1,0,0),\\ B=(1,-1,0),\\ C=(1,-2,-1)\\).",
+      "steps": [
+        [
+          "edges",
+          "\\vec{AB}=(0,-1,0),\\quad \\vec{AC}=(0,-2,-1)"
+        ],
+        [
+          "cross",
+          "\\vec{AB}\\times \\vec{AC}=(1,0,0)"
+        ],
+        [
+          "area",
+          "S=|\\vec{AB}\\times \\vec{AC}|=1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 2,
+        "template": "parallelogram-area"
+      }
+    },
+    {
+      "code": "VAP-1-0002000000000001-13",
+      "statement": "Find the area of the triangle ABC: \\(A=(0,0,1),\\ B=(1,0,1),\\ C=(-1,2,1)\\).",
+      "steps": [
+        [
+          "edges",
+          "\\vec{AB}=(1,0,0),\\quad \\vec{AC}=(-1,2,0)"
+        ],
+        [
+          "cross",
+          "\\vec{AB}\\times \\vec{AC}=(0,0,2)"
+        ],
+        [
+          "area",
+          "S=\\frac{1}{2}|\\vec{AB}\\times \\vec{AC}|=1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 2,
+        "template": "triangle-area"
+      }
+    },
+    {
+      "code": "VAP-1-0003000000000001-18",
+      "statement": "Find the area of the parallelogram spanned by AB and AC: \\(A=(0,0,1),\\ B=(1,0,1),\\ C=(-1,2,1)\\).",
+      "steps": [
+        [
+          "edges",
+          "\\vec{AB}=(1,0,0),\\quad \\vec{AC}=(-1,2,0)"
+        ],
+        [
+          "cross",
+          "\\vec{AB}\\times \\vec{AC}=(0,0,2)"
+        ],
+        [
+          "area",
+          "S=|\\vec{AB}\\times \\vec{AC}|=2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 2,
+        "template": "parallelogram-area"
+      }
+    },
+    {
+      "code": "VAP-1-0004000000000000-06",
+      "statement": "M is the midpoint of BC. Find the area of the triangle ABM: \\(A=(0,-1,-1),\\ B=(0,-1,0),\\ C=(-2,-1,-4)\\).",
+      "steps": [
+        [
+          "midpoint",
+          "M=\\frac{B+C}{2}=(-1,-1,-2)"
+        ],
+        [
+          "edges",
+          "\\vec{AB}=(0,0,1),\\quad \\vec{AM}=(-1,0,-1)"
+        ],
+        [
+          "cross",
+          "\\vec{AB}\\times \\vec{AM}=(0,-1,0)"
+        ],
+        [
+          "area",
+          "S=\\frac{1}{2}|\\vec{AB}\\times \\vec{AM}|=\\frac{1}{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{2}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "triangle-area"
+      }
+    },
+    {
+      "code": "VAP-1-0005000000000000-11",
+      "statement": "M is the midpoint of BC. Find the area of the parallelogram spanned by AB and AM: \\(A=(0,-1,-1),\\ B=(0,-1,0),\\ C=(-2,-1,-4)\\).",
+      "steps": [
+        [
+          "midpoint",
+          "M=\\frac{B+C}{2}=(-1,-1,-2)"
+        ],
+        [
+          "edges",
+          "\\vec{AB}=(0,0,1),\\quad \\vec{AM}=(-1,0,-1)"
+        ],
+        [
+          "cross",
+          "\\vec{AB}\\times \\vec{AM}=(0,-1,0)"
+        ],
+        [
+          "area",
+          "S=|\\vec{AB}\\times \\vec{AM}|=1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 3,
+        "template": "parallelogram-area"
+      }
+    },
+    {
+      "code": "VAP-1-0004000000000001-23",
+      "statement": "M is the midpoint of BC. Find the area of the triangle ABM: \\(A=(0,0,1),\\ B=(0,0,0),\\ C=(0,-4,-2)\\).",
+      "steps": [
+        [
+          "midpoint",
+          "M=\\frac{B+C}{2}=(0,-2,-1)"
+        ],
+        [
+          "edges",
+          "\\vec{AB}=(0,0,-1),\\quad \\vec{AM}=(0,-2,-2)"
+        ],
+        [
+          "cross",
+          "\\vec{AB}\\times \\vec{AM}=(-2,0,0)"
+        ],
+        [
+          "area",
+          "S=\\frac{1}{2}|\\vec{AB}\\times \\vec{AM}|=1"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "1",
+      "metadata": {
+        "difficulty": 3,
+        "template": "triangle-area"
+      }
+    },
+    {
+      "code": "VAP-1-0005000000000001-28",
+      "statement": "M is the midpoint of BC. Find the area of the parallelogram spanned by AB and AM: \\(A=(0,0,1),\\ B=(0,0,0),\\ C=(0,-4,-2)\\).",
+      "steps": [
+        [
+          "midpoint",
+          "M=\\frac{B+C}{2}=(0,-2,-1)"
+        ],
+        [
+          "edges",
+          "\\vec{AB}=(0,0,-1),\\quad \\vec{AM}=(0,-2,-2)"
+        ],
+        [
+          "cross",
+          "\\vec{AB}\\times \\vec{AM}=(-2,0,0)"
+        ],
+        [
+          "area",
+          "S=|\\vec{AB}\\times \\vec{AM}|=2"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2",
+      "metadata": {
+        "difficulty": 3,
+        "template": "parallelogram-area"
+      }
+    }
+  ],
+  "vector-expression-v1": [
+    {
+      "code": "VEC-1-0000000000000000-69",
+      "statement": "Calculate the following vector: \\(u-v,\\quad u=(0,-1,0),\\ v=(-1,-2,-2)\\).",
+      "steps": [
+        [
+          "subtract",
+          "u-v=(1,1,2)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(1,\\;1,\\;2\\right)",
+      "metadata": {
+        "difficulty": 1,
+        "template": "vector-expression"
+      }
+    },
+    {
+      "code": "VEC-1-0000000000000001-86",
+      "statement": "Calculate the following vector: \\(u-v,\\quad u=(0,1,1),\\ v=(-2,-2,1)\\).",
+      "steps": [
+        [
+          "subtract",
+          "u-v=(2,3,0)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(2,\\;3,\\;0\\right)",
+      "metadata": {
+        "difficulty": 1,
+        "template": "vector-expression"
+      }
+    },
+    {
+      "code": "VEC-1-0001000000000000-74",
+      "statement": "Calculate the following vector: \\(u\\times w-v,\\quad u=(2,-1,-2),\\ v=(0,-1,2),\\ w=(2,0,2)\\).",
+      "steps": [
+        [
+          "cross",
+          "u\\times w=(-2,-8,2)"
+        ],
+        [
+          "finish",
+          "u\\times w-v=(-2,-7,0)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(-2,\\;-7,\\;0\\right)",
+      "metadata": {
+        "difficulty": 2,
+        "template": "vector-expression"
+      }
+    },
+    {
+      "code": "VEC-1-0001000000000001-91",
+      "statement": "Calculate the following vector: \\(|u|v-w,\\quad u=(-2,1,0),\\ v=(-2,0,-1),\\ w=(0,-1,1)\\).",
+      "steps": [
+        [
+          "norm",
+          "|u|=\\sqrt{5}"
+        ],
+        [
+          "scale",
+          "|u|v=(- 2 \\sqrt{5},0,- \\sqrt{5})"
+        ],
+        [
+          "finish_scaled",
+          "|u|v-w=(- 2 \\sqrt{5},1,- \\sqrt{5} - 1)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(- 2 \\sqrt{5},\\;1,\\;- \\sqrt{5} - 1\\right)",
+      "metadata": {
+        "difficulty": 2,
+        "template": "vector-expression"
+      }
+    },
+    {
+      "code": "VEC-1-0002000000000000-79",
+      "statement": "Calculate the following vector: \\((2u-v)\\times w,\\quad u=(2,-1,0),\\ v=(-2,2,0),\\ w=(1,-2,-2)\\).",
+      "steps": [
+        [
+          "combine",
+          "2u-v=(6,-4,0)"
+        ],
+        [
+          "cross",
+          "(2u-v)\\times w=(8,12,-8)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(8,\\;12,\\;-8\\right)",
+      "metadata": {
+        "difficulty": 3,
+        "template": "vector-expression"
+      }
+    },
+    {
+      "code": "VEC-1-0002000000000001-96",
+      "statement": "Calculate the following vector: \\((2u-v)\\times w,\\quad u=(2,1,1),\\ v=(1,-2,1),\\ w=(0,2,-1)\\).",
+      "steps": [
+        [
+          "combine",
+          "2u-v=(3,4,1)"
+        ],
+        [
+          "cross",
+          "(2u-v)\\times w=(-6,3,6)"
+        ]
+      ],
+      "answer_kind": "tuple",
+      "answer_latex": "\\left(-6,\\;3,\\;6\\right)",
+      "metadata": {
+        "difficulty": 3,
+        "template": "vector-expression"
+      }
+    }
+  ],
+  "vector-length-practice-v1": [
+    {
+      "code": "VLN-1-0000000000000000-52",
+      "statement": "Vectors u and v are perpendicular. Find the length of their difference: \\(|u|=3,\\ |v|=2,\\quad |u-v|=?\\).",
+      "steps": [
+        [
+          "dot",
+          "u\\cdot v=|u||v|\\cos(90^\\circ)=0"
+        ],
+        [
+          "squared",
+          "|u-v|^2=13"
+        ],
+        [
+          "length",
+          "|u-v|=\\sqrt{13}=\\sqrt{13}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\sqrt{13}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "vector-length-practice"
+      }
+    },
+    {
+      "code": "VLN-1-0000000000000001-69",
+      "statement": "Vectors u and v are perpendicular. Find the length of their difference: \\(|u|=3,\\ |v|=4,\\quad |u-v|=?\\).",
+      "steps": [
+        [
+          "dot",
+          "u\\cdot v=|u||v|\\cos(90^\\circ)=0"
+        ],
+        [
+          "squared",
+          "|u-v|^2=25"
+        ],
+        [
+          "length",
+          "|u-v|=\\sqrt{25}=5"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "5",
+      "metadata": {
+        "difficulty": 1,
+        "template": "vector-length-practice"
+      }
+    },
+    {
+      "code": "VLN-1-0001000000000000-57",
+      "statement": "Find the length of the difference using the given angle between u and v: \\(|u|=5,\\ |v|=2,\\ \\theta=90^\\circ,\\quad |u-v|=?\\).",
+      "steps": [
+        [
+          "dot",
+          "u\\cdot v=|u||v|\\cos(90^\\circ)=0"
+        ],
+        [
+          "squared",
+          "|u-v|^2=29"
+        ],
+        [
+          "length",
+          "|u-v|=\\sqrt{29}=\\sqrt{29}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\sqrt{29}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "vector-length-practice"
+      }
+    },
+    {
+      "code": "VLN-1-0001000000000001-74",
+      "statement": "Find the length of the difference using the given angle between u and v: \\(|u|=1,\\ |v|=4,\\ \\theta=90^\\circ,\\quad |u-v|=?\\).",
+      "steps": [
+        [
+          "dot",
+          "u\\cdot v=|u||v|\\cos(90^\\circ)=0"
+        ],
+        [
+          "squared",
+          "|u-v|^2=17"
+        ],
+        [
+          "length",
+          "|u-v|=\\sqrt{17}=\\sqrt{17}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\sqrt{17}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "vector-length-practice"
+      }
+    },
+    {
+      "code": "VLN-1-0002000000000000-62",
+      "statement": "Find the length of the difference from the given lengths: \\(|u|=5,\\ |v|=2,\\ |u+v|=\\sqrt{29},\\quad |u-v|=?\\).",
+      "steps": [
+        [
+          "identity",
+          "|u+v|^2+|u-v|^2=2|u|^2+2|v|^2"
+        ],
+        [
+          "squared",
+          "|u-v|^2=29"
+        ],
+        [
+          "length",
+          "|u-v|=\\sqrt{29}=\\sqrt{29}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\sqrt{29}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "vector-length-practice"
+      }
+    },
+    {
+      "code": "VLN-1-0002000000000001-79",
+      "statement": "Find the length of the difference from the given lengths: \\(|u|=1,\\ |v|=3,\\ |u+v|=\\sqrt{7},\\quad |u-v|=?\\).",
+      "steps": [
+        [
+          "identity",
+          "|u+v|^2+|u-v|^2=2|u|^2+2|v|^2"
+        ],
+        [
+          "squared",
+          "|u-v|^2=13"
+        ],
+        [
+          "length",
+          "|u-v|=\\sqrt{13}=\\sqrt{13}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\sqrt{13}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "vector-length-practice"
+      }
+    }
+  ],
+  "vector-perpendicular-parameter-v1": [
+    {
+      "code": "VPP-1-0000000000000000-25",
+      "statement": "Find all real values of alpha that satisfy the condition: \\(|u|=3,\\ |v|=2,\\quad (u+\\alpha v)\\cdot(u-\\alpha v)=0\\).",
+      "steps": [
+        [
+          "expand",
+          "(u+\\alpha v)\\cdot(u-\\alpha v)=9-4\\alpha^2=0"
+        ],
+        [
+          "squared",
+          "\\alpha^2=\\frac{9}{4}"
+        ],
+        [
+          "roots",
+          "\\alpha\\in \\left\\{- \\frac{3}{2}, \\frac{3}{2}\\right\\}"
+        ]
+      ],
+      "answer_kind": "finite_set",
+      "answer_latex": "\\left\\{- \\frac{3}{2}, \\frac{3}{2}\\right\\}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "vector-perpendicular-parameter"
+      }
+    },
+    {
+      "code": "VPP-1-0000000000000001-42",
+      "statement": "Find all real values of alpha that satisfy the condition: \\(|u|=3,\\ |v|=4,\\quad (u+\\alpha v)\\cdot(u-\\alpha v)=0\\).",
+      "steps": [
+        [
+          "expand",
+          "(u+\\alpha v)\\cdot(u-\\alpha v)=9-16\\alpha^2=0"
+        ],
+        [
+          "squared",
+          "\\alpha^2=\\frac{9}{16}"
+        ],
+        [
+          "roots",
+          "\\alpha\\in \\left\\{- \\frac{3}{4}, \\frac{3}{4}\\right\\}"
+        ]
+      ],
+      "answer_kind": "finite_set",
+      "answer_latex": "\\left\\{- \\frac{3}{4}, \\frac{3}{4}\\right\\}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "vector-perpendicular-parameter"
+      }
+    },
+    {
+      "code": "VPP-1-0001000000000000-30",
+      "statement": "Find all real values of alpha that satisfy the condition: \\(u=(2,-1,-2),\\ v=(0,-1,2),\\quad (u+\\alpha v)\\cdot(u-\\alpha v)=0\\).",
+      "steps": [
+        [
+          "norms",
+          "|u|^2=9,\\quad |v|^2=5"
+        ],
+        [
+          "expand",
+          "(u+\\alpha v)\\cdot(u-\\alpha v)=9-5\\alpha^2=0"
+        ],
+        [
+          "squared",
+          "\\alpha^2=\\frac{9}{5}"
+        ],
+        [
+          "roots",
+          "\\alpha\\in \\left\\{- \\frac{3 \\sqrt{5}}{5}, \\frac{3 \\sqrt{5}}{5}\\right\\}"
+        ]
+      ],
+      "answer_kind": "finite_set",
+      "answer_latex": "\\left\\{- \\frac{3 \\sqrt{5}}{5}, \\frac{3 \\sqrt{5}}{5}\\right\\}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "vector-perpendicular-parameter"
+      }
+    },
+    {
+      "code": "VPP-1-0001000000000001-47",
+      "statement": "Find all real values of alpha that satisfy the condition: \\(u=(-2,1,0),\\ v=(-2,0,-1),\\quad (u+\\alpha v)\\cdot(u-\\alpha v)=0\\).",
+      "steps": [
+        [
+          "norms",
+          "|u|^2=5,\\quad |v|^2=5"
+        ],
+        [
+          "expand",
+          "(u+\\alpha v)\\cdot(u-\\alpha v)=5-5\\alpha^2=0"
+        ],
+        [
+          "squared",
+          "\\alpha^2=\\frac{5}{5}"
+        ],
+        [
+          "roots",
+          "\\alpha\\in \\left\\{-1, 1\\right\\}"
+        ]
+      ],
+      "answer_kind": "finite_set",
+      "answer_latex": "\\left\\{-1, 1\\right\\}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "vector-perpendicular-parameter"
+      }
+    },
+    {
+      "code": "VPP-1-0002000000000000-35",
+      "statement": "Given u and v are perpendicular, find all real values of alpha that satisfy the condition: \\(|u|=5,\\ |v|=2,\\quad (u+\\alpha v)\\cdot(u-2\\alpha v)=0\\).",
+      "steps": [
+        [
+          "perpendicular",
+          "u\\cdot v=0"
+        ],
+        [
+          "expand",
+          "(u+\\alpha v)\\cdot(u-2\\alpha v)=25-8\\alpha^2=0"
+        ],
+        [
+          "squared",
+          "\\alpha^2=\\frac{25}{8}"
+        ],
+        [
+          "roots",
+          "\\alpha\\in \\left\\{- \\frac{5 \\sqrt{2}}{4}, \\frac{5 \\sqrt{2}}{4}\\right\\}"
+        ]
+      ],
+      "answer_kind": "finite_set",
+      "answer_latex": "\\left\\{- \\frac{5 \\sqrt{2}}{4}, \\frac{5 \\sqrt{2}}{4}\\right\\}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "vector-perpendicular-parameter"
+      }
+    },
+    {
+      "code": "VPP-1-0002000000000001-52",
+      "statement": "Given u and v are perpendicular, find all real values of alpha that satisfy the condition: \\(|u|=1,\\ |v|=3,\\quad (u+\\alpha v)\\cdot(u-2\\alpha v)=0\\).",
+      "steps": [
+        [
+          "perpendicular",
+          "u\\cdot v=0"
+        ],
+        [
+          "expand",
+          "(u+\\alpha v)\\cdot(u-2\\alpha v)=1-18\\alpha^2=0"
+        ],
+        [
+          "squared",
+          "\\alpha^2=\\frac{1}{18}"
+        ],
+        [
+          "roots",
+          "\\alpha\\in \\left\\{- \\frac{\\sqrt{2}}{6}, \\frac{\\sqrt{2}}{6}\\right\\}"
+        ]
+      ],
+      "answer_kind": "finite_set",
+      "answer_latex": "\\left\\{- \\frac{\\sqrt{2}}{6}, \\frac{\\sqrt{2}}{6}\\right\\}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "vector-perpendicular-parameter"
+      }
+    }
+  ],
+  "vector-scalar-expression-v1": [
+    {
+      "code": "VSC-1-0000000000000000-49",
+      "statement": "Calculate the following scalar: \\(|v|,\\quad v=(-1,-2,-2)\\).",
+      "steps": [
+        [
+          "length",
+          "|v|=3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3",
+      "metadata": {
+        "difficulty": 1,
+        "template": "vector-scalar-expression"
+      }
+    },
+    {
+      "code": "VSC-1-0000000000000001-66",
+      "statement": "Calculate the following scalar: \\(u\\cdot w,\\quad u=(0,1,1),\\ w=(-2,1,2)\\).",
+      "steps": [
+        [
+          "dot",
+          "u\\cdot w=3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3",
+      "metadata": {
+        "difficulty": 1,
+        "template": "vector-scalar-expression"
+      }
+    },
+    {
+      "code": "VSC-1-0001000000000000-54",
+      "statement": "Calculate the following scalar: \\(u\\cdot(w-v),\\quad u=(2,-1,-2),\\ v=(0,-1,2),\\ w=(2,0,2)\\).",
+      "steps": [
+        [
+          "difference",
+          "w-v=(2,1,0)"
+        ],
+        [
+          "dot",
+          "u\\cdot(w-v)=3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3",
+      "metadata": {
+        "difficulty": 2,
+        "template": "vector-scalar-expression"
+      }
+    },
+    {
+      "code": "VSC-1-0001000000000001-71",
+      "statement": "Calculate the following scalar: \\(|w|-v\\cdot w,\\quad v=(-2,0,-1),\\ w=(0,-1,1)\\).",
+      "steps": [
+        [
+          "length_w",
+          "|w|=\\sqrt{2}"
+        ],
+        [
+          "dot_vw",
+          "v\\cdot w=-1"
+        ],
+        [
+          "scalar_difference",
+          "|w|-v\\cdot w=1 + \\sqrt{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "1 + \\sqrt{2}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "vector-scalar-expression"
+      }
+    },
+    {
+      "code": "VSC-1-0002000000000000-59",
+      "statement": "Calculate the following scalar: \\((u\\times v)\\cdot w,\\quad u=(2,-1,0),\\ v=(-2,2,0),\\ w=(1,-2,-2)\\).",
+      "steps": [
+        [
+          "cross",
+          "u\\times v=(0,0,2)"
+        ],
+        [
+          "dot",
+          "(u\\times v)\\cdot w=-4"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "-4",
+      "metadata": {
+        "difficulty": 3,
+        "template": "vector-scalar-expression"
+      }
+    },
+    {
+      "code": "VSC-1-0002000000000001-76",
+      "statement": "Calculate the following scalar: \\((u\\times v)\\cdot w,\\quad u=(2,1,1),\\ v=(1,-2,1),\\ w=(0,2,-1)\\).",
+      "steps": [
+        [
+          "cross",
+          "u\\times v=(3,-1,-5)"
+        ],
+        [
+          "dot",
+          "(u\\times v)\\cdot w=3"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "3",
+      "metadata": {
+        "difficulty": 3,
+        "template": "vector-scalar-expression"
+      }
+    }
+  ],
+  "vector-solid-practice-v1": [
+    {
+      "code": "VSP-1-0000000000000000-81",
+      "statement": "Find the volume of tetrahedron ABCD given these adjacent edges from A: \\(\\vec{AB}=(-1,-2,-2),\\ \\vec{AC}=(-1,0,2),\\ \\vec{AD}=(2,2,-2)\\).",
+      "steps": [
+        [
+          "cross",
+          "\\vec{AB}\\times \\vec{AC}=(-4,4,-2)"
+        ],
+        [
+          "triple",
+          "(\\vec{AB}\\times \\vec{AC})\\cdot \\vec{AD}=4"
+        ],
+        [
+          "volume",
+          "V=\\frac{|4|}{6}=\\frac{2}{3}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{2}{3}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "tetrahedron-volume"
+      }
+    },
+    {
+      "code": "VSP-1-0001000000000000-86",
+      "statement": "Find the height from D to the plane ABC given these adjacent edges from A: \\(\\vec{AB}=(0,-1,2),\\ \\vec{AC}=(2,0,2),\\ \\vec{AD}=(1,-2,-2)\\).",
+      "steps": [
+        [
+          "cross",
+          "\\vec{AB}\\times \\vec{AC}=(-2,4,2)"
+        ],
+        [
+          "base",
+          "S_{ABC}=\\frac{1}{2}|\\vec{AB}\\times \\vec{AC}|=\\sqrt{6}"
+        ],
+        [
+          "triple",
+          "(\\vec{AB}\\times \\vec{AC})\\cdot \\vec{AD}=-14"
+        ],
+        [
+          "volume",
+          "V=\\frac{|-14|}{6}=\\frac{7}{3}"
+        ],
+        [
+          "height",
+          "h=\\frac{3V}{S_{ABC}}=\\frac{7 \\sqrt{6}}{6}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{7 \\sqrt{6}}{6}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "tetrahedron-height"
+      }
+    },
+    {
+      "code": "VSP-1-0002000000000000-91",
+      "statement": "Find the surface area of the parallelepiped spanned by AB, AC and AD given these adjacent edges from A: \\(\\vec{AB}=(-2,2,0),\\ \\vec{AC}=(1,-2,-2),\\ \\vec{AD}=(1,2,0)\\).",
+      "steps": [
+        [
+          "face_uv",
+          "|\\vec{AB}\\times \\vec{AC}|=6"
+        ],
+        [
+          "face_uw",
+          "|\\vec{AB}\\times \\vec{AD}|=6"
+        ],
+        [
+          "face_vw",
+          "|\\vec{AC}\\times \\vec{AD}|=6"
+        ],
+        [
+          "surface",
+          "S=2\\left(6+6+6\\right)=36"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "36",
+      "metadata": {
+        "difficulty": 1,
+        "template": "parallelepiped-area"
+      }
+    },
+    {
+      "code": "VSP-1-0000000000000001-01",
+      "statement": "Find the volume of tetrahedron ABCD given these adjacent edges from A: \\(\\vec{AB}=(-2,-2,1),\\ \\vec{AC}=(-2,1,2),\\ \\vec{AD}=(-2,0,0)\\).",
+      "steps": [
+        [
+          "cross",
+          "\\vec{AB}\\times \\vec{AC}=(-5,2,-6)"
+        ],
+        [
+          "triple",
+          "(\\vec{AB}\\times \\vec{AC})\\cdot \\vec{AD}=10"
+        ],
+        [
+          "volume",
+          "V=\\frac{|10|}{6}=\\frac{5}{3}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{5}{3}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "tetrahedron-volume"
+      }
+    },
+    {
+      "code": "VSP-1-0001000000000001-06",
+      "statement": "Find the height from D to the plane ABC given these adjacent edges from A: \\(\\vec{AB}=(-2,0,-1),\\ \\vec{AC}=(0,-1,1),\\ \\vec{AD}=(2,2,0)\\).",
+      "steps": [
+        [
+          "cross",
+          "\\vec{AB}\\times \\vec{AC}=(-1,2,2)"
+        ],
+        [
+          "base",
+          "S_{ABC}=\\frac{1}{2}|\\vec{AB}\\times \\vec{AC}|=\\frac{3}{2}"
+        ],
+        [
+          "triple",
+          "(\\vec{AB}\\times \\vec{AC})\\cdot \\vec{AD}=2"
+        ],
+        [
+          "volume",
+          "V=\\frac{|2|}{6}=\\frac{1}{3}"
+        ],
+        [
+          "height",
+          "h=\\frac{3V}{S_{ABC}}=\\frac{2}{3}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{2}{3}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "tetrahedron-height"
+      }
+    },
+    {
+      "code": "VSP-1-0002000000000001-11",
+      "statement": "Find the surface area of the parallelepiped spanned by AB, AC and AD given these adjacent edges from A: \\(\\vec{AB}=(-2,0,-2),\\ \\vec{AC}=(1,1,1),\\ \\vec{AD}=(2,1,1)\\).",
+      "steps": [
+        [
+          "face_uv",
+          "|\\vec{AB}\\times \\vec{AC}|=2 \\sqrt{2}"
+        ],
+        [
+          "face_uw",
+          "|\\vec{AB}\\times \\vec{AD}|=2 \\sqrt{3}"
+        ],
+        [
+          "face_vw",
+          "|\\vec{AC}\\times \\vec{AD}|=\\sqrt{2}"
+        ],
+        [
+          "surface",
+          "S=2\\left(2 \\sqrt{2}+2 \\sqrt{3}+\\sqrt{2}\\right)=4 \\sqrt{3} + 6 \\sqrt{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "4 \\sqrt{3} + 6 \\sqrt{2}",
+      "metadata": {
+        "difficulty": 1,
+        "template": "parallelepiped-area"
+      }
+    },
+    {
+      "code": "VSP-1-0003000000000000-96",
+      "statement": "Find the volume of tetrahedron ABCD: \\(A=(1,0,1),\\ B=(-1,2,0),\\ C=(-1,-2,2),\\ D=(2,2,1)\\).",
+      "steps": [
+        [
+          "edges",
+          "\\vec{AB}=(-2,2,-1),\\quad \\vec{AC}=(-2,-2,1),\\quad \\vec{AD}=(1,2,0)"
+        ],
+        [
+          "cross",
+          "\\vec{AB}\\times \\vec{AC}=(0,4,8)"
+        ],
+        [
+          "triple",
+          "(\\vec{AB}\\times \\vec{AC})\\cdot \\vec{AD}=8"
+        ],
+        [
+          "volume",
+          "V=\\frac{|8|}{6}=\\frac{4}{3}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{4}{3}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "tetrahedron-volume"
+      }
+    },
+    {
+      "code": "VSP-1-0004000000000000-04",
+      "statement": "Find the height from D to the plane ABC: \\(A=(1,1,1),\\ B=(3,3,3),\\ C=(2,1,3),\\ D=(0,3,2)\\).",
+      "steps": [
+        [
+          "edges",
+          "\\vec{AB}=(2,2,2),\\quad \\vec{AC}=(1,0,2),\\quad \\vec{AD}=(-1,2,1)"
+        ],
+        [
+          "cross",
+          "\\vec{AB}\\times \\vec{AC}=(4,-2,-2)"
+        ],
+        [
+          "base",
+          "S_{ABC}=\\frac{1}{2}|\\vec{AB}\\times \\vec{AC}|=\\sqrt{6}"
+        ],
+        [
+          "triple",
+          "(\\vec{AB}\\times \\vec{AC})\\cdot \\vec{AD}=-10"
+        ],
+        [
+          "volume",
+          "V=\\frac{|-10|}{6}=\\frac{5}{3}"
+        ],
+        [
+          "height",
+          "h=\\frac{3V}{S_{ABC}}=\\frac{5 \\sqrt{6}}{6}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{5 \\sqrt{6}}{6}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "tetrahedron-height"
+      }
+    },
+    {
+      "code": "VSP-1-0005000000000000-09",
+      "statement": "Find the surface area of the parallelepiped spanned by AB, AC and AD: \\(A=(-1,-1,0),\\ B=(0,0,-2),\\ C=(1,-2,1),\\ D=(0,1,0)\\).",
+      "steps": [
+        [
+          "edges",
+          "\\vec{AB}=(1,1,-2),\\quad \\vec{AC}=(2,-1,1),\\quad \\vec{AD}=(1,2,0)"
+        ],
+        [
+          "face_uv",
+          "|\\vec{AB}\\times \\vec{AC}|=\\sqrt{35}"
+        ],
+        [
+          "face_uw",
+          "|\\vec{AB}\\times \\vec{AD}|=\\sqrt{21}"
+        ],
+        [
+          "face_vw",
+          "|\\vec{AC}\\times \\vec{AD}|=\\sqrt{30}"
+        ],
+        [
+          "surface",
+          "S=2\\left(\\sqrt{35}+\\sqrt{21}+\\sqrt{30}\\right)=2 \\sqrt{21} + 2 \\sqrt{30} + 2 \\sqrt{35}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2 \\sqrt{21} + 2 \\sqrt{30} + 2 \\sqrt{35}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "parallelepiped-area"
+      }
+    },
+    {
+      "code": "VSP-1-0003000000000001-16",
+      "statement": "Find the volume of tetrahedron ABCD: \\(A=(0,0,-1),\\ B=(0,2,-2),\\ C=(2,1,0),\\ D=(2,2,-1)\\).",
+      "steps": [
+        [
+          "edges",
+          "\\vec{AB}=(0,2,-1),\\quad \\vec{AC}=(2,1,1),\\quad \\vec{AD}=(2,2,0)"
+        ],
+        [
+          "cross",
+          "\\vec{AB}\\times \\vec{AC}=(3,-2,-4)"
+        ],
+        [
+          "triple",
+          "(\\vec{AB}\\times \\vec{AC})\\cdot \\vec{AD}=2"
+        ],
+        [
+          "volume",
+          "V=\\frac{|2|}{6}=\\frac{1}{3}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{3}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "tetrahedron-volume"
+      }
+    },
+    {
+      "code": "VSP-1-0004000000000001-21",
+      "statement": "Find the height from D to the plane ABC: \\(A=(-1,1,1),\\ B=(-3,1,2),\\ C=(-2,0,3),\\ D=(-3,2,3)\\).",
+      "steps": [
+        [
+          "edges",
+          "\\vec{AB}=(-2,0,1),\\quad \\vec{AC}=(-1,-1,2),\\quad \\vec{AD}=(-2,1,2)"
+        ],
+        [
+          "cross",
+          "\\vec{AB}\\times \\vec{AC}=(1,3,2)"
+        ],
+        [
+          "base",
+          "S_{ABC}=\\frac{1}{2}|\\vec{AB}\\times \\vec{AC}|=\\frac{\\sqrt{14}}{2}"
+        ],
+        [
+          "triple",
+          "(\\vec{AB}\\times \\vec{AC})\\cdot \\vec{AD}=5"
+        ],
+        [
+          "volume",
+          "V=\\frac{|5|}{6}=\\frac{5}{6}"
+        ],
+        [
+          "height",
+          "h=\\frac{3V}{S_{ABC}}=\\frac{5 \\sqrt{14}}{14}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{5 \\sqrt{14}}{14}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "tetrahedron-height"
+      }
+    },
+    {
+      "code": "VSP-1-0005000000000001-26",
+      "statement": "Find the surface area of the parallelepiped spanned by AB, AC and AD: \\(A=(0,1,1),\\ B=(2,-1,0),\\ C=(0,3,3),\\ D=(-2,-1,3)\\).",
+      "steps": [
+        [
+          "edges",
+          "\\vec{AB}=(2,-2,-1),\\quad \\vec{AC}=(0,2,2),\\quad \\vec{AD}=(-2,-2,2)"
+        ],
+        [
+          "face_uv",
+          "|\\vec{AB}\\times \\vec{AC}|=6"
+        ],
+        [
+          "face_uw",
+          "|\\vec{AB}\\times \\vec{AD}|=2 \\sqrt{26}"
+        ],
+        [
+          "face_vw",
+          "|\\vec{AC}\\times \\vec{AD}|=4 \\sqrt{6}"
+        ],
+        [
+          "surface",
+          "S=2\\left(6+2 \\sqrt{26}+4 \\sqrt{6}\\right)=12 + 8 \\sqrt{6} + 4 \\sqrt{26}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "12 + 8 \\sqrt{6} + 4 \\sqrt{26}",
+      "metadata": {
+        "difficulty": 2,
+        "template": "parallelepiped-area"
+      }
+    },
+    {
+      "code": "VSP-1-0006000000000000-14",
+      "statement": "N is the midpoint of CD. Find the volume of tetrahedron ABCN: \\(A=(0,-1,-1),\\ B=(0,-2,-1),\\ C=(-2,-2,-2),\\ D=(-1,-1,-2)\\).",
+      "steps": [
+        [
+          "midpoint",
+          "N=\\frac{C+D}{2}=(- \\frac{3}{2},- \\frac{3}{2},-2)"
+        ],
+        [
+          "edges",
+          "\\vec{AB}=(0,-1,0),\\quad \\vec{AC}=(-2,-1,-1),\\quad \\vec{AN}=(- \\frac{3}{2},- \\frac{1}{2},-1)"
+        ],
+        [
+          "cross",
+          "\\vec{AB}\\times \\vec{AC}=(1,0,-2)"
+        ],
+        [
+          "triple",
+          "(\\vec{AB}\\times \\vec{AC})\\cdot \\vec{AN}=\\frac{1}{2}"
+        ],
+        [
+          "volume",
+          "V=\\frac{|\\frac{1}{2}|}{6}=\\frac{1}{12}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{12}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "tetrahedron-volume"
+      }
+    },
+    {
+      "code": "VSP-1-0007000000000000-19",
+      "statement": "N is the midpoint of CD. Find the height from N to the plane ABC: \\(A=(1,1,1),\\ B=(0,2,0),\\ C=(1,-1,0),\\ D=(-1,2,-1)\\).",
+      "steps": [
+        [
+          "midpoint",
+          "N=\\frac{C+D}{2}=(0,\\frac{1}{2},- \\frac{1}{2})"
+        ],
+        [
+          "edges",
+          "\\vec{AB}=(-1,1,-1),\\quad \\vec{AC}=(0,-2,-1),\\quad \\vec{AN}=(-1,- \\frac{1}{2},- \\frac{3}{2})"
+        ],
+        [
+          "cross",
+          "\\vec{AB}\\times \\vec{AC}=(-3,-1,2)"
+        ],
+        [
+          "base",
+          "S_{ABC}=\\frac{1}{2}|\\vec{AB}\\times \\vec{AC}|=\\frac{\\sqrt{14}}{2}"
+        ],
+        [
+          "triple",
+          "(\\vec{AB}\\times \\vec{AC})\\cdot \\vec{AN}=\\frac{1}{2}"
+        ],
+        [
+          "volume",
+          "V=\\frac{|\\frac{1}{2}|}{6}=\\frac{1}{12}"
+        ],
+        [
+          "height",
+          "h=\\frac{3V}{S_{ABC}}=\\frac{\\sqrt{14}}{28}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{\\sqrt{14}}{28}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "tetrahedron-height"
+      }
+    },
+    {
+      "code": "VSP-1-0008000000000000-24",
+      "statement": "N is the midpoint of CD. Find the surface area of the parallelepiped spanned by AB, AC and AN: \\(A=(1,-1,0),\\ B=(-1,-3,1),\\ C=(3,0,0),\\ D=(-1,1,2)\\).",
+      "steps": [
+        [
+          "midpoint",
+          "N=\\frac{C+D}{2}=(1,\\frac{1}{2},1)"
+        ],
+        [
+          "edges",
+          "\\vec{AB}=(-2,-2,1),\\quad \\vec{AC}=(2,1,0),\\quad \\vec{AN}=(0,\\frac{3}{2},1)"
+        ],
+        [
+          "face_uv",
+          "|\\vec{AB}\\times \\vec{AC}|=3"
+        ],
+        [
+          "face_uw",
+          "|\\vec{AB}\\times \\vec{AN}|=\\frac{\\sqrt{101}}{2}"
+        ],
+        [
+          "face_vw",
+          "|\\vec{AC}\\times \\vec{AN}|=\\sqrt{14}"
+        ],
+        [
+          "surface",
+          "S=2\\left(3+\\frac{\\sqrt{101}}{2}+\\sqrt{14}\\right)=6 + 2 \\sqrt{14} + \\sqrt{101}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "6 + 2 \\sqrt{14} + \\sqrt{101}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "parallelepiped-area"
+      }
+    },
+    {
+      "code": "VSP-1-0006000000000001-31",
+      "statement": "N is the midpoint of CD. Find the volume of tetrahedron ABCN: \\(A=(-1,1,0),\\ B=(-1,1,-1),\\ C=(1,2,0),\\ D=(-2,1,-1)\\).",
+      "steps": [
+        [
+          "midpoint",
+          "N=\\frac{C+D}{2}=(- \\frac{1}{2},\\frac{3}{2},- \\frac{1}{2})"
+        ],
+        [
+          "edges",
+          "\\vec{AB}=(0,0,-1),\\quad \\vec{AC}=(2,1,0),\\quad \\vec{AN}=(\\frac{1}{2},\\frac{1}{2},- \\frac{1}{2})"
+        ],
+        [
+          "cross",
+          "\\vec{AB}\\times \\vec{AC}=(1,-2,0)"
+        ],
+        [
+          "triple",
+          "(\\vec{AB}\\times \\vec{AC})\\cdot \\vec{AN}=- \\frac{1}{2}"
+        ],
+        [
+          "volume",
+          "V=\\frac{|- \\frac{1}{2}|}{6}=\\frac{1}{12}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{1}{12}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "tetrahedron-volume"
+      }
+    },
+    {
+      "code": "VSP-1-0007000000000001-36",
+      "statement": "N is the midpoint of CD. Find the height from N to the plane ABC: \\(A=(-1,1,-1),\\ B=(-3,1,-2),\\ C=(0,-1,-2),\\ D=(1,2,0)\\).",
+      "steps": [
+        [
+          "midpoint",
+          "N=\\frac{C+D}{2}=(\\frac{1}{2},\\frac{1}{2},-1)"
+        ],
+        [
+          "edges",
+          "\\vec{AB}=(-2,0,-1),\\quad \\vec{AC}=(1,-2,-1),\\quad \\vec{AN}=(\\frac{3}{2},- \\frac{1}{2},0)"
+        ],
+        [
+          "cross",
+          "\\vec{AB}\\times \\vec{AC}=(-2,-3,4)"
+        ],
+        [
+          "base",
+          "S_{ABC}=\\frac{1}{2}|\\vec{AB}\\times \\vec{AC}|=\\frac{\\sqrt{29}}{2}"
+        ],
+        [
+          "triple",
+          "(\\vec{AB}\\times \\vec{AC})\\cdot \\vec{AN}=- \\frac{3}{2}"
+        ],
+        [
+          "volume",
+          "V=\\frac{|- \\frac{3}{2}|}{6}=\\frac{1}{4}"
+        ],
+        [
+          "height",
+          "h=\\frac{3V}{S_{ABC}}=\\frac{3 \\sqrt{29}}{58}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "\\frac{3 \\sqrt{29}}{58}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "tetrahedron-height"
+      }
+    },
+    {
+      "code": "VSP-1-0008000000000001-41",
+      "statement": "N is the midpoint of CD. Find the surface area of the parallelepiped spanned by AB, AC and AN: \\(A=(-1,0,0),\\ B=(-2,1,2),\\ C=(-2,1,1),\\ D=(-2,-1,1)\\).",
+      "steps": [
+        [
+          "midpoint",
+          "N=\\frac{C+D}{2}=(-2,0,1)"
+        ],
+        [
+          "edges",
+          "\\vec{AB}=(-1,1,2),\\quad \\vec{AC}=(-1,1,1),\\quad \\vec{AN}=(-1,0,1)"
+        ],
+        [
+          "face_uv",
+          "|\\vec{AB}\\times \\vec{AC}|=\\sqrt{2}"
+        ],
+        [
+          "face_uw",
+          "|\\vec{AB}\\times \\vec{AN}|=\\sqrt{3}"
+        ],
+        [
+          "face_vw",
+          "|\\vec{AC}\\times \\vec{AN}|=\\sqrt{2}"
+        ],
+        [
+          "surface",
+          "S=2\\left(\\sqrt{2}+\\sqrt{3}+\\sqrt{2}\\right)=2 \\sqrt{3} + 4 \\sqrt{2}"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "2 \\sqrt{3} + 4 \\sqrt{2}",
+      "metadata": {
+        "difficulty": 3,
+        "template": "parallelepiped-area"
+      }
+    }
+  ],
+  "vector-triangle-angle-v2": [
+    {
+      "code": "VTA-2-0000000000000000-22",
+      "statement": "Find the angle between the vectors in degrees: \\(u=(-2,0,0),\\ v=(0,0,-1)\\).",
+      "steps": [
+        [
+          "products",
+          "\\vec u\\cdot \\vec v=0,\\quad |\\vec u|=2,\\quad |\\vec v|=1"
+        ],
+        [
+          "cosine",
+          "\\cos\\theta=\\frac{0}{2}=0"
+        ],
+        [
+          "angle",
+          "\\theta=90^\\circ"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "90",
+      "metadata": {
+        "difficulty": 1,
+        "template": "triangle-angle-degrees"
+      }
+    },
+    {
+      "code": "VTA-2-0000000000000001-39",
+      "statement": "Find the angle between the vectors in degrees: \\(u=(0,2,0),\\ v=(0,0,-2)\\).",
+      "steps": [
+        [
+          "products",
+          "\\vec u\\cdot \\vec v=0,\\quad |\\vec u|=2,\\quad |\\vec v|=2"
+        ],
+        [
+          "cosine",
+          "\\cos\\theta=\\frac{0}{4}=0"
+        ],
+        [
+          "angle",
+          "\\theta=90^\\circ"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "90",
+      "metadata": {
+        "difficulty": 1,
+        "template": "triangle-angle-degrees"
+      }
+    },
+    {
+      "code": "VTA-2-0001000000000000-27",
+      "statement": "Find the angle at B of triangle ABC in degrees: \\(A=(1,0,0),\\ B=(1,-1,0),\\ C=(1,-2,-1)\\).",
+      "steps": [
+        [
+          "edges",
+          "\\vec{BA}=(0,1,0),\\quad \\vec{BC}=(0,-1,-1)"
+        ],
+        [
+          "products",
+          "\\vec{BA}\\cdot \\vec{BC}=-1,\\quad |\\vec{BA}|=1,\\quad |\\vec{BC}|=\\sqrt{2}"
+        ],
+        [
+          "cosine",
+          "\\cos\\theta=\\frac{-1}{\\sqrt{2}}=- \\frac{\\sqrt{2}}{2}"
+        ],
+        [
+          "angle",
+          "\\theta=135^\\circ"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "135",
+      "metadata": {
+        "difficulty": 2,
+        "template": "triangle-angle-degrees"
+      }
+    },
+    {
+      "code": "VTA-2-0001000000000001-44",
+      "statement": "Find the angle at B of triangle ABC in degrees: \\(A=(0,0,1),\\ B=(1,0,1),\\ C=(-1,2,1)\\).",
+      "steps": [
+        [
+          "edges",
+          "\\vec{BA}=(-1,0,0),\\quad \\vec{BC}=(-2,2,0)"
+        ],
+        [
+          "products",
+          "\\vec{BA}\\cdot \\vec{BC}=2,\\quad |\\vec{BA}|=1,\\quad |\\vec{BC}|=2 \\sqrt{2}"
+        ],
+        [
+          "cosine",
+          "\\cos\\theta=\\frac{2}{2 \\sqrt{2}}=\\frac{\\sqrt{2}}{2}"
+        ],
+        [
+          "angle",
+          "\\theta=45^\\circ"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "45",
+      "metadata": {
+        "difficulty": 2,
+        "template": "triangle-angle-degrees"
+      }
+    },
+    {
+      "code": "VTA-2-0002000000000000-32",
+      "statement": "M is the midpoint of BC in triangle ABC. Find angle BAM in degrees: \\(A=(0,-1,-1),\\ B=(0,-1,0),\\ C=(-2,-1,-4)\\).",
+      "steps": [
+        [
+          "midpoint",
+          "M=\\frac{B+C}{2}=(-1,-1,-2)"
+        ],
+        [
+          "edges",
+          "\\vec{AB}=(0,0,1),\\quad \\vec{AM}=(-1,0,-1)"
+        ],
+        [
+          "products",
+          "\\vec{AB}\\cdot \\vec{AM}=-1,\\quad |\\vec{AB}|=1,\\quad |\\vec{AM}|=\\sqrt{2}"
+        ],
+        [
+          "cosine",
+          "\\cos\\theta=\\frac{-1}{\\sqrt{2}}=- \\frac{\\sqrt{2}}{2}"
+        ],
+        [
+          "angle",
+          "\\theta=135^\\circ"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "135",
+      "metadata": {
+        "difficulty": 3,
+        "template": "triangle-angle-degrees"
+      }
+    },
+    {
+      "code": "VTA-2-0002000000000001-49",
+      "statement": "M is the midpoint of BC in triangle ABC. Find angle BAM in degrees: \\(A=(0,0,1),\\ B=(0,0,0),\\ C=(0,-4,-2)\\).",
+      "steps": [
+        [
+          "midpoint",
+          "M=\\frac{B+C}{2}=(0,-2,-1)"
+        ],
+        [
+          "edges",
+          "\\vec{AB}=(0,0,-1),\\quad \\vec{AM}=(0,-2,-2)"
+        ],
+        [
+          "products",
+          "\\vec{AB}\\cdot \\vec{AM}=2,\\quad |\\vec{AB}|=1,\\quad |\\vec{AM}|=2 \\sqrt{2}"
+        ],
+        [
+          "cosine",
+          "\\cos\\theta=\\frac{2}{2 \\sqrt{2}}=\\frac{\\sqrt{2}}{2}"
+        ],
+        [
+          "angle",
+          "\\theta=45^\\circ"
+        ]
+      ],
+      "answer_kind": "expression",
+      "answer_latex": "45",
+      "metadata": {
+        "difficulty": 3,
+        "template": "triangle-angle-degrees"
+      }
+    }
   ]
 }

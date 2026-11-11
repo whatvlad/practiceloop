@@ -6,6 +6,7 @@ import { initialMatrixOptions, matrixOptionsQuery, matrixOptionsValid, MatrixSet
 import { modulusModeQuery, type ModulusMode } from '../components/ModulusSettings';
 import { generateProblem, getCatalogue, getLastSelection } from '../data/api';
 import { mixedShares } from '../data/topics';
+import { VECTOR_MODES, type VectorMode } from '../data/vectorModes';
 import type { AreaSlug, Difficulty, PracticeTopic } from '../data/types';
 import type { MatrixDimensions } from '../data/types';
 import { navigate } from '../router';
@@ -23,6 +24,7 @@ export function TopicPage({ initialArea, initialTopic }: { initialArea?: AreaSlu
   const [rankDimensions, setRankDimensions] = useState({ rows: 2, columns: 2 });
   const [squareSize, setSquareSize] = useState(2);
   const [complexMode, setComplexMode] = useState<'multiply' | 'divide'>('multiply');
+  const [vectorMode, setVectorMode] = useState<VectorMode>('vector-expression');
   const [conversionMode, setConversionMode] = useState<'alg-trig' | 'alg-exp' | 'trig-alg' | 'exp-alg'>('alg-trig');
   const [polarMode, setPolarMode] = useState<'argument' | 'power' | 'root'>('argument');
   const [polynomialMode, setPolynomialMode] = useState<'division' | 'remainder' | 'divisibility'>('division');
@@ -41,7 +43,7 @@ export function TopicPage({ initialArea, initialTopic }: { initialArea?: AreaSlu
   // workspace random selector draws only the learner's explicit choices.
   const mixed = area === 'algebra' ? null : areas.find(a => a.slug === area)?.mixed ?? null;
   const allLevels = topic === 'mixed' ? mixed?.availableDifficulties ?? [] : topics.find(t => t.slug === topic)?.availableDifficulties ?? [];
-  const levels = topic === 'complex-polar-form' ? allLevels.filter(level => level === 1) : topic === 'complex-numbers' && modulusMode ? allLevels.filter(level => level <= 3) : allLevels;
+  const levels = topic === 'complex-polar-form' ? allLevels.filter(level => level === 1) : topic === 'vectors' || (topic === 'complex-numbers' && modulusMode) ? allLevels.filter(level => level <= 3) : allLevels;
   const offered: PracticeTopic[] = [...topics.filter(t => t.availableDifficulties.length > 0).map(t => t.slug), ...(mixed ? ['mixed' as const] : [])];
   const available = levels.includes(difficulty) && (topic !== 'matrix-operations' || !customMatrix || compatibleMatrix);
   const selectedMatrixOptions = matrixOptionsValid(difficulty, matrixOptions) ? matrixOptions : initialMatrixOptions(difficulty);
@@ -82,7 +84,7 @@ export function TopicPage({ initialArea, initialTopic }: { initialArea?: AreaSlu
     try {
       const options = topic === 'matrix-operations' && !customMatrix ? selectedMatrixOptions : undefined;
       const mode = topic === 'complex-numbers' ? modulusMode : undefined;
-      const exerciseMode = difficulty <= 3 ? topic === 'complex-arithmetic' ? complexMode : topic === 'polynomial-division' ? polynomialMode : topic === 'complex-conversion' ? conversionMode : topic === 'polynomial-roots' ? 'roots' : topic === 'partial-fractions' ? 'fractions' : topic === 'complex-polar-form' ? polarMode : undefined : undefined;
+      const exerciseMode = difficulty <= 3 ? topic === 'vectors' ? vectorMode : topic === 'complex-arithmetic' ? complexMode : topic === 'polynomial-division' ? polynomialMode : topic === 'complex-conversion' ? conversionMode : topic === 'polynomial-roots' ? 'roots' : topic === 'partial-fractions' ? 'fractions' : topic === 'complex-polar-form' ? polarMode : undefined : undefined;
       const chosenDifficulty = topic === 'complex-polar-form' ? ({ argument: 1, power: 2, root: 3 } as const)[polarMode] : difficulty;
       const problem = await generateProblem(topic, chosenDifficulty, area, options, mode, topic === 'matrix-rank' ? rankDimensions : undefined, topic === 'matrix-operations' && customMatrix ? matrixDimensions : undefined, ['determinants', 'inverse-matrices', 'linear-systems'].includes(topic) && difficulty <= 3 ? squareSize : undefined, exerciseMode);
       if (active.current) navigate(`/practice?id=${encodeURIComponent(problem.id)}${options ? matrixOptionsQuery(options) : ''}${mode ? modulusModeQuery(mode) : ''}`);
@@ -124,6 +126,7 @@ export function TopicPage({ initialArea, initialTopic }: { initialArea?: AreaSlu
             <select className="pl-input" value={squareSize} onChange={event => setSquareSize(Number(event.target.value))}>{[2, 3, 4, 5].map(size => <option key={size} value={size}>{size}</option>)}</select>
           </label>}
           {topic === 'complex-arithmetic' && difficulty <= 3 && <label className="pl-label">Exercise type<select className="pl-input" value={complexMode} onChange={event => setComplexMode(event.target.value as typeof complexMode)}><option value="multiply">Multiplication</option><option value="divide">Division</option></select></label>}
+          {topic === 'vectors' && <label className="pl-label">Exercise type<select className="pl-input" value={vectorMode} onChange={event => setVectorMode(event.target.value as VectorMode)}>{VECTOR_MODES.map(mode => <option key={mode.id} value={mode.id}>{mode.label}</option>)}</select></label>}
           {topic === 'complex-conversion' && <label className="pl-label">Exercise type<select className="pl-input" value={conversionMode} onChange={event => setConversionMode(event.target.value as typeof conversionMode)}><option value="alg-trig">Algebraic → trigonometric</option><option value="alg-exp">Algebraic → exponential</option><option value="trig-alg">Trigonometric → algebraic</option><option value="exp-alg">Exponential → algebraic</option></select></label>}
           {topic === 'complex-polar-form' && <label className="pl-label">Exercise type<select className="pl-input" value={polarMode} onChange={event => setPolarMode(event.target.value as typeof polarMode)}><option value="argument">Principal argument</option><option value="power">Powers (de Moivre)</option><option value="root">One root</option></select></label>}
           {topic === 'polynomial-division' && difficulty <= 3 && <label className="pl-label">Exercise type<select className="pl-input" value={polynomialMode} onChange={event => setPolynomialMode(event.target.value as typeof polynomialMode)}><option value="division">Quotient and remainder</option><option value="remainder">Remainder theorem</option><option value="divisibility">Divisibility condition</option></select></label>}

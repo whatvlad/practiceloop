@@ -7,6 +7,7 @@ import { AnswerInput } from './AnswerInput';
 import { Tex } from './Tex';
 import { matrixDimensions, parseMatrixAnswer, serializeMatrixAnswer } from '../data/matrixContract';
 import { MatrixAnswerInput } from './MatrixAnswerInput';
+import { VectorAnswerInput } from './VectorAnswerInput';
 import { ANSWER_VARIABLES, type AnswerVariable } from '../answerSyntax';
 
 interface Props {
@@ -40,6 +41,10 @@ export function StructuredAnswerInput({ id, spec, value, onChange, state, onEnte
     const symbols = (spec as ComputationalInputSpec).components?.[0]?.components?.[0]?.symbols;
     const variables = symbols ? Object.keys(symbols).filter((name): name is AnswerVariable => ANSWER_VARIABLES.includes(name as AnswerVariable)) : undefined;
     return <MatrixAnswerInput value={matrix} variables={variables} onChange={next => onChange(serializeMatrixAnswer(next))} />;
+  }
+  if (spec.kind === 'tuple' && spec.labels?.join('|') === 'x component|y component|z component'
+    && spec.components?.length === 3 && spec.components.every(child => child.kind === 'formula' && !Object.keys(child.symbols ?? {}).length)) {
+    return <VectorAnswerInput id={id} spec={spec as ComputationalInputSpec} value={value} onChange={onChange} state={state} onEnter={onEnter} describedBy={describedBy} />;
   }
   if ((COMPUTATIONAL_KINDS as readonly string[]).includes(spec.kind)) return <ComputationalAnswerInput
     id={id} spec={spec as ComputationalInputSpec} value={value} onChange={onChange} state={state} onEnter={onEnter} describedBy={describedBy} />;

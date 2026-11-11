@@ -3,6 +3,7 @@ import { Logo } from '../components/AppNav';
 import { Button, ButtonLink } from '../components/Button';
 import { DifficultyDots } from '../components/DifficultyScale';
 import { ProblemStatement } from '../components/ProblemStatement';
+import { SolutionVisual } from '../visual/SolutionVisual';
 import { lookupShare, type ShareLookup } from '../data/shares';
 import { practiceCodeProblem, practiceSharedProblem } from '../data/api';
 import { lookupProblemCode } from '../data/problemCodes';
@@ -89,6 +90,7 @@ function Result({ found, shareRef, signedIn, authLoading, inactive }: { found: S
         <span className="pl-label">{permanent ? 'Problem from code' : 'Shared problem'}</span>
       </div>
       <ProblemStatement topic={topic} problemLatex={problemLatex} />
+      {found.problem.statementVisual && <SolutionVisual spec={found.problem.statementVisual} />}
       {inactive ? <p className="pl-h-lg" role="status">Coming soon</p> : <p className="pl-small pl-muted pl-m-0">Solve this problem with answer checking and a full solution. Your work is saved separately in your own history.</p>}
       {error && <p role="alert">{error}</p>}
       <div>

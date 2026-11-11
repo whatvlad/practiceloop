@@ -314,15 +314,24 @@ def start_copy(client: TestClient, ref: dict[str, str], key: str | None = None) 
     )
 
 
-@pytest.mark.parametrize("topic", tuple(practice.TOPICS))
+@pytest.mark.parametrize(
+    ("topic", "exercise_mode"),
+    [*((topic, None) for topic in practice.TOPICS), ("vectors", "tetrahedron-height")],
+)
 def test_copy_preserves_exact_trusted_content_for_every_topic(
-    client: TestClient, users: Users, url: str, topic: str
+    client: TestClient, users: Users, url: str, topic: str, exercise_mode: str | None
 ) -> None:
+    request = {"topic": topic, "difficulty": min(3, max(practice.TOPICS[topic].levels))}
+    if exercise_mode is not None:
+        request["exerciseMode"] = exercise_mode
     source = client.post(
         "/problems",
-        json={"topic": topic, "difficulty": min(3, max(practice.TOPICS[topic].levels))},
+        json=request,
         headers={"Idempotency-Key": str(uuid4())},
     ).json()["problem"]
+    if exercise_mode is not None:
+        assert source["statementVisual"]["kind"] == "geometry3d"
+        assert "H" not in {point["label"] for point in source["statementVisual"]["points"]}
     created = share(client, source["id"])
     instructions = source.get("answerInput")
     with psycopg.connect(url) as conn:
@@ -346,6 +355,8 @@ def test_copy_preserves_exact_trusted_content_for_every_topic(
     public = {field: source[field] for field in ("topic", "difficulty", "problemLatex")}
     if instructions is not None:
         public["answerInput"] = instructions
+    if "statementVisual" in source:
+        public["statementVisual"] = source["statementVisual"]
     assert client.get(f"/shares/{created['token']}").json() == {"problem": public}
     users.current = users.bob
     response = start_copy(client, {"token": created["token"]})
@@ -370,6 +381,9 @@ def test_copy_preserves_exact_trusted_content_for_every_topic(
     if instructions is not None:
         expected_fields.add("answerInput")
         assert copied["answerInput"] == instructions
+    if "statementVisual" in source:
+        expected_fields.add("statementVisual")
+        assert copied["statementVisual"] == source["statementVisual"]
     expected_fields.update(settings)
     for field, value in settings.items():
         assert copied[field] == source[field] == value

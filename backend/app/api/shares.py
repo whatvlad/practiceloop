@@ -32,6 +32,7 @@ from app.services import idempotency, shares
 from app.services import owned_records as records
 from app.services.idempotency import Scope, StoredResponse
 from app.services.shares import SharedProblem, State
+from app.visuals.spec import statement_projection
 
 router = APIRouter(tags=["sharing"])
 
@@ -126,6 +127,7 @@ def _shared(found: SharedProblem | State) -> dict[str, Any]:
             "difficulty": found.difficulty,
             "problemLatex": found.problem_latex,
             **engine.input_projection(found.generator_data),
+            **statement_projection(found.generator_data),
         }
     }
 

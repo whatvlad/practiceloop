@@ -8,6 +8,27 @@ const response = (body: unknown, status = 200) => new Response(JSON.stringify(bo
 beforeEach(() => { practice.resetPractice(); practice.configurePracticeAuth(async () => null); fetchMock.mockReset(); vi.stubGlobal('fetch', fetchMock); });
 afterEach(() => vi.unstubAllGlobals());
 
+it('keeps the given diagram on a saved problem and step diagrams only after reveal', async () => {
+  const drawing = {
+    kind: 'geometry3d', version: 1, title: 'Triangle ABC', description: 'Given triangle.',
+    points: [{ label: 'A', at: [0, 0, 0], tone: 'given' }], lines: [], faces: [],
+  };
+  const stepDrawing = { ...drawing, description: 'A new point.', points: [
+    ...drawing.points, { label: 'H', at: [1, 0, 0], tone: 'active' },
+  ] };
+  practice.configurePracticeAuth(async () => 'account-token');
+  fetchMock.mockResolvedValueOnce(response({ problem: {
+    ...publicProblem, topic: 'vectors', difficulty: 1, attemptCount: 0, lastAttempt: null,
+    answerRevealed: false, solutionRevealed: false, statementVisual: drawing, answerLatex: 'PRIVATE',
+  } }, 201));
+  const problem = await practice.practiceCodeProblem('VTH-1-0000000000000000-07');
+  expect(problem.statementVisual).toEqual(drawing);
+  expect(JSON.stringify(problem)).not.toContain('PRIVATE');
+  fetchMock.mockResolvedValueOnce(response({ steps: [{ say: 'Construct H.', latex: 'H', visual: stepDrawing }] }));
+  const solution = await practice.revealSolution(problem.id);
+  expect(solution.steps[0].visual).toEqual(stepDrawing);
+});
+
 it('requires sign-in for a permanent code and retains one idempotency key on retries', async () => {
   const code = 'CMB-1-0000000000000000-32';
   await expect(practice.practiceCodeProblem(code)).rejects.toThrow('Sign in');

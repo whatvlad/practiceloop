@@ -25,6 +25,10 @@ class ComplexPlane(BaseModel):
 
 
 def validate_visual(value: object) -> dict[str, Any]:
+    if isinstance(value, dict) and value.get("kind") == "geometry3d":
+        from app.visuals.geometry import validate_geometry
+
+        return validate_geometry(value)
     if isinstance(value, dict) and value.get("kind") == "complex-plane":
         diagram = ComplexPlane.model_validate_json(json.dumps(value, allow_nan=False))
         if diagram.mode == "circle" and diagram.radius is None:
