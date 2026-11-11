@@ -28,7 +28,7 @@ def first_records() -> list[dict[str, object]]:
             for record in catalogue_records(slug, level):
                 if (record["generator_version"], level) not in first:
                     first.setdefault((record["generator_version"], level), record)
-    return list(first.values())
+    return [record for record in first.values() if build_visual(record) is not None]
 
 
 def literals(picture: str) -> list[str]:
@@ -37,7 +37,7 @@ def literals(picture: str) -> list[str]:
 
 def test_every_served_visual_kind_has_a_drawer() -> None:
     kinds = {build_visual(record)["kind"] for record in first_records()}  # type: ignore[index]
-    assert kinds == {"definite", "indefinite", "region2d", "solid3d"}
+    assert kinds == {"definite", "indefinite", "region2d", "solid3d", "plot2d"}
     # A reusable visual can precede its curriculum consumer (#234). Its own
     # renderer/print tests live with the computational extension provider.
     assert kinds <= set(DRAWERS)
@@ -52,7 +52,7 @@ def test_a_graph_is_a_picture_of_pdf_operators_and_math_labels(record: dict[str,
     words = {word for word in literal.split() if not _NUMBER.fullmatch(word)}
     assert words <= _OPERATORS, words - _OPERATORS
     # Every label is a zero-size box of math, so it cannot break the picture.
-    box = r"\\put\([^)]*\)\{\\makebox\(0,0\)\[\w+\]\{\\scriptsize\$[^$]*\$\}\}"
+    box = r"\\put\([^)]*\)\{\\makebox\(0,0\)\[\w*\]\{\\scriptsize\$[^$]*\$\}\}"
     labels = re.findall(box, picture)
     assert len(labels) == picture.count("\\makebox")
 

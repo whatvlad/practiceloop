@@ -52,6 +52,7 @@ class PrintedProblem:
     steps: Sequence[PrintedStep] = ()
     # A picture from app.services.worksheet_graphs, or "" for none.
     graph: str = ""
+    prompt_graph: str = ""
 
 
 @dataclass(frozen=True)
@@ -106,11 +107,16 @@ Name:~\rule{7cm}{0.4pt}\hfill Date:~\rule{4cm}{0.4pt}\par
 
 def _problem(number: int, problem: PrintedProblem) -> str:
     # The statement and its writing space share one unbreakable box (one page).
+    prompt = (
+        "\\par\\begin{center}\n" + problem.prompt_graph + "\n\\end{center}\n"
+        if problem.prompt_graph
+        else ""
+    )
     return (
         "\\par\\noindent\\begin{minipage}{\\linewidth}\n"
         f"\\plnumber{{{number}}}"
         f"\\plfit{{\\dimexpr\\linewidth-2em\\relax}}{{$\\displaystyle {problem.statement}$}}\n"
-        f"\\par\\rule{{0pt}}{{{problem.space_cm:.2f}cm}}\n"
+        f"{prompt}\\par\\rule{{0pt}}{{{problem.space_cm:.2f}cm}}\n"
         "\\end{minipage}\\par\\medskip\n"
     )
 
@@ -128,8 +134,9 @@ def _solution(number: int, problem: PrintedProblem) -> str:
             f"{{\\small {escape_text(step.say)}}}\\par\n"
             f"\\hspace*{{2em}}{fit}{{$\\displaystyle {step.latex}$}}\\par\\smallskip\n"
         )
-    if problem.graph:
-        parts.append("\\par\\smallskip\\begin{center}\n" + problem.graph + "\n\\end{center}\n")
+    illustration = problem.graph or problem.prompt_graph
+    if illustration:
+        parts.append("\\par\\smallskip\\begin{center}\n" + illustration + "\n\\end{center}\n")
     parts.append("\\end{minipage}\\par\\bigskip\n")
     return "".join(parts)
 

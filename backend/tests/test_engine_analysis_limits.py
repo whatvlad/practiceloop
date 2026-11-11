@@ -6,14 +6,17 @@ import sys
 from decimal import Decimal, localcontext
 from functools import cache
 
+import mpmath
 import pytest
 import sympy as sp
 from test_engine_elementary import source as computational_source
 
+from app.engine.answers.antiderivative import AntiderivativeAnswer
 from app.engine.answers.computational import (
     CategoryAnswer,
     LimitAnswer,
     OrderedAnswer,
+    PeriodicSetAnswer,
     RealSetAnswer,
 )
 from app.engine.generators.analysis_limits import generators
@@ -25,6 +28,9 @@ from app.services import math_worker
 
 
 def source(answer):
+    if isinstance(answer, AntiderivativeAnswer):
+        text = sp.sstr(answer.primitive).replace("**", "^")
+        return re.sub(r"\bE\b", "e", text) + " + C"
     if isinstance(answer, LimitAnswer):
         if answer.expected == sp.oo:
             return "inf"
@@ -34,10 +40,12 @@ def source(answer):
         return re.sub(r"\bE\b", "e", text)
     if isinstance(answer, OrderedAnswer):
         return "(" + ";".join(map(source, answer.components)) + ")"
-    return computational_source(answer)
+    return re.sub(r"\bE\b", "e", computational_source(answer))
 
 
 def different_source(answer):
+    if isinstance(answer, AntiderivativeAnswer):
+        return "x^2 + C"
     if isinstance(answer, LimitAnswer):
         return "-inf" if answer.expected == sp.oo else "inf"
     if isinstance(answer, OrderedAnswer):
@@ -47,6 +55,8 @@ def different_source(answer):
         return next(choice for choice in answer.choices if choice != answer.expected)
     if isinstance(answer, RealSetAnswer):
         return "R" if answer.expected == sp.S.EmptySet else "{}"
+    if isinstance(answer, PeriodicSetAnswer):
+        return "(" + sp.sstr(answer.period) + ";{0})"
     return "1" if answer.expected == 0 else "0"
 
 
@@ -312,20 +322,368 @@ def reference(name, a, b, c):
         f = b * (a + 1) ** x / ((a + 1) ** x - (a + 1) ** c)
         values = [sp.limit(f, x, at) for at in (-sp.oo, sp.oo)]
         return sp.FiniteSet(c), *values
+    reference_257 = reference_sequences(name, a, b, c)
+    if reference_257 is not None:
+        return reference_257
     raise AssertionError(name)
+
+
+def last_failure(values, fails):
+    """Index after the last consecutive pair that breaks the claimed direction."""
+    return 1 + max(
+        (k for k, (x, y) in enumerate(zip(values, values[1:], strict=False), 1) if fails(x, y)),
+        default=0,
+    )
+
+
+def reference_sequences(name, a, b, c):  # noqa: PLR0911, PLR0912
+    """#257 oracles: term tables, exact arithmetic and far-out numerical values."""
+    n = 10**7
+    if name == "bound_root_exponential":
+        with localcontext() as ctx:
+            ctx.prec = 120
+            shift = 1 + (b - 1) % a
+            values = [(Decimal(a + 1) ** k - shift) ** (Decimal(1) / k) for k in range(1, 80)]
+        assert all(value < a + 1 for value in values)
+        assert min(values) == values[0]
+        assert a + 1 - values[-1] < Decimal("1e-20")
+        return "both", int(values[0]), a + 1
+    if name == "bound_geometric_sum":
+        terms = [sp.Rational(c, (a + 1) ** k + b * k) for k in range(1, 40)]
+        sums = [sum(terms[:k]) for k in range(1, 40)]
+        assert sums == sorted(sums)
+        tail = sp.Rational(c, a) / (a + 1) ** 39  # geometric bound on the omitted terms
+        assert sums[-1] + tail < sp.Rational(c, a)
+        return "both", sums[0], sp.Rational(c, a)
+    if name == "monotone_exponential_difference":
+        large = a + 1 + (b + 1) // 2
+        values = [large**k - b * c * (a + 1) ** k for k in range(1, 60)]
+        return "increasing", last_failure(values, lambda x, y: y <= x)
+    if name == "monotone_rational":
+        values = [sp.Rational(b * k, k * k + a * c * (a + c)) for k in range(1, 60)]
+        return "decreasing", last_failure(values, lambda x, y: y >= x)
+    if name == "monotone_conjugate":
+        with localcontext() as ctx:
+            ctx.prec = 50
+            values = [
+                c * ((Decimal(k * k + 2 * b * k + b * b + a)).sqrt() - k) for k in range(1, 300)
+            ]
+        return "decreasing", last_failure(values, lambda x, y: y >= x)
+    if name == "definition_root":
+        return a + c / math.sqrt(n * n + b)
+    if name == "definition_exponential":
+        assert c * (a + 1) ** 60 - b > 10**18
+        return sp.oo
+    if name == "product_leading_orders":
+        return (a * n + 1) ** 2 * (b * n + 1) ** 4 / (c * n * n + 1) ** 3
+    if name == "competing_exponentials":
+        small, large = a + 1, a + b + 1
+        k = 300
+        exact = sp.Rational(large ** (k + 1) - small ** (k + 2), c * large**k - small**k)
+        return float(exact)
+    if name == "radical_degree":
+        return (a * n * math.sqrt(n) + b) / math.sqrt(c * n**3 + 1)
+    if name == "root_rational_sum":
+        return math.exp(math.log(a / n + b / n**2 + c / n**3) / n)
+    if name == "negative_growing_power":
+        return math.exp((a - c * n) * math.log1p(b / (n + a)))
+    if name == "product_of_powers":
+        return math.exp(n * (math.log1p(1 / (a * n)) + math.log1p(c / ((a + b) * n))))
+    if name == "reciprocal_power":
+        return math.exp(-c * n * math.log1p(b / (a * n)))
+    if name == "rational_growth":
+        sign = 1 if (a + b + c) % 2 == 0 else -1
+        value = (sign * a * n * n + b) / (c * n + 1)
+        assert abs(value) > 10**5
+        return sp.oo if value > 0 else -sp.oo
+    if name == "radical_difference_growth":
+        with localcontext() as ctx:
+            ctx.prec = 60
+            value = (Decimal((c + 1) ** 2 + a - 3) * n * n + b).sqrt() - (c + 1) * n
+        if abs(value) < Decimal("1e-5"):
+            return 0
+        assert abs(value) > 10**5
+        return sp.oo if value > 0 else -sp.oo
+    if name == "inverse_trig_ratio":
+        value = (a * math.atan(n) - b) / math.atan(1 / (c * n))
+        assert abs(value) > 10**5
+        return sp.oo if value > 0 else -sp.oo
+    return reference_exam_sequences(name, a, b, c)
+
+
+def reference_exam_sequences(name, a, b, c):  # noqa: PLR0911
+    """#257 exam forms, evaluated far out with exact integers or 60-digit decimals."""
+    n = 10**7
+    with localcontext() as ctx:
+        ctx.prec = 60
+        if name == "root_exponential_sum":
+            k = 20_000
+            return math.exp(math.log((a + 1) ** (k + c) + (a + b + 1) ** (k + 1)) / k)
+        if name == "root_polynomial":
+            return math.exp(math.log(a * n ** (b + 1) + c * n + 1) / n)
+        if name == "quartic_conjugate":
+            k = Decimal(10**6)
+            value = (a * a * k**4 + b * k**3 + c).sqrt() - a * k * k
+            assert value > 10**4
+            return sp.oo
+        if name == "conjugate_ratio":
+            k = Decimal(10**6)
+            return float(((k * k + a + b).sqrt() - k) / ((k * k + c).sqrt() - k))
+        if name == "factorial_degree_ratio":
+            k = 20_000
+            exact = sp.Rational(
+                (a * k + b) * math.factorial(k + 1), k * k * (math.factorial(k) + c)
+            )
+            return float(exact)
+        if name == "exponential_product_ratio":
+            k = 200
+            exact = sp.Rational(
+                ((a + 1) ** k + 1) * ((b + 1) ** (k + 1) + c), ((a + 1) * (b + 1)) ** k + a
+            )
+            return float(exact)
+        if name == "reciprocal_exponential_conjugate":
+            ctx.prec = 200
+            power = Decimal(a + 1) ** 60
+            return float(b / (power * ((power * power + c).sqrt() - power)))
+        if name == "product_radical":
+            k = Decimal(n)
+            return float(c * (((k + a) * (k + b)).sqrt() - k))
+    return reference_functions(name, a, b, c)
+
+
+def signed_infinity(value):
+    assert abs(value) > 10**5
+    return sp.oo if value > 0 else -sp.oo
+
+
+def reference_functions(name, a, b, c):  # noqa: PLR0911, PLR0912
+    """#258 oracles: 50-digit evaluation of the displayed function next to the point."""
+    with mpmath.workdps(50):
+        t, big = mpmath.mpf("1e-15"), mpmath.mpf("1e15")
+        if name == "rational_substitution":
+            return float((c * c - a) / mpmath.mpf(c * c - b * c + b * b))
+        if name == "radical_quotient_zero":
+            return float((a * t + b * mpmath.sqrt(t)) / (c * mpmath.sqrt(t)))
+        if name == "power_difference_quotient":
+            low, high = a + 1, a + b + 1
+            x = c + t
+            return float((x**low - c**low) / (x**high - c**high))
+        if name == "leading_power_quotient":
+            k = b + 1
+            x = big
+            return float((a * x**3 + 1) ** k / ((x + 1) ** (k + 2) * (c * x * x + 1) ** (k - 1)))
+        if name == "conjugate_minus_infinity":
+            x = -big
+            return float(mpmath.sqrt(a * a * x * x + (b - 3) * x + c) + a * x)
+        if name == "tangent_ratio":
+            tan2 = mpmath.tan(mpmath.pi / 2 - t) ** 2
+            return float((a * tan2 + b) / (c * tan2 + b + c))
+        if name == "radical_linear_ratio":
+            return float((mpmath.sqrt(a * a * big**2 + big) + b) / (c * big + 1))
+        if name == "cancelling_reciprocals":
+            m = b + 1
+            return float(sum(c * (1 / (1 - x) - m / (1 - x**m)) for x in (1 - t, 1 + t)) / 2)
+        if name == "bounded_inverse_trig":
+            sides = [a * x * mpmath.atan(b / x) + c for x in (-t, t)]
+            assert all(abs(side - c) < 1e-10 for side in sides)
+            return c, c, c
+        if name == "squeeze_arctan":
+            return float(a * t * t * mpmath.atan(b / t) + c)
+        if name == "sine_product_square":
+            return float(mpmath.sin(a * t) * mpmath.sin(b * t) / (c * t * t))
+        if name == "sine_radical":
+            x = c * c + t
+            return float(mpmath.sin(a * (x - c * c)) / (mpmath.sqrt(x) - c))
+        if name == "arctan_at_infinity":
+            value = a * big ** (1 + c % 2) * mpmath.atan(b / big)
+            return float(value) if c % 2 == 0 else signed_infinity(value)
+        if name == "cosine_ratio_half_pi":
+            top, bottom = 2 * a - 1, 2 * b - 1
+            bottom += 2 if top == bottom else 0
+            x = mpmath.pi / 2 + t
+            return float(c * mpmath.cos(top * x) / mpmath.cos(bottom * x))
+        if name == "log_cube_root":
+            x = t**2  # x^(-1/3) grows slowly
+            power = mpmath.mpf(1 + c % 3) / 3
+            value = mpmath.log(1 + a * mpmath.cbrt(x)) / (b * x**power)
+            return float(value) if c % 3 == 0 else signed_infinity(value)
+        if name == "log_near_one":
+            x = -c + t
+            return float(mpmath.log(a * x * x - a * c * c + 1) / (b * (x + c)))
+        if name == "tangent_power":
+            return float((1 + a * mpmath.tan(b * t)) ** mpmath.cot(c * t))
+        if name == "root_difference":
+            return float((mpmath.root(1 + a * t, c + 1) - mpmath.root(1 - b * t, c + 2)) / t)
+        if name == "sine_quadratic_ratio":
+            x = c + t
+            return float(mpmath.sin(b * x * x - b * c * c) / ((x - c) * (x - c + a)))
+        if name == "log_difference_infinity":
+            return float(a * big * (mpmath.log(c * big + b) - mpmath.log(c * big)))
+        if name == "log_quadratic_at_point":
+            x = c + t
+            return float(mpmath.log(x * x - b * x - (c * c - b * c - 1)) / (x - c))
+        if name == "sine_power_product":
+            x = mpmath.mpf("1e-6")
+            return float(mpmath.sin(a * x**5) / (mpmath.sin(b * x * x) * mpmath.sin(c * x**3)))
+    return reference_asymptotes(name, a, b, c)
+
+
+def slope_and_offset(f, far):
+    """Numerical slope and offset of f far out; None when either clearly diverges."""
+    slope = f(far) / far
+    return slope, f(far) - mpmath.nint(slope) * far
+
+
+def reference_asymptotes(name, a, b, c):  # noqa: PLR0911, PLR0912, PLR0915
+    """#259 oracles: the displayed functions at 50 digits near poles and far out."""
+    x = sp.Symbol("x", real=True)
+    dne = "does_not_exist"
+    with mpmath.workdps(50):
+        near, far = mpmath.mpf("1e-12"), mpmath.mpf("1e20")
+        if name == "radical_growth_asymptotes":
+
+            def f(x):
+                return (a * x * mpmath.sqrt(x) + b) / (x + c)
+
+            assert f(far) / far < 1e-6
+            assert f(far) > 1e8
+            return sp.S.EmptySet, 0, sp.oo
+        if name == "oscillatory_remainder":
+
+            def f(x):
+                return (a * x * x + c * x + b * mpmath.sin(x)) / x
+
+            assert abs(f(near) - (b + c)) < 1e-6
+            values = [slope_and_offset(f, end) for end in (-far, far)]
+            return sp.S.EmptySet, *(float(v) for pair in values for v in pair)
+        if name == "exponential_zero_denominator":
+
+            def f(x):
+                return b * mpmath.cos(c * x) / (mpmath.exp(a * x) - 1)
+
+            assert f(-near) < -1e9 < 1e9 < f(near)
+            k = 10**6
+            even, odd = f(-2 * mpmath.pi * k / c), f(-(2 * k + 1) * mpmath.pi / c)
+            assert abs(f(-far) / far) < 1e-10
+            assert abs(even + b) < 1e-6
+            assert abs(odd - b) < 1e-6
+            assert abs(f(mpmath.mpf(60))) < 1e-20
+            return sp.FiniteSet(0), 0, dne, 0, 0
+        if name == "trig_periodic_poles":
+
+            def f(x):
+                return (a * mpmath.sin(2 * x) + b * mpmath.cos(x)) / (mpmath.sin(x) - 1) + c
+
+            assert abs(f(mpmath.pi / 2 + near)) > 1e9
+            grid = [2 * mpmath.pi * k / 400 for k in range(400)]
+            poles = [p for p in grid if abs(mpmath.sin(p) - 1) < 1e-9]
+            assert len(poles) == 1
+            assert abs(poles[0] - mpmath.pi / 2) < 1e-30
+            k = 10**6
+            assert abs(f(2 * mpmath.pi * k) / (2 * mpmath.pi * k)) < 1e-5
+            assert abs(f(mpmath.pi / 2 + 2 * mpmath.pi * k + near)) / k > 1e3
+            return (2 * sp.pi, sp.FiniteSet(sp.pi / 2)), dne, dne, dne, dne
+        if name == "continuity_log_ratio":
+
+            def f(x):
+                return 1 / (mpmath.log(a * x * x) - mpmath.log(a * x * x + b))
+
+            tiny = mpmath.mpf("1e-100000")
+            sides = [f(-tiny), f(tiny)]
+            assert all(abs(side) < 1e-5 for side in sides)
+            assigned = c % 3 - 1
+            return 0, 0, "continuous" if assigned == 0 else "removable"
+        if name == "exp_join":
+            c = 1 + c % 2  # the generated join point
+            p = (mpmath.exp(a * near) - 1) / near
+            q = ((mpmath.exp(a * c) - 1) / c + b) / (c * c)
+            return float(p), float(q)
+        if name == "quartic_cubic_oblique":
+
+            def f(x):
+                return (a * x**4 - b * x**3) / (x**3 + c * x)
+
+            assert abs(f(near)) < 1e-6
+            values = [slope_and_offset(f, end) for end in (-far, far)]
+            return sp.S.EmptySet, *(float(v) for pair in values for v in pair)
+        if name == "radical_oblique_right":
+
+            def f(x):
+                return (x - c) * mpmath.sqrt(x - a - 2 * b) / mpmath.sqrt(x - a)
+
+            assert mpmath.sqrt(2 * b) > 0  # denominator bounded below on [a+2b, inf)
+            return sp.S.EmptySet, *(float(v) for v in slope_and_offset(f, far))
+        if name == "radical_quotient_right":
+
+            def f(x):
+                return b * mpmath.sqrt(x**3 - c**3) / mpmath.sqrt(x - c)
+
+            assert abs(f(c + near) - b * mpmath.sqrt(3) * c) < 1e-5
+            return sp.S.EmptySet, *(float(v) for v in slope_and_offset(f, far))
+        if name in {"rational_oblique_pole", "rational_oblique_pole_left"}:
+            sign = 1 if name == "rational_oblique_pole" else -1
+            numerator = x * (x - sign * b)
+            denominator = x - sign * (a + b)
+            quotient, remainder = sp.div(numerator, denominator, x)
+            assert remainder != 0
+            poles = sp.solveset(denominator, x, sp.S.Reals)
+            return sp.S.Reals - poles, poles, quotient, quotient
+    return reference_lhopital(name, a, b, c)
 
 
 def assert_answer(answer, expected):
     if isinstance(answer, OrderedAnswer):
         for item, value in zip(answer.components, expected, strict=True):
             assert_answer(item, value)
+    elif isinstance(answer, PeriodicSetAnswer):
+        assert (answer.period, answer.base) == expected
     elif isinstance(expected, float):
         assert float(answer.expected) == pytest.approx(expected, rel=0.001, abs=0.0001)
     else:
         assert answer.expected == expected
 
 
-@pytest.mark.parametrize("generator", generators(), ids=lambda g: g.prefix)
+# Derivative versions (#260) share the provider; their oracles are in test_engine_derivatives.
+LIMIT_GENERATORS = [
+    g
+    for g in generators()
+    if not g.evaluate.__module__.endswith(
+        (
+            "_derivatives",
+            "_extrema",
+            "_convexity",
+            "_taylor",
+            "_antiderivatives",
+            "_definite_integrals",
+            "_integral_applications",
+            "_revolution_applications",
+            "_improper_integrals",
+            "_series_comparisons",
+            "_series_ratio_root",
+            "_alternating_power_series",
+            "_maclaurin_expansions",
+            "_series_identities",
+            "_multivariable_domains",
+            "_multivariable_partials",
+            "_tangent_linear",
+            "_gradient_directional",
+            "_second_partials",
+            "_multivariable_extrema",
+            "_global_extrema",
+            "_applied_optimization",
+            "_double_integrals",
+            "_polar_integrals",
+            "_surface_centroid_inertia",
+            "_separable_odes",
+            "_linear_odes",
+            "_laplace_transforms",
+            "_inverse_laplace",
+        )
+    )
+]
+
+
+@pytest.mark.parametrize("generator", LIMIT_GENERATORS, ids=lambda g: g.prefix)
 def test_thousand_seeds_match_independent_results(generator):
     variants = set()
     registered = registry()
@@ -362,3 +720,95 @@ def test_actual_worker_accepts_exact_answer_and_rejects_wrong_answer(generator):
     record = {"generator_version": generator.version, "code": task.code}
     assert math_worker.check_answer(source(task.answer), record).result == "correct"
     assert math_worker.check_answer(different_source(task.answer), record).result == "incorrect"
+
+
+def reference_lhopital(name, a, b, c):  # noqa: PLR0911, PLR0912
+    """#261 oracles: errors from finite differences, limits at 50 digits near the point."""
+    with mpmath.workdps(50):
+        t, big = mpmath.mpf("1e-12"), mpmath.mpf("1e12")
+
+        def spread(f, x, step):
+            """Half the change of f over x +- step: the differential estimate, independently."""
+            return abs(f(x + step) - f(x - step)) / 2
+
+        if name == "error_triangle_area":
+            angle = (mpmath.pi / 3, mpmath.pi / 4, mpmath.pi / 6)[b % 3]
+            side = 50 * (a + 1)
+            return float(spread(lambda x: side * side * mpmath.sin(x) / 2, angle, c / 100))
+        if name == "error_sphere_volume":
+            d = 2 * (a + 2)
+            return float(spread(lambda x: mpmath.pi * x**3 / 6, d, mpmath.mpf(b) / 10**6) * 10**4)
+        if name == "error_fall_depth":
+            time = mpmath.mpf(30 + 2 * a + b) / 10
+            step = mpmath.mpf(1) / (10 if c % 2 else 20)
+            return float(spread(lambda x: mpmath.mpf("9.8") * x * x / 2, time, step))
+        if name == "error_average_speed":
+            distance = 100 * (1 + a % 2)
+            time = mpmath.mpf(1000 + 50 * b + 10 * c) / 100 * (1 + a % 2)
+            return float(spread(lambda x: distance / x, time, mpmath.mpf(1) / 10**8) * 10**6)
+        if name == "log_exponential_growth":
+            return float(mpmath.log((a + 1) ** big + b) / (c * big))
+        if name == "log_sine_ratio":
+            x = a + t
+            return float(mpmath.log(mpmath.sin(mpmath.pi * x / (2 * a))) / (b * mpmath.log(x / a)))
+        if name == "arctan_difference":
+            power = 2 + c % 2
+            x = mpmath.mpf("1e-8")
+            return float((a * x - mpmath.atan(a * x)) / x**power)
+        if name == "double_root_quotient":
+            n, x = b + 2, 1 + mpmath.mpf("1e-15")
+            return float((x ** (2 * n) - 2 * n * x + 2 * n - 1) / (x**n - n * x + n - 1))
+        if name == "log_cosine_ratio":
+            bb = b if a != b else a + 1
+            return float(mpmath.log(mpmath.cos(a * t)) / mpmath.log(mpmath.cos(bb * t)))
+        if name == "root_arccot":
+            power = mpmath.sqrt(big) if c % 2 else big
+            return float(a * power * mpmath.acot(b * big))
+        if name == "power_log_zero":
+            return float(a * t**b * mpmath.log(t))
+        if name == "tangent_half_angle":
+            x = b * mpmath.pi - t
+            return float(a * (b * mpmath.pi - x) * mpmath.tan(x / (2 * b)))
+        if name == "cosine_difference":
+            k = 2 * a + (c % 3 - 1)
+            x = mpmath.mpf("1e-6")
+            value = a / (1 - mpmath.cos(x)) - k / x**2
+            return float(value) if k == 2 * a else signed_infinity(value)
+        if name == "cotangent_difference":
+            k = a + (c % 3 - 1)
+            x = -t
+            value = a / x - k * mpmath.cot(x)
+            return float(value) if k == a else signed_infinity(value)
+        if name == "log_reciprocal_sum":
+            x = 1 + t
+            return float(a * (1 / mpmath.log(x) + 1 / (1 - x)))
+        if name == "log_power_zero":
+            x = mpmath.mpf("1e-40")
+            return float((-a * mpmath.log(x)) ** (b * x))
+        if name == "arctan_power":
+            return float((2 / mpmath.pi * mpmath.atan(a * big)) ** (b * big))
+        if name == "log_exponent_power":
+            x = mpmath.mpf("1e-30")
+            return float((1 + a * x) ** (b * mpmath.log(x)))
+        if name == "tangent_cosine_power":
+            x = mpmath.pi / 2 - mpmath.mpf("1e-30")
+            return float((a * mpmath.tan(x)) ** (b * mpmath.cos(x)))
+        if name == "exponential_cosh":
+            x = mpmath.mpf("1e-10")
+            return float((mpmath.exp(a * x) + mpmath.exp(-a * x) - 2) / (b * x * x))
+        if name == "one_minus_power":
+            x = 1 - mpmath.mpf("1e-30")
+            return float((a * (1 - x)) ** mpmath.sin(b * mpmath.pi * x))
+        if name == "tangent_log":
+            x = mpmath.mpf("1e-30")
+            return float(mpmath.tan(a * x) * mpmath.log(x))
+        if name == "log_tangent_product":
+            x = mpmath.mpf("1e-30")
+            return float(a * x * mpmath.log(mpmath.tan(b * x)))
+        if name == "differentiable_join":
+            # q from continuity at 0, p from matching one-sided difference quotients.
+            left = lambda x: mpmath.exp(a * x) + b * x  # noqa: E731
+            q = left(0)
+            p = (left(0) - left(-t)) / t
+            return float(p), float(q)
+    return None

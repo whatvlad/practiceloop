@@ -36,6 +36,7 @@ export function HistoryRow({ problem }: { problem: PublicProblem }) {
     <Link className="pl-hrow" to={`/practice?id=${encodeURIComponent(problem.id)}`}>
       <div className="m">
         <Tex latex={problem.problemLatex} />
+        {problem.promptVisual && <p className="pl-small pl-subtle">{problem.promptVisual.description}</p>}
       </div>
       <div>
         <div>{topicName(problem.topic)}</div>

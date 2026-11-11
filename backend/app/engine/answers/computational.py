@@ -333,7 +333,14 @@ class FormulaAnswer:
             expected = self.expected.xreplace(
                 {s: symbols[s.name] for s in self.expected.free_symbols}
             )
-            difference = sp.simplify(candidate - expected)
+            difference = candidate - expected
+            if not difference.free_symbols:
+                # Reject a numerical non-identity before simplify combines logarithms
+                # into integer powers with millions of digits.
+                witness = difference.evalf(40)
+                if witness.is_real and witness.is_finite and abs(witness) > sp.Float("1e-12"):
+                    return "incorrect"
+            difference = sp.simplify(difference)
             if difference == 0:
                 return "correct"
             # Exact nonzero constants/polynomials certify difference. Sampling

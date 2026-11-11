@@ -2,7 +2,7 @@ import text from '../../../backend/app/content/en.json';
 import type { AnswerInputSpec, ComputationalInputSpec } from './types';
 
 export const COMPUTATIONAL_KINDS = ['real_set', 'tuple', 'category', 'formula', 'limit_result', 'logic'] as const;
-const SYMBOL_NAMES = ['x', 'y', 'z', 'r', 'theta', 'a', 'b', 'c', 'C', 'D', 'k', 'n', 't', 's'];
+const SYMBOL_NAMES = ['x', 'y', 'z', 'r', 'theta', 'a', 'b', 'c', 'C', 'D', 'k', 'm', 'n', 't', 's'];
 const MATRIX_NAMES = ['one', 'two', 'three', 'four', 'five'];
 
 function isMatrixShape(value: unknown): boolean {

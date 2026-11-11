@@ -81,7 +81,8 @@ def _not_real(expression: Any, variable: Any, samples: tuple[float, ...]) -> boo
 
 def _defined_throughout(expression: Any, domain: Any) -> bool:
     try:
-        gap = domain - continuous_domain(expression, X, sp.S.Reals)
+        # On a bounded interval SymPy can resolve periodic poles to individual points.
+        gap = domain - continuous_domain(expression, X, domain)
     except (NotImplementedError, ValueError, TypeError):
         return False
     return bool(gap == sp.S.EmptySet)

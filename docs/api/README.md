@@ -463,15 +463,18 @@ worksheet is `404 problem_not_found`.
 
 ## Permanent problem codes (#198)
 
-`GET /codes?code=<code>` needs no account and returns only
-`{problem: {topic, difficulty, problemLatex}}`. The frontend route `/p/<code>`
+`GET /codes?code=<code>` needs no account and returns
+`{problem: {topic, difficulty, problemLatex}}` with optional `answerInput`
+and `promptVisual` fields. The frontend route `/p/<code>`
 uses this projection. Codes accept ASCII case, whitespace and dashes; the
 checksum, registered prefix and version are validated before construction.
 Invalid/unknown codes return `400 problem_code_invalid`, never a replay traceback.
 Requests over 128 characters are `422 invalid_request`. Public lookups share a
 120/minute window. Arbitrary codes rebuild in the same 2 s CPU / 256 MiB / 3 s
 wall-limited worker used for checking, with one shared admission slot and a
-bounded release-local private cache. Normal practice/worksheets still pick
+bounded release-local private cache. An optional `promptVisual` is a bounded
+plot of given problem data, also available in practice, history, shares and
+exercise PDFs before answer reveal. Normal practice/worksheets still pick
 prebuilt catalogue data without symbolic construction in the API.
 
 `POST /codes/practice` requires verified Google authentication and an

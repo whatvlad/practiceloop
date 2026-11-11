@@ -12,7 +12,7 @@ from fastapi.testclient import TestClient
 from test_engine_analysis_limits import source as limit_source
 from test_engine_elementary import source
 
-from app.api import codes, practice, shares
+from app.api import codes, practice, shares, worksheets
 from app.core.auth import VerifiedUser, current_user
 from app.engine import catalogue
 from app.engine import practice as engine
@@ -51,14 +51,108 @@ REPRESENTATIVES = (
 )
 
 
+LIMIT_REPRESENTATIVES = {
+    "SLAC",
+    "FLAK",
+    "FLBG",
+    "INAA",
+    "INAG",
+    "INBM",
+    "INBU",
+    "INBX",
+    "INCH",
+    "INCL",
+    "INCX",
+    "INDF",
+    "INDS",
+    "INDT",
+    "INDW",
+    "INEK",
+    "INES",
+    "INET",
+    "INFJ",
+    "INFU",
+    "INFV",
+    "IPAE",
+    "IPAF",
+    "IPAT",
+    "SRAA",
+    "SRAC",
+    "SRAD",
+    "SRAY",
+    "SRAZ",
+    "SRBG",
+    "SRBM",
+    "SRBQ",
+    "SRBS",
+    "SRBV",
+    "SRCD",
+    "SRCH",
+    "SRCL",
+    "SRCP",
+    "MVAB",
+    "MVAF",
+    "MVAH",
+    "MVAL",
+    "MVAQ",
+    "MVAY",
+    "MVBA",
+    "MVBD",
+    "MVBG",
+    "MVBJ",
+    "MVBN",
+    "MVBP",
+    "MVBQ",
+    "MVBW",
+    "MVCA",
+    "MVCC",
+    "MVCJ",
+    "MVCN",
+    "MVCX",
+    "MVDA",
+    "MVDC",
+    "MVDH",
+    "MVDJ",
+    "MVDK",
+    "MVDL",
+    "DIAH",
+    "DIAK",
+    "DIAN",
+    "DIAV",
+    "DIAZ",
+    "DIBF",
+    "DIBK",
+    "DIBP",
+    "DIBR",
+    "DIBY",
+    "DICC",
+    "DICF",
+    "ODAB",
+    "ODAE",
+    "ODAK",
+    "ODAO",
+    "ODAT",
+    "ODAX",
+    "ODAZ",
+    "LTAG",
+    "LTAH",
+    "LTAI",
+    "LTAM",
+    "LTAT",
+    "LTAY",
+    "LTBB",
+    "LTBC",
+}
+
+
 @pytest.mark.parametrize(
     ("generator", "answer_source"),
     [
         *((g, source) for g in generators() if g.template in REPRESENTATIVES),
-        *((g, limit_source) for g in limit_generators() if g.prefix in {"SLAC", "FLAK", "FLBG"}),
+        *((g, limit_source) for g in limit_generators() if g.prefix in LIMIT_REPRESENTATIVES),
     ],
     ids=[g.template for g in generators() if g.template in REPRESENTATIVES]
-    + [g.prefix for g in limit_generators() if g.prefix in {"SLAC", "FLAK", "FLBG"}],
+    + [g.prefix for g in limit_generators() if g.prefix in LIMIT_REPRESENTATIVES],
 )
 def test_saved_generation_reopen_history_owner_copy_reveal_and_share_are_consistent(
     generator, answer_source, monkeypatch
@@ -71,11 +165,12 @@ def test_saved_generation_reopen_history_owner_copy_reveal_and_share_are_consist
     view = replace(topic, levels={generator.difficulty: (Choice(generator.version),)})
     stored = catalogue.build({topic.slug: view}, engine._registry(), pool_size=3)
     monkeypatch.setattr(catalogue, "load", lambda: stored)
+    monkeypatch.setattr("app.main.load_engine_catalogue", lambda: stored)
     issued = stored.cells[0].problems[0].issued()
     opened = rebuild(str(issued.record["code"]))
-    descriptor = generator.input_contract(
-        generator.draw(int(issued.record["code"].split("-")[2]))
-    ).public()
+    contract = generator.input_contract(generator.draw(int(issued.record["code"].split("-")[2])))
+    descriptor = contract.public() if contract is not None else None
+    expected_prompt = engine.prompt_visual(issued.record)
     monkeypatch.setattr(codes, "open_problem_code", lambda _: opened.model_dump_json().encode())
     codes._opened.cache_clear()
     _build.cache_clear()
@@ -160,8 +255,9 @@ def test_saved_generation_reopen_history_owner_copy_reveal_and_share_are_consist
 
     def checked(text, record):
         replayed = engine.replay(record)
-        tree = parse_answer_input(text, replayed.answer.kind, contract=replayed.answer.contract)
-        return math_worker.AnswerCheck(replayed.answer.check(tree))
+        answer = replayed.answer
+        tree = parse_answer_input(text, answer.kind, contract=getattr(answer, "contract", None))
+        return math_worker.AnswerCheck(answer.check(tree))
 
     monkeypatch.setattr(practice, "shared_check", checked)
     for limiter in (
@@ -175,8 +271,14 @@ def test_saved_generation_reopen_history_owner_copy_reveal_and_share_are_consist
     try:
         with TestClient(app) as client:
             public = client.get("/codes", params={"code": issued.record["code"]}).json()
-            assert set(public["problem"]) == {"topic", "difficulty", "problemLatex", "answerInput"}
-            assert public["problem"]["answerInput"] == descriptor
+            public_fields = {"topic", "difficulty", "problemLatex"}
+            if descriptor is not None:
+                public_fields.add("answerInput")
+            if expected_prompt is not None:
+                public_fields.add("promptVisual")
+            assert set(public["problem"]) == public_fields
+            assert public["problem"].get("promptVisual") == expected_prompt
+            assert public["problem"].get("answerInput") == descriptor
             response = client.post(
                 "/problems",
                 json={"topic": topic.slug, "difficulty": generator.difficulty},
@@ -187,7 +289,8 @@ def test_saved_generation_reopen_history_owner_copy_reveal_and_share_are_consist
             original_id = saved["id"]
             private = solutions[acting[0], UUID(original_id)]
             picked = engine.replay(private.generator_data)
-            assert saved["answerInput"] == descriptor
+            assert saved.get("answerInput") == descriptor
+            assert saved.get("promptVisual") == engine.prompt_visual(private.generator_data)
             assert not {"visual", "answerLatex", "steps", "generator_data"}.intersection(saved)
             for restored in (
                 client.get("/problems").json()["items"][0],
@@ -224,13 +327,19 @@ def test_saved_generation_reopen_history_owner_copy_reveal_and_share_are_consist
             )
             assert copied.status_code == 201, copied.text
             copy = copied.json()["problem"]
-            assert copy["id"] != original_id and copy["answerInput"] == descriptor
+            assert copy["id"] != original_id and copy.get("answerInput") == descriptor
             assert copy["problemLatex"] == issued.statement
+            assert copy.get("promptVisual") == expected_prompt
             assert not copy["answerRevealed"] and not copy["solutionRevealed"]
             shared = shares._shared(
                 SharedProblem(topic.slug, generator.difficulty, issued.statement, issued.record)
             )
             assert shared == public
+            worksheet_statement, worksheet_solution = worksheets._prepare(issued.record)
+            assert worksheet_statement == issued.statement
+            assert worksheet_solution.generator_data == issued.record
+            assert worksheet_solution.answer_latex == issued.answer_latex
+            assert worksheet_solution.solution_steps == list(issued.steps)
     finally:
         app.dependency_overrides.pop(current_user, None)
         codes._opened.cache_clear()

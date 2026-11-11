@@ -327,7 +327,7 @@ def _public_problem(
         "topic": problem.topic,
         "difficulty": problem.difficulty,
         "problemLatex": problem.problem_latex,
-        **engine.input_projection(problem.generator_data),
+        **engine.problem_projection(problem.generator_data),
         **engine.public_settings(problem.generator_data),
         **statement_projection(problem.generator_data),
         "createdAt": _timestamp(problem.created_at),
@@ -629,7 +629,7 @@ def generate(body: GenerateBody, user: User, key: IdempotencyKey = None) -> JSON
                     "topic": problem.topic,
                     "difficulty": problem.difficulty,
                     "problemLatex": problem.problem_latex,
-                    **engine.input_projection(problem.generator_data),
+                    **engine.problem_projection(problem.generator_data),
                     **engine.public_settings(problem.generator_data),
                     **(
                         {"statementVisual": issued.statement_visual}
@@ -649,6 +649,10 @@ def generate(body: GenerateBody, user: User, key: IdempotencyKey = None) -> JSON
 
 def _check(answer: str, record: dict[str, object]) -> AnswerCheck:
     """A trustworthy check result; raises ApiError when none exists."""
+    if engine.is_engine_record(record) and engine.input_kind(record) == "self_review":
+        raise ApiError(
+            409, "self_review_required", "Compare your work with the reference solution."
+        )
     if not CHECK_SLOTS.acquire(blocking=False):
         raise _worker_unavailable()
     try:

@@ -1,6 +1,8 @@
 import { useLayoutEffect, useRef } from 'react';
 import type { TopicSlug } from '../data/types';
 import { displayProblem } from '../format';
+import { Plot2dView } from '../visual/Plot2dView';
+import type { Plot2dSpec } from '../visual/spec';
 import { Tex } from './Tex';
 
 // Below this a formula stops being comfortable to read, so it scrolls instead.
@@ -38,13 +40,16 @@ function useFittedFormula(formula: string) {
   return box;
 }
 
-export function ProblemStatement({ topic, problemLatex }: { topic: TopicSlug; problemLatex: string }) {
+export function ProblemStatement({ topic, problemLatex, promptVisual }: {
+  topic: TopicSlug; problemLatex: string; promptVisual?: Plot2dSpec;
+}) {
   const { instruction, formula } = displayProblem(topic, problemLatex);
   const box = useFittedFormula(formula);
   return (
     <div className="pl-stack pl-gap-3">
       <p className="pl-lead">{instruction}</p>
       <div className="pl-expr" ref={box} tabIndex={0} role="group" aria-label="Problem formula"><Tex latex={formula} display /></div>
+      {promptVisual && <Plot2dView spec={promptVisual} />}
     </div>
   );
 }

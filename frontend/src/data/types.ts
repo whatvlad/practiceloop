@@ -1,6 +1,6 @@
 // Public shapes the UI works with. None of them carries an expected answer,
 // a solution or generator data: those arrive only from the reveal calls.
-import type { VisualSpec } from '../visual/spec';
+import type { Plot2dSpec, VisualSpec } from '../visual/spec';
 import type { VectorMode } from './vectorModes';
 
 /** ADR-005: practice has two areas, and every topic belongs to exactly one. */
@@ -102,6 +102,8 @@ export interface PublicProblem {
   rankDimensions?: { rows: number; columns: number };
   modulusMode?: 'expression' | 'properties' | 'geometry';
   answerInput?: AnswerInputSpec;
+  promptVisual?: Plot2dSpec;
+  selfReview?: boolean;
   attemptCount?: number;
   saved?: boolean;
   id: string;
@@ -164,6 +166,8 @@ export interface ProblemShare {
 export interface SharedProblem {
   statementVisual?: VisualSpec;
   answerInput?: AnswerInputSpec;
+  promptVisual?: Plot2dSpec;
+  selfReview?: boolean;
   topic: TopicSlug;
   difficulty: Difficulty;
   problemLatex: string;

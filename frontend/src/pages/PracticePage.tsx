@@ -78,6 +78,8 @@ function PracticeSession({ opened, randomAccountId, algebraRandomAccountId, matr
       difficulty={problem.difficulty}
       difficultyScale={problem.topic === 'complex-polar-form' && problem.exerciseMode ? null : problem.modulusMode || (problem.topic === 'vectors' && problem.exerciseMode) ? 3 : 5}
       problemLatex={problem.problemLatex}
+      promptVisual={problem.promptVisual}
+      selfReview={problem.selfReview}
       statementVisual={problem.statementVisual}
       mixed={problem.mixed === true}
       headLabel={problem.saved ? 'Saved to your account' : 'Temporary practice'}

@@ -16,20 +16,24 @@ class DomainFormulaAnswer:
     expected: Any
     domain: Any
     kind: ClassVar[str] = "formula"
-    contract: ClassVar[InputContract] = InputContract("formula", symbols=(("x", "real"),))
+    variable: str = "x"
+
+    @property
+    def contract(self) -> InputContract:
+        return InputContract("formula", symbols=((self.variable, "real"),))
 
     def latex(self) -> str:
         return str(sp.latex(self.expected))
 
     def check(self, tree: MathNode) -> Outcome:
-        x = sp.Symbol("x", real=True)
+        x = sp.Symbol(self.variable, real=True)
         try:
             stack = [tree]
             while stack:
                 node = stack.pop()
                 if node.kind not in {"number", "symbol", "unary", "binary", "function"}:
                     return "invalid"
-                if node.kind == "symbol" and node.value not in {"x", "pi", "e"}:
+                if node.kind == "symbol" and node.value not in {self.variable, "pi", "e"}:
                     return "invalid"
                 value = build_expression(node, evaluate=True)
                 if value.has(sp.nan, sp.zoo, sp.oo, -sp.oo) or value.is_real is False:
@@ -43,12 +47,18 @@ class DomainFormulaAnswer:
                 for expression in expressions:
                     if expression.free_symbols:
                         gap = self.domain - continuous_domain(expression, x, sp.S.Reals)
+                        if gap.is_empty is None and isinstance(self.domain, sp.Interval):
+                            # Periodic poles (cot, 1/sin^2) leave an undecided complement
+                            # over R; restricting to the stated interval decides it.
+                            gap = self.domain - continuous_domain(expression, x, self.domain)
                         if gap.is_empty is False:
                             return "invalid"
                         if gap != sp.S.EmptySet:
                             return "inconclusive"
                 stack.extend(node.children)
             candidate = build_expression(tree, evaluate=True)
+            if _differs_at_a_sample(candidate - self.expected, x, self.domain):
+                return "incorrect"
             if not candidate.free_symbols and self.domain.interior.is_empty is False:
                 # Identity with a constant would force the target's derivative
                 # to vanish throughout the domain's interior. Certify a point
@@ -78,3 +88,37 @@ class DomainFormulaAnswer:
             return "inconclusive"
         except (NotImplementedError, TypeError, ValueError):
             return "inconclusive"
+
+
+def _sample_points(domain: sp.Set) -> list[sp.Rational]:
+    """A few rational points inside each interval component of the domain."""
+    if domain == sp.S.Reals:
+        domain = sp.Interval(-sp.oo, sp.oo)
+    parts = domain.args if isinstance(domain, sp.Union) else (domain,)
+
+    def rational(value: sp.Expr) -> sp.Rational:
+        return sp.Rational(str(sp.N(value, 15)))
+
+    points: list[sp.Rational] = []
+    for part in parts:
+        if not isinstance(part, sp.Interval):
+            continue
+        low, high = part.start, part.end
+        if low.is_finite and high.is_finite:
+            points.extend(rational(low + (high - low) * sp.Rational(k, 6)) for k in (1, 3, 5))
+        elif low.is_finite:
+            points.extend(rational(low) + d for d in (sp.Rational(1, 3), 2))
+        elif high.is_finite:
+            points.extend(rational(high) - d for d in (sp.Rational(1, 3), 2))
+        else:
+            points.extend((sp.Rational(-7, 3), sp.Rational(2, 7), sp.Rational(13, 5)))
+    return [p for p in points if domain.contains(p) is sp.true][:8]
+
+
+def _differs_at_a_sample(difference: sp.Expr, x: sp.Symbol, domain: sp.Set) -> bool:
+    """Certify a non-identity numerically at an interior point; equality is never sampled."""
+    for point in _sample_points(domain):
+        value = sp.N(difference.subs(x, point), 30)
+        if value.is_real and value.is_finite and abs(value) > sp.Float("1e-12"):
+            return True
+    return False

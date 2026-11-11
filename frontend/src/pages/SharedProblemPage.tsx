@@ -76,7 +76,7 @@ function Result({ found, shareRef, signedIn, authLoading, inactive }: { found: S
       </section>
     );
   }
-  const { topic, difficulty, problemLatex } = found.problem;
+  const { topic, difficulty, problemLatex, promptVisual } = found.problem;
   return (
     <section className="pl-problem" aria-label={permanent ? 'Problem from code' : 'Shared problem'}>
       <h1 className="pl-sr-only">{permanent ? 'Problem from code' : 'Shared problem'}</h1>
@@ -89,7 +89,7 @@ function Result({ found, shareRef, signedIn, authLoading, inactive }: { found: S
         </div>
         <span className="pl-label">{permanent ? 'Problem from code' : 'Shared problem'}</span>
       </div>
-      <ProblemStatement topic={topic} problemLatex={problemLatex} />
+      <ProblemStatement topic={topic} problemLatex={problemLatex} promptVisual={promptVisual} />
       {found.problem.statementVisual && <SolutionVisual spec={found.problem.statementVisual} />}
       {inactive ? <p className="pl-h-lg" role="status">Coming soon</p> : <p className="pl-small pl-muted pl-m-0">Solve this problem with answer checking and a full solution. Your work is saved separately in your own history.</p>}
       {error && <p role="alert">{error}</p>}

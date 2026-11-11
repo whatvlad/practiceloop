@@ -126,7 +126,7 @@ def _shared(found: SharedProblem | State) -> dict[str, Any]:
             "topic": found.topic,
             "difficulty": found.difficulty,
             "problemLatex": found.problem_latex,
-            **engine.input_projection(found.generator_data),
+            **engine.problem_projection(found.generator_data),
             **statement_projection(found.generator_data),
         }
     }
