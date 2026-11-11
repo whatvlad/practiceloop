@@ -1,5 +1,6 @@
 // Permanent problem codes (#198). The server checks the checksum and rebuilds privately.
 import text from '../../../backend/app/content/en.json';
+import { parsePromptVisual } from '../visual/spec';
 import { parseAnswerInput } from './answerInput';
 import { isTopicSlug } from './topics';
 import type { ShareLookup } from './shares';
@@ -33,6 +34,9 @@ export async function lookupProblemCode(value: string): Promise<ShareLookup> {
   const problem = (data as { problem?: Record<string, unknown> } | null)?.problem;
   if (!problem || typeof problem.problemLatex !== 'string' || !isTopicSlug(problem.topic)
     || ![1, 2, 3, 4, 5].includes(problem.difficulty as number)) throw new Error(text.service_error);
+  const promptVisual = parsePromptVisual(problem.promptVisual);
   return { problem: { topic: problem.topic as TopicSlug, difficulty: problem.difficulty as Difficulty, problemLatex: problem.problemLatex,
+    ...(promptVisual ? { promptVisual } : {}),
+    ...(problem.selfReview === true ? { selfReview: true } : {}),
     ...(problem.answerInput === undefined ? {} : { answerInput: parseAnswerInput(problem.answerInput) }) } };
 }

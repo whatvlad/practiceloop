@@ -228,3 +228,9 @@ export function parseVisual(value: unknown): VisualSpec | undefined {
     return undefined;
   }
 }
+
+/** A public exercise diagram describes given data and uses only the bounded plot format. */
+export function parsePromptVisual(value: unknown): Plot2dSpec | undefined {
+  const visual = parseVisual(value);
+  return visual?.kind === 'plot2d' ? visual : undefined;
+}

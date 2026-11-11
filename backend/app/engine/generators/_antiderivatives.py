@@ -27,6 +27,7 @@ def antiderivative(
     shown: str | None = None,
     primitive: sp.Expr | None = None,
     checked: sp.Expr | None = None,
+    derivation: str = "",
 ) -> Built:
     """``checked`` is an equal form of the integrand on the domain that the checker decides."""
     result = primitive_of(integrand) if primitive is None else primitive
@@ -34,21 +35,7 @@ def antiderivative(
         rf"\text{{Find }}\int {shown or tex(integrand)}\,dx\text{{ for }}x\in{tex(domain)}.",
         AntiderivativeAnswer(integrand if checked is None else checked, result, domain),
         method,
-        rf"\int {shown or tex(integrand)}\,dx={tex(result)}+C.",
-    )
-
-
-def fixed_primitive(
-    shown: str, primitive: sp.Expr, domain: sp.Set, method: str, derivation: str
-) -> Built:
-    """Ask for the primitive vanishing at 0, checked as an identity on the stated interval."""
-    value = sp.simplify(primitive - primitive.subs(X, 0))
-    return finish(
-        rf"\text{{Find the primitive }}F\text{{ of }}{shown}\text{{ on }}{tex(domain)}"
-        r"\text{ with }F(x)\to0\text{ as }x\to0.",
-        DomainFormulaAnswer(value, domain),
-        method,
-        derivation + rf",\qquad F(x)={tex(value)}.",
+        rf"{derivation}\int {shown or tex(integrand)}\,dx={tex(result)}+C.",
     )
 
 
@@ -61,7 +48,11 @@ def scaled(k: int) -> str:
 
 def sum_of_powers(a: int, b: int, c: int) -> Built:
     f = a * X ** (b + 1) + c / X - (b + 2) * sp.sqrt(X)
-    return antiderivative(f, POSITIVE, r"\text{Integrate term by term with the power rule.}")
+    return antiderivative(
+        f,
+        POSITIVE,
+        r"\text{Integrate the powers separately and use }\int x^{-1}\,dx=\ln x+C.",
+    )
 
 
 def conjugate_quotient(a: int, b: int, c: int) -> Built:
@@ -84,12 +75,14 @@ def polynomial_division(a: int, b: int, c: int) -> Built:
 
 def double_angle_quotient(a: int, b: int, c: int) -> Built:
     domain = sp.Interval.open(-3 * sp.pi / (4 * b), sp.pi / (4 * b))
-    return fixed_primitive(
-        rf"\frac{{{scaled(a)}\cos {2 * b}x}}{{\cos {scaled(b)}x-\sin {scaled(b)}x}}",
-        a * (sp.sin(b * X) - sp.cos(b * X)) / b,
+    f = a * (sp.cos(b * X) + sp.sin(b * X))
+    return antiderivative(
+        f,
         domain,
-        r"\cos2u=(\cos u-\sin u)(\cos u+\sin u)\text{: cancel.}",
-        rf"\int{scaled(a)}(\cos {scaled(b)}x+\sin {scaled(b)}x)\,dx",
+        r"\cos2u=(\cos u-\sin u)(\cos u+\sin u)\text{. On the given interval the quotient "
+        rf"simplifies to }}{tex(f)}.",
+        shown=rf"\frac{{{scaled(a)}\cos {2 * b}x}}{{\cos {scaled(b)}x-\sin {scaled(b)}x}}",
+        primitive=a * (sp.sin(b * X) - sp.cos(b * X)) / b,
     )
 
 
@@ -126,11 +119,23 @@ def parts(integrand: sp.Expr, domain: sp.Set, method: str, **kwargs: object) -> 
 
 
 def linear_exponential(a: int, b: int, c: int) -> Built:
-    return parts((X + b) * sp.exp(-a * X), REALS, r"u=x+b,\ dv=e^{-ax}dx.")
+    return parts(
+        (X + b) * sp.exp(-a * X),
+        REALS,
+        rf"u=x+{b},\quad dv=e^{{-{a}x}}dx,\quad v=-\frac{{e^{{-{a}x}}}}{{{a}}}.",
+        derivation=rf"uv-\int v\,du=-\frac{{(x+{b})e^{{-{a}x}}}}{{{a}}}"
+        rf"+\frac1{{{a}}}\int e^{{-{a}x}}\,dx,\quad",
+    )
 
 
 def square_exponential(a: int, b: int, c: int) -> Built:
-    return parts((X + b) ** 2 * sp.exp(a * X), REALS, r"\text{Integrate by parts twice.}")
+    return parts(
+        (X + b) ** 2 * sp.exp(a * X),
+        REALS,
+        rf"u=(x+{b})^2,\quad v=\frac{{e^{{{a}x}}}}{{{a}}},\quad "
+        rf"\int u\,dv=uv-\frac{{2}}{{{a}}}\int (x+{b})e^{{{a}x}}\,dx."
+        r"\quad\text{Apply parts again to the remaining integral.}",
+    )
 
 
 def root_arctan(a: int, b: int, c: int) -> Built:
@@ -149,17 +154,26 @@ def root_arctan(a: int, b: int, c: int) -> Built:
 
 def secant_square(a: int, b: int, c: int) -> Built:
     domain = sp.Interval.open(0, sp.pi / (2 * b))
-    return fixed_primitive(
-        rf"\frac{{{scaled(a)}x}}{{\cos^2 {scaled(b)}x}}",
-        a * (X * sp.tan(b * X) / b + sp.log(sp.cos(b * X)) / b**2),
+    angle = f"{scaled(b)}x"
+    return antiderivative(
+        a * X / sp.cos(b * X) ** 2,
         domain,
-        r"u=x,\ dv=\frac{dx}{\cos^2bx},\ v=\frac{\tan bx}{b}.",
-        rf"\int=\frac{{{a}x\tan {scaled(b)}x}}{{{b}}}-\frac{{{a}}}{{{b}}}\int\tan {scaled(b)}x\,dx",
+        rf"u=x,\quad dv=\frac{{{a}\,dx}}{{\cos^2({angle})}},"
+        rf"\quad v=\frac{{{a}\tan({angle})}}{{{b}}}.",
+        primitive=a * (X * sp.tan(b * X) / b + sp.log(sp.cos(b * X)) / b**2),
+        derivation=rf"uv-\int v\,du=\frac{{{a}x\tan({angle})}}{{{b}}}"
+        rf"-\frac{{{a}}}{{{b}}}\int\tan({angle})\,dx,\quad",
     )
 
 
 def square_sine(a: int, b: int, c: int) -> Built:
-    return parts(a * X**2 * sp.sin(b * X), REALS, r"\text{Integrate by parts twice.}")
+    return parts(
+        a * X**2 * sp.sin(b * X),
+        REALS,
+        rf"u=x^2,\quad v=-\frac{{{a}\cos({scaled(b)}x)}}{{{b}}},\quad "
+        rf"\int u\,dv=uv+\frac{{{2 * a}}}{{{b}}}\int x\cos({scaled(b)}x)\,dx."
+        r"\quad\text{Apply parts again with }u=x.",
+    )
 
 
 def arccos_over_root(a: int, b: int, c: int) -> Built:
@@ -251,7 +265,15 @@ def logarithm_quadratic(a: int, b: int, c: int) -> Built:
 
 
 def linear_sine_exponential(a: int, b: int, c: int) -> Built:
-    return parts(X * sp.sin(b * X) * sp.exp(a * X), REALS, r"\text{Parts with }u=x\text{, twice.}")
+    angle = f"{scaled(b)}x"
+    return parts(
+        X * sp.sin(b * X) * sp.exp(a * X),
+        REALS,
+        rf"u=x,\quad v=\frac{{e^{{{a}x}}({a}\sin({angle})-{b}\cos({angle}))}}{{{a * a + b * b}}},"
+        r"\quad \int u\,dv=xv-\int v\,dx."
+        r"\quad\text{Use the exponential-sine and exponential-cosine primitives "
+        r"for the remainder.}",
+    )
 
 
 def arccot_linear(a: int, b: int, c: int) -> Built:
@@ -430,5 +452,5 @@ def root_quotient_value(a: int, b: int, c: int) -> Built:
         r"\frac{x^2+\sqrt x}{\sqrt x+1}\text{ on }(0,\infty)\text{ with }F(1)=" + tex(value) + ".",
         DomainFormulaAnswer(primitive, POSITIVE),
         r"dx=2t\,dt:\ \int\frac{t^4+t}{t+1}\,2t\,dt=\int2t^2(t^2-t+1)\,dt.",
-        rf"F(x)={tex(primitive)}.",
+        rf"G(x)={tex(general)},\qquad F(x)=G(x)-G(1)+{tex(value)}={tex(primitive)}.",
     )

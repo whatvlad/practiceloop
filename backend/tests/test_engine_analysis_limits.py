@@ -648,7 +648,37 @@ LIMIT_GENERATORS = [
     g
     for g in generators()
     if not g.evaluate.__module__.endswith(
-        ("_derivatives", "_extrema", "_convexity", "_taylor", "_antiderivatives")
+        (
+            "_derivatives",
+            "_extrema",
+            "_convexity",
+            "_taylor",
+            "_antiderivatives",
+            "_definite_integrals",
+            "_integral_applications",
+            "_revolution_applications",
+            "_improper_integrals",
+            "_series_comparisons",
+            "_series_ratio_root",
+            "_alternating_power_series",
+            "_maclaurin_expansions",
+            "_series_identities",
+            "_multivariable_domains",
+            "_multivariable_partials",
+            "_tangent_linear",
+            "_gradient_directional",
+            "_second_partials",
+            "_multivariable_extrema",
+            "_global_extrema",
+            "_applied_optimization",
+            "_double_integrals",
+            "_polar_integrals",
+            "_surface_centroid_inertia",
+            "_separable_odes",
+            "_linear_odes",
+            "_laplace_transforms",
+            "_inverse_laplace",
+        )
     )
 ]
 

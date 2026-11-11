@@ -14,7 +14,7 @@ Domain = Literal["real", "positive", "integer"]
 COMPUTATIONAL_KINDS = frozenset(
     {"real_set", "tuple", "category", "formula", "limit_result", "logic"}
 )
-PARAMETER_NAMES = frozenset({"a", "b", "c", "C", "D", "k", "n", "t", "s"})
+PARAMETER_NAMES = frozenset({"a", "b", "c", "C", "D", "k", "m", "n", "t", "s"})
 COORDINATE_NAMES = frozenset({"x", "y", "z", "r", "theta"})
 _MATRIX_NAMES = ("one", "two", "three", "four", "five")
 

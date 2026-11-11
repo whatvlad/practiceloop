@@ -27,6 +27,19 @@ function card(props: Partial<Parameters<typeof ProblemCard>[0]> = {}) {
 }
 
 describe('ProblemCard', () => {
+  it('shows the given Laplace graph before any answer is revealed', () => {
+    const html = card({
+      topic: 'differential-equations',
+      problemLatex: String.raw`\text{Find the transform of the given function.}`,
+      promptVisual: { kind: 'plot2d', version: 1, title: 'Given function',
+        description: 'Join (0,0), (2,3) and (4,0) by straight lines, then stay at zero.',
+        x: [-1, 6], y: [-1, 4], xLabel: 't', yLabel: 'f(t)',
+        paths: [{ label: 'Triangle', closed: false, arrow: false, points: [[0, 0], [2, 3], [4, 0]] }], points: [] },
+    });
+    expect(html).toContain('aria-label="Join (0,0), (2,3) and (4,0) by straight lines, then stay at zero."');
+    expect(html).toContain('Given function');
+  });
+
   it.each([
     ['algebraic-expressions', '\\text{Simplify }2\\sqrt{3}-\\sqrt{27}\\text{.}', 'Simplify', '2\\sqrt{3}-\\sqrt{27}'],
     ['algebraic-expressions', '\\text{Rationalize the denominator of }\\frac{1}{2+\\sqrt{3}}\\text{.}', 'Rationalize the denominator', '\\frac{1}{2+\\sqrt{3}}'],
@@ -144,4 +157,12 @@ describe('ApiStatusNotice', () => {
     expect(html).toContain('role="status"');
     expect(html).toContain('reach the MathLoop server');
   });
+});
+
+it('opens the reference for a self-review exercise without offering automatic grading', () => {
+  const html = card({ selfReview: true, answer: 'Compare two points' });
+  expect(html).toContain('Show reference solution');
+  expect(html).toContain('Compare two points');
+  expect(html).not.toContain('Check answer');
+  expect(html).not.toContain('Show answer');
 });

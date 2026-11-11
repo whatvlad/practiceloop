@@ -305,6 +305,25 @@ def build(
                     )
                     continue
                 topic = replace(topic, levels={**topic.levels, level: old_choices})
+            choices = topic.levels[level]
+            present = {problem.generator_version for problem in problems.values()}
+            missing = tuple(choice for choice in choices if choice.generator not in present)
+            if len(missing) <= pool_size - len(problems) and any(
+                choice.generator.startswith(("analysis1-", "analysis2-", "elementary-"))
+                for choice in choices
+            ):
+                # A random pool can omit a family entirely when many share one level.
+                # Reserve a reproducible task for each choice before filling the remaining slots.
+                for index, choice in enumerate(missing):
+                    selected = replace(topic, levels={level: (choice,)})
+                    task = selected.generate(level, level * POOL_SIZE + index, generators)
+                    problem = StoredProblem.from_issued(render(task, generators))
+                    problems[problem.code] = problem
+                if len(problems) == pool_size:
+                    cells.append(
+                        StoredCell(topic=slug, level=level, problems=tuple(problems.values()))
+                    )
+                    continue
             for seed in range(pool_size * ATTEMPTS_PER_SLOT):
                 try:
                     task = topic.generate(level, seed, generators)

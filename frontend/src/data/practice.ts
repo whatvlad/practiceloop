@@ -2,7 +2,7 @@
 import text from '../../../backend/app/content/en.json';
 import { normalizeCode } from './shares';
 import { normalizeProblemCode } from './problemCodes';
-import { parseVisual } from '../visual/spec';
+import { parsePromptVisual, parseVisual } from '../visual/spec';
 import { AREAS, areaOf, isTopicSlug, listedArea, rememberTopics } from './topics';
 import { FEEDBACK_CODES } from './types';
 import { parseAnswerInput } from './answerInput';
@@ -178,11 +178,14 @@ function publicProblem(value: unknown): PublicProblem {
     || (data.modulusMode !== undefined && (data.topic !== 'complex-numbers' || !['expression', 'properties', 'geometry'].includes(data.modulusMode as string)))) throw new Error(text.service_error);
   const last = data.lastAttempt === null ? null : object(data.lastAttempt);
   if (last && typeof last.answer !== 'string') throw new Error(text.service_error);
+  const promptVisual = parsePromptVisual(data.promptVisual);
   return { saved: true, id: data.id, topic: data.topic as TopicSlug, difficulty: data.difficulty as Difficulty,
     problemLatex: data.problemLatex, createdAt: data.createdAt, answerRevealed: data.answerRevealed,
     solutionRevealed: data.solutionRevealed, attemptCount: data.attemptCount as number,
     lastResult: last ? verdict(last).result : null, lastFeedback: last ? verdict(last).feedback : null,
     lastAnswer: last ? last.answer as string : null, worksheetId: (data.worksheetId as string | null | undefined) ?? null,
+    ...(promptVisual ? { promptVisual } : {}),
+    ...(data.selfReview === true ? { selfReview: true } : {}),
     ...(data.answerInput === undefined ? {} : { answerInput: parseAnswerInput(data.answerInput) }),
     ...(data.modulusMode === undefined ? {} : { modulusMode: data.modulusMode as ModulusMode }),
     ...(dimensions ? { rankDimensions: { rows: dimensions.rows as number, columns: dimensions.columns as number } } : {}),
@@ -493,9 +496,12 @@ export function generateProblem(topic: PracticeTopic, difficulty: Difficulty, ar
         || (mixed ? !isTopicSlug(data.topic) || listedArea(data.topic) !== drawFrom : data.topic !== topic)
         || data.difficulty !== difficulty) throw new Error(text.service_error);
     // Explicit projection: even a malformed server response cannot cache private fields.
+    const promptVisual = parsePromptVisual(data.promptVisual);
     const problem: PublicProblem = { saved, id: data.id, topic: data.topic as TopicSlug, difficulty,
       problemLatex: data.problemLatex, createdAt: data.createdAt, answerRevealed: false, solutionRevealed: false,
       lastResult: null, lastAnswer: null, ...(mixed ? { mixed: true } : {}),
+      ...(promptVisual ? { promptVisual } : {}),
+      ...(data.selfReview === true ? { selfReview: true } : {}),
       ...(data.answerInput === undefined ? {} : { answerInput: parseAnswerInput(data.answerInput) }),
       ...(modulusMode ? { modulusMode } : {}), ...(rankDimensions ? { rankDimensions } : {}), ...(matrixDimensions ? { matrixDimensions } : {}), ...(squareSize ? { squareSize } : {}), ...(exerciseMode ? { exerciseMode } : {}) };
     problems.unshift(problem);

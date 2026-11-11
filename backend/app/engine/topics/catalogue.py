@@ -605,12 +605,6 @@ def topics() -> dict[str, Topic]:
             space_cm=5 if slug == "differential-calculus" else 4,
             served=True,
         )
-    for limit_generator in limit_generators():
-        topic = declared[limit_generator.topic]
-        limit_levels = dict(topic.levels)
-        level = limit_generator.difficulty
-        limit_levels[level] = (*limit_levels[level], Choice(limit_generator.version))
-        declared[topic.slug] = replace(topic, levels=limit_levels)
     # #146: retain product identity/weights and the three proven introductory forms.
     retained = {
         "improper-integrals": "practice-improper-v1",
@@ -724,6 +718,20 @@ def topics() -> dict[str, Topic]:
                 Choice(version, partial(_local_level, level)),
             )
         declared[slug] = replace(topic, levels=combined)
+    from app.engine.generators.self_review import generators as review_generators
+
+    for review_generator in review_generators():
+        topic = declared[review_generator.topic]
+        review_levels = dict(topic.levels)
+        level = review_generator.difficulty
+        review_levels[level] = (*review_levels[level], Choice(review_generator.version))
+        declared[topic.slug] = replace(topic, levels=review_levels)
+    for limit_generator in limit_generators():
+        topic = declared[limit_generator.topic]
+        limit_levels = dict(topic.levels)
+        level = limit_generator.difficulty
+        limit_levels[level] = (*limit_levels[level], Choice(limit_generator.version))
+        declared[topic.slug] = replace(topic, levels=limit_levels)
     return declared
 
 

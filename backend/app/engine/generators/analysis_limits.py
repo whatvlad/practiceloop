@@ -15,15 +15,42 @@ from app.engine.answers.computational import (
     OrderedAnswer,
     RealSetAnswer,
 )
+from app.engine.answers.logic import LogicAnswer
 from app.engine.codes import encode
+from app.engine.generators import _alternating_power_series as alternating_power_series
 from app.engine.generators import _antiderivatives as antiderivatives
+from app.engine.generators import _applied_optimization as applied_optimization
 from app.engine.generators import _convexity as convexity
+from app.engine.generators import _definite_integrals as definite_integrals
 from app.engine.generators import _derivatives as derivatives
+from app.engine.generators import _double_integrals as double_integrals
 from app.engine.generators import _extrema as extrema
 from app.engine.generators import _function_limits as functions
+from app.engine.generators import _global_extrema as global_extrema
+from app.engine.generators import _gradient_directional as gradient_directional
+from app.engine.generators import _improper_integrals as improper_integrals
+from app.engine.generators import _integral_applications as integral_applications
+from app.engine.generators import _inverse_laplace as inverse_laplace
+from app.engine.generators import _laplace_transforms as laplace_transforms
 from app.engine.generators import _lhopital as lhopital
+from app.engine.generators import _linear_odes as linear_odes
+from app.engine.generators import _maclaurin_expansions as maclaurin_expansions
+from app.engine.generators import _multivariable_domains as multivariable_domains
+from app.engine.generators import _multivariable_extrema as multivariable_extrema
+from app.engine.generators import _multivariable_partials as multivariable_partials
+from app.engine.generators import _polar_integrals as polar_integrals
+from app.engine.generators import _rational_antiderivatives as rational_antiderivatives
+from app.engine.generators import _revolution_applications as revolution_applications
+from app.engine.generators import _second_partials as second_partials
+from app.engine.generators import _separable_odes as separable_odes
 from app.engine.generators import _sequence_limits as sequences
+from app.engine.generators import _series_comparisons as series_comparisons
+from app.engine.generators import _series_identities as series_identities
+from app.engine.generators import _series_ratio_root as series_ratio_root
+from app.engine.generators import _surface_centroid_inertia as surface_centroid_inertia
+from app.engine.generators import _tangent_linear as tangent_linear
 from app.engine.generators import _taylor as taylor
+from app.engine.generators import _trig_antiderivatives as trig_antiderivatives
 from app.engine.generators._elementary_common import Built
 from app.engine.models import Answer, Drawn, Task
 from app.engine.prng import DeterministicRNG
@@ -31,6 +58,186 @@ from app.math_input.contracts import InputContract
 
 LIMIT = InputContract("limit_result")
 CONSTANT = InputContract("formula")
+VOLUME_SURFACE = InputContract(
+    "tuple", components=(CONSTANT, CONSTANT), labels=("Volume", "Lateral surface area")
+)
+IMPROPER_CONVERGENCE = InputContract("category", choices=improper_integrals.CONVERGENCE)
+SURFACE_FINITUDE = InputContract("category", choices=improper_integrals.FINITUDE)
+IMPROPER_VALUE = InputContract(
+    "tuple", components=(IMPROPER_CONVERGENCE, LIMIT), labels=improper_integrals.VALUE_LABELS
+)
+IMPROPER_TAILS = InputContract(
+    "tuple",
+    components=(IMPROPER_CONVERGENCE, LIMIT, LIMIT, LIMIT),
+    labels=improper_integrals.TAIL_LABELS,
+)
+PARTIAL_ONE = InputContract(
+    "tuple",
+    components=(CONSTANT, IMPROPER_CONVERGENCE, LIMIT),
+    labels=series_comparisons.PARTIAL_ONE_LABELS,
+)
+PARTIAL_TWO = InputContract(
+    "tuple",
+    components=(CONSTANT, CONSTANT, IMPROPER_CONVERGENCE, LIMIT),
+    labels=series_comparisons.PARTIAL_TWO_LABELS,
+)
+SERIES_TEST = InputContract(
+    "tuple", components=(LIMIT, IMPROPER_CONVERGENCE), labels=series_ratio_root.TEST_LABELS
+)
+ABSOLUTE_CLASSIFICATION = InputContract(
+    "category", choices=alternating_power_series.ABSOLUTE_CHOICES
+)
+SERIES_COEFFICIENTS = InputContract(
+    "tuple",
+    components=(CONSTANT, CONSTANT, InputContract("real_set")),
+    labels=maclaurin_expansions.COEFFICIENT_LABELS,
+)
+PARTIAL_XY = InputContract("formula", symbols=multivariable_partials.XY)
+PARTIAL_XYZ = InputContract("formula", symbols=multivariable_partials.XYZ)
+PARTIAL_VALUES = InputContract(
+    "tuple", components=(CONSTANT, CONSTANT), labels=multivariable_partials.PARTIALS
+)
+FIRST_PARTIALS = InputContract(
+    "tuple", components=(PARTIAL_XY, PARTIAL_XY), labels=multivariable_partials.PARTIALS
+)
+THREE_PARTIALS = InputContract(
+    "tuple",
+    components=(PARTIAL_XYZ, PARTIAL_XYZ, PARTIAL_XYZ),
+    labels=multivariable_partials.TRIPLE_PARTIALS,
+)
+EULER_PARTIALS = InputContract(
+    "tuple", components=(PARTIAL_XY, PARTIAL_XY, CONSTANT), labels=multivariable_partials.EULER
+)
+TANGENT_PLANE = InputContract(
+    "tuple", components=(CONSTANT, CONSTANT, CONSTANT), labels=tangent_linear.PLANE
+)
+TANGENT_CONTACT = InputContract(
+    "tuple", components=(CONSTANT, CONSTANT, CONSTANT), labels=tangent_linear.CONTACT
+)
+LINEAR_ESTIMATE = InputContract(
+    "tuple", components=(CONSTANT, CONSTANT), labels=tangent_linear.LINEAR
+)
+DIRECTIONAL_QUOTIENTS = InputContract(
+    "tuple", components=(LIMIT, LIMIT, LIMIT), labels=gradient_directional.QUOTIENTS
+)
+GRADIENT_XY = InputContract(
+    "tuple", components=(CONSTANT, CONSTANT), labels=gradient_directional.GRADIENT_XY
+)
+GRADIENT_XYZ = InputContract(
+    "tuple", components=(CONSTANT,) * 3, labels=gradient_directional.GRADIENT_XYZ
+)
+ZERO_DIRECTION = InputContract(
+    "tuple", components=(CONSTANT, CONSTANT), labels=gradient_directional.ZERO_DIRECTION
+)
+EXTREME_DIRECTIONS = InputContract(
+    "tuple", components=(CONSTANT,) * 5, labels=gradient_directional.EXTREME_DIRECTIONS
+)
+HESSIAN_2D = InputContract("tuple", components=(PARTIAL_XY,) * 3, labels=second_partials.HESSIAN_2D)
+HESSIAN_3D = InputContract(
+    "tuple", components=(PARTIAL_XYZ,) * 6, labels=second_partials.HESSIAN_3D
+)
+HESSIAN_X = InputContract("tuple", components=(PARTIAL_XYZ,) * 2, labels=second_partials.HESSIAN_X)
+HESSIAN_Y = InputContract("tuple", components=(PARTIAL_XYZ,) * 2, labels=second_partials.HESSIAN_Y)
+HESSIAN_Z = InputContract("tuple", components=(PARTIAL_XYZ,) * 2, labels=second_partials.HESSIAN_Z)
+LAPLACIAN = InputContract(
+    "tuple", components=(PARTIAL_XY, PARTIAL_XY, CONSTANT), labels=second_partials.LAPLACE
+)
+MV_MINIMUM = InputContract(
+    "tuple", components=(CONSTANT,) * 3, labels=multivariable_extrema.MINIMUM
+)
+MV_MAXIMUM = InputContract(
+    "tuple", components=(CONSTANT,) * 3, labels=multivariable_extrema.MAXIMUM
+)
+MV_EXTREMA = InputContract(
+    "tuple", components=(CONSTANT,) * 6, labels=multivariable_extrema.EXTREMA
+)
+MV_STATIONARY = InputContract(
+    "tuple",
+    components=(CONSTANT, CONSTANT, InputContract("category", choices=multivariable_extrema.TYPES)),
+    labels=multivariable_extrema.STATIONARY,
+)
+MV_PARABOLA = InputContract(
+    "tuple", components=(CONSTANT,) * 8, labels=multivariable_extrema.PARABOLA_EXTREMA
+)
+MV_TWO_MINIMA = InputContract("tuple", components=(CONSTANT,) * 8, labels=global_extrema.TWO_MINIMA)
+MV_TWO_MAXIMA = InputContract("tuple", components=(CONSTANT,) * 8, labels=global_extrema.TWO_MAXIMA)
+OPTIMUM_DIMENSIONS = InputContract(
+    "tuple", components=(CONSTANT,) * 4, labels=applied_optimization.DIMENSIONS
+)
+OPTIMUM_PROFIT = InputContract(
+    "tuple", components=(CONSTANT,) * 3, labels=applied_optimization.PROFIT
+)
+CLOSEST_POINT = InputContract(
+    "tuple", components=(CONSTANT,) * 3, labels=applied_optimization.CLOSEST
+)
+X_BOUND = InputContract("formula", symbols=(("x", "real"),))
+Y_BOUND = InputContract("formula", symbols=(("y", "real"),))
+X_BOUNDS = InputContract(
+    "tuple",
+    components=(CONSTANT, CONSTANT, X_BOUND, X_BOUND),
+    labels=double_integrals.BOUND_LABELS,
+)
+Y_BOUNDS = InputContract(
+    "tuple",
+    components=(CONSTANT, CONSTANT, Y_BOUND, Y_BOUND),
+    labels=double_integrals.BOUND_LABELS,
+)
+Y_BOUNDS_TWO = InputContract(
+    "tuple", components=(Y_BOUNDS,) * 2, labels=double_integrals.PIECES[:2]
+)
+Y_BOUNDS_THREE = InputContract("tuple", components=(Y_BOUNDS,) * 3, labels=double_integrals.PIECES)
+X_BOUNDS_THREE = InputContract("tuple", components=(X_BOUNDS,) * 3, labels=double_integrals.PIECES)
+CENTROID = InputContract(
+    "tuple", components=(CONSTANT, CONSTANT), labels=surface_centroid_inertia.CENTROID
+)
+INERTIA = InputContract("formula", symbols=surface_centroid_inertia.MASS)
+ELLIPSE_INERTIA = InputContract(
+    "tuple", components=(INERTIA, INERTIA), labels=surface_centroid_inertia.INERTIA
+)
+TIME_FORMULA = InputContract("formula", symbols=(("t", "real"),))
+DEPENDENT_FORMULA = InputContract("formula", symbols=(("y", "real"),))
+SET_VALUE = InputContract("real_set")
+DECAY_FIT = InputContract("tuple", components=(CONSTANT,) * 2, labels=separable_odes.DECAY_FIT)
+HALF_LIFE = InputContract("tuple", components=(CONSTANT,) * 2, labels=separable_odes.HALF_LIFE)
+DECAY_PERCENT = InputContract(
+    "tuple", components=(CONSTANT,) * 3, labels=separable_odes.DECAY_PERCENT
+)
+ODE_GENERAL = InputContract(
+    "tuple", components=(TIME_FORMULA, SET_VALUE, SET_VALUE), labels=separable_odes.GENERAL
+)
+ODE_JUNCTION = InputContract(
+    "tuple", components=(*ODE_GENERAL.components, SET_VALUE), labels=separable_odes.JUNCTION
+)
+ODE_IVP = InputContract("tuple", components=(TIME_FORMULA, SET_VALUE), labels=separable_odes.IVP)
+ODE_IMPLICIT_IVP = InputContract(
+    "tuple",
+    components=(DEPENDENT_FORMULA, TIME_FORMULA, CONSTANT, SET_VALUE),
+    labels=separable_odes.IMPLICIT_IVP,
+)
+ODE_WAITING = InputContract(
+    "tuple", components=(TIME_FORMULA, X_BOUND, SET_VALUE, SET_VALUE), labels=separable_odes.WAITING
+)
+ODE_LINEAR = InputContract(
+    "tuple",
+    components=(TIME_FORMULA, TIME_FORMULA, SET_VALUE, SET_VALUE),
+    labels=linear_odes.LINEAR_FAMILY,
+)
+ODE_TANGENT = InputContract(
+    "tuple",
+    components=(TIME_FORMULA, TIME_FORMULA, SET_VALUE, TIME_FORMULA, TIME_FORMULA),
+    labels=linear_odes.TANGENT_FAMILY,
+)
+LAPLACE_FORMULA = InputContract("formula", symbols=(("s", "real"),))
+LAPLACE_TRANSFORM = InputContract(
+    "tuple", components=(LAPLACE_FORMULA, SET_VALUE), labels=laplace_transforms.TRANSFORM
+)
+LAPLACE_COMPACT = InputContract(
+    "tuple", components=(LAPLACE_FORMULA, CONSTANT, SET_VALUE), labels=laplace_transforms.COMPACT
+)
+LAPLACE_RESPONSE = InputContract(
+    "tuple", components=(TIME_FORMULA, SET_VALUE), labels=inverse_laplace.RESPONSE
+)
+NATURAL_REGION = InputContract("logic", choices=multivariable_domains.ATOMS)
 BOUNDS_KIND = InputContract("category", choices=sequences.BOUNDS)
 BOUNDS = InputContract(
     "tuple", components=(BOUNDS_KIND, CONSTANT, CONSTANT), labels=sequences.BOUND_LABELS
@@ -120,6 +327,7 @@ ANSWERS: dict[str, type[Answer]] = {
     "limit_result": LimitAnswer,
     "tuple": OrderedAnswer,
     "real_set": RealSetAnswer,
+    "logic": LogicAnswer,
 }
 
 SEQUENCES = "functions-and-sequences"
@@ -127,6 +335,13 @@ FUNCTIONS = "limits-and-continuity"
 DERIVATIVES = "differential-calculus"
 BASIC = "basic-integrals"
 PARTS = "integration-by-parts"
+SUBSTITUTION = "substitution"
+RATIONAL = "rational-functions"
+TRIGONOMETRIC = "trigonometric-integrals"
+DEFINITE = "definite-integrals"
+IMPROPER = "improper-integrals"
+SERIES = "series"
+MULTIVARIABLE = "multivariable-functions"
 # Antiderivatives are not a computational kind: they carry no public input contract.
 PRIMITIVE = None
 # Explicit prefixes are permanent and independent of the order of these entries.
@@ -394,13 +609,13 @@ SPECS = (
     (antiderivatives.sum_of_powers, BASIC, 1, "INAA", PRIMITIVE),
     (antiderivatives.conjugate_quotient, BASIC, 2, "INAB", PRIMITIVE),
     (antiderivatives.polynomial_division, BASIC, 2, "INAC", PRIMITIVE),
-    (antiderivatives.double_angle_quotient, BASIC, 3, "INAD", LINE),
+    (antiderivatives.double_angle_quotient, BASIC, 3, "INAD", PRIMITIVE),
     (antiderivatives.root_powers, BASIC, 2, "INAE", PRIMITIVE),
     (antiderivatives.exponential_product, BASIC, 2, "INAF", PRIMITIVE),
     (antiderivatives.linear_exponential, PARTS, 1, "INAG", PRIMITIVE),
     (antiderivatives.square_exponential, PARTS, 2, "INAH", PRIMITIVE),
     (antiderivatives.root_arctan, PARTS, 3, "INAI", PRIMITIVE),
-    (antiderivatives.secant_square, PARTS, 2, "INAJ", LINE),
+    (antiderivatives.secant_square, PARTS, 2, "INAJ", PRIMITIVE),
     (antiderivatives.square_sine, PARTS, 2, "INAK", PRIMITIVE),
     (antiderivatives.arccos_over_root, PARTS, 3, "INAL", PRIMITIVE),
     (antiderivatives.logarithm, PARTS, 1, "INAM", PRIMITIVE),
@@ -414,22 +629,720 @@ SPECS = (
     (antiderivatives.logarithm_quadratic, PARTS, 3, "INAU", PRIMITIVE),
     (antiderivatives.linear_sine_exponential, PARTS, 3, "INAV", PRIMITIVE),
     (antiderivatives.arccot_linear, PARTS, 2, "INAW", PRIMITIVE),
-    (antiderivatives.cosine_root, BASIC, 3, "INAX", PRIMITIVE),
-    (antiderivatives.root_over_x, BASIC, 4, "INAY", PRIMITIVE),
-    (antiderivatives.cosine_over_root_sine, BASIC, 3, "INAZ", PRIMITIVE),
-    (antiderivatives.sine_of_quadratic, BASIC, 2, "INBA", PRIMITIVE),
-    (antiderivatives.reciprocal_cosh, BASIC, 4, "INBB", PRIMITIVE),
-    (antiderivatives.linear_power, BASIC, 2, "INBC", PRIMITIVE),
-    (antiderivatives.fifth_root, BASIC, 3, "INBD", PRIMITIVE),
-    (antiderivatives.reciprocal_root_sum, BASIC, 3, "INBE", PRIMITIVE),
-    (antiderivatives.logarithm_power, BASIC, 2, "INBF", PRIMITIVE),
-    (antiderivatives.exponential_arctan, BASIC, 3, "INBG", PRIMITIVE),
-    (antiderivatives.sine_over_cosine, BASIC, 3, "INBH", PRIMITIVE),
-    (antiderivatives.cubic_exponential, BASIC, 4, "INBI", PRIMITIVE),
-    (antiderivatives.root_over_linear, BASIC, 3, "INBJ", PRIMITIVE),
-    (antiderivatives.logarithm_arctan, BASIC, 4, "INBK", PRIMITIVE),
-    (antiderivatives.sine_cosine_arctan, BASIC, 5, "INBL", PRIMITIVE),
-    (antiderivatives.root_quotient_value, BASIC, 4, "INBM", LINE),
+    (antiderivatives.cosine_root, SUBSTITUTION, 3, "INAX", PRIMITIVE),
+    (antiderivatives.root_over_x, SUBSTITUTION, 4, "INAY", PRIMITIVE),
+    (antiderivatives.cosine_over_root_sine, SUBSTITUTION, 3, "INAZ", PRIMITIVE),
+    (antiderivatives.sine_of_quadratic, SUBSTITUTION, 2, "INBA", PRIMITIVE),
+    (antiderivatives.reciprocal_cosh, SUBSTITUTION, 4, "INBB", PRIMITIVE),
+    (antiderivatives.linear_power, SUBSTITUTION, 2, "INBC", PRIMITIVE),
+    (antiderivatives.fifth_root, SUBSTITUTION, 3, "INBD", PRIMITIVE),
+    (antiderivatives.reciprocal_root_sum, SUBSTITUTION, 3, "INBE", PRIMITIVE),
+    (antiderivatives.logarithm_power, SUBSTITUTION, 2, "INBF", PRIMITIVE),
+    (antiderivatives.exponential_arctan, SUBSTITUTION, 3, "INBG", PRIMITIVE),
+    (antiderivatives.sine_over_cosine, SUBSTITUTION, 3, "INBH", PRIMITIVE),
+    (antiderivatives.cubic_exponential, SUBSTITUTION, 4, "INBI", PRIMITIVE),
+    (antiderivatives.root_over_linear, SUBSTITUTION, 3, "INBJ", PRIMITIVE),
+    (antiderivatives.logarithm_arctan, SUBSTITUTION, 4, "INBK", PRIMITIVE),
+    (antiderivatives.sine_cosine_arctan, SUBSTITUTION, 5, "INBL", PRIMITIVE),
+    (antiderivatives.root_quotient_value, SUBSTITUTION, 4, "INBM", LINE),
+    # #266
+    (rational_antiderivatives.linear_high_power, RATIONAL, 2, "INBN", PRIMITIVE),
+    (rational_antiderivatives.shifted_log, RATIONAL, 1, "INBO", PRIMITIVE),
+    (rational_antiderivatives.decreasing_linear_power, RATIONAL, 2, "INBP", PRIMITIVE),
+    (rational_antiderivatives.scaled_linear_log, RATIONAL, 1, "INBQ", PRIMITIVE),
+    (rational_antiderivatives.quadratic_arctangent, RATIONAL, 2, "INBR", PRIMITIVE),
+    (rational_antiderivatives.quadratic_logarithm, RATIONAL, 2, "INBS", PRIMITIVE),
+    (rational_antiderivatives.quadratic_log_and_arctangent, RATIONAL, 3, "INBT", PRIMITIVE),
+    (rational_antiderivatives.nonmonic_quadratic, RATIONAL, 3, "INBU", PRIMITIVE),
+    (rational_antiderivatives.distinct_linear_factors, RATIONAL, 3, "INBV", PRIMITIVE),
+    (rational_antiderivatives.divide_by_linear, RATIONAL, 3, "INBW", PRIMITIVE),
+    (rational_antiderivatives.repeated_linear_factor, RATIONAL, 4, "INBX", PRIMITIVE),
+    (rational_antiderivatives.divide_by_difference_of_squares, RATIONAL, 5, "INBY", PRIMITIVE),
+    (rational_antiderivatives.distinct_quadratic_factors, RATIONAL, 4, "INBZ", PRIMITIVE),
+    (rational_antiderivatives.nonmonic_logarithm, RATIONAL, 2, "INCA", PRIMITIVE),
+    (rational_antiderivatives.positive_quadratic_reciprocal, RATIONAL, 2, "INCB", PRIMITIVE),
+    (rational_antiderivatives.three_linear_factors, RATIONAL, 4, "INCC", PRIMITIVE),
+    (rational_antiderivatives.decreasing_quadratic_numerator, RATIONAL, 3, "INCD", PRIMITIVE),
+    (rational_antiderivatives.divide_by_irreducible_quadratic, RATIONAL, 5, "INCE", PRIMITIVE),
+    (rational_antiderivatives.linear_times_irreducible_quadratic, RATIONAL, 4, "INCF", PRIMITIVE),
+    (rational_antiderivatives.quartic_via_square, RATIONAL, 5, "INCG", PRIMITIVE),
+    (rational_antiderivatives.mixed_cubic_exam, RATIONAL, 5, "INCH", PRIMITIVE),
+    (rational_antiderivatives.difference_of_squares_log_exam, RATIONAL, 3, "INCI", PRIMITIVE),
+    # #267
+    (trig_antiderivatives.odd_sine_cube, TRIGONOMETRIC, 2, "INCJ", PRIMITIVE),
+    (trig_antiderivatives.even_sine_odd_cosine, TRIGONOMETRIC, 3, "INCK", PRIMITIVE),
+    (trig_antiderivatives.shifted_cosine_fourth, TRIGONOMETRIC, 3, "INCL", PRIMITIVE),
+    (trig_antiderivatives.odd_sine_even_cosine, TRIGONOMETRIC, 3, "INCM", PRIMITIVE),
+    (trig_antiderivatives.cosine_square_double_angle, TRIGONOMETRIC, 4, "INCN", PRIMITIVE),
+    (trig_antiderivatives.product_of_sine_squares, TRIGONOMETRIC, 5, "INCO", PRIMITIVE),
+    (trig_antiderivatives.reciprocal_sine, TRIGONOMETRIC, 3, "INCP", PRIMITIVE),
+    (trig_antiderivatives.secant_plus_secant_tangent, TRIGONOMETRIC, 4, "INCQ", PRIMITIVE),
+    (trig_antiderivatives.cancel_sine_square, TRIGONOMETRIC, 2, "INCR", PRIMITIVE),
+    (trig_antiderivatives.reciprocal_cosine_quadratic, TRIGONOMETRIC, 4, "INCS", PRIMITIVE),
+    (trig_antiderivatives.reciprocal_one_minus_tangent, TRIGONOMETRIC, 4, "INCT", PRIMITIVE),
+    (trig_antiderivatives.odd_sine_over_cosine_cube, TRIGONOMETRIC, 4, "INCU", PRIMITIVE),
+    (trig_antiderivatives.reciprocal_sine_plus_tangent, TRIGONOMETRIC, 5, "INCV", PRIMITIVE),
+    (trig_antiderivatives.reciprocal_sine_plus_cosine, TRIGONOMETRIC, 4, "INCW", PRIMITIVE),
+    (trig_antiderivatives.pythagorean_trig_denominator, TRIGONOMETRIC, 5, "INCX", PRIMITIVE),
+    (trig_antiderivatives.sine_fourth_exam, TRIGONOMETRIC, 3, "INCY", PRIMITIVE),
+    # #268
+    (definite_integrals.root_and_reciprocal_root, DEFINITE, 2, "INCZ", CONSTANT),
+    (definite_integrals.linear_quotient_value, DEFINITE, 3, "INDA", CONSTANT),
+    (definite_integrals.arctangent_value, DEFINITE, 2, "INDB", CONSTANT),
+    (definite_integrals.polynomial_product_value, DEFINITE, 1, "INDC", CONSTANT),
+    (definite_integrals.reciprocal_powers_value, DEFINITE, 2, "INDD", CONSTANT),
+    (definite_integrals.tangent_square_value, DEFINITE, 3, "INDE", CONSTANT),
+    (definite_integrals.riemann_power, DEFINITE, 2, "INDF", CONSTANT),
+    (definite_integrals.riemann_cosine, DEFINITE, 3, "INDG", CONSTANT),
+    (definite_integrals.riemann_shifted_root, DEFINITE, 3, "INDH", CONSTANT),
+    (definite_integrals.parts_linear_exponential_value, DEFINITE, 2, "INDI", CONSTANT),
+    (definite_integrals.parts_square_exponential_value, DEFINITE, 3, "INDJ", CONSTANT),
+    (definite_integrals.parts_logarithm_reciprocal_square, DEFINITE, 3, "INDK", CONSTANT),
+    (definite_integrals.parts_linear_sine_value, DEFINITE, 3, "INDL", CONSTANT),
+    (definite_integrals.parts_linear_one_plus_cosine, DEFINITE, 3, "INDM", CONSTANT),
+    (definite_integrals.parts_arcsine_value, DEFINITE, 4, "INDN", CONSTANT),
+    (definite_integrals.substitute_cosine_value, DEFINITE, 3, "INDO", CONSTANT),
+    (definite_integrals.substitute_shifted_root_denominator, DEFINITE, 3, "INDP", CONSTANT),
+    (definite_integrals.substitute_shifted_root_product, DEFINITE, 3, "INDQ", CONSTANT),
+    (definite_integrals.substitute_logarithm_value, DEFINITE, 4, "INDR", CONSTANT),
+    (definite_integrals.substitute_square_at_endpoint, DEFINITE, 5, "INDS", CONSTANT),
+    (definite_integrals.substitute_quarter_circle, DEFINITE, 4, "INDT", CONSTANT),
+    (definite_integrals.substitute_exponential_value, DEFINITE, 3, "INDU", CONSTANT),
+    (definite_integrals.parts_linear_cosine_exam, DEFINITE, 3, "INDV", CONSTANT),
+    # #269
+    (integral_applications.parabola_and_line, DEFINITE, 3, "INDW", CONSTANT),
+    (integral_applications.two_parabolas_and_ray, DEFINITE, 4, "INDX", CONSTANT),
+    (integral_applications.inverse_square_and_line, DEFINITE, 4, "INDY", CONSTANT),
+    (integral_applications.rational_cap_and_horizontal, DEFINITE, 3, "INDZ", CONSTANT),
+    (integral_applications.exponential_and_horizontal, DEFINITE, 3, "INEA", CONSTANT),
+    (integral_applications.sine_lobe_area, DEFINITE, 4, "INEB", CONSTANT),
+    (integral_applications.meeting_root_arcs, DEFINITE, 4, "INEC", CONSTANT),
+    (integral_applications.inverse_fourth_between_levels, DEFINITE, 4, "INED", CONSTANT),
+    (integral_applications.logarithmic_arch, DEFINITE, 4, "INEE", CONSTANT),
+    (integral_applications.root_sum_with_axes, DEFINITE, 4, "INEF", CONSTANT),
+    (integral_applications.parabola_and_rational_cap, DEFINITE, 4, "INEG", CONSTANT),
+    (integral_applications.logarithm_and_two_lines, DEFINITE, 3, "INEH", CONSTANT),
+    (integral_applications.circle_between_horizontal_lines, DEFINITE, 4, "INEI", CONSTANT),
+    (integral_applications.two_exponentials_and_level, DEFINITE, 4, "INEJ", CONSTANT),
+    (integral_applications.unbounded_tangent_cotangent, DEFINITE, 5, "INEK", LIMIT),
+    (integral_applications.logarithmic_exponential_arc, DEFINITE, 5, "INEL", CONSTANT),
+    (integral_applications.parabola_arc, DEFINITE, 4, "INEM", CONSTANT),
+    (integral_applications.three_halves_power_arc, DEFINITE, 3, "INEN", CONSTANT),
+    (integral_applications.exponential_arc, DEFINITE, 5, "INEO", CONSTANT),
+    (integral_applications.reciprocal_power_arc, DEFINITE, 4, "INEP", CONSTANT),
+    (integral_applications.logarithm_cosine_arc, DEFINITE, 4, "INEQ", CONSTANT),
+    (integral_applications.spring_work, DEFINITE, 2, "INER", CONSTANT),
+    (integral_applications.horizontal_tank_work, DEFINITE, 5, "INES", CONSTANT),
+    (integral_applications.two_phase_motion, DEFINITE, 3, "INET", CONSTANT),
+    (integral_applications.approaching_particles, DEFINITE, 4, "INEU", CONSTANT),
+    (integral_applications.root_line_axis_exam, DEFINITE, 4, "INEV", CONSTANT),
+    (integral_applications.sideways_parabola_line_exam, DEFINITE, 3, "INEW", CONSTANT),
+    (integral_applications.two_parabolas_exam, DEFINITE, 3, "INEX", CONSTANT),
+    (integral_applications.parabola_tangent_axes_exam, DEFINITE, 5, "INEY", CONSTANT),
+    (integral_applications.cubic_tangent_axis_exam, DEFINITE, 4, "INEZ", CONSTANT),
+    (integral_applications.logarithm_and_square_exam, DEFINITE, 4, "INFA", CONSTANT),
+    # #270
+    (revolution_applications.parabolic_disc_volume, DEFINITE, 3, "INFB", CONSTANT),
+    (revolution_applications.reciprocal_root_shell_volume, DEFINITE, 3, "INFC", CONSTANT),
+    (revolution_applications.tangent_disc_volume, DEFINITE, 3, "INFD", CONSTANT),
+    (revolution_applications.power_root_shell_volume, DEFINITE, 4, "INFE", CONSTANT),
+    (revolution_applications.cubic_shell_volume, DEFINITE, 3, "INFF", CONSTANT),
+    (revolution_applications.reciprocal_shell_volume, DEFINITE, 3, "INFG", CONSTANT),
+    (revolution_applications.line_reciprocal_washers, DEFINITE, 4, "INFH", CONSTANT),
+    (revolution_applications.sine_cosine_disc_volume, DEFINITE, 4, "INFI", CONSTANT),
+    (revolution_applications.sine_shifted_horizontal_volume, DEFINITE, 4, "INFJ", CONSTANT),
+    (revolution_applications.parabola_shifted_vertical_volume, DEFINITE, 4, "INFK", CONSTANT),
+    (revolution_applications.cosine_surface, DEFINITE, 4, "INFL", CONSTANT),
+    (revolution_applications.square_root_surface, DEFINITE, 4, "INFM", CONSTANT),
+    (revolution_applications.logarithm_vertical_surface, DEFINITE, 4, "INFN", CONSTANT),
+    (revolution_applications.corner_vertical_surface, DEFINITE, 3, "INFO", CONSTANT),
+    (revolution_applications.sphere_belt_surface, DEFINITE, 3, "INFP", CONSTANT),
+    (revolution_applications.root_cubic_surface, DEFINITE, 5, "INFQ", CONSTANT),
+    (revolution_applications.line_vertical_surface, DEFINITE, 3, "INFR", CONSTANT),
+    (revolution_applications.parabola_vertical_surface, DEFINITE, 4, "INFS", CONSTANT),
+    (revolution_applications.sine_line_volume_exam, DEFINITE, 4, "INFT", CONSTANT),
+    (revolution_applications.sine_volume_and_surface_exam, DEFINITE, 5, "INFU", VOLUME_SURFACE),
+    (revolution_applications.torus_shell_volume, DEFINITE, 5, "INFV", CONSTANT),
+    # #271
+    (improper_integrals.rational_tail_definition, IMPROPER, 2, "IPAA", IMPROPER_VALUE),
+    (improper_integrals.root_quotient_divergence, IMPROPER, 2, "IPAB", IMPROPER_VALUE),
+    (improper_integrals.oscillatory_linear_tail, IMPROPER, 4, "IPAC", IMPROPER_VALUE),
+    (improper_integrals.exponential_root_tail, IMPROPER, 3, "IPAD", IMPROPER_VALUE),
+    (improper_integrals.two_sided_quadratic_tail, IMPROPER, 3, "IPAE", IMPROPER_TAILS),
+    (improper_integrals.two_sided_exponential_linear, IMPROPER, 4, "IPAF", IMPROPER_TAILS),
+    (improper_integrals.root_product_comparison, IMPROPER, 3, "IPAG", IMPROPER_CONVERGENCE),
+    (
+        improper_integrals.squared_root_denominator_comparison,
+        IMPROPER,
+        3,
+        "IPAH",
+        IMPROPER_CONVERGENCE,
+    ),
+    (improper_integrals.polynomial_quotient_comparison, IMPROPER, 3, "IPAI", IMPROPER_CONVERGENCE),
+    (improper_integrals.exponential_ratio_comparison, IMPROPER, 3, "IPAJ", IMPROPER_CONVERGENCE),
+    (
+        improper_integrals.oscillatory_numerator_comparison,
+        IMPROPER,
+        3,
+        "IPAK",
+        IMPROPER_CONVERGENCE,
+    ),
+    (
+        improper_integrals.bounded_numerator_root_comparison,
+        IMPROPER,
+        3,
+        "IPAL",
+        IMPROPER_CONVERGENCE,
+    ),
+    (improper_integrals.root_linear_limit_comparison, IMPROPER, 4, "IPAM", IMPROPER_CONVERGENCE),
+    (
+        improper_integrals.quintic_square_root_limit_comparison,
+        IMPROPER,
+        4,
+        "IPAN",
+        IMPROPER_CONVERGENCE,
+    ),
+    (
+        improper_integrals.exponential_reciprocal_limit_comparison,
+        IMPROPER,
+        4,
+        "IPAO",
+        IMPROPER_CONVERGENCE,
+    ),
+    (improper_integrals.squared_sine_limit_comparison, IMPROPER, 4, "IPAP", IMPROPER_CONVERGENCE),
+    (
+        improper_integrals.cubic_oscillatory_limit_comparison,
+        IMPROPER,
+        4,
+        "IPAQ",
+        IMPROPER_CONVERGENCE,
+    ),
+    (improper_integrals.unbounded_quadratic_area, IMPROPER, 4, "IPAR", CONSTANT),
+    (improper_integrals.unbounded_exponential_volume, IMPROPER, 4, "IPAS", CONSTANT),
+    (improper_integrals.surface_finitude_comparison, IMPROPER, 5, "IPAT", SURFACE_FINITUDE),
+    # #272
+    (series_comparisons.geometric_partial_sums, SERIES, 2, "SRAA", PARTIAL_ONE),
+    (series_comparisons.rational_telescoping_partial_sums, SERIES, 3, "SRAB", PARTIAL_TWO),
+    (series_comparisons.factorial_telescoping_partial_sums, SERIES, 3, "SRAC", PARTIAL_TWO),
+    (series_comparisons.root_telescoping_partial_sums, SERIES, 3, "SRAD", PARTIAL_TWO),
+    (series_comparisons.quadratic_integral_test, SERIES, 3, "SRAE", IMPROPER_CONVERGENCE),
+    (series_comparisons.harmonic_quotient_integral_test, SERIES, 3, "SRAF", IMPROPER_CONVERGENCE),
+    (series_comparisons.logarithmic_integral_test, SERIES, 3, "SRAG", IMPROPER_CONVERGENCE),
+    (series_comparisons.root_integral_test, SERIES, 3, "SRAH", IMPROPER_CONVERGENCE),
+    (series_comparisons.exponential_integral_test, SERIES, 3, "SRAI", IMPROPER_CONVERGENCE),
+    (series_comparisons.polynomial_direct_comparison, SERIES, 3, "SRAJ", IMPROPER_CONVERGENCE),
+    (series_comparisons.root_direct_comparison, SERIES, 3, "SRAK", IMPROPER_CONVERGENCE),
+    (series_comparisons.sine_direct_comparison, SERIES, 3, "SRAL", IMPROPER_CONVERGENCE),
+    (series_comparisons.exponential_direct_comparison, SERIES, 3, "SRAM", IMPROPER_CONVERGENCE),
+    (
+        series_comparisons.harmonic_exponential_direct_comparison,
+        SERIES,
+        3,
+        "SRAN",
+        IMPROPER_CONVERGENCE,
+    ),
+    (series_comparisons.root_cubic_limit_comparison, SERIES, 4, "SRAO", IMPROPER_CONVERGENCE),
+    (series_comparisons.rational_square_limit_comparison, SERIES, 4, "SRAP", IMPROPER_CONVERGENCE),
+    (series_comparisons.exponential_limit_comparison, SERIES, 4, "SRAQ", IMPROPER_CONVERGENCE),
+    (
+        series_comparisons.growing_geometric_limit_comparison,
+        SERIES,
+        4,
+        "SRAR",
+        IMPROPER_CONVERGENCE,
+    ),
+    (series_comparisons.sine_quotient_limit_comparison, SERIES, 4, "SRAS", IMPROPER_CONVERGENCE),
+    (series_comparisons.factorial_limit_comparison, SERIES, 4, "SRAT", IMPROPER_CONVERGENCE),
+    # #273
+    (series_ratio_root.exponential_over_multiple_factorial, SERIES, 4, "SRAU", SERIES_TEST),
+    (series_ratio_root.exponential_over_polynomial, SERIES, 4, "SRAV", SERIES_TEST),
+    (series_ratio_root.factorial_over_self_power, SERIES, 4, "SRAW", SERIES_TEST),
+    (series_ratio_root.self_power_over_factorial, SERIES, 4, "SRAX", SERIES_TEST),
+    (series_ratio_root.central_binomial_ratio, SERIES, 5, "SRAY", SERIES_TEST),
+    (series_ratio_root.quadratic_self_power_root, SERIES, 5, "SRAZ", SERIES_TEST),
+    (series_ratio_root.exponential_quotient_root, SERIES, 4, "SRBA", SERIES_TEST),
+    (series_ratio_root.power_quotient_root, SERIES, 4, "SRBB", SERIES_TEST),
+    (series_ratio_root.arctangent_power_root, SERIES, 4, "SRBC", SERIES_TEST),
+    (series_ratio_root.polynomial_exponential_sequence_limit, SERIES, 5, "SRBD", LIMIT),
+    (series_ratio_root.self_power_squared_factorial_limit, SERIES, 5, "SRBE", LIMIT),
+    (series_ratio_root.self_power_factorial_infinite_limit, SERIES, 5, "SRBF", LIMIT),
+    (series_ratio_root.balanced_factorial_sequence_limit, SERIES, 5, "SRBG", LIMIT),
+    # #274
+    (alternating_power_series.root_difference_leibniz, SERIES, 3, "SRBH", IMPROPER_CONVERGENCE),
+    (
+        alternating_power_series.exponential_quotient_leibniz,
+        SERIES,
+        3,
+        "SRBI",
+        IMPROPER_CONVERGENCE,
+    ),
+    (alternating_power_series.sine_reciprocal_leibniz, SERIES, 3, "SRBJ", IMPROPER_CONVERGENCE),
+    (alternating_power_series.factorial_leibniz, SERIES, 3, "SRBK", IMPROPER_CONVERGENCE),
+    (
+        alternating_power_series.alternating_geometric_absolute,
+        SERIES,
+        4,
+        "SRBL",
+        ABSOLUTE_CLASSIFICATION,
+    ),
+    (
+        alternating_power_series.alternating_harmonic_conditional,
+        SERIES,
+        4,
+        "SRBM",
+        ABSOLUTE_CLASSIFICATION,
+    ),
+    (
+        alternating_power_series.negative_rational_power_classification,
+        SERIES,
+        4,
+        "SRBN",
+        ABSOLUTE_CLASSIFICATION,
+    ),
+    (
+        alternating_power_series.alternating_exponential_conditional,
+        SERIES,
+        4,
+        "SRBO",
+        ABSOLUTE_CLASSIFICATION,
+    ),
+    (alternating_power_series.damped_sine_absolute, SERIES, 4, "SRBP", ABSOLUTE_CLASSIFICATION),
+    (alternating_power_series.logarithmic_power_domain, SERIES, 5, "SRBQ", REAL_SET),
+    (alternating_power_series.geometric_power_domain, SERIES, 5, "SRBR", REAL_SET),
+    (alternating_power_series.factorial_power_domain, SERIES, 5, "SRBS", REAL_SET),
+    (alternating_power_series.exponential_difference_power_domain, SERIES, 5, "SRBT", REAL_SET),
+    (alternating_power_series.even_power_domain, SERIES, 5, "SRBU", REAL_SET),
+    # #275
+    (maclaurin_expansions.geometric_maclaurin, SERIES, 3, "SRBV", SERIES_COEFFICIENTS),
+    (maclaurin_expansions.sine_maclaurin, SERIES, 3, "SRBW", SERIES_COEFFICIENTS),
+    (maclaurin_expansions.polynomial_exponential_maclaurin, SERIES, 3, "SRBX", SERIES_COEFFICIENTS),
+    (maclaurin_expansions.odd_rational_maclaurin, SERIES, 3, "SRBY", SERIES_COEFFICIENTS),
+    (maclaurin_expansions.hyperbolic_cosine_maclaurin, SERIES, 3, "SRBZ", SERIES_COEFFICIENTS),
+    (maclaurin_expansions.sine_square_maclaurin, SERIES, 4, "SRCA", SERIES_COEFFICIENTS),
+    (maclaurin_expansions.cosine_high_derivative, SERIES, 4, "SRCB", CONSTANT),
+    (maclaurin_expansions.exponential_high_derivative, SERIES, 4, "SRCC", CONSTANT),
+    (maclaurin_expansions.rational_high_derivative, SERIES, 4, "SRCD", CONSTANT),
+    (maclaurin_expansions.sine_square_high_derivative, SERIES, 4, "SRCE", CONSTANT),
+    (
+        maclaurin_expansions.differentiated_geometric_maclaurin,
+        SERIES,
+        4,
+        "SRCF",
+        SERIES_COEFFICIENTS,
+    ),
+    (
+        maclaurin_expansions.differentiated_exponential_maclaurin,
+        SERIES,
+        4,
+        "SRCG",
+        SERIES_COEFFICIENTS,
+    ),
+    (maclaurin_expansions.integrated_logarithm_maclaurin, SERIES, 4, "SRCH", SERIES_COEFFICIENTS),
+    (maclaurin_expansions.integrated_arctangent_maclaurin, SERIES, 4, "SRCI", SERIES_COEFFICIENTS),
+    # #276
+    (series_identities.weighted_geometric_identity, SERIES, 4, "SRCJ", LINE),
+    (series_identities.quadratic_geometric_identity, SERIES, 4, "SRCK", LINE),
+    (series_identities.corrected_factorial_identity, SERIES, 4, "SRCL", LINE),
+    (series_identities.logarithmic_shift_sum, SERIES, 4, "SRCM", CONSTANT),
+    (series_identities.linear_weighted_sum, SERIES, 4, "SRCN", CONSTANT),
+    (series_identities.quadratic_weighted_sum, SERIES, 4, "SRCO", CONSTANT),
+    (series_identities.weighted_logarithmic_sum, SERIES, 4, "SRCP", CONSTANT),
+    # #277
+    (multivariable_domains.logarithmic_sine_region, MULTIVARIABLE, 1, "MVAA", NATURAL_REGION),
+    (multivariable_domains.quotient_square_root_region, MULTIVARIABLE, 2, "MVAB", NATURAL_REGION),
+    (multivariable_domains.denominator_root_region, MULTIVARIABLE, 1, "MVAC", NATURAL_REGION),
+    (multivariable_domains.logarithmic_annulus_region, MULTIVARIABLE, 2, "MVAD", NATURAL_REGION),
+    (multivariable_domains.independent_root_region, MULTIVARIABLE, 2, "MVAE", NATURAL_REGION),
+    (multivariable_domains.arccosine_shell_region, MULTIVARIABLE, 3, "MVAF", NATURAL_REGION),
+    (multivariable_domains.quartic_sine_limit, MULTIVARIABLE, 3, "MVAG", LIMIT),
+    (multivariable_domains.quadratic_cosine_limit, MULTIVARIABLE, 4, "MVAH", LIMIT),
+    (multivariable_domains.cubic_over_quadratic_limit, MULTIVARIABLE, 3, "MVAI", LIMIT),
+    (multivariable_domains.bounded_oscillation_limit, MULTIVARIABLE, 3, "MVAJ", LIMIT),
+    (multivariable_partials.quotient_at_point, "partial-derivatives", 1, "MVAK", PARTIAL_VALUES),
+    (multivariable_partials.radical_at_origin, "partial-derivatives", 2, "MVAL", PARTIAL_VALUES),
+    (multivariable_partials.rational_partials, "partial-derivatives", 1, "MVAM", FIRST_PARTIALS),
+    (
+        multivariable_partials.arctangent_quotient_partials,
+        "partial-derivatives",
+        2,
+        "MVAN",
+        FIRST_PARTIALS,
+    ),
+    (
+        multivariable_partials.exponential_cosine_partials,
+        "partial-derivatives",
+        2,
+        "MVAO",
+        FIRST_PARTIALS,
+    ),
+    (
+        multivariable_partials.radial_product_partials,
+        "partial-derivatives",
+        2,
+        "MVAP",
+        FIRST_PARTIALS,
+    ),
+    (
+        multivariable_partials.logarithmic_radial_partials,
+        "partial-derivatives",
+        3,
+        "MVAQ",
+        FIRST_PARTIALS,
+    ),
+    (
+        multivariable_partials.three_variable_polynomial_quotient,
+        "partial-derivatives",
+        2,
+        "MVAR",
+        THREE_PARTIALS,
+    ),
+    (
+        multivariable_partials.three_variable_radial_quotient,
+        "partial-derivatives",
+        2,
+        "MVAS",
+        THREE_PARTIALS,
+    ),
+    (
+        multivariable_partials.nested_trigonometric_x,
+        "partial-derivatives",
+        3,
+        "MVAT",
+        PARTIAL_XYZ,
+    ),
+    (
+        multivariable_partials.nested_radical_x,
+        "partial-derivatives",
+        4,
+        "MVAU",
+        PARTIAL_XYZ,
+    ),
+    (
+        multivariable_partials.logarithmic_euler_partials,
+        "partial-derivatives",
+        3,
+        "MVAV",
+        EULER_PARTIALS,
+    ),
+    (
+        multivariable_partials.homogeneous_euler_partials,
+        "partial-derivatives",
+        3,
+        "MVAW",
+        EULER_PARTIALS,
+    ),
+    (multivariable_partials.nested_trigonometric_y, "partial-derivatives", 3, "MVAX", PARTIAL_XYZ),
+    (multivariable_partials.nested_trigonometric_z, "partial-derivatives", 4, "MVAY", PARTIAL_XYZ),
+    (multivariable_partials.nested_radical_y, "partial-derivatives", 4, "MVAZ", PARTIAL_XYZ),
+    (multivariable_partials.nested_radical_z, "partial-derivatives", 4, "MVBA", PARTIAL_XYZ),
+    (tangent_linear.radical_plane, MULTIVARIABLE, 2, "MVBB", TANGENT_PLANE),
+    (tangent_linear.exponential_plane, MULTIVARIABLE, 2, "MVBC", TANGENT_PLANE),
+    (tangent_linear.inverse_trig_plane, MULTIVARIABLE, 3, "MVBD", TANGENT_PLANE),
+    (tangent_linear.vertical_axis_plane, MULTIVARIABLE, 3, "MVBE", TANGENT_PLANE),
+    (tangent_linear.horizontal_axis_plane, MULTIVARIABLE, 3, "MVBF", TANGENT_PLANE),
+    (tangent_linear.parallel_plane_contact, MULTIVARIABLE, 4, "MVBG", TANGENT_CONTACT),
+    (tangent_linear.perpendicular_line_plane, MULTIVARIABLE, 4, "MVBH", TANGENT_PLANE),
+    (tangent_linear.power_product_approximation, MULTIVARIABLE, 2, "MVBI", LINEAR_ESTIMATE),
+    (tangent_linear.cube_norm_approximation, MULTIVARIABLE, 3, "MVBJ", LINEAR_ESTIMATE),
+    (tangent_linear.exponential_product_approximation, MULTIVARIABLE, 2, "MVBK", LINEAR_ESTIMATE),
+    (tangent_linear.cosine_quotient_approximation, MULTIVARIABLE, 2, "MVBL", LINEAR_ESTIMATE),
+    (tangent_linear.cylinder_measurement_error, MULTIVARIABLE, 3, "MVBM", CONSTANT),
+    (tangent_linear.diagonal_measurement_change, MULTIVARIABLE, 3, "MVBN", CONSTANT),
+    (tangent_linear.box_relative_error, MULTIVARIABLE, 3, "MVBO", CONSTANT),
+    (gradient_directional.norm_at_origin, MULTIVARIABLE, 3, "MVBP", DIRECTIONAL_QUOTIENTS),
+    (gradient_directional.cube_root_at_boundary, MULTIVARIABLE, 4, "MVBQ", DIRECTIONAL_QUOTIENTS),
+    (gradient_directional.cubic_polynomial_gradient, MULTIVARIABLE, 1, "MVBR", GRADIENT_XY),
+    (gradient_directional.nested_log_gradient, MULTIVARIABLE, 2, "MVBS", GRADIENT_XY),
+    (gradient_directional.variable_power_gradient, MULTIVARIABLE, 2, "MVBT", GRADIENT_XY),
+    (gradient_directional.radical_log_gradient, MULTIVARIABLE, 2, "MVBU", GRADIENT_XYZ),
+    (gradient_directional.sinusoidal_quotient_gradient, MULTIVARIABLE, 2, "MVBV", GRADIENT_XYZ),
+    (gradient_directional.nested_root_gradient, MULTIVARIABLE, 3, "MVBW", GRADIENT_XYZ),
+    (gradient_directional.quadratic_directional, MULTIVARIABLE, 2, "MVBX", CONSTANT),
+    (gradient_directional.rational_directional, MULTIVARIABLE, 2, "MVBY", CONSTANT),
+    (gradient_directional.exponential_directional, MULTIVARIABLE, 3, "MVBZ", CONSTANT),
+    (
+        gradient_directional.logarithmic_extreme_directions,
+        MULTIVARIABLE,
+        4,
+        "MVCA",
+        EXTREME_DIRECTIONS,
+    ),
+    (gradient_directional.exponential_zero_directions, MULTIVARIABLE, 3, "MVCB", ZERO_DIRECTION),
+    (second_partials.radial_cosine_hessian, "partial-derivatives", 3, "MVCC", HESSIAN_2D),
+    (second_partials.exponential_hessian, "partial-derivatives", 3, "MVCD", HESSIAN_2D),
+    (second_partials.rational_hessian, "partial-derivatives", 2, "MVCE", HESSIAN_2D),
+    (second_partials.logarithmic_hessian, "partial-derivatives", 2, "MVCF", HESSIAN_2D),
+    (second_partials.polynomial_hessian, "partial-derivatives", 2, "MVCG", HESSIAN_3D),
+    (second_partials.nested_log_hessian_x, "partial-derivatives", 3, "MVCH", HESSIAN_X),
+    (second_partials.nested_log_hessian_y, "partial-derivatives", 4, "MVCI", HESSIAN_Y),
+    (second_partials.nested_log_hessian_z, "partial-derivatives", 4, "MVCJ", HESSIAN_Z),
+    (second_partials.arctangent_laplacian, "partial-derivatives", 4, "MVCK", LAPLACIAN),
+    (second_partials.radial_log_laplacian, "partial-derivatives", 3, "MVCL", LAPLACIAN),
+    (second_partials.trigonometric_laplacian, "partial-derivatives", 3, "MVCM", LAPLACIAN),
+    (multivariable_extrema.symmetric_cubic_extrema, MULTIVARIABLE, 5, "MVCN", MV_EXTREMA),
+    (multivariable_extrema.reciprocal_exponential_extremum, MULTIVARIABLE, 4, "MVCO", MV_MINIMUM),
+    (multivariable_extrema.positive_cubic_product_extremum, MULTIVARIABLE, 4, "MVCP", MV_MAXIMUM),
+    (multivariable_extrema.square_root_extremum, MULTIVARIABLE, 4, "MVCQ", MV_MAXIMUM),
+    (multivariable_extrema.coupled_cubic_extremum, MULTIVARIABLE, 4, "MVCR", MV_MINIMUM),
+    (multivariable_extrema.positive_rational_extremum, MULTIVARIABLE, 4, "MVCS", MV_MINIMUM),
+    (multivariable_extrema.logarithmic_saddle, MULTIVARIABLE, 4, "MVCT", MV_STATIONARY),
+    (multivariable_extrema.exponential_sum_extremum, MULTIVARIABLE, 4, "MVCU", MV_MINIMUM),
+    (multivariable_extrema.exponential_product_saddle, MULTIVARIABLE, 4, "MVCV", MV_STATIONARY),
+    (multivariable_extrema.linear_constraint_minimum, MULTIVARIABLE, 3, "MVCW", MV_MINIMUM),
+    (multivariable_extrema.parabolic_constraint_extrema, MULTIVARIABLE, 4, "MVCX", MV_PARABOLA),
+    (multivariable_extrema.logarithmic_constraint_maximum, MULTIVARIABLE, 4, "MVCY", MV_MAXIMUM),
+    (multivariable_extrema.circular_constraint_extrema, MULTIVARIABLE, 4, "MVCZ", MV_EXTREMA),
+    (global_extrema.parabolic_cap_extrema, MULTIVARIABLE, 4, "MVDA", MV_TWO_MAXIMA),
+    (global_extrema.radical_lens_extrema, MULTIVARIABLE, 4, "MVDB", MV_TWO_MINIMA),
+    (global_extrema.radical_strip_extrema, MULTIVARIABLE, 3, "MVDC", MV_EXTREMA),
+    (global_extrema.triangular_region_extrema, MULTIVARIABLE, 3, "MVDD", MV_EXTREMA),
+    (global_extrema.quartic_disk_extrema, MULTIVARIABLE, 3, "MVDE", MV_EXTREMA),
+    (global_extrema.quadrant_decay_extrema, MULTIVARIABLE, 3, "MVDF", MV_EXTREMA),
+    (global_extrema.triangle_least_squares, MULTIVARIABLE, 2, "MVDG", MV_MINIMUM),
+    (global_extrema.skew_line_distance, MULTIVARIABLE, 3, "MVDH", CONSTANT),
+    (applied_optimization.open_tank, MULTIVARIABLE, 3, "MVDI", OPTIMUM_DIMENSIONS),
+    (applied_optimization.weighted_warehouse, MULTIVARIABLE, 4, "MVDJ", OPTIMUM_DIMENSIONS),
+    (applied_optimization.discrete_profit, MULTIVARIABLE, 3, "MVDK", OPTIMUM_PROFIT),
+    (applied_optimization.closest_parabola, MULTIVARIABLE, 4, "MVDL", CLOSEST_POINT),
+    (double_integrals.polynomial_rectangle, "double-integrals", 1, "DIAA", CONSTANT),
+    (double_integrals.reciprocal_rectangle, "double-integrals", 1, "DIAB", CONSTANT),
+    (double_integrals.cubic_denominator_rectangle, "double-integrals", 2, "DIAC", CONSTANT),
+    (double_integrals.sine_rectangle, "double-integrals", 3, "DIAD", CONSTANT),
+    (double_integrals.separable_exponential_rectangle, "double-integrals", 2, "DIAE", CONSTANT),
+    (double_integrals.linear_exponential_rectangle, "double-integrals", 2, "DIAF", CONSTANT),
+    (double_integrals.power_strip_integral, "double-integrals", 2, "DIAG", CONSTANT),
+    (double_integrals.radical_wedge_integral, "double-integrals", 3, "DIAH", CONSTANT),
+    (double_integrals.semicircle_integral, "double-integrals", 3, "DIAI", CONSTANT),
+    (double_integrals.radical_triangle_integral, "double-integrals", 2, "DIAJ", CONSTANT),
+    (double_integrals.absolute_value_reversal, "double-integrals", 4, "DIAK", Y_BOUNDS_THREE),
+    (double_integrals.circular_strip_reversal, "double-integrals", 4, "DIAL", Y_BOUNDS_TWO),
+    (double_integrals.semicircle_split_reversal, "double-integrals", 5, "DIAM", Y_BOUNDS_THREE),
+    (double_integrals.two_parabola_reversal, "double-integrals", 5, "DIAN", X_BOUNDS_THREE),
+    (double_integrals.trigonometric_reversal, "double-integrals", 4, "DIAO", Y_BOUNDS_TWO),
+    (double_integrals.logarithmic_reversal, "double-integrals", 3, "DIAP", Y_BOUNDS),
+    (double_integrals.parabola_line_integral, "double-integrals", 3, "DIAQ", CONSTANT),
+    (double_integrals.negative_curves_integral, "double-integrals", 3, "DIAR", CONSTANT),
+    (double_integrals.exponential_radical_integral, "double-integrals", 3, "DIAS", CONSTANT),
+    (double_integrals.shifted_parabola_integral, "double-integrals", 3, "DIAT", CONSTANT),
+    (double_integrals.exponential_triangle_integral, "double-integrals", 4, "DIAU", CONSTANT),
+    (double_integrals.angular_strip_integral, "double-integrals", 3, "DIAV", CONSTANT),
+    (double_integrals.gaussian_wedge_integral, "double-integrals", 3, "DIAW", CONSTANT),
+    (double_integrals.sinusoidal_strip_integral, "double-integrals", 4, "DIAX", CONSTANT),
+    (polar_integrals.sector_xy, "double-integrals", 3, "DIAY", CONSTANT),
+    (polar_integrals.half_annulus_xy_squared, "double-integrals", 3, "DIAZ", CONSTANT),
+    (polar_integrals.quadrant_radial_exponential, "double-integrals", 4, "DIBA", CONSTANT),
+    (polar_integrals.shifted_disk_x_squared, "double-integrals", 4, "DIBB", CONSTANT),
+    (polar_integrals.radial_between_disks, "double-integrals", 4, "DIBC", CONSTANT),
+    (polar_integrals.lower_shifted_disk_y, "double-integrals", 3, "DIBD", CONSTANT),
+    (polar_integrals.radial_sine_disk, "double-integrals", 3, "DIBE", CONSTANT),
+    (polar_integrals.radial_log_annulus, "double-integrals", 3, "DIBF", CONSTANT),
+    (polar_integrals.parabola_triangle_area, "double-integrals", 2, "DIBG", CONSTANT),
+    (polar_integrals.nested_tangent_circles_area, "double-integrals", 3, "DIBH", CONSTANT),
+    (polar_integrals.affine_parallelogram_area, "double-integrals", 3, "DIBI", CONSTANT),
+    (polar_integrals.disk_wedge_area, "double-integrals", 3, "DIBJ", CONSTANT),
+    (polar_integrals.sphere_paraboloid_volume, "double-integrals", 4, "DIBK", CONSTANT),
+    (polar_integrals.spherical_cap_volume, "double-integrals", 3, "DIBL", CONSTANT),
+    (polar_integrals.shifted_disk_paraboloid_volume, "double-integrals", 3, "DIBM", CONSTANT),
+    (polar_integrals.paraboloid_slab_volume, "double-integrals", 3, "DIBN", CONSTANT),
+    (polar_integrals.disk_product_volume, "double-integrals", 4, "DIBO", CONSTANT),
+    (polar_integrals.plane_paraboloid_volume, "double-integrals", 4, "DIBP", CONSTANT),
+    (surface_centroid_inertia.paraboloid_patch, "double-integrals", 3, "DIBQ", CONSTANT),
+    (
+        surface_centroid_inertia.tangent_disk_spherical_patch,
+        "double-integrals",
+        4,
+        "DIBR",
+        CONSTANT,
+    ),
+    (surface_centroid_inertia.conical_patch, "double-integrals", 3, "DIBS", CONSTANT),
+    (surface_centroid_inertia.spherical_paraboloid_patch, "double-integrals", 4, "DIBT", CONSTANT),
+    (surface_centroid_inertia.parabolic_segment_centroid, "double-integrals", 3, "DIBU", CENTROID),
+    (surface_centroid_inertia.sine_square_centroid, "double-integrals", 3, "DIBV", CENTROID),
+    (
+        surface_centroid_inertia.exponential_bound_centroid,
+        "double-integrals",
+        1,
+        "DIBW",
+        CENTROID,
+    ),
+    (surface_centroid_inertia.isosceles_triangle_centroid, "double-integrals", 2, "DIBX", CENTROID),
+    (
+        surface_centroid_inertia.semicircle_triangle_centroid,
+        "double-integrals",
+        4,
+        "DIBY",
+        CENTROID,
+    ),
+    (surface_centroid_inertia.semicircle_cutout_centroid, "double-integrals", 4, "DIBZ", CENTROID),
+    (surface_centroid_inertia.triangle_base_inertia, "double-integrals", 3, "DICA", INERTIA),
+    (surface_centroid_inertia.parabolic_segment_inertia, "double-integrals", 3, "DICB", INERTIA),
+    (surface_centroid_inertia.square_diagonal_inertia, "double-integrals", 3, "DICC", INERTIA),
+    (surface_centroid_inertia.quadrant_symmetry_inertia, "double-integrals", 4, "DICD", INERTIA),
+    (surface_centroid_inertia.disk_center_inertia, "double-integrals", 2, "DICE", INERTIA),
+    (surface_centroid_inertia.ellipse_axes_inertia, "double-integrals", 4, "DICF", ELLIPSE_INERTIA),
+    (separable_odes.two_measurements_decay, "differential-equations", 2, "ODAA", DECAY_FIT),
+    (separable_odes.half_life_mass, "differential-equations", 2, "ODAB", HALF_LIFE),
+    (separable_odes.half_life_percentages, "differential-equations", 2, "ODAC", DECAY_PERCENT),
+    (separable_odes.circle_separable_family, "differential-equations", 3, "ODAD", ODE_GENERAL),
+    (separable_odes.vanishing_factor_family, "differential-equations", 5, "ODAE", ODE_JUNCTION),
+    (separable_odes.product_invariant_family, "differential-equations", 4, "ODAF", ODE_GENERAL),
+    (separable_odes.arcsine_plateau_family, "differential-equations", 5, "ODAG", ODE_GENERAL),
+    (separable_odes.euler_separable_family, "differential-equations", 3, "ODAH", ODE_GENERAL),
+    (separable_odes.exponential_separable_family, "differential-equations", 3, "ODAI", ODE_GENERAL),
+    (separable_odes.logarithm_sine_ivp, "differential-equations", 4, "ODAJ", ODE_IVP),
+    (separable_odes.square_root_waiting_ivp, "differential-equations", 5, "ODAK", ODE_WAITING),
+    (separable_odes.logarithm_implicit_ivp, "differential-equations", 4, "ODAL", ODE_IMPLICIT_IVP),
+    (separable_odes.cosine_implicit_ivp, "differential-equations", 4, "ODAM", ODE_IMPLICIT_IVP),
+    (separable_odes.reciprocal_pole_ivp, "differential-equations", 4, "ODAN", ODE_IVP),
+    (separable_odes.exponential_log_ivp, "differential-equations", 3, "ODAO", ODE_IVP),
+    (linear_odes.sinusoidal_forcing_family, "differential-equations", 3, "ODAP", ODE_LINEAR),
+    (linear_odes.gaussian_forcing_family, "differential-equations", 3, "ODAQ", ODE_LINEAR),
+    (linear_odes.cosine_euler_family, "differential-equations", 4, "ODAR", ODE_LINEAR),
+    (linear_odes.power_euler_family, "differential-equations", 4, "ODAS", ODE_LINEAR),
+    (linear_odes.exponential_singular_family, "differential-equations", 4, "ODAT", ODE_LINEAR),
+    (linear_odes.shifted_singular_family, "differential-equations", 5, "ODAU", ODE_LINEAR),
+    (linear_odes.constant_forcing_ivp, "differential-equations", 2, "ODAV", ODE_IVP),
+    (linear_odes.sinusoidal_coefficient_ivp, "differential-equations", 3, "ODAW", ODE_IVP),
+    (linear_odes.rational_forcing_ivp, "differential-equations", 4, "ODAX", ODE_IVP),
+    (linear_odes.trigonometric_singular_ivp, "differential-equations", 4, "ODAY", ODE_IVP),
+    (linear_odes.tangent_area_family, "differential-equations", 5, "ODAZ", ODE_TANGENT),
+    (laplace_transforms.affine_definition, "differential-equations", 1, "LTAA", LAPLACE_TRANSFORM),
+    (laplace_transforms.sine_definition, "differential-equations", 2, "LTAB", LAPLACE_TRANSFORM),
+    (laplace_transforms.power_definition, "differential-equations", 2, "LTAC", LAPLACE_TRANSFORM),
+    (
+        laplace_transforms.decaying_linear_definition,
+        "differential-equations",
+        2,
+        "LTAD",
+        LAPLACE_TRANSFORM,
+    ),
+    (
+        laplace_transforms.growing_cosine_definition,
+        "differential-equations",
+        3,
+        "LTAE",
+        LAPLACE_TRANSFORM,
+    ),
+    (
+        laplace_transforms.hyperbolic_sine_definition,
+        "differential-equations",
+        3,
+        "LTAF",
+        LAPLACE_TRANSFORM,
+    ),
+    (
+        laplace_transforms.rectangular_pulse_transform,
+        "differential-equations",
+        3,
+        "LTAG",
+        LAPLACE_COMPACT,
+    ),
+    (
+        laplace_transforms.triangular_pulse_transform,
+        "differential-equations",
+        4,
+        "LTAH",
+        LAPLACE_COMPACT,
+    ),
+    (
+        laplace_transforms.ramp_to_constant_transform,
+        "differential-equations",
+        4,
+        "LTAI",
+        LAPLACE_TRANSFORM,
+    ),
+    (
+        laplace_transforms.linear_cosine_table,
+        "differential-equations",
+        2,
+        "LTAJ",
+        LAPLACE_TRANSFORM,
+    ),
+    (laplace_transforms.polynomial_table, "differential-equations", 2, "LTAK", LAPLACE_TRANSFORM),
+    (
+        laplace_transforms.shifted_affine_table,
+        "differential-equations",
+        3,
+        "LTAL",
+        LAPLACE_TRANSFORM,
+    ),
+    (laplace_transforms.sine_cosine_table, "differential-equations", 3, "LTAM", LAPLACE_TRANSFORM),
+    (
+        laplace_transforms.shifted_sine_constant_table,
+        "differential-equations",
+        3,
+        "LTAN",
+        LAPLACE_TRANSFORM,
+    ),
+    (
+        laplace_transforms.shifted_trigonometric_table,
+        "differential-equations",
+        4,
+        "LTAO",
+        LAPLACE_TRANSFORM,
+    ),
+    (inverse_laplace.inverse_simple_pole, "differential-equations", 2, "LTAP", LAPLACE_RESPONSE),
+    (
+        inverse_laplace.inverse_shifted_numerator,
+        "differential-equations",
+        3,
+        "LTAQ",
+        LAPLACE_RESPONSE,
+    ),
+    (inverse_laplace.inverse_distinct_real, "differential-equations", 3, "LTAR", LAPLACE_RESPONSE),
+    (
+        inverse_laplace.inverse_real_and_complex,
+        "differential-equations",
+        4,
+        "LTAS",
+        LAPLACE_RESPONSE,
+    ),
+    (
+        inverse_laplace.inverse_repeated_symmetric_poles,
+        "differential-equations",
+        5,
+        "LTAT",
+        LAPLACE_RESPONSE,
+    ),
+    (
+        inverse_laplace.inverse_completed_square,
+        "differential-equations",
+        3,
+        "LTAU",
+        LAPLACE_RESPONSE,
+    ),
+    (
+        inverse_laplace.laplace_constant_forcing,
+        "differential-equations",
+        3,
+        "LTAV",
+        LAPLACE_RESPONSE,
+    ),
+    (inverse_laplace.laplace_sine_forcing, "differential-equations", 3, "LTAW", LAPLACE_RESPONSE),
+    (inverse_laplace.laplace_velocity_decay, "differential-equations", 3, "LTAX", LAPLACE_RESPONSE),
+    (inverse_laplace.laplace_resonant_decay, "differential-equations", 4, "LTAY", LAPLACE_RESPONSE),
+    (
+        inverse_laplace.laplace_growing_oscillator,
+        "differential-equations",
+        5,
+        "LTAZ",
+        LAPLACE_RESPONSE,
+    ),
+    (
+        inverse_laplace.laplace_affine_acceleration,
+        "differential-equations",
+        4,
+        "LTBA",
+        LAPLACE_RESPONSE,
+    ),
+    (inverse_laplace.laplace_repeated_root, "differential-equations", 5, "LTBB", LAPLACE_RESPONSE),
+    (
+        inverse_laplace.laplace_damped_exponential_forcing,
+        "differential-equations",
+        5,
+        "LTBC",
+        LAPLACE_RESPONSE,
+    ),
 )
 
 
@@ -457,7 +1370,47 @@ class AnalysisLimits:
 
     @property
     def family(self) -> str:
-        if self.evaluate.__module__.endswith("_antiderivatives"):
+        if self.evaluate.__module__.endswith(("_laplace_transforms", "_inverse_laplace")):
+            stem = "analysis2-laplace-"
+        elif self.evaluate.__module__.endswith(("_separable_odes", "_linear_odes")):
+            stem = "analysis2-ode-"
+        elif self.evaluate.__module__.endswith(
+            ("_double_integrals", "_polar_integrals", "_surface_centroid_inertia")
+        ):
+            stem = "analysis2-double-integral-"
+        elif self.evaluate.__module__.endswith(
+            (
+                "_multivariable_domains",
+                "_multivariable_partials",
+                "_tangent_linear",
+                "_gradient_directional",
+                "_second_partials",
+                "_multivariable_extrema",
+                "_global_extrema",
+                "_applied_optimization",
+            )
+        ):
+            stem = "analysis2-multivariable-"
+        elif self.evaluate.__module__.endswith("_improper_integrals"):
+            stem = "analysis2-improper-"
+        elif self.evaluate.__module__.endswith(
+            (
+                "_series_comparisons",
+                "_series_ratio_root",
+                "_alternating_power_series",
+                "_maclaurin_expansions",
+                "_series_identities",
+            )
+        ):
+            stem = "analysis2-series-"
+        elif self.evaluate.__module__.endswith(
+            (
+                "_antiderivatives",
+                "_definite_integrals",
+                "_integral_applications",
+                "_revolution_applications",
+            )
+        ):
             stem = "analysis1-integrals-"
         elif self.topic == DERIVATIVES:
             stem = "analysis1-derivatives-"
@@ -489,7 +1442,7 @@ class AnalysisLimits:
             seed=seed, a=1 + rng.randbelow(5), b=1 + rng.randbelow(5), c=1 + rng.randbelow(5)
         )
 
-    def input_contract(self, params: LimitParams) -> InputContract:
+    def input_contract(self, params: LimitParams) -> InputContract | None:
         return self.contract
 
     def build(self, params: LimitParams) -> Task:
@@ -503,9 +1456,16 @@ class AnalysisLimits:
             self.version,
         )
 
+    def prompt_visual(self, params: LimitParams) -> dict[str, Any] | None:
+        graph = laplace_transforms.PROMPT_GRAPHS.get(self.evaluate)
+        return None if graph is None else graph(params.a, params.b, params.c)
+
     def solution_visual(self, params: LimitParams) -> dict[str, Any] | None:
         from app.engine.generators._limit_visuals import diagrams
 
+        built = build_form(self.evaluate, params.a, params.b, params.c)
+        if built.visual is not None:
+            return built.visual
         diagram = diagrams.get(self.evaluate)
         if diagram is None:
             return None

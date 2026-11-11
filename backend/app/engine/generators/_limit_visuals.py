@@ -2,9 +2,13 @@
 
 import math
 from collections.abc import Callable
+from functools import partial
 from typing import Any
 
-from app.engine.blocks.analysis_one import bisect_exp
+import sympy as sp
+
+from app.engine.blocks.analysis_one import X, bisect_exp
+from app.engine.generators import _definite_integrals as definite
 from app.engine.generators import _function_limits as forms
 from app.engine.generators import _lhopital
 from app.engine.generators._elementary_common import Built
@@ -611,6 +615,43 @@ def exponential_pole(a: int, b: int, c: int) -> dict[str, Any]:
     )
 
 
+def right_endpoint_rectangles(
+    integrand: Callable[[int, int, int], sp.Expr], a: int, b: int, c: int
+) -> dict[str, Any]:
+    f = sp.lambdify(X, integrand(a, b, c), "math")
+    paths = [path("Integrand", 0, 1, f)]
+    for index in range(5):
+        left, right = index / 5, (index + 1) / 5
+        height = f(right)
+        paths.append(
+            {
+                "label": f"Rectangle {index + 1}",
+                "points": [
+                    [left, 0],
+                    [left, height],
+                    [right, height],
+                    [right, 0],
+                    [left, 0],
+                ],
+            }
+        )
+    return plot(
+        "Right-endpoint Riemann sum",
+        "Five rectangles illustrate the sample rule from 0 to 1. The limit uses increasing n.",
+        paths,
+    )
+
+
+def quarter_circle_area(a: int, b: int, c: int) -> dict[str, Any]:
+    curve = path("Upper boundary", 0, b, lambda x: a * math.sqrt(max(0.0, b * b - x * x)))
+    return plot(
+        "Area under the quarter ellipse",
+        f"The curve runs from (0, {a * b}) to ({b}, 0). "
+        "The integral gives the area between it and the axes.",
+        [curve, {"label": "Axes of the region", "points": [[0, a * b], [0, 0], [b, 0]]}],
+    )
+
+
 diagrams: dict[Callable[[int, int, int], Built], Callable[[int, int, int], dict[str, Any]]] = {
     forms.absolute_jump: absolute_jump,
     forms.essential_exponential: essential_exponential,
@@ -646,4 +687,10 @@ diagrams: dict[Callable[[int, int, int], Built], Callable[[int, int, int], dict[
     forms.rational_oblique_pole: rational_oblique_pole,
     forms.rational_oblique_pole_left: rational_oblique_pole_left,
     _lhopital.differentiable_join: differentiable_join,
+    definite.riemann_power: partial(right_endpoint_rectangles, definite.riemann_power_function),
+    definite.riemann_cosine: partial(right_endpoint_rectangles, definite.riemann_cosine_function),
+    definite.riemann_shifted_root: partial(
+        right_endpoint_rectangles, definite.riemann_root_function
+    ),
+    definite.substitute_quarter_circle: quarter_circle_area,
 }

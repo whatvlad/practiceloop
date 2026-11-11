@@ -39,21 +39,22 @@ text and rendered reference images remain ignored local inspection artifacts.
 The repository index contains source references and paraphrased family names,
 not the original problems or answers.
 
-**Source intake reconciled on 2026-11-04; generator delivery remains pending.**
+**Source intake reconciled on 2026-11-04. Computational coverage verified locally.**
 The version-2 index enumerates 830 positional references (536 AM1, including
-84 exam questions; 294 AM2A), with 146 shared family contracts. All 27 pages
-were visually checked against their extracted text. Every reference names its
+84 exam questions, and 294 AM2A) and 146 shared family contracts. All 27 pages
+were visually checked against their extracted text. Each reference names its
 family contracts, page, method, result interaction and delivery components.
-30 references are wholly deferred to #244 and 146 combine computational and
-deferred components. Other references remain computational delivery work.
-At intake `verified_versions` stayed empty: that audit was not a generator coverage
-certificate. #235 links 102 computational references/components under 20 family
-contracts to 81 new verified bounded versions; see
-[ELEMENTARY_FUNCTIONS.md](ELEMENTARY_FUNCTIONS.md). Other delivery issues remain
-pending, and mixed derivative/asymptote/proof/sketch components retain their
-separate routes. `candidate_versions` identifies inspected, related implementations;
-`existing_coverage: partial` never certifies the complete source family.
 
+The #232 local read-back covers 799 references and 807 computational components
+across 777 registered versions, including nine extra bounded family variants.
+Every linked version has three golden seeds. All 412 golden version entries
+from the synchronized main baseline are preserved. The index records 178
+learner proof, sketch and graph components in #244, plus one open polynomial
+construction tracked there. Hosted CI, publication and deployment are pending.
+
+Intake fields such as `candidate_versions` and `existing_coverage` retain their
+historical meaning. Delivery is recorded by the exact component links in
+`verified_versions` and the corresponding `deliveries` records.
 Exam rows reuse method-family contracts while preserving all 84 source IDs.
 Combined questions retain multiple contracts instead of dropping a requested
 result. Eight exam-only contracts cover primitive initial values, differentiability
@@ -242,3 +243,14 @@ must explicitly link to the owner-accepted later stage #244.
 The [sequence and continuity delivery](ANALYSIS_LIMITS.md) documents the #236
 methods. After #257-#259 every computational #236 reference names a verified
 version in the machine-readable index.
+
+## Learner self-review (#244)
+
+Proof and sketch exercises open a parameter-specific reference through the
+existing solution reveal. The proof draft or sketch notes stay in the
+current practice card. Revealing the reference is recorded in history.
+Self-review exercises do not create automatically graded attempts.
+
+The first delivery covers AM1/7, AM1/9 and AM1/12. Sketches show the given
+graph before reveal and the transformed graph with the reference solution.
+Each transformation uses the same sampled vertices and rays as its prompt.

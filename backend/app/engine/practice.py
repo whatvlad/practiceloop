@@ -452,6 +452,42 @@ def input_projection(record: object) -> dict[str, object]:
     return {"answerInput": descriptor}
 
 
+def prompt_visual(record: object) -> dict[str, Any] | None:
+    """Build only the public diagram from the frozen draw, without constructing the task."""
+    if not is_engine_record(record):
+        return None
+    if not isinstance(record, dict) or not isinstance(record.get("code"), str):
+        raise ValueError("Invalid new-engine record")
+    code = parse_code(record["code"], _registry())
+    generator = _registry().get_code(code.prefix, code.version)
+    if generator.version != record.get("generator_version"):
+        raise ValueError("Record version differs from its code")
+    build = getattr(generator, "prompt_visual", None)
+    if not callable(build):
+        return None
+    diagram = build(generator.draw(code.seed))
+    if diagram is None:
+        return None
+    from app.visuals.plot2d import validate_plot
+
+    return validate_plot(diagram)
+
+
+def problem_projection(record: object) -> dict[str, object]:
+    """Optional public input and prompt data shared by practice, history and code lookup."""
+    fields = input_projection(record)
+    if (
+        isinstance(record, dict)
+        and is_engine_record(record)
+        and input_kind(record) == "self_review"
+    ):
+        fields["selfReview"] = True
+    diagram = prompt_visual(record)
+    if diagram is not None:
+        fields["promptVisual"] = diagram
+    return fields
+
+
 def input_contract(record: dict[str, object]) -> InputContract | None:
     """Optional plain contract from the same frozen draw, never an expected answer."""
     kind = input_kind(record)  # validates record/version/code before any helper call

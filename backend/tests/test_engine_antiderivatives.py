@@ -3,7 +3,8 @@
 import mpmath as mp
 import pytest
 import sympy as sp
-from test_engine_analysis_limits import source as computational_source
+from seed_sweep import sweep
+from test_engine_analysis_limits import source
 
 from app.engine.answers.antiderivative import AntiderivativeAnswer
 from app.engine.generators.analysis_limits import generators
@@ -11,7 +12,7 @@ from app.engine.generators.catalogue import registry
 from app.engine.rendering import render
 from app.math_input import parse_answer_input
 
-PRIMITIVES = [g for g in generators() if g.evaluate.__module__.endswith("_antiderivatives")]
+PRIMITIVES = [g for g in generators() if g.evaluate.__module__.endswith("._antiderivatives")]
 X = sp.Symbol("x", real=True)
 
 
@@ -76,18 +77,13 @@ def integrand(name, a, b, c):  # noqa: PLR0911, PLR0912
     return table[name]
 
 
-def source(answer):
-    if isinstance(answer, AntiderivativeAnswer):
-        return sp.sstr(answer.primitive).replace("**", "^").replace("E", "e") + " + C"
-    return computational_source(answer)
-
-
 @pytest.mark.parametrize("generator", PRIMITIVES, ids=lambda g: g.prefix)
 def test_thousand_seeds_differentiate_back(generator):
     name = generator.evaluate.__name__
     seen = set()
+    checked_answers = set()
     with mp.workdps(40):
-        for seed in range(1000):
+        for seed in sweep(1000):
             params = generator.draw(seed)
             triple = (params.a, params.b, params.c)
             if triple in seen:
@@ -96,19 +92,29 @@ def test_thousand_seeds_differentiate_back(generator):
             task = generator.build(params)
             answer = task.answer
             f, points = integrand(name, *triple)
-            primitive = answer.primitive if isinstance(answer, AntiderivativeAnswer) else None
-            if primitive is None:  # a fixed primitive with a stated value
+            if isinstance(answer, AntiderivativeAnswer):
+                primitive = answer.primitive
+            else:
                 primitive = answer.expected
-                point, value = (
-                    (1, sp.Rational(params.c, 3)) if name == "root_quotient_value" else (0, 0)
-                )
-                assert abs(sp.N(primitive.subs(X, point), 30) - value) < 1e-25
+                assert primitive.subs(X, 1) == sp.Rational(params.c, 3)
             F = sp.lambdify(X, primitive, "mpmath")  # noqa: N806
             for x in points:
                 assert abs(mp.diff(F, x) - f(x)) < 1e-15 * max(1, abs(f(x))), (name, triple, x)
-            kind = answer.kind
-            tree = parse_answer_input(
-                source(answer), kind, contract=getattr(answer, "contract", None)
-            )
-            assert answer.check(tree) == "correct"
+            if answer not in checked_answers:
+                tree = parse_answer_input(
+                    source(answer), answer.kind, contract=getattr(answer, "contract", None)
+                )
+                assert answer.check(tree) == "correct"
+                checked_answers.add(answer)
             render(task, registry())
+
+
+@pytest.mark.parametrize("prefix", ["INAD", "INAJ"])
+def test_restricted_trigonometric_primitive_accepts_a_different_constant(prefix):
+    generator = registry().get_code(prefix, 1)
+    answer = generator.build(generator.draw(123)).answer
+    text = source(answer)
+    assert answer.check(parse_answer_input(text + " + 7", answer.kind)) == "correct"
+    assert answer.check(parse_answer_input(text.removesuffix(" + C"), answer.kind)) == (
+        "missing_constant"
+    )

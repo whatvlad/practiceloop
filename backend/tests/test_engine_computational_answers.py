@@ -213,3 +213,21 @@ def test_old_grammars_do_not_gain_new_syntax(text):
                 parse_answer_input(text, "expression")
         else:
             assert parse_answer_input(text, "expression") == expected
+
+
+@pytest.mark.parametrize(
+    ("text", "expected"),
+    [
+        ("0", "incorrect"),
+        ("48828125-4882812/log(5)", "correct"),
+        ("48828125-9765624/log(25)", "correct"),
+    ],
+)
+def test_large_logarithmic_constants_keep_exact_equality(text, expected):
+    target = FormulaAnswer(48828125 - 4882812 / sp.log(5))
+    assert verdict(target, text) == expected
+
+
+def test_small_constant_differences_still_require_exact_equality():
+    assert verdict(FormulaAnswer(1), "1+1/(10000000*1000000)") == "incorrect"
+    assert verdict(FormulaAnswer(0), "log(25)-2*log(5)") == "correct"

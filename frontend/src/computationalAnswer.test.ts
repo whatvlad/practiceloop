@@ -28,3 +28,9 @@ it('projects only safe metadata recursively and rejects oversized or unknown sch
   expect(() => parseAnswerInput({ kind: 'category', maxBytes: 256, choices: ['__proto__', 'ok'] })).toThrow();
   expect(() => parseAnswerInput({ kind: 'tuple', maxBytes: 256, components: Array(9).fill({ kind: 'formula', maxBytes: 256 }), labels: Array(9).fill('Value') })).toThrow();
 });
+
+it('accepts the declared symbolic mass used by inertia exercises', () => {
+  const formula = parseAnswerInput({ kind: 'formula', maxBytes: 256, symbols: { m: 'positive' } }) as ComputationalInputSpec;
+  expect(analyseComputationalAnswer('m*(pi-2)/(4*pi)', formula).status).toBe('ok');
+  expect(analyseComputationalAnswer('x*m', formula).status).toBe('error');
+});

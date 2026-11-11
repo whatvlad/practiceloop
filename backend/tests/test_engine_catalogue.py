@@ -199,3 +199,14 @@ def test_catalogue_build_failure_stops_release_before_activation(tmp_path: Path)
     assert "Building verified engine catalogue" in result.stdout
     assert "Starting test192" not in result.stdout
     assert current.read_text(encoding="utf-8") == "previous release"
+
+
+def test_analysis_pool_includes_each_family_when_the_choices_fit():
+    topic = topics()["differential-calculus"]
+    choices = topic.levels[3]
+    selected = replace(topic, levels={3: choices})
+    stored = catalogue.build({topic.slug: selected}, registry(), pool_size=len(choices))
+    assert len(stored.cells[0].problems) == len(choices)
+    assert {problem.generator_version for problem in stored.cells[0].problems} == {
+        choice.generator for choice in choices
+    }

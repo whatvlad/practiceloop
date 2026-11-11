@@ -32,6 +32,7 @@ class Built:
     answer: Answer
     steps: tuple[Step, ...]
     sets: tuple[tuple[str, Any], ...] = ()
+    visual: dict[str, Any] | None = None
 
 
 def tex(value: Any) -> str:

@@ -16,20 +16,24 @@ class DomainFormulaAnswer:
     expected: Any
     domain: Any
     kind: ClassVar[str] = "formula"
-    contract: ClassVar[InputContract] = InputContract("formula", symbols=(("x", "real"),))
+    variable: str = "x"
+
+    @property
+    def contract(self) -> InputContract:
+        return InputContract("formula", symbols=((self.variable, "real"),))
 
     def latex(self) -> str:
         return str(sp.latex(self.expected))
 
     def check(self, tree: MathNode) -> Outcome:
-        x = sp.Symbol("x", real=True)
+        x = sp.Symbol(self.variable, real=True)
         try:
             stack = [tree]
             while stack:
                 node = stack.pop()
                 if node.kind not in {"number", "symbol", "unary", "binary", "function"}:
                     return "invalid"
-                if node.kind == "symbol" and node.value not in {"x", "pi", "e"}:
+                if node.kind == "symbol" and node.value not in {self.variable, "pi", "e"}:
                     return "invalid"
                 value = build_expression(node, evaluate=True)
                 if value.has(sp.nan, sp.zoo, sp.oo, -sp.oo) or value.is_real is False:

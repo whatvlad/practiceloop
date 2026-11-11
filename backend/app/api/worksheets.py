@@ -346,6 +346,23 @@ def _worked(item: store.PrintItem, deadline: float) -> tuple[list[PrintedStep], 
         return steps, ""
 
 
+def _print_problem(item: store.PrintItem, solutions: bool, deadline: float) -> PrintedProblem:
+    steps, solution_graph = _worked(item, deadline) if solutions else ([], "")
+    prompt = (
+        None
+        if archive.is_archived(item.topic, item.generator_data)
+        else engine.prompt_visual(item.generator_data)
+    )
+    return PrintedProblem(
+        item.problem_latex,
+        item.answer_latex,
+        _space_cm(item.topic, item.difficulty),
+        steps,
+        solution_graph,
+        graph(prompt),
+    )
+
+
 @router.get("/worksheets/{worksheet_id}/pdf")
 def download_pdf(worksheet_id: UUID, user: User) -> Response:
     render_limit.check(user.id)
@@ -355,15 +372,7 @@ def download_pdf(worksheet_id: UUID, user: User) -> Response:
             raise _not_found()
         items = store.print_items(conn, user.id, worksheet_id)
     deadline = time.monotonic() + GRAPH_SECONDS
-    printed = [
-        PrintedProblem(
-            item.problem_latex,
-            item.answer_latex,
-            _space_cm(item.topic, item.difficulty),
-            *(_worked(item, deadline) if worksheet.solutions else ()),
-        )
-        for item in items
-    ]
+    printed = [_print_problem(item, worksheet.solutions, deadline) for item in items]
     groups = [
         PrintedGroup(
             label(group["topic"], group["difficulty"]),
