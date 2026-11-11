@@ -5,16 +5,21 @@ product, a cosine, an area, a volume, a distance or a coordinate. Points and
 vectors are bounded integers, so results are rationals or square roots.
 """
 
+from dataclasses import replace
+from itertools import permutations
 from typing import Any, Self
 
 import sympy as sp
 from pydantic import Field, model_validator
 
+from app.engine.answers.computational import FormulaAnswer, OrderedAnswer
 from app.engine.answers.expression import ExpressionAnswer
+from app.engine.answers.structured import FiniteSetAnswer
 from app.engine.blocks.matrices import IntMatrix, bounded, draw_entries, draw_invertible, pmatrix
 from app.engine.codes import encode
 from app.engine.models import Drawn, Step, Task, TaskGenerator
 from app.engine.prng import DeterministicRNG, draw_valid
+from app.math_input.contracts import InputContract
 
 ORDINALS = ("first", "second", "third")
 type Vector = tuple[int, int, int]
@@ -331,6 +336,396 @@ class MatrixFromEigenvectors(DiagonalPower):
 # Vectors --------------------------------------------------------------------
 
 
+def vector_expression_seed(level: int, variation: int) -> int:
+    if level not in (1, 2, 3) or not 0 <= variation < 10**12:
+        raise ValueError("Invalid vector-expression settings")
+    return (level - 1) * 10**12 + variation
+
+
+class VectorExpressionParameters(Drawn):
+    level: int = Field(ge=1, le=3)
+    u: Vector
+    v: Vector
+    w: Vector
+
+    @model_validator(mode="after")
+    def valid(self) -> Self:
+        if self.seed // 10**12 != self.level - 1:
+            raise ValueError("Vector-expression seed and level differ")
+        if any(abs(component) > 2 for vector in (self.u, self.v, self.w) for component in vector):
+            raise ValueError("Vector coordinates exceed the practice range")
+        if any(vector == (0, 0, 0) for vector in (self.u, self.v, self.w)):
+            raise ValueError("The given vectors must be nonzero")
+        u, v, w = (_m(vector) for vector in (self.u, self.v, self.w))
+        if u == v or u.cross(w) == sp.zeros(3, 1) or (2 * u - v).cross(w) == sp.zeros(3, 1):
+            raise ValueError("Vector construction is degenerate")
+        return self
+
+
+class VectorExpression:
+    """Ordered vector operations, including algebra30 72(c) and 72(g)."""
+
+    version, prefix, family, code_version = "vector-expression-v1", "VEC", "vector-expression", 1
+    params, answer, requires = VectorExpressionParameters, OrderedAnswer, ()
+    step_text = {
+        "subtract": "Subtract the vectors coordinate by coordinate.",
+        "cross": "Calculate the cross product in the indicated order.",
+        "combine": "First calculate the linear combination inside the brackets.",
+        "finish": "Subtract v from the cross product, coordinate by coordinate.",
+        "norm": "Find the length of u from its coordinates.",
+        "scale": "Multiply every coordinate of v by the length of u.",
+        "finish_scaled": "Subtract w from the scaled vector, coordinate by coordinate.",
+    }
+
+    def input_contract(self, params: VectorExpressionParameters) -> InputContract:
+        return InputContract(
+            "tuple",
+            components=(InputContract("formula"),) * 3,
+            labels=("x component", "y component", "z component"),
+        )
+
+    def draw(self, seed: int) -> VectorExpressionParameters:
+        level = seed // 10**12 + 1
+        if level not in (1, 2, 3):
+            raise ValueError("Invalid vector-expression seed")
+        rng = DeterministicRNG(seed)
+
+        def candidate() -> tuple[Vector, Vector, Vector]:
+            return tuple(tuple(rng.randbelow(5) - 2 for _ in range(3)) for _ in range(3))  # type: ignore[return-value]
+
+        def valid(vectors: tuple[Vector, Vector, Vector]) -> bool:
+            u, v, w = (_m(vector) for vector in vectors)
+            return (
+                all(vector != (0, 0, 0) for vector in vectors)
+                and u != v
+                and u.cross(w) != sp.zeros(3, 1)
+                and (2 * u - v).cross(w) != sp.zeros(3, 1)
+            )
+
+        u, v, w = draw_valid(candidate, valid)
+        return VectorExpressionParameters(seed=seed, level=level, u=u, v=v, w=w)
+
+    def build(self, params: VectorExpressionParameters) -> Task:
+        u, v, w = (_m(vector) for vector in (params.u, params.v, params.w))
+        steps: tuple[Step, ...]
+        if params.level == 1:
+            result = u - v
+            expression = "u-v"
+            givens = rf"u={_vec(u)},\ v={_vec(v)}"
+            steps = (Step("subtract", rf"u-v={_vec(result)}"),)
+        elif params.level == 2 and params.seed % 2:
+            length = u.norm()
+            scaled = length * v
+            result = scaled - w
+            expression = r"|u|v-w"
+            givens = rf"u={_vec(u)},\ v={_vec(v)},\ w={_vec(w)}"
+            steps = (
+                Step("norm", rf"|u|={sp.latex(length)}"),
+                Step("scale", rf"|u|v={_vec(scaled)}"),
+                Step("finish_scaled", rf"|u|v-w={_vec(result)}"),
+            )
+        elif params.level == 2:
+            cross = u.cross(w)
+            result = cross - v
+            expression = r"u\times w-v"
+            givens = rf"u={_vec(u)},\ v={_vec(v)},\ w={_vec(w)}"
+            steps = (
+                Step("cross", rf"u\times w={_vec(cross)}"),
+                Step("finish", rf"u\times w-v={_vec(result)}"),
+            )
+        else:
+            combined = 2 * u - v
+            result = combined.cross(w)
+            expression = r"(2u-v)\times w"
+            givens = rf"u={_vec(u)},\ v={_vec(v)},\ w={_vec(w)}"
+            steps = (
+                Step("combine", rf"2u-v={_vec(combined)}"),
+                Step("cross", rf"(2u-v)\times w={_vec(result)}"),
+            )
+        answer = OrderedAnswer(
+            tuple(FormulaAnswer(component) for component in result),
+            ("x component", "y component", "z component"),
+        )
+        return Task(
+            statement=rf"Calculate the following vector: \({expression},\quad {givens}\).",
+            steps=steps,
+            answer=answer,
+            metadata={"difficulty": params.level, "template": "vector-expression"},
+            code=encode(self.prefix, self.code_version, params.seed),
+            generator_version=self.version,
+        )
+
+
+def scalar_expression_seed(level: int, variation: int) -> int:
+    return vector_expression_seed(level, variation)
+
+
+class ScalarVectorExpression(_Generator):
+    """A length, a dot product after subtraction, or a scalar triple product."""
+
+    version, prefix, family, code_version = (
+        "vector-scalar-expression-v1",
+        "VSC",
+        "vector-scalar-expression",
+        1,
+    )
+    params, difficulty, template = VectorExpressionParameters, 1, "vector-scalar-expression"
+    step_text = {
+        "length": "Find the length of v from its coordinates.",
+        "difference": "First subtract v from w, coordinate by coordinate.",
+        "dot": "Multiply corresponding coordinates and add the products.",
+        "cross": "Calculate u cross v in the indicated order.",
+        "length_w": "Calculate the length of w.",
+        "dot_vw": "Calculate the dot product of v and w.",
+        "scalar_difference": "Subtract the dot product from the length.",
+    }
+
+    def draw(self, seed: int) -> VectorExpressionParameters:
+        return VectorExpression().draw(seed)
+
+    def build(self, params: VectorExpressionParameters) -> Task:
+        u, v, w = (_m(vector) for vector in (params.u, params.v, params.w))
+        steps: tuple[Step, ...]
+        if params.level == 1 and params.seed % 2:
+            expression = r"u\cdot w"
+            givens = rf"u={_vec(u)},\ w={_vec(w)}"
+            value = u.dot(w)
+            steps = (Step("dot", rf"u\cdot w={sp.latex(value)}"),)
+        elif params.level == 1:
+            expression = r"|v|"
+            givens = rf"v={_vec(v)}"
+            value = v.norm()
+            steps = (Step("length", rf"|v|={sp.latex(value)}"),)
+        elif params.level == 2 and params.seed % 2:
+            expression = r"|w|-v\cdot w"
+            givens = rf"v={_vec(v)},\ w={_vec(w)}"
+            length, dot = w.norm(), v.dot(w)
+            value = length - dot
+            steps = (
+                Step("length_w", rf"|w|={sp.latex(length)}"),
+                Step("dot_vw", rf"v\cdot w={sp.latex(dot)}"),
+                Step("scalar_difference", rf"|w|-v\cdot w={sp.latex(value)}"),
+            )
+        elif params.level == 2:
+            expression = r"u\cdot(w-v)"
+            givens = rf"u={_vec(u)},\ v={_vec(v)},\ w={_vec(w)}"
+            difference = w - v
+            value = u.dot(difference)
+            steps = (
+                Step("difference", rf"w-v={_vec(difference)}"),
+                Step("dot", rf"u\cdot(w-v)={sp.latex(value)}"),
+            )
+        else:
+            expression = r"(u\times v)\cdot w"
+            givens = rf"u={_vec(u)},\ v={_vec(v)},\ w={_vec(w)}"
+            cross = u.cross(v)
+            value = cross.dot(w)
+            steps = (
+                Step("cross", rf"u\times v={_vec(cross)}"),
+                Step("dot", rf"(u\times v)\cdot w={sp.latex(value)}"),
+            )
+        return replace(
+            self._task(
+                params,
+                rf"Calculate the following scalar: \({expression},\quad {givens}\).",
+                steps,
+                value,
+            ),
+            metadata={"difficulty": params.level, "template": "vector-scalar-expression"},
+        )
+
+
+def length_seed(level: int, variation: int) -> int:
+    return vector_expression_seed(level, variation)
+
+
+class VectorLengthParameters(Drawn):
+    level: int = Field(ge=1, le=3)
+    a: int = Field(ge=1, le=5)
+    b: int = Field(ge=1, le=5)
+    angle: int
+
+    @model_validator(mode="after")
+    def valid(self) -> Self:
+        if self.seed // 10**12 != self.level - 1 or self.angle not in (60, 90, 120):
+            raise ValueError("Invalid vector-length settings")
+        if self.level == 1 and self.angle != 90:
+            raise ValueError("Level one requires perpendicular vectors")
+        return self
+
+
+class VectorLengthPractice(_Generator):
+    """Lengths from perpendicularity, an angle, or the parallelogram identity."""
+
+    version, prefix, family, code_version = (
+        "vector-length-practice-v1",
+        "VLN",
+        "vector-length-practice",
+        1,
+    )
+    params, difficulty, template = VectorLengthParameters, 1, "vector-length-practice"
+    step_text = {
+        "dot": "Use the given angle to find the dot product.",
+        "identity": "Relate the sum and difference using the parallelogram identity.",
+        "squared": "Find the square of the requested length.",
+        "length": "Take the nonnegative square root to obtain the length.",
+    }
+
+    def draw(self, seed: int) -> VectorLengthParameters:
+        level = seed // 10**12 + 1
+        if level not in (1, 2, 3):
+            raise ValueError("Invalid vector-length seed")
+        rng = DeterministicRNG(seed)
+        a, b = rng.randbelow(5) + 1, rng.randbelow(5) + 1
+        angle = 90 if level == 1 else (60, 90, 120)[rng.randbelow(3)]
+        return VectorLengthParameters(seed=seed, level=level, a=a, b=b, angle=angle)
+
+    def build(self, params: VectorLengthParameters) -> Task:
+        a, b = sp.Integer(params.a), sp.Integer(params.b)
+        cosine = sp.cos(sp.pi * params.angle / 180)
+        dot = a * b * cosine
+        squared = a**2 + b**2 - 2 * dot
+        value = sp.sqrt(squared)
+        if params.level == 1:
+            statement = (
+                "Vectors u and v are perpendicular. Find the length of their difference: "
+                rf"\(|u|={a},\ |v|={b},\quad |u-v|=?\)."
+            )
+        elif params.level == 2:
+            statement = (
+                "Find the length of the difference using the given angle between u and v: "
+                rf"\(|u|={a},\ |v|={b},\ \theta={params.angle}^\circ,\quad |u-v|=?\)."
+            )
+        else:
+            sum_length = sp.sqrt(a**2 + b**2 + 2 * dot)
+            statement = (
+                "Find the length of the difference from the given lengths: "
+                rf"\(|u|={a},\ |v|={b},\ |u+v|={sp.latex(sum_length)},\quad |u-v|=?\)."
+            )
+        first = (
+            Step("identity", r"|u+v|^2+|u-v|^2=2|u|^2+2|v|^2")
+            if params.level == 3
+            else Step("dot", rf"u\cdot v=|u||v|\cos({params.angle}^\circ)={sp.latex(dot)}")
+        )
+        steps = (
+            first,
+            Step("squared", rf"|u-v|^2={sp.latex(squared)}"),
+            Step("length", rf"|u-v|=\sqrt{{{sp.latex(squared)}}}={sp.latex(value)}"),
+        )
+        return replace(
+            self._task(params, statement, steps, value),
+            metadata={"difficulty": params.level, "template": "vector-length-practice"},
+        )
+
+
+def parameter_seed(level: int, variation: int) -> int:
+    return vector_expression_seed(level, variation)
+
+
+class PerpendicularParameters(Drawn):
+    level: int = Field(ge=1, le=3)
+    a: int = Field(ge=1, le=5)
+    b: int = Field(ge=1, le=5)
+    u: Vector
+    v: Vector
+
+    @model_validator(mode="after")
+    def valid(self) -> Self:
+        if self.seed // 10**12 != self.level - 1:
+            raise ValueError("Parameter seed and level differ")
+        if self.u == (0, 0, 0) or self.v == (0, 0, 0):
+            raise ValueError("The vectors must be nonzero")
+        if any(abs(value) > 5 for vector in (self.u, self.v) for value in vector):
+            raise ValueError("Vector coordinates exceed the practice range")
+        if self.level == 2 and _m(self.u).cross(_m(self.v)) == sp.zeros(3, 1):
+            raise ValueError("Level two needs nonparallel vectors")
+        if self.level == 3 and (
+            _m(self.u).dot(_m(self.v)) != 0
+            or _m(self.u).dot(_m(self.u)) != self.a**2
+            or _m(self.v).dot(_m(self.v)) != self.b**2
+        ):
+            raise ValueError("Level three requires perpendicular vectors with the given lengths")
+        return self
+
+
+class PerpendicularParameter:
+    """All parameters for which two vector expressions are perpendicular."""
+
+    version, prefix, family, code_version = (
+        "vector-perpendicular-parameter-v1",
+        "VPP",
+        "vector-perpendicular-parameter",
+        1,
+    )
+    params, answer, requires = PerpendicularParameters, FiniteSetAnswer, ()
+    step_text = {
+        "norms": "Calculate the squared lengths of the given vectors.",
+        "perpendicular": "Use the perpendicularity of u and v to find their dot product.",
+        "expand": "Set the dot product to zero and expand it.",
+        "squared": "Isolate the square of the parameter.",
+        "roots": "Include both real values of the parameter.",
+    }
+
+    def draw(self, seed: int) -> PerpendicularParameters:
+        level = seed // 10**12 + 1
+        if level not in (1, 2, 3):
+            raise ValueError("Invalid perpendicular-parameter seed")
+        rng = DeterministicRNG(seed)
+        a, b = rng.randbelow(5) + 1, rng.randbelow(5) + 1
+        if level == 2:
+            for offset in range(64):
+                variation = (seed % 10**12 + offset) % 10**12
+                drawn = VectorExpression().draw(vector_expression_seed(level, variation))
+                if _m(drawn.u).cross(_m(drawn.v)) != sp.zeros(3, 1):
+                    u, v = drawn.u, drawn.v
+                    break
+            else:
+                raise ValueError("No nonparallel vector pair after 64 draws")
+        else:
+            u, v = (a, 0, 0), (0, b, 0)
+        return PerpendicularParameters(seed=seed, level=level, a=a, b=b, u=u, v=v)
+
+    def squared_lengths(self, params: PerpendicularParameters) -> tuple[Any, Any]:
+        if params.level == 2:
+            return _m(params.u).dot(_m(params.u)), _m(params.v).dot(_m(params.v))
+        return sp.Integer(params.a**2), sp.Integer(params.b**2)
+
+    def build(self, params: PerpendicularParameters) -> Task:
+        squared_u, squared_v = self.squared_lengths(params)
+        factor = 2 if params.level == 3 else 1
+        root = sp.radsimp(sp.sqrt(squared_u / (factor * squared_v)))
+        answer = FiniteSetAnswer((-root, root))
+        expression = (
+            r"(u+\alpha v)\cdot(u-2\alpha v)" if factor == 2 else r"(u+\alpha v)\cdot(u-\alpha v)"
+        )
+        leading: tuple[Step, ...]
+        if params.level == 2:
+            givens = rf"u={_vec(params.u)},\ v={_vec(params.v)}"
+            leading = (Step("norms", rf"|u|^2={squared_u},\quad |v|^2={squared_v}"),)
+        else:
+            givens = rf"|u|={params.a},\ |v|={params.b}"
+            leading = (Step("perpendicular", r"u\cdot v=0"),) if factor == 2 else ()
+        qualification = "Given u and v are perpendicular, find" if factor == 2 else "Find"
+        statement = (
+            f"{qualification} all real values of alpha that satisfy the condition: "
+            + rf"\({givens},\quad {expression}=0\)."
+        )
+        steps = (
+            *leading,
+            Step("expand", rf"{expression}={squared_u}-{factor * squared_v}\alpha^2=0"),
+            Step("squared", rf"\alpha^2=\frac{{{squared_u}}}{{{factor * squared_v}}}"),
+            Step("roots", rf"\alpha\in {answer.latex()}"),
+        )
+        return Task(
+            statement=statement,
+            steps=steps,
+            answer=answer,
+            metadata={"difficulty": params.level, "template": "vector-perpendicular-parameter"},
+            code=encode(self.prefix, self.code_version, params.seed),
+            generator_version=self.version,
+        )
+
+
 class PointsParams(Drawn):
     points: tuple[Vector, ...]
 
@@ -444,6 +839,214 @@ class TriangleAngle(_Generator):
         )
 
 
+def angle_seed(level: int, variation: int) -> int:
+    if level not in (1, 2, 3) or not 0 <= variation < 10**12:
+        raise ValueError("Invalid angle settings")
+    return (level - 1) * 10**12 + variation
+
+
+class AngleParameters(PointsParams):
+    level: int = Field(ge=1, le=3)
+
+    @model_validator(mode="after")
+    def valid_level(self) -> Self:
+        if self.seed // 10**12 != self.level - 1:
+            raise ValueError("Angle seed and level differ")
+        return self
+
+
+class TriangleAngleDegrees(_Generator):
+    """The angle itself, in degrees, with increasingly involved constructions."""
+
+    version = "vector-triangle-angle-v2"
+    prefix = TriangleAngle.prefix
+    family = TriangleAngle.family
+    code_version = 2
+    params = AngleParameters
+    difficulty = 1
+    template = "triangle-angle-degrees"
+    step_text = {
+        "midpoint": "Find the midpoint M of BC, coordinate by coordinate.",
+        "edges": "Form the two vectors that start at the required vertex.",
+        "products": "Calculate the dot product and the lengths of both vectors.",
+        "cosine": "Divide the dot product by the product of the lengths.",
+        "angle": "Choose the angle between 0 and 180 degrees with this cosine.",
+    }
+
+    def draw(self, seed: int) -> AngleParameters:
+        level = seed // 10**12 + 1
+        if level not in (1, 2, 3):
+            raise ValueError("Invalid angle seed")
+        rng = DeterministicRNG(seed)
+        shapes = (
+            ((1, 0, 0), (1, 1, 0)),
+            ((1, 1, 0), (1, 0, 1)),
+            ((1, 0, 0), (0, 1, 0)),
+            ((1, 1, 0), (-1, 0, 1)),
+            ((1, 0, 0), (-1, 1, 0)),
+        )
+        axes = tuple(permutations(range(3)))
+
+        def candidate() -> tuple[Vector, ...]:
+            first, second = shapes[rng.randbelow(len(shapes))]
+            order = axes[rng.randbelow(len(axes))]
+            signs = tuple(1 if rng.randbelow(2) else -1 for _ in range(3))
+            scale_u, scale_v = rng.randbelow(2) + 1, rng.randbelow(2) + 1
+            u = tuple(scale_u * signs[i] * first[order[i]] for i in range(3))
+            v = tuple(scale_v * signs[i] * second[order[i]] for i in range(3))
+            origin = tuple(rng.randbelow(3) - 1 for _ in range(3))
+            if level == 3:
+                a = origin
+                b = tuple(origin[i] + u[i] for i in range(3))
+                c = tuple(origin[i] + 2 * v[i] - u[i] for i in range(3))
+            else:
+                b = origin
+                a = tuple(origin[i] + u[i] for i in range(3))
+                c = tuple(origin[i] + v[i] for i in range(3))
+            return (a, b, c)  # type: ignore[return-value]
+
+        points = draw_valid(candidate, lambda ps: all(abs(x) <= 6 for p in ps for x in p))
+        return AngleParameters(seed=seed, level=level, points=points)
+
+    def build(self, params: AngleParameters) -> Task:
+        a, b, c = (_m(point) for point in params.points)
+        leading: tuple[Step, ...]
+        if params.level == 3:
+            midpoint = (b + c) / 2
+            u, v = b - a, midpoint - a
+            names = (r"\vec{AB}", r"\vec{AM}")
+            statement = (
+                "M is the midpoint of BC in triangle ABC. Find angle BAM in degrees: "
+                rf"\({_points_latex(params.points)}\)."
+            )
+            leading = (Step("midpoint", rf"M=\frac{{B+C}}{{2}}={_vec(midpoint)}"),)
+        else:
+            u, v = a - b, c - b
+            names = (r"\vec u", r"\vec v") if params.level == 1 else (r"\vec{BA}", r"\vec{BC}")
+            statement = (
+                "Find the angle between the vectors in degrees: "
+                rf"\(u={_vec(u)},\ v={_vec(v)}\)."
+                if params.level == 1
+                else "Find the angle at B of triangle ABC in degrees: "
+                rf"\({_points_latex(params.points)}\)."
+            )
+            leading = ()
+        if params.level > 1:
+            leading += (Step("edges", rf"{names[0]}={_vec(u)},\quad {names[1]}={_vec(v)}"),)
+        dot, length_u, length_v = u.dot(v), u.norm(), v.norm()
+        cosine = sp.radsimp(dot / (length_u * length_v))
+        angle = sp.simplify(180 * sp.acos(cosine) / sp.pi)
+        if angle not in (45, 60, 90, 120, 135):
+            raise ValueError("Angle must be a standard nondegenerate angle")
+        steps = (
+            *leading,
+            Step(
+                "products",
+                rf"{names[0]}\cdot {names[1]}={dot},\quad "
+                rf"|{names[0]}|={sp.latex(length_u)},\quad |{names[1]}|={sp.latex(length_v)}",
+            ),
+            Step("cosine", rf"\cos\theta={_ratio(dot, length_u * length_v)}={sp.latex(cosine)}"),
+            Step("angle", rf"\theta={sp.latex(angle)}^\circ"),
+        )
+        return replace(
+            self._task(params, statement, steps, angle),
+            metadata={"difficulty": params.level, "template": "triangle-angle-degrees"},
+        )
+
+
+AREA_MODES = ("triangle-area", "parallelogram-area")
+
+
+def area_seed(level: int, mode: str, variation: int) -> int:
+    if level not in (1, 2, 3) or mode not in AREA_MODES or not 0 <= variation < 10**12:
+        raise ValueError("Invalid area settings")
+    return ((level - 1) * len(AREA_MODES) + AREA_MODES.index(mode)) * 10**12 + variation
+
+
+class AreaParameters(PointsParams):
+    level: int = Field(ge=1, le=3)
+    mode: str
+
+    @model_validator(mode="after")
+    def valid_settings(self) -> Self:
+        if self.mode not in AREA_MODES or self.seed // 10**12 != (
+            (self.level - 1) * len(AREA_MODES) + AREA_MODES.index(self.mode)
+        ):
+            raise ValueError("Area seed and settings differ")
+        return self
+
+
+class AreaPractice(_Generator):
+    """Areas of triangles and parallelograms with source-style coordinates."""
+
+    version, prefix, family, code_version = (
+        "vector-area-practice-v1",
+        "VAP",
+        "vector-area-practice",
+        1,
+    )
+    params, difficulty, template = AreaParameters, 1, "vector-area-practice"
+    step_text = {
+        "midpoint": "Find the midpoint M of BC, coordinate by coordinate.",
+        "edges": "Form the two edge vectors from their endpoints.",
+        "cross": "Calculate the cross product of the two edge vectors.",
+        "area": "Use the length of the cross product to find the requested area.",
+    }
+
+    def draw(self, seed: int) -> AreaParameters:
+        index, variation = divmod(seed, 10**12)
+        level = index // len(AREA_MODES) + 1
+        if level not in (1, 2, 3):
+            raise ValueError("Invalid area seed")
+        mode = AREA_MODES[index % len(AREA_MODES)]
+        points = TriangleAngleDegrees().draw(angle_seed(level, variation)).points
+        return AreaParameters(seed=seed, level=level, mode=mode, points=points)
+
+    def build(self, params: AreaParameters) -> Task:
+        a, b, c = (_m(point) for point in params.points)
+        triangle = params.mode == "triangle-area"
+        leading: tuple[Step, ...] = ()
+        if params.level == 1:
+            u, v = a - b, c - b
+            names = (r"\vec u", r"\vec v")
+            figure = (
+                "triangle with adjacent edge vectors" if triangle else "parallelogram spanned by"
+            )
+            statement = rf"Find the area of the {figure}: \(u={_vec(u)},\ v={_vec(v)}\)."
+        elif params.level == 2:
+            u, v = b - a, c - a
+            names = (r"\vec{AB}", r"\vec{AC}")
+            figure = "triangle ABC" if triangle else "parallelogram spanned by AB and AC"
+            statement = rf"Find the area of the {figure}: \({_points_latex(params.points)}\)."
+        else:
+            midpoint = (b + c) / 2
+            u, v = b - a, midpoint - a
+            names = (r"\vec{AB}", r"\vec{AM}")
+            figure = "triangle ABM" if triangle else "parallelogram spanned by AB and AM"
+            statement = (
+                f"M is the midpoint of BC. Find the area of the {figure}: "
+                rf"\({_points_latex(params.points)}\)."
+            )
+            leading = (Step("midpoint", rf"M=\frac{{B+C}}{{2}}={_vec(midpoint)}"),)
+        if params.level > 1:
+            leading += (Step("edges", rf"{names[0]}={_vec(u)},\quad {names[1]}={_vec(v)}"),)
+        cross = u.cross(v)
+        norm = cross.norm()
+        value = norm / 2 if triangle else norm
+        if sp.simplify(norm**2 - (u.dot(u) * v.dot(v) - u.dot(v) ** 2)) != 0:
+            raise ValueError("Area cross product failed verification")
+        factor = r"\frac{1}{2}" if triangle else ""
+        steps = (
+            *leading,
+            Step("cross", rf"{names[0]}\times {names[1]}={_vec(cross)}"),
+            Step("area", rf"S={factor}|{names[0]}\times {names[1]}|={sp.latex(value)}"),
+        )
+        return replace(
+            self._task(params, statement, steps, value),
+            metadata={"difficulty": params.level, "template": params.mode},
+        )
+
+
 class TriangleArea(_Generator):
     """Algebra30 78(a): half the length of a cross product."""
 
@@ -551,6 +1154,165 @@ class TetrahedronHeight(TetrahedronVolume):
                 Step("height", rf"h=\frac{{3V}}{{P_{{ABC}}}}={sp.latex(value)}"),
             ),
             value,
+        )
+
+
+SOLID_MODES = ("tetrahedron-volume", "tetrahedron-height", "parallelepiped-area")
+
+
+def solid_seed(level: int, mode: str, variation: int) -> int:
+    if level not in (1, 2, 3) or mode not in SOLID_MODES or not 0 <= variation < 10**12:
+        raise ValueError("Invalid solid settings")
+    return ((level - 1) * len(SOLID_MODES) + SOLID_MODES.index(mode)) * 10**12 + variation
+
+
+class SolidParameters(PointsParams):
+    level: int = Field(ge=1, le=3)
+    mode: str
+
+    @model_validator(mode="after")
+    def valid_settings(self) -> Self:
+        if self.mode not in SOLID_MODES or self.seed // 10**12 != (
+            (self.level - 1) * len(SOLID_MODES) + SOLID_MODES.index(self.mode)
+        ):
+            raise ValueError("Solid seed and settings differ")
+        if len(self.points) != 4:
+            raise ValueError("A solid needs four noncoplanar points")
+        return self
+
+
+class SolidPractice(_Generator):
+    """Source-style tetrahedron and parallelepiped calculations."""
+
+    version, prefix, family, code_version = (
+        "vector-solid-practice-v1",
+        "VSP",
+        "vector-solid-practice",
+        1,
+    )
+    params, difficulty, template = SolidParameters, 1, "vector-solid-practice"
+    step_text = {
+        "midpoint": "Find the midpoint N of CD, coordinate by coordinate.",
+        "edges": "Form the three edge vectors from their endpoints.",
+        "cross": "Calculate a normal vector to the base using the cross product.",
+        "base": "The base triangle has half the area of the spanned parallelogram.",
+        "triple": "Take the dot product of the base normal and the third edge.",
+        "volume": "Divide the absolute scalar triple product by six.",
+        "height": "Use the volume and base area to find the perpendicular height.",
+        "face_uv": "Find the area of the face spanned by the first two edges.",
+        "face_uw": "Find the area of the face spanned by the first and third edges.",
+        "face_vw": "Find the area of the face spanned by the second and third edges.",
+        "surface": "Add the three face areas and double for the opposite faces.",
+    }
+
+    def draw(self, seed: int) -> SolidParameters:
+        index, _ = divmod(seed, 10**12)
+        level = index // len(SOLID_MODES) + 1
+        if level not in (1, 2, 3):
+            raise ValueError("Invalid solid seed")
+        mode = SOLID_MODES[index % len(SOLID_MODES)]
+        rng = DeterministicRNG(seed)
+
+        def candidate() -> tuple[Vector, ...]:
+            a = (rng.randbelow(3) - 1, rng.randbelow(3) - 1, rng.randbelow(3) - 1)
+
+            def endpoint() -> Vector:
+                return (
+                    a[0] + rng.randbelow(5) - 2,
+                    a[1] + rng.randbelow(5) - 2,
+                    a[2] + rng.randbelow(5) - 2,
+                )
+
+            return (a, endpoint(), endpoint(), endpoint())
+
+        def valid(points: tuple[Vector, ...]) -> bool:
+            a, b, c, d = (_m(point) for point in points)
+            determinant = (b - a).cross(c - a).dot(d - a)
+            return bool(0 < abs(determinant) <= 24)
+
+        points = draw_valid(candidate, valid)
+        return SolidParameters(seed=seed, level=level, mode=mode, points=points)
+
+    def build(self, params: SolidParameters) -> Task:
+        a, b, c, d = (_m(point) for point in params.points)
+        target = (c + d) / 2 if params.level == 3 else d
+        u, v, w = b - a, c - a, target - a
+        third = "N" if params.level == 3 else "D"
+        names = (r"\vec{AB}", r"\vec{AC}", rf"\vec{{A{third}}}")
+        if params.mode == "tetrahedron-volume":
+            question = f"the volume of tetrahedron ABC{third}"
+        elif params.mode == "tetrahedron-height":
+            question = f"the height from {third} to the plane ABC"
+        else:
+            question = f"the surface area of the parallelepiped spanned by AB, AC and A{third}"
+        leading: tuple[Step, ...] = ()
+        if params.level == 1:
+            statement = (
+                f"Find {question} given these adjacent edges from A: "
+                rf"\(\vec{{AB}}={_vec(u)},\ \vec{{AC}}={_vec(v)},\ "
+                rf"\vec{{AD}}={_vec(w)}\)."
+            )
+        else:
+            prefix = "N is the midpoint of CD. " if params.level == 3 else ""
+            statement = f"{prefix}Find {question}: " + rf"\({_points_latex(params.points)}\)."
+            if params.level == 3:
+                leading += (Step("midpoint", rf"N=\frac{{C+D}}{{2}}={_vec(target)}"),)
+            leading += (
+                Step(
+                    "edges",
+                    rf"{names[0]}={_vec(u)},\quad {names[1]}={_vec(v)},\quad {names[2]}={_vec(w)}",
+                ),
+            )
+        normal = u.cross(v)
+        triple = normal.dot(w)
+        if triple != sp.det(sp.Matrix.hstack(u, v, w)):
+            raise ValueError("Scalar triple product failed verification")
+        if params.mode == "parallelepiped-area":
+            face_areas = (normal.norm(), u.cross(w).norm(), v.cross(w).norm())
+            value = 2 * sum(face_areas)
+            steps = (
+                leading
+                + tuple(
+                    Step(key, rf"|{first}\times {second}|={sp.latex(area)}")
+                    for key, first, second, area in (
+                        ("face_uv", names[0], names[1], face_areas[0]),
+                        ("face_uw", names[0], names[2], face_areas[1]),
+                        ("face_vw", names[1], names[2], face_areas[2]),
+                    )
+                )
+                + (
+                    Step(
+                        "surface",
+                        rf"S=2\left({'+'.join(sp.latex(area) for area in face_areas)}\right)"
+                        rf"={sp.latex(value)}",
+                    ),
+                )
+            )
+        else:
+            volume = abs(triple) / 6
+            value = volume if params.mode == "tetrahedron-volume" else abs(triple) / normal.norm()
+            steps = leading + (Step("cross", rf"{names[0]}\times {names[1]}={_vec(normal)}"),)
+            if params.mode == "tetrahedron-height":
+                steps += (
+                    Step(
+                        "base",
+                        rf"S_{{ABC}}=\frac{{1}}{{2}}|{names[0]}\times {names[1]}|"
+                        rf"={sp.latex(normal.norm() / 2)}",
+                    ),
+                )
+            steps += (
+                Step(
+                    "triple", rf"({names[0]}\times {names[1]})\cdot {names[2]}={sp.latex(triple)}"
+                ),
+                Step("volume", rf"V=\frac{{|{sp.latex(triple)}|}}{{6}}={sp.latex(volume)}"),
+            )
+            if params.mode == "tetrahedron-height":
+                steps += (
+                    Step("height", rf"h=\frac{{3V}}{{S_{{ABC}}}}={sp.latex(sp.radsimp(value))}"),
+                )
+        return replace(
+            self._task(params, statement, steps, value),
+            metadata={"difficulty": params.level, "template": params.mode},
         )
 
 
@@ -880,8 +1642,15 @@ def generators() -> tuple[TaskGenerator[Any], ...]:
         DiagonalPower(),
         TriangularPowerEigenvalue(),
         MatrixFromEigenvectors(),
+        VectorExpression(),
+        ScalarVectorExpression(),
+        VectorLengthPractice(),
+        PerpendicularParameter(),
+        AreaPractice(),
+        SolidPractice(),
         TripleProduct(),
         TriangleAngle(),
+        TriangleAngleDegrees(),
         TriangleArea(),
         TetrahedronVolume(),
         TetrahedronHeight(),

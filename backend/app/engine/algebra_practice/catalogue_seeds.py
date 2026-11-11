@@ -24,6 +24,48 @@ def matrix_seeds(level: int, variation: int) -> Iterator[int]:
 
 
 def mode_seeds(slug: str, level: int, variation: int) -> tuple[tuple[str, str, int], ...]:
+    if slug == "vectors":
+        from app.engine.generators.eigen_geometry import (
+            SOLID_MODES,
+            angle_seed,
+            area_seed,
+            solid_seed,
+            vector_expression_seed,
+        )
+
+        return (
+            ("vector-expression", "vector-expression-v1", vector_expression_seed(level, variation)),
+            (
+                "scalar-expression",
+                "vector-scalar-expression-v1",
+                vector_expression_seed(level, variation),
+            ),
+            (
+                "vector-length",
+                "vector-length-practice-v1",
+                vector_expression_seed(level, variation),
+            ),
+            (
+                "perpendicular-parameter",
+                "vector-perpendicular-parameter-v1",
+                vector_expression_seed(level, variation),
+            ),
+            ("triangle-angle", "vector-triangle-angle-v2", angle_seed(level, variation)),
+            (
+                "triangle-area",
+                "vector-area-practice-v1",
+                area_seed(level, "triangle-area", variation),
+            ),
+            (
+                "parallelogram-area",
+                "vector-area-practice-v1",
+                area_seed(level, "parallelogram-area", variation),
+            ),
+            *(
+                (mode, "vector-solid-practice-v1", solid_seed(level, mode, variation))
+                for mode in SOLID_MODES
+            ),
+        )
     if slug == "complex-numbers":
         from app.engine.algebra_practice.selection import modulus_selection
 

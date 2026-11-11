@@ -20,3 +20,19 @@ it('drops unknown, newer or broken specs instead of throwing', () => {
     expect(parseVisual(value)).toBeUndefined();
   }
 });
+
+it('accepts bounded geometry while removing fields unrelated to the drawing', () => {
+  const geometry = {
+    kind: 'geometry3d', version: 1, title: 'Vectors', description: 'Given vectors.',
+    points: [{ label: 'A', at: [0, 1, 2], tone: 'given' }],
+    lines: [{ label: 'u', start: [0, 0, 0], end: [1, 2, 3], tone: 'active', arrow: true, dashed: false }],
+    faces: [],
+  };
+  expect(parseVisual({ ...geometry, answer: 'private' })).toEqual(geometry);
+  for (const bad of [
+    { ...geometry, points: [{ ...geometry.points[0], at: [Infinity, 0, 0] }] },
+    { ...geometry, points: Array(17).fill(geometry.points[0]) },
+    { ...geometry, lines: [{ ...geometry.lines[0], tone: 'unknown' }] },
+    { ...geometry, lines: [{ ...geometry.lines[0], arrow: 'yes' }] },
+  ]) expect(parseVisual(bad)).toBeUndefined();
+});

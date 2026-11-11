@@ -208,6 +208,28 @@ class Topic:
                     if item[1] == choice.generator
                 )
                 seed = candidates[rng.randbelow(len(candidates))]
+            elif choice.generator == "vector-triangle-angle-v2":
+                from app.engine.generators.eigen_geometry import angle_seed
+
+                seed = angle_seed(level, seed % 10**12)
+            elif choice.generator in {
+                "vector-expression-v1",
+                "vector-scalar-expression-v1",
+                "vector-length-practice-v1",
+                "vector-perpendicular-parameter-v1",
+            }:
+                from app.engine.generators.eigen_geometry import vector_expression_seed
+
+                seed = vector_expression_seed(level, seed % 10**12)
+            elif choice.generator in {"vector-area-practice-v1", "vector-solid-practice-v1"}:
+                from app.engine.algebra_practice.catalogue_seeds import mode_seeds
+
+                candidates = tuple(
+                    item[2]
+                    for item in mode_seeds("vectors", level, seed % 10**12)
+                    if item[1] == choice.generator
+                )
+                seed = candidates[rng.randbelow(len(candidates))]
             elif choice.generator in {"local-matrix-sized-v1", "local-matrix-division-v3"}:
                 from app.engine.algebra_practice.catalogue_seeds import matrix_seeds
 
@@ -724,6 +746,26 @@ def topics() -> dict[str, Topic]:
                 Choice(version, partial(_local_level, level)),
             )
         declared[slug] = replace(topic, levels=combined)
+    topic = declared["vectors"]
+    declared["vectors"] = replace(
+        topic,
+        levels={
+            **topic.levels,
+            **{
+                level: (
+                    *topic.levels[level],
+                    Choice("vector-triangle-angle-v2", partial(_local_level, level)),
+                    Choice("vector-expression-v1", partial(_local_level, level)),
+                    Choice("vector-scalar-expression-v1", partial(_local_level, level)),
+                    Choice("vector-length-practice-v1", partial(_local_level, level)),
+                    Choice("vector-perpendicular-parameter-v1", partial(_local_level, level)),
+                    Choice("vector-area-practice-v1", partial(_local_level, level)),
+                    Choice("vector-solid-practice-v1", partial(_local_level, level)),
+                )
+                for level in (1, 2, 3)
+            },
+        },
+    )
     return declared
 
 

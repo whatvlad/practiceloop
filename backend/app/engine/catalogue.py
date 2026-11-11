@@ -31,9 +31,31 @@ class StoredModel(BaseModel):
     model_config = ConfigDict(extra="forbid", strict=True, frozen=True)
 
 
+class StoredRule(StoredModel):
+    title: str = Field(min_length=1, max_length=120)
+    latex: str = Field(min_length=1, max_length=2000)
+    explanation: str = Field(min_length=1, max_length=1000)
+
+
 class StoredStep(StoredModel):
     say: str = Field(min_length=1)
     latex: str = Field(min_length=1)
+    visual: dict[str, Any] | None = None
+    rules: tuple[StoredRule, ...] = Field(default=(), max_length=4)
+
+    @field_validator("rules", mode="before")
+    @classmethod
+    def tuple_rules(cls, value: object) -> object:
+        return tuple(value) if isinstance(value, list) else value
+
+    @field_validator("visual")
+    @classmethod
+    def valid_visual(cls, value: dict[str, Any] | None) -> dict[str, Any] | None:
+        if value is None:
+            return None
+        from app.visuals.complex_plane import validate_visual
+
+        return validate_visual(value)
 
 
 class StoredProblem(StoredModel):
@@ -43,8 +65,9 @@ class StoredProblem(StoredModel):
     answer_latex: str = Field(min_length=1)
     steps: tuple[StoredStep, ...] = Field(min_length=1)
     visual: dict[str, Any] | None = None
+    statement_visual: dict[str, Any] | None = None
 
-    @field_validator("visual")
+    @field_validator("visual", "statement_visual")
     @classmethod
     def valid_visual(cls, value: dict[str, Any] | None) -> dict[str, Any] | None:
         if value is None:
@@ -62,6 +85,7 @@ class StoredProblem(StoredModel):
             answer_latex=issued.answer_latex,
             steps=tuple(StoredStep(**step) for step in issued.steps),
             visual=issued.visual,
+            statement_visual=issued.statement_visual,
         )
 
     def issued(self) -> Issued:
@@ -70,8 +94,14 @@ class StoredProblem(StoredModel):
             self.statement,
             {"generator_version": self.generator_version, "code": self.code},
             self.answer_latex,
-            tuple({"say": step.say, "latex": step.latex} for step in self.steps),
+            tuple(
+                {"say": step.say, "latex": step.latex}
+                | ({"visual": deepcopy(step.visual)} if step.visual is not None else {})
+                | ({"rules": [rule.model_dump() for rule in step.rules]} if step.rules else {})
+                for step in self.steps
+            ),
             deepcopy(self.visual),
+            deepcopy(self.statement_visual),
         )
 
 
@@ -152,6 +182,7 @@ class Catalogue(StoredModel):
                         "complex-conversion",
                         "polynomial-roots",
                         "partial-fractions",
+                        "vectors",
                     }
                     or cell.topic == "complex-polar-form"
                 ):
@@ -204,6 +235,7 @@ def build(
                     "polynomial-roots",
                     "partial-fractions",
                     "complex-polar-form",
+                    "vectors",
                 )
                 and level <= 3
             ):
@@ -214,7 +246,8 @@ def build(
                     any(c.generator == version for c in topic.levels[level])
                     for _, version, _ in local_modes
                 ):
-                    for variation in (0, 1):
+                    count = max(2, pool_size // (len(local_modes) + 1)) if slug == "vectors" else 2
+                    for variation in range(count):
                         for _, version, seed in mode_seeds(slug, level, variation):
                             if len(problems) == pool_size:
                                 break

@@ -5,6 +5,7 @@ import { ApiStatusNotice } from './ApiStatusNotice';
 import { DifficultyScale } from './DifficultyScale';
 import { ProblemCard } from './ProblemCard';
 import { TopicChips } from './TopicChips';
+import type { Geometry3dSpec } from '../visual/spec';
 
 const noop = () => {};
 
@@ -27,6 +28,17 @@ function card(props: Partial<Parameters<typeof ProblemCard>[0]> = {}) {
 }
 
 describe('ProblemCard', () => {
+  it('shows the given drawing immediately and a step drawing only with the solution', () => {
+    const given: Geometry3dSpec = { kind: 'geometry3d', version: 1, title: 'Given drawing', description: 'Given vertices.',
+      points: [{ label: 'A', at: [0, 0, 0], tone: 'given' }], lines: [], faces: [] };
+    const step: Geometry3dSpec = { ...given, title: 'Foot H', description: 'The constructed foot.' };
+    const initial = card({ topic: 'vectors', statementVisual: given });
+    expect(initial).toContain('Given drawing');
+    expect(initial).not.toContain('Foot H');
+    const revealed = card({ topic: 'vectors', statementVisual: given, solution: [{ say: 'Construct H.', latex: 'H', visual: step }] });
+    expect(revealed).toContain('Given drawing');
+    expect(revealed).toContain('Foot H');
+  });
   it.each([
     ['algebraic-expressions', '\\text{Simplify }2\\sqrt{3}-\\sqrt{27}\\text{.}', 'Simplify', '2\\sqrt{3}-\\sqrt{27}'],
     ['algebraic-expressions', '\\text{Rationalize the denominator of }\\frac{1}{2+\\sqrt{3}}\\text{.}', 'Rationalize the denominator', '\\frac{1}{2+\\sqrt{3}}'],

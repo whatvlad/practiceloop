@@ -2,6 +2,7 @@
 // No Authorization header is sent, and only the statement, topic and difficulty are kept.
 import text from '../../../backend/app/content/en.json';
 import { parseAnswerInput } from './answerInput';
+import { parseVisual } from '../visual/spec';
 import { isTopicSlug } from './topics';
 import type { Difficulty, ProblemShare, SharedProblem, ShareUnavailable, TopicSlug } from './types';
 
@@ -62,7 +63,9 @@ export async function lookupShare(ref: { token: string } | { code: string }): Pr
   const problem = (data as { problem?: Record<string, unknown> } | null)?.problem;
   if (!problem || typeof problem.problemLatex !== 'string' || !isTopicSlug(problem.topic)
     || ![1, 2, 3, 4, 5].includes(problem.difficulty as number)) throw new Error(text.service_error);
+  const statementVisual = parseVisual(problem.statementVisual);
   // Explicit projection: even a malformed response cannot carry more into the page.
   return { problem: { topic: problem.topic as TopicSlug, difficulty: problem.difficulty as Difficulty, problemLatex: problem.problemLatex,
+    ...(statementVisual ? { statementVisual } : {}),
     ...(problem.answerInput === undefined ? {} : { answerInput: parseAnswerInput(problem.answerInput) }) } };
 }

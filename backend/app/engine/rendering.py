@@ -15,8 +15,9 @@ class Issued:
     statement: str
     record: dict[str, object]
     answer_latex: str
-    steps: tuple[dict[str, str], ...]
+    steps: tuple[dict[str, Any], ...]
     visual: dict[str, Any] | None = None
+    statement_visual: dict[str, Any] | None = None
 
 
 def statement_latex(statement: str) -> str:
@@ -87,7 +88,7 @@ def render(task: Task, generators: Registry) -> Issued:
         built = complex_visual(generator, generator.draw(code.seed), task)
         if built is not None:
             visual = validate_visual(built)
-    steps = []
+    steps: list[dict[str, Any]] = []
     for step in task.steps:
         if step.text_key not in step_text:
             raise ValueError(f"No learner text for step {step.text_key}")
@@ -98,10 +99,44 @@ def render(task: Task, generators: Registry) -> Issued:
 
         code = parse_code(task.code, generators)
         steps = de_moivre_steps(generator.draw(code.seed))
+    statement_visual = None
+    if generator.version in {
+        "vector-triple-product-v1",
+        "vector-triangle-angle-v1",
+        "vector-triangle-angle-v2",
+        "vector-expression-v1",
+        "vector-scalar-expression-v1",
+        "vector-length-practice-v1",
+        "vector-perpendicular-parameter-v1",
+        "vector-area-practice-v1",
+        "vector-solid-practice-v1",
+        "vector-triangle-area-v1",
+        "vector-tetrahedron-volume-v1",
+        "vector-tetrahedron-height-v1",
+    }:
+        from app.engine.codes import parse_code
+        from app.visuals.geometry import statement_visual as geometry_statement
+        from app.visuals.geometry import step_visuals
+        from app.visuals.geometry_rules import step_rules
+
+        record: dict[str, object] = {"generator_version": task.generator_version, "code": task.code}
+        code = parse_code(task.code, generators)
+        if generator.build(generator.draw(code.seed)) != task:
+            raise ValueError("Geometry task does not match its code")
+        statement_visual = geometry_statement(record)
+        diagrams = step_visuals(record)
+        rules = step_rules(record)
+        if len(diagrams) != len(steps) or len(rules) != len(steps):
+            raise ValueError("Geometry explanations do not match solution steps")
+        steps = [
+            {**step, "visual": diagram, "rules": list(explanation)}
+            for step, diagram, explanation in zip(steps, diagrams, rules, strict=True)
+        ]
     return Issued(
         statement=statement_latex(task.statement),
         record={"generator_version": task.generator_version, "code": task.code},
         answer_latex=task.answer.latex(),
         steps=tuple(steps),
         visual=visual,
+        statement_visual=statement_visual,
     )

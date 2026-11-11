@@ -13,12 +13,48 @@ from app.engine import practice as engine
 from app.engine.codes import parse_code
 from app.engine.generators.integrals import IntegralGenerator
 from app.engine.generators.multiple import DoubleIntegrals
+from app.engine.rendering import Issued
 from app.visuals.region2d import region2d_setup
 from app.visuals.single import definite_data, indefinite
 from app.visuals.solid3d import solid3d_setup
 
 VERSION = 1
 MAX_BYTES = 8 * 1024
+
+
+def statement_visual(record: dict[str, object]) -> dict[str, Any] | None:
+    """Only the given geometry, without solution objects or answers."""
+    from app.visuals.geometry import statement_visual as geometry_statement
+
+    return geometry_statement(record)
+
+
+def _geometry_issued(record: dict[str, object]) -> Issued:
+    """Read prepared geometry; arbitrary permanent codes rebuild in the worker."""
+    try:
+        issued = engine.pooled(record)
+    except ValueError:
+        issued = None
+    if issued is None or issued.statement_visual is None:
+        from app.api.codes import _opened
+
+        code = record.get("code")
+        if not isinstance(code, str):
+            raise ValueError("Invalid geometry record")
+        issued = _opened(code).problem.issued()
+    if issued.record != record:
+        raise ValueError("Geometry record differs from its code")
+    return issued
+
+
+def statement_projection(record: object) -> dict[str, Any]:
+    """Project only the prepared public geometry of a supported record."""
+    from app.visuals.geometry import _VERSIONS
+
+    if not isinstance(record, dict) or record.get("generator_version") not in _VERSIONS:
+        return {}
+    visual = _geometry_issued(record).statement_visual
+    return {"statementVisual": visual} if visual is not None else {}
 
 
 def build_visual(record: dict[str, object]) -> dict[str, Any] | None:
@@ -80,6 +116,19 @@ def solution_payload(steps: Any, record: dict[str, object]) -> dict[str, Any]:
     visual = build_visual(record)
     rendered = list(steps)
     version = record.get("generator_version")
+    from app.visuals.geometry import _VERSIONS
+
+    if version in _VERSIONS and not any(step.get("visual") for step in rendered):
+        prepared = _geometry_issued(record).steps
+        if len(prepared) == len(rendered):
+            rendered = [
+                {
+                    **step,
+                    **({"visual": source["visual"]} if source.get("visual") else {}),
+                    **({"rules": source["rules"]} if source.get("rules") else {}),
+                }
+                for step, source in zip(rendered, prepared, strict=True)
+            ]
     if version in {
         "local-polynomial-roots-v1",
         "local-polynomial-division-v1",

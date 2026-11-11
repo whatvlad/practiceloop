@@ -96,6 +96,18 @@ def issue(
             "polynomial-roots": {"roots"},
             "partial-fractions": {"fractions"},
             "complex-polar-form": {"argument", "power", "root"},
+            "vectors": {
+                "vector-expression",
+                "scalar-expression",
+                "vector-length",
+                "perpendicular-parameter",
+                "triangle-angle",
+                "triangle-area",
+                "parallelogram-area",
+                "tetrahedron-volume",
+                "tetrahedron-height",
+                "parallelepiped-area",
+            },
         }
         if level not in (1, 2, 3) or exercise_mode not in supported.get(slug, set()):
             raise ValueError("Invalid exercise mode")
@@ -279,6 +291,47 @@ def _matrix_dimensions(code: str) -> dict[str, Any]:
 
 def public_settings(record: Any) -> dict[str, Any]:
     """Recover learner-selected settings without exposing answer parameters."""
+    if is_engine_record(record) and record.get("generator_version") == "vector-solid-practice-v1":
+        from app.engine.generators.eigen_geometry import SOLID_MODES
+
+        parsed = parse_code(record["code"], _registry())
+        if (
+            _registry().get_code(parsed.prefix, parsed.version).version
+            != record["generator_version"]
+        ):
+            raise ValueError("Record version differs from its code")
+        index = parsed.seed // 10**12
+        if index >= 3 * len(SOLID_MODES):
+            raise ValueError("Invalid solid settings")
+        return {"exerciseMode": SOLID_MODES[index % len(SOLID_MODES)]}
+    if is_engine_record(record) and record.get("generator_version") == "vector-area-practice-v1":
+        from app.engine.generators.eigen_geometry import AREA_MODES
+
+        parsed = parse_code(record["code"], _registry())
+        if (
+            _registry().get_code(parsed.prefix, parsed.version).version
+            != record["generator_version"]
+        ):
+            raise ValueError("Record version differs from its code")
+        index = parsed.seed // 10**12
+        if index >= 3 * len(AREA_MODES):
+            raise ValueError("Invalid area settings")
+        return {"exerciseMode": AREA_MODES[index % len(AREA_MODES)]}
+    vector_modes = {
+        "vector-expression-v1": "vector-expression",
+        "vector-scalar-expression-v1": "scalar-expression",
+        "vector-length-practice-v1": "vector-length",
+        "vector-perpendicular-parameter-v1": "perpendicular-parameter",
+        "vector-triangle-angle-v2": "triangle-angle",
+    }
+    if is_engine_record(record) and record.get("generator_version") in vector_modes:
+        parsed = parse_code(record["code"], _registry())
+        if (
+            _registry().get_code(parsed.prefix, parsed.version).version
+            != record["generator_version"]
+        ):
+            raise ValueError("Record version differs from its code")
+        return {"exerciseMode": vector_modes[record["generator_version"]]}
     polar_modes = {
         "complex-argument-v1": "argument",
         "complex-de-moivre-v1": "power",
@@ -460,6 +513,12 @@ def input_contract(record: dict[str, object]) -> InputContract | None:
     code = parse_code(record["code"], _registry())  # type: ignore[arg-type]
     generator = _registry().get_code(code.prefix, code.version)
     version = generator.version
+    if version == "vector-expression-v1":
+        return InputContract(
+            "tuple",
+            components=(InputContract("formula"),) * 3,
+            labels=("x component", "y component", "z component"),
+        )
     if version in {"local-matrix-sized-v1", "local-matrix-division-v3", "local-inverse-v1"}:
         from app.engine.generators.matrix_full import matrix_contract
 
