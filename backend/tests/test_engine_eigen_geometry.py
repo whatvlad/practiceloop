@@ -8,6 +8,7 @@ from pydantic import ValidationError
 from seed_sweep import sweep
 
 from app.engine.generators.eigen_geometry import (
+    AreaPractice,
     DiagonalPower,
     EigenParams,
     EigenvectorValue,
@@ -16,19 +17,25 @@ from app.engine.generators.eigen_geometry import (
     LinePlaneParams,
     MatrixFromEigenvectors,
     ParallelPlanesDistance,
+    PerpendicularParameter,
     PlaneReflection,
     PlanesAngle,
     PlanesParams,
     PointPlaneDistance,
     PointsParams,
     ReflectionParams,
+    ScalarVectorExpression,
+    SolidPractice,
     TetrahedronHeight,
     TetrahedronVolume,
     TriangleAngle,
+    TriangleAngleDegrees,
     TriangleArea,
     TriangularParams,
     TriangularPowerEigenvalue,
     TripleProduct,
+    VectorExpression,
+    VectorLengthPractice,
     generators,
 )
 from app.engine.opening import rebuild
@@ -45,6 +52,13 @@ TOPIC_OF = {
     MatrixFromEigenvectors.version: ("eigenvalues", 5),
     TripleProduct.version: ("vectors", 1),
     TriangleAngle.version: ("vectors", 2),
+    TriangleAngleDegrees.version: ("vectors", 1),
+    VectorExpression.version: ("vectors", 1),
+    ScalarVectorExpression.version: ("vectors", 1),
+    VectorLengthPractice.version: ("vectors", 1),
+    PerpendicularParameter.version: ("vectors", 1),
+    AreaPractice.version: ("vectors", 1),
+    SolidPractice.version: ("vectors", 1),
     TriangleArea.version: ("vectors", 3),
     TetrahedronVolume.version: ("vectors", 4),
     TetrahedronHeight.version: ("vectors", 5),
@@ -64,6 +78,25 @@ def check(task, answer: str) -> str:
     return task.answer.check(parse_math_input(answer))
 
 
+@pytest.mark.parametrize(
+    ("code", "level", "statement", "answer"),
+    [
+        ("VTP-1-0000000000000000-26", 1, "scalar triple product", "50"),
+        ("VTA-1-0000000000000000-21", 2, "cosine", "-sqrt(10)/10"),
+        ("VTR-1-0000000000000000-14", 3, "area of the triangle", "45/2"),
+        ("VTV-1-0000000000000000-89", 4, "volume of the tetrahedron", "30"),
+        ("VTH-1-0000000000000000-07", 5, "height of the tetrahedron", "4"),
+    ],
+)
+def test_existing_vector_codes_keep_their_question_and_answer(code, level, statement, answer):
+    opened = rebuild(code)
+    task = replay(opened.problem.issued().record)
+    assert (opened.topic, opened.difficulty) == ("vectors", level)
+    assert statement in task.statement
+    assert check(task, answer) == "correct"
+    assert check(task, f"({answer})+1") == "incorrect"
+
+
 def test_every_generator_is_offered_at_its_declared_level() -> None:
     declared = topics()
     assert {g.version for g in generators()} == set(TOPIC_OF)
@@ -72,7 +105,15 @@ def test_every_generator_is_offered_at_its_declared_level() -> None:
         assert declared[slug].mixed_weight == 1
 
 
-@pytest.mark.parametrize("generator", generators(), ids=lambda g: g.version)
+@pytest.mark.parametrize(
+    "generator",
+    [
+        g
+        for g in generators()
+        if g.version not in {VectorExpression.version, PerpendicularParameter.version}
+    ],
+    ids=lambda g: g.version,
+)
 def test_tasks_replay_open_and_accept_only_their_own_answer(generator) -> None:
     slug, level = TOPIC_OF[generator.version]
     for seed in sweep(150):

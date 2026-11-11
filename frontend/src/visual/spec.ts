@@ -78,7 +78,18 @@ export interface ComplexPlaneSpec {
   firstLabel?: string;
 }
 
-export type VisualSpec = DefiniteSpec | IndefiniteSpec | Region2dSpec | Solid3dSpec | Plot2dSpec | ComplexPlaneSpec;
+export type GeometryTone = 'given' | 'active' | 'previous';
+export type GeometryPoint3 = readonly [number, number, number];
+
+export interface Geometry3dSpec {
+  kind: 'geometry3d'; version: 1;
+  title: string; description: string;
+  points: { label: string; at: GeometryPoint3; tone: GeometryTone }[];
+  lines: { label: string; start: GeometryPoint3; end: GeometryPoint3; tone: GeometryTone; arrow: boolean; dashed: boolean }[];
+  faces: { label: string; vertices: readonly [GeometryPoint3, GeometryPoint3, GeometryPoint3]; tone: GeometryTone }[];
+}
+
+export type VisualSpec = DefiniteSpec | IndefiniteSpec | Region2dSpec | Solid3dSpec | Plot2dSpec | ComplexPlaneSpec | Geometry3dSpec;
 
 const REGION_VARIABLES = { cartesian: ['x', 'y'], polar: ['r', 'theta'] } as const;
 const SOLID_VARIABLES = { cartesian: ['x', 'y'], cylindrical: ['r', 'theta'] } as const;
@@ -116,6 +127,37 @@ const POINT_KINDS: readonly PointKind[] = ['zero', 'extremum', 'inflection', 'po
 
 /** One validator per kind; a later Issue adds its kind here and in SolutionVisual. */
 const VALIDATORS: Record<string, (data: Record<string, unknown>) => VisualSpec> = {
+  geometry3d(data) {
+    if (new TextEncoder().encode(JSON.stringify(data)).length > 8192) throw new Error('Oversized diagram');
+    const label = (value: unknown) => {
+      if (typeof value !== 'string' || value.length < 1 || value.length > 120 || !/^[A-Za-z0-9 .,():/+=-]+$/.test(value)) throw new Error('Bad diagram label');
+      return value;
+    };
+    const point = (value: unknown): GeometryPoint3 => {
+      if (!Array.isArray(value) || value.length !== 3) throw new Error('Bad point');
+      const coordinates = value.map(finite);
+      if (coordinates.some(n => Math.abs(n) > 1e8)) throw new Error('Point out of range');
+      return [coordinates[0], coordinates[1], coordinates[2]];
+    };
+    const tone = (value: unknown): GeometryTone => {
+      if (value !== 'given' && value !== 'active' && value !== 'previous') throw new Error('Bad tone');
+      return value;
+    };
+    if (!Array.isArray(data.points) || data.points.length > 16 || !Array.isArray(data.lines) || data.lines.length > 32 || !Array.isArray(data.faces) || data.faces.length > 8) throw new Error('Bad geometry');
+    const points = data.points.map(value => { const p = record(value); return { label: label(p.label), at: point(p.at), tone: tone(p.tone) }; });
+    const lines = data.lines.map(value => {
+      const line = record(value);
+      if (typeof line.arrow !== 'boolean' || typeof line.dashed !== 'boolean') throw new Error('Bad line');
+      return { label: label(line.label), start: point(line.start), end: point(line.end), tone: tone(line.tone), arrow: line.arrow, dashed: line.dashed };
+    });
+    const faces = data.faces.map(value => {
+      const face = record(value);
+      if (!Array.isArray(face.vertices) || face.vertices.length !== 3) throw new Error('Bad face');
+      return { label: label(face.label), vertices: [point(face.vertices[0]), point(face.vertices[1]), point(face.vertices[2])] as const, tone: tone(face.tone) };
+    });
+    if (!points.length && !lines.length && !faces.length) throw new Error('Empty geometry');
+    return { kind: 'geometry3d', version: 1, title: label(data.title), description: label(data.description), points, lines, faces };
+  },
   'complex-plane'(data) {
     const modes = ['add', 'subtract', 'multiply', 'divide', 'modulus', 'argument', 'power', 'root', 'circle'] as const;
     if (typeof data.mode !== 'string' || !modes.includes(data.mode as typeof modes[number])) throw new Error('Bad mode');

@@ -30,6 +30,23 @@ let catalogue: unknown;
 const response = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status });
 const button = (label: string) => Array.from(element.querySelectorAll('button')).find(b => b.textContent?.includes(label))!;
 
+it('selects an analytic geometry type and one of three levels, and retains both for the next problem', async () => {
+  catalogue = { areas: [{ slug: 'algebra', name: 'Algebra', mixed: null }], items: [
+    { slug: 'vectors', name: 'Vectors, areas and volumes', area: 'algebra', availableDifficulties: [1, 2, 3, 4, 5] },
+  ] };
+  await act(async () => root.render(<TopicPage initialArea="algebra" initialTopic="vectors" />));
+  expect(element.querySelectorAll('.pl-seg button')).toHaveLength(3);
+  const select = [...element.querySelectorAll('label')].find(label => label.textContent?.startsWith('Exercise type'))!.querySelector('select')!;
+  await act(async () => { select.value = 'tetrahedron-height'; select.dispatchEvent(new Event('change', { bubbles: true })); });
+  await act(async () => (element.querySelectorAll<HTMLButtonElement>('.pl-seg button')[2]).click());
+  await act(async () => button('Generate problem').click());
+  expect(calls.filter(call => call.path === '/api/problems').at(-1)?.body).toMatchObject({ topic: 'vectors', difficulty: 3, exerciseMode: 'tetrahedron-height' });
+  await act(async () => root.render(<PracticePage id={new URLSearchParams(window.location.search).get('id')} />));
+  expect(element.querySelector('[aria-label="Difficulty 3 of 3"]')).not.toBeNull();
+  await act(async () => button('Generate next problem').click());
+  expect(calls.filter(call => call.path === '/api/problems').at(-1)?.body).toMatchObject({ topic: 'vectors', difficulty: 3, exerciseMode: 'tetrahedron-height' });
+});
+
 it('persists and reuses random algebra settings for saved problems', async () => {
   localStorage.removeItem('practiceloop:algebra-random:student');
   catalogue = { areas: [{ slug: 'algebra', name: 'Algebra', mixed: null }], items: [

@@ -1,6 +1,7 @@
 // Public shapes the UI works with. None of them carries an expected answer,
 // a solution or generator data: those arrive only from the reveal calls.
 import type { Plot2dSpec, VisualSpec } from '../visual/spec';
+import type { VectorMode } from './vectorModes';
 
 /** ADR-005: practice has two areas, and every topic belongs to exactly one. */
 export type AreaSlug = 'algebra' | 'mathematical-analysis' | 'probability-statistics';
@@ -94,7 +95,8 @@ export interface CheckOutcome {
 export type AttemptResult = CheckResult | null;
 
 export interface PublicProblem {
-  exerciseMode?: 'multiply' | 'divide' | 'division' | 'remainder' | 'divisibility' | 'alg-trig' | 'alg-exp' | 'trig-alg' | 'exp-alg' | 'roots' | 'fractions' | 'argument' | 'power' | 'root';
+  statementVisual?: VisualSpec;
+  exerciseMode?: 'multiply' | 'divide' | 'division' | 'remainder' | 'divisibility' | 'alg-trig' | 'alg-exp' | 'trig-alg' | 'exp-alg' | 'roots' | 'fractions' | 'argument' | 'power' | 'root' | VectorMode;
   squareSize?: number;
   matrixDimensions?: MatrixDimensions;
   rankDimensions?: { rows: number; columns: number };
@@ -130,6 +132,7 @@ export interface RevealedAnswer {
 }
 
 export interface SolutionStep {
+  visual?: VisualSpec;
   rules?: readonly { title: string; latex: string; explanation: string }[];
   say: string;
   latex: string;
@@ -161,6 +164,7 @@ export interface ProblemShare {
 
 /** All a shared link or code reveals: never answers, results, solutions or the owner. */
 export interface SharedProblem {
+  statementVisual?: VisualSpec;
   answerInput?: AnswerInputSpec;
   promptVisual?: Plot2dSpec;
   selfReview?: boolean;

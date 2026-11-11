@@ -3,6 +3,7 @@ import text from '../../../backend/app/content/en.json';
 import { normalizeCode } from './shares';
 import { normalizeProblemCode } from './problemCodes';
 import { parsePromptVisual, parseVisual } from '../visual/spec';
+import { VECTOR_MODE_IDS } from './vectorModes';
 import { AREAS, areaOf, isTopicSlug, listedArea, rememberTopics } from './topics';
 import { FEEDBACK_CODES } from './types';
 import { parseAnswerInput } from './answerInput';
@@ -164,7 +165,7 @@ function verdict(data: Record<string, unknown>): CheckOutcome {
 
 function publicProblem(value: unknown): PublicProblem {
   const data = object(value);
-  if (data.exerciseMode !== undefined && !(data.topic === 'complex-arithmetic' ? ['multiply', 'divide'] : data.topic === 'polynomial-division' ? ['division', 'remainder', 'divisibility'] : data.topic === 'complex-conversion' ? ['alg-trig', 'alg-exp', 'trig-alg', 'exp-alg'] : data.topic === 'polynomial-roots' ? ['roots'] : data.topic === 'partial-fractions' ? ['fractions'] : data.topic === 'complex-polar-form' ? ['argument', 'power', 'root'] : []).includes(data.exerciseMode as string)) throw new Error(text.service_error);
+  if (data.exerciseMode !== undefined && !(data.topic === 'vectors' ? VECTOR_MODE_IDS : data.topic === 'complex-arithmetic' ? ['multiply', 'divide'] : data.topic === 'polynomial-division' ? ['division', 'remainder', 'divisibility'] : data.topic === 'complex-conversion' ? ['alg-trig', 'alg-exp', 'trig-alg', 'exp-alg'] : data.topic === 'polynomial-roots' ? ['roots'] : data.topic === 'partial-fractions' ? ['fractions'] : data.topic === 'complex-polar-form' ? ['argument', 'power', 'root'] : []).includes(data.exerciseMode as string)) throw new Error(text.service_error);
   if (data.squareSize !== undefined && (!['determinants', 'inverse-matrices', 'linear-systems'].includes(data.topic as string) || ![2, 3, 4, 5].includes(data.squareSize as number))) throw new Error(text.service_error);
   const matrixDimensions = data.matrixDimensions === undefined ? undefined : object(data.matrixDimensions);
   if (matrixDimensions && (data.topic !== 'matrix-operations' || !['add', 'subtract', 'multiply', 'divide'].includes(matrixDimensions.operation as string) || !['rowsA', 'colsA', 'rowsB', 'colsB'].every(k => [1, 2, 3, 4, 5].includes(matrixDimensions[k] as number)))) throw new Error(text.service_error);
@@ -179,6 +180,7 @@ function publicProblem(value: unknown): PublicProblem {
   const last = data.lastAttempt === null ? null : object(data.lastAttempt);
   if (last && typeof last.answer !== 'string') throw new Error(text.service_error);
   const promptVisual = parsePromptVisual(data.promptVisual);
+  const statementVisual = parseVisual(data.statementVisual);
   return { saved: true, id: data.id, topic: data.topic as TopicSlug, difficulty: data.difficulty as Difficulty,
     problemLatex: data.problemLatex, createdAt: data.createdAt, answerRevealed: data.answerRevealed,
     solutionRevealed: data.solutionRevealed, attemptCount: data.attemptCount as number,
@@ -187,6 +189,7 @@ function publicProblem(value: unknown): PublicProblem {
     ...(promptVisual ? { promptVisual } : {}),
     ...(data.selfReview === true ? { selfReview: true } : {}),
     ...(data.answerInput === undefined ? {} : { answerInput: parseAnswerInput(data.answerInput) }),
+    ...(statementVisual ? { statementVisual } : {}),
     ...(data.modulusMode === undefined ? {} : { modulusMode: data.modulusMode as ModulusMode }),
     ...(dimensions ? { rankDimensions: { rows: dimensions.rows as number, columns: dimensions.columns as number } } : {}),
     ...(matrixDimensions ? { matrixDimensions: { operation: matrixDimensions.operation as MatrixDimensions['operation'], rowsA: matrixDimensions.rowsA as number, colsA: matrixDimensions.colsA as number, rowsB: matrixDimensions.rowsB as number, colsB: matrixDimensions.colsB as number } } : {}),
@@ -225,7 +228,8 @@ function solution(data: Record<string, unknown>): RevealedSolution {
       if (!Number.isInteger(source.row) || (source.row as number) < 0 || (source.row as number) >= m.length || !Array.isArray(source.columns) || source.columns.some(col => !Number.isInteger(col) || col < 0 || col >= m.length)) throw new Error(text.service_error);
       minorExpansion = { matrix: m, row: source.row as number, columns: source.columns as number[] };
     }
-    return { say: step.say, latex: step.latex, ...(rules ? { rules } : {}), ...(determinantMatrix ? { determinantMatrix } : {}), ...(minorExpansion ? { minorExpansion } : {}) };
+    const visual = parseVisual(step.visual);
+    return { say: step.say, latex: step.latex, ...(rules ? { rules } : {}), ...(determinantMatrix ? { determinantMatrix } : {}), ...(minorExpansion ? { minorExpansion } : {}), ...(visual ? { visual } : {}) };
   });
   // A visual this build cannot read is left out; the steps never depend on it.
   const visual = parseVisual(data.visual);
@@ -478,7 +482,7 @@ export function generateProblem(topic: PracticeTopic, difficulty: Difficulty, ar
     || (rankDimensions && (topic !== 'matrix-rank' || difficulty > 3 || ![2, 3, 4, 5].includes(rankDimensions.rows) || ![2, 3, 4, 5].includes(rankDimensions.columns)))
     || (matrixDimensions && (topic !== 'matrix-operations' || difficulty > 3 || !!matrixOptions))
     || (squareSize !== undefined && (!['determinants', 'inverse-matrices', 'linear-systems'].includes(topic) || difficulty > 3 || ![2, 3, 4, 5].includes(squareSize)))
-    || (exerciseMode && (difficulty > 3 || !(topic === 'complex-arithmetic' ? ['multiply', 'divide'] : topic === 'polynomial-division' ? ['division', 'remainder', 'divisibility'] : topic === 'complex-conversion' ? ['alg-trig', 'alg-exp', 'trig-alg', 'exp-alg'] : topic === 'polynomial-roots' ? ['roots'] : topic === 'partial-fractions' ? ['fractions'] : topic === 'complex-polar-form' ? ['argument', 'power', 'root'] : []).includes(exerciseMode)))) return Promise.reject(new Error(text.unsupported));
+    || (exerciseMode && (difficulty > 3 || !(topic === 'vectors' ? VECTOR_MODE_IDS : topic === 'complex-arithmetic' ? ['multiply', 'divide'] : topic === 'polynomial-division' ? ['division', 'remainder', 'divisibility'] : topic === 'complex-conversion' ? ['alg-trig', 'alg-exp', 'trig-alg', 'exp-alg'] : topic === 'polynomial-roots' ? ['roots'] : topic === 'partial-fractions' ? ['fractions'] : topic === 'complex-polar-form' ? ['argument', 'power', 'root'] : []).includes(exerciseMode)))) return Promise.reject(new Error(text.unsupported));
   const drawFrom = mixed ? area : areaOf(topic);
   if (generating) return generating;
   const started = epoch;
@@ -495,6 +499,7 @@ export function generateProblem(topic: PracticeTopic, difficulty: Difficulty, ar
     if (typeof data.id !== 'string' || typeof data.problemLatex !== 'string' || typeof data.createdAt !== 'string'
         || (mixed ? !isTopicSlug(data.topic) || listedArea(data.topic) !== drawFrom : data.topic !== topic)
         || data.difficulty !== difficulty) throw new Error(text.service_error);
+    const statementVisual = parseVisual(data.statementVisual);
     // Explicit projection: even a malformed server response cannot cache private fields.
     const promptVisual = parsePromptVisual(data.promptVisual);
     const problem: PublicProblem = { saved, id: data.id, topic: data.topic as TopicSlug, difficulty,
@@ -502,6 +507,7 @@ export function generateProblem(topic: PracticeTopic, difficulty: Difficulty, ar
       lastResult: null, lastAnswer: null, ...(mixed ? { mixed: true } : {}),
       ...(promptVisual ? { promptVisual } : {}),
       ...(data.selfReview === true ? { selfReview: true } : {}),
+      ...(statementVisual ? { statementVisual } : {}),
       ...(data.answerInput === undefined ? {} : { answerInput: parseAnswerInput(data.answerInput) }),
       ...(modulusMode ? { modulusMode } : {}), ...(rankDimensions ? { rankDimensions } : {}), ...(matrixDimensions ? { matrixDimensions } : {}), ...(squareSize ? { squareSize } : {}), ...(exerciseMode ? { exerciseMode } : {}) };
     problems.unshift(problem);

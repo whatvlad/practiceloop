@@ -5,6 +5,7 @@ import { useTheme } from '../theme';
 import { MatrixProductDiagram } from './MatrixProductDiagram';
 import { DeterminantDiagram } from './DeterminantDiagram';
 import { MinorExpansion } from './MinorExpansion';
+import { SolutionVisual } from '../visual/SolutionVisual';
 
 function StepFormula({ latex }: { latex: string }) {
   const rowColors = ROW_COLORS[useTheme()];
@@ -48,7 +49,7 @@ export function SolutionSteps({ steps, matrixStatement, colorEntries = true }: {
       {matrixStatement && <li><div><div className="m" tabIndex={0}><Tex latex={colorEntries ? colorMatrixEntries(matrixStatement, !!statementProduct, theme) : matrixStatement} /></div></div></li>}
       {steps.map((step, index) => (
         <li key={index} className={index === steps.length - 1 ? 'final' : undefined}>
-          <div>
+          <div className={step.visual?.kind === 'geometry3d' ? 'pl-geometry-step' : undefined}>
             {product && index === multiplyIndex && step.latex.includes(String.raw`\cdot`) && step.latex.includes(String.raw`\begin{`) ? <>
               <strong>Multiply the matrices</strong>
               <MatrixProductDiagram matrices={product} />
@@ -70,6 +71,7 @@ export function SolutionSteps({ steps, matrixStatement, colorEntries = true }: {
               <div className="say">{step.say}</div>
               <div className="m" tabIndex={0}><Tex latex={step.latex} /></div>
             </>}
+            {step.visual && <SolutionVisual spec={step.visual} />}
           </div>
         </li>
       ))}

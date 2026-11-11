@@ -76,6 +76,11 @@ def lookup(code: Annotated[str, Query(max_length=128)]) -> dict[str, Any]:
             "difficulty": opened.difficulty,
             "problemLatex": opened.problem.statement,
             **engine.problem_projection(opened.problem.issued().record),
+            **(
+                {"statementVisual": opened.problem.statement_visual}
+                if opened.problem.statement_visual is not None
+                else {}
+            ),
         }
     }
 

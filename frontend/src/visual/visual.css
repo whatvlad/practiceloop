@@ -36,4 +36,30 @@
 .pl-vis-legend i.dot.zero{background:var(--ink-muted)}
 .pl-vis-legend i.dot.extremum{background:var(--correct)}
 .pl-vis-legend i.dot.inflection{background:var(--surface);border:2px solid var(--correct)}
-@media (max-width:560px){.pl-vis{padding:var(--space-3)}}
+.pl-geometry{margin-block:var(--space-4);gap:var(--space-3)}
+.pl-geometry-step .m{color:var(--correct)}
+.pl-geometry-head{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);flex-wrap:wrap}
+.pl-geometry .pl-visual-3d{width:100%;max-width:480px;align-self:center}
+.pl-geometry-projection{width:100%;max-width:480px;align-self:center;background:var(--surface);border-radius:var(--radius-md)}
+.pl-geometry-projection svg{display:block;width:100%;height:auto}
+.pl-geometry-axis line{stroke:var(--ink-subtle);stroke-width:1.3;stroke-dasharray:4 3}
+.pl-geometry-axis circle{fill:var(--ink-subtle)}
+.pl-geometry-axis text{fill:var(--ink-muted);font:12px var(--font-mono);stroke:var(--surface);stroke-width:3;paint-order:stroke}
+.pl-geometry-line line{stroke:var(--ink-muted);stroke-width:1.8;fill:none}
+.pl-geometry-line.active line{stroke:var(--correct);stroke-width:2.5}
+.pl-geometry-line.previous line{stroke:var(--ink-subtle);stroke-width:1.5}
+.pl-geometry-point circle{fill:var(--ink);stroke:var(--surface);stroke-width:1.2}
+.pl-geometry-point.active circle{fill:var(--correct)}
+.pl-geometry-point text,.pl-geometry-line text{fill:var(--ink);font:12px var(--font-mono);stroke:var(--surface);stroke-width:3;paint-order:stroke}
+.pl-geometry-section-label{fill:var(--ink-muted);font:11px var(--font-mono)}
+.pl-geometry-scale-note{margin:0;padding:0 var(--space-3) var(--space-3)}
+.pl-geometry-face{fill:var(--ink-subtle);fill-opacity:.14;stroke:none}
+.pl-geometry-face.active{fill:var(--correct);fill-opacity:.25}
+.pl-geometry-face.previous{fill-opacity:.09}
+@media (max-width:560px){
+  .pl-vis{padding:var(--space-3)}
+  .pl-geometry-step > .pl-geometry{margin-left:calc(-32px - var(--space-4));width:calc(100% + 32px + var(--space-4))}
+  .pl-geometry-point text,.pl-geometry-line text{font-size:18px}
+  .pl-geometry-axis text{font-size:15px}
+  .pl-geometry-section-label{font-size:15px}
+}

@@ -38,7 +38,7 @@ from app.services.learning_stats import statistics
 from app.services.math_worker import AnswerCheck, MathCheckInconclusive, MathWorkerError
 from app.services.math_worker import check_answer as shared_check
 from app.services.preview_check import CHECK_SLOTS
-from app.visuals.spec import solution_payload
+from app.visuals.spec import solution_payload, statement_projection
 
 router = APIRouter(tags=["practice"])
 
@@ -168,6 +168,16 @@ class GenerateBody(BaseModel):
     exerciseMode: (
         Literal[
             "multiply",
+            "vector-expression",
+            "scalar-expression",
+            "vector-length",
+            "perpendicular-parameter",
+            "triangle-angle",
+            "triangle-area",
+            "parallelogram-area",
+            "tetrahedron-volume",
+            "tetrahedron-height",
+            "parallelepiped-area",
             "divide",
             "division",
             "remainder",
@@ -319,6 +329,7 @@ def _public_problem(
         "problemLatex": problem.problem_latex,
         **engine.problem_projection(problem.generator_data),
         **engine.public_settings(problem.generator_data),
+        **statement_projection(problem.generator_data),
         "createdAt": _timestamp(problem.created_at),
         "answerRevealed": problem.answer_revealed,
         "solutionRevealed": problem.solution_revealed,
@@ -474,6 +485,18 @@ def generate(body: GenerateBody, user: User, key: IdempotencyKey = None) -> JSON
         or body.exerciseMode
         not in {
             "complex-arithmetic": {"multiply", "divide"},
+            "vectors": {
+                "vector-expression",
+                "scalar-expression",
+                "vector-length",
+                "perpendicular-parameter",
+                "triangle-angle",
+                "triangle-area",
+                "parallelogram-area",
+                "tetrahedron-volume",
+                "tetrahedron-height",
+                "parallelepiped-area",
+            },
             "polynomial-division": {"division", "remainder", "divisibility"},
             "complex-conversion": {"alg-trig", "alg-exp", "trig-alg", "exp-alg"},
             "polynomial-roots": {"roots"},
@@ -608,6 +631,11 @@ def generate(body: GenerateBody, user: User, key: IdempotencyKey = None) -> JSON
                     "problemLatex": problem.problem_latex,
                     **engine.problem_projection(problem.generator_data),
                     **engine.public_settings(problem.generator_data),
+                    **(
+                        {"statementVisual": issued.statement_visual}
+                        if issued.statement_visual is not None
+                        else {}
+                    ),
                     "createdAt": _timestamp(problem.created_at),
                     "answerRevealed": problem.answer_revealed,
                     "solutionRevealed": problem.solution_revealed,

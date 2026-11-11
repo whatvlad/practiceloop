@@ -9,6 +9,7 @@ Never point it at Supabase or shared data: the tests commit and then delete user
 from __future__ import annotations
 
 import os
+import sys
 import threading
 from collections.abc import Iterator
 from pathlib import Path
@@ -102,6 +103,64 @@ def test_algebra_settings_are_saved_and_reopened(
     revealed = client.post(f"/problems/{problem['id']}/reveal-solution")
     assert revealed.status_code == 200, revealed.text
     assert revealed.json()["steps"]
+
+
+@pytest.mark.parametrize(
+    ("mode", "level"),
+    [("vector-expression", 2), ("perpendicular-parameter", 1), ("tetrahedron-height", 3)],
+)
+def test_geometry_practice_persists_public_and_revealed_diagrams(
+    client: TestClient, url: str, monkeypatch: pytest.MonkeyPatch, mode: str, level: int
+) -> None:
+    # On Linux the actual limited worker participates in the persisted API flow.
+    # Windows has no resource limits, so keep the local-check seam there.
+    from app.math_input import MathInputError, parse_answer_input
+
+    def check_locally(answer: str, record: dict[str, object]) -> AnswerCheck:
+        try:
+            tree = parse_answer_input(
+                answer,
+                engine.input_kind(record),
+                engine.input_variables(record),
+                contract=engine.input_contract(record),
+            )
+        except MathInputError:
+            return AnswerCheck("invalid")
+        result = engine.check(record, tree)
+        assert result in ("correct", "incorrect", "invalid")
+        return AnswerCheck(result)
+
+    if sys.platform != "linux":
+        monkeypatch.setattr(practice, "shared_check", check_locally)
+    response = client.post(
+        "/problems",
+        json={
+            "topic": "vectors",
+            "difficulty": level,
+            "exerciseMode": mode,
+        },
+        headers=key(),
+    )
+    assert response.status_code == 201, response.text
+    problem = response.json()["problem"]
+    assert problem["exerciseMode"] == mode
+    assert problem["statementVisual"]["kind"] == "geometry3d"
+    assert "answerLatex" not in problem and "steps" not in problem
+    if mode == "tetrahedron-height":
+        assert "H" not in {point["label"] for point in problem["statementVisual"]["points"]}
+    problem_id = problem["id"]
+    before = client.get(f"/problems/{problem_id}").json()
+    assert "solution" not in before and "answer" not in before
+    wrong = attempt(client, problem_id, answer_of(url, problem_id, wrong=True))
+    assert wrong.status_code == 201 and wrong.json()["attempt"]["result"] != "correct"
+    correct = attempt(client, problem_id, answer_of(url, problem_id))
+    assert correct.status_code == 201 and correct.json()["attempt"]["result"] == "correct"
+    shown = client.post(f"/problems/{problem_id}/reveal-solution")
+    assert shown.status_code == 200, shown.text
+    assert all(step.get("visual") and step.get("rules") for step in shown.json()["steps"])
+    reopened = client.get(f"/problems/{problem_id}").json()
+    assert reopened["problem"]["statementVisual"] == problem["statementVisual"]
+    assert reopened["solution"]["steps"] == shown.json()["steps"]
 
 
 class Users:

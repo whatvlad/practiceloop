@@ -105,6 +105,57 @@ def test_public_code_lookup_projects_only_the_statement_without_symbolic_work(
     assert not calls
 
 
+def test_geometry_lookup_shows_given_drawing_without_symbolic_work(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    codes._opened.cache_clear()
+    codes.lookup_limit.reset()
+    opened = rebuild("VTH-1-0000000000000000-07")
+    monkeypatch.setattr(codes, "open_problem_code", lambda _: opened.model_dump_json().encode())
+    calls = []
+
+    def profile(frame: FrameType, event: str, _: Any) -> None:
+        if event == "call" and frame.f_globals.get("__name__", "").startswith("sympy"):
+            calls.append(frame.f_code.co_name)
+
+    previous = sys.getprofile()
+    sys.setprofile(profile)
+    try:
+        body = codes.lookup(opened.problem.code)
+    finally:
+        sys.setprofile(previous)
+    visual = body["problem"].get("statementVisual")
+    assert visual is not None
+    assert {point["label"] for point in visual["points"]} == {"A", "B", "C", "D"}
+    assert "answer" not in body["problem"] and "solution" not in body["problem"]
+    assert not calls
+    codes._opened.cache_clear()
+
+
+def test_vector_coordinate_input_does_not_run_symbolic_work_during_lookup(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    codes._opened.cache_clear()
+    codes.lookup_limit.reset()
+    opened = rebuild(encode("VEC", 1, 0))
+    monkeypatch.setattr(codes, "open_problem_code", lambda _: opened.model_dump_json().encode())
+    calls = []
+
+    def profile(frame: FrameType, event: str, _: Any) -> None:
+        if event == "call" and frame.f_globals.get("__name__", "").startswith("sympy"):
+            calls.append(frame.f_code.co_name)
+
+    previous = sys.getprofile()
+    sys.setprofile(profile)
+    try:
+        body = codes.lookup(opened.problem.code)
+    finally:
+        sys.setprofile(previous)
+        codes._opened.cache_clear()
+    assert body["problem"]["answerInput"]["kind"] == "tuple"
+    assert not calls
+
+
 @pytest.mark.parametrize(
     "code",
     [
