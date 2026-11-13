@@ -20,6 +20,7 @@ from app.engine.registry import Registry
 from app.engine.rendering import Issued, render
 from app.engine.rendering import statement_latex as statement_latex
 from app.engine.topics.catalogue import Topic, topics
+from app.geometry_options import geometry_modes
 from app.math_input import MathNode, VariableDomain, declared_variables
 from app.math_input.contracts import COMPUTATIONAL_KINDS, InputContract
 
@@ -96,7 +97,8 @@ def issue(
             "polynomial-roots": {"roots"},
             "partial-fractions": {"fractions"},
             "complex-polar-form": {"argument", "power", "root"},
-            "vectors": {
+            "vectors": geometry_modes("vectors")
+            | {
                 "vector-expression",
                 "scalar-expression",
                 "vector-length",
@@ -108,6 +110,7 @@ def issue(
                 "tetrahedron-height",
                 "parallelepiped-area",
             },
+            "lines-and-planes": geometry_modes("lines-and-planes"),
         }
         if level not in (1, 2, 3) or exercise_mode not in supported.get(slug, set()):
             raise ValueError("Invalid exercise mode")
@@ -225,6 +228,19 @@ def issue(
         if not complete:
             raise ValueError("No matrix problems match these settings")
     candidates = tuple(p for p in complete if p.issued().record not in recent) or complete
+    if slug in {"vectors", "lines-and-planes"} and level <= 3 and exercise_mode is None:
+        # A mode's boundary cases enlarge its pool, not its chance of being selected.
+        groups: dict[str, list[Any]] = {}
+        for problem in candidates:
+            mode = public_settings(problem.issued().record).get(
+                "exerciseMode", problem.generator_version
+            )
+            groups.setdefault(mode, []).append(problem)
+        grouped = tuple(groups.values())
+        index = secrets.randbelow(len(grouped)) if seed is None else seed % len(grouped)
+        candidates = tuple(grouped[index])
+        if seed is not None:
+            seed //= len(grouped)
     chosen = secrets.randbelow(len(candidates)) if seed is None else seed % len(candidates)
     return candidates[chosen].issued()
 
@@ -291,6 +307,20 @@ def _matrix_dimensions(code: str) -> dict[str, Any]:
 
 def public_settings(record: Any) -> dict[str, Any]:
     """Recover learner-selected settings without exposing answer parameters."""
+    if is_engine_record(record) and str(record.get("generator_version")).startswith(
+        "geometry-practice-"
+    ):
+        from app.engine.generators.geometry_practice import GeometryPractice
+
+        parsed = parse_code(record["code"], _registry())
+        generator = _registry().get_code(parsed.prefix, parsed.version)
+        if (
+            not isinstance(generator, GeometryPractice)
+            or generator.version != record["generator_version"]
+            or parsed.seed >= 3 * 10**12
+        ):
+            raise ValueError("Invalid geometry settings")
+        return {"exerciseMode": generator.mode}
     if is_engine_record(record) and record.get("generator_version") == "vector-solid-practice-v1":
         from app.engine.generators.eigen_geometry import SOLID_MODES
 
@@ -549,6 +579,12 @@ def input_contract(record: dict[str, object]) -> InputContract | None:
     code = parse_code(record["code"], _registry())  # type: ignore[arg-type]
     generator = _registry().get_code(code.prefix, code.version)
     version = generator.version
+    if version.startswith("geometry-practice-"):
+        from app.engine.generators.geometry_practice import GeometryPractice, mode_contract
+
+        if not isinstance(generator, GeometryPractice) or code.seed >= 3 * 10**12:
+            raise ValueError("Invalid geometry input contract")
+        return mode_contract(generator.mode)
     if version == "vector-expression-v1":
         return InputContract(
             "tuple",

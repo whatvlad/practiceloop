@@ -1,7 +1,7 @@
 /** The public navigation groups; a missing topic is planned, not selectable. */
 export interface AlgebraGroup {
   title: string;
-  items: { title: string; topic?: string; note?: string }[];
+  items: { title: string; topic?: string; note?: string; section?: string }[];
 }
 
 export const algebraGroups: AlgebraGroup[] = [
@@ -32,10 +32,10 @@ export const algebraGroups: AlgebraGroup[] = [
   ] },
   { title: 'Analytic geometry', items: [
     { title: 'Vectors, areas and volumes', topic: 'vectors', note: 'Combined practice' },
-    { title: 'Lines and planes', topic: 'lines-and-planes', note: 'Combined practice' },
-    { title: 'Vector operations' },
-    { title: 'Lengths and angles' },
-    { title: 'Distances and intersections' },
-    { title: 'Projections and reflections' },
+    { title: 'Lines and planes', topic: 'lines-and-planes', section: 'lines-and-planes' },
+    { title: 'Vector operations', topic: 'vectors', section: 'vector-operations' },
+    { title: 'Lengths and angles', topic: 'vectors', section: 'lengths-and-angles' },
+    { title: 'Distances and intersections', topic: 'lines-and-planes', section: 'distances-and-intersections' },
+    { title: 'Projections and reflections', topic: 'lines-and-planes', section: 'projections-and-reflections' },
   ] },
 ];

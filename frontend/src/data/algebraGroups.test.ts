@@ -12,4 +12,14 @@ describe('algebra navigation', () => {
     expect(items.map(item => item.topic)).not.toContain('algebraic-expressions');
     expect(items.map(item => item.topic)).not.toContain('binomial-theorem');
   });
+
+  it('opens every remaining analytic-geometry section through an available canonical topic', () => {
+    const geometry = algebraGroups.find(group => group.title === 'Analytic geometry')!.items;
+    expect(geometry).toHaveLength(6);
+    expect(geometry.every(item => item.topic)).toBe(true);
+    expect(geometry.slice(1).map(item => item.section)).toEqual([
+      'lines-and-planes', 'vector-operations', 'lengths-and-angles',
+      'distances-and-intersections', 'projections-and-reflections',
+    ]);
+  });
 });

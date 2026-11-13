@@ -15,12 +15,12 @@ export function PracticeSidebar({ preview, onLocalRandom, onPreviewTopic }: { pr
   const topics = catalogue.status === 'ready' ? catalogue.data.topics : [];
   const current = pathname === '/dashboard' ? params.get('topic') : null;
 
-  function topicRow(topic: AvailableTopic, title = topic.name) {
-    return <li key={topic.slug}>
+  function topicRow(topic: AvailableTopic, title = topic.name, section?: string) {
+    return <li key={`${topic.slug}:${section ?? ''}`}>
       {onPreviewTopic && LOCAL_PREVIEW_TOPICS.includes(topic.slug)
         ? <button type="button" className="pl-sidebar-topic" onClick={() => onPreviewTopic(topic.slug)}>{title}</button>
         : preview && onPreviewTopic ? <span aria-disabled="true">{title} <small>Not available locally</small></span>
-        : <Link to={`/dashboard?area=${topic.area}&topic=${topic.slug}`} aria-current={current === topic.slug ? 'page' : undefined}>{title}</Link>}
+        : <Link to={`/dashboard?area=${topic.area}&topic=${topic.slug}${section ? `&section=${section}` : ''}`} aria-current={current === topic.slug && (params.get('section') ?? undefined) === section ? 'page' : undefined}>{title}</Link>}
     </li>;
   }
   const randomCurrent = pathname === '/random';
@@ -52,7 +52,7 @@ export function PracticeSidebar({ preview, onLocalRandom, onPreviewTopic }: { pr
               <summary>{group.title}</summary>
               <ul>{group.items.filter(item => !(preview && onLocalRandom && ['polynomial-operations', 'fundamental-theorem-algebra'].includes(item.topic ?? ''))).map(item => {
                 const topic = available.find(entry => entry.slug === item.topic);
-                return topic ? topicRow(topic, item.title) : <li key={item.title}><span>{item.title} <small>Coming soon</small></span></li>;
+                return topic ? topicRow(topic, item.title, item.section) : <li key={item.title}><span>{item.title} <small>Coming soon</small></span></li>;
               })}</ul>
             </details>;
           })}

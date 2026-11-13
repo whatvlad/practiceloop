@@ -1,5 +1,10 @@
 # Algebra30 coverage
 
+The geometry rows below describe the historical #221 baseline. The local
+2026-11-13 extension, its exact level matrix and remaining bounds are documented
+in [Analytic geometry practice](ANALYTIC_GEOMETRY.md). It activates the five
+remaining geometry navigation sections without claiming every original subpart.
+
 Issue #221. Source: algebra30.pdf, exercises 1–97. Each row compares an exercise
 group with the served engine topics. **Covered** means a generator issues that
 exercise type with exact checking and solution steps. **Partial** means only some

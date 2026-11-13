@@ -114,6 +114,8 @@ body{--keyboard-background:var(--surface);--keyboard-border:var(--line);--keyboa
 .pl-expr{position:relative;background:var(--surface-raised);border-radius:var(--radius-lg);padding:var(--space-6) var(--space-5);text-align:center;font-family:var(--font-math);font-size:44px;line-height:1.3;overflow-x:auto;overflow-y:hidden}
 .pl-expr .katex{font-size:1em}
 .pl-expr .katex-display{width:max-content;min-width:100%}
+.pl-geometry-statement{font-size:18px;line-height:1.75;overflow-wrap:break-word}
+.pl-geometry-given{display:inline-block;max-width:100%;overflow-x:auto;vertical-align:middle;margin:0 .15em}
 .pl-actions{display:flex;flex-wrap:wrap;gap:var(--space-3);align-items:center}
 
 /* result banners */
@@ -125,7 +127,8 @@ body{--keyboard-background:var(--surface);--keyboard-border:var(--line);--keyboa
 .pl-result--incorrect{background:var(--incorrect-soft);color:var(--incorrect);border-color:var(--incorrect)}
 .pl-result--invalid{background:var(--invalid-soft);color:var(--invalid);border-color:var(--invalid)}
 .pl-answer{background:var(--surface-raised);border-radius:var(--radius-lg);padding:var(--space-4) var(--space-5);display:flex;align-items:center;justify-content:space-between;gap:var(--space-4)}
-.pl-answer .v{font-family:var(--font-math);font-size:26px;line-height:1.3}
+.pl-answer>div{min-width:0;max-width:100%}
+.pl-answer .v{font-family:var(--font-math);font-size:26px;line-height:1.3;overflow-x:auto;overflow-y:hidden}
 
 /* solution steps */
 .pl-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0;counter-reset:s;background:var(--surface-raised);border-radius:var(--radius-lg);overflow:hidden}

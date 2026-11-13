@@ -29,6 +29,10 @@ def test_each_vector_mode_is_available_and_opens_at_its_level(level, monkeypatch
         "tetrahedron-volume",
         "tetrahedron-height",
         "parallelepiped-area",
+        "point-collinearity",
+        "parallel-vector",
+        "unit-perpendiculars",
+        "constrained-vector",
     }
     for mode in (
         "vector-expression",

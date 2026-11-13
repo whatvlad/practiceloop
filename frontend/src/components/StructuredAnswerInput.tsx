@@ -35,6 +35,21 @@ function entries(value: string, kind: AnswerInputSpec['kind']): string[] {
 
 /** The server supplies only an input kind. Correctness remains server-side. */
 export function StructuredAnswerInput({ id, spec, value, onChange, state, onEnter, describedBy }: Props) {
+  const numericVector = (child: ComputationalInputSpec) => child.kind === 'tuple'
+    && ['x component|y component|z component', 'x coordinate|y coordinate|z coordinate'].includes(child.labels?.join('|') ?? '')
+    && child.components?.length === 3 && child.components.every(part => part.kind === 'formula' && !Object.keys(part.symbols ?? {}).length);
+  const vectorPair = spec.kind === 'tuple' && spec.labels?.join('|') === 'Vector one|Vector two'
+    && spec.components?.length === 2 && spec.components.every(numericVector);
+  const pair = vectorPair ? parseMatrixAnswer(value, 2, 3) : null;
+  if (pair && spec.kind === 'tuple' && spec.components) {
+    const values = pair.map(row => `(${row.join(';')})`);
+    return <fieldset className="pl-structured-answer pl-field pl-stack pl-gap-3" aria-describedby={describedBy}>
+      <legend className="pl-label">Your answer</legend>
+      <p className="pl-small">Enter both vectors in either order. Keep x, y and z in coordinate order.</p>
+      {spec.components.map((child, index) => <VectorAnswerInput key={index} id={`${id}-${index}`} label={spec.labels![index]} spec={child} value={values[index]}
+        onChange={next => onChange(`(${values.map((old, i) => i === index ? next : old).join(';')})`)} state={state} onEnter={onEnter} describedBy={describedBy} />)}
+    </fieldset>;
+  }
   const dimensions = matrixDimensions(spec as ComputationalInputSpec);
   const matrix = dimensions && parseMatrixAnswer(value, ...dimensions);
   if (matrix) {
@@ -42,8 +57,7 @@ export function StructuredAnswerInput({ id, spec, value, onChange, state, onEnte
     const variables = symbols ? Object.keys(symbols).filter((name): name is AnswerVariable => ANSWER_VARIABLES.includes(name as AnswerVariable)) : undefined;
     return <MatrixAnswerInput value={matrix} variables={variables} onChange={next => onChange(serializeMatrixAnswer(next))} />;
   }
-  if (spec.kind === 'tuple' && spec.labels?.join('|') === 'x component|y component|z component'
-    && spec.components?.length === 3 && spec.components.every(child => child.kind === 'formula' && !Object.keys(child.symbols ?? {}).length)) {
+  if (numericVector(spec as ComputationalInputSpec)) {
     return <VectorAnswerInput id={id} spec={spec as ComputationalInputSpec} value={value} onChange={onChange} state={state} onEnter={onEnter} describedBy={describedBy} />;
   }
   if ((COMPUTATIONAL_KINDS as readonly string[]).includes(spec.kind)) return <ComputationalAnswerInput

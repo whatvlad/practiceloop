@@ -39,3 +39,23 @@ it('opens the determinant topic in local preview without navigating away', async
   expect(select).toHaveBeenCalledWith('determinants');
   await act(async () => root.unmount()); element.remove();
 });
+
+it('links each geometry section separately and marks only its current row', async () => {
+  (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
+  window.history.replaceState(null, '', '/dashboard?area=algebra&topic=vectors&section=vector-operations');
+  const element = document.createElement('div'); document.body.append(element);
+  const root = createRoot(element);
+  await act(async () => root.render(<PracticeSidebar preview={{
+    areas: [{ slug: 'algebra', name: 'Algebra', mixed: null }],
+    topics: [
+      { slug: 'vectors', name: 'Vectors', area: 'algebra', availableDifficulties: [1, 2, 3] },
+      { slug: 'lines-and-planes', name: 'Lines and planes', area: 'algebra', availableDifficulties: [1, 2, 3] },
+    ],
+  }} />));
+  const links = [...element.querySelectorAll<HTMLAnchorElement>('a[href*="topic=vectors"], a[href*="topic=lines-and-planes"]')];
+  expect(new Set(links.map(link => link.href)).size).toBe(6);
+  expect(links.filter(link => link.getAttribute('aria-current') === 'page').map(link => link.textContent)).toEqual(['Vector operations']);
+  expect(links.find(link => link.textContent === 'Projections and reflections')?.href).toContain('section=projections-and-reflections');
+  await act(async () => root.unmount()); element.remove();
+  window.history.replaceState(null, '', '/');
+});

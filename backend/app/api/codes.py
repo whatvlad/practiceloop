@@ -47,6 +47,16 @@ def canonical(text: str) -> str:
 
 @lru_cache(maxsize=128)
 def _opened(code: str) -> OpenedCode:
+    parsed = parse_code(code, engine._registry())
+    generator = engine._registry().get_code(parsed.prefix, parsed.version)
+    if generator.version.startswith("geometry-practice-"):
+        # These immutable records already contain the verified complete drawing
+        # and solution. Concurrent public lookups need no symbolic worker slot.
+        for topic in ("vectors", "lines-and-planes"):
+            for level in (1, 2, 3):
+                for problem in engine.pool(topic, level):
+                    if problem.code == code:
+                        return OpenedCode(topic=topic, difficulty=level, problem=problem)
     if not CHECK_SLOTS.acquire(blocking=False):
         raise _worker_unavailable()
     try:

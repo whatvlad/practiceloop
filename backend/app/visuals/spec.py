@@ -24,6 +24,8 @@ MAX_BYTES = 8 * 1024
 
 def statement_visual(record: dict[str, object]) -> dict[str, Any] | None:
     """Only the given geometry, without solution objects or answers."""
+    if str(record.get("generator_version")).startswith("geometry-practice-"):
+        return deepcopy(_geometry_issued(record).statement_visual)
     from app.visuals.geometry import statement_visual as geometry_statement
 
     return geometry_statement(record)
@@ -51,7 +53,10 @@ def statement_projection(record: object) -> dict[str, Any]:
     """Project only the prepared public geometry of a supported record."""
     from app.visuals.geometry import _VERSIONS
 
-    if not isinstance(record, dict) or record.get("generator_version") not in _VERSIONS:
+    if not isinstance(record, dict) or (
+        record.get("generator_version") not in _VERSIONS
+        and not str(record.get("generator_version")).startswith("geometry-practice-")
+    ):
         return {}
     visual = _geometry_issued(record).statement_visual
     return {"statementVisual": visual} if visual is not None else {}
@@ -118,7 +123,9 @@ def solution_payload(steps: Any, record: dict[str, object]) -> dict[str, Any]:
     version = record.get("generator_version")
     from app.visuals.geometry import _VERSIONS
 
-    if version in _VERSIONS and not any(step.get("visual") for step in rendered):
+    if (version in _VERSIONS or str(version).startswith("geometry-practice-")) and not any(
+        step.get("visual") for step in rendered
+    ):
         prepared = _geometry_issued(record).steps
         if len(prepared) == len(rendered):
             rendered = [

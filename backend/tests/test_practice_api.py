@@ -107,13 +107,27 @@ def test_algebra_settings_are_saved_and_reopened(
 
 @pytest.mark.parametrize(
     ("mode", "level"),
-    [("vector-expression", 2), ("perpendicular-parameter", 1), ("tetrahedron-height", 3)],
+    [
+        ("vector-expression", 2),
+        ("perpendicular-parameter", 1),
+        ("tetrahedron-height", 3),
+        ("plane-equation", 1),
+        ("plane-parameterisation", 2),
+        ("line-equation", 3),
+        ("unit-perpendiculars", 2),
+        ("constrained-vector", 3),
+        ("line-position", 1),
+        ("line-plane-projection", 2),
+        ("plane-reflection", 3),
+        ("planes-common-point", 3),
+    ],
 )
 def test_geometry_practice_persists_public_and_revealed_diagrams(
     client: TestClient, url: str, monkeypatch: pytest.MonkeyPatch, mode: str, level: int
 ) -> None:
     # On Linux the actual limited worker participates in the persisted API flow.
     # Windows has no resource limits, so keep the local-check seam there.
+    from app.geometry_options import GEOMETRY_OPTIONS
     from app.math_input import MathInputError, parse_answer_input
 
     def check_locally(answer: str, record: dict[str, object]) -> AnswerCheck:
@@ -135,7 +149,7 @@ def test_geometry_practice_persists_public_and_revealed_diagrams(
     response = client.post(
         "/problems",
         json={
-            "topic": "vectors",
+            "topic": GEOMETRY_OPTIONS.get(mode, {"topic": "vectors"})["topic"],
             "difficulty": level,
             "exerciseMode": mode,
         },
@@ -504,6 +518,11 @@ def answer_of(url: str, problem_id: str, *, wrong: bool = False) -> str:
     from app.engine.generators.matrix_full import MatrixAnswer
 
     answer = engine.replay(data).answer
+    if str(data["generator_version"]).startswith("geometry-practice-"):
+        from test_geometry_practice import answer_text
+        from test_geometry_worker import wrong_answer
+
+        return wrong_answer(answer) if wrong else answer_text(answer)
 
     def scalar(value: Any) -> str:
         return str(value).replace("**", "^").replace("E", "e")

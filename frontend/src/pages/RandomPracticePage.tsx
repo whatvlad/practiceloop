@@ -21,7 +21,7 @@ function groupsOf(catalogue: Catalogue): Group[] {
     key: `algebra:${group.title}`,
     area: algebraName,
     title: group.title,
-    topics: group.items.flatMap(item => {
+    topics: group.items.filter(item => !item.section || item.section === 'lines-and-planes').flatMap(item => {
       const topic = available.find(entry => entry.slug === item.topic);
       return topic ? [{ topic, title: item.title }] : [];
     }),
@@ -38,7 +38,12 @@ function groupsOf(catalogue: Catalogue): Group[] {
 /** Random practice: pick topics and a level for each; every problem draws one of them. */
 export function RandomPracticePage({ accountId }: { accountId: string }) {
   const catalogue = useLoad(getCatalogue);
-  const topics = catalogue.status === 'ready' ? catalogue.data.topics : [];
+  const currentCatalogue = catalogue.status === 'ready' ? {
+    ...catalogue.data,
+    topics: catalogue.data.topics.map(topic => ['vectors', 'lines-and-planes'].includes(topic.slug)
+      ? { ...topic, availableDifficulties: topic.availableDifficulties.filter(level => level <= 3) } : topic),
+  } : null;
+  const topics = currentCatalogue?.topics ?? [];
   const [selection, setSelection] = useState<RandomSelection>(() => loadRandomSelection(accountId));
   const [matrixOptions, setMatrixOptions] = useState(() => loadRandomMatrixOptions(accountId) ?? initialMatrixOptions(1));
   const [busy, setBusy] = useState(false);
@@ -46,7 +51,8 @@ export function RandomPracticePage({ accountId }: { accountId: string }) {
   const [error, setError] = useState('');
   const choices = eligibleRandomChoices(selection, topics);
   const count = Object.keys(selection).length;
-  const missingLevel = Object.values(selection).some(level => level === null);
+  const missingLevel = Object.entries(selection).some(([slug, level]) => level === null
+    || topics.find(topic => topic.slug === slug)?.availableDifficulties.includes(level) === false);
 
   function update(next: RandomSelection) {
     setSelection(next);
@@ -83,7 +89,8 @@ export function RandomPracticePage({ accountId }: { accountId: string }) {
 
   function tile({ topic, title }: Group['topics'][number]) {
     const on = Object.hasOwn(selection, topic.slug);
-    const level = selection[topic.slug] ?? null;
+    const selected = selection[topic.slug];
+    const level = selected && topic.availableDifficulties.includes(selected) ? selected : null;
     return <li key={topic.slug} className={`pl-rtile${on ? ' is-on' : ''}`}>
       <button type="button" className="pl-rtile-toggle" aria-pressed={on} onClick={() => toggle([topic.slug], !on)}>
         <span className="pl-rtile-check" aria-hidden="true">{on && <CheckIcon />}</span>
@@ -103,7 +110,7 @@ export function RandomPracticePage({ accountId }: { accountId: string }) {
     </li>;
   }
 
-  const groups = catalogue.status === 'ready' ? groupsOf(catalogue.data) : [];
+  const groups = currentCatalogue ? groupsOf(currentCatalogue) : [];
   return (
     <main id="main" tabIndex={-1} className="pl-wrap pl-app-main pl-random">
       <h1 className="pl-display-md pl-page-title">Mix topics</h1>

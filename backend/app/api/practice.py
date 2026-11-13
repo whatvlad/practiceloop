@@ -29,6 +29,7 @@ from app.core.database import transaction
 from app.core.errors import ApiError
 from app.engine import practice as engine
 from app.engine.topics.catalogue import Topic as EngineTopic
+from app.geometry_options import GeometryExerciseMode, geometry_modes
 from app.math_input import MathInputTooLong
 from app.services import archive, idempotency, shares
 from app.services import owned_records as records
@@ -192,6 +193,7 @@ class GenerateBody(BaseModel):
             "power",
             "root",
         ]
+        | GeometryExerciseMode
         | None
     ) = None
 
@@ -485,7 +487,8 @@ def generate(body: GenerateBody, user: User, key: IdempotencyKey = None) -> JSON
         or body.exerciseMode
         not in {
             "complex-arithmetic": {"multiply", "divide"},
-            "vectors": {
+            "vectors": geometry_modes("vectors")
+            | {
                 "vector-expression",
                 "scalar-expression",
                 "vector-length",
@@ -497,6 +500,7 @@ def generate(body: GenerateBody, user: User, key: IdempotencyKey = None) -> JSON
                 "tetrahedron-height",
                 "parallelepiped-area",
             },
+            "lines-and-planes": geometry_modes("lines-and-planes"),
             "polynomial-division": {"division", "remainder", "divisibility"},
             "complex-conversion": {"alg-trig", "alg-exp", "trig-alg", "exp-alg"},
             "polynomial-roots": {"roots"},

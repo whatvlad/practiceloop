@@ -3,7 +3,7 @@ import text from '../../../backend/app/content/en.json';
 import { normalizeCode } from './shares';
 import { normalizeProblemCode } from './problemCodes';
 import { parsePromptVisual, parseVisual } from '../visual/spec';
-import { VECTOR_MODE_IDS } from './vectorModes';
+import { geometryModesForTopic } from './geometryModes';
 import { AREAS, areaOf, isTopicSlug, listedArea, rememberTopics } from './topics';
 import { FEEDBACK_CODES } from './types';
 import { parseAnswerInput } from './answerInput';
@@ -15,7 +15,7 @@ const base = (import.meta.env.VITE_API_BASE_URL ?? '/api').trim().replace(/\/+$/
 let token: Promise<string> | null = null;
 let epoch = 0;
 let problems: PublicProblem[] = [];
-export interface Selection { topic: PracticeTopic; difficulty: Difficulty; area: AreaSlug }
+export interface Selection { topic: PracticeTopic; difficulty: Difficulty; area: AreaSlug; exerciseMode?: PublicProblem['exerciseMode'] }
 const FIRST: Selection = { topic: 'basic-integrals', difficulty: 1, area: 'mathematical-analysis' };
 let selection: Selection = { ...FIRST };
 let generating: Promise<PublicProblem> | null = null;
@@ -165,7 +165,7 @@ function verdict(data: Record<string, unknown>): CheckOutcome {
 
 function publicProblem(value: unknown): PublicProblem {
   const data = object(value);
-  if (data.exerciseMode !== undefined && !(data.topic === 'vectors' ? VECTOR_MODE_IDS : data.topic === 'complex-arithmetic' ? ['multiply', 'divide'] : data.topic === 'polynomial-division' ? ['division', 'remainder', 'divisibility'] : data.topic === 'complex-conversion' ? ['alg-trig', 'alg-exp', 'trig-alg', 'exp-alg'] : data.topic === 'polynomial-roots' ? ['roots'] : data.topic === 'partial-fractions' ? ['fractions'] : data.topic === 'complex-polar-form' ? ['argument', 'power', 'root'] : []).includes(data.exerciseMode as string)) throw new Error(text.service_error);
+  if (data.exerciseMode !== undefined && !((data.topic === 'vectors' || data.topic === 'lines-and-planes') ? geometryModesForTopic(data.topic as string) : data.topic === 'complex-arithmetic' ? ['multiply', 'divide'] : data.topic === 'polynomial-division' ? ['division', 'remainder', 'divisibility'] : data.topic === 'complex-conversion' ? ['alg-trig', 'alg-exp', 'trig-alg', 'exp-alg'] : data.topic === 'polynomial-roots' ? ['roots'] : data.topic === 'partial-fractions' ? ['fractions'] : data.topic === 'complex-polar-form' ? ['argument', 'power', 'root'] : []).includes(data.exerciseMode as string)) throw new Error(text.service_error);
   if (data.squareSize !== undefined && (!['determinants', 'inverse-matrices', 'linear-systems'].includes(data.topic as string) || ![2, 3, 4, 5].includes(data.squareSize as number))) throw new Error(text.service_error);
   const matrixDimensions = data.matrixDimensions === undefined ? undefined : object(data.matrixDimensions);
   if (matrixDimensions && (data.topic !== 'matrix-operations' || !['add', 'subtract', 'multiply', 'divide'].includes(matrixDimensions.operation as string) || !['rowsA', 'colsA', 'rowsB', 'colsB'].every(k => [1, 2, 3, 4, 5].includes(matrixDimensions[k] as number)))) throw new Error(text.service_error);
@@ -482,7 +482,7 @@ export function generateProblem(topic: PracticeTopic, difficulty: Difficulty, ar
     || (rankDimensions && (topic !== 'matrix-rank' || difficulty > 3 || ![2, 3, 4, 5].includes(rankDimensions.rows) || ![2, 3, 4, 5].includes(rankDimensions.columns)))
     || (matrixDimensions && (topic !== 'matrix-operations' || difficulty > 3 || !!matrixOptions))
     || (squareSize !== undefined && (!['determinants', 'inverse-matrices', 'linear-systems'].includes(topic) || difficulty > 3 || ![2, 3, 4, 5].includes(squareSize)))
-    || (exerciseMode && (difficulty > 3 || !(topic === 'vectors' ? VECTOR_MODE_IDS : topic === 'complex-arithmetic' ? ['multiply', 'divide'] : topic === 'polynomial-division' ? ['division', 'remainder', 'divisibility'] : topic === 'complex-conversion' ? ['alg-trig', 'alg-exp', 'trig-alg', 'exp-alg'] : topic === 'polynomial-roots' ? ['roots'] : topic === 'partial-fractions' ? ['fractions'] : topic === 'complex-polar-form' ? ['argument', 'power', 'root'] : []).includes(exerciseMode)))) return Promise.reject(new Error(text.unsupported));
+    || (exerciseMode && (difficulty > 3 || !((topic === 'vectors' || topic === 'lines-and-planes') ? geometryModesForTopic(topic) : topic === 'complex-arithmetic' ? ['multiply', 'divide'] : topic === 'polynomial-division' ? ['division', 'remainder', 'divisibility'] : topic === 'complex-conversion' ? ['alg-trig', 'alg-exp', 'trig-alg', 'exp-alg'] : topic === 'polynomial-roots' ? ['roots'] : topic === 'partial-fractions' ? ['fractions'] : topic === 'complex-polar-form' ? ['argument', 'power', 'root'] : []).includes(exerciseMode)))) return Promise.reject(new Error(text.unsupported));
   const drawFrom = mixed ? area : areaOf(topic);
   if (generating) return generating;
   const started = epoch;
@@ -511,7 +511,7 @@ export function generateProblem(topic: PracticeTopic, difficulty: Difficulty, ar
       ...(data.answerInput === undefined ? {} : { answerInput: parseAnswerInput(data.answerInput) }),
       ...(modulusMode ? { modulusMode } : {}), ...(rankDimensions ? { rankDimensions } : {}), ...(matrixDimensions ? { matrixDimensions } : {}), ...(squareSize ? { squareSize } : {}), ...(exerciseMode ? { exerciseMode } : {}) };
     problems.unshift(problem);
-    selection = { topic, difficulty, area: drawFrom };
+    selection = { topic, difficulty, area: drawFrom, ...(exerciseMode ? { exerciseMode } : {}) };
     keys.delete(operation);
     return structuredClone(problem);
   })();
