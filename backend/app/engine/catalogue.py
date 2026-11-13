@@ -126,7 +126,15 @@ class Catalogue(StoredModel):
             expanded_matrix = (
                 cell.topic == "matrix-operations" and "local-matrix-sized-v1" in versions
             )
-            expected_size = self.pool_size + (400 if expanded_matrix else 0)
+            expanded_geometry = (
+                cell.topic == "lines-and-planes"
+                and cell.level <= 3
+                and self.pool_size >= 64
+                and any(version.startswith("geometry-practice-") for version in versions)
+            )
+            expected_size = self.pool_size + (
+                400 if expanded_matrix else 16 if expanded_geometry else 0
+            )
             if (
                 len(cell.problems) != expected_size
                 or len({p.code for p in cell.problems}) != expected_size
@@ -183,6 +191,7 @@ class Catalogue(StoredModel):
                         "polynomial-roots",
                         "partial-fractions",
                         "vectors",
+                        "lines-and-planes",
                     }
                     or cell.topic == "complex-polar-form"
                 ):
@@ -191,7 +200,7 @@ class Catalogue(StoredModel):
                     modes = mode_seeds(cell.topic, cell.level, 0)
                     if all(version in versions for _, version, _ in modes):
                         required = {(version, seed) for _, version, seed in modes}
-                if not required <= present:
+                if len(required) <= self.pool_size and not required <= present:
                     raise ValueError(
                         f"Catalogue settings incomplete: {cell.topic} level {cell.level}"
                     )
@@ -224,6 +233,14 @@ def build(
     cells = []
     for slug, topic in entries.items():
         for level in sorted(topic.levels):
+            cell_size = pool_size + (
+                16
+                if slug == "lines-and-planes"
+                and level <= 3
+                and pool_size >= 64
+                and any(c.generator.startswith("geometry-practice-") for c in topic.levels[level])
+                else 0
+            )
             problems: dict[str, StoredProblem] = {}
             if (
                 slug
@@ -236,6 +253,7 @@ def build(
                     "partial-fractions",
                     "complex-polar-form",
                     "vectors",
+                    "lines-and-planes",
                 )
                 and level <= 3
             ):
@@ -246,16 +264,20 @@ def build(
                     any(c.generator == version for c in topic.levels[level])
                     for _, version, _ in local_modes
                 ):
-                    count = max(2, pool_size // (len(local_modes) + 1)) if slug == "vectors" else 2
+                    count = (
+                        max(2, pool_size // (len(local_modes) + 1))
+                        if slug in {"vectors", "lines-and-planes"}
+                        else 2
+                    )
                     for variation in range(count):
                         for _, version, seed in mode_seeds(slug, level, variation):
-                            if len(problems) == pool_size:
+                            if len(problems) == cell_size:
                                 break
                             generator = generators.get(version)
                             task = generator.build(generator.draw(seed))
                             problem = StoredProblem.from_issued(render(task, generators))
                             problems[problem.code] = problem
-                    if len(problems) == pool_size:
+                    if len(problems) == cell_size:
                         cells.append(
                             StoredCell(topic=slug, level=level, problems=tuple(problems.values()))
                         )
@@ -266,13 +288,13 @@ def build(
                     )
                     if not legacy:
                         variation = 2
-                        while len(problems) < pool_size:
+                        while len(problems) < cell_size:
                             for _, version, seed in mode_seeds(slug, level, variation):
                                 generator = generators.get(version)
                                 task = generator.build(generator.draw(seed))
                                 problem = StoredProblem.from_issued(render(task, generators))
                                 problems.setdefault(problem.code, problem)
-                                if len(problems) == pool_size:
+                                if len(problems) == cell_size:
                                     break
                             variation += 1
                         cells.append(
@@ -293,13 +315,13 @@ def build(
                 generator = generators.get(local_version)
                 for variation in (0, 1):
                     for size in range(2, 6):
-                        if len(problems) == pool_size:
+                        if len(problems) == cell_size:
                             break
                         seed = determinant_seed(level, size, variation)
                         task = generator.build(generator.draw(seed))
                         problem = StoredProblem.from_issued(render(task, generators))
                         problems[problem.code] = problem
-                if len(problems) == pool_size:
+                if len(problems) == cell_size:
                     cells.append(
                         StoredCell(topic=slug, level=level, problems=tuple(problems.values()))
                     )
@@ -332,7 +354,7 @@ def build(
                     task = generator.build(generator.draw(seed))
                     problem = StoredProblem.from_issued(render(task, generators))
                     problems[problem.code] = problem
-                if not old_choices or len(problems) == pool_size:
+                if not old_choices or len(problems) == cell_size:
                     cells.append(
                         StoredCell(topic=slug, level=level, problems=tuple(problems.values()))
                     )
@@ -341,7 +363,7 @@ def build(
             choices = topic.levels[level]
             present = {problem.generator_version for problem in problems.values()}
             missing = tuple(choice for choice in choices if choice.generator not in present)
-            if len(missing) <= pool_size - len(problems) and any(
+            if len(missing) <= cell_size - len(problems) and any(
                 choice.generator.startswith(("analysis1-", "analysis2-", "elementary-"))
                 for choice in choices
             ):
@@ -352,12 +374,12 @@ def build(
                     task = selected.generate(level, level * POOL_SIZE + index, generators)
                     problem = StoredProblem.from_issued(render(task, generators))
                     problems[problem.code] = problem
-                if len(problems) == pool_size:
+                if len(problems) == cell_size:
                     cells.append(
                         StoredCell(topic=slug, level=level, problems=tuple(problems.values()))
                     )
                     continue
-            for seed in range(pool_size * ATTEMPTS_PER_SLOT):
+            for seed in range(cell_size * ATTEMPTS_PER_SLOT):
                 try:
                     task = topic.generate(level, seed, generators)
                 except ValueError:
@@ -365,9 +387,9 @@ def build(
                     continue
                 problem = StoredProblem.from_issued(render(task, generators))
                 problems.setdefault(problem.code, problem)
-                if len(problems) == pool_size:
+                if len(problems) == cell_size:
                     break
-            if len(problems) != pool_size:
+            if len(problems) != cell_size:
                 raise ValueError(f"Cannot fill catalogue pool: {slug} level {level}")
             if expanded_matrix:
                 from app.engine.algebra_practice.catalogue_seeds import matrix_seeds

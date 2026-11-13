@@ -12,6 +12,25 @@ const spec: Geometry3dSpec = {
   faces: [],
 };
 
+it('labels given infinite lines and plane patches once in the 2D fallback', async () => {
+  (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
+  const canvas = vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(null);
+  const host = document.createElement('div'); document.body.append(host); const root = createRoot(host);
+  const diagram: Geometry3dSpec = { ...spec, points: [], lines: [
+    { label: 'l', start: [-2, 0, 0], end: [2, 0, 0], tone: 'given', arrow: false, dashed: false },
+    { label: 'pi', start: [-1, -1, 0], end: [1, -1, 0], tone: 'given', arrow: false, dashed: false },
+    { label: 'pi', start: [1, -1, 0], end: [1, 1, 0], tone: 'given', arrow: false, dashed: false },
+  ] };
+  try {
+    await act(async () => root.render(<SolutionVisual spec={diagram} />));
+    await vi.waitFor(() => expect(host.textContent).toContain('3D is unavailable'));
+    const labels = [...host.querySelectorAll('svg text')].map(node => node.textContent);
+    expect(labels).toContain('l');
+    expect(labels.filter(label => label === 'pi')).toHaveLength(1);
+    expect(labels).toEqual(expect.arrayContaining(['x', 'y', 'z']));
+  } finally { await act(async () => root.unmount()); host.remove(); canvas.mockRestore(); }
+});
+
 it('keeps a labelled projection available when 3D graphics are unavailable', async () => {
   (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
   const canvas = vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(null);

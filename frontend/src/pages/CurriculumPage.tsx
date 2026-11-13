@@ -89,7 +89,7 @@ export function CurriculumPage({ guest = false }: { guest?: boolean }) {
             <summary className="pl-h-lg">{group.title}</summary>
             <ul>
               {group.items.map(item => <li key={item.title}>
-                {item.topic ? <Link to={`/dashboard?area=algebra&topic=${item.topic}`}>{item.title}</Link> : item.title}
+                {item.topic ? <Link to={`/dashboard?area=algebra&topic=${item.topic}${item.section ? `&section=${item.section}` : ''}`}>{item.title}</Link> : item.title}
                 <span className="pl-small pl-muted"> — {item.topic ? item.note ?? 'Available' : 'Coming soon'}</span>
               </li>)}
             </ul>

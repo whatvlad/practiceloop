@@ -11,11 +11,12 @@ interface Props {
   state?: CheckResult | null;
   onEnter?: () => void;
   describedBy?: string;
+  label?: string;
 }
 
 /** The existing ordered-tuple contract, presented as three compact coordinates. */
 export function VectorAnswerInput(props: Props) {
-  const { id, spec, value, onChange, state, onEnter, describedBy } = props;
+  const { id, spec, value, onChange, state, onEnter, describedBy, label = 'Your answer' } = props;
   let parts: string[] | undefined;
   try {
     const text = value.trim();
@@ -30,7 +31,7 @@ export function VectorAnswerInput(props: Props) {
   const invalid = state === 'invalid' || analysis?.status === 'error';
   return <fieldset className="pl-structured-answer pl-vector-answer pl-field pl-stack pl-gap-3"
     aria-describedby={[`${id}-hint`, `${id}-preview`, describedBy].filter(Boolean).join(' ')}>
-    <legend className="pl-label">Your answer</legend>
+    <legend className="pl-label">{label}</legend>
     <div className="pl-vector-grid">{entries.map((entry, index) => {
       const label = spec.labels![index];
       return <label className="pl-label" key={label} htmlFor={`${id}-${index}`}>{label}

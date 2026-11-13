@@ -171,7 +171,7 @@ export function App() {
         <PracticeSidebar />
         <div className="pl-workspace-content">
         {pathname === '/dashboard' && (params.has('topic')
-          ? <TopicPage key={`${params.get('area')}:${params.get('topic')}`} initialArea={params.get('area') === 'algebra' ? 'algebra' : params.get('area') === 'probability-statistics' ? 'probability-statistics' : 'mathematical-analysis'} initialTopic={params.get('topic') ?? undefined} />
+          ? <TopicPage key={`${params.get('area')}:${params.get('topic')}:${params.get('section')}`} initialArea={params.get('area') === 'algebra' ? 'algebra' : params.get('area') === 'probability-statistics' ? 'probability-statistics' : 'mathematical-analysis'} initialTopic={params.get('topic') ?? undefined} initialGeometrySection={params.get('section') ?? undefined} />
           : <HomePage name={account.name} />)}
         {pathname === '/practice' && params.has('id') && <PracticePage key={params.get('id')} id={params.get('id')} randomAccountId={params.get('mode') === 'random' ? account.id : undefined} algebraRandomAccountId={params.get('mode') === 'algebra-random' ? account.id : undefined} matrixOptions={matrixOptionsFromSearch(params)} modulusMode={modulusModeFromSearch(params)} />}
         {pathname === '/random' && <RandomPracticePage accountId={account.id} />}

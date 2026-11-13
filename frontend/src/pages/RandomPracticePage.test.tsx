@@ -9,7 +9,11 @@ import type { PublicProblem } from '../data/types';
 vi.mock('../data/api', () => ({
   getCatalogue: async () => ({
     areas: [{ slug: 'algebra', name: 'Algebra', mixed: null }],
-    topics: [{ slug: 'matrix-operations', name: 'Matrix operations', area: 'algebra', availableDifficulties: [1] }],
+    topics: [
+      { slug: 'matrix-operations', name: 'Matrix operations', area: 'algebra', availableDifficulties: [1] },
+      { slug: 'vectors', name: 'Vectors', area: 'algebra', availableDifficulties: [1, 2, 3, 4, 5] },
+      { slug: 'lines-and-planes', name: 'Lines and planes', area: 'algebra', availableDifficulties: [1, 2, 3, 4, 5] },
+    ],
   }),
   generateProblem: vi.fn(),
 }));
@@ -57,4 +61,20 @@ it('selects and clears a whole group', async () => {
   expect(element.textContent).toContain('No topics selected.');
   await act(async () => root.unmount());
   element.remove();
+});
+
+it('offers each canonical geometry topic once with three current levels', async () => {
+  (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
+  localStorage.clear();
+  const element = document.createElement('div'); document.body.append(element);
+  const root = createRoot(element);
+  await act(async () => root.render(<RandomPracticePage accountId="geometry-random" />));
+  for (const title of ['Vectors, areas and volumes', 'Lines and planes']) {
+    const toggles = [...element.querySelectorAll<HTMLButtonElement>('button')].filter(button => button.textContent === title);
+    expect(toggles).toHaveLength(1);
+    await act(async () => toggles[0].click());
+    const levels = element.querySelector(`[aria-label="Level for ${title}"]`)!;
+    expect(levels.querySelectorAll('button')).toHaveLength(3);
+  }
+  await act(async () => root.unmount()); element.remove();
 });

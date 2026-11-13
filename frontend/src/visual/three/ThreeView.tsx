@@ -202,6 +202,7 @@ export default function ThreeView({ scene: data, label, onUnavailable }: { scene
     const toneColor = (tone: 'given' | 'active' | 'previous') => tone === 'active' ? colors.active : tone === 'previous' ? colors.previous : colors.edge;
     const segmentGeometry = data.edges?.length ? new CylinderGeometry(1, 1, 1, 8) : null;
     if (segmentGeometry) disposables.push(segmentGeometry);
+    const labelledEdges = new Set<string>();
     for (const edge of data.edges ?? []) {
       const start = new Vector3(...edge.start); const end = new Vector3(...edge.end);
       const direction = end.clone().sub(start); const length = direction.length();
@@ -246,10 +247,11 @@ export default function ThreeView({ scene: data, label, onUnavailable }: { scene
         if (edge.dashed) line.computeLineDistances();
         scene.add(line); disposables.push(geometry, material);
       }
-      if (edge.arrow || edge.tone === 'active') {
+      if (!labelledEdges.has(edge.label) && (edge.arrow || edge.tone === 'active' || data.analyticGeometry)) {
+        labelledEdges.add(edge.label);
         const label = labelSprite(edge.label, colors.objectLabel, radius * 0.19, '40px ui-monospace, monospace');
         const labelOffset = new Vector3(...direction).cross(camera.up).normalize().multiplyScalar(radius * 0.08);
-        label.position.copy(start.clone().lerp(end, 0.62)).add(labelOffset);
+        label.position.copy(start.clone().lerp(end, data.analyticGeometry && !edge.arrow && !edge.dashed ? 0.7 : 0.62)).add(labelOffset);
         objectLabels.push({ sprite: label, baseScale: label.scale.clone() });
         disposables.push(label.material.map!, label.material); scene.add(label);
       }

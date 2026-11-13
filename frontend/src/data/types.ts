@@ -2,6 +2,7 @@
 // a solution or generator data: those arrive only from the reveal calls.
 import type { Plot2dSpec, VisualSpec } from '../visual/spec';
 import type { VectorMode } from './vectorModes';
+import type { GeometryMode } from './geometryModes';
 
 /** ADR-005: practice has two areas, and every topic belongs to exactly one. */
 export type AreaSlug = 'algebra' | 'mathematical-analysis' | 'probability-statistics';
@@ -96,7 +97,7 @@ export type AttemptResult = CheckResult | null;
 
 export interface PublicProblem {
   statementVisual?: VisualSpec;
-  exerciseMode?: 'multiply' | 'divide' | 'division' | 'remainder' | 'divisibility' | 'alg-trig' | 'alg-exp' | 'trig-alg' | 'exp-alg' | 'roots' | 'fractions' | 'argument' | 'power' | 'root' | VectorMode;
+  exerciseMode?: 'multiply' | 'divide' | 'division' | 'remainder' | 'divisibility' | 'alg-trig' | 'alg-exp' | 'trig-alg' | 'exp-alg' | 'roots' | 'fractions' | 'argument' | 'power' | 'root' | VectorMode | GeometryMode;
   squareSize?: number;
   matrixDimensions?: MatrixDimensions;
   rankDimensions?: { rows: number; columns: number };

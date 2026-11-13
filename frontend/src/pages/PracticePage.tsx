@@ -76,7 +76,7 @@ function PracticeSession({ opened, randomAccountId, algebraRandomAccountId, matr
       answerInput={problem.answerInput}
       topic={problem.topic}
       difficulty={problem.difficulty}
-      difficultyScale={problem.topic === 'complex-polar-form' && problem.exerciseMode ? null : problem.modulusMode || (problem.topic === 'vectors' && problem.exerciseMode) ? 3 : 5}
+      difficultyScale={problem.topic === 'complex-polar-form' && problem.exerciseMode ? null : problem.modulusMode || (['vectors', 'lines-and-planes'].includes(problem.topic) && problem.exerciseMode) ? 3 : 5}
       problemLatex={problem.problemLatex}
       promptVisual={problem.promptVisual}
       selfReview={problem.selfReview}

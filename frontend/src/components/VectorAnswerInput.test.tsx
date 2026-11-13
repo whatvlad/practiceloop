@@ -27,3 +27,27 @@ it('edits the three vector coordinates compactly and keeps their exact order', a
     expect((host.textContent?.match(/Use exact/g) ?? [])).toHaveLength(1);
   } finally { await act(async () => root.unmount()); host.remove(); }
 });
+
+it('presents an unordered vector pair as two compact coordinate editors', async () => {
+  (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
+  const formula = { kind: 'formula', maxBytes: 256 } as const;
+  const vector: ComputationalInputSpec = { kind: 'tuple', maxBytes: 256, components: [formula, formula, formula], labels: ['x coordinate', 'y coordinate', 'z coordinate'] };
+  const spec: ComputationalInputSpec = { kind: 'tuple', maxBytes: 256, components: [vector, vector], labels: ['Vector one', 'Vector two'] };
+  const host = document.createElement('div'); document.body.append(host); const root = createRoot(host);
+  function Form() {
+    const [value, setValue] = useState('');
+    return <><StructuredAnswerInput id="pair" spec={spec} value={value} onChange={setValue} /><output>{value}</output></>;
+  }
+  try {
+    await act(async () => root.render(<Form />));
+    expect(host.querySelectorAll('.pl-vector-grid')).toHaveLength(2);
+    expect(host.querySelectorAll('input')).toHaveLength(6);
+    expect(host.textContent).toContain('either order');
+    expect(host.textContent).not.toContain('Keep the displayed order');
+    const inputs = [...host.querySelectorAll<HTMLInputElement>('input')];
+    for (const [index, input] of inputs.entries()) {
+      await act(async () => { Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!.call(input, String(index)); input.dispatchEvent(new Event('input', { bubbles: true })); });
+    }
+    expect(host.querySelector('output')?.textContent).toBe('((0;1;2);(3;4;5))');
+  } finally { await act(async () => root.unmount()); host.remove(); }
+});

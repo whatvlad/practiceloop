@@ -239,6 +239,10 @@ class Topic:
                         value for value in candidates if value // 10**12 // (3 * 5**4) == 3
                     )
                 seed = candidates[rng.randbelow(len(candidates))]
+            if choice.generator.startswith("geometry-practice-"):
+                from app.engine.generators.geometry_practice import geometry_seed
+
+                seed = geometry_seed(level, seed % 10**12)
             params = generator.draw(seed)
             if not choice.predicate(params):
                 continue
@@ -774,6 +778,29 @@ def topics() -> dict[str, Topic]:
         level = limit_generator.difficulty
         limit_levels[level] = (*limit_levels[level], Choice(limit_generator.version))
         declared[topic.slug] = replace(topic, levels=limit_levels)
+    from app.engine.generators.geometry_practice import MODES, VECTOR_MODES, GeometryPractice
+
+    for slug, modes in (
+        ("vectors", VECTOR_MODES),
+        ("lines-and-planes", tuple(mode for mode in MODES if mode not in VECTOR_MODES)),
+    ):
+        topic = declared[slug]
+        declared[slug] = replace(
+            topic,
+            levels={
+                **topic.levels,
+                **{
+                    level: (
+                        *topic.levels[level],
+                        *(
+                            Choice(GeometryPractice(mode).version, partial(_local_level, level))
+                            for mode in modes
+                        ),
+                    )
+                    for level in (1, 2, 3)
+                },
+            },
+        )
     return declared
 
 

@@ -32,6 +32,7 @@ def mode_seeds(slug: str, level: int, variation: int) -> tuple[tuple[str, str, i
             solid_seed,
             vector_expression_seed,
         )
+        from app.engine.generators.geometry_practice import VECTOR_MODES, geometry_seed
 
         return (
             ("vector-expression", "vector-expression-v1", vector_expression_seed(level, variation)),
@@ -65,7 +66,45 @@ def mode_seeds(slug: str, level: int, variation: int) -> tuple[tuple[str, str, i
                 (mode, "vector-solid-practice-v1", solid_seed(level, mode, variation))
                 for mode in SOLID_MODES
             ),
+            *(
+                (mode, f"geometry-practice-{mode}-v1", geometry_seed(level, variation))
+                for mode in VECTOR_MODES
+            ),
         )
+    if slug == "lines-and-planes" and level in (1, 2, 3):
+        from app.engine.generators.geometry_practice import MODES as GEOMETRY_MODES
+        from app.engine.generators.geometry_practice import VECTOR_MODES, geometry_seed
+
+        result = [
+            (mode, f"geometry-practice-{mode}-v1", geometry_seed(level, variation))
+            for mode in GEOMETRY_MODES
+            if mode not in VECTOR_MODES
+        ]
+        if variation == 0:
+            # Reserve boundary cases inside the expanded geometry cell.
+            boundary = (
+                ("line-angle", 2),
+                ("plane-angle", 2),
+                ("line-position", 2),
+                ("line-position", 3),
+                ("line-plane-position", 2),
+                ("same-side", 2),
+                *(
+                    (mode, 4)
+                    for mode in (
+                        "point-line-distance",
+                        "point-plane-distance",
+                        "parallel-line-distance",
+                        "skew-line-distance",
+                        "parallel-plane-distance",
+                    )
+                ),
+            )
+            result.extend(
+                (mode, f"geometry-practice-{mode}-v1", geometry_seed(level, case))
+                for mode, case in boundary
+            )
+        return tuple(result)
     if slug == "complex-numbers":
         from app.engine.algebra_practice.selection import modulus_selection
 

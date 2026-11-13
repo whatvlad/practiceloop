@@ -132,6 +132,18 @@ def render(task: Task, generators: Registry) -> Issued:
             {**step, "visual": diagram, "rules": list(explanation)}
             for step, diagram, explanation in zip(steps, diagrams, rules, strict=True)
         ]
+    from app.engine.generators.geometry_practice import GeometryPractice
+
+    if isinstance(generator, GeometryPractice):
+        from app.engine.codes import parse_code
+        from app.visuals.geometry_practice import render_work
+
+        code = parse_code(task.code, generators)
+        params = generator.draw(code.seed)
+        if generator.build(params) != task:
+            raise ValueError("Geometry task does not match its code")
+        statement_visual, rendered_steps = render_work(generator.work(params))
+        steps = list(rendered_steps)
     return Issued(
         statement=statement_latex(task.statement),
         record={"generator_version": task.generator_version, "code": task.code},

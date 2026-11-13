@@ -47,6 +47,36 @@ it('selects an analytic geometry type and one of three levels, and retains both 
   expect(calls.filter(call => call.path === '/api/problems').at(-1)?.body).toMatchObject({ topic: 'vectors', difficulty: 3, exerciseMode: 'tetrahedron-height' });
 });
 
+it('selects a remaining geometry type and retains its canonical topic, mode and three-level scale', async () => {
+  catalogue = { areas: [{ slug: 'algebra', name: 'Algebra', mixed: null }], items: [
+    { slug: 'lines-and-planes', name: 'Lines and planes', area: 'algebra', availableDifficulties: [1, 2, 3, 4, 5] },
+  ] };
+  await act(async () => root.render(<TopicPage initialArea="algebra" initialTopic="lines-and-planes" initialGeometrySection="projections-and-reflections" />));
+  expect(element.querySelectorAll('.pl-seg button')).toHaveLength(3);
+  const select = [...element.querySelectorAll('label')].find(label => label.textContent?.startsWith('Exercise type'))!.querySelector('select')!;
+  await act(async () => { select.value = 'plane-reflection'; select.dispatchEvent(new Event('change', { bubbles: true })); });
+  await act(async () => element.querySelectorAll<HTMLButtonElement>('.pl-seg button')[2].click());
+  await act(async () => button('Generate problem').click());
+  expect(calls.filter(call => call.path === '/api/problems').at(-1)?.body).toMatchObject({ topic: 'lines-and-planes', difficulty: 3, exerciseMode: 'plane-reflection' });
+  await act(async () => root.render(<PracticePage id={new URLSearchParams(window.location.search).get('id')} />));
+  expect(element.querySelector('[aria-label="Difficulty 3 of 3"]')).not.toBeNull();
+  await act(async () => button('Generate next problem').click());
+  expect(calls.filter(call => call.path === '/api/problems').at(-1)?.body).toMatchObject({ topic: 'lines-and-planes', difficulty: 3, exerciseMode: 'plane-reflection' });
+});
+
+it('offers vector and line angles in one section and routes the chosen mode to its canonical topic', async () => {
+  catalogue = { areas: [{ slug: 'algebra', name: 'Algebra', mixed: null }], items: [
+    { slug: 'vectors', name: 'Vectors, areas and volumes', area: 'algebra', availableDifficulties: [1, 2, 3, 4, 5] },
+    { slug: 'lines-and-planes', name: 'Lines and planes', area: 'algebra', availableDifficulties: [1, 2, 3, 4, 5] },
+  ] };
+  await act(async () => root.render(<TopicPage initialArea="algebra" initialTopic="vectors" initialGeometrySection="lengths-and-angles" />));
+  const select = [...element.querySelectorAll('label')].find(label => label.textContent?.startsWith('Exercise type'))!.querySelector('select')!;
+  expect([...select.options].map(option => option.value)).toEqual(['vector-length', 'triangle-angle', 'line-angle', 'plane-angle']);
+  await act(async () => { select.value = 'plane-angle'; select.dispatchEvent(new Event('change', { bubbles: true })); });
+  await act(async () => button('Generate problem').click());
+  expect(calls.filter(call => call.path === '/api/problems').at(-1)?.body).toMatchObject({ topic: 'lines-and-planes', difficulty: 1, exerciseMode: 'plane-angle' });
+});
+
 it('persists and reuses random algebra settings for saved problems', async () => {
   localStorage.removeItem('practiceloop:algebra-random:student');
   catalogue = { areas: [{ slug: 'algebra', name: 'Algebra', mixed: null }], items: [

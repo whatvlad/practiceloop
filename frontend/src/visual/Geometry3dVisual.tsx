@@ -10,6 +10,7 @@ function Projection({ spec, box }: { spec: Geometry3dSpec; box: Scene3D['box'] }
   const id = useId().replaceAll(':', '');
   const project = ([x, y, z]: GeometryPoint3) => [(x - y) / Math.SQRT2, (2 * z - x - y) / Math.sqrt(6)] as const;
   const axes = coordinateAxes(box);
+  const labelledLines = new Set<string>();
   const all = [
     ...spec.points.map(point => point.at), ...spec.lines.flatMap(line => [line.start, line.end]),
     ...spec.faces.flatMap(face => face.vertices),
@@ -24,6 +25,29 @@ function Projection({ spec, box }: { spec: Geometry3dSpec; box: Scene3D['box'] }
     return [width / 2 + (x - (minX + maxX) / 2) * scale, height / 2 - (y - (minY + maxY) / 2) * scale] as const;
   };
   const [originX, originY] = map([0, 0, 0]);
+  const occupied = axes.map(axis => { const [x, y] = map(axis.to); return { x: x + 5, y: y - 21, width: 11, height: 20 }; });
+  occupied.push({ x: originX - 10, y: originY - 2, width: 11, height: 20 });
+  // Place point names first, then active constructions. Try nearby free positions
+  // so a line's name does not cover its foot or leave the drawing on a phone.
+  const labelAt = (x: number, y: number, label: string) => {
+    const textWidth = Math.min(width - 16, label.length * 11);
+    const positions = [[0, 0], [0, 22], [0, -22], [-textWidth - 12, 0], [-textWidth - 12, 22], [-textWidth - 12, -22], [0, 44], [0, -44]]
+      .map(([dx, dy]) => ({ x: Math.max(8, Math.min(width - 8 - textWidth, x + dx)), y: Math.max(18, Math.min(height - 8, y + dy)) }));
+    const chosen = positions.find(position => !occupied.some(box => position.x < box.x + box.width + 2
+      && position.x + textWidth + 2 > box.x && position.y - 16 < box.y + box.height + 2 && position.y + 6 > box.y)) ?? positions[0];
+    occupied.push({ x: chosen.x, y: chosen.y - 16, width: textWidth, height: 20 });
+    return chosen;
+  };
+  const pointLabels = new Map(spec.points.map((point, index) => ({ point, index })).sort((a, b) => Number(b.point.tone === 'active') - Number(a.point.tone === 'active'))
+    .map(({ point, index }) => { const [x, y] = map(point.at); return [index, labelAt(x + 7, y - 7, point.label)] as const; }));
+  const lineLabels = new Map<string, { x: number; y: number }>();
+  const priority = { active: 0, previous: 1, given: 2 };
+  for (const line of [...spec.lines].sort((a, b) => priority[a.tone] - priority[b.tone])) {
+    if (lineLabels.has(line.label)) continue;
+    const [x1, y1] = map(line.start); const [x2, y2] = map(line.end);
+    const along = !line.arrow && !line.dashed ? 0.7 : 0.5;
+    lineLabels.set(line.label, labelAt(x1 + (x2 - x1) * along + 4, y1 + (y2 - y1) * along - 5, line.label));
+  }
   return <div className="pl-geometry-projection">
     <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`${spec.description} 2D projection with coordinate axes x, y and z; angles and lengths may look different.`}>
       <defs><marker id={`arrow-${id}`} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke" /></marker></defs>
@@ -38,14 +62,16 @@ function Projection({ spec, box }: { spec: Geometry3dSpec; box: Scene3D['box'] }
       <g className="pl-geometry-axis"><circle data-axis-origin cx={originX} cy={originY} r="2" /><text x={originX - 10} y={originY + 14}>0</text></g>
       {spec.lines.map((line, index) => {
         const [x1, y1] = map(line.start); const [x2, y2] = map(line.end);
+        const showLabel = !labelledLines.has(line.label);
+        labelledLines.add(line.label);
         return <g key={`${line.label}-${index}`} className={`pl-geometry-line ${line.tone}`}>
           <line x1={x1} y1={y1} x2={x2} y2={y2} strokeDasharray={line.dashed ? '5 4' : undefined} markerEnd={line.arrow ? `url(#arrow-${id})` : undefined} />
-          {line.arrow && <text x={(x1 + x2) / 2 + 4} y={(y1 + y2) / 2 - 5}>{line.label}</text>}
+          {showLabel && <text {...lineLabels.get(line.label)}>{line.label}</text>}
         </g>;
       })}
       {spec.points.map((point, index) => {
         const [x, y] = map(point.at);
-        return <g key={`${point.label}-${index}`} className={`pl-geometry-point ${point.tone}`}><circle cx={x} cy={y} r="3.5" /><text x={x + 7} y={y - 7}>{point.label}</text></g>;
+        return <g key={`${point.label}-${index}`} className={`pl-geometry-point ${point.tone}`}><circle cx={x} cy={y} r="3.5" /><text {...pointLabels.get(index)}>{point.label}</text></g>;
       })}
     </svg>
   </div>;
